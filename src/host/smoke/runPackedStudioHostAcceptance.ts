@@ -13,6 +13,9 @@ const STUDIO_OWNED_PEERS = {
   [EXPO_PLATFORM.packages.imagePicker.name]: EXPO_PLATFORM.packages.imagePicker.version,
 } as const;
 
+/*** Pack the current Studio branch and validate its host subpath from a cold external consumer.
+ * @todo Move this package acceptance harness from src/host/smoke to test/acceptance.
+ */
 export async function runPackedStudioHostAcceptance(
   options: { readonly keepFixture?: boolean } = {},
 ): Promise<void> {
@@ -37,6 +40,7 @@ export async function runPackedStudioHostAcceptance(
   }
 }
 
+/*** Assert that the packed package resolves externally and carries required owner dependencies. */
 async function assertPackedPackageAsync(
   consumerRoot: string,
   repositoryRoot: string,
@@ -57,6 +61,7 @@ async function assertPackedPackageAsync(
   }
 }
 
+/*** Build and pack the current Studio checkout into the acceptance fixture artifact directory. */
 async function buildAndPackStudioAsync(repositoryRoot: string, tarballPath: string): Promise<void> {
   await runAcceptanceCommandAsync({
     args: ['run', 'build'],
@@ -74,6 +79,7 @@ async function buildAndPackStudioAsync(repositoryRoot: string, tarballPath: stri
   });
 }
 
+/*** Write the minimal external consumer used to import and typecheck the packed Studio host. */
 async function createConsumerAsync(consumerRoot: string, tarballPath: string): Promise<void> {
   await mkdir(consumerRoot, { recursive: true });
   await Promise.all([
@@ -96,6 +102,7 @@ async function createConsumerAsync(consumerRoot: string, tarballPath: string): P
   ]);
 }
 
+/*** Create the package manifest for the packed-host acceptance consumer. */
 function createConsumerPackageJson(tarballPath: string) {
   return {
     name: 'packed-studio-host-consumer',
@@ -110,6 +117,7 @@ function createConsumerPackageJson(tarballPath: string) {
   } as const;
 }
 
+/*** Create the strict TypeScript configuration for the packed-host acceptance consumer. */
 function createConsumerTsconfig() {
   return {
     compilerOptions: {
@@ -126,6 +134,7 @@ function createConsumerTsconfig() {
   } as const;
 }
 
+/*** Resolve and cold-install the packed-host consumer with an isolated Bun cache. */
 async function installConsumerAsync(consumerRoot: string, cacheRoot: string): Promise<void> {
   await runAcceptanceCommandAsync({
     args: ['install', '--lockfile-only'],
@@ -146,11 +155,15 @@ async function installConsumerAsync(consumerRoot: string, cacheRoot: string): Pr
   });
 }
 
+/*** Return whether target is equal to or nested beneath parent.
+ * @utility @ankhorage/utility/node/path
+ */
 function isWithin(target: string, parent: string): boolean {
   const relativePath = path.relative(parent, target);
   return relativePath === '' || (!relativePath.startsWith('..') && !path.isAbsolute(relativePath));
 }
 
+/*** Import and typecheck the packed Studio host from the external consumer fixture. */
 async function runConsumerChecksAsync(consumerRoot: string, cacheRoot: string): Promise<void> {
   const options = {
     command: 'bun',

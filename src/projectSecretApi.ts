@@ -58,6 +58,7 @@ export class ProjectSecretApiError extends Error {
   readonly status: number;
   readonly data?: unknown;
 
+  /*** Create a typed secret API error with code, HTTP status, and optional structured data. */
   constructor(args: {
     readonly code: string;
     readonly message: string;
@@ -72,6 +73,10 @@ export class ProjectSecretApiError extends Error {
   }
 }
 
+/***
+ * Fetch metadata for project secrets filtered by optional environment, kind, and provider.
+ * @todo Move project-secret HTTP access from the source root into the secrets package-edge adapter.
+ */
 export async function listProjectSecrets(input: {
   readonly projectId: string;
   readonly environment?: string;
@@ -89,6 +94,10 @@ export async function listProjectSecrets(input: {
   return parseProjectSecretListResponse(value);
 }
 
+/***
+ * Create one project secret and return only its browser-safe metadata.
+ * @todo Move secret creation orchestration into the secrets application responsibility.
+ */
 export async function createProjectSecret(
   input: ProjectSecretCreateInput,
 ): Promise<SecretMetadata> {
@@ -106,6 +115,10 @@ export async function createProjectSecret(
   return parseProjectSecretMetadataResponse(value);
 }
 
+/***
+ * Replace one project secret payload and return only its browser-safe metadata.
+ * @todo Move secret replacement orchestration into the secrets application responsibility.
+ */
 export async function replaceProjectSecret(
   input: ProjectSecretReplaceInput,
 ): Promise<SecretMetadata> {
@@ -121,6 +134,10 @@ export async function replaceProjectSecret(
   return parseProjectSecretMetadataResponse(value);
 }
 
+/***
+ * Fetch all authored usages of one project secret reference.
+ * @todo Move secret-usage HTTP access from the source root into the secrets package-edge adapter.
+ */
 export async function getProjectSecretUsages(input: {
   readonly projectId: string;
   readonly environment?: string;
@@ -133,6 +150,10 @@ export async function getProjectSecretUsages(input: {
   return parseProjectSecretUsageSummaryResponse(value);
 }
 
+/***
+ * Remove one project secret, optionally acknowledging broken references, and return its usage summary.
+ * @todo Move secret removal orchestration into the secrets application responsibility.
+ */
 export async function removeProjectSecret(
   input: ProjectSecretRemoveInput,
 ): Promise<ProjectSecretUsageSummary> {
@@ -148,6 +169,10 @@ export async function removeProjectSecret(
   return parseProjectSecretRemoveResponse(value);
 }
 
+/***
+ * Persist OAuth credentials through the secret owner while configuring the matching auth provider.
+ * @todo Keep this cross-domain use case at the auth/secrets application boundary rather than the source root.
+ */
 export async function configureProjectOAuthProvider(
   input: ConfigureProjectOAuthProviderInput,
 ): Promise<ConfigureProjectOAuthProviderResponse> {
@@ -167,6 +192,7 @@ export async function configureProjectOAuthProvider(
   return parseConfigureProjectOAuthProviderResponse(value);
 }
 
+/*** Validate a secret-list envelope and normalize every returned metadata record. */
 export function parseProjectSecretListResponse(value: unknown): readonly SecretMetadata[] {
   rejectRawSecretResponse(value, 'Secret list response was invalid.');
   const result = readResult(value);
@@ -176,6 +202,7 @@ export function parseProjectSecretListResponse(value: unknown): readonly SecretM
   return result.data.map(parseSecretMetadata);
 }
 
+/*** Validate a successful secret-metadata envelope and normalize its metadata payload. */
 export function parseProjectSecretMetadataResponse(value: unknown): SecretMetadata {
   rejectRawSecretResponse(value, 'Secret metadata response was invalid.');
   const result = readResult(value);
@@ -185,6 +212,7 @@ export function parseProjectSecretMetadataResponse(value: unknown): SecretMetada
   return parseSecretMetadata(result.data);
 }
 
+/*** Validate a successful secret-usage envelope and normalize its usage summary. */
 export function parseProjectSecretUsageSummaryResponse(value: unknown): ProjectSecretUsageSummary {
   rejectRawSecretResponse(value, 'Secret usage response was invalid.');
   const result = readResult(value);
@@ -194,6 +222,7 @@ export function parseProjectSecretUsageSummaryResponse(value: unknown): ProjectS
   return parseProjectSecretUsageSummary(result.data);
 }
 
+/*** Validate the response from secret removal and normalize the returned usage summary. */
 function parseProjectSecretRemoveResponse(value: unknown): ProjectSecretUsageSummary {
   rejectRawSecretResponse(value, 'Secret removal response was invalid.');
   const result = readResult(value);
@@ -203,6 +232,7 @@ function parseProjectSecretRemoveResponse(value: unknown): ProjectSecretUsageSum
   return parseProjectSecretUsageSummary(result.data);
 }
 
+/*** Validate and normalize the structured result of configuring OAuth credentials. */
 export function parseConfigureProjectOAuthProviderResponse(
   value: unknown,
 ): ConfigureProjectOAuthProviderResponse {
@@ -236,6 +266,10 @@ export function parseConfigureProjectOAuthProviderResponse(
   };
 }
 
+/***
+ * Fetch and decode JSON with optional pass-through of a structured non-success result.
+ * @utility @ankhorage/utility/http
+ */
 async function requestJson(
   path: string,
   init?: RequestInit,
@@ -258,6 +292,10 @@ async function requestJson(
   return value;
 }
 
+/***
+ * Decode a Response body as JSON while retaining response status on decode failure.
+ * @utility @ankhorage/utility/http
+ */
 async function readJson(response: Response): Promise<unknown> {
   try {
     return await response.json();
@@ -270,10 +308,12 @@ async function readJson(response: Response): Promise<unknown> {
   }
 }
 
+/*** Convert an unsuccessful secret HTTP response through the canonical secret error parser. */
 function parseHttpError(value: unknown, status: number): ProjectSecretApiError {
   return parseProjectSecretHttpErrorResponse(value, status);
 }
 
+/*** Validate a raw-secret-safe error payload and project it into ProjectSecretApiError. */
 export function parseProjectSecretHttpErrorResponse(
   value: unknown,
   status: number,
@@ -297,6 +337,10 @@ export function parseProjectSecretHttpErrorResponse(
   return new ProjectSecretApiError({ code, message, status, data });
 }
 
+/***
+ * Validate a generic boolean-result envelope and expose its optional data payload.
+ * @utility @ankhorage/utility/validation
+ */
 function readResult(value: unknown): { readonly ok: boolean; readonly data?: unknown } {
   const record = asRecord(value);
   if (record === null || typeof record.ok !== 'boolean') {
@@ -305,6 +349,7 @@ function readResult(value: unknown): { readonly ok: boolean; readonly data?: unk
   return { ok: record.ok, data: record.data };
 }
 
+/*** Validate and normalize browser-safe secret metadata from an unknown payload. */
 function parseSecretMetadata(value: unknown): SecretMetadata {
   const record = asRecord(value);
   if (record === null) {
@@ -337,6 +382,7 @@ function parseSecretMetadata(value: unknown): SecretMetadata {
   };
 }
 
+/*** Validate and normalize a project secret usage-summary payload. */
 function parseProjectSecretUsageSummary(value: unknown): ProjectSecretUsageSummary {
   const record = asRecord(value);
   if (record === null || typeof record.ref !== 'string' || !Array.isArray(record.usages)) {
@@ -348,6 +394,7 @@ function parseProjectSecretUsageSummary(value: unknown): ProjectSecretUsageSumma
   };
 }
 
+/*** Validate and normalize one authored usage of a project secret reference. */
 function parseProjectSecretUsage(value: unknown): ProjectSecretUsage {
   const record = asRecord(value);
   if (
@@ -372,6 +419,10 @@ function parseProjectSecretUsage(value: unknown): ProjectSecretUsage {
   };
 }
 
+/***
+ * Validate and project the common structured `{ code, message }` error shape.
+ * @utility @ankhorage/utility/validation
+ */
 function parseError(value: unknown): { readonly code: string; readonly message: string } {
   const record = asRecord(value);
   if (record === null || typeof record.code !== 'string' || typeof record.message !== 'string') {
@@ -380,6 +431,10 @@ function parseError(value: unknown): { readonly code: string; readonly message: 
   return { code: record.code, message: record.message };
 }
 
+/***
+ * Serialize defined non-empty string values into an optional URL query string.
+ * @utility @ankhorage/utility/url
+ */
 function createQuery(values: Readonly<Record<string, string | undefined>>): string {
   const params = new URLSearchParams();
   for (const [key, value] of Object.entries(values)) {
@@ -390,20 +445,36 @@ function createQuery(values: Readonly<Record<string, string | undefined>>): stri
   return query ? `?${query}` : '';
 }
 
+/***
+ * Narrow an unknown value to a strict non-array record or return null.
+ * @utility @ankhorage/utility/value
+ */
 function asRecord(value: unknown): Record<string, unknown> | null {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
     ? (value as Record<string, unknown>)
     : null;
 }
 
+/***
+ * Return whether an unknown value is an array containing only strings.
+ * @utility @ankhorage/utility/array
+ */
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((entry) => typeof entry === 'string');
 }
 
+/***
+ * Create a typed invalid-upstream-response error with a fixed bad-gateway status.
+ * @utility @ankhorage/utility/http
+ */
 function createInvalidResponseError(message: string): ProjectSecretApiError {
   return new ProjectSecretApiError({ code: 'invalid_response', message, status: 502 });
 }
 
+/***
+ * Reject an unknown response when a nested forbidden-key detector reports a match.
+ * @utility @ankhorage/utility/validation
+ */
 function rejectRawSecretResponse(value: unknown, message: string): void {
   const match = findRawSecretResponseKey(value);
   if (match) {
@@ -413,6 +484,7 @@ function rejectRawSecretResponse(value: unknown, message: string): void {
   }
 }
 
+/*** Return whether an unknown value is one of the project-secret usage categories. */
 function isProjectSecretUsageCategory(value: unknown): value is ProjectSecretUsageCategory {
   return value === 'oauth-provider' || value === 'project-config';
 }

@@ -11,6 +11,10 @@ export interface ExternalApiUpsertResult {
   readonly created: boolean;
 }
 
+/***
+ * Immutably insert or replace an item in an array by stable identity and report whether it was created.
+ * @utility @ankhorage/utility/array
+ */
 export function upsertExternalApi(
   apis: ApiDefinitionList,
   api: ExternalApiDefinition,

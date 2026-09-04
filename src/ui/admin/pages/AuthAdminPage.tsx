@@ -71,6 +71,10 @@ export interface AuthAdminPageProps {
   >;
 }
 
+/***
+ * Render and coordinate Studio authentication authoring, OAuth credential setup, health, routes, and profile configuration.
+ * @todo This page currently owns substantial auth application orchestration and generic UI primitives; move auth persistence/provider transaction policy into `auth/` and use canonical ZORA form/action patterns.
+ */
 export function AuthAdminPage(props: AuthAdminPageProps) {
   const { projectId, manifest, routeId } = props;
   const studio = useStudio();
@@ -102,6 +106,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
     setDraft(readStudioAuthSettings(manifest) ?? createDefaultSettings());
   }, [manifest]);
 
+  /*** Refresh auth health for the selected environment without allowing stale requests to overwrite newer state. */
   const refreshHealth = useCallback(async () => {
     await healthRefreshCoordinatorRef.current.refresh({
       loadHealth: () => getProjectAuthHealth({ projectId, environment }),
@@ -110,6 +115,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
     });
   }, [environment, projectId]);
 
+  /*** Reload canonical auth settings and health together, rebasing the local editor draft only from the latest accepted request. */
   const reload = useCallback(async () => {
     setLoading(true);
     const result = await healthRefreshCoordinatorRef.current.refresh({
@@ -139,6 +145,10 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
     });
   }, [refreshHealth]);
 
+  /***
+   * Persist one auth draft after rebasing canonical credential refs, flush the manifest, synchronize runtime state, and refresh health.
+   * @todo Move this multi-step auth save use case into the auth application layer.
+   */
   const persistAuthDraft = useCallback(
     async (nextDraft: StudioAuthSettings, nextMessage: string) => {
       const canonicalAuthSettings = canonicalManifestRef.current
@@ -157,6 +167,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
     [flushManifest, projectId, refreshHealth, updateAuthSettings],
   );
 
+  /*** Persist one stored OAuth credential reference into the manifest and maintain pending-recovery state when manifest persistence fails. */
   const persistCredentialLink = useCallback(
     async (link: StoredOAuthCredentialLink): Promise<StoredOAuthCredentialLinkResult> => {
       const result = await persistStoredOAuthCredentialLink({
@@ -179,6 +190,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
     [authAdminSession, flushManifest, mutateAuthSettings, refreshHealth],
   );
 
+  /*** Persist a credential link and mirror it into the local draft only after successful manifest linkage. */
   const persistCredentialLinkAndPatchDraft = useCallback(
     async (link: StoredOAuthCredentialLink) =>
       persistStoredOAuthCredentialLinkAndPatchLocalDraft({
@@ -189,6 +201,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
     [persistCredentialLink],
   );
 
+  /*** Retry one pending provider credential-link transaction under the auth session's conflict guard. */
   const retryPendingCredentialLink = useCallback(
     async (link: StoredOAuthCredentialLink) => {
       const result = await authAdminSession.runCredentialTransaction(
@@ -203,6 +216,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
     [authAdminSession, persistCredentialLinkAndPatchDraft],
   );
 
+  /*** Save the complete auth draft through the session's exclusive whole-auth write transaction. */
   const save = useCallback(async () => {
     setSaving(true);
     setMessage(null);
@@ -611,6 +625,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   );
 }
 
+/*** Render recovery controls for one OAuth credential secret that was stored but not linked into the manifest. */
 function PendingCredentialLinkCard(props: {
   readonly link: StoredOAuthCredentialLink;
   readonly loading: boolean;
@@ -636,6 +651,10 @@ function PendingCredentialLinkCard(props: {
   );
 }
 
+/***
+ * Render one Supabase OAuth provider's setup requirements, credentials, health state, and enablement controls.
+ * @todo Provider setup/credential completeness and transaction policy belongs in the auth application domain; this component should render a prepared view model.
+ */
 function OAuthProviderSetting(props: {
   readonly projectId: string;
   readonly providerId: SupabaseOAuthProviderId;
@@ -686,6 +705,7 @@ function OAuthProviderSetting(props: {
   const [savingCredentials, setSavingCredentials] = useState(false);
   const [credentialMessage, setCredentialMessage] = useState<string | null>(null);
 
+  /*** Toggle a provider only when its required credentials are complete, upserting the provider draft when permitted. */
   const setEnabled = (nextEnabled: boolean) => {
     if (nextEnabled && !credentialsComplete) {
       props.onChange(
@@ -712,6 +732,7 @@ function OAuthProviderSetting(props: {
     );
   };
 
+  /*** Validate a complete credential replacement, store it through the secret API, and persist its manifest reference under a keyed transaction lock. */
   const saveCredentials = async () => {
     if (props.transactionBusy) {
       setCredentialMessage(
@@ -844,6 +865,10 @@ function OAuthProviderSetting(props: {
   );
 }
 
+/***
+ * Immutably insert or replace an array item selected by its `id` key.
+ * @utility @ankhorage/utility/array
+ */
 function upsertProvider(
   providers: NonNullable<StudioAuthSettings['oauth']>['providers'],
   provider: NonNullable<StudioAuthSettings['oauth']>['providers'][number],
@@ -855,6 +880,7 @@ function upsertProvider(
   );
 }
 
+/*** Merge a partial auth-flow patch into the current React auth draft. */
 function updateFlow(
   setDraft: React.Dispatch<React.SetStateAction<StudioAuthSettings>>,
   patch: Partial<StudioAuthSettings['flow']>,
@@ -862,16 +888,25 @@ function updateFlow(
   setDraft((current) => ({ ...current, flow: { ...current.flow, ...patch } }));
 }
 
+/***
+ * Return an immutable object copy without its `signUp` property; parameterized key omission is reusable.
+ * @utility @ankhorage/utility/object
+ */
 function omitSignUp(settings: StudioAuthSettings): StudioAuthSettings {
   const { signUp: _signUp, ...rest } = settings;
   return rest;
 }
 
+/***
+ * Return an immutable object copy without its `profile` property; parameterized key omission is reusable.
+ * @utility @ankhorage/utility/object
+ */
 function omitProfile(settings: StudioAuthSettings): StudioAuthSettings {
   const { profile: _profile, ...rest } = settings;
   return rest;
 }
 
+/*** Create Studio's default editable authentication settings shell. */
 function createDefaultSettings(): StudioAuthSettings {
   return {
     scope: 'none',
@@ -882,6 +917,7 @@ function createDefaultSettings(): StudioAuthSettings {
   };
 }
 
+/*** Create Studio's default OAuth settings shell. */
 function createDefaultOAuth(): NonNullable<StudioAuthSettings['oauth']> {
   return {
     enabled: false,
@@ -890,6 +926,7 @@ function createDefaultOAuth(): NonNullable<StudioAuthSettings['oauth']> {
   };
 }
 
+/*** Create the minimal fallback manifest needed to initialize auth authoring before a canonical manifest is available. */
 function createFallbackManifest(): AppManifest {
   return {
     metadata: {
@@ -908,6 +945,10 @@ function createFallbackManifest(): AppManifest {
   };
 }
 
+/***
+ * Split a comma-delimited string into trimmed, non-empty, insertion-order-deduplicated values.
+ * @utility @ankhorage/utility/string
+ */
 function splitList(value: string): string[] {
   return [
     ...new Set(
@@ -919,11 +960,16 @@ function splitList(value: string): string[] {
   ];
 }
 
+/***
+ * Normalize auth API/general failures to a user-display message with a caller-specific fallback.
+ * @utility @ankhorage/utility/error
+ */
 function toMessage(error: unknown): string {
   if (error instanceof ProjectAuthApiError) return error.message;
   return error instanceof Error ? error.message : 'Authentication configuration request failed.';
 }
 
+/*** Convert an auth write-conflict reason into the administration message appropriate to the blocked operation. */
 function formatAuthAdminWriteBusyReason(
   reason: Extract<AuthAdminWriteResult<unknown>, { readonly ok: false }>['reason'],
 ): string {
@@ -942,6 +988,7 @@ function formatAuthAdminWriteBusyReason(
   return 'OAuth provider credentials are already being saved.';
 }
 
+/*** Render project auth health, provider field completeness, callback metadata, and diagnostics. */
 function AuthHealthCard({ health }: { readonly health: ProjectAuthHealth | null }) {
   if (!health) {
     return (
@@ -1004,6 +1051,7 @@ function AuthHealthCard({ health }: { readonly health: ProjectAuthHealth | null 
   );
 }
 
+/*** Format the aggregate auth health status for display. */
 function formatHealthStatus(status: ProjectAuthHealth['status']): string {
   if (status === 'healthy') return 'Healthy';
   if (status === 'warning') return 'Warning';
@@ -1011,6 +1059,7 @@ function formatHealthStatus(status: ProjectAuthHealth['status']): string {
   return 'Not configured';
 }
 
+/*** Format one OAuth provider health status for display. */
 function formatProviderHealthStatus(status: ProjectAuthHealth['providers'][number]['status']) {
   if (status === 'configured') return 'Configured';
   if (status === 'incomplete') return 'Incomplete';
@@ -1019,6 +1068,7 @@ function formatProviderHealthStatus(status: ProjectAuthHealth['providers'][numbe
   return 'Disabled';
 }
 
+/*** Map aggregate auth health status to the semantic text color used by the admin UI. */
 function healthStatusColor(status: ProjectAuthHealth['status']) {
   if (status === 'healthy') return 'success';
   if (status === 'warning') return 'warning';
@@ -1026,12 +1076,17 @@ function healthStatusColor(status: ProjectAuthHealth['status']) {
   return 'neutral';
 }
 
+/*** Map auth diagnostic severity to the semantic text color used by the admin UI. */
 function diagnosticSeverityColor(severity: ProjectAuthHealth['diagnostics'][number]['severity']) {
   if (severity === 'error') return 'danger';
   if (severity === 'warning') return 'warning';
   return 'neutral';
 }
 
+/***
+ * Render a themed generic card shell used throughout this auth page.
+ * @todo Replace with the canonical ZORA Card instead of owning a duplicate local primitive.
+ */
 function Card(props: { readonly title: string; readonly children: React.ReactNode }) {
   const { theme } = useZoraTheme();
   return (
@@ -1047,6 +1102,10 @@ function Card(props: { readonly title: string; readonly children: React.ReactNod
   );
 }
 
+/***
+ * Render a labeled generic field shell used by auth forms.
+ * @todo Replace with the canonical ZORA FormField pattern.
+ */
 function Field(props: { readonly label: string; readonly children: React.ReactNode }) {
   return (
     <View style={styles.field}>
@@ -1058,6 +1117,7 @@ function Field(props: { readonly label: string; readonly children: React.ReactNo
   );
 }
 
+/*** Render one route text field using the auth page's local field/input primitives. */
 function RouteField(props: {
   readonly label: string;
   readonly value: string;
@@ -1070,6 +1130,10 @@ function RouteField(props: {
   );
 }
 
+/***
+ * Render a theme-aware generic React Native text input.
+ * @todo Replace with canonical ZORA Input rather than duplicating design-system input ownership in Studio.
+ */
 function Input(props: React.ComponentProps<typeof TextInput>) {
   const { theme } = useZoraTheme();
   return (
@@ -1089,6 +1153,10 @@ function Input(props: React.ComponentProps<typeof TextInput>) {
   );
 }
 
+/***
+ * Render a generic title/description/switch setting row.
+ * @todo Replace with canonical ZORA SwitchField where its contract fits.
+ */
 function SwitchSetting(props: {
   readonly title: string;
   readonly description: string;
@@ -1108,6 +1176,7 @@ function SwitchSetting(props: {
   );
 }
 
+/*** Render one selectable pill-like option used by auth/profile configuration. */
 function Choice(props: {
   readonly label: string;
   readonly selected: boolean;
@@ -1132,6 +1201,10 @@ function Choice(props: {
   );
 }
 
+/***
+ * Render a generic label/value row used in auth administration.
+ * @todo Reuse the shared admin/ZORA key-value pattern rather than a second local implementation.
+ */
 function KeyValue(props: { readonly label: string; readonly value: string }) {
   return (
     <View style={styles.keyValue}>
@@ -1143,6 +1216,10 @@ function KeyValue(props: { readonly label: string; readonly value: string }) {
   );
 }
 
+/***
+ * Render the auth page's primary loading/action button.
+ * @todo Replace with canonical ZORA Button.
+ */
 function PrimaryButton(props: {
   readonly label: string;
   readonly loading: boolean;
@@ -1166,6 +1243,10 @@ function PrimaryButton(props: {
   );
 }
 
+/***
+ * Render the auth page's secondary action button.
+ * @todo Replace with canonical ZORA Button.
+ */
 function SecondaryButton(props: { readonly label: string; readonly onPress: () => void }) {
   const { theme } = useZoraTheme();
   return (
@@ -1178,6 +1259,7 @@ function SecondaryButton(props: { readonly label: string; readonly onPress: () =
   );
 }
 
+/*** Render a simple informational auth-admin message. */
 function Message({ text }: { readonly text: string }) {
   return (
     <Text color="info" variant="bodySmall">

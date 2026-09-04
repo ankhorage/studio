@@ -20,6 +20,7 @@ const PROTOCOL_OPTIONS = [
   { value: 'graphql', label: 'GraphQL introspection' },
 ] as const;
 
+/*** Render the external-API discovery/connect form and refresh the Studio manifest after a successful connection. */
 export function ExternalApiConnectCard() {
   const studio = useStudio();
   const [apiId, setApiId] = useState('');
@@ -33,6 +34,7 @@ export function ExternalApiConnectCard() {
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
+  /*** Submit one external API discovery/connect request and refresh canonical Studio state on success. */
   const connect = useCallback(async () => {
     setBusy(true);
     setMessage(null);

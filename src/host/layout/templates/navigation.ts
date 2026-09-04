@@ -12,10 +12,16 @@ export interface BuiltNavigatorJsx {
   usesZoraNavigationRouteMap: boolean;
 }
 
+/***
+ * Build the generated header-visibility expression for a navigator, hiding headers in Studio development mode when Studio integration is included.
+ */
 function getNavigatorHeaderShownTsx(includeStudio: boolean): string {
   return includeStudio ? '__DEV__ ? false : true' : 'true';
 }
 
+/***
+ * Build generated tab navigator screen options with Studio-aware header visibility and theme-driven colors.
+ */
 function getTabsOptionsTsx(includeStudio: boolean): string {
   return `{
   headerShown: ${getNavigatorHeaderShownTsx(includeStudio)},
@@ -28,6 +34,9 @@ function getTabsOptionsTsx(includeStudio: boolean): string {
 }`;
 }
 
+/***
+ * Build generated drawer navigator screen options with Studio-aware header visibility and theme-driven colors.
+ */
 function getDrawerOptionsTsx(includeStudio: boolean): string {
   return `{
   headerShown: ${getNavigatorHeaderShownTsx(includeStudio)},
@@ -43,12 +52,18 @@ function getDrawerOptionsTsx(includeStudio: boolean): string {
 }`;
 }
 
+/***
+ * Build generated stack navigator screen options with Studio-aware header visibility.
+ */
 function getStackOptionsTsx(includeStudio: boolean): string {
   return `{
   headerShown: ${getNavigatorHeaderShownTsx(includeStudio)},
 }`;
 }
 
+/***
+ * Generate the declaration and JSX fragments required for the manifest navigator type and report which generated runtime imports it needs.
+ */
 export function buildNavigatorJsx(args: {
   navigator: NavigatorSpec;
   manifest: AppManifest;
@@ -67,6 +82,9 @@ export function buildNavigatorJsx(args: {
   return buildStackNavigatorJsx({ navigator, manifest, includeStudio });
 }
 
+/***
+ * Generate tab-navigator declarations and JSX, preferring the ZORA route-map integration when every route belongs in primary navigation and falling back to Expo Router options otherwise.
+ */
 function buildTabsNavigatorJsx(args: {
   navigator: NavigatorSpec;
   manifest: AppManifest;
@@ -136,6 +154,9 @@ ${screens}
   };
 }
 
+/***
+ * Generate drawer-navigator declarations and JSX, preferring the ZORA route-map integration when every route belongs in primary navigation and falling back to Expo Router options otherwise.
+ */
 function buildDrawerNavigatorJsx(args: {
   navigator: NavigatorSpec;
   manifest: AppManifest;
@@ -205,6 +226,9 @@ ${screens}
   };
 }
 
+/***
+ * Generate stack-navigator declarations and JSX for the manifest routes.
+ */
 function buildStackNavigatorJsx(args: {
   navigator: NavigatorSpec;
   manifest: AppManifest;
@@ -238,6 +262,9 @@ ${screens}
   };
 }
 
+/***
+ * Generate one ZORA-integrated tab screen declaration and JSX reference from a manifest route.
+ */
 function buildTabsScreenJsx(
   route: RouteDefinition,
   manifest: AppManifest,
@@ -256,6 +283,9 @@ function buildTabsScreenJsx(
   };
 }
 
+/***
+ * Generate one fallback tab screen declaration and JSX reference, including hidden-route and icon options when required.
+ */
 function buildTabsScreenFallbackJsx(
   route: RouteDefinition,
   manifest: AppManifest,
@@ -296,6 +326,9 @@ function buildTabsScreenFallbackJsx(
   };
 }
 
+/***
+ * Generate one ZORA-integrated drawer screen declaration and JSX reference from a manifest route.
+ */
 function buildDrawerScreenJsx(
   route: RouteDefinition,
   manifest: AppManifest,
@@ -314,6 +347,9 @@ function buildDrawerScreenJsx(
   };
 }
 
+/***
+ * Generate one fallback drawer screen declaration and JSX reference, including hidden-route and icon options when required.
+ */
 function buildDrawerScreenFallbackJsx(
   route: RouteDefinition,
   manifest: AppManifest,
@@ -351,6 +387,9 @@ function buildDrawerScreenFallbackJsx(
   };
 }
 
+/***
+ * Generate one stack screen declaration and JSX reference, adding only the route-specific options that are required.
+ */
 function buildStackScreenJsx(
   route: RouteDefinition,
   manifest: AppManifest,
@@ -382,11 +421,17 @@ function buildStackScreenJsx(
   };
 }
 
+/***
+ * Resolve and escape the display label for a route, preferring explicit route metadata before screen metadata and the route name.
+ */
 function resolveRouteLabel(route: RouteDefinition, manifest: AppManifest): string {
   const screen = route.screenId ? manifest.screens[route.screenId] : undefined;
   return escapeStringLiteral(route.label ?? screen?.title ?? screen?.name ?? route.name);
 }
 
+/***
+ * Generate the ZORA navigation route-map declaration for the manifest routes, including optional icon metadata.
+ */
 function buildRouteMapDeclaration(args: {
   routes: RouteDefinition[];
   manifest: AppManifest;
@@ -408,6 +453,9 @@ function buildRouteMapDeclaration(args: {
   return `const routeMap: ZoraNavigationRouteMap = {\n${entries},\n};\n`;
 }
 
+/***
+ * Generate a serialized ZORA route-icon object literal from manifest icon metadata.
+ */
 function buildRouteIconLiteral(icon: NonNullable<RouteDefinition['icon']>): string {
   const provider = icon.provider
     ? `, provider: '${escapeStringLiteral(resolveIconProvider(icon.provider))}'`
@@ -421,10 +469,17 @@ function buildRouteIconLiteral(icon: NonNullable<RouteDefinition['icon']>): stri
   return `{ name: '${escapeStringLiteral(icon.name)}'${provider}${size}${color} }`;
 }
 
+/***
+ * Translate the manifest's legacy material-community provider identifier to the runtime ZORA provider name while preserving every other provider.
+ * @todo Move provider-name normalization to the icon/navigation owner instead of keeping contract-to-runtime mapping inside a layout template.
+ */
 function resolveIconProvider(provider: string): string {
   return provider === 'material-community' ? 'MaterialDesignIcons' : provider;
 }
 
+/***
+ * Build a stable generated screen-options constant name from the route name and route index.
+ */
 function buildScreenOptionsConstName(route: RouteDefinition, index: number): string {
   const normalizedName = route.name.replace(/[^a-zA-Z0-9]+/g, ' ').trim();
   const parts = normalizedName.length > 0 ? normalizedName.split(/\s+/) : [];
@@ -437,6 +492,9 @@ function buildScreenOptionsConstName(route: RouteDefinition, index: number): str
   return `route${index}${camelName.charAt(0).toUpperCase() + camelName.slice(1)}ScreenOptions`;
 }
 
+/***
+ * Derive the generated route-icon render-function name from the corresponding screen-options constant name.
+ */
 function buildScreenIconFunctionName(route: RouteDefinition, index: number): string {
   return buildScreenOptionsConstName(route, index).replace(/ScreenOptions$/, 'Icon');
 }

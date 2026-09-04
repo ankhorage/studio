@@ -10,6 +10,10 @@ export interface ResolveProjectSecretDatabaseUrlInput {
   readonly processEnvironment?: Readonly<Record<string, string | undefined>>;
 }
 
+/***
+ * @todo Keep trusted secret-store database resolution with the Secrets host edge; it composes host environment and generated Infra state rather than providing a generic URL helper.
+ * Resolve the trusted database URL used by the project secret store, preferring an explicit host override over generated Infra state.
+ */
 export async function resolveProjectSecretDatabaseUrl(
   input: ResolveProjectSecretDatabaseUrlInput,
 ): Promise<string> {

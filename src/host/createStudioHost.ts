@@ -7,6 +7,10 @@ export interface CreateStudioHostOptions {
   readonly workspaceRoot: string;
 }
 
+/***
+ * Compose the Studio host edge from project, module, deploy, and infrastructure-session owners.
+ * @todo Keep this as thin host composition while moving domain services out of host-owned folders.
+ */
 export function createStudioHost(options: CreateStudioHostOptions) {
   const projectManager = new ProjectManager(options.workspaceRoot);
   const moduleManager = new ModuleManager(options.workspaceRoot);
@@ -19,6 +23,7 @@ export function createStudioHost(options: CreateStudioHostOptions) {
     projectManager,
     moduleManager,
     projectDeployService,
+    /*** Close host-owned infrastructure sessions during Studio host shutdown. */
     async close() {
       await stopAllProjectInfraPortForwards();
     },

@@ -10,6 +10,7 @@ import { setOwnProperty } from '../../../utils/setOwnProperty';
 
 export type NumericThemeTokenFamily = 'spacing' | 'radii' | 'shadows';
 
+/*** Immutably set/remove one numeric global theme token and prune empty family/global override structures. */
 export function updateNumericThemeToken(args: {
   readonly tokens: ThemeGlobalTokenOverrides | undefined;
   readonly family: NumericThemeTokenFamily;
@@ -26,6 +27,7 @@ export function updateNumericThemeToken(args: {
   return normalizeGlobalTokens(nextTokens);
 }
 
+/*** Immutably set/remove one typography size override and prune empty typography/global override structures. */
 export function updateTypographySize(args: {
   readonly tokens: ThemeGlobalTokenOverrides | undefined;
   readonly key: string;
@@ -37,6 +39,7 @@ export function updateTypographySize(args: {
   });
 }
 
+/*** Immutably set/remove one typography weight override and prune empty typography/global override structures. */
 export function updateTypographyWeight(args: {
   readonly tokens: ThemeGlobalTokenOverrides | undefined;
   readonly key: string;
@@ -48,6 +51,7 @@ export function updateTypographyWeight(args: {
   });
 }
 
+/*** Immutably set/remove one typography heading field override and prune empty heading/typography/global structures. */
 export function updateTypographyHeading(args: {
   readonly tokens: ThemeGlobalTokenOverrides | undefined;
   readonly level: string;
@@ -72,6 +76,7 @@ export function updateTypographyHeading(args: {
   });
 }
 
+/*** Replace typography overrides and normalize empty typography/global token structures. */
 function updateTypographyTokens(
   tokens: ThemeGlobalTokenOverrides | undefined,
   typography: ThemeTypographyTokenOverrides,
@@ -79,6 +84,10 @@ function updateTypographyTokens(
   return normalizeGlobalTokens({ ...tokens, typography: normalizeTypography(typography) });
 }
 
+/***
+ * Immutably set/delete a keyed record value and normalize an empty resulting record to undefined.
+ * @utility @ankhorage/utility/object
+ */
 function updateRecordValue<T>(
   record: Readonly<Record<string, T>> | undefined,
   key: string,
@@ -90,6 +99,7 @@ function updateRecordValue<T>(
   return Object.keys(next).length > 0 ? next : undefined;
 }
 
+/*** Normalize an empty typography override shell to undefined. */
 function normalizeTypography(
   typography: ThemeTypographyTokenOverrides,
 ): ThemeTypographyTokenOverrides | undefined {
@@ -98,6 +108,7 @@ function normalizeTypography(
   return typography;
 }
 
+/*** Normalize an empty global theme-token override shell to undefined. */
 function normalizeGlobalTokens(
   tokens: ThemeGlobalTokenOverrides,
 ): ThemeGlobalTokenOverrides | undefined {

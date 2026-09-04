@@ -31,11 +31,19 @@ export interface CanvasDragSessionResolution {
   readonly shouldReset: boolean;
 }
 
+/***
+ * Test whether a tree contains a node with the requested id.
+ * @utility @ankhorage/utility/tree
+ */
 function treeContainsNode(root: UiNode, nodeId: string): boolean {
   if (root.id === nodeId) return true;
   return root.children?.some((child) => treeContainsNode(child, nodeId)) ?? false;
 }
 
+/***
+ * Keep or reset the active Studio canvas drag session when edit mode, selection, or tree membership changes.
+ * @todo Move Studio canvas drag-session behavior under src/canvas/.
+ */
 export function resolveCanvasDragSession(args: {
   readonly activeDragNodeId: string | null;
   readonly isEditMode: boolean;
@@ -58,10 +66,18 @@ export function resolveCanvasDragSession(args: {
     : { activeDragNodeId: null, shouldReset: true };
 }
 
+/***
+ * Create the Studio-specific drag payload used to identify a canvas node.
+ * @todo Move Studio canvas drag payload behavior under src/canvas/.
+ */
 export function createStudioCanvasDragPayload(nodeId: string): StudioCanvasDragPayload {
   return { kind: 'studio-canvas-node', nodeId };
 }
 
+/***
+ * Validate an unknown value as the Studio-specific canvas drag payload.
+ * @todo Move Studio canvas drag payload validation under src/canvas/.
+ */
 export function isStudioCanvasDragPayload(value: unknown): value is StudioCanvasDragPayload {
   if (typeof value !== 'object' || value === null) return false;
   if (!('kind' in value) || !('nodeId' in value)) return false;
@@ -70,12 +86,20 @@ export function isStudioCanvasDragPayload(value: unknown): value is StudioCanvas
   return candidate.kind === 'studio-canvas-node' && typeof candidate.nodeId === 'string';
 }
 
+/***
+ * Narrow a canvas drop-zone resolution to its valid variant.
+ * @todo Keep the Studio drop-zone discriminator with src/canvas/.
+ */
 export function isValidCanvasDropZone(
   zone: CanvasDropZoneResolution,
 ): zone is ValidCanvasDropZoneResolution {
   return zone.status === 'valid';
 }
 
+/***
+ * Group valid Studio drop zones into before, inside, and after slots.
+ * @todo Move Studio drop-zone slot behavior under src/canvas/.
+ */
 export function resolveCanvasDropZoneSlots(
   zones: readonly CanvasDropZoneResolution[],
 ): CanvasDropZoneSlots {
@@ -89,6 +113,10 @@ export function resolveCanvasDropZoneSlots(
   };
 }
 
+/***
+ * Find one valid Studio drop zone by placement kind.
+ * @todo Keep Studio placement lookup with src/canvas/.
+ */
 function findDropZoneByKind(
   zones: readonly ValidCanvasDropZoneResolution[],
   kind: PlacementKind,
@@ -96,6 +124,10 @@ function findDropZoneByKind(
   return zones.find((zone) => zone.kind === kind) ?? null;
 }
 
+/***
+ * Resolve a before, inside, or after drop-target rectangle from target and dragged rectangles.
+ * @utility @ankhorage/utility/geometry
+ */
 export function resolveCanvasDropZoneRect(args: {
   readonly kind: PlacementKind;
   readonly targetRect: CanvasRect;
@@ -130,6 +162,10 @@ export function resolveCanvasDropZoneRect(args: {
   };
 }
 
+/***
+ * Read the first useful display string from a preferred property-key list and limit its preview length.
+ * @utility @ankhorage/utility/object
+ */
 export function resolveCanvasDragPreviewText(
   props: Record<string, unknown> | undefined,
 ): string | null {

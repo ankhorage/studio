@@ -33,14 +33,17 @@ const HOST_MODULE_REGISTRY = new Map<string, HostModuleContribution>(
   ]),
 );
 
+/*** List the host module contributions available to Studio in deterministic catalog order. */
 export function listHostModules(): readonly HostModuleContribution[] {
   return [...HOST_MODULE_CONTRIBUTIONS];
 }
 
+/*** Resolve one host module contribution by stable module id. */
 export function getHostModule(moduleId: string): HostModuleContribution | null {
   return HOST_MODULE_REGISTRY.get(moduleId) ?? null;
 }
 
+/*** Validate and expose a module-owned admin contribution while reporting invalid contribution metadata. */
 export function resolveHostModuleAdminContribution(
   contribution: { readonly id: string; readonly admin?: unknown } | null,
 ): {
@@ -54,6 +57,7 @@ export function resolveHostModuleAdminContribution(
   return { admin: contribution.admin };
 }
 
+/*** Validate the semantic shape of a module admin config-schema contribution. */
 function isAdminContribution(value: unknown): value is HostModuleAdminContribution {
   return (
     isRecord(value) &&
@@ -65,6 +69,7 @@ function isAdminContribution(value: unknown): value is HostModuleAdminContributi
   );
 }
 
+/*** Validate one module-admin field definition required by the Studio admin surface. */
 function isAdminField(value: unknown): value is StudioModuleAdminField {
   if (!isRecord(value)) return false;
   return (
@@ -76,6 +81,7 @@ function isAdminField(value: unknown): value is StudioModuleAdminField {
   );
 }
 
+/*** Build the bounded error response for an invalid module admin contribution. */
 function invalidAdmin(moduleId: string): {
   readonly admin: null;
   readonly error: string;
@@ -83,6 +89,10 @@ function invalidAdmin(moduleId: string): {
   return { admin: null, error: `Module '${moduleId}' has an invalid admin contribution.` };
 }
 
+/***
+ * Narrow an unknown non-array object to a string-keyed record.
+ * @utility @ankhorage/utility/object
+ */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

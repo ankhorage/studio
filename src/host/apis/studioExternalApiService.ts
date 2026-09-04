@@ -42,6 +42,10 @@ export class StudioExternalApiService {
   private readonly endpointFetch: EndpointTestFetch;
   private readonly secretService?: Pick<ProjectSecretService, 'resolve'>;
 
+  /***
+   * Create the Studio host service that owns external-API discovery, testing, and manifest persistence.
+   * @todo Move this service from the generic host subtree to the external-apis domain's host adapter.
+   */
   constructor(options: {
     readonly projectManager: Pick<ProjectManager, 'getProjectManifest' | 'persistProjectManifest'>;
     readonly discoveryFetch?: ExternalApiFetch;
@@ -54,6 +58,7 @@ export class StudioExternalApiService {
     this.secretService = options.secretService;
   }
 
+  /*** Discover and persist an external API using the requested protocol with automatic fallback where allowed. */
   async connect(
     projectId: string,
     request: ExternalApiConnectRequest,
@@ -69,6 +74,7 @@ export class StudioExternalApiService {
     return this.connectGraphQl(projectId, input, openApi.attempts, openApi.diagnostics);
   }
 
+  /*** Create and persist a manually authored REST API definition for a Studio project. */
   async createManualRest(
     projectId: string,
     request: ManualRestApiRequest,
@@ -101,6 +107,7 @@ export class StudioExternalApiService {
       : { ok: false, attempts: [], diagnostics: result.diagnostics };
   }
 
+  /*** Execute one authored external API operation against the project's current manifest and credential resolver. */
   async testOperation(
     projectId: string,
     request: ExternalApiOperationTestRequest,
@@ -125,6 +132,7 @@ export class StudioExternalApiService {
     return sanitizeExternalApiOperationTestResult(result);
   }
 
+  /*** Run OpenAPI discovery through the service's trusted discovery transport. */
   private discoverOpenApi(request: ExternalApiConnectRequest) {
     return discoverOpenApi({
       id: request.apiId,
@@ -136,6 +144,7 @@ export class StudioExternalApiService {
     });
   }
 
+  /*** Run GraphQL introspection and merge diagnostics from any previous discovery attempt. */
   private async connectGraphQl(
     projectId: string,
     request: ExternalApiConnectRequest,
@@ -159,6 +168,7 @@ export class StudioExternalApiService {
         };
   }
 
+  /*** Upsert an external API into the project manifest and persist the resulting canonical manifest. */
   private async persist(
     projectId: string,
     api: ExternalApiDefinition,
@@ -182,6 +192,7 @@ export class StudioExternalApiService {
   }
 }
 
+/*** Create the external-API connect failure returned for invalid authoring configuration. */
 function invalidResult(message: string): ExternalApiConnectResult {
   return {
     ok: false,
@@ -190,6 +201,7 @@ function invalidResult(message: string): ExternalApiConnectResult {
   };
 }
 
+/*** Create the operation-test failure returned when a configured API is not an external API. */
 function unsupportedTestApiResult(apiId: string): ExternalApiOperationTestResult {
   return {
     ok: false,
@@ -204,6 +216,7 @@ function unsupportedTestApiResult(apiId: string): ExternalApiOperationTestResult
   };
 }
 
+/*** Create the operation-test failure returned when the requested API does not exist. */
 function missingApiResult(apiId: string): ExternalApiOperationTestResult {
   return {
     ok: false,
@@ -218,6 +231,10 @@ function missingApiResult(apiId: string): ExternalApiOperationTestResult {
   };
 }
 
+/***
+ * Trim an optional string and normalize blank values to undefined.
+ * @utility @ankhorage/utility/value
+ */
 function clean(value: string | undefined): string | undefined {
   const normalized = value?.trim();
   return normalized === '' ? undefined : normalized;

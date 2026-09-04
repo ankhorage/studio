@@ -22,6 +22,10 @@ const FORBIDDEN_REACT_NAVIGATION_IMPORT =
 const HTTP_TIMEOUT_MS = 120_000;
 const ROUTER_REWRITE_DISABLED = '1';
 
+/***
+ * Run the focused authenticated hidden-route Drawer acceptance against a generated Studio app and assert lockfile stability.
+ * @todo Move this focused navigation acceptance from production src/host/smoke to test/smoke.
+ */
 export async function runExpo57AuthHiddenRouteDrawerAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-auth-hidden-drawer-'));
   let studioHost: Awaited<ReturnType<typeof startStudioHostServer>> | null = null;
@@ -52,6 +56,10 @@ export async function runExpo57AuthHiddenRouteDrawerAcceptanceAsync(): Promise<v
   }
 }
 
+/***
+ * Generate the full navigation fixture matrix and validate Router-owned tabs/drawer, auth scopes, Studio Admin navigation, dynamic/static routes, Web behavior and frozen lockfiles.
+ * @todo Move this generated navigation acceptance matrix from production src/host/smoke to test/smoke.
+ */
 export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-navigation-'));
   let staticServer: ReturnType<typeof Bun.serve> | null = null;
@@ -165,6 +173,7 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
   }
 }
 
+/*** Assert that a generated navigation project uses Router-owned navigation APIs, keeps hidden routes out of visible navigators and emits protected auth groups when required. */
 async function assertGeneratedNavigationContractAsync(project: NavigationProject): Promise<void> {
   const packageJson = JSON.parse(
     await readFile(path.join(project.path, 'package.json'), 'utf8'),
@@ -234,6 +243,7 @@ async function assertGeneratedNavigationContractAsync(project: NavigationProject
   }
 }
 
+/*** Assert that a Studio-enabled generated navigation fixture installs its declared Studio range from the registry. */
 async function assertReleasedStudioPackageAsync(studioProject: NavigationProject): Promise<void> {
   const generatedPackage = JSON.parse(
     await readFile(path.join(studioProject.path, 'package.json'), 'utf8'),
@@ -252,6 +262,7 @@ async function assertReleasedStudioPackageAsync(studioProject: NavigationProject
   });
 }
 
+/*** Assert that generated Expo Router declarations are non-empty and contain the required navigation route evidence. */
 async function assertRouterTypesAsync(
   project: NavigationProject,
   routeEvidence: readonly string[] = [
@@ -275,6 +286,7 @@ async function assertRouterTypesAsync(
   }
 }
 
+/*** Generate Expo Router type declarations for one navigation fixture under the isolated acceptance environment. */
 async function generateRouterTypesAsync(project: NavigationProject): Promise<void> {
   await generateExpoRouterTypesAsync({
     env: {
@@ -287,6 +299,7 @@ async function generateRouterTypesAsync(project: NavigationProject): Promise<voi
   });
 }
 
+/*** Create and persist one generated navigation fixture variant from the shared navigation acceptance manifest. */
 async function createProjectAsync(
   manager: ProjectManager,
   options: {
@@ -319,6 +332,7 @@ async function createProjectAsync(
   };
 }
 
+/*** Create the focused global-auth Drawer fixture whose auth-injected sign-out route must remain hidden from primary navigation. */
 async function createAuthHiddenRouteDrawerStudioAsync(
   manager: ProjectManager,
 ): Promise<NavigationProject> {
@@ -331,6 +345,7 @@ async function createAuthHiddenRouteDrawerStudioAsync(
   });
 }
 
+/*** Create the temporary Bun workspace root used by generated navigation acceptance fixtures. */
 async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
   await mkdir(path.join(workspaceRoot, 'apps'), { recursive: true });
   await writeFile(
@@ -349,6 +364,7 @@ async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
   );
 }
 
+/*** Create one generated project's app-owned lockfile, cold-install it frozen and return the pre-install lockfile digest. */
 async function installGeneratedProjectAsync(project: NavigationProject): Promise<string> {
   await runCommandAsync({
     args: ['install', '--lockfile-only', '--os=*', '--cpu=*'],
@@ -367,10 +383,18 @@ async function installGeneratedProjectAsync(project: NavigationProject): Promise
   return digest;
 }
 
+/***
+ * Compute a SHA-256 hex digest for byte content.
+ * @utility @ankhorage/utility/crypto
+ */
 function hash(value: Uint8Array): string {
   return createHash('sha256').update(value).digest('hex');
 }
 
+/***
+ * Recursively list JavaScript/TypeScript source files beneath a source root.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function listSourceFilesAsync(rootPath: string): Promise<string[]> {
   const entries = await readdir(rootPath, { withFileTypes: true });
   const files: string[] = [];
@@ -382,6 +406,10 @@ async function listSourceFilesAsync(rootPath: string): Promise<string[]> {
   return files;
 }
 
+/***
+ * Report whether a filesystem path currently exists, propagating non-ENOENT stat failures.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function pathExistsAsync(targetPath: string): Promise<boolean> {
   try {
     await stat(targetPath);
@@ -392,6 +420,7 @@ async function pathExistsAsync(targetPath: string): Promise<boolean> {
   }
 }
 
+/*** Run one acceptance command with isolated Expo home, telemetry disabled and optional Router rewrite-check disabling. */
 async function runCommandAsync(options: AcceptanceCommand): Promise<string> {
   return runAcceptanceCommandAsync({
     ...options,
@@ -406,6 +435,7 @@ async function runCommandAsync(options: AcceptanceCommand): Promise<string> {
   });
 }
 
+/*** Exercise dynamic/static routes, browser history, nested tabs/drawer and hidden-route direct navigation in the generated development Web app. */
 async function runDevelopmentNavigationSmokeAsync(projectRoot: string): Promise<void> {
   await runDevelopmentWebAsync(projectRoot, async (chrome, rootUrl) => {
     await chrome.navigateAsync(`${rootUrl}/profile/grace?source=direct`);
@@ -452,6 +482,7 @@ async function runDevelopmentNavigationSmokeAsync(projectRoot: string): Promise<
   });
 }
 
+/*** Launch the generated project's Expo Web development server and execute a caller-supplied Chrome smoke scenario against it. */
 async function runDevelopmentWebAsync(
   projectRoot: string,
   smoke: (chrome: ChromeNavigationSession, rootUrl: string) => Promise<void>,
@@ -489,6 +520,7 @@ async function runDevelopmentWebAsync(
   }
 }
 
+/*** Validate one root-tabs/root-drawer fixture's generated bridge, typed Router boundary, lint and typecheck. */
 async function runFocusedRootNavigatorChecksAsync(project: NavigationProject): Promise<void> {
   if (!project.rootNavigator) throw new Error(`${project.id} has no focused root navigator.`);
 
@@ -522,6 +554,7 @@ async function runFocusedRootNavigatorChecksAsync(project: NavigationProject): P
   });
 }
 
+/*** Run typed-route generation, navigation lint, Expo compatibility/Doctor, TypeScript and Web/native exports for one generated navigation fixture. */
 async function runGeneratedProjectChecksAsync(project: NavigationProject): Promise<void> {
   await generateRouterTypesAsync(project);
   await assertRouterTypesAsync(project);
@@ -585,6 +618,7 @@ async function runGeneratedProjectChecksAsync(project: NavigationProject): Promi
   }
 }
 
+/*** Exercise the served static navigation export at mobile and desktop widths using real pointer navigation and overflow assertions. */
 async function runStaticExportSmokeAsync(port: number): Promise<void> {
   const chromePort = await reserveTcpPortAsync('static navigation Chrome debug');
   const chrome = await ChromeNavigationSession.createAsync(chromePort);
@@ -605,6 +639,7 @@ async function runStaticExportSmokeAsync(port: number): Promise<void> {
   }
 }
 
+/*** Assert signed-out global-auth navigation redirects protected generated content to the sign-in route without leaking protected UI. */
 async function runSignedOutAuthNavigationSmokeAsync(projectRoot: string): Promise<void> {
   await runDevelopmentWebAsync(projectRoot, async (chrome, rootUrl) => {
     await chrome.navigateAsync(`${rootUrl}/sign-in`);
@@ -620,6 +655,7 @@ async function runSignedOutAuthNavigationSmokeAsync(projectRoot: string): Promis
   });
 }
 
+/*** Exercise global-auth Studio bootstrap, signed-out Admin denial, authenticated post-sign-in routing and Back-to-app behavior. */
 async function runGlobalStudioAuthNavigationSmokeAsync(
   projectRoot: string,
   studioApiUrl: string,
@@ -670,6 +706,7 @@ async function runGlobalStudioAuthNavigationSmokeAsync(
   );
 }
 
+/*** Exercise the explicit development auth bypass and verify direct Studio Admin access remains available without a stored session. */
 async function runGlobalStudioAuthBypassNavigationSmokeAsync(
   projectRoot: string,
   studioApiUrl: string,
@@ -695,6 +732,7 @@ async function runGlobalStudioAuthBypassNavigationSmokeAsync(
   );
 }
 
+/*** Assert the auth-injected sign-out route is hidden in the themed Drawer fallback and exercise authenticated app/Admin navigation. */
 async function runAuthHiddenRouteDrawerStudioNavigationSmokeAsync(
   project: NavigationProject,
   studioApiUrl: string,
@@ -747,6 +785,7 @@ async function runAuthHiddenRouteDrawerStudioNavigationSmokeAsync(
   );
 }
 
+/*** Validate integrated/none auth-scope fixtures keep the public app root accessible and deny Studio Admin routes without a global session. */
 async function runScopeAwareStudioChecksAsync(
   project: NavigationProject,
   studioApiUrl: string,
@@ -777,6 +816,10 @@ async function runScopeAwareStudioChecksAsync(
   );
 }
 
+/***
+ * Poll an HTTP endpoint until it responds below the 5xx range, including caller-provided diagnostics on timeout.
+ * @utility @ankhorage/utility/http
+ */
 async function waitForHttpAsync(url: string, diagnostics: () => string): Promise<void> {
   const start = Date.now();
   while (Date.now() - start < HTTP_TIMEOUT_MS) {
@@ -790,6 +833,10 @@ async function waitForHttpAsync(url: string, diagnostics: () => string): Promise
   throw new Error(`Timed out waiting for ${url}.\n${diagnostics()}`);
 }
 
+/***
+ * Collect UTF-8 stdout and stderr chunks from a child process into a shared output buffer.
+ * @utility @ankhorage/utility/node/process
+ */
 function collectProcessOutput(
   processToCollect: ChildProcessWithoutNullStreams,
   output: string[],
@@ -798,6 +845,10 @@ function collectProcessOutput(
   processToCollect.stderr.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
 }
 
+/***
+ * Terminate a detached child-process group, falling back to the direct child when group signaling is unavailable.
+ * @utility @ankhorage/utility/node/process
+ */
 function stopProcess(processToStop: ChildProcessWithoutNullStreams): void {
   if (!processToStop.pid) return;
   try {

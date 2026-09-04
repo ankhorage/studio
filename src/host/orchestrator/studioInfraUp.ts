@@ -37,6 +37,10 @@ export interface StudioInfraUpResult {
       };
 }
 
+/***
+ * Regenerate and start one project's Infrastructure, injecting trusted OAuth environment and ensuring the runtime session.
+ * @todo Move this Studio Infrastructure-up use case from generic `host/orchestrator` into the projects/infra application edge.
+ */
 export async function upProjectInfrastructure(
   args: {
     readonly projectId: string;

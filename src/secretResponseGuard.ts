@@ -15,10 +15,18 @@ export interface RawSecretResponseKeyMatch {
   readonly key: string;
 }
 
+/***
+ * Find the first raw-secret-shaped key anywhere in an unknown response value.
+ * @utility @ankhorage/utility/object
+ */
 export function findRawSecretResponseKey(value: unknown): RawSecretResponseKeyMatch | null {
   return findRawSecretResponseKeyAtPath(value, '$', new Set<object>());
 }
 
+/***
+ * Reject a response that contains raw-secret-shaped keys instead of metadata-only values.
+ * @utility @ankhorage/utility/object
+ */
 export function assertMetadataOnlyResponse(value: unknown, message: string): void {
   const match = findRawSecretResponseKey(value);
   if (match) {
@@ -26,6 +34,10 @@ export function assertMetadataOnlyResponse(value: unknown, message: string): voi
   }
 }
 
+/***
+ * Recursively search nested arrays and records for a forbidden key while tracking object cycles and paths.
+ * @utility @ankhorage/utility/object
+ */
 function findRawSecretResponseKeyAtPath(
   value: unknown,
   path: string,

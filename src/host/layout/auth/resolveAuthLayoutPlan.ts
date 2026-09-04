@@ -95,6 +95,10 @@ export interface EnabledAuthLayoutPlan extends BaseAuthLayoutPlan {
 
 export type AuthLayoutPlan = DisabledAuthLayoutPlan | EnabledAuthLayoutPlan;
 
+/***
+ * Derive the generated auth/navigation/file plan for a Studio manifest with global Supabase Auth.
+ * @todo Move auth generation planning from the host layout edge into the auth/routes application domain.
+ */
 export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLayoutPlan {
   const { manifest } = input;
   const { auth } = manifest.infra;
@@ -190,6 +194,7 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
   };
 }
 
+/*** Derive OAuth callback and provider generation metadata for enabled OAuth configuration. */
 function resolveOAuthLayoutPlan(
   oauth: AppManifest['infra']['auth'] extends infer _Auth
     ? NonNullable<AppManifest['infra']['auth']>['oauth']
@@ -217,6 +222,7 @@ function resolveOAuthLayoutPlan(
   };
 }
 
+/*** Resolve one enabled auth provider into the generated OAuth provider contract. */
 function resolveGeneratedOAuthProvider(
   provider: AuthOAuthProviderConfig,
 ): GeneratedOAuthProviderPlan {
@@ -250,6 +256,10 @@ function resolveGeneratedOAuthProvider(
   };
 }
 
+/***
+ * Normalize and validate a canonical relative application route without query/hash or traversal segments.
+ * @utility @ankhorage/utility/route
+ */
 function normalizeCanonicalCallbackRoute(route: string): string {
   const normalized = route.trim().replace(/^\/+/, '').replace(/\/+$/, '');
   const segments = normalized.split('/').filter(Boolean);
@@ -264,10 +274,15 @@ function normalizeCanonicalCallbackRoute(route: string): string {
   return segments.join('/');
 }
 
+/***
+ * Trim values, remove empty entries, and preserve first-occurrence order while deduplicating.
+ * @utility @ankhorage/utility/array
+ */
 function uniqueNonEmpty(values: readonly string[]): string[] {
   return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
 }
 
+/*** Create the explicit no-auth-generation plan. */
 function createDisabledPlan(): DisabledAuthLayoutPlan {
   return {
     enabled: false,
@@ -277,52 +292,26 @@ function createDisabledPlan(): DisabledAuthLayoutPlan {
   };
 }
 
+/*** Build the generated auth support-file plan for the active auth/OAuth configuration. */
 function buildGeneratedFilePlans(
   includeSignOutRoute: boolean,
   signOutRouteName: string,
   oauth: AuthOAuthLayoutPlan | undefined,
 ): AuthGeneratedFilePlan[] {
   const generatedFiles: AuthGeneratedFilePlan[] = [
-    {
-      path: AUTH_ADAPTER_FILE_PATH,
-      kind: 'adapter',
-    },
-    {
-      path: AUTH_SESSION_FILE_PATH,
-      kind: 'session',
-    },
-    {
-      path: AUTH_NAVIGATION_FILE_PATH,
-      kind: 'navigation',
-    },
-    {
-      path: AUTH_FORM_FILE_PATH,
-      kind: 'form',
-    },
-    {
-      path: AUTH_SCREEN_CONTROLLER_FILE_PATH,
-      kind: 'screen-controller',
-    },
-    {
-      path: AUTH_SCREEN_RUNTIME_FILE_PATH,
-      kind: 'screen-runtime',
-    },
+    { path: AUTH_ADAPTER_FILE_PATH, kind: 'adapter' },
+    { path: AUTH_SESSION_FILE_PATH, kind: 'session' },
+    { path: AUTH_NAVIGATION_FILE_PATH, kind: 'navigation' },
+    { path: AUTH_FORM_FILE_PATH, kind: 'form' },
+    { path: AUTH_SCREEN_CONTROLLER_FILE_PATH, kind: 'screen-controller' },
+    { path: AUTH_SCREEN_RUNTIME_FILE_PATH, kind: 'screen-runtime' },
   ];
 
   if (oauth) {
     generatedFiles.push(
-      {
-        path: AUTH_OAUTH_COMPLETION_FILE_PATH,
-        kind: 'oauth-completion',
-      },
-      {
-        path: AUTH_OAUTH_STATE_FILE_PATH,
-        kind: 'oauth-state',
-      },
-      {
-        path: AUTH_OAUTH_RUNTIME_FILE_PATH,
-        kind: 'oauth-runtime',
-      },
+      { path: AUTH_OAUTH_COMPLETION_FILE_PATH, kind: 'oauth-completion' },
+      { path: AUTH_OAUTH_STATE_FILE_PATH, kind: 'oauth-state' },
+      { path: AUTH_OAUTH_RUNTIME_FILE_PATH, kind: 'oauth-runtime' },
       {
         path: normalizeRel(path.join(APP_ROOT_REL, `${oauth.callbackRouteName}.tsx`)),
         kind: 'oauth-callback',
@@ -342,6 +331,7 @@ function buildGeneratedFilePlans(
   return generatedFiles;
 }
 
+/*** Collect route files that should render generated sign-in/sign-up screens. */
 function collectAuthScreenFiles(
   navigator: NavigatorSpec,
   currentRel: string,
@@ -353,6 +343,7 @@ function collectAuthScreenFiles(
   const { signInRouteName, signUpRouteName } = authRouteNames;
   const files: AuthGeneratedFilePlan[] = [];
 
+  /*** Walk nested navigators while retaining the generated relative route path. */
   const visit = (node: NavigatorSpec, parentRel: string) => {
     for (const route of node.routes) {
       const nextRel = parentRel ? path.join(parentRel, route.name) : route.name;
@@ -380,6 +371,7 @@ function collectAuthScreenFiles(
   return files;
 }
 
+/*** Resolve one leaf route's generated TSX file path under src/app. */
 function resolveRouteScreenFilePath(routeRel: string): string {
   const fileName = `${path.basename(routeRel)}.tsx`;
   const dirRel = path.dirname(routeRel);
@@ -387,6 +379,7 @@ function resolveRouteScreenFilePath(routeRel: string): string {
   return normalizeRel(path.join(APP_ROOT_REL, targetDirRel, fileName));
 }
 
+/*** Reuse already-grouped app/auth navigators when the manifest explicitly contains both groups. */
 function getGroupedAuthNavigators(
   manifest: AppManifest,
 ): { appNavigator: NavigatorSpec; authNavigator: NavigatorSpec } | null {
@@ -407,6 +400,7 @@ function getGroupedAuthNavigators(
   };
 }
 
+/*** Ensure the authenticated navigator contains the generated sign-out route when required. */
 function ensureAuthSignOutRoute(
   navigator: NavigatorSpec,
   includeAuthSignOutRoute: boolean,
@@ -431,6 +425,7 @@ function ensureAuthSignOutRoute(
   };
 }
 
+/*** Ensure both canonical global-auth entry routes exist in the auth navigator. */
 function ensureGlobalAuthEntryRoutes(
   navigator: NavigatorSpec,
   authRouteNames: {
@@ -451,6 +446,7 @@ function ensureGlobalAuthEntryRoutes(
   });
 }
 
+/*** Ensure one generated public auth entry route exists without replacing an authored route. */
 function ensureGlobalAuthEntryRoute(
   navigator: NavigatorSpec,
   args: {
@@ -478,6 +474,7 @@ function ensureGlobalAuthEntryRoute(
   };
 }
 
+/*** Partition an ungrouped root navigator into authenticated app and public auth navigators. */
 function partitionRootNavigatorForAuth(
   manifest: AppManifest,
   signInRoute: string,
@@ -506,6 +503,7 @@ function partitionRootNavigatorForAuth(
   return { appNavigator, authNavigator };
 }
 
+/*** Construct one generated public auth route for the requested navigator type. */
 function buildGeneratedAuthRoute(args: {
   routeName: string;
   routeLabel: string;
@@ -523,6 +521,7 @@ function buildGeneratedAuthRoute(args: {
   };
 }
 
+/*** Collect top-level routes that are public through auth-flow defaults or explicit public/guest guards. */
 function collectPublicRoutes(
   manifest: AppManifest,
   unauthorizedRoute: string | undefined,
@@ -542,6 +541,7 @@ function collectPublicRoutes(
     publicRoutes.add(oauthCallbackTopLevelRouteName);
   }
 
+  /*** Walk nested route definitions and collect routes explicitly guarded as public or guest. */
   const visit = (routes: RouteDefinition[]) => {
     for (const route of routes) {
       const normalizedGuards = (route.guards ?? []).map((guard) => guard.trim().toLowerCase());
@@ -561,6 +561,7 @@ function collectPublicRoutes(
   return [...publicRoutes];
 }
 
+/*** Return whether a route name exists anywhere in a nested route tree. */
 function hasRouteName(routes: RouteDefinition[], routeName: string): boolean {
   for (const route of routes) {
     if (route.name === routeName) {
@@ -575,10 +576,18 @@ function hasRouteName(routes: RouteDefinition[], routeName: string): boolean {
   return false;
 }
 
+/***
+ * Convert a generated filesystem path to portable slash separators.
+ * @utility @ankhorage/utility/node/path
+ */
 function normalizeRel(filePath: string): string {
   return filePath.replace(/\\/g, '/');
 }
 
+/***
+ * Normalize an application route path to its file-based route name, using index for the root route.
+ * @utility @ankhorage/utility/route
+ */
 function authFlowPathToRouteName(routePath: string): string {
   const normalized = routePath.trim().replace(/^\/+/, '').replace(/\/+$/, '');
   return normalized === '' ? 'index' : normalized;

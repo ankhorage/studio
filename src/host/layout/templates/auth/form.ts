@@ -1,3 +1,4 @@
+/*** Generate the auth form model used by generated sign-in and sign-up screens. */
 export function getAuthFormTs() {
   return `import type { AuthIdentifier, AuthSession } from '@ankhorage/contracts/auth';
 import { isEmail, isPhone, isUsername } from '@ankhorage/utility/regex';

@@ -4,6 +4,10 @@ export interface TrimmedOutput {
   originalLength: number;
 }
 
+/***
+ * Limit text to a maximum character count while preserving original length and appending a truncation marker when space permits.
+ * @utility @ankhorage/utility/string
+ */
 export function trimOutputForApi(text: string, maxChars: number): TrimmedOutput {
   if (maxChars <= 0) {
     return {

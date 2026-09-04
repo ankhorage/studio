@@ -15,6 +15,10 @@ interface IngestStudioMediaSelectionArgs {
   readonly target?: StudioMediaIngestTarget;
 }
 
+/***
+ * Send a picked media payload to the Studio host and return the persisted media asset.
+ * @todo Move this concrete HTTP adapter out of core and colocate it with the media capability's package-edge adapter. Replace the inline fetch/JSON transport with the shared HTTP utility once extracted.
+ */
 export async function ingestStudioMediaSelection(
   args: IngestStudioMediaSelectionArgs,
 ): Promise<StudioMediaIngestResult> {
@@ -35,6 +39,10 @@ export async function ingestStudioMediaSelection(
   return { ok: true, asset: payload.asset };
 }
 
+/***
+ * Request deletion of a Studio-owned media source while treating external URLs as non-owned.
+ * @todo Move this concrete HTTP adapter out of core and colocate it with the media capability's package-edge adapter. Replace the inline fetch/JSON transport with the shared HTTP utility once extracted.
+ */
 export async function cleanupStudioMediaSource(
   projectId: string,
   source: MediaAssetSource,
@@ -55,6 +63,7 @@ export async function cleanupStudioMediaSource(
   return { ok: true, cleanup: payload.cleanup ?? 'removed' };
 }
 
+/*** Serialize media ingest metadata into the query string expected by the Studio host endpoint. */
 function createIngestQuery(assetId: string, selection: StudioMediaPickerSelection): string {
   const query = new URLSearchParams({ assetId, name: selection.name, kind: selection.kind });
   appendQuery(query, 'contentType', selection.contentType);
@@ -65,6 +74,10 @@ function createIngestQuery(assetId: string, selection: StudioMediaPickerSelectio
   return query.toString();
 }
 
+/***
+ * Append an optional scalar value to a URL query when the value is present.
+ * @utility @ankhorage/utility/url
+ */
 function appendQuery(query: URLSearchParams, key: string, value: number | string | undefined) {
   if (value !== undefined) query.set(key, String(value));
 }

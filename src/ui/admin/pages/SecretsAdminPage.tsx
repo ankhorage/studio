@@ -39,10 +39,15 @@ type UsageLookupState =
 
 let nextFieldId = 1;
 
+/*** Create one blank browser-only secret payload field draft with a monotonically increasing local identity. */
 function createField(name = ''): SecretFieldDraft {
   return { id: nextFieldId++, name, value: '' };
 }
 
+/***
+ * Render project secret creation/rotation, metadata inventory, usage analysis, and guarded deletion without exposing stored secret values.
+ * @todo This page owns substantial secrets application orchestration; move lifecycle/use-analysis/delete-confirmation use cases into `secrets/` and replace duplicate generic UI primitives with ZORA.
+ */
 export function SecretsAdminPage({ projectId }: { readonly projectId: string }) {
   const authAdminSession = useAuthAdminSession();
   const [inventoryEnvironment, setInventoryEnvironment] = useState('local');
@@ -121,6 +126,7 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
     };
   }, [inventory.items, projectId]);
 
+  /*** Reset the create/rotation form to a fresh local secret draft. */
   const resetDraft = useCallback(() => {
     setRef('');
     setKind('api-key');
@@ -129,6 +135,10 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
     setReplaceTarget(null);
   }, []);
 
+  /***
+   * Patch one array item selected by an id while preserving all other items; parameterized key/update logic is reusable.
+   * @utility @ankhorage/utility/array
+   */
   const updateField = useCallback(
     (id: number, patch: Partial<Pick<SecretFieldDraft, 'name' | 'value'>>) => {
       setFields((current) =>
@@ -138,6 +148,7 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
     [],
   );
 
+  /*** Initialize a complete replacement payload draft from secret metadata without exposing previous secret values. */
   const beginRotation = useCallback((metadata: SecretMetadata) => {
     setReplaceTarget(metadata);
     setEnvironment(metadata.scope.environment);
@@ -152,6 +163,7 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
     setMessage('Enter every field again. Rotation never merges browser-visible old values.');
   }, []);
 
+  /*** Validate and persist either a new secret or a complete replacement, then clear browser-held values and refresh inventory. */
   const save = useCallback(async () => {
     const entries = fields.map((field) => [field.name.trim(), field.value] as const);
     if (!ref.trim() || !kind.trim() || entries.some(([name, value]) => !name || !value)) {
@@ -192,8 +204,13 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
     }
   }, [environment, fields, inventory, kind, projectId, provider, ref, replaceTarget, resetDraft]);
 
+  /***
+   * Remove one project secret and reconcile pending local OAuth credential-link recovery under the auth cleanup lock when applicable.
+   * @todo Move this cross-domain secret/auth cleanup use case out of React UI into the secrets/auth application boundary.
+   */
   const removeSecretAndReconcilePendingAuth = useCallback(
     async (metadata: SecretMetadata, confirmBrokenReferences = false) => {
+      /*** Remove the physical secret and clear pending local auth links only after successful removal. */
       const removeAndReconcile = async () => {
         await removeProjectSecret({
           projectId,
@@ -228,6 +245,7 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
     [authAdminSession, inventory, projectId],
   );
 
+  /*** Inspect usages before deletion and either open a broken-reference confirmation flow or request a simple destructive confirmation. */
   const confirmRemove = useCallback(
     async (metadata: SecretMetadata) => {
       let usageSummary;
@@ -265,6 +283,7 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
     [projectId, removeSecretAndReconcilePendingAuth],
   );
 
+  /*** Execute the explicitly confirmed deletion of an in-use secret while intentionally leaving manifest references broken. */
   const confirmBrokenReferenceDelete = useCallback(async () => {
     if (!pendingDelete || pendingDelete.confirmation !== pendingDelete.metadata.ref) {
       return;
@@ -458,12 +477,17 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
   );
 }
 
+/***
+ * Load secret metadata inventory for one project/environment while invalidating stale request generations.
+ * @todo The React hook remains a UI adapter; extract/reuse the already identified latest-generation async coordinator for the request race policy.
+ */
 function useSecretInventory(projectId: string, environment: string) {
   const [items, setItems] = useState<readonly SecretMetadata[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const requestGeneration = useRef(0);
 
+  /*** Refresh secret inventory and apply only the latest request generation. */
   const refresh = useCallback(async () => {
     const generation = ++requestGeneration.current;
     setItems([]);
@@ -492,6 +516,10 @@ function useSecretInventory(projectId: string, environment: string) {
   return useMemo(() => ({ items, loading, error, refresh }), [error, items, loading, refresh]);
 }
 
+/***
+ * Render a themed generic card shell used by the secrets page.
+ * @todo Replace with canonical ZORA Card.
+ */
 function Card(props: { readonly title: string; readonly children: React.ReactNode }) {
   const { theme } = useZoraTheme();
   return (
@@ -507,6 +535,10 @@ function Card(props: { readonly title: string; readonly children: React.ReactNod
   );
 }
 
+/***
+ * Render a labeled generic field shell used by secret forms.
+ * @todo Replace with canonical ZORA FormField.
+ */
 function Field(props: { readonly label: string; readonly children: React.ReactNode }) {
   return (
     <View style={styles.field}>
@@ -518,6 +550,10 @@ function Field(props: { readonly label: string; readonly children: React.ReactNo
   );
 }
 
+/***
+ * Render a theme-aware generic React Native text input.
+ * @todo Replace with canonical ZORA Input.
+ */
 function Input(props: React.ComponentProps<typeof TextInput>) {
   const { theme } = useZoraTheme();
   return (
@@ -537,6 +573,7 @@ function Input(props: React.ComponentProps<typeof TextInput>) {
   );
 }
 
+/*** Render one secret metadata inventory row with usage details and rotate/remove actions. */
 function InventoryRow(props: {
   readonly metadata: SecretMetadata;
   readonly usageState: UsageLookupState | undefined;
@@ -611,6 +648,10 @@ function InventoryRow(props: {
   );
 }
 
+/***
+ * Render the secrets page's primary loading/action button.
+ * @todo Replace with canonical ZORA Button.
+ */
 function PrimaryButton(props: {
   readonly label: string;
   readonly loading: boolean;
@@ -639,6 +680,7 @@ function PrimaryButton(props: {
   );
 }
 
+/*** Render a compact selectable list of string-valued filter options. */
 function FilterPills(props: {
   readonly options: readonly string[];
   readonly value: string;
@@ -659,6 +701,10 @@ function FilterPills(props: {
   );
 }
 
+/***
+ * Render the secrets page's secondary action/filter button.
+ * @todo Replace with canonical ZORA Button/segmented selection primitive.
+ */
 function SecondaryButton(props: {
   readonly label: string;
   readonly compact?: boolean;
@@ -686,6 +732,7 @@ function SecondaryButton(props: {
   );
 }
 
+/*** Render a bordered secret-operation message. */
 function Message({ text }: { readonly text: string }) {
   const { theme } = useZoraTheme();
   return (
@@ -695,11 +742,16 @@ function Message({ text }: { readonly text: string }) {
   );
 }
 
+/***
+ * Normalize secret API/general failures to a user-display message with a caller-specific fallback.
+ * @utility @ankhorage/utility/error
+ */
 function toMessage(error: unknown): string {
   if (error instanceof ProjectSecretApiError || error instanceof Error) return error.message;
   return 'The Studio secret operation failed.';
 }
 
+/*** Convert an auth/secret cleanup conflict reason into the appropriate administration message. */
 function formatSecretCleanupBusyReason(
   reason: Extract<AuthAdminWriteResult<unknown>, { readonly ok: false }>['reason'],
 ): string {
@@ -715,14 +767,26 @@ function formatSecretCleanupBusyReason(
   return 'OAuth provider credentials are already being saved.';
 }
 
+/***
+ * Build a stable composite inventory key from environment and logical secret reference.
+ * @utility @ankhorage/utility/string
+ */
 function secretInventoryKey(metadata: SecretMetadata): string {
   return `${metadata.scope.environment}:${metadata.ref}`;
 }
 
+/***
+ * Deduplicate string values and return a locale-sorted copy.
+ * @utility @ankhorage/utility/array
+ */
 function uniqueSorted(values: readonly string[]): string[] {
   return [...new Set(values)].sort((left, right) => left.localeCompare(right));
 }
 
+/***
+ * Narrow an optional string to a present non-empty string.
+ * @utility @ankhorage/utility/string
+ */
 function isPresentString(value: string | undefined): value is string {
   return typeof value === 'string' && value.length > 0;
 }

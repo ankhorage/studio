@@ -9,10 +9,12 @@ import { createThemeModeUpdates } from './adminThemeModel';
 import { ThemeModeEditorSelector } from './ThemeModeEditorSelector';
 import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 
+/*** Render primary-color and harmony authoring for the active light/dark runtime theme mode. */
 export function ThemeColorsAdminPage() {
   const { selection, updateTheme } = useActiveThemeAdmin();
   if (!selection) return <Unavailable />;
 
+  /*** Wrap partial mode config changes in the active light/dark branch before updating the theme. */
   const updateMode = (updates: Partial<ThemeModeConfig>) => {
     updateTheme(createThemeModeUpdates(selection.mode, updates));
   };
@@ -49,6 +51,7 @@ export function ThemeColorsAdminPage() {
   );
 }
 
+/*** Render one selectable color-harmony option. */
 function HarmonyChoice(props: {
   readonly harmony: ThemeModeConfig['harmony'];
   readonly selected: boolean;
@@ -68,6 +71,7 @@ function HarmonyChoice(props: {
   );
 }
 
+/*** Render the theme-colors fallback when no canonical active theme is available. */
 function Unavailable() {
   return (
     <AdminScroll>

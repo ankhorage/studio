@@ -6,6 +6,7 @@ import { ThemeModeEditorSelector } from './ThemeModeEditorSelector';
 import { ThemeRecipeCatalog } from './ThemeRecipeCatalog';
 import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 
+/*** Render active-theme metadata, global/mode ownership guidance, and the catalog of ZORA theme recipes. */
 export function ThemeAdminPage() {
   const { selection, updateTheme } = useActiveThemeAdmin();
 

@@ -4,6 +4,10 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 const MODES = ['light', 'dark'] as const;
 
+/***
+ * Render a compact light/dark runtime-theme mode selector backed by the active ZORA theme context.
+ * @todo Prefer a canonical ZORA segmented-control/toggle pattern rather than owning a Studio-specific generic selector.
+ */
 export function ThemeModeEditorSelector() {
   const { mode, setMode, theme } = useZoraTheme();
 

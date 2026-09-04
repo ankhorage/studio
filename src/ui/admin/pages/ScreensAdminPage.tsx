@@ -36,6 +36,7 @@ interface PendingScreenDelete {
   label: string;
 }
 
+/*** Render canonical screens and primary-navigation authoring controls from the derived Studio screen navigation model. */
 export function ScreensAdminPage() {
   const studio = useStudio();
   const router = useRouter();
@@ -45,9 +46,11 @@ export function ScreensAdminPage() {
     () => (studio.manifest ? deriveStudioScreenNavigationModel(studio.manifest) : null),
     [studio.manifest],
   );
+  /*** Dispatch one typed screens-admin action against the current Studio mutation target. */
   const dispatch = (action: Parameters<typeof applyScreensAdminAction>[1]) =>
     applyScreensAdminAction(studio, action);
 
+  /*** Trim and create the requested screen, then clear the creation draft. */
   const createScreen = () => {
     const name = newScreenName.trim();
     if (!name) return;
@@ -55,6 +58,7 @@ export function ScreensAdminPage() {
     setNewScreenName('');
   };
 
+  /*** Apply the pending destructive screen deletion after confirmation. */
   const confirmDelete = () => {
     if (!pendingDelete) return;
     dispatch({ type: 'delete-screen', screenId: pendingDelete.screenId });
@@ -171,6 +175,7 @@ export function ScreensAdminPage() {
   );
 }
 
+/*** Render one canonical screen with route references, detail navigation, and guarded deletion. */
 function ScreenOverviewRow(props: {
   entry: StudioScreenNavigationEntry;
   screenCount: number;
@@ -238,6 +243,7 @@ function ScreenOverviewRow(props: {
   );
 }
 
+/*** Render primary-navigation visibility, initial-route, and sibling-order controls for one screen route reference. */
 function ScreenRouteReferenceControls(props: {
   reference: StudioScreenRouteReference;
   siblingCount: number;
@@ -326,6 +332,10 @@ function ScreenRouteReferenceControls(props: {
   );
 }
 
+/***
+ * Format a route parent-path segment array as a slash-delimited display label with a root fallback.
+ * @utility @ankhorage/utility/route
+ */
 function formatParentPath(parentPath: readonly string[]): string {
   return parentPath.length === 0 ? 'root' : parentPath.join('/');
 }

@@ -36,10 +36,9 @@ const DYNAMIC_ROUTE_SEGMENT_PATTERN = /^\[[^.[\]]+\]$|^:[^/]+$/u;
 const CATCH_ALL_ROUTE_SEGMENT_PATTERN = /^\[\.\.\.[^\]]+\]$/u;
 const OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_PATTERN = /^\[\[\.\.\.[^\]]+\]\]$/u;
 
-/**
- * Resolves the leaf screen owned by a pathname through an arbitrarily nested
- * manifest navigator tree. Static route segments take precedence over dynamic
- * and catch-all segments, matching Expo Router's route specificity.
+/***
+ * Resolve the leaf screen owned by a pathname using Studio manifest navigation and route specificity.
+ * @todo Move Studio/contracts screen resolution under src/routes/ or the shared runtime owner; keep generic route matching in Utility.
  */
 export function resolveScreenIdForPathname(
   navigator: NavigatorSpec,
@@ -65,11 +64,19 @@ export function resolveScreenIdForPathname(
   return pathnameSegments.length === 0 ? resolveInitialScreenId(navigator, screens) : null;
 }
 
+/***
+ * Normalize a pathname into non-empty path segments while ignoring query and hash suffixes.
+ * @utility @ankhorage/utility/url
+ */
 function normalizePathnameSegments(pathname: string): string[] {
   const [pathWithoutQuery = ''] = pathname.trim().split(/[?#]/u, 1);
   return pathWithoutQuery.split('/').filter(Boolean);
 }
 
+/***
+ * Normalize route-pattern segments by splitting nested path fragments, removing groups, and trimming index segments.
+ * @utility @ankhorage/utility/route
+ */
 function normalizeRoutePatternSegments(routePath: readonly string[]): string[] {
   const segments = routePath
     .flatMap((segment) => segment.split('/'))
@@ -81,6 +88,10 @@ function normalizeRoutePatternSegments(routePath: readonly string[]): string[] {
   return segments;
 }
 
+/***
+ * Score an exact, dynamic, catch-all, or optional-catch-all route-pattern match against pathname segments.
+ * @utility @ankhorage/utility/route
+ */
 function scoreRoutePatternMatch(
   pattern: readonly string[],
   pathname: readonly string[],

@@ -11,6 +11,7 @@ import {
 import { bindingAdminStyles } from './bindingAdminStyles';
 import { EventBindingComposer } from './EventBindingComposer';
 
+/*** Render bindable component events, existing event bindings, removal actions, and the composer for new action/operation bindings. */
 export function EventBindingsCard(props: {
   readonly node: UiNode;
   readonly registry: ComponentDataBindingRegistry;
@@ -74,6 +75,7 @@ export function EventBindingsCard(props: {
   );
 }
 
+/*** Format declared event payload fields as a compact human-readable summary. */
 function EventPayloadSummary(props: {
   readonly fields: readonly {
     readonly path: string;
@@ -90,12 +92,14 @@ function EventPayloadSummary(props: {
   );
 }
 
+/*** Format one canonical event binding target for administration display. */
 function describeEventBinding(binding: EventBinding): string {
   if (binding.target.kind === 'action') return `Action · ${binding.target.type}`;
   const { apiId, endpointId, operationId } = binding.target.operation;
   return `API operation · ${apiId} · ${endpointId ?? '<auto>'} · ${operationId}`;
 }
 
+/*** Format the keys of an event binding's input map for administration display. */
 function describeBindingInput(input: EventBinding['input']): string {
   const keys = Object.keys(input ?? {});
   return keys.length > 0 ? `Inputs: ${keys.join(', ')}` : 'No mapped inputs';

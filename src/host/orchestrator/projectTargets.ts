@@ -73,6 +73,10 @@ const RESERVED_NATIVE_IDENTIFIER_SEGMENTS = new Set(
   ].map((segment) => segment.toLowerCase()),
 );
 
+/***
+ * Create the default web/Android/iOS deployment manifest and native identifiers for a Studio project.
+ * @todo Move default target and native-identifier policy from generic `host/orchestrator` to the Deploy owner rather than Utility.
+ */
 export function createDefaultAppDeployManifest(projectId: string): AppDeployManifest {
   const identifierSegment = createNativeIdentifierSegment(projectId);
   const applicationId = `com.ankh.${identifierSegment}`;
@@ -95,6 +99,10 @@ export function createDefaultAppDeployManifest(projectId: string): AppDeployMani
   };
 }
 
+/***
+ * Convert a project id into a native-safe identifier segment while avoiding reserved language keywords.
+ * @todo This naming policy belongs with Deploy/native-target generation, not generic Utility.
+ */
 function createNativeIdentifierSegment(projectId: string): string {
   const sanitized = projectId.replace(/[^A-Za-z0-9_]/g, '').toLowerCase();
   const ensuredValue = sanitized.length > 0 ? sanitized : 'app';

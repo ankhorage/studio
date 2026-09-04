@@ -46,6 +46,10 @@ function resolveProjectTemplateSelection(body: {
   };
 }
 
+/***
+ * Compose the Fastify Studio host by applying security middleware and registering project, template, infrastructure, runtime, media and module HTTP endpoints.
+ * @todo Split the remaining inline project/template/infrastructure endpoints into domain-owned HTTP route adapters so this server remains composition/bootstrap only and can satisfy canonical function-size lint rules without local overrides.
+ */
 export async function createStudioHostServer(args: {
   projectManager: ProjectManager;
   orchestrator: ModuleManager;
@@ -352,6 +356,7 @@ export interface StartStudioHostServerOptions {
   readonly projectRoot?: string;
 }
 
+/*** Resolve host options, construct Studio managers/server composition and listen on the requested local interface. */
 export async function startStudioHostServer(options: number | StartStudioHostServerOptions = {}) {
   const resolvedOptions = typeof options === 'number' ? { port: options } : options;
   const projectRoot = resolvedOptions.projectRoot ?? resolveWorkspaceRoot(import.meta.dirname);

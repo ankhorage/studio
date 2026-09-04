@@ -17,6 +17,10 @@ export interface GeneratedAppFilesOptions {
 const FORBIDDEN_SPECIFIER_PATTERN = /['"]@ankh\//;
 const GENERATED_APP_SCAN_FILES = ['package.json', 'tsconfig.json', 'app.config.ts'];
 
+/***
+ * Synchronize generated Expo/ZORA runtime files and assert that the resulting standalone app contains no internal `@ankh/*` imports.
+ * @todo Move generated-app file composition from generic `host/orchestrator` into the projects/templates generation owner.
+ */
 export async function syncGeneratedAppFiles(
   targetProjectPath: string,
   options: GeneratedAppFilesOptions = {},
@@ -61,6 +65,7 @@ export async function syncGeneratedAppFiles(
   await assertNoForbiddenSpecifiers(targetProjectPath);
 }
 
+/*** Generate the standalone app-extension component registry and interaction-policy support source. */
 export function createGeneratedAppExtensionRegistrySource(args: {
   usesExpoBarcodeScannerAdapter: boolean;
   usesExpoReaderSurfaceAdapter: boolean;
@@ -140,6 +145,10 @@ export function createGeneratedAppExtensionRegistrySource(args: {
     .join('\n');
 }
 
+/***
+ * Format an arbitrary string as either a bare JavaScript identifier key or a JSON-quoted object key.
+ * @utility @ankhorage/utility/string
+ */
 function formatRegistryKey(key: string): string {
   if (/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(key)) {
     return key;
@@ -148,10 +157,18 @@ function formatRegistryKey(key: string): string {
   return JSON.stringify(key);
 }
 
+/***
+ * Remove a filesystem path recursively while tolerating already-absent paths.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function removePath(pathToRemove: string) {
   await fs.rm(pathToRemove, { recursive: true, force: true });
 }
 
+/***
+ * Assert that selected project files do not contain a forbidden source pattern.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function assertNoForbiddenSpecifiers(targetProjectPath: string) {
   const filesToCheck = GENERATED_APP_SCAN_FILES.map((file) => path.join(targetProjectPath, file));
   filesToCheck.push(...(await listSourceFiles(path.join(targetProjectPath, 'src'))));
@@ -171,6 +188,10 @@ async function assertNoForbiddenSpecifiers(targetProjectPath: string) {
   }
 }
 
+/***
+ * Recursively list JavaScript/TypeScript/JSON source files beneath a root, returning an empty list for a missing root.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function listSourceFiles(rootPath: string): Promise<string[]> {
   let entries;
   try {
@@ -194,6 +215,10 @@ async function listSourceFiles(rootPath: string): Promise<string[]> {
   return files;
 }
 
+/***
+ * Detect a Node filesystem error indicating that a path does not exist.
+ * @utility @ankhorage/utility/node/fs
+ */
 function isMissingPathError(error: unknown): error is NodeJS.ErrnoException {
   return error instanceof Error && 'code' in error && error.code === 'ENOENT';
 }

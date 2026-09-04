@@ -7,7 +7,10 @@ interface OAuthFixtureManifestOverrides {
   readonly metadata?: Partial<AppManifest['metadata']>;
 }
 
-/*** Compose a local smoke manifest around the published OAuth fixture without requiring a catalog template. */
+/***
+ * Compose a local smoke manifest around the published OAuth fixture without requiring a catalog template.
+ * @todo Move this acceptance-fixture composition from production src/host/smoke to test/smoke.
+ */
 export function createOAuthFixtureManifest(args: {
   readonly category: AppCategory;
   readonly fixture: OAuthFixtureId;

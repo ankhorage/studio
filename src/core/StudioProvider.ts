@@ -85,9 +85,11 @@ export interface StudioProviderProps {
   mediaPicker?: StudioMediaPickerAdapter;
 }
 
+/*** Provide a no-op action for context capabilities that Studio does not currently implement. */
 const noop = () => undefined;
 const STUDIO_MANIFEST_SAVE_DELAY_MS = 350;
 
+/*** Own Studio authoring state, manifest mutations, media actions, selection, navigation, and persistence for one project. */
 export const StudioProvider = ({
   children,
   projectId,
@@ -110,10 +112,14 @@ export const StudioProvider = ({
   const [error, setError] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState(false);
   const manifestRef = useRef<StudioManifest | null>(initialManifest);
+
+  /*** Replace the current manifest in both the synchronous ref and React state. */
   const replaceManifest = useCallback((nextManifest: StudioManifest | null) => {
     manifestRef.current = nextManifest;
     setManifest(nextManifest);
   }, []);
+
+  /*** Apply one immutable mutation to the current manifest and publish the resulting draft. */
   const updateManifest = useCallback(
     (mutation: (current: StudioManifest) => StudioManifest): StudioManifest | null => {
       const nextManifest = applyStudioManifestDraftMutation(manifestRef.current, mutation);
@@ -167,6 +173,7 @@ export const StudioProvider = ({
     }
   }, [rootNode, selectedNodeId]);
 
+  /*** Update the authored props of one manifest node. */
   const updateNode = useCallback(
     (nodeId: StudioNodeId, props: Record<string, unknown>) => {
       updateManifest((current) => updateStudioManifestDraftNode(current, nodeId, props));
@@ -174,6 +181,7 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
+  /*** Add or replace one media asset in the current manifest. */
   const upsertMediaAsset = useCallback(
     (asset: MediaAsset) => {
       updateManifest((current) => upsertStudioMediaAsset(current, asset));
@@ -181,6 +189,7 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
+  /*** Remove a media asset from the manifest only and report whether it was removed. */
   const removeMediaAsset = useCallback(
     (mediaId: string): boolean => {
       let removed = false;
@@ -194,6 +203,7 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
+  /*** Remove a media asset, persist the manifest, and clean up the source owned by Studio. */
   const deleteMediaAsset = useCallback(
     async (mediaId: string): Promise<StudioMediaDeleteResult> => {
       const { current } = manifestRef;
@@ -209,6 +219,7 @@ export const StudioProvider = ({
     [persistence.flushManifest, projectId, replaceManifest],
   );
 
+  /*** Pick media from the configured adapter, ingest it through the host, and add the asset to the manifest. */
   const ingestMediaFromPicker = useCallback(
     async (
       source: StudioMediaPickerSource,
@@ -233,6 +244,7 @@ export const StudioProvider = ({
     [mediaPicker, projectId, upsertMediaAsset],
   );
 
+  /*** Apply authored updates to one theme entry. */
   const updateTheme = useCallback(
     (id: string, updates: ThemeUpdates) => {
       updateManifest((current) => updateStudioManifestDraftTheme(current, id, updates));
@@ -240,6 +252,7 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
+  /*** Replace the manifest auth settings with an explicit authored value. */
   const updateAuthSettings = useCallback(
     (settings: StudioAuthSettings) => {
       updateManifest((current) => updateStudioManifestDraftAuthSettings(current, settings));
@@ -247,6 +260,7 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
+  /*** Apply a caller-provided mutation to the current auth settings and return the resulting settings. */
   const mutateAuthSettings = useCallback(
     (mutation: StudioAuthSettingsMutation) => {
       let nextSettings: StudioAuthSettings | null = null;
@@ -259,6 +273,7 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
+  /*** Replace OAuth providers while preserving or creating the surrounding Studio auth configuration. */
   const updateOAuthProviders = useCallback(
     (providers: AuthOAuthProviderConfig[]) => {
       updateManifest((current) => {
@@ -282,6 +297,7 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
+  /*** Create and insert a component node from one enabled catalog entry at its resolved placement. */
   const insertFromCatalogEntry = useCallback(
     (entry: InsertCatalogEntry): boolean => {
       if (entry.status !== 'enabled' || !entry.placement) return false;
@@ -303,6 +319,7 @@ export const StudioProvider = ({
     [activeScreenId, componentMeta, updateManifest],
   );
 
+  /*** Move an existing canvas node to a validated placement and keep the moved node selected. */
   const moveSelectedNodeToPlacement = useCallback(
     (nodeId: StudioNodeId, placement: NodePlacement): boolean => {
       const { current } = manifestRef;
@@ -322,6 +339,7 @@ export const StudioProvider = ({
     [activeScreenId, componentMeta, updateManifest],
   );
 
+  /*** Delete one non-root node and move selection to its former parent. */
   const deleteNode = useCallback(
     (nodeId: StudioNodeId) => {
       const currentRoot = resolveActiveRootNode(manifestRef.current, activeScreenId);
@@ -338,6 +356,7 @@ export const StudioProvider = ({
     [activeScreenId, updateManifest],
   );
 
+  /*** Add a screen and switch Studio authoring state to the newly active screen. */
   const addScreen = useCallback(
     (name: string) => {
       const { current } = manifestRef;
@@ -356,6 +375,7 @@ export const StudioProvider = ({
     [activeScreenId, updateManifest],
   );
 
+  /*** Delete a screen and clear selection or drag state that referenced the deleted tree. */
   const deleteScreen = useCallback(
     (screenId: StudioScreenId) => {
       const { current } = manifestRef;
@@ -377,6 +397,7 @@ export const StudioProvider = ({
     [activeScreenId, selectedNodeId, updateManifest],
   );
 
+  /*** Change the manifest navigator type. */
   const setNavigatorType = useCallback(
     (type: NavigatorType) => {
       updateManifest((current) => setStudioManifestNavigatorType(current, type));
@@ -384,6 +405,7 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
+  /*** Change the navigator route used as the initial route. */
   const setNavigatorInitialRoute = useCallback(
     (routeName: string) => {
       updateManifest((current) => setStudioManifestNavigatorInitialRoute(current, routeName));
@@ -391,6 +413,7 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
+  /*** Change whether a route is visible in the generated primary navigation. */
   const setRoutePrimaryNavigationVisibility = useCallback(
     (parentPath: string[], routeName: string, showInPrimaryNavigation: boolean) => {
       updateManifest((current) =>
@@ -405,6 +428,7 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
+  /*** Reorder one route within its navigator parent. */
   const moveRoute = useCallback(
     (parentPath: string[], routeName: string, toIndex: number) => {
       updateManifest((current) =>
@@ -414,6 +438,7 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
+  /*** Select an existing canonical screen as the requested active authoring screen. */
   const setActiveScreenId = useCallback((screenId: StudioScreenId) => {
     const { current } = manifestRef;
     if (!current || !hasCanonicalStudioScreenRegistryIdentity(current.screens)) return;
@@ -523,6 +548,10 @@ export const StudioProvider = ({
   });
 };
 
+/***
+ * Coordinate initial manifest hydration, debounced persistence, explicit flushes, and save-state reporting for StudioProvider.
+ * @todo Move manifest persistence orchestration out of StudioProvider into the dedicated persistence responsibility.
+ */
 function useStudioManifestPersistence(args: {
   readonly projectId: string;
   readonly manifest: StudioManifest | null;
@@ -568,6 +597,7 @@ function useStudioManifestPersistence(args: {
     };
   }, [manifestRef, projectId, setError, setSaveStatus]);
 
+  /*** Fetch the persisted project manifest and hydrate Studio save-state bookkeeping around it. */
   const loadManifest = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -630,6 +660,7 @@ function useStudioManifestPersistence(args: {
     };
   }, [manifest, setSaveStatus]);
 
+  /*** Cancel any pending debounce and persist the latest manifest immediately through the coordinator. */
   const flushManifest = useCallback(async () => {
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
@@ -641,6 +672,10 @@ function useStudioManifestPersistence(args: {
   return { refetchManifest: loadManifest, flushManifest };
 }
 
+/***
+ * Fetch and parse the persisted Studio manifest for one project.
+ * @todo Group project-manifest HTTP access in a dedicated manifest host client instead of StudioProvider.
+ */
 async function requestProjectManifest(projectId: string): Promise<StudioManifest> {
   const response = await fetch(`${API_BASE}/projects/${encodeURIComponent(projectId)}/manifest`);
   const value = await readPersistenceJson(response);
@@ -648,6 +683,10 @@ async function requestProjectManifest(projectId: string): Promise<StudioManifest
   return value as StudioManifest;
 }
 
+/***
+ * Persist the complete Studio manifest for one project through the host API.
+ * @todo Group project-manifest HTTP access in a dedicated manifest host client instead of StudioProvider.
+ */
 async function persistProjectManifest(projectId: string, manifest: StudioManifest): Promise<void> {
   const response = await fetch(`${API_BASE}/projects/${encodeURIComponent(projectId)}/manifest`, {
     method: 'PUT',
@@ -658,6 +697,10 @@ async function persistProjectManifest(projectId: string, manifest: StudioManifes
   if (!response.ok) throw createPersistenceError(value, response.status);
 }
 
+/***
+ * Parse a persistence response body as JSON and convert invalid bodies into an explicit request error.
+ * @todo Keep response parsing beside the dedicated project-manifest host client.
+ */
 async function readPersistenceJson(response: Response): Promise<unknown> {
   try {
     return await response.json();
@@ -666,6 +709,10 @@ async function readPersistenceJson(response: Response): Promise<unknown> {
   }
 }
 
+/***
+ * Convert an unsuccessful persistence response payload and HTTP status into an Error.
+ * @todo Keep persistence response error policy beside the dedicated project-manifest host client.
+ */
 function createPersistenceError(value: unknown, status: number): Error {
   const record =
     typeof value === 'object' && value !== null ? (value as Record<string, unknown>) : {};
@@ -673,6 +720,7 @@ function createPersistenceError(value: unknown, status: number): Error {
   return new Error(error);
 }
 
+/*** Convert an unknown persistence failure into the message shown by Studio save-state UI. */
 function toPersistenceMessage(error: unknown): string {
   return error instanceof Error ? error.message : 'Project manifest persistence failed.';
 }

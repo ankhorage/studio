@@ -56,11 +56,13 @@ export interface ProjectDeployServiceOptions {
   readonly secretStore?: ProjectDeploySecretStore;
 }
 
+/*** Adapt Studio project paths, secrets, and runtime credentials to the package-owned Deploy project APIs. */
 export class ProjectDeployService {
   private readonly workspaceRoot: string;
   private readonly secretStore: ProjectDeploySecretStore;
   private readonly mutationGuard = new ProjectDeployMutationGuard();
 
+  /*** Construct the host Deploy adapter with an injected or default project secret store. */
   constructor(options: ProjectDeployServiceOptions) {
     this.workspaceRoot = options.workspaceRoot;
     this.secretStore =
@@ -71,10 +73,12 @@ export class ProjectDeployService {
       });
   }
 
+  /*** Read the persisted Deploy manifest for one generated project. */
   readConfig(projectId: string): Promise<AppDeployManifest | null> {
     return readProjectDeploymentConfig({ projectRoot: this.projectRoot(projectId) });
   }
 
+  /*** Replace the persisted Deploy manifest for one generated project. */
   updateConfig(
     projectId: string,
     config: AppDeployManifest | null,
@@ -85,10 +89,12 @@ export class ProjectDeployService {
     });
   }
 
+  /*** Read authored store-listing state for one generated project. */
   readListing(projectId: string) {
     return readProjectStoreListing({ projectRoot: this.projectRoot(projectId) });
   }
 
+  /*** Persist one localized store-listing record for a project. */
   writeListingLocale(projectId: string, locale: StoreListingLocale) {
     return writeProjectStoreListingLocale({
       projectRoot: this.projectRoot(projectId),
@@ -96,6 +102,7 @@ export class ProjectDeployService {
     });
   }
 
+  /*** Remove one localized store-listing record from a project. */
   removeListingLocale(projectId: string, locale: string) {
     return removeProjectStoreListingLocale({
       projectRoot: this.projectRoot(projectId),
@@ -103,6 +110,7 @@ export class ProjectDeployService {
     });
   }
 
+  /*** Persist one binary store-listing asset at its Deploy-owned location. */
   writeListingAsset(
     projectId: string,
     location: ProjectStoreListingAssetLocation,
@@ -115,6 +123,7 @@ export class ProjectDeployService {
     });
   }
 
+  /*** Remove one authored store-listing asset from a project. */
   removeListingAsset(projectId: string, location: ProjectStoreListingAssetLocation) {
     return removeProjectStoreListingAsset({
       projectRoot: this.projectRoot(projectId),
@@ -122,10 +131,12 @@ export class ProjectDeployService {
     });
   }
 
+  /*** Read authored monetization products for one project. */
   readMonetization(projectId: string) {
     return readProjectMonetization({ projectRoot: this.projectRoot(projectId) });
   }
 
+  /*** Persist authored monetization products for one project. */
   writeMonetization(projectId: string, products: readonly MonetizationProduct[]) {
     return writeProjectMonetization({
       projectRoot: this.projectRoot(projectId),
@@ -133,6 +144,7 @@ export class ProjectDeployService {
     });
   }
 
+  /*** Inspect monetization state and pair the package-owned inspection with its derived execution plan. */
   async inspectMonetization(
     projectId: string,
     runtime: ProjectDeployRuntimeInput,
@@ -150,6 +162,7 @@ export class ProjectDeployService {
     };
   }
 
+  /*** Execute a monetization synchronization under the project's exclusive mutation reservation. */
   executeMonetization(input: {
     readonly projectId: string;
     readonly runtime: ProjectDeployRuntimeInput;
@@ -166,10 +179,12 @@ export class ProjectDeployService {
     });
   }
 
+  /*** Read the authored release definition for one project. */
   readRelease(projectId: string) {
     return readProjectRelease({ projectRoot: this.projectRoot(projectId) });
   }
 
+  /*** Persist the authored release definition for one project. */
   writeRelease(projectId: string, release: ProjectReleaseInput) {
     return writeProjectRelease({
       projectRoot: this.projectRoot(projectId),
@@ -177,6 +192,7 @@ export class ProjectDeployService {
     });
   }
 
+  /*** Inspect release readiness and augment the package-owned inspection with its plan and lifecycle controls. */
   async inspectRelease(
     projectId: string,
     runtime: ProjectDeployRuntimeInput,
@@ -195,6 +211,7 @@ export class ProjectDeployService {
     };
   }
 
+  /*** Execute a release plan under the project's exclusive mutation reservation. */
   executeRelease(input: {
     readonly projectId: string;
     readonly runtime: ProjectDeployRuntimeInput;
@@ -213,6 +230,7 @@ export class ProjectDeployService {
     });
   }
 
+  /*** Resume a prior release execution under the project's exclusive mutation reservation. */
   resumeRelease(input: {
     readonly projectId: string;
     readonly runtime: ProjectDeployRuntimeInput;
@@ -230,6 +248,7 @@ export class ProjectDeployService {
     });
   }
 
+  /*** Execute one release lifecycle control under the project's exclusive mutation reservation. */
   executeReleaseControl(input: {
     readonly projectId: string;
     readonly runtime: ProjectDeployRuntimeInput;
@@ -245,6 +264,7 @@ export class ProjectDeployService {
     });
   }
 
+  /*** List prior release executions and project each record with its resumability state. */
   async listReleaseHistory(
     projectId: string,
   ): Promise<readonly ProjectDeployReleaseHistoryRecord[]> {
@@ -255,10 +275,12 @@ export class ProjectDeployService {
     }));
   }
 
+  /*** Resolve one Studio project id to its generated project root. */
   private projectRoot(projectId: string): string {
     return getProjectPath(this.workspaceRoot, projectId);
   }
 
+  /*** Build package-owned Deploy access from the project's runtime input and secret store. */
   private createAccess(projectId: string, runtime: ProjectDeployRuntimeInput) {
     return createProjectDeployAccess({
       projectId,

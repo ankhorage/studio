@@ -24,18 +24,34 @@ export class AuthAdminWriteCoordinator {
   private readonly activeCredentialRefs = new Set<string>();
   private readonly activeCredentialSecretCleanupRefs = new Set<string>();
 
+  /***
+   * Return whether the coordinator currently holds its exclusive whole-resource write lock.
+   * @utility @ankhorage/utility/concurrency
+   */
   isFullAuthSaveActive(): boolean {
     return this.fullAuthSaveActive;
   }
 
+  /***
+   * Return whether any keyed transaction is currently active.
+   * @utility @ankhorage/utility/concurrency
+   */
   isAnyCredentialTransactionActive(): boolean {
     return this.activeProviderIds.size > 0;
   }
 
+  /***
+   * Return whether one primary key currently owns an active keyed transaction.
+   * @utility @ankhorage/utility/concurrency
+   */
   isProviderBusy(providerId: AuthOAuthProviderId): boolean {
     return this.activeProviderIds.has(providerId);
   }
 
+  /***
+   * Return whether one secondary key is reserved either by a transaction or a cleanup operation.
+   * @utility @ankhorage/utility/concurrency
+   */
   isCredentialRefBusy(credentialsRef: string): boolean {
     return (
       this.activeCredentialRefs.has(credentialsRef) ||
@@ -43,18 +59,34 @@ export class AuthAdminWriteCoordinator {
     );
   }
 
+  /***
+   * Return an immutable snapshot copy of currently busy primary keys.
+   * @utility @ankhorage/utility/collection
+   */
   getBusyProviderIds(): ReadonlySet<AuthOAuthProviderId> {
     return new Set(this.activeProviderIds);
   }
 
+  /***
+   * Return an immutable snapshot copy of currently busy secondary transaction keys.
+   * @utility @ankhorage/utility/collection
+   */
   getBusyCredentialRefs(): ReadonlySet<string> {
     return new Set(this.activeCredentialRefs);
   }
 
+  /***
+   * Return an immutable snapshot copy of secondary keys currently reserved for cleanup.
+   * @utility @ankhorage/utility/collection
+   */
   getBusyCredentialSecretCleanupRefs(): ReadonlySet<string> {
     return new Set(this.activeCredentialSecretCleanupRefs);
   }
 
+  /***
+   * Execute an exclusive whole-resource asynchronous operation unless any conflicting whole/keyed operation is active.
+   * @utility @ankhorage/utility/concurrency
+   */
   async runFullAuthSave<T>(operation: () => Promise<T>): Promise<AuthAdminWriteResult<T>> {
     if (this.fullAuthSaveActive) return { ok: false, reason: 'full_auth_save_busy' };
     if (this.activeProviderIds.size > 0) {
@@ -69,6 +101,10 @@ export class AuthAdminWriteCoordinator {
     }
   }
 
+  /***
+   * Execute an asynchronous operation while atomically reserving a primary and secondary key and rejecting conflicting reservations.
+   * @utility @ankhorage/utility/concurrency
+   */
   async runCredentialTransaction<T>(
     providerId: AuthOAuthProviderId,
     credentialsRef: string,
@@ -93,6 +129,10 @@ export class AuthAdminWriteCoordinator {
     }
   }
 
+  /***
+   * Execute an asynchronous cleanup while reserving one secondary key against concurrent transaction/cleanup use.
+   * @utility @ankhorage/utility/concurrency
+   */
   async runCredentialSecretCleanup<T>(
     credentialsRef: string,
     operation: () => Promise<T>,
@@ -116,22 +156,42 @@ export class AuthAdminWriteCoordinator {
 export class AuthAdminPendingCredentialRecoveryStore {
   private readonly linksByProviderId = new Map<AuthOAuthProviderId, StoredOAuthCredentialLink>();
 
+  /***
+   * Return all values currently held by a keyed in-memory registry.
+   * @utility @ankhorage/utility/registry
+   */
   list(): readonly StoredOAuthCredentialLink[] {
     return [...this.linksByProviderId.values()];
   }
 
+  /***
+   * Resolve one registry value by primary key, normalizing a miss to null.
+   * @utility @ankhorage/utility/registry
+   */
   get(providerId: AuthOAuthProviderId): StoredOAuthCredentialLink | null {
     return this.linksByProviderId.get(providerId) ?? null;
   }
 
+  /***
+   * Insert or replace one registry value using a key derived from the value.
+   * @utility @ankhorage/utility/registry
+   */
   set(link: StoredOAuthCredentialLink): void {
     this.linksByProviderId.set(link.providerId, link);
   }
 
+  /***
+   * Delete one registry value by primary key.
+   * @utility @ankhorage/utility/registry
+   */
   clear(providerId: AuthOAuthProviderId): void {
     this.linksByProviderId.delete(providerId);
   }
 
+  /***
+   * Delete and return every registry value matching a secondary-key predicate.
+   * @utility @ankhorage/utility/registry
+   */
   clearByCredentialsRef(credentialsRef: string): readonly StoredOAuthCredentialLink[] {
     const cleared: StoredOAuthCredentialLink[] = [];
 
@@ -158,8 +218,10 @@ export class AuthAdminProjectSession {
   private readonly writeCoordinator = new AuthAdminWriteCoordinator();
   private readonly pendingRecovery = new AuthAdminPendingCredentialRecoveryStore();
 
+  /*** Create the auth-admin application session for one Studio project. */
   constructor(readonly projectId: string) {}
 
+  /*** Project auth-admin transaction and pending-recovery state into an immutable UI snapshot. */
   getSnapshot(): AuthAdminProjectSessionSnapshot {
     return {
       pendingCredentialLinks: this.pendingRecovery.list(),
@@ -170,24 +232,29 @@ export class AuthAdminProjectSession {
     };
   }
 
+  /*** Store one pending OAuth credential link that needs later recovery/persistence. */
   setPendingCredentialLink(link: StoredOAuthCredentialLink): void {
     this.pendingRecovery.set(link);
   }
 
+  /*** Clear the pending OAuth credential link for one provider. */
   clearPendingCredentialLink(providerId: AuthOAuthProviderId): void {
     this.pendingRecovery.clear(providerId);
   }
 
+  /*** Clear and return all pending links backed by one credential reference. */
   clearPendingCredentialLinksByCredentialsRef(
     credentialsRef: string,
   ): readonly StoredOAuthCredentialLink[] {
     return this.pendingRecovery.clearByCredentialsRef(credentialsRef);
   }
 
+  /*** Delegate a whole-auth save to the session's write coordinator. */
   async runFullAuthSave<T>(operation: () => Promise<T>): Promise<AuthAdminWriteResult<T>> {
     return await this.writeCoordinator.runFullAuthSave(operation);
   }
 
+  /*** Delegate a provider/credential transaction to the session's write coordinator. */
   async runCredentialTransaction<T>(
     providerId: AuthOAuthProviderId,
     credentialsRef: string,
@@ -200,6 +267,7 @@ export class AuthAdminProjectSession {
     );
   }
 
+  /*** Delegate credential-secret cleanup to the session's write coordinator. */
   async runCredentialSecretCleanup<T>(
     credentialsRef: string,
     operation: () => Promise<T>,
@@ -208,6 +276,7 @@ export class AuthAdminProjectSession {
   }
 }
 
+/*** Clear pending local credential links after their backing local project secret was actually removed. */
 export function clearPendingCredentialLinksForRemovedProjectSecret(args: {
   readonly session: {
     readonly clearPendingCredentialLinksByCredentialsRef: (
@@ -223,6 +292,10 @@ export function clearPendingCredentialLinksForRemovedProjectSecret(args: {
   return args.session.clearPendingCredentialLinksByCredentialsRef(args.ref);
 }
 
+/***
+ * Rebase an editable auth draft onto canonical OAuth credential references while preserving all other draft edits.
+ * @todo Move this auth reconciliation policy from `ui/` into the auth application/domain layer.
+ */
 export function rebaseAuthDraftOntoCanonicalCredentialRefs(args: {
   readonly draft: StudioAuthSettings;
   readonly canonical: StudioAuthSettings | null;

@@ -9,10 +9,15 @@ interface GetAuthNavigationTsArgs {
   publicRoutes: string[];
 }
 
+/***
+ * Serialize a string list as a compact single-quoted JavaScript array literal.
+ * @utility @ankhorage/utility/string
+ */
 function serializeStringArrayLiteral(values: readonly string[]): string {
   return `[${values.map((value) => `'${escapeStringLiteral(value)}'`).join(', ')}]`;
 }
 
+/*** Generate the auth route-guard and authenticated-navigation module for a generated app. */
 export function getAuthNavigationTs(args: GetAuthNavigationTsArgs): string {
   return `import { type Href, usePathname, useRootNavigationState, useRouter } from 'expo-router';
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';

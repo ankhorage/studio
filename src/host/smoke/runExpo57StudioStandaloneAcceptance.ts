@@ -15,6 +15,10 @@ const COMMAND_TIMEOUT_MS = 300_000;
 const ACCEPTANCE_CATEGORY = 'developer_tools' as const;
 const ACCEPTANCE_CATEGORY_LABEL = 'Developer Tools';
 
+/***
+ * Build and install an isolated standalone Studio fixture, exercise development/static/native output against a real local host, and assert checkout independence plus lockfile stability.
+ * @todo Move this standalone end-to-end acceptance orchestration from production src/host/smoke to test/smoke.
+ */
 export async function runExpo57StudioStandaloneAcceptance(
   options: {
     readonly keepFixture?: boolean;
@@ -76,6 +80,7 @@ export async function runExpo57StudioStandaloneAcceptance(
   }
 }
 
+/*** Assert that the standalone fixture's Bun lockfile still matches the expected content digest. */
 async function assertLockfileUnchangedAsync(
   fixtureRoot: string,
   expectedDigest: string,
@@ -85,6 +90,7 @@ async function assertLockfileUnchangedAsync(
     throw new Error('Standalone acceptance mutated its frozen lockfile.');
 }
 
+/*** Create the standalone registry lockfile, perform a cold frozen install, assert lockfile stability and return its digest. */
 async function createLockfileAndInstallAsync(
   fixtureRoot: string,
   cacheRoot: string,
@@ -113,6 +119,7 @@ async function createLockfileAndInstallAsync(
   return lockfileDigest;
 }
 
+/*** Build the isolated Bun/Expo cache environment used by standalone acceptance commands. */
 function createCommandEnvironment(cacheRoot: string): Readonly<Record<string, string>> {
   return {
     __UNSAFE_EXPO_HOME_DIRECTORY: path.join(cacheRoot, 'expo-home'),
@@ -122,10 +129,15 @@ function createCommandEnvironment(cacheRoot: string): Readonly<Record<string, st
   };
 }
 
+/***
+ * Compute a SHA-256 hex digest for byte content.
+ * @utility @ankhorage/utility/crypto
+ */
 function hash(value: Uint8Array): string {
   return createHash('sha256').update(value).digest('hex');
 }
 
+/*** Run the standalone app-owned platform, type, lint, format, Expo Doctor and React Compiler quality gates. */
 async function runAppOwnedQualityChecksAsync(
   fixtureRoot: string,
   cacheRoot: string,
@@ -151,6 +163,7 @@ async function runAppOwnedQualityChecksAsync(
   }
 }
 
+/*** Run static Web, Android and iOS exports plus served static-Web smoke and clean native prebuild for the standalone fixture. */
 async function runStaticAndNativeOutputChecksAsync(options: {
   readonly apiUrl: string;
   readonly cacheRoot: string;

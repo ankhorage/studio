@@ -18,6 +18,7 @@ import type { ProjectManager } from '../orchestrator/projectManager';
 
 const MAX_STORE_ASSET_BYTES = 25 * 1024 * 1024;
 
+/*** Register all Studio deployment config, listing, monetization and release HTTP adapters around ProjectDeployService. */
 export function registerProjectDeployRoutes(
   fastify: FastifyInstance,
   args: {
@@ -40,6 +41,7 @@ export function registerProjectDeployRoutes(
   registerReleaseRoutes(fastify, service);
 }
 
+/*** Register deployment-config read/write routes. */
 function registerConfigRoutes(fastify: FastifyInstance, service: ProjectDeployService): void {
   fastify.get('/api/projects/:id/deploy/config', async (req, reply) =>
     respond(reply, () => service.readConfig(projectId(req))),
@@ -51,6 +53,7 @@ function registerConfigRoutes(fastify: FastifyInstance, service: ProjectDeploySe
   );
 }
 
+/*** Register store-listing locale and asset routes. */
 function registerListingRoutes(fastify: FastifyInstance, service: ProjectDeployService): void {
   fastify.get('/api/projects/:id/deploy/listing', async (req, reply) =>
     respond(reply, () => service.readListing(projectId(req))),
@@ -72,10 +75,12 @@ function registerListingRoutes(fastify: FastifyInstance, service: ProjectDeployS
   );
 }
 
+/*** Register bounded binary store-listing asset writes. */
 function registerListingAssetWrite(fastify: FastifyInstance, service: ProjectDeployService): void {
   fastify.put(
     '/api/projects/:id/deploy/listing/asset',
     { bodyLimit: MAX_STORE_ASSET_BYTES },
+    /*** Validate binary listing bytes and write them to the requested canonical asset location. */
     async (req, reply) => {
       const { body } = req;
       if (!Buffer.isBuffer(body)) {
@@ -92,6 +97,7 @@ function registerListingAssetWrite(fastify: FastifyInstance, service: ProjectDep
   );
 }
 
+/*** Register deployment monetization read/write/inspect/execute routes. */
 function registerMonetizationRoutes(fastify: FastifyInstance, service: ProjectDeployService): void {
   fastify.get('/api/projects/:id/deploy/monetization', async (req, reply) =>
     respond(reply, () => service.readMonetization(projectId(req))),
@@ -112,6 +118,7 @@ function registerMonetizationRoutes(fastify: FastifyInstance, service: ProjectDe
   );
 }
 
+/*** Project one monetization execute HTTP body into the ProjectDeployService operation input. */
 function executeMonetizationRequest(service: ProjectDeployService, req: FastifyRequest) {
   const body = req.body as {
     readonly runtime: ProjectDeployRuntimeInput;
@@ -126,6 +133,7 @@ function executeMonetizationRequest(service: ProjectDeployService, req: FastifyR
   });
 }
 
+/*** Register release desired-state, inspection, mutation and history routes. */
 function registerReleaseRoutes(fastify: FastifyInstance, service: ProjectDeployService): void {
   fastify.get('/api/projects/:id/deploy/release', async (req, reply) =>
     respond(reply, () => service.readRelease(projectId(req))),
@@ -144,6 +152,7 @@ function registerReleaseRoutes(fastify: FastifyInstance, service: ProjectDeployS
   );
 }
 
+/*** Register release execute/resume/control mutation routes. */
 function registerReleaseMutationRoutes(
   fastify: FastifyInstance,
   service: ProjectDeployService,
@@ -159,6 +168,7 @@ function registerReleaseMutationRoutes(
   );
 }
 
+/*** Start a new release execution with a fresh UUID and return both execution id and service result. */
 async function executeReleaseRequest(
   service: ProjectDeployService,
   req: FastifyRequest,
@@ -179,6 +189,7 @@ async function executeReleaseRequest(
   return { executionId, result };
 }
 
+/*** Resume a prior release under a fresh execution UUID and return both execution id and result. */
 async function resumeReleaseRequest(
   service: ProjectDeployService,
   req: FastifyRequest,
@@ -197,6 +208,7 @@ async function resumeReleaseRequest(
   return { executionId, result };
 }
 
+/*** Project one release-control HTTP body into the ProjectDeployService control operation. */
 function executeReleaseControlRequest(service: ProjectDeployService, req: FastifyRequest) {
   const body = req.body as {
     readonly runtime: ProjectDeployRuntimeInput;
@@ -209,15 +221,21 @@ function executeReleaseControlRequest(service: ProjectDeployService, req: Fastif
   });
 }
 
+/***
+ * Ensure a Fastify instance has an octet-stream Buffer body parser.
+ * @utility @ankhorage/utility/http/fastify
+ */
 function ensureBinaryBodyParser(fastify: FastifyInstance): void {
   if (fastify.hasContentTypeParser('application/octet-stream')) return;
   fastify.addContentTypeParser(
     'application/octet-stream',
     { parseAs: 'buffer' },
+    /*** Pass the parsed binary body through unchanged. */
     (_req, body, done) => done(null, body),
   );
 }
 
+/*** Parse a deploy store-listing asset location from HTTP query data. */
 function readAssetLocation(value: unknown): ProjectStoreListingAssetLocation {
   const query = value as Record<string, unknown>;
   if (query.kind === 'android-shared') {
@@ -244,10 +262,18 @@ function readAssetLocation(value: unknown): ProjectStoreListingAssetLocation {
   };
 }
 
+/***
+ * Read the canonical `id` route parameter from a Fastify request.
+ * @utility @ankhorage/utility/http/fastify
+ */
 function projectId(req: FastifyRequest): string {
   return (req.params as { readonly id: string }).id;
 }
 
+/***
+ * Execute an async Fastify route operation and map thrown failures to a configured HTTP error response.
+ * @utility @ankhorage/utility/http/fastify
+ */
 async function respond(reply: FastifyReply, operation: () => Promise<unknown>): Promise<unknown> {
   try {
     return await operation();
@@ -256,6 +282,10 @@ async function respond(reply: FastifyReply, operation: () => Promise<unknown>): 
   }
 }
 
+/***
+ * Convert an unknown thrown value to a human-readable message.
+ * @utility @ankhorage/utility/error
+ */
 function readErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }

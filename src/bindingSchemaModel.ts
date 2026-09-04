@@ -12,6 +12,10 @@ import type {
 } from './bindingAuthoringContracts';
 import { readOwnProperty } from './utils/readOwnProperty';
 
+/***
+ * Resolve a contracts data schema into the bindable value metadata used by Studio authoring.
+ * @todo Move binding schema interpretation under src/bindings/.
+ */
 export function resolveStudioSchemaValueMeta(
   schema: DataSchema | undefined,
   schemas: DataSchemaRegistry | undefined,
@@ -31,6 +35,10 @@ export function resolveStudioSchemaValueMeta(
   };
 }
 
+/***
+ * Collect response-path options from a schema for Studio binding authoring.
+ * @todo Move response-path authoring under src/bindings/.
+ */
 export function collectStudioResponsePaths(
   schema: DataSchema | undefined,
   schemas: DataSchemaRegistry | undefined,
@@ -41,6 +49,10 @@ export function collectStudioResponsePaths(
   return paths;
 }
 
+/***
+ * Assess whether an actual bindable value shape can satisfy an expected Studio binding shape.
+ * @todo Keep binding compatibility policy under src/bindings/.
+ */
 export function assessStudioBindingCompatibility(
   expected: UiBindableValueMeta,
   actual: UiBindableValueMeta,
@@ -56,6 +68,10 @@ export function assessStudioBindingCompatibility(
   return 'incompatible';
 }
 
+/***
+ * Recursively append object-property response paths and their resolved binding metadata.
+ * @todo Keep recursive binding response-path collection under src/bindings/.
+ */
 function collectObjectPaths(
   schema: DataSchema | undefined,
   schemas: DataSchemaRegistry | undefined,
@@ -76,6 +92,10 @@ function collectObjectPaths(
   }
 }
 
+/***
+ * Resolve a schema reference recursively while preventing reference cycles.
+ * @utility @ankhorage/utility/schema
+ */
 function resolveSchemaRef(
   schema: DataSchema | undefined,
   schemas: DataSchemaRegistry | undefined,
@@ -87,6 +107,10 @@ function resolveSchemaRef(
   return referenced ? resolveSchemaRef(referenced, schemas, new Set([...seen, refId])) : schema;
 }
 
+/***
+ * Project schema properties into the field metadata expected by Studio bindings.
+ * @todo Keep bindable field projection under src/bindings/.
+ */
 function resolveSchemaFields(
   schema: DataSchema,
   schemas: DataSchemaRegistry | undefined,
@@ -99,6 +123,10 @@ function resolveSchemaFields(
   }));
 }
 
+/***
+ * Normalize a schema's format, primitive type, and structural hints into one effective value type.
+ * @utility @ankhorage/utility/schema
+ */
 function resolveSchemaType(schema: DataSchema): UiBindableValueMeta['type'] {
   if (schema.format === 'date' || schema.format === 'date-time') return 'date';
   const rawType = resolveSingleSchemaType(schema.type);
@@ -117,15 +145,27 @@ function resolveSchemaType(schema: DataSchema): UiBindableValueMeta['type'] {
   return 'unknown';
 }
 
+/***
+ * Return a schema primitive type only when the declaration contains exactly one effective type.
+ * @utility @ankhorage/utility/schema
+ */
 function resolveSingleSchemaType(type: DataSchema['type']): DataSchemaPrimitiveType | undefined {
   if (typeof type === 'string') return type;
   return type?.length === 1 ? type.at(0) : undefined;
 }
 
+/***
+ * Test whether a bindable value type represents an object-shaped value.
+ * @todo Keep this bindable-type semantic predicate under src/bindings/.
+ */
 function isObjectLike(type: UiBindableValueMeta['type']): boolean {
   return type === 'object' || type === 'record';
 }
 
+/***
+ * Detect the object-field shape Studio accepts as an image-asset-compatible binding value.
+ * @todo Keep image-asset binding compatibility under src/bindings/.
+ */
 function isImageAssetShape(value: UiBindableValueMeta): boolean {
   return (
     isObjectLike(value.type) &&

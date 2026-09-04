@@ -1,3 +1,7 @@
+/***
+ * Fail browser acceptance when collected issues contain anything beyond explicitly tolerated React Native Web warnings.
+ * @todo Move this browser acceptance policy out of src/host into test/smoke.
+ */
 export function assertNoBrowserErrors(issues: readonly string[], label: string): void {
   const unexpectedIssues = issues.filter((issue) => !isKnownReactNativeWebWarning(issue));
   if (unexpectedIssues.length === 0) return;
@@ -26,6 +30,7 @@ const KNOWN_REACT_NATIVE_WEB_WARNING_HEADERS = new Set([
   '[console.warning] "\\"textShadow*\\" style props are deprecated. Use \\"textShadow\\"."',
 ]);
 
+/*** Recognize the bounded React Native Web warnings intentionally tolerated by browser smoke acceptance. */
 function isKnownReactNativeWebWarning(issue: string): boolean {
   const [header] = issue.split('\n', 1);
   return header !== undefined && KNOWN_REACT_NATIVE_WEB_WARNING_HEADERS.has(header);

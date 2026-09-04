@@ -1,3 +1,4 @@
+/*** Generate the cross-platform auth-session persistence, bootstrap, refresh, and subscription module for a generated app. */
 export function getAuthSessionTs() {
   return `import type { AuthAdapter, AuthSession, AuthUser } from '@ankhorage/contracts/auth';
 import * as SecureStore from 'expo-secure-store';

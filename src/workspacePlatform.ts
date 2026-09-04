@@ -1,3 +1,7 @@
+/***
+ * Report whether browser globals are available in the current runtime.
+ * @utility @ankhorage/utility/web
+ */
 function isWeb(): boolean {
   return typeof window !== 'undefined';
 }
@@ -20,6 +24,10 @@ export interface DeleteConfirmationDependencies {
   readonly isWeb: boolean;
 }
 
+/***
+ * Create a confirmation action that uses browser confirm when available and an injected alert otherwise.
+ * @utility @ankhorage/utility/interaction
+ */
 export function createDeleteConfirmation(dependencies: DeleteConfirmationDependencies) {
   return (name: string, onConfirm: () => void): void => {
     const message = `Delete ${name}?`;
@@ -42,6 +50,10 @@ export function createDeleteConfirmation(dependencies: DeleteConfirmationDepende
   };
 }
 
+/***
+ * Ask for deletion confirmation using browser globals or an injected alert implementation.
+ * @utility @ankhorage/utility/interaction
+ */
 export function confirmDelete(
   name: string,
   onConfirm: () => void,
@@ -63,6 +75,10 @@ export function confirmDelete(
   })(name, onConfirm);
 }
 
+/***
+ * Open a URL in a new browser tab without granting opener access and report whether opening was attempted.
+ * @utility @ankhorage/utility/web
+ */
 export function openProjectUrl(url: string): boolean {
   if (isWeb() && typeof window.open === 'function') {
     window.open(url, '_blank', 'noopener,noreferrer');

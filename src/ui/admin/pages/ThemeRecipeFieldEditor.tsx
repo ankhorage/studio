@@ -6,6 +6,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Field } from '../adminPagePrimitives';
 
+/*** Render inherited and explicit override choices for one metadata-described ZORA theme recipe field. */
 export function ThemeRecipeFieldEditor(props: {
   readonly fieldName: string;
   readonly meta: ZoraThemeRecipeFieldMeta;
@@ -40,6 +41,7 @@ export function ThemeRecipeFieldEditor(props: {
   );
 }
 
+/*** Resolve boolean, explicit-choice, or token metadata into selectable theme recipe override options. */
 function resolveFieldOptions(
   meta: ZoraThemeRecipeFieldMeta,
   tokenOptions: readonly string[],
@@ -54,11 +56,13 @@ function resolveFieldOptions(
   return options.map((value) => ({ label: value, value }));
 }
 
+/*** Format the inherited recipe field option and include its owner default when one exists. */
 function formatInheritedLabel(meta: ZoraThemeRecipeFieldMeta): string {
   if (meta.default === undefined) return 'Inherited';
   return `Inherited (${String(meta.default)})`;
 }
 
+/*** Render one selectable theme recipe override option. */
 function Choice(props: {
   readonly label: string;
   readonly selected: boolean;

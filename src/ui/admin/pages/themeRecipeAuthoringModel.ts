@@ -10,6 +10,10 @@ import { setOwnProperty } from '../../../utils/setOwnProperty';
 
 export type ThemeRecipeAuthoringKind = 'component' | 'pattern';
 
+/***
+ * Immutably set or remove one component/pattern recipe field override and prune empty recipe/bucket structures.
+ * @todo Move this theme-recipe mutation policy from admin UI into the theme authoring domain.
+ */
 export function updateThemeRecipeField(args: {
   readonly recipes: ThemeRecipeOverrides | undefined;
   readonly kind: ThemeRecipeAuthoringKind;
@@ -32,6 +36,7 @@ export function updateThemeRecipeField(args: {
   return nextRecipes.components || nextRecipes.patterns ? nextRecipes : undefined;
 }
 
+/*** Apply the generic record-update primitive to one theme recipe field map. */
 function updateField(
   fields: ThemeRecipeFieldOverrides | undefined,
   fieldName: string,
@@ -40,6 +45,10 @@ function updateField(
   return updateRecord(fields, fieldName, value);
 }
 
+/***
+ * Immutably set/delete a keyed record value and normalize an empty resulting record to undefined.
+ * @utility @ankhorage/utility/object
+ */
 function updateRecord<T>(
   record: Readonly<Record<string, T>> | undefined,
   key: string,

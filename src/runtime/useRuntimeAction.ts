@@ -16,6 +16,10 @@ export interface UseRuntimeActionOptions {
   consoleImpl?: Pick<typeof console, 'log'>;
 }
 
+/***
+ * Compose Expo Router, ZORA theme state, optional DB persistence, and custom runtime handlers into a React runtime-action executor.
+ * @todo Keep this React/Expo/ZORA composition at the Studio app/runtime edge rather than generic runtime ownership.
+ */
 export function useRuntimeAction(options: UseRuntimeActionOptions = {}) {
   const router = useRouter();
   const { mode, setMode } = useZoraTheme();

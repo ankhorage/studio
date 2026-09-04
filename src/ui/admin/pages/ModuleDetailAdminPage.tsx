@@ -21,6 +21,7 @@ import { AdminHeader, AdminScroll, Field, KeyValue } from '../adminPagePrimitive
 import { ModuleAdminViewHost } from '../ModuleAdminViewHost';
 import { getStudioModuleAdminView } from '../moduleAdminViewRegistry';
 
+/*** Render lifecycle, package-owned administration, and fallback metadata-driven configuration for one Studio module. */
 export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string | null }) {
   const studio = useStudio();
   const router = useRouter();
@@ -31,6 +32,7 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
   const [unknown, setUnknown] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
+  /*** Store a freshly loaded module and derive its editable fallback admin draft. */
   const applyLoadedModule = useCallback((loaded: StudioModuleState) => {
     setModule(loaded);
     setDraft(
@@ -40,6 +42,7 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
     );
   }, []);
 
+  /*** Reload the selected module lifecycle/admin state and classify an unknown module id. */
   const reload = useCallback(async () => {
     if (!moduleId) {
       setUnknown(true);
@@ -63,6 +66,7 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
     void reload();
   }, [reload]);
 
+  /*** Install or uninstall the selected module, refresh its lifecycle state, and synchronize the Studio manifest. */
   const runLifecycle = useCallback(
     async (operation: 'install' | 'uninstall') => {
       if (!moduleId) return;
@@ -89,6 +93,7 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
     [applyLoadedModule, moduleId, studio],
   );
 
+  /*** Parse and persist the module's metadata-driven configuration draft through the Orchestrator lifecycle. */
   const saveConfig = useCallback(async () => {
     if (!moduleId || !module?.admin) return;
     const parsed = parseStudioModuleAdminDraft({
@@ -253,6 +258,10 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
   );
 }
 
+/***
+ * Normalize an unknown thrown value to a display message.
+ * @utility @ankhorage/utility/error
+ */
 function toMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }

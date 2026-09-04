@@ -41,6 +41,10 @@ interface AdminPageRenderContext {
 type AdminPageRenderer = (context: AdminPageRenderContext) => React.ReactElement;
 type AuthAdminRouteId = AuthAdminPageProps['routeId'];
 
+/***
+ * Map each Studio administration route id to the React page adapter that renders that route from current Studio/path context.
+ * @todo Keep page selection at the app/admin composition edge while route parsing and route policy remain owned by the routes domain.
+ */
 const ADMIN_PAGE_RENDERERS = {
   overview: () => <OverviewAdminPage />,
   screens: () => <ScreensAdminPage />,
@@ -103,6 +107,7 @@ const ADMIN_PAGE_RENDERERS = {
   ),
 } satisfies Record<StudioAdminRouteId, AdminPageRenderer>;
 
+/*** Render the Studio administration page selected by the current route id and pathname context. */
 export function AnkhAdminPage({ routeId }: AnkhAdminPageProps) {
   const studio = useStudio();
   const pathname = usePathname();

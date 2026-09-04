@@ -10,6 +10,7 @@ import { getProjectPath } from '../orchestrator/projectPaths';
 
 type ProjectRuntimeManager = Pick<ProjectManager, 'getInfrastructureStatus'>;
 
+/*** Register Studio project-launch and infrastructure-runtime ensure HTTP adapters. */
 export function registerProjectRuntimeRoutes(
   fastify: FastifyInstance,
   options: {
@@ -18,6 +19,7 @@ export function registerProjectRuntimeRoutes(
     readonly dependencies?: InfraSessionDependencies;
   },
 ): void {
+  /*** Ensure/open the project's web launch session and return its URL/start state. */
   fastify.post('/api/projects/:id/launch', (request, reply) =>
     handleProjectRuntimeRequest(request, reply, options, async ({ args, target }) => {
       const runtime = await ensureProjectWebLaunchSession(args, options.dependencies);
@@ -30,6 +32,7 @@ export function registerProjectRuntimeRoutes(
     }),
   );
 
+  /*** Ensure the project's infrastructure runtime session is active. */
   fastify.post('/api/projects/:id/infra/runtime/ensure', (request, reply) =>
     handleProjectRuntimeRequest(request, reply, options, async ({ args, target }) => {
       await ensureProjectInfrastructureRuntimeSession(args, options.dependencies);
@@ -38,6 +41,10 @@ export function registerProjectRuntimeRoutes(
   );
 }
 
+/***
+ * Resolve project runtime target/path context, honor skipped projects, execute an injected runtime action, and translate failures to HTTP 500.
+ * @todo Keep this project/infra runtime orchestration in the deploy/runtime application owner rather than extracting it as a generic HTTP helper.
+ */
 async function handleProjectRuntimeRequest(
   request: FastifyRequest,
   reply: FastifyReply,

@@ -8,6 +8,10 @@ const RESERVED_PROJECT_IDS = ['studio'] as const;
 
 const PROJECT_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 
+/***
+ * Normalize a project name into a lowercase hyphenated identifier.
+ * @utility @ankhorage/utility/string
+ */
 export function deriveProjectId(projectName: string): string {
   return projectName
     .trim()
@@ -17,21 +21,35 @@ export function deriveProjectId(projectName: string): string {
     .replace(/^-|-$/g, '');
 }
 
+/***
+ * Normalize a human-readable name for case-insensitive equality checks.
+ * @utility @ankhorage/utility/string
+ */
 function normalizeProjectName(projectName: string): string {
   return projectName.trim().replace(/\s+/g, ' ').toLowerCase();
 }
 
+/***
+ * Test whether a project id is reserved by the Studio workspace.
+ * @todo Move project identity/reserved-id policy under src/projects/.
+ */
 function isReservedProjectId(projectId: string): boolean {
   return RESERVED_PROJECT_IDS.includes(projectId as (typeof RESERVED_PROJECT_IDS)[number]);
 }
 
+/*** Represent a failed Studio project-creation validation as an Error carrying its structured reason. */
 export class ProjectCreationValidationError extends Error {
+  /*** Create an error from one structured project-creation validation failure. */
   constructor(readonly reason: ProjectCreationValidationFailure) {
     super(reason.message);
     this.name = 'ProjectCreationValidationError';
   }
 }
 
+/***
+ * Validate a new Studio project name and derived id against format, reservation, and uniqueness rules.
+ * @todo Move project creation validation under src/projects/.
+ */
 export function validateProjectCreationInput(args: {
   name: string;
   existingProjects: readonly StudioProjectSummary[];

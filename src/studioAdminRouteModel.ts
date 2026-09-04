@@ -274,6 +274,10 @@ const MODULE_ROUTE_PREFIX = '/ankh/modules/';
 const THEME_COMPONENT_ROUTE_PREFIX = '/ankh/theme/components/';
 const THEME_PATTERN_ROUTE_PREFIX = '/ankh/theme/patterns/';
 
+/***
+ * Resolve a Studio admin-route definition by id and fail when the registry is inconsistent.
+ * @todo Move the admin-route registry and lookup policy from root `src/` into the `routes/` domain.
+ */
 export function getStudioAdminRouteDefinition(
   routeId: StudioAdminRouteId,
 ): StudioAdminRouteDefinition {
@@ -285,6 +289,10 @@ export function getStudioAdminRouteDefinition(
   return route;
 }
 
+/***
+ * Resolve a pathname to the matching Studio admin-route id, including contextual detail routes.
+ * @todo Move Studio admin route matching from root `src/` into the `routes/` domain.
+ */
 export function resolveStudioAdminRouteId(pathname: string): StudioAdminRouteId | null {
   if (pathname.startsWith(MODULE_ROUTE_PREFIX)) {
     return resolveStudioModuleId(pathname) ? 'module-detail' : null;
@@ -324,6 +332,10 @@ export function resolveStudioAdminRouteId(pathname: string): StudioAdminRouteId 
   return route?.id ?? null;
 }
 
+/***
+ * Canonicalize a recognized Studio admin pathname to its typed route path.
+ * @todo Move Studio admin route canonicalization into the `routes/` domain.
+ */
 export function resolveStudioAdminRoutePath(pathname: string): StudioAdminRoutePath | null {
   const routeId = resolveStudioAdminRouteId(pathname);
   if (!routeId) return null;
@@ -355,26 +367,38 @@ export function resolveStudioAdminRoutePath(pathname: string): StudioAdminRouteP
   return getStudioAdminRouteDefinition(routeId).path;
 }
 
+/*** Resolve the contextual node id from a Studio bindings pathname. */
 export function resolveStudioBindingsNodeId(pathname: string): string | null {
   return resolveStudioContextNodeId(pathname, BINDINGS_ROUTE_PREFIX);
 }
 
+/*** Resolve the screen id from a Studio screen-detail pathname. */
 export function resolveStudioScreenId(pathname: string): string | null {
   return resolveStudioDetailId(pathname, SCREEN_ROUTE_PREFIX);
 }
 
+/***
+ * Build a Studio screen-detail pathname from an arbitrary screen id.
+ * @utility @ankhorage/utility/url
+ */
 export function createStudioScreenRoutePath(screenId: string): `/ankh/screens/${string}` {
   return `/ankh/screens/${encodeURIComponent(screenId)}`;
 }
 
+/*** Resolve the module id from a Studio module-detail pathname. */
 export function resolveStudioModuleId(pathname: string): string | null {
   return resolveStudioDetailId(pathname, MODULE_ROUTE_PREFIX);
 }
 
+/***
+ * Build a Studio module-detail pathname from an arbitrary module id.
+ * @utility @ankhorage/utility/url
+ */
 export function createStudioModuleRoutePath(moduleId: string): `/ankh/modules/${string}` {
   return `/ankh/modules/${encodeURIComponent(moduleId)}`;
 }
 
+/*** Resolve a component/pattern theme recipe name from its Studio contextual pathname. */
 export function resolveStudioThemeRecipeName(pathname: string): string | null {
   if (pathname.startsWith(THEME_COMPONENT_ROUTE_PREFIX)) {
     return resolveStudioDetailId(pathname, THEME_COMPONENT_ROUTE_PREFIX);
@@ -385,6 +409,10 @@ export function resolveStudioThemeRecipeName(pathname: string): string | null {
   return null;
 }
 
+/***
+ * Build a Studio component/pattern recipe pathname by URL-encoding the recipe name.
+ * @utility @ankhorage/utility/url
+ */
 export function createStudioThemeRecipeRoutePath(
   kind: 'component' | 'pattern',
   recipeName: string,
@@ -395,18 +423,31 @@ export function createStudioThemeRecipeRoutePath(
     : `/ankh/theme/patterns/${encoded}`;
 }
 
+/***
+ * Build a Studio bindings pathname from an arbitrary node id.
+ * @utility @ankhorage/utility/url
+ */
 export function createStudioBindingsRoutePath(nodeId: string): `/ankh/bindings/${string}` {
   return `/ankh/bindings/${encodeURIComponent(nodeId)}`;
 }
 
+/*** Resolve the contextual node id from a Studio properties pathname. */
 export function resolveStudioPropertiesNodeId(pathname: string): string | null {
   return resolveStudioContextNodeId(pathname, PROPERTIES_ROUTE_PREFIX);
 }
 
+/***
+ * Build a Studio properties pathname from an arbitrary node id.
+ * @utility @ankhorage/utility/url
+ */
 export function createStudioPropertiesRoutePath(nodeId: string): `/ankh/properties/${string}` {
   return `/ankh/properties/${encodeURIComponent(nodeId)}`;
 }
 
+/***
+ * Build the concrete Studio admin route path for a static or contextual admin-route id.
+ * @todo Move route-construction policy from root `src/` into the `routes/` domain; contextual segment encoding can compose the shared URL primitive.
+ */
 export function createStudioAdminRoutePath(args: {
   routeId: StudioAdminRouteId;
   selectedNodeId?: string | null;
@@ -438,6 +479,10 @@ export function createStudioAdminRoutePath(args: {
   return getStudioAdminRouteDefinition(args.routeId).path;
 }
 
+/***
+ * Return whether a contextual Studio admin route has the context needed to open it.
+ * @todo Keep this availability policy with the Studio `routes/` domain.
+ */
 export function isStudioAdminRouteAvailable(
   routeId: StudioAdminRouteId,
   context: StudioAdminRouteAvailabilityContext,
@@ -455,10 +500,15 @@ export function isStudioAdminRouteAvailable(
   return true;
 }
 
+/*** Resolve the active Studio admin route id, falling back to overview for non-admin/unknown paths. */
 export function resolveStudioAdminActiveRouteId(pathname: string): StudioAdminRouteId {
   return resolveStudioAdminRouteId(pathname) ?? 'overview';
 }
 
+/***
+ * Return whether a candidate Studio admin route is the current route or an ancestor of it.
+ * @todo Keep Studio route-hierarchy policy in the `routes/` domain; its generic ancestry traversal can reuse the existing tree Utility primitives if useful.
+ */
 export function isStudioAdminRouteActive(args: {
   currentRouteId: StudioAdminRouteId;
   candidateRouteId: StudioAdminRouteId;
@@ -476,6 +526,10 @@ export function isStudioAdminRouteActive(args: {
   return false;
 }
 
+/***
+ * Project pathname + persisted admin-route state into the render state consumed by the Studio shell.
+ * @todo Move this render-state route policy into the `routes/` application domain.
+ */
 export function createStudioAdminRouteRenderState(args: {
   pathname: string;
   activeAdminRouteId: StudioAdminRouteId;
@@ -497,6 +551,10 @@ export function createStudioAdminRouteRenderState(args: {
   };
 }
 
+/***
+ * Open a Studio admin route by resolving its contextual path, closing the active panel, and delegating navigation.
+ * @todo Keep this route-opening use case in the `routes/` application domain rather than root `src/`.
+ */
 export function openStudioAdminRoute(args: {
   next: StudioAdminRouteId;
   selectedNodeId?: string | null;
@@ -520,10 +578,18 @@ export function openStudioAdminRoute(args: {
   return true;
 }
 
+/***
+ * Return whether a pathname is at or below the Studio admin path prefix.
+ * @utility @ankhorage/utility/url
+ */
 export function isStudioAdminPath(pathname: string): boolean {
   return pathname === '/ankh' || pathname.startsWith('/ankh/');
 }
 
+/***
+ * Preserve the current browser search/hash suffix when a requested pathname equals `location.pathname`.
+ * @utility @ankhorage/utility/web
+ */
 export function resolveStudioNavigableLocation(pathname: string): string {
   const runtimeGlobal = globalThis as { readonly location?: Location };
   const { location } = runtimeGlobal;
@@ -534,6 +600,10 @@ export function resolveStudioNavigableLocation(pathname: string): string {
   return pathname;
 }
 
+/***
+ * Resolve the last navigable non-admin location while excluding Studio admin paths.
+ * @todo Keep this Studio navigation-history policy in the `routes/` application domain; browser location reconstruction can use the shared Web utility.
+ */
 export function resolveStudioLastNonAdminLocation(args: {
   readonly pathname: string;
   readonly navigableLocation?: string;
@@ -542,6 +612,10 @@ export function resolveStudioLastNonAdminLocation(args: {
   return args.navigableLocation ?? resolveStudioNavigableLocation(args.pathname);
 }
 
+/***
+ * Read the first path segment after a required prefix and decode it, preserving the encoded segment when decoding fails.
+ * @utility @ankhorage/utility/url
+ */
 function resolveStudioContextNodeId(pathname: string, prefix: string): string | null {
   if (!pathname.startsWith(prefix)) return null;
   const [encodedNodeId] = pathname.slice(prefix.length).split('/');
@@ -553,6 +627,10 @@ function resolveStudioContextNodeId(pathname: string, prefix: string): string | 
   }
 }
 
+/***
+ * Read exactly one URL-encoded detail segment after a required prefix and reject empty, nested, or undecodable values.
+ * @utility @ankhorage/utility/url
+ */
 function resolveStudioDetailId(pathname: string, prefix: string): string | null {
   if (!pathname.startsWith(prefix)) return null;
   const remainder = pathname.slice(prefix.length);

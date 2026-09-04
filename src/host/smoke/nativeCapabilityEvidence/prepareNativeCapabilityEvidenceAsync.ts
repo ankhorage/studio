@@ -33,6 +33,10 @@ const EXPECTED_GENERATED_OWNER_VERSIONS = {
 const EXPECTED_EXPO_RUNTIME_VERSION = EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/expo-runtime'];
 const ROUTER_REWRITE_DISABLED = '1';
 
+/***
+ * Prepare the complete released-Studio native capability evidence workspace, validate its frozen owner graph and generated native output, and persist baseline evidence.
+ * @todo Move this end-to-end acceptance orchestration from production src/host/smoke to test/smoke.
+ */
 export async function prepareNativeCapabilityEvidenceAsync(workspaceRoot: string): Promise<void> {
   await assertFreshWorkspaceAsync(workspaceRoot);
   const node24Path = await resolveNode24PathAsync();
@@ -131,6 +135,7 @@ interface NativeEvidenceCheckResults {
   readonly routerTypesBytes: number;
 }
 
+/*** Run Devtools synchronization twice and assert both idempotent output and a byte-stable lockfile. */
 async function assertDevtoolsSyncIdempotentAsync(
   appRoot: string,
   lockPath: string,
@@ -154,6 +159,7 @@ async function assertDevtoolsSyncIdempotentAsync(
   }
 }
 
+/*** Assert exact installed package versions for every expected owner in a generated installation root. */
 async function assertInstalledPackageVersionsAsync(
   installationRoot: string,
   expectedVersions: Readonly<Record<string, string>>,
@@ -166,6 +172,7 @@ async function assertInstalledPackageVersionsAsync(
   }
 }
 
+/*** Assert that clean native prebuild output contains the expected Android permissions/scheme and iOS URL/usage-description evidence. */
 async function assertNativePrebuildAsync(appRoot: string): Promise<void> {
   const androidManifest = await readFile(
     path.join(appRoot, 'android', 'app', 'src', 'main', 'AndroidManifest.xml'),
@@ -194,6 +201,7 @@ async function assertNativePrebuildAsync(appRoot: string): Promise<void> {
   }
 }
 
+/*** Assert generated Expo Router declarations are non-empty and contain the native-evidence acceptance routes, returning their byte size. */
 async function assertRouterTypesAsync(appRoot: string): Promise<number> {
   const routerTypes = await readFile(path.join(appRoot, '.expo', 'types', 'router.d.ts'), 'utf8');
   if (!routerTypes.trim()) throw new Error('Expo Router generated an empty route declaration.');
@@ -205,6 +213,7 @@ async function assertRouterTypesAsync(appRoot: string): Promise<number> {
   return Buffer.byteLength(routerTypes);
 }
 
+/*** Create a cross-platform Bun lockfile, perform a cold frozen install, assert lockfile stability and return its SHA-256 fingerprint. */
 async function createLockfileAndColdInstallAsync(
   installationRoot: string,
   commandEnv: Readonly<Record<string, string>>,
@@ -231,6 +240,7 @@ async function createLockfileAndColdInstallAsync(
   return createHash('sha256').update(installed).digest('hex');
 }
 
+/*** Inject the Expo development-client plugin into the generated app config for native evidence execution. */
 async function configureNativeEvidenceDevelopmentClientAsync(appRoot: string): Promise<void> {
   const appConfigPath = path.join(appRoot, 'app.config.ts');
   const appConfig = await readFile(appConfigPath, 'utf8');
@@ -246,6 +256,7 @@ async function configureNativeEvidenceDevelopmentClientAsync(appRoot: string): P
   );
 }
 
+/*** Add the React Compiler healthcheck dependency to the generated native-evidence app tooling. */
 async function configureNativeEvidenceToolingAsync(appRoot: string): Promise<void> {
   const packagePath = path.join(appRoot, 'package.json');
   const packageJson = await readPackageJsonAsync(packagePath);
@@ -267,6 +278,7 @@ async function configureNativeEvidenceToolingAsync(appRoot: string): Promise<voi
   );
 }
 
+/*** Require the native-evidence workspace path to be absolute and not already exist. */
 async function assertFreshWorkspaceAsync(workspaceRoot: string): Promise<void> {
   if (!path.isAbsolute(workspaceRoot)) {
     throw new Error('Native evidence workspace path must be absolute.');
@@ -282,6 +294,7 @@ async function assertFreshWorkspaceAsync(workspaceRoot: string): Promise<void> {
   }
 }
 
+/*** Assert that released Studio auth generation wires Expo Crypto random bytes into the generated OAuth adapter. */
 async function assertReleasedNativeOAuthWiringAsync(appRoot: string): Promise<void> {
   const adapter = await readFile(path.join(appRoot, 'src', 'auth', 'adapter.ts'), 'utf8');
   for (const expected of [
@@ -294,6 +307,10 @@ async function assertReleasedNativeOAuthWiringAsync(appRoot: string): Promise<vo
   }
 }
 
+/***
+ * Assert that package metadata has the requested package name and exact version.
+ * @utility @ankhorage/utility/package
+ */
 function assertPackageVersion(
   packageJson: Readonly<Record<string, unknown>>,
   packageName: string,
@@ -308,12 +325,17 @@ function assertPackageVersion(
   }
 }
 
+/***
+ * Read, parse and validate a package.json-compatible file as a non-array object record.
+ * @utility @ankhorage/utility/node/package
+ */
 async function readPackageJsonAsync(filePath: string): Promise<Readonly<Record<string, unknown>>> {
   const parsed: unknown = JSON.parse(await readFile(filePath, 'utf8'));
   if (!isRecord(parsed)) throw new Error(`Invalid package metadata at ${filePath}.`);
   return parsed;
 }
 
+/*** Build the command environment required by the Expo native-evidence acceptance workspace, including isolated Expo home and optional task TMPDIR. */
 function createCommandEnvironment(
   nodePath: string,
   workspaceRoot: string,
@@ -327,16 +349,25 @@ function createCommandEnvironment(
   };
 }
 
+/***
+ * Read the current process PATH as a string, falling back to an empty path.
+ * @utility @ankhorage/utility/node/env
+ */
 function getPathEnvironment(): string {
   return getEnvironmentValue('PATH') ?? '';
 }
 
+/***
+ * Read one Bun environment variable only when its runtime value is a string.
+ * @utility @ankhorage/utility/node/env
+ */
 function getEnvironmentValue(name: string): string | undefined {
   const environment = Bun.env as unknown as Readonly<Record<string, unknown>>;
   const value = Reflect.get(environment, name);
   return typeof value === 'string' ? value : undefined;
 }
 
+/*** Recursively locate and read the generated iOS Info.plist under an iOS native-project root. */
 async function readNativeInfoPlistAsync(rootPath: string): Promise<string> {
   const entries = await readdir(rootPath, { withFileTypes: true });
   for (const entry of entries) {
@@ -352,6 +383,7 @@ async function readNativeInfoPlistAsync(rootPath: string): Promise<string> {
   return '';
 }
 
+/*** Resolve the @ankhorage/templates range declared by the exact released Studio version from registry metadata. */
 async function resolvePublishedTemplateRangeAsync(cwd: string): Promise<string> {
   const versionOutput = await runAcceptanceCommandAsync({
     args: [
@@ -395,6 +427,7 @@ async function resolvePublishedTemplateRangeAsync(cwd: string): Promise<string> 
   return templateRange;
 }
 
+/*** Resolve an accessible Node 24 executable from PATH for the Expo native-evidence fixture. */
 async function resolveNode24PathAsync(): Promise<string> {
   for (const binDirectory of getPathEnvironment().split(':')) {
     const candidate = path.join(binDirectory, 'node');
@@ -410,12 +443,17 @@ async function resolveNode24PathAsync(): Promise<string> {
   throw new Error('Node 24 LTS is required for the generated Expo 57 native evidence fixture.');
 }
 
+/***
+ * Extract a completed/total check-count pair from command output using a caller-provided regular expression.
+ * @utility @ankhorage/utility/string
+ */
 function readCheckSummary(output: string, pattern: RegExp, label: string): string {
   const match = pattern.exec(output);
   if (!match?.[1] || !match[2]) throw new Error(`${label} did not report a complete check count.`);
   return `${match[1]}/${match[2]}`;
 }
 
+/*** Export native-evidence JavaScript for web, Android and iOS and regenerate clean native development-client projects. */
 async function runNativeEvidenceExportsAsync(
   appRoot: string,
   expoEnv: Readonly<Record<string, string>>,
@@ -442,6 +480,7 @@ async function runNativeEvidenceExportsAsync(
   );
 }
 
+/*** Run formatting, lint, Expo compatibility/doctor, router types, TypeScript, React Compiler and multi-platform export checks for native evidence. */
 async function runGeneratedNativeEvidenceChecksAsync(
   appRoot: string,
   commandEnv: Readonly<Record<string, string>>,
@@ -498,6 +537,7 @@ async function runGeneratedNativeEvidenceChecksAsync(
   return { doctor, reactCompiler, routerTypesBytes };
 }
 
+/*** Run one Bun command through the shared acceptance command runner and discard captured output. */
 async function runCommandAsync(
   cwd: string,
   label: string,
@@ -514,6 +554,7 @@ async function runCommandAsync(
   });
 }
 
+/*** Run one Bun command through the shared acceptance command runner and return its captured output. */
 async function runCommandOutputAsync(
   cwd: string,
   label: string,
@@ -531,6 +572,7 @@ async function runCommandOutputAsync(
   });
 }
 
+/*** Resolve the app-owned Expo CLI and run one Expo command with telemetry disabled. */
 async function runExpoCommandAsync(
   cwd: string,
   label: string,
@@ -548,6 +590,7 @@ async function runExpoCommandAsync(
   });
 }
 
+/*** Collect installed version/check metadata and persist the native-evidence baseline JSON with lockfile and executable provenance. */
 async function writeBaselineEvidenceAsync(args: {
   readonly appRoot: string;
   readonly checkResults: NativeEvidenceCheckResults;
@@ -603,6 +646,10 @@ async function writeBaselineEvidenceAsync(args: {
   );
 }
 
+/***
+ * Run an executable with --version and require a successful non-empty version string.
+ * @utility @ankhorage/utility/node/process
+ */
 async function resolveExecutableVersionAsync(executable: string): Promise<string> {
   const childProcess = Bun.spawn([executable, '--version'], { stderr: 'ignore', stdout: 'pipe' });
   const output = (await new Response(childProcess.stdout).text()).trim();
@@ -612,6 +659,7 @@ async function resolveExecutableVersionAsync(executable: string): Promise<string
   return output;
 }
 
+/*** Write the temporary released-Studio generator package manifest with the requested dependency set. */
 async function writeGeneratorPackageAsync(
   generatorRoot: string,
   dependencies: Readonly<Record<string, string>>,
@@ -632,6 +680,7 @@ async function writeGeneratorPackageAsync(
   );
 }
 
+/*** Write the native-evidence client/controller/scenario/screen modules and expose the evidence route in the generated root layout. */
 async function writeNativeEvidenceAppFilesAsync(appRoot: string): Promise<void> {
   const nativeEvidenceRoot = path.join(appRoot, 'src', 'native-evidence');
   await mkdir(nativeEvidenceRoot, { recursive: true });
@@ -682,6 +731,10 @@ async function writeNativeEvidenceAppFilesAsync(appRoot: string): Promise<void> 
   );
 }
 
+/***
+ * Narrow an unknown value to a non-null, non-array object record.
+ * @utility @ankhorage/utility/object
+ */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

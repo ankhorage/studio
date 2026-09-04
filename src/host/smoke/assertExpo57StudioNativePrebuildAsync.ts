@@ -1,6 +1,10 @@
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
+/***
+ * Assert Studio's generated Expo 57 native projects retain canonical IDs, schemes, fonts, and platform baselines.
+ * @todo Move this Studio native acceptance policy out of src/host into test/smoke.
+ */
 export async function assertExpo57StudioNativePrebuildAsync(fixtureRoot: string): Promise<void> {
   const androidRoot = path.join(fixtureRoot, 'android');
   const iosRoot = path.join(fixtureRoot, 'ios');
@@ -64,6 +68,7 @@ export async function assertExpo57StudioNativePrebuildAsync(fixtureRoot: string)
   }
 }
 
+/*** Resolve the generated iOS application project directory while excluding Pods and .xcodeproj bundles. */
 async function resolveIosProjectAsync(iosRoot: string): Promise<string> {
   const entries = await readdir(iosRoot, { withFileTypes: true });
   const project = entries.find(

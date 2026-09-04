@@ -15,6 +15,10 @@ interface HitTestResult {
   readonly y?: number;
 }
 
+/***
+ * Drive a headless Chrome DevTools Protocol session for Studio web acceptance, including navigation, hydration, hit testing, font assertions and browser-error capture.
+ * @todo Move this browser acceptance adapter from production src/host/smoke to test/smoke.
+ */
 export class ChromeNavigationSession {
   readonly errors: string[] = [];
   private nextId = 1;
@@ -28,6 +32,9 @@ export class ChromeNavigationSession {
   private readonly process: ChildProcess;
   private readonly socket: WebSocket;
 
+  /***
+   * Launch a detached headless Chrome process, open a CDP page target and initialize the protocol domains used by acceptance checks.
+   */
   static async createAsync(debugPort: number): Promise<ChromeNavigationSession> {
     const chromePath = await resolveChromePathAsync();
     const process = spawn(
@@ -76,16 +83,19 @@ export class ChromeNavigationSession {
     }
   }
 
+  /*** Bind the launched Chrome process and CDP socket and route incoming protocol messages to the session dispatcher. */
   private constructor(process: ChildProcess, socket: WebSocket) {
     this.process = process;
     this.socket = socket;
     this.socket.onmessage = (event) => this.handleMessage(event.data);
   }
 
+  /*** Clear browser local storage in the active acceptance page. */
   async clearLocalStorageAsync(): Promise<void> {
     await this.evaluateAsync('(() => { localStorage.clear(); return true; })()');
   }
 
+  /*** Hit-test and dispatch a real pointer click to the requested accessible role/name occurrence. */
   async clickByRoleAndNameAsync(role: string, name: string, occurrence = 0): Promise<void> {
     const point = await this.waitForHitTestedRoleAndNameAsync(role, name, occurrence);
     await this.sendAsync('Input.dispatchMouseEvent', {
@@ -111,6 +121,7 @@ export class ChromeNavigationSession {
     });
   }
 
+  /*** Wait for a test-id control to have a hydrated React click handler and invoke its browser click behavior. */
   async clickByTestIdAsync(testId: string): Promise<void> {
     const expression = `(() => {
   const hasHydratedClickHandler = (element) => {
@@ -129,19 +140,23 @@ export class ChromeNavigationSession {
     await this.waitForBooleanAsync(expression, `testID "${testId}" to become clickable`);
   }
 
+  /*** Close the CDP socket and terminate the detached Chrome process group. */
   close(): void {
     this.socket.close();
     stopProcess(this.process);
   }
 
+  /*** Navigate backward through browser history in the active page. */
   async goBackAsync(): Promise<void> {
     await this.evaluateAsync('(() => { history.back(); return true; })()');
   }
 
+  /*** Navigate forward through browser history in the active page. */
   async goForwardAsync(): Promise<void> {
     await this.evaluateAsync('(() => { history.forward(); return true; })()');
   }
 
+  /*** Install a page bootstrap that offsets Date.now by a local-storage value for deterministic time-based acceptance scenarios. */
   async installDateNowOffsetAsync(storageKey: string): Promise<void> {
     await this.sendAsync('Page.addScriptToEvaluateOnNewDocument', {
       source: `(() => {
@@ -158,6 +173,7 @@ export class ChromeNavigationSession {
     });
   }
 
+  /*** Install a document observer that records distinct rendered body-text snapshots for transient-state assertions. */
   async installObservedBodyTextHistoryAsync(): Promise<void> {
     await this.sendAsync('Page.addScriptToEvaluateOnNewDocument', {
       source: `(() => {
@@ -180,6 +196,7 @@ export class ChromeNavigationSession {
     });
   }
 
+  /*** Install a page bootstrap that continuously records distinct pathname values for transient navigation assertions. */
   async installObservedPathnameHistoryAsync(): Promise<void> {
     await this.sendAsync('Page.addScriptToEvaluateOnNewDocument', {
       source: `(() => {
@@ -200,12 +217,14 @@ export class ChromeNavigationSession {
     });
   }
 
+  /*** Check whether a visible element with the requested accessible role and name currently exists. */
   async hasRoleAndNameAsync(role: string, name: string): Promise<boolean> {
     return this.evaluateAsync<boolean>(
       createRoleAndNameExpression(role, name, { occurrence: 0, requireHydration: false }),
     );
   }
 
+  /*** Check whether any previously recorded body-text snapshot contains the requested text. */
   async hasObservedBodyTextAsync(expectedText: string): Promise<boolean> {
     return this.evaluateAsync<boolean>(`(() => {
   const history = Reflect.get(globalThis, '__ankhObservedBodyText');
@@ -215,6 +234,7 @@ export class ChromeNavigationSession {
 })()`);
   }
 
+  /*** Check whether the pathname observer has recorded the requested route. */
   async hasObservedPathnameAsync(expectedPathname: string): Promise<boolean> {
     return this.evaluateAsync<boolean>(`(() => {
   const history = Reflect.get(globalThis, '__ankhObservedPathnames');
@@ -222,6 +242,7 @@ export class ChromeNavigationSession {
 })()`);
   }
 
+  /*** Assert that the requested accessible element renders a loaded glyph with the expected font family. */
   async assertRoleUsesFontFamilyAsync(
     role: string,
     name: string,
@@ -239,16 +260,19 @@ export class ChromeNavigationSession {
     );
   }
 
+  /*** Navigate the active Chrome target to a URL and wait for the page load event. */
   async navigateAsync(url: string): Promise<void> {
     await this.sendAsync('Page.navigate', { url });
     await this.waitForLoadAsync();
   }
 
+  /*** Reload the active Chrome target and wait for its page load event. */
   async reloadAsync(): Promise<void> {
     await this.sendAsync('Page.reload');
     await this.waitForLoadAsync();
   }
 
+  /*** Assert that the document's scroll width does not exceed its client viewport width. */
   async assertNoHorizontalOverflowAsync(label: string): Promise<void> {
     const layout = await this.evaluateAsync<{
       readonly clientWidth: number;
@@ -263,6 +287,7 @@ export class ChromeNavigationSession {
     }
   }
 
+  /*** Override Chrome device metrics for one desktop or mobile acceptance viewport. */
   async setViewportAsync(width: number, height: number): Promise<void> {
     await this.sendAsync('Emulation.setDeviceMetricsOverride', {
       deviceScaleFactor: 1,
@@ -272,12 +297,14 @@ export class ChromeNavigationSession {
     });
   }
 
+  /*** Set one local-storage entry in the active page. */
   async setLocalStorageItemAsync(key: string, value: string): Promise<void> {
     await this.evaluateAsync(
       `(() => { localStorage.setItem(${JSON.stringify(key)}, ${JSON.stringify(value)}); return true; })()`,
     );
   }
 
+  /*** Poll the browser FontFaceSet until every requested font family is loaded or the acceptance timeout expires. */
   async waitForLoadedFontFamiliesAsync(
     fontFamilies: readonly string[],
     timeoutMs = HTTP_TIMEOUT_MS,
@@ -316,6 +343,7 @@ export class ChromeNavigationSession {
     );
   }
 
+  /*** Wait until the requested accessible element exists and has a hydrated React click handler. */
   async waitForHydratedRoleAndNameAsync(role: string, name: string, occurrence = 0): Promise<void> {
     const expression = createRoleAndNameExpression(role, name, {
       occurrence,
@@ -324,6 +352,7 @@ export class ChromeNavigationSession {
     await this.waitForBooleanAsync(expression, `hydrated ${role} named "${name}"`);
   }
 
+  /*** Wait until an element with the requested test id exposes React hydration metadata. */
   async waitForHydratedTestIdAsync(testId: string): Promise<void> {
     const expression = `(() => {
   const element = [...document.querySelectorAll('[data-testid]')].find(
@@ -337,6 +366,7 @@ export class ChromeNavigationSession {
     await this.waitForBooleanAsync(expression, `testID "${testId}" to hydrate`);
   }
 
+  /*** Poll rendered body text until it contains the requested content and return the matching snapshot. */
   async waitForBodyTextAsync(expectedText: string, timeoutMs = HTTP_TIMEOUT_MS): Promise<string> {
     const start = Date.now();
     let bodyText = '';
@@ -350,6 +380,7 @@ export class ChromeNavigationSession {
     );
   }
 
+  /*** Wait until a previously observed body-text snapshot contains the requested content. */
   async waitForObservedBodyTextAsync(
     expectedText: string,
     timeoutMs = HTTP_TIMEOUT_MS,
@@ -363,6 +394,7 @@ export class ChromeNavigationSession {
     await this.waitForBooleanAsync(expression, `observed body text "${expectedText}"`, timeoutMs);
   }
 
+  /*** Poll the browser location until pathname and optional search string match, reporting page and browser diagnostics on timeout. */
   async waitForLocationAsync(
     expected: { readonly pathname: string; readonly search?: string },
     timeoutMs = HTTP_TIMEOUT_MS,
@@ -387,6 +419,7 @@ export class ChromeNavigationSession {
     );
   }
 
+  /*** Evaluate a JavaScript expression through CDP and unwrap its by-value result. */
   private evaluateAsync<T>(expression: string): Promise<T> {
     return this.sendAsync('Runtime.evaluate', { expression, returnByValue: true }).then(
       (result) => {
@@ -398,6 +431,7 @@ export class ChromeNavigationSession {
     );
   }
 
+  /*** Dispatch one incoming CDP response or event to its pending request or browser-issue collector. */
   private handleMessage(data: unknown): void {
     const message = parseChromeProtocolMessage(data);
     if (!message) return;
@@ -415,6 +449,7 @@ export class ChromeNavigationSession {
     if (issue) this.errors.push(issue);
   }
 
+  /*** Send one CDP request with a monotonically increasing id and resolve it when the matching response arrives. */
   private sendAsync(method: string, params?: Readonly<Record<string, unknown>>): Promise<unknown> {
     const id = this.nextId;
     this.nextId += 1;
@@ -425,6 +460,7 @@ export class ChromeNavigationSession {
     return promise;
   }
 
+  /*** Wait for Chrome's next page-load event, with a bounded fallback timeout so acceptance cannot hang indefinitely. */
   private waitForLoadAsync(): Promise<void> {
     return new Promise((resolve) => {
       const timeout = setTimeout(resolve, 10_000);
@@ -440,6 +476,7 @@ export class ChromeNavigationSession {
     });
   }
 
+  /*** Poll a browser expression until it evaluates truthy or the configured timeout expires. */
   private async waitForBooleanAsync(
     expression: string,
     description: string,
@@ -453,6 +490,7 @@ export class ChromeNavigationSession {
     throw new Error(`Timed out waiting for ${description}.`);
   }
 
+  /*** Poll real DOM hit testing for an accessible element until its center point is visible and unobstructed. */
   private async waitForHitTestedRoleAndNameAsync(
     role: string,
     name: string,
@@ -473,6 +511,7 @@ export class ChromeNavigationSession {
     );
   }
 
+  /*** Wait for the Chrome DevTools WebSocket to open or reject when the connection fails. */
   private waitForSocketAsync(): Promise<void> {
     if (this.socket.readyState === WebSocket.OPEN) return Promise.resolve();
     return new Promise((resolve, reject) => {
@@ -482,6 +521,7 @@ export class ChromeNavigationSession {
   }
 }
 
+/*** Build a browser expression that finds a visible element by accessible role/name and optionally requires a hydrated React click handler. */
 function createRoleAndNameExpression(
   role: string,
   name: string,
@@ -512,6 +552,7 @@ function createRoleAndNameExpression(
 })()`;
 }
 
+/*** Build a browser expression that inspects a role/name match for a loaded glyph rendered by the requested font family. */
 function createRoleFontExpression(
   role: string,
   name: string,
@@ -562,6 +603,7 @@ function createRoleFontExpression(
 })()`;
 }
 
+/*** Build a browser expression that scrolls to and hit-tests the center point of a visible role/name match. */
 function createRoleHitTestExpression(role: string, name: string, occurrence: number): string {
   return `(() => {
   const normalize = (value) => value.replace(/\\s+/gu, ' ').trim();
@@ -615,6 +657,10 @@ function createRoleHitTestExpression(role: string, name: string, occurrence: num
 })()`;
 }
 
+/***
+ * Report whether a filesystem path is accessible to the current process.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function canAccessAsync(filePath: string): Promise<boolean> {
   try {
     await access(filePath);
@@ -624,10 +670,15 @@ async function canAccessAsync(filePath: string): Promise<boolean> {
   }
 }
 
+/***
+ * Narrow an unknown value to a non-null object record.
+ * @utility @ankhorage/utility/object
+ */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
 
+/*** Parse a string or ArrayBuffer CDP payload into the protocol fields consumed by the Chrome acceptance session. */
 function parseChromeProtocolMessage(data: unknown): ChromeProtocolMessage | null {
   const source =
     typeof data === 'string'
@@ -647,6 +698,7 @@ function parseChromeProtocolMessage(data: unknown): ChromeProtocolMessage | null
   };
 }
 
+/*** Resolve the Chrome/Chromium executable from CHROME_PATH or the supported Linux/macOS installation locations. */
 async function resolveChromePathAsync(): Promise<string> {
   const configured = (process.env as Record<string, string | undefined>).CHROME_PATH;
   const candidates = [
@@ -667,6 +719,10 @@ async function resolveChromePathAsync(): Promise<string> {
   throw new Error('Could not resolve Chrome/Chromium. Set CHROME_PATH before acceptance.');
 }
 
+/***
+ * Terminate a spawned detached process group, falling back to terminating the direct child when group signaling is unavailable.
+ * @utility @ankhorage/utility/node/process
+ */
 function stopProcess(processToStop: ChildProcess): void {
   if (!processToStop.pid) return;
   try {
@@ -676,6 +732,10 @@ function stopProcess(processToStop: ChildProcess): void {
   }
 }
 
+/***
+ * Poll an HTTP endpoint until it responds below the 5xx range or the timeout expires.
+ * @utility @ankhorage/utility/http
+ */
 async function waitForHttpAsync(url: string, timeoutMs: number): Promise<void> {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {

@@ -7,6 +7,7 @@ import {
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { ProjectSecretService } from '../secrets/projectSecretService';
 
+/*** Register the Studio project-auth health HTTP adapter and compose its secret-store-backed service when available. */
 export function registerProjectAuthRoutes(
   fastify: FastifyInstance,
   options: { readonly projectManager: ProjectManager; readonly workspaceRoot?: string },
@@ -23,6 +24,7 @@ export function registerProjectAuthRoutes(
           }),
         });
 
+  /*** Resolve project auth health or return service-unavailable when the host secret-store bridge is absent. */
   fastify.get('/api/projects/:id/auth/health', async (request: FastifyRequest, reply) => {
     const { id } = request.params as { id: string };
     const query = request.query as { environment?: string };
@@ -43,6 +45,10 @@ export function registerProjectAuthRoutes(
   });
 }
 
+/***
+ * Return a successful `{ok}` result directly or send a failed result with a configured server-error status.
+ * @utility @ankhorage/utility/http/fastify
+ */
 function sendProjectAuthHealthResult(reply: FastifyReply, result: ProjectAuthHealthResult) {
   if (result.ok) return result;
 

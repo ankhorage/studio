@@ -13,6 +13,10 @@ export type AuthHealthRefreshResult =
 export class AuthHealthRefreshCoordinator {
   private latestRequestId = 0;
 
+  /***
+   * Run one asynchronous refresh and apply only the result belonging to the latest request generation.
+   * @utility @ankhorage/utility/async
+   */
   async refresh(args: {
     readonly loadHealth: () => Promise<ProjectAuthHealth>;
     readonly onHealth: (health: ProjectAuthHealth) => void;
@@ -33,6 +37,10 @@ export class AuthHealthRefreshCoordinator {
     }
   }
 
+  /***
+   * Return whether a request generation is still the newest generation owned by the coordinator.
+   * @utility @ankhorage/utility/async
+   */
   private isLatest(requestId: number): boolean {
     return requestId === this.latestRequestId;
   }

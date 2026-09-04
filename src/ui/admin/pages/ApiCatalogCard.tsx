@@ -4,6 +4,7 @@ import { View } from 'react-native';
 
 import { externalApiAdminStyles } from './ExternalApiAdminPrimitives';
 
+/*** Render canonical API definitions as compact catalog rows for Studio administration. */
 export function ApiCatalogCard({ apis }: { readonly apis: ApiDefinitionList }) {
   return (
     <Card title="APIs">
@@ -30,6 +31,7 @@ export function ApiCatalogCard({ apis }: { readonly apis: ApiDefinitionList }) {
   );
 }
 
+/*** Count all operations across every endpoint of one canonical API definition. */
 function countOperations(api: ApiDefinition): number {
   return Object.values(api.endpoints).reduce(
     (count, endpoint) => count + Object.keys(endpoint.operations).length,
@@ -37,6 +39,7 @@ function countOperations(api: ApiDefinition): number {
   );
 }
 
+/*** Format the protocol/origin-specific API location shown in the administration catalog. */
 function describeLocation(api: ApiDefinition): string {
   if (api.origin === 'internal') return api.basePath;
   if (api.protocol === 'graphql') return api.endpointUrl;

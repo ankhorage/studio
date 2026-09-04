@@ -7,6 +7,7 @@ interface AuthOAuthRuntimeTemplateArgs extends AuthOAuthLayoutPlan {
   readonly nativeSchemes: ExpoRuntimeNativeSchemeMap;
 }
 
+/*** Generate the OAuth transport/runtime module for configured providers in a generated app. */
 export function getAuthOAuthRuntimeTs(args: AuthOAuthRuntimeTemplateArgs) {
   const providers = serializeOAuthProviders(args.providers);
 
@@ -309,6 +310,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 `;
 }
 
+/*** Serialize configured OAuth provider metadata into generated TypeScript source. */
 function serializeOAuthProviders(providers: AuthOAuthLayoutPlan['providers']): string {
   if (providers.length === 0) return '[]';
   const entries = providers.map((provider) => {
@@ -332,6 +334,7 @@ function serializeOAuthProviders(providers: AuthOAuthLayoutPlan['providers']): s
   return `[\n${entries.join(',\n')},\n]`;
 }
 
+/*** Serialize one OAuth icon specification into a compact JavaScript object literal. */
 function serializeOAuthIcon(icon: NonNullable<AuthOAuthLayoutPlan['providers'][number]['icon']>) {
   const properties = Object.entries(icon).flatMap(([name, value]) => {
     if (value === undefined) return [];
@@ -342,6 +345,10 @@ function serializeOAuthIcon(icon: NonNullable<AuthOAuthLayoutPlan['providers'][n
   return `{ ${properties.join(', ')} }`;
 }
 
+/***
+ * Format a JavaScript object-property name for generated source, quoting unsafe identifiers.
+ * @utility @ankhorage/utility/string
+ */
 function serializeObjectPropertyName(name: string): string {
   return /^[A-Za-z_$][A-Za-z0-9_$]*$/u.test(name) ? name : `'${escapeStringLiteral(name)}'`;
 }

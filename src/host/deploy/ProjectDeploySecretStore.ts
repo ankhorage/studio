@@ -4,6 +4,7 @@ import type {
   SecretStoreResult,
 } from '@ankhorage/contracts/secrets';
 
+/*** Minimal secret-store port required by Studio's host-side Deploy integration. */
 export interface ProjectDeploySecretStore {
   list(input: {
     readonly projectId: string;

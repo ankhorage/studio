@@ -35,19 +35,24 @@ export type HostModuleState = StudioModuleState;
 
 const PENDING_OPS_FILE = '.ankh/pending.json';
 
-/** Generic Studio host adapter over the standalone Orchestrator lifecycle. */
+/***
+ * Coordinate Studio's host-side module lifecycle, pending removals, admin runtime, and manifest projection over Orchestrator.
+ * @todo Move this manager from generic `host/orchestrator` into the `modules/` application domain and consume an Orchestrator-owned target adapter.
+ */
 export class ModuleManager {
   private readonly appsRoot: string;
   private readonly projectManager: ProjectManager;
   private readonly adapter: LocalFsTargetAdapter;
   private readonly orchestratorsByAppRoot = new Map<string, Orchestrator>();
 
+  /*** Construct the module lifecycle coordinator for one Studio workspace root. */
   constructor(rootPath: string) {
     this.appsRoot = path.join(rootPath, 'apps');
     this.projectManager = new ProjectManager(rootPath);
     this.adapter = new LocalFsTargetAdapter();
   }
 
+  /*** List module states projected with host contribution metadata and pending-removal state. */
   async listModules(projectId: string): Promise<readonly HostModuleState[]> {
     const appPath = this.getAppPath(projectId);
     await this.ensureProjectExists(projectId);
@@ -62,6 +67,7 @@ export class ModuleManager {
     );
   }
 
+  /*** Resolve one module state with host metadata and pending-removal state. */
   async getModuleState(projectId: string, moduleId: string): Promise<HostModuleState | null> {
     const appPath = this.getAppPath(projectId);
     await this.ensureProjectExists(projectId);
@@ -78,6 +84,7 @@ export class ModuleManager {
     );
   }
 
+  /*** Install one available module, normalize its config, clear pending removal, and persist lifecycle projection. */
   async installModule(projectId: string, moduleId: string, config?: unknown) {
     await this.prepareProjectForLifecycle(projectId);
     const appPath = this.getAppPath(projectId);
@@ -101,6 +108,7 @@ export class ModuleManager {
     };
   }
 
+  /*** Queue one installed module for removal after validating installed dependents. */
   async uninstallModule(projectId: string, moduleId: string) {
     await this.prepareProjectForLifecycle(projectId);
     const appPath = this.getAppPath(projectId);
@@ -129,6 +137,7 @@ export class ModuleManager {
     };
   }
 
+  /*** Normalize and reconfigure one installed module before persisting lifecycle projection. */
   async updateModuleConfig(projectId: string, moduleId: string, config: unknown) {
     await this.prepareProjectForLifecycle(projectId);
     const appPath = this.getAppPath(projectId);
@@ -153,6 +162,7 @@ export class ModuleManager {
     };
   }
 
+  /*** Execute one module-owned admin runtime operation against Studio's bounded authoring context. */
   async executeModuleAdminOperation(
     projectId: string,
     moduleId: string,
@@ -182,6 +192,7 @@ export class ModuleManager {
     return { success: true, result };
   }
 
+  /*** Apply queued module removals after synchronizing generated layout state, then persist lifecycle projection. */
   async applyPendingOperations(projectId: string) {
     const appPath = this.getAppPath(projectId);
     await this.ensureProjectExists(projectId);
@@ -210,6 +221,7 @@ export class ModuleManager {
     return { success: true, applied };
   }
 
+  /*** Apply pending module lifecycle work and synchronize the generated project. */
   async syncProject(args: { projectId: string; includeStudio?: boolean }) {
     const { projectId, includeStudio = true } = args;
     await this.ensureProjectExists(projectId);
@@ -221,6 +233,7 @@ export class ModuleManager {
     });
   }
 
+  /*** Project current module lifecycle state into and persist one canonical project manifest. */
   async persistProjectManifest(args: { projectId: string; manifest: AppManifest }) {
     await this.ensureProjectExists(args.projectId);
     return this.projectManager.persistProjectManifest({
@@ -229,6 +242,7 @@ export class ModuleManager {
     });
   }
 
+  /*** Synchronize generated runtime files using current installed module layout mutations. */
   async syncProjectRuntime(projectId: string) {
     await this.ensureProjectExists(projectId);
     return this.projectManager.syncProjectRuntime({
@@ -237,6 +251,7 @@ export class ModuleManager {
     });
   }
 
+  /*** Persist and fully regenerate a project manifest after projecting current module lifecycle state. */
   async saveProjectManifest(args: { projectId: string; manifest: AppManifest }) {
     await this.ensureProjectExists(args.projectId);
     return this.projectManager.saveProjectManifest({
@@ -247,6 +262,7 @@ export class ModuleManager {
     });
   }
 
+  /*** Rebuild the generated root layout from currently effective module mutations. */
   async rebuildRootLayout(projectId: string) {
     await this.ensureProjectExists(projectId);
     return this.projectManager.rebuildRootLayout({
@@ -255,6 +271,7 @@ export class ModuleManager {
     });
   }
 
+  /*** Build the bounded runtime context exposed to a module-owned admin operation. */
   private createModuleAdminRuntimeContext(
     projectId: string,
     moduleId: string,
@@ -287,6 +304,7 @@ export class ModuleManager {
     };
   }
 
+  /*** Validate and apply one module-admin field mutation to a current Studio manifest node. */
   private async mutateModuleAdminManifestField(
     projectId: string,
     mutation: HostModuleManifestFieldMutation,
@@ -313,6 +331,7 @@ export class ModuleManager {
     await this.persistProjectManifest({ projectId, manifest: nextManifest });
   }
 
+  /*** Synchronize current project state and pending operations before a module lifecycle mutation. */
   private async prepareProjectForLifecycle(projectId: string) {
     await this.ensureProjectExists(projectId);
     await this.projectManager.syncProject({
@@ -322,6 +341,7 @@ export class ModuleManager {
     await this.applyPendingOperations(projectId);
   }
 
+  /*** Project module lifecycle state into the manifest and trigger the normal project regeneration path. */
   private async persistLifecycleProjection(projectId: string) {
     const manifest = await this.projectManager.getProjectManifest(projectId);
     const nextManifest = await this.projectLifecycleState(projectId, manifest);
@@ -335,6 +355,7 @@ export class ModuleManager {
     return nextManifest;
   }
 
+  /*** Project installed Orchestrator module ids/config into the canonical project Infra manifest. */
   private async projectLifecycleState(
     projectId: string,
     manifest: AppManifest,
@@ -358,6 +379,7 @@ export class ModuleManager {
     };
   }
 
+  /*** Resolve effective layout mutations from installed modules excluding pending removals. */
   private async resolveLayoutMutations(projectId: string) {
     const appPath = this.getAppPath(projectId);
     const [states, pending] = await Promise.all([
@@ -372,6 +394,7 @@ export class ModuleManager {
     );
   }
 
+  /*** Resolve a required host module contribution or reject an unavailable module id. */
   private requireHostModule(moduleId: string): HostModuleContribution {
     const contribution = getHostModule(moduleId);
     if (!contribution) {
@@ -380,6 +403,7 @@ export class ModuleManager {
     return contribution;
   }
 
+  /*** Reuse or construct the Orchestrator instance associated with one generated app root. */
   private getModuleOrchestrator(appPath: string): Orchestrator {
     const cached = this.orchestratorsByAppRoot.get(appPath);
     if (cached) return cached;
@@ -392,6 +416,7 @@ export class ModuleManager {
     return orchestrator;
   }
 
+  /*** Project raw Orchestrator module state into the Studio module-admin state contract. */
   private toHostModuleState(
     state: ModuleState,
     contribution: HostModuleContribution | null,
@@ -424,6 +449,7 @@ export class ModuleManager {
     };
   }
 
+  /*** Validate, normalize, and verify JSON serialization of module-owned configuration. */
   private normalizeConfig(
     contribution: HostModuleContribution,
     config: unknown,
@@ -443,10 +469,12 @@ export class ModuleManager {
     return normalized;
   }
 
+  /*** Resolve a generated app root from the cached workspace apps directory. */
   private getAppPath(projectId: string) {
     return path.join(this.appsRoot, projectId);
   }
 
+  /*** Require the generated app root for a project to exist before module lifecycle work. */
   private async ensureProjectExists(projectId: string) {
     const appPath = this.getAppPath(projectId);
     if (!(await this.adapter.exists(appPath))) {
@@ -454,24 +482,28 @@ export class ModuleManager {
     }
   }
 
+  /*** Read pending module operations from the generated project's Orchestrator state file. */
   private async readPending(appPath: string): Promise<PendingOpsData> {
     const fullPath = path.join(appPath, PENDING_OPS_FILE);
     if (!(await this.adapter.exists(fullPath))) return { ops: [] };
     return (await this.adapter.readJson<PendingOpsData>(fullPath)) ?? { ops: [] };
   }
 
+  /*** Persist the current pending module-operation state. */
   private async writePending(appPath: string, data: PendingOpsData) {
     const fullPath = path.join(appPath, PENDING_OPS_FILE);
     await this.adapter.ensureDir(path.dirname(fullPath));
     await this.adapter.writeJson(fullPath, data);
   }
 
+  /*** Add one pending module operation only when the module is not already queued. */
   private async enqueuePending(appPath: string, operation: PendingOperation) {
     const data = await this.readPending(appPath);
     if (data.ops.some((pending) => pending.moduleId === operation.moduleId)) return;
     await this.writePending(appPath, { ops: [...data.ops, operation] });
   }
 
+  /*** Remove one module's pending operation and delete the pending state file when it becomes empty. */
   private async removePendingOperation(appPath: string, moduleId: string) {
     const data = await this.readPending(appPath);
     const ops = data.ops.filter((operation) => operation.moduleId !== moduleId);
@@ -483,12 +515,17 @@ export class ModuleManager {
     await this.writePending(appPath, { ops });
   }
 
+  /*** Delete the pending module-operation state file when present. */
   private async clearPending(appPath: string) {
     const fullPath = path.join(appPath, PENDING_OPS_FILE);
     if (await this.adapter.exists(fullPath)) await this.adapter.remove(fullPath);
   }
 }
 
+/***
+ * Narrow an unknown non-array object to a string-keyed record.
+ * @utility @ankhorage/utility/object
+ */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

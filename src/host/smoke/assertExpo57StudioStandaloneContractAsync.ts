@@ -15,6 +15,10 @@ const REQUIRED_ROUTE_EVIDENCE = [
   '/projects/[projectId]',
 ] as const;
 
+/***
+ * Verify that a generated standalone Studio fixture is checkout-independent, declares canonical release ranges and, once installed, resolves the expected registry owner graph and router evidence.
+ * @todo Move this standalone acceptance contract from production src/host/smoke to test/smoke.
+ */
 export async function assertExpo57StudioStandaloneContractAsync(options: {
   readonly fixtureRoot: string;
   readonly installed: boolean;
@@ -69,6 +73,7 @@ export async function assertExpo57StudioStandaloneContractAsync(options: {
   }
 }
 
+/*** Assert that every copied fixture file is a real file and does not embed a path back to the source repository. */
 async function assertCopiedFilesAreIndependentAsync(
   fixtureRoot: string,
   repositoryRoot: string,
@@ -88,6 +93,7 @@ async function assertCopiedFilesAreIndependentAsync(
   }
 }
 
+/*** Verify installed registry packages, React Native owner ranges and generated Expo Router declarations for the standalone fixture. */
 async function assertInstalledContractAsync(
   fixtureRoot: string,
   packageJson: StandalonePackageJson,
@@ -156,6 +162,7 @@ async function resolveInstalledStudioOwnerRangesAsync(
   return { '@ankhorage/zora': zoraRange };
 }
 
+/*** Assert that fixture dependency ranges resolve from the registry and scripts do not reach outside the standalone package root. */
 function assertRegistryDependencyRanges(packageJson: StandalonePackageJson): void {
   for (const [name, version] of Object.entries({
     ...packageJson.dependencies,
@@ -172,11 +179,19 @@ function assertRegistryDependencyRanges(packageJson: StandalonePackageJson): voi
   }
 }
 
+/***
+ * Report whether a target path is equal to or nested within a parent path.
+ * @utility @ankhorage/utility/path
+ */
 function isWithin(target: string, parent: string): boolean {
   const relativePath = path.relative(parent, target);
   return relativePath === '' || (!relativePath.startsWith('..') && !path.isAbsolute(relativePath));
 }
 
+/***
+ * Recursively list filesystem entries under a root while skipping traversal into node_modules.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function listFilesAsync(root: string): Promise<string[]> {
   const entries = await readdir(root, { withFileTypes: true });
   const files: string[] = [];
@@ -189,6 +204,7 @@ async function listFilesAsync(root: string): Promise<string[]> {
   return files;
 }
 
+/*** Resolve the canonical Studio, Expo Runtime and Devtools release ranges required by a standalone fixture from repository-owned package manifests. */
 async function resolveRequiredReleaseRangesAsync(
   repositoryRoot: string,
   studioRange: string,
@@ -225,6 +241,7 @@ async function resolveRequiredReleaseRangesAsync(
   ];
 }
 
+/*** Resolve the Runtime, Studio and Surface ranges owned by the repository's current package graph for standalone acceptance. */
 async function resolveOwnerRangesAsync(
   repositoryRoot: string,
 ): Promise<
@@ -256,11 +273,18 @@ async function resolveOwnerRangesAsync(
   };
 }
 
-/*** Reads a JSON package manifest from disk. */
+/***
+ * Read and parse a package.json-compatible manifest from disk.
+ * @utility @ankhorage/utility/node/package
+ */
 async function readPackageJsonAsync(filePath: string): Promise<StandalonePackageJson> {
   return JSON.parse(await readFile(filePath, 'utf8')) as StandalonePackageJson;
 }
 
+/***
+ * Require and return one dependency range from a selected package manifest dependency group.
+ * @utility @ankhorage/utility/package
+ */
 function requireDependencyRange(
   packageJson: StandalonePackageJson,
   dependencyGroup: ReleaseRequirement['dependencyGroup'],

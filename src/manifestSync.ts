@@ -7,6 +7,10 @@ interface RuntimeScreenSignature {
   title?: string;
 }
 
+/***
+ * Build the sorted screen subset used to detect runtime-relevant manifest changes.
+ * @todo Move manifest signature behavior from the source root into the manifest domain.
+ */
 function createRuntimeScreenSignatures(
   manifest: StudioManifest,
 ): Record<string, RuntimeScreenSignature> {
@@ -22,6 +26,10 @@ function createRuntimeScreenSignatures(
     }, {});
 }
 
+/***
+ * Serialize only the manifest fields that affect generated runtime synchronization.
+ * @todo Move manifest signature behavior from the source root into the manifest domain.
+ */
 export function createStudioRuntimeSyncSignature(manifest: StudioManifest): string {
   return JSON.stringify({
     navigator: manifest.navigator,
@@ -34,6 +42,10 @@ export function createStudioRuntimeSyncSignature(manifest: StudioManifest): stri
   });
 }
 
+/***
+ * Serialize the complete manifest for exact persistence-change comparison.
+ * @todo Move manifest signature behavior from the source root into the manifest domain.
+ */
 export function createStudioManifestSignature(manifest: StudioManifest): string {
   return JSON.stringify(manifest);
 }

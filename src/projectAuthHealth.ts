@@ -48,6 +48,10 @@ export interface ProjectAuthHealth {
   };
 }
 
+/***
+ * Analyze authored auth configuration, secret metadata, providers, and deploy setup into project auth health.
+ * @todo Move project auth health analysis under src/auth/.
+ */
 export function analyzeProjectAuthHealth(input: {
   readonly manifest: AppManifest;
   readonly secretMetadata: readonly SecretMetadata[];
@@ -156,6 +160,10 @@ export function analyzeProjectAuthHealth(input: {
   };
 }
 
+/***
+ * Analyze one OAuth provider against definition, setup requirements, secret metadata, and enabled state.
+ * @todo Keep provider health policy under src/auth/.
+ */
 function analyzeProviderHealth(input: {
   readonly provider: AuthOAuthProviderConfig;
   readonly index: number;
@@ -241,6 +249,10 @@ function analyzeProviderHealth(input: {
   };
 }
 
+/***
+ * Resolve one OAuth provider's health state from enabled, definition, credential, and required-field state.
+ * @todo Keep OAuth provider health semantics under src/auth/.
+ */
 function resolveProviderStatus(input: {
   readonly enabled: boolean;
   readonly definitionExists: boolean;
@@ -255,6 +267,10 @@ function resolveProviderStatus(input: {
   return 'configured';
 }
 
+/***
+ * Add diagnostics for duplicate provider ids and incompatible reuse of credential references.
+ * @todo Keep OAuth duplicate/configuration policy under src/auth/.
+ */
 function addDuplicateDiagnostics(
   providers: readonly AuthOAuthProviderConfig[],
   diagnostics: ProjectAuthDiagnostic[],
@@ -292,6 +308,10 @@ function addDuplicateDiagnostics(
   });
 }
 
+/***
+ * Map known Studio auth validation messages to stable project auth diagnostic codes.
+ * @todo Keep auth-validation diagnostic mapping under src/auth/.
+ */
 function resolveAuthValidationCode(message: string): string {
   if (message.includes('callback')) return 'invalid_callback_route';
   if (message.includes('configured more than once')) return 'duplicate_provider_id';
@@ -302,6 +322,10 @@ function resolveAuthValidationCode(message: string): string {
   return 'invalid_auth_config';
 }
 
+/***
+ * Resolve aggregate health from the highest diagnostic severity present.
+ * @utility @ankhorage/utility/diagnostics
+ */
 function resolveHealthStatus(
   diagnostics: readonly ProjectAuthDiagnostic[],
 ): ProjectAuthHealthStatus {
@@ -310,6 +334,10 @@ function resolveHealthStatus(
   return 'healthy';
 }
 
+/***
+ * Sort diagnostics by severity rank and stable secondary string keys.
+ * @utility @ankhorage/utility/diagnostics
+ */
 function sortDiagnostics(
   diagnostics: readonly ProjectAuthDiagnostic[],
 ): readonly ProjectAuthDiagnostic[] {

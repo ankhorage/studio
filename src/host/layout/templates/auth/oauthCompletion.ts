@@ -2,6 +2,7 @@ import type { ExpoRuntimeNativeSchemeMap } from '@ankhorage/expo-runtime/plannin
 
 import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
 
+/*** Generate the OAuth callback-completion module for web and native generated app targets. */
 export function getAuthOAuthCompletionTs(args: {
   callbackRoute: string;
   nativeSchemes: ExpoRuntimeNativeSchemeMap;
@@ -171,6 +172,10 @@ function toTransportOutcome(result: AuthOAuthCompletionResult): GeneratedOAuthTr
 `;
 }
 
+/***
+ * Serialize an optional native URL scheme for generated TypeScript source.
+ * @utility @ankhorage/utility/string
+ */
 function serializeOptionalScheme(scheme: string | undefined): string {
   return scheme === undefined ? 'undefined' : `'${escapeStringLiteral(scheme)}'`;
 }

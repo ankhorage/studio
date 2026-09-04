@@ -16,6 +16,10 @@ export class ProjectAuthHealthService {
   private readonly secretService: Pick<ProjectSecretService, 'list'>;
   private readonly workspaceRoot: string;
 
+  /***
+   * Create the Studio host service that combines authored Auth state, secret availability, and generated-runtime diagnostics.
+   * @todo Move this service under the auth domain's host/application boundary.
+   */
   constructor(options: {
     readonly projectManager: ProjectAuthHealthManager;
     readonly secretService: Pick<ProjectSecretService, 'list'>;
@@ -26,6 +30,7 @@ export class ProjectAuthHealthService {
     this.workspaceRoot = options.workspaceRoot;
   }
 
+  /*** Resolve one project's bounded Auth health result without leaking infrastructure script output. */
   async get(input: {
     readonly projectId: string;
     readonly environment?: string;

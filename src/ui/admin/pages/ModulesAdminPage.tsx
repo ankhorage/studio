@@ -14,6 +14,7 @@ import {
 import { createStudioModuleRoutePath } from '../../../studioAdminRouteModel';
 import { AdminHeader, AdminScroll, KeyValue } from '../adminPagePrimitives';
 
+/*** Render the project module catalog, lifecycle actions, pending-removal finalization, and navigation to module details. */
 export function ModulesAdminPage() {
   const studio = useStudio();
   const router = useRouter();
@@ -23,6 +24,7 @@ export function ModulesAdminPage() {
   const [finalizing, setFinalizing] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
+  /*** Reload all registered/installed module lifecycle state for the active Studio project. */
   const reload = useCallback(async () => {
     setLoading(true);
     try {
@@ -39,6 +41,7 @@ export function ModulesAdminPage() {
     void reload();
   }, [reload]);
 
+  /*** Install or uninstall one module and refresh both manifest and module lifecycle state afterwards. */
   const runLifecycle = useCallback(
     async (module: StudioModuleState, operation: 'install' | 'uninstall') => {
       setBusyId(module.id);
@@ -64,6 +67,7 @@ export function ModulesAdminPage() {
     [studio],
   );
 
+  /*** Finalize all pending module removals after the generated app has released package-owned state. */
   const finalizePending = useCallback(async () => {
     setFinalizing(true);
     setMessage(null);
@@ -161,6 +165,7 @@ export function ModulesAdminPage() {
   );
 }
 
+/*** Format the lifecycle availability/installation/pending-removal state of one Studio module for display. */
 function formatStatus(module: StudioModuleState): string {
   if (module.pendingRemoval) return 'pending removal';
   if (module.installed && !module.available) return 'installed, unavailable';
@@ -168,6 +173,10 @@ function formatStatus(module: StudioModuleState): string {
   return module.available ? 'available' : 'unavailable';
 }
 
+/***
+ * Normalize an unknown thrown value to a display message.
+ * @utility @ankhorage/utility/error
+ */
 function toMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }

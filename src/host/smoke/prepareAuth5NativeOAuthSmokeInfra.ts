@@ -43,6 +43,9 @@ export interface Auth5NativeOAuthSmokeInfraDependencies {
   resolveSourceCredential(ref: string): Promise<SecretStoreResult<SecretPayload>>;
 }
 
+/*** Prepare trusted OAuth infrastructure for the Auth 5 native smoke fixture without exposing credentials.
+ * @todo Move this acceptance infrastructure orchestrator from src/host/smoke to test/smoke.
+ */
 export async function prepareAuth5NativeOAuthSmokeInfra(
   args: PrepareAuth5NativeOAuthSmokeInfraArgs,
   dependencies: Auth5NativeOAuthSmokeInfraDependencies = createDependencies(args),
@@ -81,6 +84,7 @@ export async function prepareAuth5NativeOAuthSmokeInfra(
   };
 }
 
+/*** Create production-backed dependencies used by the Auth 5 smoke infrastructure orchestrator. */
 function createDependencies(
   args: PrepareAuth5NativeOAuthSmokeInfraArgs,
 ): Auth5NativeOAuthSmokeInfraDependencies {
@@ -118,6 +122,7 @@ function createDependencies(
   };
 }
 
+/*** Resolve the enabled Google OAuth credential reference from a manifest. */
 function resolveGoogleCredentialRef(manifest: AppManifest): string {
   const provider = manifest.infra.auth?.oauth?.providers.find(
     (candidate) => candidate.id === GOOGLE_PROVIDER_ID && candidate.enabled !== false,
@@ -131,6 +136,9 @@ function resolveGoogleCredentialRef(manifest: AppManifest): string {
   return ref;
 }
 
+/*** Normalize the smoke manifest OAuth callback route to an unprefixed relative route name.
+ * @utility @ankhorage/utility/route
+ */
 function resolveOAuthCallbackRoute(manifest: AppManifest): string {
   const callbackRoute = manifest.infra.auth?.oauth?.callbackRoute.trim();
   if (!callbackRoute) {
@@ -139,6 +147,9 @@ function resolveOAuthCallbackRoute(manifest: AppManifest): string {
   return callbackRoute.replace(/^\/+|\/+$/gu, '');
 }
 
+/*** Read a required key from dotenv-formatted text and return its unquoted non-empty value.
+ * @utility @ankhorage/utility/node/env
+ */
 function parseRequiredEnvValue(raw: string, key: string): string {
   for (const line of raw.split(/\r?\n/u)) {
     const normalized = line.trim().replace(/^export\s+/u, '');
@@ -151,6 +162,9 @@ function parseRequiredEnvValue(raw: string, key: string): string {
   throw new Error(`Auth 5 smoke project is missing ${key} in .env.local after Infra Up.`);
 }
 
+/*** Remove one matching pair of single or double quotes around a string.
+ * @utility @ankhorage/utility/string
+ */
 function stripMatchingQuotes(value: string): string {
   if (value.length < 2) return value;
   const [first] = value;

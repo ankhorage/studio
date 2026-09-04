@@ -31,6 +31,10 @@ export interface AnkhAdminShellProps {
   readonly children?: React.ReactNode;
 }
 
+/***
+ * Compose the Studio administration app bar, responsive navigation drawer/sidebar, and routed page content.
+ * @todo Keep this as package-wide admin UI composition; route construction/availability/active-state policy belongs to the routes domain and reusable responsive primitives belong to ZORA.
+ */
 export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
   const studio = useStudio();
   const pathname = usePathname();
@@ -42,6 +46,7 @@ export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
   const contextualModuleId = resolveStudioModuleId(pathname);
   const activeDefinition = getStudioAdminRouteDefinition(activeRouteId);
 
+  /*** Open one available Studio admin route, synchronize route selection state, and close compact navigation. */
   const openRoute = (routeId: StudioAdminRouteId) => {
     const path = createStudioAdminRoutePath({
       routeId,
@@ -56,6 +61,7 @@ export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
     setDrawerOpen(false);
   };
 
+  /*** Return from administration to the most recently recorded non-admin application location. */
   const goBackToApp = () => {
     router.replace(studio.lastNonAdminLocation || '/');
   };
@@ -125,6 +131,7 @@ export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
   );
 }
 
+/*** Render navigation entries from the Studio admin-route registry using current availability and hierarchy state. */
 function AdminNavigation(props: {
   readonly activeRouteId: StudioAdminRouteId;
   readonly selectedNodeId: string | null;

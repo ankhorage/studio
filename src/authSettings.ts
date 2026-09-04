@@ -70,6 +70,10 @@ const FORBIDDEN_INLINE_SECRET_KEYS = new Set([
   'token',
 ]);
 
+/***
+ * Read authored authentication settings from a manifest and clone nested mutable collections.
+ * @todo Move the auth settings model from the source root into the auth domain.
+ */
 export function readStudioAuthSettings(manifest: AppManifest): StudioAuthSettings | null {
   const { auth } = manifest.infra;
   if (!auth) return null;
@@ -113,6 +117,10 @@ export function readStudioAuthSettings(manifest: AppManifest): StudioAuthSetting
   };
 }
 
+/***
+ * Replace a manifest's authored authentication settings while preserving authorization policy.
+ * @todo Move the auth settings model from the source root into the auth domain.
+ */
 export function applyStudioAuthSettings(
   manifest: AppManifest,
   settings: StudioAuthSettings,
@@ -171,6 +179,10 @@ export function applyStudioAuthSettings(
   };
 }
 
+/***
+ * Validate an unknown authored auth configuration and return the canonical Studio auth settings shape.
+ * @todo Keep auth validation with the auth domain rather than at the source root.
+ */
 export function validateStudioAuthSettings(value: unknown): StudioAuthSettingsValidationResult {
   const forbiddenPath = findForbiddenInlineSecretPath(value);
   if (forbiddenPath) {
@@ -214,6 +226,7 @@ export function validateStudioAuthSettings(value: unknown): StudioAuthSettingsVa
   });
 }
 
+/*** Parse and validate the route configuration used by the authored auth flow. */
 function parseFlow(value: unknown): ValidationResult<ManifestFlow> {
   const record = asRecord(value);
   const keys = [
@@ -256,6 +269,7 @@ function parseFlow(value: unknown): ValidationResult<ManifestFlow> {
   });
 }
 
+/*** Parse the allowed sign-in identifiers from unknown authored configuration. */
 function parseSignIn(value: unknown): ValidationResult<ManifestSignIn> {
   const record = asRecord(value);
   if (!record || !hasOnlyKeys(record, ['identifiers'])) {
@@ -267,6 +281,7 @@ function parseSignIn(value: unknown): ValidationResult<ManifestSignIn> {
   return success({ identifiers: identifiers.data as ManifestSignIn['identifiers'] });
 }
 
+/*** Parse required, optional, and policy fields for authored sign-up configuration. */
 function parseSignUp(value: unknown): ValidationResult<ManifestSignUp> {
   const record = asRecord(value);
   if (!record || !hasOnlyKeys(record, ['requiredFields', 'optionalFields', 'signUpPolicy'])) {
@@ -302,6 +317,7 @@ function parseSignUp(value: unknown): ValidationResult<ManifestSignUp> {
   });
 }
 
+/*** Parse OAuth enablement, callback route, providers, and cross-provider secret-reference constraints. */
 function parseOAuth(value: unknown): ValidationResult<ManifestOAuth> {
   const record = asRecord(value);
   if (!record || !hasOnlyKeys(record, ['enabled', 'callbackRoute', 'providers'])) {
@@ -337,6 +353,7 @@ function parseOAuth(value: unknown): ValidationResult<ManifestOAuth> {
   return success({ enabled: record.enabled, callbackRoute: callbackRoute.data, providers });
 }
 
+/*** Parse one Supabase OAuth provider and normalize its optional authored metadata and secret reference. */
 function parseOAuthProvider(value: unknown): ValidationResult<ManifestOAuthProvider> {
   const record = asRecord(value);
   if (
@@ -403,6 +420,7 @@ function parseOAuthProvider(value: unknown): ValidationResult<ManifestOAuthProvi
   });
 }
 
+/*** Parse authored profile fields, table configuration, and supported persistence strategies. */
 function parseProfile(value: unknown): ValidationResult<ManifestProfile> {
   const record = asRecord(value);
   if (
@@ -452,6 +470,7 @@ function parseProfile(value: unknown): ValidationResult<ManifestProfile> {
   });
 }
 
+/*** Clone an OAuth provider's nested arrays and objects so authored settings do not share mutable references. */
 function cloneOAuthProvider(provider: ManifestOAuthProvider): ManifestOAuthProvider {
   return {
     ...provider,
@@ -461,6 +480,7 @@ function cloneOAuthProvider(provider: ManifestOAuthProvider): ManifestOAuthProvi
   };
 }
 
+/*** Validate and normalize an application route used by auth flow configuration. */
 function readRoute(value: unknown, field: string): ValidationResult<string> {
   if (typeof value !== 'string') return invalid(`${field} must be a string.`);
   const route = value.trim();
@@ -470,6 +490,7 @@ function readRoute(value: unknown, field: string): ValidationResult<string> {
   return success(route);
 }
 
+/*** Validate and normalize the absolute application path used as the OAuth callback route. */
 function readCallbackRoute(value: unknown): ValidationResult<string> {
   if (typeof value !== 'string') return invalid('OAuth callbackRoute must be a string.');
   const route = value.trim();
@@ -486,6 +507,7 @@ function readCallbackRoute(value: unknown): ValidationResult<string> {
   return success(route);
 }
 
+/*** Validate, trim, de-duplicate, and optionally constrain an unknown string-array value. */
 function readStringArray(
   value: unknown,
   label: string,
@@ -509,6 +531,7 @@ function readStringArray(
   return success(normalized);
 }
 
+/*** Validate an optional record whose values must all be strings. */
 function readOptionalStringRecord(
   value: unknown,
   label: string,
@@ -523,6 +546,7 @@ function readOptionalStringRecord(
   );
 }
 
+/*** Parse the optional icon metadata accepted for an authored OAuth provider. */
 function readOptionalIcon(
   value: unknown,
 ): ValidationResult<ManifestOAuthProvider['icon'] | undefined> {
@@ -558,6 +582,7 @@ function readOptionalIcon(
   });
 }
 
+/*** Recursively locate the first key that would inline secret material in authored auth configuration. */
 function findForbiddenInlineSecretPath(value: unknown, parent = ''): string | null {
   if (Array.isArray(value)) {
     for (const [index, entry] of value.entries()) {
@@ -578,21 +603,31 @@ function findForbiddenInlineSecretPath(value: unknown, parent = ''): string | nu
   return null;
 }
 
+/***
+ * Return whether every own enumerable string key in a record belongs to an allowed key set.
+ * @utility @ankhorage/utility/object
+ */
 function hasOnlyKeys(record: Record<string, unknown>, allowed: readonly string[]): boolean {
   const allowedSet = new Set(allowed);
   return Object.keys(record).every((key) => allowedSet.has(key));
 }
 
+/***
+ * Narrow an unknown value to a non-array record.
+ * @utility @ankhorage/utility/value
+ */
 function asRecord(value: unknown): Record<string, unknown> | null {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
     ? (value as Record<string, unknown>)
     : null;
 }
 
+/*** Construct a successful auth-validation result. */
 function success<T>(data: T): ValidationResult<T> {
   return { ok: true, data };
 }
 
+/*** Construct a canonical invalid-config auth-validation result. */
 function invalid(message: string): { readonly ok: false; readonly error: ValidationError } {
   return { ok: false, error: { code: 'invalid_config', message } };
 }

@@ -47,6 +47,7 @@ export interface RuntimeNodeMeasurementRegistry<TResizeTarget = Element> {
   ) => () => void;
 }
 
+/*** Decide whether one runtime-node measurement change can affect currently visible Studio indicators. */
 export function runtimeNodeMeasurementChangeAffectsActiveIndicators<TResizeTarget>(options: {
   readonly isEditMode: boolean;
   readonly activeDragNodeId?: string | null;
@@ -62,6 +63,7 @@ export function runtimeNodeMeasurementChangeAffectsActiveIndicators<TResizeTarge
   );
 }
 
+/*** Decide whether Studio should render selected-node chrome for the active platform/edit state. */
 export function shouldRenderSelectedNodeChrome(
   platform: string,
   isEditMode: boolean,
@@ -76,6 +78,10 @@ export interface NativeMeasurableView {
   ) => void;
 }
 
+/***
+ * Compute the smallest axis-aligned rectangle containing all supplied rectangles, or null for an empty collection.
+ * @utility @ankhorage/utility/geometry
+ */
 export function unionMeasuredRects(rects: readonly MeasuredRect[]): MeasuredRect | null {
   if (rects.length === 0) {
     return null;
@@ -94,34 +100,47 @@ export function unionMeasuredRects(rects: readonly MeasuredRect[]): MeasuredRect
   };
 }
 
+/***
+ * Measure a React-Native-like view in window coordinates and reject zero-area results as absent.
+ * @utility @ankhorage/utility/react-native/measurement
+ */
 export function measureNativeRuntimeNodeView(
   view: NativeMeasurableView,
 ): Promise<MeasuredRect | null> {
   return new Promise((resolve) => {
+    /*** Resolve the measurement promise from native window coordinates, returning null for a zero-area result. */
     view.measureInWindow((x, y, width, height) => {
       resolve(width > 0 && height > 0 ? { x, y, width, height } : null);
     });
   });
 }
 
+/*** Adapt a native measurable view into Studio's runtime-node measurement contract. */
 export function createNativeRuntimeNodeMeasurement(
   view: NativeMeasurableView,
   showUnsupportedIndicator: boolean,
 ): RuntimeNodeMeasurement<never> {
   return {
+    /*** Measure the adapted native view in window coordinates. */
     measure: () => measureNativeRuntimeNodeView(view),
     showUnsupportedIndicator,
     source: 'authored-root',
   };
 }
 
+/***
+ * Create a keyed multi-value registry with idempotent unregister callbacks and optional change notifications.
+ * @utility @ankhorage/utility/registry
+ */
 export function createRuntimeNodeMeasurementRegistry<TResizeTarget = Element>(options?: {
   readonly onChange?: () => void;
 }): RuntimeNodeMeasurementRegistry<TResizeTarget> {
   const measurements = new Map<string, Set<RuntimeNodeMeasurement<TResizeTarget>>>();
 
   return {
+    /*** Return the registry's current keyed measurement map. */
     getMeasurements: () => measurements,
+    /*** Register one value under a key and return an idempotent unregister function. */
     register(nodeId, measurement) {
       const nodeMeasurements = measurements.get(nodeId) ?? new Set();
       nodeMeasurements.add(measurement);
@@ -129,6 +148,7 @@ export function createRuntimeNodeMeasurementRegistry<TResizeTarget = Element>(op
       options?.onChange?.();
 
       let registered = true;
+      /*** Unregister this exact key/value pair once and remove the key when its set becomes empty. */
       return () => {
         if (!registered) {
           return;
@@ -148,6 +168,7 @@ export function createRuntimeNodeMeasurementRegistry<TResizeTarget = Element>(op
   };
 }
 
+/*** Prefer authored-root measurements when present, otherwise keep every runtime measurement for the node. */
 function selectPreferredRuntimeNodeMeasurements<TResizeTarget>(
   measurements: ReadonlySet<RuntimeNodeMeasurement<TResizeTarget>>,
 ): readonly RuntimeNodeMeasurement<TResizeTarget>[] {
@@ -157,6 +178,7 @@ function selectPreferredRuntimeNodeMeasurements<TResizeTarget>(
   return authoredRoots.length > 0 ? authoredRoots : [...measurements];
 }
 
+/*** Select runtime-node measurements whose geometry is currently relevant to Studio edit indicators. */
 export function getActiveRuntimeNodeMeasurements<TResizeTarget>(
   runtimeNodes: RuntimeNodeMeasurements<TResizeTarget>,
   isEditMode: boolean,
@@ -176,6 +198,7 @@ export function getActiveRuntimeNodeMeasurements<TResizeTarget>(
   });
 }
 
+/*** Return whether Studio currently has at least one active runtime-node measurement. */
 export function hasActiveRuntimeNodeMeasurements<TResizeTarget>(
   runtimeNodes: RuntimeNodeMeasurements<TResizeTarget>,
   isEditMode: boolean,
@@ -188,6 +211,7 @@ export function hasActiveRuntimeNodeMeasurements<TResizeTarget>(
   );
 }
 
+/*** Measure active runtime nodes and project their window geometry into canvas-relative indicator rectangles. */
 export async function measureRuntimeNodeIndicators<TResizeTarget>(options: {
   readonly isEditMode: boolean;
   readonly activeDragNodeId?: string | null;
@@ -263,6 +287,10 @@ export async function measureRuntimeNodeIndicators<TResizeTarget>(options: {
   return indicators.sort((left, right) => left.nodeId.localeCompare(right.nodeId));
 }
 
+/***
+ * Synchronize an observer with the union of resize targets exposed by active measurements plus additional targets.
+ * @utility @ankhorage/utility/observer
+ */
 export function createActiveResizeTargetCoordinator<TResizeTarget>(
   observer: ResizeTargetObserver<TResizeTarget>,
 ): ActiveResizeTargetCoordinator<TResizeTarget> {
@@ -270,6 +298,7 @@ export function createActiveResizeTargetCoordinator<TResizeTarget>(
   let disconnected = false;
 
   return {
+    /*** Disconnect the underlying observer once and clear tracked targets. */
     disconnect() {
       if (disconnected) {
         return;
@@ -278,7 +307,9 @@ export function createActiveResizeTargetCoordinator<TResizeTarget>(
       observer.disconnect();
       observedTargets = new Set();
     },
+    /*** Return the exact target set currently tracked by the coordinator. */
     getObservedTargets: () => observedTargets,
+    /*** Diff desired targets against observed targets and issue only required observe/unobserve calls. */
     sync(measurements, additionalTargets = []) {
       if (disconnected) {
         return;
@@ -306,6 +337,7 @@ export function createActiveResizeTargetCoordinator<TResizeTarget>(
   };
 }
 
+/*** Create the React-Native-style absolute overlay props used to render Studio selected-node chrome around a measured rectangle. */
 export function createSelectedIndicatorViewProps(
   rect: RuntimeNodeIndicatorRect,
   borderColor: string,

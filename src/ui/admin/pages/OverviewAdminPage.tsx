@@ -11,6 +11,7 @@ import {
   Metric,
 } from '../adminPagePrimitives';
 
+/*** Render high-level project, route, screen, data-source, auth, and theme metrics for Studio administration. */
 export function OverviewAdminPage() {
   const studio = useStudio();
   const manifest = studio.manifest;

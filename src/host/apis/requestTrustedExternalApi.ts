@@ -7,6 +7,10 @@ const BLOCKED_HOSTNAMES = new Set([
   'metadata.google.internal',
 ]);
 
+/***
+ * Execute a credential-free, redirect-rejecting external HTTP request with timeout, target, and response-size safeguards.
+ * @utility @ankhorage/utility/http
+ */
 export async function requestTrustedExternalApi(
   rawUrl: string,
   init: {
@@ -30,6 +34,10 @@ export async function requestTrustedExternalApi(
   return { status: response.status, text: () => textPromise };
 }
 
+/***
+ * Parse an HTTP(S) URL while rejecting inline credentials and caller-blocked sensitive hosts.
+ * @utility @ankhorage/utility/url
+ */
 function parseTrustedUrl(rawUrl: string): URL {
   const url = new URL(rawUrl);
   if (url.protocol !== 'http:' && url.protocol !== 'https:') {
@@ -41,6 +49,10 @@ function parseTrustedUrl(rawUrl: string): URL {
   return url;
 }
 
+/***
+ * Read a response body as text while rejecting declared or measured payload sizes above a limit.
+ * @utility @ankhorage/utility/http
+ */
 async function readLimitedResponseText(response: Response, maxBytes: number): Promise<string> {
   const contentLength = Number(response.headers.get('content-length'));
   if (Number.isFinite(contentLength) && contentLength > maxBytes) {

@@ -1,6 +1,7 @@
 import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
 import { routeNameToGroupedHref } from '../utils/routes';
 
+/*** Generate the OAuth callback screen for a generated app using canonical auth and post-sign-in route targets. */
 export function getAuthOAuthCallbackTsx(args: { signInRoute: string; postSignInRoute: string }) {
   const signInTarget = escapeStringLiteral(routeNameToGroupedHref(args.signInRoute, 'auth'));
   const postSignInTarget = escapeStringLiteral(routeNameToGroupedHref(args.postSignInRoute, 'app'));

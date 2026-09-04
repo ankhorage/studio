@@ -1,6 +1,10 @@
 export type ExternalApiIdResult =
   { readonly ok: true; readonly apiId: string } | { readonly ok: false; readonly message: string };
 
+/***
+ * Normalize user input into the lowercase, hyphenated identifier format used for external APIs.
+ * @utility @ankhorage/utility/string
+ */
 export function normalizeExternalApiId(value: string): ExternalApiIdResult {
   const apiId = value
     .trim()

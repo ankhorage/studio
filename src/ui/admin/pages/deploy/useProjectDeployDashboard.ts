@@ -14,6 +14,10 @@ interface LoadedDashboardState {
   state: ProjectDeployDashboardState;
 }
 
+/***
+ * Load the five deploy-dashboard resources for one project, invalidate stale generations, and expose an explicit refresh trigger.
+ * @todo Keep this React adapter at the deploy admin UI edge while dashboard loading/orchestration moves into deploy application ownership.
+ */
 export function useProjectDeployDashboard(projectId: string) {
   const [refreshGeneration, setRefreshGeneration] = useState(0);
   const [loaded, setLoaded] = useState<LoadedDashboardState | null>(null);
@@ -29,6 +33,7 @@ export function useProjectDeployDashboard(projectId: string) {
     };
   }, [projectId, requestKey]);
 
+  /*** Increment the request generation so the hook reloads all dashboard resources. */
   const refresh = useCallback(() => {
     setRefreshGeneration((current) => current + 1);
   }, []);
@@ -45,6 +50,7 @@ const loadingState: ProjectDeployDashboardState = {
   history: { status: 'loading' },
 };
 
+/*** Load all deploy-dashboard resources concurrently while isolating each resource failure into its own loadable state. */
 async function loadDashboard(projectId: string): Promise<ProjectDeployDashboardState> {
   const [config, listing, monetization, release, history] = await Promise.all([
     capture(readProjectDeployConfig(projectId)),
@@ -56,6 +62,10 @@ async function loadDashboard(projectId: string): Promise<ProjectDeployDashboardS
   return { config, listing, monetization, release, history };
 }
 
+/***
+ * Convert a promise into a discriminated ready/error loadable result while normalizing unknown errors to messages.
+ * @utility @ankhorage/utility/async
+ */
 async function capture<T>(operation: Promise<T>): Promise<DeployLoadable<T>> {
   try {
     return { status: 'ready', data: await operation };

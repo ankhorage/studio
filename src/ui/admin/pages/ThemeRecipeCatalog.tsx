@@ -6,6 +6,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { createStudioThemeRecipeRoutePath } from '../../../studioAdminRouteModel';
 
+/*** Render links to all ZORA component and pattern theme recipes registered in canonical recipe metadata. */
 export function ThemeRecipeCatalog() {
   const router = useRouter();
   return (
@@ -22,6 +23,7 @@ export function ThemeRecipeCatalog() {
   );
 }
 
+/*** Filter ZORA theme recipe metadata by kind and render a navigable recipe group. */
 function RecipeGroup(props: {
   readonly kind: ZoraThemeRecipeKind;
   readonly onOpen: (name: string) => void;
@@ -45,6 +47,7 @@ function RecipeGroup(props: {
   );
 }
 
+/*** Render one navigable ZORA theme recipe metadata entry. */
 function RecipeLink(props: {
   readonly name: string;
   readonly description: string | undefined;

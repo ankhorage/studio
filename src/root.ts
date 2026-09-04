@@ -1,3 +1,6 @@
+/***
+ * Package root entrypoint. Intentionally contains exports only; implementation belongs to app, domain, adapter, and UI owner modules.
+ */
 export {
   CreateCategoriesScreen,
   CreateCategoryTemplatesScreen,

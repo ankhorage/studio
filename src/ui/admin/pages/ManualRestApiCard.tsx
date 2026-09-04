@@ -24,6 +24,7 @@ const INTENT_OPTIONS: readonly { value: DataOperationIntent; label: string }[] =
   { value: 'action', label: 'Action' },
 ];
 
+/*** Render manual REST API authoring for services without OpenAPI discovery and refresh canonical Studio state after success. */
 export function ManualRestApiCard() {
   const studio = useStudio();
   const [apiId, setApiId] = useState('');
@@ -37,6 +38,7 @@ export function ManualRestApiCard() {
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
+  /*** Persist the current manual REST definition and refresh the Studio manifest when the API write succeeds. */
   const save = useCallback(async () => {
     setBusy(true);
     setMessage(null);

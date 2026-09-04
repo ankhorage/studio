@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import type { StudioBindingDiagnostic } from '../../../../bindingAuthoringModel';
 import { bindingAdminStyles } from './bindingAdminStyles';
 
+/*** Render Studio binding diagnostics with severity-aware presentation and optional diagnostic paths. */
 export function BindingDiagnosticsCard(props: {
   readonly diagnostics: readonly StudioBindingDiagnostic[];
 }) {

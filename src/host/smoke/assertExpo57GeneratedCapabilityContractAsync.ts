@@ -3,6 +3,10 @@ import path from 'node:path';
 
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 
+/***
+ * Assert a generated Expo 57 capability fixture's dependency, config, runtime, and source contracts.
+ * @todo Move this generated-app acceptance policy out of src/host into test/smoke.
+ */
 export async function assertExpo57GeneratedCapabilityContractAsync(
   projectRoot: string,
 ): Promise<void> {
@@ -37,6 +41,7 @@ export async function assertExpo57GeneratedCapabilityContractAsync(
   await assertGeneratedSourceContractAsync(projectRoot);
 }
 
+/*** Assert generated Expo app-config evidence for capability packages and native permissions. */
 async function assertConfigAsync(projectRoot: string): Promise<void> {
   const appConfig = await readFile(path.join(projectRoot, 'app.config.ts'), 'utf8');
   for (const expected of [
@@ -57,6 +62,7 @@ async function assertConfigAsync(projectRoot: string): Promise<void> {
   }
 }
 
+/*** Assert generated runtime bridges and auth/session capability integration. */
 async function assertGeneratedRuntimesAsync(projectRoot: string): Promise<void> {
   const rootLayout = await readFile(path.join(projectRoot, 'src', 'app', '_layout.tsx'), 'utf8');
   for (const expected of ['ExpoRuntimeProviders', 'APP_EXTENSION_COMPONENT_REGISTRY']) {
@@ -139,6 +145,7 @@ async function assertGeneratedRuntimesAsync(projectRoot: string): Promise<void> 
   }
 }
 
+/*** Assert generated source does not contain forbidden legacy Expo APIs. */
 async function assertGeneratedSourceContractAsync(projectRoot: string): Promise<void> {
   const generatedSource = await readSourceTreeAsync(path.join(projectRoot, 'src'));
   for (const forbiddenSource of ["from 'expo/fetch'", 'readAsStringAsync(']) {
@@ -150,6 +157,10 @@ async function assertGeneratedSourceContractAsync(projectRoot: string): Promise<
   }
 }
 
+/***
+ * Recursively list all files beneath a directory.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function listFilesAsync(rootPath: string): Promise<string[]> {
   const entries = await readdir(rootPath, { withFileTypes: true });
   const files: string[] = [];
@@ -161,6 +172,10 @@ async function listFilesAsync(rootPath: string): Promise<string[]> {
   return files;
 }
 
+/***
+ * Read and concatenate source-like files from a directory tree using a file predicate.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function readSourceTreeAsync(sourceRoot: string): Promise<string> {
   const sourceFiles = (await listFilesAsync(sourceRoot)).filter((file) =>
     /\.[cm]?[jt]sx?$/u.test(file),

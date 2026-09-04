@@ -13,6 +13,10 @@ import type {
 } from './bindingAuthoringContracts';
 import { collectStudioResponsePaths, resolveStudioSchemaValueMeta } from './bindingSchemaModel';
 
+/***
+ * Collect and alphabetically sort the API operations available for Studio binding authoring.
+ * @todo Move binding operation catalog behavior under src/bindings/.
+ */
 export function collectStudioBindingOperationOptions(
   apis: ApiDefinitionList,
 ): readonly StudioBindingOperationOption[] {
@@ -21,6 +25,10 @@ export function collectStudioBindingOperationOptions(
     .sort((left, right) => left.label.localeCompare(right.label));
 }
 
+/***
+ * Find an option whose compound API, endpoint, and operation identifiers match a reference.
+ * @utility @ankhorage/utility/array
+ */
 export function findStudioBindingOperationOption(
   options: readonly StudioBindingOperationOption[],
   ref: BindingOperationRef,
@@ -33,6 +41,10 @@ export function findStudioBindingOperationOption(
   );
 }
 
+/***
+ * Project all endpoint operations from one API definition into Studio binding options.
+ * @todo Keep API-to-binding option projection under src/bindings/.
+ */
 function collectApiOperations(api: ApiDefinition): StudioBindingOperationOption[] {
   return Object.values(api.endpoints).flatMap((endpoint) =>
     Object.values(endpoint.operations).map((operation) => ({
@@ -52,6 +64,10 @@ function collectApiOperations(api: ApiDefinition): StudioBindingOperationOption[
   );
 }
 
+/***
+ * Collect request parameters and request-body properties as Studio binding input fields.
+ * @todo Keep operation input-field projection under src/bindings/.
+ */
 function collectOperationInputFields(
   api: ApiDefinition,
   operation: DataOperationConfig,
@@ -80,6 +96,10 @@ function collectOperationInputFields(
   return [...fields.values()];
 }
 
+/***
+ * Resolve an inline schema or schema reference from an API operation slot.
+ * @todo Move this reusable API-contract helper to @ankhorage/contracts beside API schema definitions.
+ */
 function resolveSlotSchema(
   api: ApiDefinition,
   slot: { readonly schema?: DataSchema; readonly schemaRef?: { readonly id: string } } | undefined,
@@ -87,10 +107,18 @@ function resolveSlotSchema(
   return slot?.schema ?? (slot?.schemaRef ? api.schemas?.[slot.schemaRef.id] : undefined);
 }
 
+/***
+ * Format one API definition as a compact id, origin, and protocol label.
+ * @todo Keep API-specific presentation formatting with the binding authoring owner.
+ */
 function describeApi(api: ApiDefinition): string {
   return `${api.id} · ${api.origin} · ${api.protocol}`;
 }
 
+/***
+ * Convert an action payload schema into Studio binding input-field options.
+ * @todo Move action binding-field projection under src/bindings/.
+ */
 export function createStudioActionInputFields(
   payloadSchema:
     | Readonly<
@@ -109,6 +137,10 @@ export function createStudioActionInputFields(
   }));
 }
 
+/***
+ * Narrow an arbitrary payload type string to the primitive types supported by bindable values.
+ * @todo Keep bindable-type semantics under src/bindings/.
+ */
 function toBindableType(type: string): UiBindableValueMeta['type'] {
   if (type === 'string' || type === 'number' || type === 'boolean' || type === 'object') {
     return type;

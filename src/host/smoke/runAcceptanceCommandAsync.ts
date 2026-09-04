@@ -1,3 +1,7 @@
+/*** Run a Bun child process for acceptance work with deterministic CI/TMPDIR environment, optional output capture, and timeout failure.
+ * @utility @ankhorage/utility/bun/process
+ * @todo Move the acceptance-specific consumers from src/host/smoke to test/smoke.
+ */
 export async function runAcceptanceCommandAsync(options: {
   readonly args: readonly string[];
   readonly captureOutput?: boolean;

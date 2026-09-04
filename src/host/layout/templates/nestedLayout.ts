@@ -3,6 +3,7 @@ import type { NavigatorSpec } from '@ankhorage/contracts';
 import type { BuiltNavigatorJsx } from './navigation';
 import { joinNonEmptyLines } from './utils/strings';
 
+/*** Generate a nested Expo Router layout around one already-built navigator source fragment. */
 export function getNestedLayoutTsx(args: { node: NavigatorSpec; navigator: BuiltNavigatorJsx }) {
   const { node, navigator } = args;
   const themeHook = navigator.usesTheme ? '  const { theme } = useZoraTheme();\n' : '';
@@ -58,6 +59,7 @@ ${themeHook}${scopedDeclarations ? `${scopedDeclarations}\n` : ''}  return (
 `;
 }
 
+/*** Resolve a valid generated initial route from a navigator, falling back to its first route or index. */
 function resolveGeneratedInitialRouteName(node: NavigatorSpec): string {
   const routeNames = new Set(node.routes.map((route) => route.name));
 

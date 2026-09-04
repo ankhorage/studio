@@ -7,6 +7,10 @@ import type {
 
 import type { ProjectSecretService } from '../secrets/projectSecretService';
 
+/***
+ * Adapt one Studio project's secret resolver to the credential lookup contract used by external endpoint tests.
+ * @todo Keep this secret/data-source adapter at the external-apis host edge when the Studio domains are reorganized.
+ */
 export function createProjectEndpointCredentialResolver(args: {
   readonly projectId: string;
   readonly service: Pick<ProjectSecretService, 'resolve'>;
@@ -22,6 +26,7 @@ export function createProjectEndpointCredentialResolver(args: {
   };
 }
 
+/*** Map a credential reference and resolved secret payload to the endpoint-test credential representation. */
 function mapCredential(
   credential: CredentialRef,
   payload: SecretPayload,
@@ -43,6 +48,7 @@ function mapCredential(
   return mapScopedValueCredential(credential, payload);
 }
 
+/*** Map a scoped secret value to an endpoint-test header or query credential. */
 function mapScopedValueCredential(
   credential: CredentialRef,
   payload: SecretPayload,

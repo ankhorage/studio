@@ -8,6 +8,7 @@ import type {
 export class StudioModuleApiError extends Error {
   readonly status: number;
 
+  /*** Create a module API error carrying the HTTP-compatible status returned to Studio. */
   constructor(message: string, status: number) {
     super(message);
     this.name = 'StudioModuleApiError';
@@ -15,12 +16,20 @@ export class StudioModuleApiError extends Error {
   }
 }
 
+/***
+ * Fetch and validate the modules available to one Studio project.
+ * @todo Move module HTTP access from the source root into the modules package-edge adapter.
+ */
 export async function listProjectModules(projectId: string): Promise<readonly StudioModuleState[]> {
   const value = await requestJson(`/projects/${encodeURIComponent(projectId)}/modules`);
   if (!Array.isArray(value)) throw invalidResponse('Module list response was invalid.');
   return value.map(parseStudioModuleState);
 }
 
+/***
+ * Fetch and validate one project module by project and module identifier.
+ * @todo Move module HTTP access from the source root into the modules package-edge adapter.
+ */
 export async function getProjectModule(input: {
   readonly projectId: string;
   readonly moduleId: string;
@@ -29,6 +38,10 @@ export async function getProjectModule(input: {
   return parseStudioModuleState(value);
 }
 
+/***
+ * Install one module for a project with an optional authored configuration.
+ * @todo Move module installation orchestration into the modules application responsibility.
+ */
 export async function installProjectModule(input: {
   readonly projectId: string;
   readonly moduleId: string;
@@ -41,6 +54,10 @@ export async function installProjectModule(input: {
   });
 }
 
+/***
+ * Uninstall one module from a project.
+ * @todo Move module removal orchestration into the modules application responsibility.
+ */
 export async function uninstallProjectModule(input: {
   readonly projectId: string;
   readonly moduleId: string;
@@ -48,6 +65,10 @@ export async function uninstallProjectModule(input: {
   return await mutateProjectModule(input, 'uninstall', { method: 'POST' });
 }
 
+/***
+ * Replace the authored configuration for one installed project module.
+ * @todo Move module configuration mutation into the modules application responsibility.
+ */
 export async function updateProjectModuleConfig(input: {
   readonly projectId: string;
   readonly moduleId: string;
@@ -61,6 +82,10 @@ export async function updateProjectModuleConfig(input: {
   return parseOperationResult(value);
 }
 
+/***
+ * Execute one module-owned admin operation and return its successful result payload.
+ * @todo Keep module admin-operation semantics in the modules domain while moving concrete HTTP transport to its edge adapter.
+ */
 export async function executeProjectModuleAdminOperation(input: {
   readonly projectId: string;
   readonly moduleId: string;
@@ -83,6 +108,10 @@ export async function executeProjectModuleAdminOperation(input: {
   return record.result;
 }
 
+/***
+ * Ask the Studio host to finalize pending module changes and return the applied count.
+ * @todo Move pending-module finalization into the modules application responsibility.
+ */
 export async function finalizePendingProjectModules(projectId: string): Promise<number> {
   const value = await requestJson(
     `/projects/${encodeURIComponent(projectId)}/modules/finalize-pending`,
@@ -95,6 +124,10 @@ export async function finalizePendingProjectModules(projectId: string): Promise<
   return record.applied;
 }
 
+/***
+ * Validate an unknown module-state response and project it into the canonical Studio module model.
+ * @todo Keep module response semantics in the modules domain rather than the source root.
+ */
 export function parseStudioModuleState(value: unknown): StudioModuleState {
   const record = asRecord(value);
   if (
@@ -137,6 +170,7 @@ export function parseStudioModuleState(value: unknown): StudioModuleState {
   };
 }
 
+/*** Validate and normalize a module-provided admin configuration-schema contribution. */
 function parseAdminContribution(value: unknown): StudioModuleAdminContribution {
   const record = asRecord(value);
   if (
@@ -172,6 +206,7 @@ function parseAdminContribution(value: unknown): StudioModuleAdminContribution {
   };
 }
 
+/*** Execute an install/uninstall module mutation through the shared module request and result parser. */
 async function mutateProjectModule(
   input: { readonly projectId: string; readonly moduleId: string },
   operation: 'install' | 'uninstall',
@@ -181,6 +216,7 @@ async function mutateProjectModule(
   return parseOperationResult(value);
 }
 
+/*** Validate and normalize the host result of a module mutation. */
 function parseOperationResult(value: unknown): StudioModuleOperationResult {
   const record = asRecord(value);
   if (
@@ -202,6 +238,10 @@ function parseOperationResult(value: unknown): StudioModuleOperationResult {
   };
 }
 
+/***
+ * Fetch a path, decode a JSON response, and surface non-success status as a typed HTTP error.
+ * @utility @ankhorage/utility/http
+ */
 async function requestJson(path: string, init?: RequestInit): Promise<unknown> {
   const { API_BASE } = await import('./core/constants');
   const response = await fetch(`${API_BASE}${path}`, init);
@@ -221,6 +261,10 @@ async function requestJson(path: string, init?: RequestInit): Promise<unknown> {
   return value;
 }
 
+/***
+ * Build the encoded REST path for a project-owned resource identified by two path segments.
+ * @utility @ankhorage/utility/url
+ */
 export function createProjectModuleApiPath(input: {
   readonly projectId: string;
   readonly moduleId: string;
@@ -228,6 +272,10 @@ export function createProjectModuleApiPath(input: {
   return `/projects/${encodeURIComponent(input.projectId)}/modules/${encodeURIComponent(input.moduleId)}`;
 }
 
+/***
+ * Extend an encoded resource path with one required non-empty operation segment.
+ * @utility @ankhorage/utility/url
+ */
 export function createProjectModuleAdminOperationApiPath(input: {
   readonly projectId: string;
   readonly moduleId: string;
@@ -238,22 +286,42 @@ export function createProjectModuleAdminOperationApiPath(input: {
   return `${createProjectModuleApiPath(input)}/admin/${encodeURIComponent(operation)}`;
 }
 
+/***
+ * Narrow an unknown value to a strict non-array record or return null.
+ * @utility @ankhorage/utility/value
+ */
 function asRecord(value: unknown): Record<string, unknown> | null {
   return isRecord(value) ? value : null;
 }
 
+/***
+ * Return whether an unknown value is a non-null, non-array object record.
+ * @utility @ankhorage/utility/object
+ */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/***
+ * Return whether an unknown value is an array containing only strings.
+ * @utility @ankhorage/utility/array
+ */
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((entry) => typeof entry === 'string');
 }
 
+/***
+ * Return whether an unknown value is a non-empty string.
+ * @utility @ankhorage/utility/string
+ */
 function isAdminControl(value: unknown): value is StudioModuleAdminControl {
   return typeof value === 'string' && value.length > 0;
 }
 
+/***
+ * Create a typed bad-gateway-style API error for an invalid upstream response.
+ * @utility @ankhorage/utility/http
+ */
 function invalidResponse(message: string): StudioModuleApiError {
   return new StudioModuleApiError(message, 502);
 }

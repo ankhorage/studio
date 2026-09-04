@@ -33,6 +33,7 @@ const ACTION_OPTIONS = Object.values(ACTION_REGISTRY).map((action) => ({
   label: action.label,
 }));
 
+/*** Compose a new event binding by selecting an action/API target and authoring its input mappings from event payload or literal values. */
 export function EventBindingComposer(props: {
   readonly eventMeta: UiBindableEventMeta;
   readonly operations: readonly StudioBindingOperationOption[];
@@ -59,6 +60,7 @@ export function EventBindingComposer(props: {
     setDrafts(createStudioEventInputDrafts(fields, eventFields));
   }, [eventFields, fields]);
 
+  /*** Build and emit the current event binding when its selected target can be resolved. */
   const add = () => {
     const target =
       targetKind === 'action'
@@ -115,6 +117,7 @@ export function EventBindingComposer(props: {
   );
 }
 
+/*** Render editors for each declared target input and let each input choose event-payload or literal sourcing. */
 function EventInputDrafts(props: {
   readonly fields: readonly StudioBindingInputFieldOption[];
   readonly eventFields: readonly string[];

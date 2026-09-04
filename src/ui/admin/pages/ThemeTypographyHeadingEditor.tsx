@@ -9,11 +9,13 @@ import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 
 const HEADING_WEIGHTS = ['regular', 'medium', 'semiBold', 'bold'] as const;
 
+/*** Render resolved heading typography tokens with authored size/line-height/weight overrides and reset actions. */
 export function ThemeTypographyHeadingEditor() {
   const { theme: resolvedTheme } = useZoraTheme();
   const { selection, updateTheme } = useActiveThemeAdmin();
   if (!selection) return null;
 
+  /*** Set or remove one authored heading token field and persist the resulting theme token tree. */
   const updateHeading = (
     level: string,
     field: 'size' | 'lineHeight' | 'weight',
@@ -46,6 +48,7 @@ export function ThemeTypographyHeadingEditor() {
   );
 }
 
+/*** Render one heading token level with numeric metrics and semantic weight selection. */
 function HeadingRow(props: {
   readonly level: string;
   readonly heading: { readonly size: number; readonly lineHeight: number; readonly weight: string };
@@ -82,6 +85,7 @@ function HeadingRow(props: {
   );
 }
 
+/*** Render one numeric heading metric input with reset-to-inherited support. */
 function MetricInput(props: {
   readonly label: string;
   readonly value: number;
@@ -107,6 +111,7 @@ function MetricInput(props: {
   );
 }
 
+/*** Render semantic heading-weight choices plus reset-to-inherited behavior. */
 function HeadingWeightChoice(props: {
   readonly value: string;
   readonly authored: boolean;
@@ -144,6 +149,10 @@ function HeadingWeightChoice(props: {
   );
 }
 
+/***
+ * Parse a non-empty string as a finite non-negative number and return null for invalid input.
+ * @utility @ankhorage/utility/number
+ */
 function parseNonNegativeNumber(value: string): number | null {
   if (value.trim() === '') return null;
   const parsed = Number(value);

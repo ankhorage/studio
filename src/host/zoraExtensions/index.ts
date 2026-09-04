@@ -33,7 +33,10 @@ const ZORA_TABLETOP_EXTENSION = {
 
 const KNOWN_ZORA_EXTENSIONS = [ZORA_CHESS_EXTENSION, ZORA_TABLETOP_EXTENSION] as const;
 
-/*** Resolve extension packages from the component types actually used by one manifest. */
+/***
+ * Resolve extension packages from the component types actually used by one manifest.
+ * @todo Move ZORA extension discovery from the host edge to project-generation/module ownership; host should consume the resolved extension plan.
+ */
 export function resolveZoraExtensionsForManifest(
   manifest: AppManifest,
 ): readonly ZoraExtensionDefinition[] {
@@ -46,12 +49,17 @@ export function resolveZoraExtensionsForManifest(
   );
 }
 
+/***
+ * Resolve known ZORA extensions from a package dependency record.
+ * @todo Keep dependency-to-extension projection with the same project-generation/module owner as manifest extension discovery.
+ */
 export function resolveZoraExtensionsFromDependencies(
   dependencies: Readonly<Record<string, string>>,
 ): readonly ZoraExtensionDefinition[] {
   return KNOWN_ZORA_EXTENSIONS.filter((extension) => extension.packageName in dependencies);
 }
 
+/*** Merge extension lists by package ownership, with later definitions replacing earlier definitions for the same package. */
 export function mergeZoraExtensions(
   ...extensionLists: readonly (readonly ZoraExtensionDefinition[])[]
 ): readonly ZoraExtensionDefinition[] {
@@ -66,6 +74,10 @@ export function mergeZoraExtensions(
   return [...extensions.values()];
 }
 
+/***
+ * Project dependency requirements from selected ZORA extension definitions.
+ * @todo Replace extension dependency ranges such as `latest` with canonical owned release ranges; generated projects must not bypass reproducible dependency ownership.
+ */
 export function collectZoraExtensionDependencies(
   extensions: readonly ZoraExtensionDefinition[],
 ): Record<string, string> {
