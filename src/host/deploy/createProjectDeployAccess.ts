@@ -6,6 +6,7 @@ import type { ProjectDeployRuntimeInput } from '../../projectDeployRuntimeInput'
 import type { ProjectDeploySecretStore } from './ProjectDeploySecretStore';
 import { serializeProjectDeploySecret } from './serializeProjectDeploySecret';
 
+/*** Build Deploy project access from project secrets and runtime-specific platform credentials. */
 export async function createProjectDeployAccess(options: {
   readonly projectId: string;
   readonly runtime: ProjectDeployRuntimeInput;
@@ -30,12 +31,14 @@ export async function createProjectDeployAccess(options: {
   };
 }
 
+/*** Map secret metadata carrying Deploy provider ownership into a Deploy credential reference. */
 function toCredentialReference(metadata: SecretMetadata): readonly DeploymentCredentialReference[] {
   return metadata.provider === undefined
     ? []
     : [{ id: metadata.ref, provider: metadata.provider, kind: metadata.kind }];
 }
 
+/*** Resolve an allow-listed Deploy credential only when the requested provider and kind still match metadata. */
 async function resolveAllowedSecret(
   options: {
     readonly projectId: string;
