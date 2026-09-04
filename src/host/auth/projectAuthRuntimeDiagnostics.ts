@@ -4,6 +4,8 @@ import {
   readProjectInfrastructureEnvironment,
   runProjectInfrastructureLifecycle,
 } from '@ankhorage/infra/project';
+import { readSafeRegexCapture, splitCommaSeparated } from '@ankhorage/utility/string';
+import { isExactHttpUrl, resolveHttpOrigin } from '@ankhorage/utility/url';
 
 import type { ProjectAuthDiagnostic } from '../../projectAuthHealth';
 import type {
@@ -104,7 +106,7 @@ export async function observeProjectAuthRuntimeDiagnostics(input: {
     });
   }
 
-  const expectedAppCallbackUrl = expected?.appCallbackTargets.find(isExactWebCallbackUrl);
+  const expectedAppCallbackUrl = expected?.appCallbackTargets.find(isExactHttpUrl);
   if (
     expectedAppCallbackUrl &&
     observed.appCallbackUrl &&
@@ -137,11 +139,11 @@ export function resolveProjectAuthRedirectRuntime(input: {
   readonly callbackRoute: string;
   readonly infraEnvironment: Readonly<Record<string, string | undefined>>;
 }): ProjectAuthRedirectRuntime {
-  const siteOrigin = resolveOrigin(
+  const siteOrigin = resolveHttpOrigin(
     input.infraEnvironment.SITE_URL,
     input.infraEnvironment.APP_PORT_FORWARD_LOCAL_PORT,
   );
-  const gatewayOrigin = resolveOrigin(
+  const gatewayOrigin = resolveHttpOrigin(
     input.infraEnvironment.API_EXTERNAL_URL ?? input.infraEnvironment.EXPO_PUBLIC_SUPABASE_URL,
     input.infraEnvironment.SUPABASE_GATEWAY_FORWARD_LOCAL_PORT,
   );
@@ -171,13 +173,15 @@ export function resolveProjectAuthRedirectRuntime(input: {
 
 /*** Parse bounded Auth provider callback and readiness values from generated infrastructure status output. */
 export function parseProjectAuthRuntimeStatus(stdout: string): ParsedProjectAuthRuntimeStatus {
-  const providerRedirectUrl = readSafeStatusValue(
+  const providerRedirectUrl = readSafeRegexCapture(
     stdout,
     /provider\s+supabase-auth\/provider-callback:\s*([^\r\n]+)/iu,
+    { allowWhitespace: false, maxLength: 2048 },
   );
-  const appCallbackUrl = readSafeStatusValue(
+  const appCallbackUrl = readSafeRegexCapture(
     stdout,
     /provider\s+supabase-auth\/app-callback:\s*([^\r\n]+)/iu,
+    { allowWhitespace: false, maxLength: 2048 },
   );
   const readiness = /provider\s+supabase-auth\/GoTrue:\s*(not ready|ready)\b/iu.exec(stdout)?.[1];
 
@@ -187,62 +191,4 @@ export function parseProjectAuthRuntimeStatus(stdout: string): ParsedProjectAuth
     ...(providerRedirectUrl ? { providerRedirectUrl } : {}),
     ...(appCallbackUrl ? { appCallbackUrl } : {}),
   };
-}
-
-/***
- * Resolve an HTTP origin from a URL value or a localhost port fallback.
- * @utility @ankhorage/utility/url
- */
-function resolveOrigin(value: string | undefined, portValue: string | undefined): string | null {
-  if (value?.trim()) {
-    try {
-      return new URL(value.trim()).origin;
-    } catch {
-      return null;
-    }
-  }
-
-  const port = parsePort(portValue);
-  return port === null ? null : `http://127.0.0.1:${port}`;
-}
-
-/***
- * Parse a valid TCP port number from an optional string.
- * @utility @ankhorage/utility/number
- */
-function parsePort(value: string | undefined): number | null {
-  if (!value) return null;
-  const port = Number.parseInt(value, 10);
-  if (!Number.isInteger(port) || port < 1 || port > 65535) return null;
-  return port;
-}
-
-/***
- * Split an optional comma-separated string into trimmed non-empty values while preserving duplicates and order.
- * @utility @ankhorage/utility/string
- */
-function splitCommaSeparated(value: string | undefined): readonly string[] {
-  if (!value) return [];
-  return value
-    .split(',')
-    .map((entry) => entry.trim())
-    .filter(Boolean);
-}
-
-/***
- * Read and trim one regex capture only when it is bounded and contains no whitespace.
- * @utility @ankhorage/utility/string
- */
-function readSafeStatusValue(stdout: string, pattern: RegExp): string | undefined {
-  const value = pattern.exec(stdout)?.[1]?.trim();
-  if (!value || value.length > 2048 || /\s/u.test(value)) return undefined;
-  return value;
-}
-
-/***
- * Return whether a string is an exact HTTP(S) URL candidate without wildcard syntax.
- * @utility @ankhorage/utility/url
- */
-function isExactWebCallbackUrl(value: string): boolean {
-  return /^https?:\/\//u.test(value) && !value.includes('*');
 }

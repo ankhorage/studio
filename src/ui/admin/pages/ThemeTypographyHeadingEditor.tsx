@@ -1,3 +1,4 @@
+import { parseNonNegativeNumber } from '@ankhorage/utility/number';
 import { Card, Text, useZoraTheme } from '@ankhorage/zora';
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -147,16 +148,6 @@ function HeadingWeightChoice(props: {
       </View>
     </Field>
   );
-}
-
-/***
- * Parse a non-empty string as a finite non-negative number and return null for invalid input.
- * @utility @ankhorage/utility/number
- */
-function parseNonNegativeNumber(value: string): number | null {
-  if (value.trim() === '') return null;
-  const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
 }
 
 const styles = StyleSheet.create({

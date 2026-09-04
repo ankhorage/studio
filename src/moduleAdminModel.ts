@@ -1,3 +1,5 @@
+import { createFormDraft, type FormDraftField, parseFormDraft } from '@ankhorage/utility/form';
+
 import type { StudioModuleAdminContribution } from './moduleAdminContracts';
 
 export type StudioModuleAdminDraft = Record<string, string>;
@@ -7,92 +9,35 @@ export type StudioModuleAdminDraftResult =
   | { readonly ok: false; readonly message: string };
 
 /***
- * Project typed configuration values into editable string draft fields from a field/control schema.
- * @utility @ankhorage/utility/form
+ * Project a Studio contribution schema through the canonical generic form-draft utility.
  */
 export function createStudioModuleAdminDraft(args: {
   readonly contribution: StudioModuleAdminContribution;
   readonly config: unknown;
 }): StudioModuleAdminDraft {
-  const config = isRecord(args.config) ? args.config : {};
-  return Object.fromEntries(
-    args.contribution.fields.map((field) => {
-      const value = config[field.key];
-      if (field.control === 'string-list') {
-        return [field.key, isStringArray(value) ? value.join(', ') : ''];
-      }
-      if (field.control !== 'text') {
-        return [field.key, value === undefined ? '' : JSON.stringify(value, null, 2)];
-      }
-      return [field.key, typeof value === 'string' ? value : ''];
-    }),
-  );
+  return createFormDraft(toFormDraftFields(args.contribution), args.config);
 }
 
 /***
- * Parse editable string draft fields back into configuration values according to field/control metadata.
- * @utility @ankhorage/utility/form
+ * Parse a Studio contribution draft through the canonical generic form-draft utility.
  */
 export function parseStudioModuleAdminDraft(args: {
   readonly contribution: StudioModuleAdminContribution;
   readonly currentConfig: unknown;
   readonly draft: StudioModuleAdminDraft;
 }): StudioModuleAdminDraftResult {
-  const config: Record<string, unknown> = isRecord(args.currentConfig)
-    ? { ...args.currentConfig }
-    : {};
-
-  for (const field of args.contribution.fields) {
-    const raw = args.draft[field.key]?.trim() ?? '';
-    if (field.control === 'text') {
-      if (field.required && !raw) return requiredField(field.label);
-      config[field.key] = raw;
-      continue;
-    }
-    if (field.control === 'string-list') {
-      const values = raw
-        .split(',')
-        .map((value) => value.trim())
-        .filter(Boolean);
-      if (field.required && values.length === 0) return requiredField(field.label);
-      config[field.key] = values;
-      continue;
-    }
-
-    if (field.required && !raw) return requiredField(field.label);
-
-    let parsed: unknown;
-    try {
-      parsed = raw ? JSON.parse(raw) : null;
-    } catch {
-      return { ok: false, message: `${field.label} must be valid JSON.` };
-    }
-    config[field.key] = parsed;
-  }
-
-  return { ok: true, config };
+  const result = parseFormDraft({
+    fields: toFormDraftFields(args.contribution),
+    currentValues: args.currentConfig,
+    draft: args.draft,
+  });
+  return result.ok ? { ok: true, config: result.values } : { ok: false, message: result.message };
 }
 
-/***
- * Create a standard required-field validation failure from a display label.
- * @utility @ankhorage/utility/validation
- */
-function requiredField(label: string): StudioModuleAdminDraftResult {
-  return { ok: false, message: `${label} is required.` };
-}
-
-/***
- * Narrow an unknown non-array object to a string-keyed record.
- * @utility @ankhorage/utility/value
- */
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-/***
- * Narrow an unknown value to an array containing only strings.
- * @utility @ankhorage/utility/array
- */
-function isStringArray(value: unknown): value is string[] {
-  return Array.isArray(value) && value.every((entry) => typeof entry === 'string');
+/*** Translate open Studio control identifiers into the canonical generic form controls. */
+function toFormDraftFields(contribution: StudioModuleAdminContribution): readonly FormDraftField[] {
+  return contribution.fields.map((field) => ({
+    ...field,
+    control: field.control === 'text' || field.control === 'string-list' ? field.control : 'json',
+  }));
 }

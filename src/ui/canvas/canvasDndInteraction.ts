@@ -1,4 +1,5 @@
 import { isStudioCanvasDragPayload, type StudioCanvasDragPayload } from '../../canvasDragModel';
+export { sortByRectArea as sortCanvasDropTargetsBySpecificity } from '@ankhorage/utility/geometry';
 import type { CanvasDropZoneResolution } from '../../canvasDropZones';
 import type { NodePlacement } from '../../index';
 
@@ -14,18 +15,6 @@ export interface CanvasDragSessionCallbacks {
  */
 export function createCanvasDraggableSessionKey(nodeId: string, revision: number): string {
   return `${nodeId}:${revision}`;
-}
-
-/***
- * Return drop targets ordered from smallest rectangle area to largest so the most specific target wins first.
- * @utility @ankhorage/utility/geometry
- */
-export function sortCanvasDropTargetsBySpecificity<
-  T extends { readonly rect: { readonly width: number; readonly height: number } },
->(targets: readonly T[]): readonly T[] {
-  return [...targets].sort(
-    (left, right) => left.rect.width * left.rect.height - right.rect.width * right.rect.height,
-  );
 }
 
 /***

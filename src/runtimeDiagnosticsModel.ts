@@ -1,4 +1,6 @@
 import type { DataSourceDiagnostic } from '@ankhorage/contracts';
+import { arraysEqual } from '@ankhorage/utility/array';
+import { formatDiagnostic, formatDiagnostics } from '@ankhorage/utility/diagnostics';
 
 export type RuntimeDiagnosticsNoticeColor = 'danger' | 'warning';
 
@@ -6,17 +8,13 @@ export type RuntimeDiagnosticsNoticeColor = 'danger' | 'warning';
  * Format a code/message/severity diagnostic as one compact display line.
  * @utility @ankhorage/utility/diagnostics
  */
-export function formatRuntimeDiagnostic(diagnostic: DataSourceDiagnostic): string {
-  return `[${diagnostic.severity}] ${diagnostic.code}: ${diagnostic.message}`;
-}
+export const formatRuntimeDiagnostic = formatDiagnostic;
 
 /***
  * Format multiple diagnostics as newline-separated display text.
  * @utility @ankhorage/utility/diagnostics
  */
-export function formatRuntimeDiagnostics(diagnostics: readonly DataSourceDiagnostic[]): string {
-  return diagnostics.map(formatRuntimeDiagnostic).join('\n');
-}
+export const formatRuntimeDiagnostics = formatDiagnostics;
 
 /***
  * Choose the Studio notice color for a diagnostics collection based on whether any error exists.
@@ -36,21 +34,15 @@ export function areRuntimeDiagnosticsEqual(
   left: readonly DataSourceDiagnostic[],
   right: readonly DataSourceDiagnostic[],
 ): boolean {
-  if (left.length !== right.length) {
-    return false;
-  }
-
-  return left.every((diagnostic, index) => {
-    const other = right.at(index);
-    if (!other) return false;
-
-    return (
+  return arraysEqual(
+    left,
+    right,
+    (diagnostic, other) =>
       diagnostic.code === other.code &&
       diagnostic.message === other.message &&
       diagnostic.severity === other.severity &&
       diagnostic.dataSourceId === other.dataSourceId &&
       diagnostic.endpointId === other.endpointId &&
-      diagnostic.operationId === other.operationId
-    );
-  });
+      diagnostic.operationId === other.operationId,
+  );
 }

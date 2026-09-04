@@ -1,4 +1,5 @@
-import { readOwnProperty } from '@ankhorage/utility/object';
+import { readExpoHostUri } from '@ankhorage/utility/expo';
+import { readEnvString } from '@ankhorage/utility/node/env';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
@@ -10,29 +11,10 @@ import { resolveStudioApiBase } from './apiBase';
  */
 const getApiBase = (): string => {
   return resolveStudioApiBase({
-    explicitApiBase: readEnvString('EXPO_PUBLIC_API_URL'),
-    expoHostUri: readExpoHostUri(),
+    explicitApiBase: readEnvString('EXPO_PUBLIC_API_URL', process.env),
+    expoHostUri: readExpoHostUri(Constants),
     platform: Platform.OS,
   });
 };
-
-/***
- * Read a non-empty string environment variable without traversing inherited properties.
- * @utility @ankhorage/utility/node/env
- */
-function readEnvString(name: string): string | undefined {
-  const value = readOwnProperty<unknown>(process.env, name);
-  return typeof value === 'string' && value.length > 0 ? value : undefined;
-}
-
-/***
- * Read the current Expo development host URI when Expo exposes a non-empty value.
- * @utility @ankhorage/utility/expo
- */
-function readExpoHostUri(): string | null {
-  const expoConfig = Constants.expoConfig as { hostUri?: unknown } | null | undefined;
-  const hostUri = expoConfig?.hostUri;
-  return typeof hostUri === 'string' && hostUri.length > 0 ? hostUri : null;
-}
 
 export const API_BASE = getApiBase();
