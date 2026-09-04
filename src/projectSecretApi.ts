@@ -1,5 +1,7 @@
 import type { AuthOAuthProviderId } from '@ankhorage/contracts';
 import type { SecretMetadata, SecretPayload } from '@ankhorage/contracts/secrets';
+import { isStringArray } from '@ankhorage/utility/array';
+import { isRecord } from '@ankhorage/utility/object';
 
 import {
   type ProjectSecretUsage,
@@ -450,17 +452,7 @@ function createQuery(values: Readonly<Record<string, string | undefined>>): stri
  * @utility @ankhorage/utility/value
  */
 function asRecord(value: unknown): Record<string, unknown> | null {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-    ? (value as Record<string, unknown>)
-    : null;
-}
-
-/***
- * Return whether an unknown value is an array containing only strings.
- * @utility @ankhorage/utility/array
- */
-function isStringArray(value: unknown): value is string[] {
-  return Array.isArray(value) && value.every((entry) => typeof entry === 'string');
+  return isRecord(value) ? value : null;
 }
 
 /***

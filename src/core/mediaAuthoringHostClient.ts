@@ -1,4 +1,5 @@
 import type { MediaAsset, MediaAssetSource } from '@ankhorage/contracts';
+import { setOptionalQueryParam } from '@ankhorage/utility/url';
 
 import type {
   StudioMediaIngestResult,
@@ -66,18 +67,10 @@ export async function cleanupStudioMediaSource(
 /*** Serialize media ingest metadata into the query string expected by the Studio host endpoint. */
 function createIngestQuery(assetId: string, selection: StudioMediaPickerSelection): string {
   const query = new URLSearchParams({ assetId, name: selection.name, kind: selection.kind });
-  appendQuery(query, 'contentType', selection.contentType);
-  appendQuery(query, 'sizeBytes', selection.sizeBytes);
-  appendQuery(query, 'width', selection.width);
-  appendQuery(query, 'height', selection.height);
-  appendQuery(query, 'durationMs', selection.durationMs);
+  setOptionalQueryParam(query, 'contentType', selection.contentType);
+  setOptionalQueryParam(query, 'sizeBytes', selection.sizeBytes);
+  setOptionalQueryParam(query, 'width', selection.width);
+  setOptionalQueryParam(query, 'height', selection.height);
+  setOptionalQueryParam(query, 'durationMs', selection.durationMs);
   return query.toString();
-}
-
-/***
- * Append an optional scalar value to a URL query when the value is present.
- * @utility @ankhorage/utility/url
- */
-function appendQuery(query: URLSearchParams, key: string, value: number | string | undefined) {
-  if (value !== undefined) query.set(key, String(value));
 }

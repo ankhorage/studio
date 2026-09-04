@@ -4,6 +4,8 @@ import {
   type AppDeployEnvironmentId,
   type AppDeployTargetId,
 } from '@ankhorage/contracts/deploy';
+import { isStringArray } from '@ankhorage/utility/array';
+import { isRecord } from '@ankhorage/utility/object';
 
 import type {
   ProjectAuthDiagnostic,
@@ -117,9 +119,7 @@ function invalidResponse(message: string): ProjectAuthApiError {
  * @utility @ankhorage/utility/value
  */
 function asRecord(value: unknown): Record<string, unknown> | null {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-    ? (value as Record<string, unknown>)
-    : null;
+  return isRecord(value) ? value : null;
 }
 
 /*** Validate and normalize the project-auth health payload inside a successful host response. */
@@ -239,14 +239,6 @@ function rejectRawSecretResponse(value: unknown, message: string): void {
       `${message} Raw secret-shaped response field "${match.key}" was present.`,
     );
   }
-}
-
-/***
- * Return whether an unknown value is an array containing only strings.
- * @utility @ankhorage/utility/array
- */
-function isStringArray(value: unknown): value is string[] {
-  return Array.isArray(value) && value.every((entry) => typeof entry === 'string');
 }
 
 /***

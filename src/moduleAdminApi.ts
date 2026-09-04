@@ -1,3 +1,6 @@
+import { isStringArray } from '@ankhorage/utility/array';
+import { isRecord } from '@ankhorage/utility/object';
+
 import type {
   StudioModuleAdminContribution,
   StudioModuleAdminControl,
@@ -292,22 +295,6 @@ export function createProjectModuleAdminOperationApiPath(input: {
  */
 function asRecord(value: unknown): Record<string, unknown> | null {
   return isRecord(value) ? value : null;
-}
-
-/***
- * Return whether an unknown value is a non-null, non-array object record.
- * @utility @ankhorage/utility/object
- */
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-/***
- * Return whether an unknown value is an array containing only strings.
- * @utility @ankhorage/utility/array
- */
-function isStringArray(value: unknown): value is string[] {
-  return Array.isArray(value) && value.every((entry) => typeof entry === 'string');
 }
 
 /***

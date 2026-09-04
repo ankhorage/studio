@@ -1,4 +1,6 @@
 import type { UiNode } from '@ankhorage/contracts';
+import { groupBy } from '@ankhorage/utility/collection';
+import { filterByTextFields } from '@ankhorage/utility/search';
 
 import type { InsertCatalogEntry, StudioComponentMetaRegistry } from './index';
 
@@ -16,19 +18,12 @@ export function filterInsertCatalogEntries(
   entries: InsertCatalogEntry[],
   query: string,
 ): InsertCatalogEntry[] {
-  const normalizedQuery = query.trim().toLowerCase();
-  if (normalizedQuery.length === 0) {
-    return entries;
-  }
-
-  return entries.filter((entry) => {
-    const description = entry.description?.toLowerCase() ?? '';
-    return (
-      entry.label.toLowerCase().includes(normalizedQuery) ||
-      entry.rootType.toLowerCase().includes(normalizedQuery) ||
-      description.includes(normalizedQuery)
-    );
-  });
+  const filtered = filterByTextFields(entries, query, (entry) => [
+    entry.label,
+    entry.rootType,
+    entry.description ?? '',
+  ]);
+  return filtered === entries ? entries : [...filtered];
 }
 
 /***
@@ -40,26 +35,11 @@ export function groupInsertEntries(args: {
   getCategoryLabel: (category: string) => string;
 }): InsertCategoryGroup[] {
   const { entries, getCategoryLabel } = args;
-  const groups: InsertCategoryGroup[] = [];
-  const byCategory = new Map<string, InsertCategoryGroup>();
-
-  for (const entry of entries) {
-    const existing = byCategory.get(entry.category);
-    if (existing) {
-      existing.entries.push(entry);
-      continue;
-    }
-
-    const group: InsertCategoryGroup = {
-      category: entry.category,
-      label: getCategoryLabel(entry.category),
-      entries: [entry],
-    };
-    byCategory.set(entry.category, group);
-    groups.push(group);
-  }
-
-  return groups;
+  return [...groupBy(entries, (entry) => entry.category)].map(([category, groupedEntries]) => ({
+    category,
+    label: getCategoryLabel(category),
+    entries: groupedEntries,
+  }));
 }
 
 /***
