@@ -8,24 +8,34 @@ import { getProjectPath } from './projectPaths';
 
 export type ProjectSummary = StudioProjectSummary;
 
+/*** Signal that a project directory exists but its canonical ankh.config.json manifest is missing. */
 export class ProjectManifestNotFoundError extends Error {
+  /*** Create a missing-manifest error with the affected project id. */
   constructor(projectId: string) {
     super(`Project '${projectId}' is missing canonical ankh.config.json.`);
     this.name = 'ProjectManifestNotFoundError';
   }
 }
 
+/***
+ * Persist and project Studio project manifests under one workspace root.
+ * @todo Move project persistence from host/orchestrator into the projects domain and expose filesystem access through a project persistence port/adapter.
+ */
 export class ProjectStore {
+  /*** Bind project persistence to one Studio workspace root. */
   constructor(private readonly rootPath: string) {}
 
+  /*** Resolve one project directory from the store workspace root and project id. */
   private getProjectPath(projectId: string) {
     return getProjectPath(this.rootPath, projectId);
   }
 
+  /*** Resolve the canonical ankh.config.json path for one project. */
   private getManifestPath(projectId: string) {
     return path.join(this.getProjectPath(projectId), 'ankh.config.json');
   }
 
+  /*** List readable Studio project summaries from workspace app directories, ignoring invalid/incomplete projects. */
   async listProjects(): Promise<ProjectSummary[]> {
     const appsRoot = path.join(this.rootPath, 'apps');
     try {
@@ -43,12 +53,14 @@ export class ProjectStore {
     }
   }
 
+  /*** Remove one project directory recursively from the workspace. */
   async deleteProject(projectId: string) {
     const projectPath = this.getProjectPath(projectId);
     await fs.rm(projectPath, { recursive: true, force: true });
     return true;
   }
 
+  /*** Read and validate one project's canonical AppManifest, distinguishing missing project and missing manifest states. */
   async readManifest(projectId: string): Promise<AppManifest> {
     const projectPath = this.getProjectPath(projectId);
     const manifestPath = this.getManifestPath(projectId);
@@ -64,6 +76,7 @@ export class ProjectStore {
     throw new ProjectManifestNotFoundError(projectId);
   }
 
+  /*** Normalize project-owned metadata and atomically persist one canonical AppManifest. */
   async writeManifest(projectId: string, manifest: AppManifest): Promise<AppManifest> {
     const projectPath = this.getProjectPath(projectId);
     if (!(await exists(projectPath))) {
@@ -75,6 +88,7 @@ export class ProjectStore {
     return updated;
   }
 
+  /*** Read, transform and persist one project manifest through a caller-supplied manifest updater. */
   async mutateManifest(
     projectId: string,
     updater: (manifest: AppManifest) => AppManifest,
@@ -83,6 +97,7 @@ export class ProjectStore {
     return this.writeManifest(projectId, updater(current));
   }
 
+  /*** Read one project directory into the workspace summary projection, returning null for incomplete or invalid projects. */
   private async readProjectSummary(id: string): Promise<ProjectSummary | null> {
     try {
       const projectPath = getProjectPath(this.rootPath, id);
@@ -151,7 +166,10 @@ function resolveActiveTheme(manifest: AppManifest): ThemeConfig {
   return activeTheme;
 }
 
-/*** Return whether one filesystem path currently exists. */
+/***
+ * Return whether one filesystem path currently exists.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function exists(filePath: string): Promise<boolean> {
   try {
     await fs.access(filePath);
@@ -161,7 +179,10 @@ async function exists(filePath: string): Promise<boolean> {
   }
 }
 
-/*** Persist JSON atomically through a project-local temporary file. */
+/***
+ * Persist JSON atomically by writing a same-directory temporary file and renaming it over the target.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function writeJsonAtomic(filePath: string, value: unknown): Promise<void> {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   const temporaryPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
