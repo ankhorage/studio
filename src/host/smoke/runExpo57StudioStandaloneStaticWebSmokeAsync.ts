@@ -4,6 +4,9 @@ import { ChromeNavigationSession } from './ChromeNavigationSession';
 import { createStaticExportServer } from './createStaticExportServer';
 import { reserveTcpPortAsync } from './reserveTcpPortAsync';
 
+/*** Run the standalone Studio static-export browser acceptance flow.
+ * @todo Move this end-to-end smoke flow from src/host/smoke to test/smoke.
+ */
 export async function runExpo57StudioStandaloneStaticWebSmokeAsync(
   fixtureRoot: string,
 ): Promise<void> {
