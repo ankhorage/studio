@@ -10,6 +10,7 @@ export interface ProjectMediaStorageContext {
   readonly bucket: string;
 }
 
+/*** Resolve the active project's canonical authoring-media storage adapter from manifest and generated Infra state. */
 export async function resolveProjectMediaStorage(args: {
   readonly projectId: string;
   readonly projectManager: ProjectManager;
