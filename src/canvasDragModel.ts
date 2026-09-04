@@ -1,8 +1,10 @@
 import type { UiNode } from '@ankhorage/contracts';
+import { resolveDropZoneRect } from '@ankhorage/utility/geometry';
+import { readOwnProperty } from '@ankhorage/utility/object';
+import { treeContainsId } from '@ankhorage/utility/tree';
 
 import type { CanvasDropZoneResolution, ValidCanvasDropZoneResolution } from './canvasDropZones';
 import type { PlacementKind } from './index';
-import { readOwnProperty } from './utils/readOwnProperty';
 
 export interface CanvasRect {
   readonly x: number;
@@ -10,9 +12,6 @@ export interface CanvasRect {
   readonly width: number;
   readonly height: number;
 }
-
-const MIN_DROP_ZONE_SIZE = 24;
-const MAX_DROP_ZONE_SIZE = 96;
 
 export interface StudioCanvasDragPayload {
   kind: 'studio-canvas-node';
@@ -29,15 +28,6 @@ export interface CanvasDropZoneSlots {
 export interface CanvasDragSessionResolution {
   readonly activeDragNodeId: string | null;
   readonly shouldReset: boolean;
-}
-
-/***
- * Test whether a tree contains a node with the requested id.
- * @utility @ankhorage/utility/tree
- */
-function treeContainsNode(root: UiNode, nodeId: string): boolean {
-  if (root.id === nodeId) return true;
-  return root.children?.some((child) => treeContainsNode(child, nodeId)) ?? false;
 }
 
 /***
@@ -59,7 +49,11 @@ export function resolveCanvasDragSession(args: {
     args.isEditMode &&
     args.selectedNodeId === activeDragNodeId &&
     args.rootNode !== null &&
-    treeContainsNode(args.rootNode, activeDragNodeId);
+    treeContainsId(args.rootNode, activeDragNodeId, {
+      getId: (node) => node.id,
+      getChildren: (node) => node.children ?? [],
+      withChildren: (node, children) => ({ ...node, children: [...children] }),
+    });
 
   return isValid
     ? { activeDragNodeId, shouldReset: false }
@@ -133,33 +127,7 @@ export function resolveCanvasDropZoneRect(args: {
   readonly targetRect: CanvasRect;
   readonly draggedRect: CanvasRect;
 }): CanvasRect {
-  const { kind, targetRect, draggedRect } = args;
-  const edgeSize = Math.max(MIN_DROP_ZONE_SIZE, Math.min(MAX_DROP_ZONE_SIZE, draggedRect.height));
-
-  if (kind === 'before') {
-    return {
-      x: targetRect.x,
-      y: targetRect.y - edgeSize / 2,
-      width: targetRect.width,
-      height: edgeSize,
-    };
-  }
-  if (kind === 'after') {
-    return {
-      x: targetRect.x,
-      y: targetRect.y + targetRect.height - edgeSize / 2,
-      width: targetRect.width,
-      height: edgeSize,
-    };
-  }
-
-  const inset = Math.min(edgeSize / 2, targetRect.width / 4, targetRect.height / 4);
-  return {
-    x: targetRect.x + inset,
-    y: targetRect.y + inset,
-    width: Math.max(MIN_DROP_ZONE_SIZE, targetRect.width - inset * 2),
-    height: Math.max(MIN_DROP_ZONE_SIZE, targetRect.height - inset * 2),
-  };
+  return resolveDropZoneRect(args);
 }
 
 /***

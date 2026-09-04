@@ -1,7 +1,8 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import { readOwnProperty } from '../../utils/readOwnProperty';
+import { readOwnProperty } from '@ankhorage/utility/object';
+
 import { assertInstalledRegistryPackageAsync } from './assertInstalledRegistryPackageAsync';
 import { assertReactNativeOwnerGraphAsync } from './assertReactNativeOwnerGraphAsync';
 

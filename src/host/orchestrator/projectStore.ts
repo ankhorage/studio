@@ -1,4 +1,5 @@
 import type { AppManifest, ThemeConfig } from '@ankhorage/contracts';
+import { pathExists, writeJsonFileAtomic } from '@ankhorage/utility/node/fs';
 import { promises as fs } from 'fs';
 import path from 'path';
 
@@ -65,11 +66,11 @@ export class ProjectStore {
     const projectPath = this.getProjectPath(projectId);
     const manifestPath = this.getManifestPath(projectId);
 
-    if (!(await exists(projectPath))) {
+    if (!(await pathExists(projectPath))) {
       throw new Error(`Project '${projectId}' not found.`);
     }
 
-    if (await exists(manifestPath)) {
+    if (await pathExists(manifestPath)) {
       return parseReadableAppManifest(JSON.parse(await fs.readFile(manifestPath, 'utf8')));
     }
 
@@ -79,12 +80,12 @@ export class ProjectStore {
   /*** Normalize project-owned metadata and atomically persist one canonical AppManifest. */
   async writeManifest(projectId: string, manifest: AppManifest): Promise<AppManifest> {
     const projectPath = this.getProjectPath(projectId);
-    if (!(await exists(projectPath))) {
+    if (!(await pathExists(projectPath))) {
       throw new Error(`Project '${projectId}' not found.`);
     }
 
     const updated = normalizeManifestForProject(projectId, manifest);
-    await writeJsonAtomic(this.getManifestPath(projectId), updated);
+    await writeJsonFileAtomic(this.getManifestPath(projectId), updated);
     return updated;
   }
 
@@ -101,9 +102,9 @@ export class ProjectStore {
   private async readProjectSummary(id: string): Promise<ProjectSummary | null> {
     try {
       const projectPath = getProjectPath(this.rootPath, id);
-      if (!(await exists(path.join(projectPath, 'package.json')))) return null;
+      if (!(await pathExists(path.join(projectPath, 'package.json')))) return null;
       const manifestPath = path.join(projectPath, 'ankh.config.json');
-      if (!(await exists(manifestPath))) return null;
+      if (!(await pathExists(manifestPath))) return null;
       const manifest = parseProjectSummaryManifest(
         JSON.parse(await fs.readFile(manifestPath, 'utf8')),
       );
@@ -164,28 +165,4 @@ function resolveActiveTheme(manifest: AppManifest): ThemeConfig {
   }
 
   return activeTheme;
-}
-
-/***
- * Return whether one filesystem path currently exists.
- * @utility @ankhorage/utility/node/fs
- */
-async function exists(filePath: string): Promise<boolean> {
-  try {
-    await fs.access(filePath);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-/***
- * Persist JSON atomically by writing a same-directory temporary file and renaming it over the target.
- * @utility @ankhorage/utility/node/fs
- */
-async function writeJsonAtomic(filePath: string, value: unknown): Promise<void> {
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
-  const temporaryPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
-  await fs.writeFile(temporaryPath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
-  await fs.rename(temporaryPath, filePath);
 }

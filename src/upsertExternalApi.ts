@@ -3,6 +3,7 @@ import type {
   ExternalGraphQlApiDefinition,
   ExternalRestApiDefinition,
 } from '@ankhorage/contracts/data';
+import { upsertBy } from '@ankhorage/utility/array';
 
 type ExternalApiDefinition = ExternalGraphQlApiDefinition | ExternalRestApiDefinition;
 
@@ -12,18 +13,15 @@ export interface ExternalApiUpsertResult {
 }
 
 /***
- * Immutably insert or replace an item in an array by stable identity and report whether it was created.
- * @utility @ankhorage/utility/array
+ * Use canonical keyed upsert behavior while reporting Studio's domain-specific creation metadata.
  */
 export function upsertExternalApi(
   apis: ApiDefinitionList,
   api: ExternalApiDefinition,
 ): ExternalApiUpsertResult {
-  const index = apis.findIndex((candidate) => candidate.id === api.id);
-  if (index < 0) return { apis: [...apis, api], created: true };
-
+  const created = !apis.some((candidate) => candidate.id === api.id);
   return {
-    apis: apis.map((candidate, candidateIndex) => (candidateIndex === index ? api : candidate)),
-    created: false,
+    apis: upsertBy(apis, api, (candidate) => candidate.id),
+    created,
   };
 }

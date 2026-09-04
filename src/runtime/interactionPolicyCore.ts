@@ -1,4 +1,4 @@
-import { readOwnProperty } from '../utils/readOwnProperty';
+import { readOwnProperty } from '@ankhorage/utility/object';
 
 export type InteractionPolicy = 'enabled' | 'passive';
 export type ThirdPartyComponentSupport = Readonly<Record<string, true>>;

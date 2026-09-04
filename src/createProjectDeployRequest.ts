@@ -1,3 +1,5 @@
+import { createBaseUrlFetch } from '@ankhorage/utility/http';
+
 import type { ProjectDeployRequest } from './projectDeployRequest';
 
 /***
@@ -8,6 +10,6 @@ export function createProjectDeployRequest(): ProjectDeployRequest {
   /*** Prefix a request path with the resolved API base and forward the fetch init unchanged. */
   return async (path, init) => {
     const { API_BASE } = await import('./core/constants');
-    return fetch(`${API_BASE}${path}`, init);
+    return createBaseUrlFetch(API_BASE)(path, init);
   };
 }

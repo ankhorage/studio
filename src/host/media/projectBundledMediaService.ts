@@ -1,4 +1,5 @@
 import type { MediaAsset, MediaAssetKind, MediaBundledSource } from '@ankhorage/contracts';
+import { sanitizeFileName, sanitizePathSegment } from '@ankhorage/utility/media';
 
 import { getProjectPath } from '../orchestrator/projectPaths';
 import { writeProjectAuthoringAsset } from './projectAuthoringAssetWriter';
@@ -56,28 +57,5 @@ export class ProjectBundledMediaService {
 
 /*** Build the bundled project path for one Studio-authored media asset. */
 export function createBundledAuthoringMediaPath(assetId: string, fileName: string): string {
-  return `assets/authoring/${sanitizeSegment(assetId)}/${sanitizeFileName(fileName)}`;
-}
-
-/***
- * Sanitize an arbitrary path segment to letters, digits, underscores, and hyphens with a fallback.
- * @utility @ankhorage/utility/media
- */
-function sanitizeSegment(value: string): string {
-  return (
-    value
-      .trim()
-      .replace(/[^A-Za-z0-9_-]+/g, '-')
-      .replace(/^-+|-+$/g, '') || 'media'
-  );
-}
-
-/***
- * Sanitize an arbitrary file name to a safe basename with a deterministic fallback.
- * @utility @ankhorage/utility/media
- */
-function sanitizeFileName(value: string): string {
-  const baseName = value.trim().split(/[\\/]/).pop() ?? '';
-  const normalized = baseName.replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^\.+/, '');
-  return normalized || 'asset';
+  return `assets/authoring/${sanitizePathSegment(assetId, 'media')}/${sanitizeFileName(fileName, 'asset')}`;
 }

@@ -3,10 +3,7 @@ import type {
   ThemeTypographyHeadingOverrides,
   ThemeTypographyTokenOverrides,
 } from '@ankhorage/contracts';
-
-import { deleteOwnProperty } from '../../../utils/deleteOwnProperty';
-import { readOwnProperty } from '../../../utils/readOwnProperty';
-import { setOwnProperty } from '../../../utils/setOwnProperty';
+import { deleteOwnProperty, readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
 
 export type NumericThemeTokenFamily = 'spacing' | 'radii' | 'shadows';
 

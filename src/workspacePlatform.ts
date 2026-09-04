@@ -1,10 +1,5 @@
-/***
- * Report whether browser globals are available in the current runtime.
- * @utility @ankhorage/utility/web
- */
-function isWeb(): boolean {
-  return typeof window !== 'undefined';
-}
+import { confirmAction } from '@ankhorage/utility/interaction';
+import { isBrowserRuntime, openUrl } from '@ankhorage/utility/web';
 
 export interface DeleteConfirmationButton {
   readonly text: string;
@@ -30,23 +25,21 @@ export interface DeleteConfirmationDependencies {
  */
 export function createDeleteConfirmation(dependencies: DeleteConfirmationDependencies) {
   return (name: string, onConfirm: () => void): void => {
-    const message = `Delete ${name}?`;
-
-    if (dependencies.isWeb && dependencies.confirm) {
-      if (dependencies.confirm(message)) {
-        onConfirm();
-      }
-      return;
-    }
-
-    dependencies.alert('Delete project', message, [
-      { text: 'Cancel', style: 'cancel' },
+    confirmAction(
       {
-        text: 'Delete',
-        style: 'destructive',
-        onPress: onConfirm,
+        title: 'Delete project',
+        message: `Delete ${name}?`,
+        confirmText: 'Delete',
+        destructive: true,
       },
-    ]);
+      {
+        alert: (title, message, buttons) =>
+          dependencies.alert(title, message, buttons ? [...buttons] : undefined),
+        confirm: dependencies.confirm,
+        preferConfirm: dependencies.isWeb,
+      },
+      onConfirm,
+    );
   };
 }
 
@@ -60,7 +53,9 @@ export function confirmDelete(
   alert?: DeleteConfirmationAlert,
 ): void {
   const webConfirm =
-    isWeb() && typeof window.confirm === 'function' ? window.confirm.bind(window) : undefined;
+    isBrowserRuntime() && typeof window.confirm === 'function'
+      ? window.confirm.bind(window)
+      : undefined;
 
   if (!webConfirm && !alert) return;
 
@@ -71,7 +66,7 @@ export function confirmDelete(
         // Web confirmations are handled above; native callers inject Alert.alert.
       }),
     confirm: webConfirm,
-    isWeb: isWeb(),
+    isWeb: isBrowserRuntime(),
   })(name, onConfirm);
 }
 
@@ -80,10 +75,7 @@ export function confirmDelete(
  * @utility @ankhorage/utility/web
  */
 export function openProjectUrl(url: string): boolean {
-  if (isWeb() && typeof window.open === 'function') {
-    window.open(url, '_blank', 'noopener,noreferrer');
-    return true;
-  }
-
-  return false;
+  const opener =
+    isBrowserRuntime() && typeof window.open === 'function' ? window.open.bind(window) : undefined;
+  return openUrl(url, opener);
 }

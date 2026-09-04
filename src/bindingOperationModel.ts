@@ -6,6 +6,7 @@ import type {
   DataSchema,
   UiBindableValueMeta,
 } from '@ankhorage/contracts';
+import { findByKey } from '@ankhorage/utility/array';
 
 import type {
   StudioBindingInputFieldOption,
@@ -26,19 +27,18 @@ export function collectStudioBindingOperationOptions(
 }
 
 /***
- * Find an option whose compound API, endpoint, and operation identifiers match a reference.
- * @utility @ankhorage/utility/array
+ * Find an option through the canonical keyed array lookup utility.
  */
 export function findStudioBindingOperationOption(
   options: readonly StudioBindingOperationOption[],
   ref: BindingOperationRef,
 ): StudioBindingOperationOption | undefined {
-  return options.find(
-    (option) =>
-      option.operation.apiId === ref.apiId &&
-      option.operation.operationId === ref.operationId &&
-      option.operation.endpointId === ref.endpointId,
-  );
+  return findByKey(options, toOperationKey(ref), (option) => toOperationKey(option.operation));
+}
+
+/*** Create a stable key for a Studio binding-operation reference. */
+function toOperationKey(reference: BindingOperationRef): string {
+  return `${reference.apiId}:${reference.endpointId}:${reference.operationId}`;
 }
 
 /***

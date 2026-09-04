@@ -1,6 +1,7 @@
 import { type AppManifest, DEFAULT_AUTH_FLOW } from '@ankhorage/contracts';
 import { normalizeSecretRef } from '@ankhorage/contracts/secrets';
 import { getSupabaseOAuthProviderDefinition } from '@ankhorage/supabase-auth';
+import { hasOnlyKeys, isRecord } from '@ankhorage/utility/object';
 
 type ManifestAuth = NonNullable<AppManifest['infra']['auth']>;
 type ManifestFlow = NonNullable<ManifestAuth['flow']>;
@@ -603,23 +604,8 @@ function findForbiddenInlineSecretPath(value: unknown, parent = ''): string | nu
   return null;
 }
 
-/***
- * Return whether every own enumerable string key in a record belongs to an allowed key set.
- * @utility @ankhorage/utility/object
- */
-function hasOnlyKeys(record: Record<string, unknown>, allowed: readonly string[]): boolean {
-  const allowedSet = new Set(allowed);
-  return Object.keys(record).every((key) => allowedSet.has(key));
-}
-
-/***
- * Narrow an unknown value to a non-array record.
- * @utility @ankhorage/utility/value
- */
 function asRecord(value: unknown): Record<string, unknown> | null {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-    ? (value as Record<string, unknown>)
-    : null;
+  return isRecord(value) ? value : null;
 }
 
 /*** Construct a successful auth-validation result. */

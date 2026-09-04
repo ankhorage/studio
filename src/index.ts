@@ -10,6 +10,15 @@ import type {
   ThemeModeConfig,
   UiNode,
 } from '@ankhorage/contracts';
+import { createCompactId as createUtilityCompactId } from '@ankhorage/utility/id';
+import {
+  findTreeNode,
+  findTreeNodeWithParent,
+  isTreeDescendant,
+  removeTreeNode,
+  type TreeAdapter,
+  updateTreeNode,
+} from '@ankhorage/utility/tree';
 
 export type {
   StudioModuleAdminContribution,
@@ -26,6 +35,15 @@ import type {
   StudioMediaIngestTarget,
   StudioMediaPickerSource,
 } from './mediaPickerAuthoring';
+
+const uiNodeTreeAdapter: TreeAdapter<UiNode> = {
+  getId: (node) => node.id,
+  getChildren: (node) => node.children,
+  withChildren: (node, children) => {
+    if (children.length === 0 && node.children === undefined) return { ...node };
+    return { ...node, children: [...children] };
+  },
+};
 
 export * from './bindingAuthoringModel';
 export * from './mediaAuthoringModel';
@@ -567,16 +585,13 @@ export const TPL_SCREEN_EMPTY: UiNode = {
  * @todo Move the Studio-facing wrapper out of `src/index.ts`; the reusable identifier primitive belongs in Utility.
  */
 export const generateStudioId: StudioIdGenerator = (prefix?: string): string => {
-  const timestamp = Date.now().toString(36);
-  const random = Math.random().toString(36).substring(2, 11);
-  const id = `${timestamp}-${random}`;
-  return prefix ? `${prefix.toLowerCase()}-${id}` : id;
+  return createUtilityCompactId(prefix?.toLowerCase() ?? '', { randomLength: 9 });
 };
 
 /***
  * Deep-clone a UiNode tree while assigning fresh identifiers and shallow-cloning node props.
  * @utility @ankhorage/utility/tree
- * @todo Move this implementation out of the public entrypoint; parameterize id/children/clone accessors for the canonical Utility primitive.
+ * @todo `cloneTreeWithNewIds` currently allocates child ids before the root; retain this public pre-order callback contract until Utility supports configurable traversal order.
  */
 export const cloneWithNewIds = (
   node: UiNode,
@@ -601,15 +616,7 @@ export const cloneWithNewIds = (
  * @todo Move the UiNode wrapper out of `src/index.ts`; parameterize id and child accessors for Utility.
  */
 export const findNodeById = (root: UiNode, id: string): UiNode | null => {
-  if (root.id === id) return root;
-  if (!root.children) return null;
-
-  for (const child of root.children) {
-    const found = findNodeById(child, id);
-    if (found) return found;
-  }
-
-  return null;
+  return findTreeNode(root, id, uiNodeTreeAdapter) ?? null;
 };
 
 /***
@@ -622,27 +629,22 @@ export const updateNodeInTree = (
   id: string,
   newProps: Record<string, unknown>,
 ): UiNode => {
-  if (root.id === id) {
-    const { alias, style, ...rest } = newProps;
-    const aliasUpdate = typeof alias === 'string' ? { alias } : {};
-    const styleUpdate = isStyleRecord(style) ? { style } : {};
-
-    return {
-      ...root,
-      ...aliasUpdate,
-      ...styleUpdate,
-      props: { ...(root.props ?? {}), ...rest },
-    };
-  }
-
-  if (!root.children) {
-    return root;
-  }
-
-  return {
-    ...root,
-    children: root.children.map((child) => updateNodeInTree(child, id, newProps)),
-  };
+  return updateTreeNode(
+    root,
+    id,
+    (node) => {
+      const { alias, style, ...rest } = newProps;
+      const aliasUpdate = typeof alias === 'string' ? { alias } : {};
+      const styleUpdate = isStyleRecord(style) ? { style } : {};
+      return {
+        ...node,
+        ...aliasUpdate,
+        ...styleUpdate,
+        props: { ...(node.props ?? {}), ...rest },
+      };
+    },
+    uiNodeTreeAdapter,
+  );
 };
 
 /***
@@ -651,21 +653,7 @@ export const updateNodeInTree = (
  * @todo Move the UiNode wrapper out of `src/index.ts` and parameterize tree accessors for Utility.
  */
 export const removeNodeFromTree = (root: UiNode, nodeId: string): UiNode | null => {
-  if (root.id === nodeId) return null;
-
-  if (!root.children) {
-    return root;
-  }
-
-  const filteredChildren = root.children.filter((child) => child.id !== nodeId);
-  if (filteredChildren.length !== root.children.length) {
-    return { ...root, children: filteredChildren };
-  }
-
-  const nextChildren = root.children.map((child) => removeNodeFromTree(child, nodeId) ?? child);
-  const hasChanged = nextChildren.some((child, index) => child !== root.children?.at(index));
-
-  return hasChanged ? { ...root, children: nextChildren } : root;
+  return removeTreeNode(root, nodeId, uiNodeTreeAdapter) ?? null;
 };
 
 interface NodeWithParent {
@@ -679,28 +667,7 @@ interface NodeWithParent {
  * @utility @ankhorage/utility/tree
  */
 function findNodeWithParent(root: UiNode, nodeId: string): NodeWithParent | null {
-  if (root.id === nodeId) {
-    return { node: root, parent: null, index: -1 };
-  }
-
-  /*** Visit one subtree while retaining parent/index context for matching descendants. */
-  const visit = (node: UiNode): NodeWithParent | null => {
-    const children = node.children ?? [];
-    for (const [index, child] of children.entries()) {
-      if (child.id === nodeId) {
-        return { node: child, parent: node, index };
-      }
-
-      const nested = visit(child);
-      if (nested) {
-        return nested;
-      }
-    }
-
-    return null;
-  };
-
-  return visit(root);
+  return findTreeNodeWithParent(root, nodeId, uiNodeTreeAdapter) ?? null;
 }
 
 /***
@@ -708,14 +675,7 @@ function findNodeWithParent(root: UiNode, nodeId: string): NodeWithParent | null
  * @utility @ankhorage/utility/tree
  */
 function isDescendantNode(node: UiNode, descendantId: string): boolean {
-  const children = node.children ?? [];
-  for (const child of children) {
-    if (child.id === descendantId || isDescendantNode(child, descendantId)) {
-      return true;
-    }
-  }
-
-  return false;
+  return isTreeDescendant(node, node.id, descendantId, uiNodeTreeAdapter);
 }
 
 /***

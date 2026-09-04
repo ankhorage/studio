@@ -1,4 +1,5 @@
 import type { MediaAsset, MediaAssetKind, MediaStorageSource } from '@ankhorage/contracts';
+import { sanitizeFileName, sanitizePathSegment } from '@ankhorage/utility/media';
 
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { type ProjectMediaStorageContext, resolveProjectMediaStorage } from './projectMediaStorage';
@@ -94,7 +95,7 @@ export class ProjectMediaService {
 
 /*** Build the storage-object path for one Studio-authored media asset. */
 export function createAuthoringMediaPath(assetId: string, fileName: string): string {
-  return `authoring/${sanitizeSegment(assetId)}/${sanitizeFileName(fileName)}`;
+  return `authoring/${sanitizePathSegment(assetId, 'media')}/${sanitizeFileName(fileName, 'asset')}`;
 }
 
 /*** Verify that a storage reference belongs to the active project's authoring-media pool. */
@@ -102,27 +103,4 @@ function assertAuthoringStorageSource(source: MediaStorageSource, bucket: string
   if (source.bucket !== bucket || !source.path.startsWith('authoring/')) {
     throw new Error('Media storage reference is outside the project authoring pool.');
   }
-}
-
-/***
- * Sanitize an arbitrary path segment to letters, digits, underscores, and hyphens with a fallback.
- * @utility @ankhorage/utility/media
- */
-function sanitizeSegment(value: string): string {
-  return (
-    value
-      .trim()
-      .replace(/[^A-Za-z0-9_-]+/g, '-')
-      .replace(/^-+|-+$/g, '') || 'media'
-  );
-}
-
-/***
- * Sanitize an arbitrary file name to a safe basename with a deterministic fallback.
- * @utility @ankhorage/utility/media
- */
-function sanitizeFileName(value: string): string {
-  const baseName = value.trim().split(/[\\/]/).pop() ?? '';
-  const normalized = baseName.replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^\.+/, '');
-  return normalized || 'asset';
 }

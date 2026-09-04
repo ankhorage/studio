@@ -1,12 +1,16 @@
 import type { AppManifest, NavigatorSpec } from '@ankhorage/contracts';
+import { readOwnProperty } from '@ankhorage/utility/object';
+import {
+  normalizePathnameSegments,
+  normalizeRoutePatternSegments,
+  scoreRoutePatternMatch,
+} from '@ankhorage/utility/route';
 
 import {
   collectScreenRouteEntries,
   hasCanonicalStudioScreenRegistryIdentity,
-  isRouteGroupSegment,
   resolveInitialScreenId,
 } from './manifestState';
-import { readOwnProperty } from './utils/readOwnProperty';
 
 export type { ScreenRouteEntry, ScreenRouteGroup } from './manifestState';
 export {
@@ -31,10 +35,6 @@ interface ScreenRouteMatch {
   readonly screenId: string;
   readonly score: number;
 }
-
-const DYNAMIC_ROUTE_SEGMENT_PATTERN = /^\[[^.[\]]+\]$|^:[^/]+$/u;
-const CATCH_ALL_ROUTE_SEGMENT_PATTERN = /^\[\.\.\.[^\]]+\]$/u;
-const OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_PATTERN = /^\[\[\.\.\.[^\]]+\]\]$/u;
 
 /***
  * Resolve the leaf screen owned by a pathname using Studio manifest navigation and route specificity.
@@ -62,80 +62,4 @@ export function resolveScreenIdForPathname(
 
   if (bestMatch) return bestMatch.screenId;
   return pathnameSegments.length === 0 ? resolveInitialScreenId(navigator, screens) : null;
-}
-
-/***
- * Normalize a pathname into non-empty path segments while ignoring query and hash suffixes.
- * @utility @ankhorage/utility/url
- */
-function normalizePathnameSegments(pathname: string): string[] {
-  const [pathWithoutQuery = ''] = pathname.trim().split(/[?#]/u, 1);
-  return pathWithoutQuery.split('/').filter(Boolean);
-}
-
-/***
- * Normalize route-pattern segments by splitting nested path fragments, removing groups, and trimming index segments.
- * @utility @ankhorage/utility/route
- */
-function normalizeRoutePatternSegments(routePath: readonly string[]): string[] {
-  const segments = routePath
-    .flatMap((segment) => segment.split('/'))
-    .filter(Boolean)
-    .filter((segment) => !isRouteGroupSegment(segment));
-
-  while (segments.at(0) === 'index') segments.shift();
-  while (segments.at(-1) === 'index') segments.pop();
-  return segments;
-}
-
-/***
- * Score an exact, dynamic, catch-all, or optional-catch-all route-pattern match against pathname segments.
- * @utility @ankhorage/utility/route
- */
-function scoreRoutePatternMatch(
-  pattern: readonly string[],
-  pathname: readonly string[],
-): number | null {
-  let patternIndex = 0;
-  let pathnameIndex = 0;
-  let score = 0;
-  let exactMatch = true;
-
-  while (patternIndex < pattern.length) {
-    const routeSegment = pattern.at(patternIndex);
-    if (!routeSegment) return null;
-
-    if (OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_PATTERN.test(routeSegment)) {
-      exactMatch = false;
-      if (pathnameIndex < pathname.length) score += 1;
-      pathnameIndex = pathname.length;
-      patternIndex += 1;
-      continue;
-    }
-
-    if (CATCH_ALL_ROUTE_SEGMENT_PATTERN.test(routeSegment)) {
-      if (pathnameIndex >= pathname.length) return null;
-      exactMatch = false;
-      pathnameIndex = pathname.length;
-      patternIndex += 1;
-      score += 1;
-      continue;
-    }
-
-    const pathnameSegment = pathname.at(pathnameIndex);
-    if (!pathnameSegment) return null;
-
-    if (DYNAMIC_ROUTE_SEGMENT_PATTERN.test(routeSegment)) {
-      score += 10;
-    } else if (routeSegment === pathnameSegment) {
-      score += 100;
-    } else {
-      return null;
-    }
-
-    patternIndex += 1;
-    pathnameIndex += 1;
-  }
-
-  return pathnameIndex === pathname.length ? score + (exactMatch ? 5 : 0) : null;
 }

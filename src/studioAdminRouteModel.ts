@@ -1,3 +1,8 @@
+import {
+  decodeFirstPathSegmentAfterPrefix,
+  decodeSinglePathSegmentAfterPrefix,
+} from '@ankhorage/utility/url';
+
 import type {
   StudioAdminRouteId,
   StudioAdminRoutePath,
@@ -369,12 +374,12 @@ export function resolveStudioAdminRoutePath(pathname: string): StudioAdminRouteP
 
 /*** Resolve the contextual node id from a Studio bindings pathname. */
 export function resolveStudioBindingsNodeId(pathname: string): string | null {
-  return resolveStudioContextNodeId(pathname, BINDINGS_ROUTE_PREFIX);
+  return decodeFirstPathSegmentAfterPrefix(pathname, BINDINGS_ROUTE_PREFIX);
 }
 
 /*** Resolve the screen id from a Studio screen-detail pathname. */
 export function resolveStudioScreenId(pathname: string): string | null {
-  return resolveStudioDetailId(pathname, SCREEN_ROUTE_PREFIX);
+  return decodeSinglePathSegmentAfterPrefix(pathname, SCREEN_ROUTE_PREFIX);
 }
 
 /***
@@ -387,7 +392,7 @@ export function createStudioScreenRoutePath(screenId: string): `/ankh/screens/${
 
 /*** Resolve the module id from a Studio module-detail pathname. */
 export function resolveStudioModuleId(pathname: string): string | null {
-  return resolveStudioDetailId(pathname, MODULE_ROUTE_PREFIX);
+  return decodeSinglePathSegmentAfterPrefix(pathname, MODULE_ROUTE_PREFIX);
 }
 
 /***
@@ -401,10 +406,10 @@ export function createStudioModuleRoutePath(moduleId: string): `/ankh/modules/${
 /*** Resolve a component/pattern theme recipe name from its Studio contextual pathname. */
 export function resolveStudioThemeRecipeName(pathname: string): string | null {
   if (pathname.startsWith(THEME_COMPONENT_ROUTE_PREFIX)) {
-    return resolveStudioDetailId(pathname, THEME_COMPONENT_ROUTE_PREFIX);
+    return decodeSinglePathSegmentAfterPrefix(pathname, THEME_COMPONENT_ROUTE_PREFIX);
   }
   if (pathname.startsWith(THEME_PATTERN_ROUTE_PREFIX)) {
-    return resolveStudioDetailId(pathname, THEME_PATTERN_ROUTE_PREFIX);
+    return decodeSinglePathSegmentAfterPrefix(pathname, THEME_PATTERN_ROUTE_PREFIX);
   }
   return null;
 }
@@ -433,7 +438,7 @@ export function createStudioBindingsRoutePath(nodeId: string): `/ankh/bindings/$
 
 /*** Resolve the contextual node id from a Studio properties pathname. */
 export function resolveStudioPropertiesNodeId(pathname: string): string | null {
-  return resolveStudioContextNodeId(pathname, PROPERTIES_ROUTE_PREFIX);
+  return decodeFirstPathSegmentAfterPrefix(pathname, PROPERTIES_ROUTE_PREFIX);
 }
 
 /***
@@ -610,34 +615,4 @@ export function resolveStudioLastNonAdminLocation(args: {
 }): string | null {
   if (isStudioAdminPath(args.pathname)) return null;
   return args.navigableLocation ?? resolveStudioNavigableLocation(args.pathname);
-}
-
-/***
- * Read the first path segment after a required prefix and decode it, preserving the encoded segment when decoding fails.
- * @utility @ankhorage/utility/url
- */
-function resolveStudioContextNodeId(pathname: string, prefix: string): string | null {
-  if (!pathname.startsWith(prefix)) return null;
-  const [encodedNodeId] = pathname.slice(prefix.length).split('/');
-  if (!encodedNodeId) return null;
-  try {
-    return decodeURIComponent(encodedNodeId);
-  } catch {
-    return encodedNodeId;
-  }
-}
-
-/***
- * Read exactly one URL-encoded detail segment after a required prefix and reject empty, nested, or undecodable values.
- * @utility @ankhorage/utility/url
- */
-function resolveStudioDetailId(pathname: string, prefix: string): string | null {
-  if (!pathname.startsWith(prefix)) return null;
-  const remainder = pathname.slice(prefix.length);
-  if (!remainder || remainder.includes('/')) return null;
-  try {
-    return decodeURIComponent(remainder) || null;
-  } catch {
-    return null;
-  }
 }

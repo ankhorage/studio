@@ -1,6 +1,7 @@
 import type { ModuleDefinition } from '@ankhorage/orchestrator';
 import { expoGoogleFontsHostContribution } from '@ankhorage/orchestrator-module-expo-google-fonts/host';
 import { expoLocalizationHostContribution } from '@ankhorage/orchestrator-module-expo-localization/host';
+import { isRecord } from '@ankhorage/utility/object';
 
 import type {
   StudioModuleAdminContribution,
@@ -87,12 +88,4 @@ function invalidAdmin(moduleId: string): {
   readonly error: string;
 } {
   return { admin: null, error: `Module '${moduleId}' has an invalid admin contribution.` };
-}
-
-/***
- * Narrow an unknown non-array object to a string-keyed record.
- * @utility @ankhorage/utility/object
- */
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

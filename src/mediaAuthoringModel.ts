@@ -6,10 +6,7 @@ import type {
   MediaAssetRegistry,
   UiNode,
 } from '@ankhorage/contracts';
-
-import { deleteOwnProperty } from './utils/deleteOwnProperty';
-import { readOwnProperty } from './utils/readOwnProperty';
-import { setOwnProperty } from './utils/setOwnProperty';
+import { deleteOwnProperty, readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
 
 export interface StudioMediaUsage {
   readonly screenId: string;

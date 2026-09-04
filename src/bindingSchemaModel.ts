@@ -1,16 +1,15 @@
 import type {
   DataSchema,
-  DataSchemaPrimitiveType,
   DataSchemaRegistry,
   UiBindableValueFieldMeta,
   UiBindableValueMeta,
 } from '@ankhorage/contracts';
+import { resolveSchemaReference, resolveSingleSchemaType } from '@ankhorage/utility/schema';
 
 import type {
   StudioBindingCompatibility,
   StudioBindingResponsePathOption,
 } from './bindingAuthoringContracts';
-import { readOwnProperty } from './utils/readOwnProperty';
 
 /***
  * Resolve a contracts data schema into the bindable value metadata used by Studio authoring.
@@ -21,7 +20,7 @@ export function resolveStudioSchemaValueMeta(
   schemas: DataSchemaRegistry | undefined,
   seen: ReadonlySet<string> = new Set(),
 ): UiBindableValueMeta {
-  const resolved = resolveSchemaRef(schema, schemas, seen);
+  const resolved = resolveSchemaReference(schema, schemas, seen);
   if (!resolved) return { type: 'unknown' };
   const type = resolveSchemaType(resolved);
   const fields = resolveSchemaFields(resolved, schemas, seen);
@@ -79,7 +78,7 @@ function collectObjectPaths(
   paths: StudioBindingResponsePathOption[],
   seen: Set<string>,
 ): void {
-  const resolved = resolveSchemaRef(schema, schemas, seen);
+  const resolved = resolveSchemaReference(schema, schemas, seen);
   if (!resolved?.properties) return;
   for (const [name, property] of Object.entries(resolved.properties)) {
     const path = prefix ? `${prefix}.${name}` : name;
@@ -90,21 +89,6 @@ function collectObjectPaths(
     });
     collectObjectPaths(property, schemas, path, paths, new Set(seen));
   }
-}
-
-/***
- * Resolve a schema reference recursively while preventing reference cycles.
- * @utility @ankhorage/utility/schema
- */
-function resolveSchemaRef(
-  schema: DataSchema | undefined,
-  schemas: DataSchemaRegistry | undefined,
-  seen: ReadonlySet<string>,
-): DataSchema | undefined {
-  const refId = schema?.ref?.id;
-  if (!refId || !schemas || seen.has(refId)) return schema;
-  const referenced = readOwnProperty<DataSchema>(schemas, refId);
-  return referenced ? resolveSchemaRef(referenced, schemas, new Set([...seen, refId])) : schema;
 }
 
 /***
@@ -149,10 +133,6 @@ function resolveSchemaType(schema: DataSchema): UiBindableValueMeta['type'] {
  * Return a schema primitive type only when the declaration contains exactly one effective type.
  * @utility @ankhorage/utility/schema
  */
-function resolveSingleSchemaType(type: DataSchema['type']): DataSchemaPrimitiveType | undefined {
-  if (typeof type === 'string') return type;
-  return type?.length === 1 ? type.at(0) : undefined;
-}
 
 /***
  * Test whether a bindable value type represents an object-shaped value.

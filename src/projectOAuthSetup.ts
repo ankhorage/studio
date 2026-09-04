@@ -7,8 +7,7 @@ import {
   type AppDeployTargetId,
 } from '@ankhorage/contracts/deploy';
 import { resolveSupabaseOAuthSetupPlan } from '@ankhorage/supabase-auth';
-
-import { readOwnProperty } from './utils/readOwnProperty';
+import { readOwnProperty } from '@ankhorage/utility/object';
 
 /***
  * Resolve a requested deploy environment to a canonical environment id with local fallback.

@@ -1,4 +1,5 @@
 import type { MediaAssetKind, MediaAssetReference, UiNode } from '@ankhorage/contracts';
+import { withoutOwnProperty, withOwnProperty } from '@ankhorage/utility/object';
 
 export interface StudioAuthoringPropSchema {
   readonly type: string;
@@ -106,12 +107,13 @@ export function createStudioInstancePropertyPatch(
   propertyName: string,
   value: StudioInstancePropertyValue | undefined,
 ): Readonly<Record<string, unknown>> {
-  const entries = Object.entries(node.props ?? {}).filter(([name]) => name !== propertyName);
-  if (value !== undefined) {
-    entries.push([propertyName, value]);
-  }
-
-  return { props: Object.fromEntries(entries) };
+  const props = node.props ?? {};
+  return {
+    props:
+      value === undefined
+        ? withoutOwnProperty(props, propertyName)
+        : withOwnProperty<unknown>(props, propertyName, value),
+  };
 }
 
 /***

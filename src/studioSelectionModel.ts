@@ -1,4 +1,6 @@
 import type { UiNode } from '@ankhorage/contracts';
+import { arrayToSingleSelection, singleSelectionToArray } from '@ankhorage/utility/selection';
+import { findTreeNodeWithParent, type TreeAdapter, treeContainsId } from '@ankhorage/utility/tree';
 
 export interface StudioSelectionProviderAdapterProps {
   mode: 'single';
@@ -20,6 +22,11 @@ export interface StudioSelectionContext {
 }
 
 const EMPTY_IDS: readonly string[] = [];
+const uiNodeTreeAdapter: TreeAdapter<UiNode> = {
+  getId: (node) => node.id,
+  getChildren: (node) => node.children,
+  withChildren: (node, children) => ({ ...node, children: [...children] }),
+};
 
 /***
  * Test whether a selected id exists in a node tree.
@@ -27,23 +34,7 @@ const EMPTY_IDS: readonly string[] = [];
  */
 function containsUiNode(rootNode: UiNode | null, selectedNodeId: string | null): boolean {
   if (!rootNode || !selectedNodeId) return false;
-  if (rootNode.id === selectedNodeId) return true;
-
-  /***
-   * Recursively visit a tree until the selected id is found.
-   * @utility @ankhorage/utility/tree
-   */
-  const visit = (node: UiNode): boolean => {
-    if (node.id === selectedNodeId) return true;
-    for (const child of node.children ?? []) {
-      if (visit(child)) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  return visit(rootNode);
+  return treeContainsId(rootNode, selectedNodeId, uiNodeTreeAdapter);
 }
 
 /***
@@ -55,24 +46,7 @@ export function resolveStudioSelectionParentNodeId(
   selectedNodeId: string | null,
 ): string | null {
   if (!rootNode || !selectedNodeId || !containsUiNode(rootNode, selectedNodeId)) return null;
-  if (rootNode.id === selectedNodeId) return null;
-
-  /***
-   * Recursively search a tree while carrying the current parent id.
-   * @utility @ankhorage/utility/tree
-   */
-  const visit = (node: UiNode, parentId: string | null): string | null => {
-    if (node.id === selectedNodeId) return parentId;
-    for (const child of node.children ?? []) {
-      const parentCandidate = visit(child, node.id);
-      if (parentCandidate !== null || child.id === selectedNodeId) {
-        return parentCandidate;
-      }
-    }
-    return null;
-  };
-
-  return visit(rootNode, null);
+  return findTreeNodeWithParent(rootNode, selectedNodeId, uiNodeTreeAdapter)?.parent?.id ?? null;
 }
 
 /***
@@ -116,12 +90,12 @@ export function createStudioSelectionProviderProps(
   return {
     mode: 'single',
     disabled: previewMode,
-    selectedIds: previewMode ? EMPTY_IDS : selectedNodeId ? [selectedNodeId] : EMPTY_IDS,
+    selectedIds: previewMode ? EMPTY_IDS : singleSelectionToArray(selectedNodeId),
     /*** Forward the provider's first selected id into nullable single-selection state. */
     onSelectionChange: previewMode
       ? undefined
       : (ids) => {
-          selectNode(ids[0] ?? null);
+          selectNode(arrayToSingleSelection(ids));
         },
   };
 }
