@@ -1,0 +1,44 @@
+name: Navigator Node Fix
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - run: bun install --frozen-lockfile
+      - name: Preserve navigator discriminant when changing type
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const file = 'src/manifestState.ts';
+          const before = fs.readFileSync(file, 'utf8');
+          const old = `  return {\n    ...manifest,\n    navigator: updateNavigatorAtPath(manifest.navigator, primaryNavigatorPath, (current) => ({\n      ...current,\n      type,\n    })),\n  };`;
+          const replacement = `  return {\n    ...manifest,\n    navigator: updateNavigatorAtPath(manifest.navigator, primaryNavigatorPath, (current) =>\n      createNavigatorWithType(current, type),\n    ),\n  };`;
+          if (!before.includes(old)) throw new Error('Expected navigator type update block not found.');
+          const helper = `\n/*** Rebuild a navigator with one concrete discriminant and only shared navigator state. */\nfunction createNavigatorWithType(current: NavigatorNode, type: NavigatorType): NavigatorNode {\n  const shared = {\n    routes: current.routes,\n    ...(current.initialRouteName === undefined ? {} : { initialRouteName: current.initialRouteName }),\n    ...(current.options === undefined ? {} : { options: current.options }),\n  };\n\n  switch (type) {\n    case 'stack':\n      return { ...shared, type: 'stack' };\n    case 'tabs':\n      return { ...shared, type: 'tabs' };\n    case 'drawer':\n      return { ...shared, type: 'drawer' };\n  }\n}\n`;
+          const marker = `\n/***\n * Change the primary navigator type when the requested navigator type is valid and different.`;
+          if (!before.includes(marker)) throw new Error('Expected navigator type function marker not found.');
+          const after = before.replace(marker, helper + marker).replace(old, replacement);
+          fs.writeFileSync(file, after);
+          NODE
+          bun run format
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/manifestState.ts
+          git commit -m 'fix: preserve navigator node discriminants'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
