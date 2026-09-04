@@ -203,6 +203,34 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
   });
 
+  test('keeps the root web export route when auth posts back to root without an index screen', () => {
+    const manifest = createOAuthManifest();
+    const { auth } = manifest.infra;
+    if (!auth?.flow) {
+      throw new Error('OAuth fixture is missing auth flow.');
+    }
+    manifest.infra = {
+      ...manifest.infra,
+      auth: {
+        ...auth,
+        flow: {
+          ...auth.flow,
+          postSignInRoute: '/',
+        },
+      },
+    };
+    manifest.navigator = {
+      ...manifest.navigator,
+      routes: [{ name: 'dashboard', screenId: 'index' }],
+    };
+
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', manifest, [], {
+      includeStudio: false,
+    });
+
+    expect(files.some((file) => file.path === 'src/app/index.tsx')).toBe(true);
+  });
+
   test('composes one React import for generated Auth plus Studio root layouts', () => {
     const files = new GeneratedAppFileGenerator().generateFiles(
       '/tmp/demo',

@@ -246,7 +246,10 @@ export class GeneratedAppFileGenerator {
       });
 
       const postSignInHref = routeNameToHref(authLayoutPlan.postSignInRoute);
-      if (postSignInHref !== '/') {
+      const hasRootIndexRoute = authLayoutPlan.appNavigator.routes.some(
+        (route) => route.name === 'index',
+      );
+      if (postSignInHref !== '/' || !hasRootIndexRoute) {
         files.push({
           path: normalizeRel(path.join('src/app/index.tsx')),
           content: getIndexRedirectRouteTsx(postSignInHref),
