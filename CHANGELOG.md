@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.23
+
+### Patch Changes
+
+- 4403125: Emit the canonical `MaterialDesignIcons` provider in generated navigation and update generated apps to the current ZORA and Studio owner ranges.
+
 ## 2.0.22
 
 ### Patch Changes
