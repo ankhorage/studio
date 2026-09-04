@@ -29,6 +29,9 @@ interface GetRootLayoutTsxArgs {
   useStoredAuthSessionCredentialResolver?: boolean;
 }
 
+/***
+ * Describe the generated root-layout import requirements, including Studio-only runtime and media-picker dependencies when authoring is enabled.
+ */
 export function getRootLayoutImportRequirements(
   includeStudio: boolean,
 ): GeneratedImportRequirement[] {
@@ -84,6 +87,10 @@ export function getRootLayoutImportRequirements(
   ];
 }
 
+/***
+ * Indent every non-empty line in a generated multiline block while preserving blank lines.
+ * @utility @ankhorage/utility/string
+ */
 function indentGeneratedBlock(content: string, indent = '  '): string {
   return content
     .split('\n')
@@ -91,6 +98,10 @@ function indentGeneratedBlock(content: string, indent = '  '): string {
     .join('\n');
 }
 
+/***
+ * Generate the complete Expo root-layout module by composing manifest navigation, runtime providers, optional auth integration, Studio authoring shell and generated operation infrastructure.
+ * @todo Move generated application-shell template ownership out of the generic host/layout bucket into the project/template generation domain.
+ */
 export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
   const {
     manifest,
