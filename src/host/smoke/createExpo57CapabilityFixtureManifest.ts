@@ -12,6 +12,9 @@ const EXPO57_CAPABILITY_PERMISSIONS = [
   'notifications',
 ] as const satisfies readonly AnkhoragePermissionName[];
 
+/*** Create the generated Expo 57 capability manifest used by acceptance fixtures.
+ * @todo Move this fixture manifest builder from src/host/smoke to test/smoke.
+ */
 export function createExpo57CapabilityFixtureManifest(): AppManifest {
   const manifest = createOAuthFixtureManifest({
     category: 'developer_tools',
