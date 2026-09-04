@@ -3,7 +3,8 @@ import path from 'node:path';
 
 /***
  * Resolve and require the Expo CLI binary installed by a generated fixture rather than an ambient executable.
- * @todo Move this Expo acceptance helper out of src/host into test/smoke.
+ * @utility @ankhorage/utility/node/process
+ * @todo Extract the reusable project-owned executable resolver; keep Expo-specific acceptance wording in test/smoke.
  */
 export async function resolveAppOwnedExpoCliAsync(projectRoot: string): Promise<string> {
   const expoCli = path.join(projectRoot, 'node_modules', '.bin', 'expo');
