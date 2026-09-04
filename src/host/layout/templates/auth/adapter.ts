@@ -2,6 +2,7 @@ interface AuthAdapterTemplateOptions {
   readonly oauthProviders?: readonly ('google' | 'apple')[];
 }
 
+/*** Generate the Supabase-auth adapter module and its missing-environment fallback for a generated app. */
 export function getAuthAdapterTs(options: AuthAdapterTemplateOptions = {}) {
   const oauthProviders = options.oauthProviders ?? [];
   const oauthProviderDeclaration =
