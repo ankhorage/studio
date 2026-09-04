@@ -97,7 +97,6 @@ export class ProjectStore {
         id,
         name: manifest.metadata.name,
         path: projectPath,
-        version: manifest.metadata.version,
         isAnkhApp: true,
         category: manifest.metadata.category,
         created: manifest.metadata.created,
@@ -111,6 +110,7 @@ export class ProjectStore {
   }
 }
 
+/*** Normalize mutable project-owned manifest metadata before persistence. */
 function normalizeManifestForProject(projectId: string, manifest: AppManifest): AppManifest {
   return {
     ...manifest,
@@ -122,6 +122,7 @@ function normalizeManifestForProject(projectId: string, manifest: AppManifest): 
   };
 }
 
+/*** Validate one manifest before projecting it into a project summary. */
 function parseProjectSummaryManifest(value: unknown): AppManifest {
   if (!isAppManifest(value)) {
     throw new Error('Project manifest does not contain canonical Studio metadata.');
@@ -130,6 +131,7 @@ function parseProjectSummaryManifest(value: unknown): AppManifest {
   return value;
 }
 
+/*** Validate one manifest before exposing it through the ProjectStore. */
 function parseReadableAppManifest(value: unknown): AppManifest {
   if (!isAppManifest(value)) {
     throw new Error('Project manifest is not a canonical AppManifest.');
@@ -138,6 +140,7 @@ function parseReadableAppManifest(value: unknown): AppManifest {
   return value;
 }
 
+/*** Resolve the active theme referenced by one project manifest. */
 function resolveActiveTheme(manifest: AppManifest): ThemeConfig {
   const activeTheme = manifest.themes.find((theme) => theme.id === manifest.activeThemeId);
   if (!activeTheme) {
@@ -147,6 +150,7 @@ function resolveActiveTheme(manifest: AppManifest): ThemeConfig {
   return activeTheme;
 }
 
+/*** Return whether one filesystem path currently exists. */
 async function exists(filePath: string): Promise<boolean> {
   try {
     await fs.access(filePath);
@@ -156,6 +160,7 @@ async function exists(filePath: string): Promise<boolean> {
   }
 }
 
+/*** Persist JSON atomically through a project-local temporary file. */
 async function writeJsonAtomic(filePath: string, value: unknown): Promise<void> {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   const temporaryPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
