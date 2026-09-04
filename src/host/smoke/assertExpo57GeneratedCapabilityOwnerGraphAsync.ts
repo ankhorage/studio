@@ -5,6 +5,10 @@ import { readOwnProperty } from '../../utils/readOwnProperty';
 import { assertInstalledRegistryPackageAsync } from './assertInstalledRegistryPackageAsync';
 import { assertReactNativeOwnerGraphAsync } from './assertReactNativeOwnerGraphAsync';
 
+/***
+ * Assert released package ownership, React Native graph consistency, and forbidden legacy Expo packages for a capability fixture.
+ * @todo Move this capability-graph acceptance policy out of src/host into test/smoke.
+ */
 export async function assertExpo57GeneratedCapabilityOwnerGraphAsync(
   projectRoot: string,
 ): Promise<void> {
@@ -47,10 +51,18 @@ export async function assertExpo57GeneratedCapabilityOwnerGraphAsync(
   }
 }
 
+/***
+ * Read and parse a package.json file from disk.
+ * @utility @ankhorage/utility/node/package
+ */
 async function readPackageJsonAsync(packageJsonPath: string): Promise<PackageJson> {
   return JSON.parse(await readFile(packageJsonPath, 'utf8')) as PackageJson;
 }
 
+/***
+ * Require a string dependency range for one package name from a package manifest.
+ * @utility @ankhorage/utility/node/package
+ */
 function requireDependencyRange(packageJson: PackageJson, packageName: string): string {
   const range = packageJson.dependencies
     ? readOwnProperty<string>(packageJson.dependencies, packageName)
