@@ -31,6 +31,10 @@ interface ProjectManagerDependencies {
   readonly runProjectInfrastructureLifecycle: typeof runProjectInfrastructureLifecycle;
 }
 
+/***
+ * Coordinate Studio project lifecycle operations across persistence, scaffolding, generated routes, bundled media and infrastructure synchronization.
+ * @todo Move project application orchestration from host/orchestrator to the projects domain; host should remain an adapter/composition edge.
+ */
 export class ProjectManager {
   private readonly store: ProjectStore;
   private readonly scaffolder: ProjectScaffolder;
@@ -40,6 +44,7 @@ export class ProjectManager {
   private readonly dependencies: ProjectManagerDependencies;
   private readonly appsRoot: string;
 
+  /*** Construct project lifecycle collaborators for one Studio workspace root, allowing infrastructure lifecycle injection for tests/adapters. */
   constructor(
     private readonly rootPath: string,
     dependencies: Partial<ProjectManagerDependencies> = {},
@@ -56,10 +61,12 @@ export class ProjectManager {
     };
   }
 
+  /*** List persisted Studio project summaries for the workspace. */
   async listProjects(): Promise<ProjectSummary[]> {
     return this.store.listProjects();
   }
 
+  /*** Destroy deployed infrastructure when present and then remove the project files from the workspace. */
   async deleteProject(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
     let infraDestroyed = false;
@@ -83,6 +90,7 @@ export class ProjectManager {
     return { success: true, infraDestroyed, projectFilesDeleted: true };
   }
 
+  /*** Validate project identity, scaffold a new app from a source manifest/assets, generate owned files and synchronize infrastructure. */
   async createProject(
     name: string,
     source: ProjectCreationSource,
@@ -145,15 +153,18 @@ export class ProjectManager {
     return { success: true, id: slug, path: projectPath };
   }
 
+  /*** Install packages inside one generated project's own workspace. */
   async installProjectPackages(projectId: string) {
     await runWorkspaceInstall(getProjectPath(this.rootPath, projectId));
     return { success: true, scope: 'project' as const };
   }
 
+  /*** Read one project's canonical persisted manifest. */
   async getProjectManifest(projectId: string): Promise<AppManifest> {
     return this.store.readManifest(projectId);
   }
 
+  /*** Apply system-owned manifest templates and persist the normalized project manifest without regenerating route files. */
   async persistProjectManifest(args: {
     projectId: string;
     manifest: AppManifest;
@@ -162,6 +173,7 @@ export class ProjectManager {
     return this.store.writeManifest(args.projectId, normalizedManifest);
   }
 
+  /*** Persist a project manifest, optionally regenerate current scaffold/router ownership, and synchronize infrastructure. */
   async saveProjectManifest(args: {
     projectId: string;
     manifest: AppManifest;
@@ -193,6 +205,7 @@ export class ProjectManager {
     return { success: true };
   }
 
+  /*** Regenerate current project scaffold/runtime files from the persisted manifest and synchronize infrastructure without changing manifest state. */
   async syncProjectRuntime(args: {
     projectId: string;
     mutations: LayoutMutation[];
@@ -221,6 +234,7 @@ export class ProjectManager {
     return { success: true };
   }
 
+  /*** Regenerate only the root Expo layout from current manifest and layout mutations. */
   async rebuildRootLayout(args: { projectId: string; mutations: LayoutMutation[] }) {
     const { projectId, mutations } = args;
     const manifest = await this.getProjectManifest(projectId);
@@ -240,6 +254,10 @@ export class ProjectManager {
     return { success: true };
   }
 
+  /***
+   * Delegate project synchronization to syncProjectRuntime.
+   * @todo Remove this compatibility alias and keep one canonical project synchronization operation.
+   */
   async syncProject(args: {
     projectId: string;
     mutations: LayoutMutation[];
@@ -248,12 +266,14 @@ export class ProjectManager {
     return this.syncProjectRuntime(args);
   }
 
+  /*** Regenerate the infrastructure projection for one persisted project manifest. */
   async regenerateInfrastructure(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
     const manifest = await this.getProjectManifest(projectId);
     return syncProjectInfrastructure({ projectId, projectPath, manifest });
   }
 
+  /*** Inspect current infrastructure status for one persisted project manifest. */
   async getInfrastructureStatus(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
     const manifest = await this.getProjectManifest(projectId);
@@ -282,6 +302,7 @@ export class ProjectManager {
     };
   }
 
+  /*** Execute infrastructure teardown and wrap provider/lifecycle failures with project context. */
   private async destroyProjectInfrastructure(
     projectId: string,
     projectPath: string,
@@ -302,6 +323,7 @@ export class ProjectManager {
     }
   }
 
+  /*** Generate current app files, write them to disk and initialize or reconcile generated-route ownership. */
   private async writeGeneratedFiles(
     projectPath: string,
     manifest: AppManifest,
@@ -327,15 +349,21 @@ export class ProjectManager {
     }
   }
 
+  /***
+   * Ensure a text file's parent directory exists and write UTF-8 content.
+   * @utility @ankhorage/utility/node/fs
+   */
   private async writeText(absPath: string, content: string) {
     await fs.mkdir(path.dirname(absPath), { recursive: true });
     await fs.writeFile(absPath, content, 'utf8');
   }
 
+  /*** Resolve whether generated project files should include Studio, preferring an explicit request over persisted generation state. */
   private async shouldIncludeStudio(projectPath: string, requested?: boolean) {
     return requested ?? (await readProjectStudioInclusion(projectPath));
   }
 
+  /*** Synchronize the generated project scaffold against the current manifest/runtime plan and persist Studio inclusion ownership. */
   private async syncProjectScaffold(
     projectPath: string,
     projectId: string,
@@ -355,6 +383,10 @@ export class ProjectManager {
   }
 }
 
+/***
+ * Require canonical deploy targets before project generation/synchronization.
+ * @todo Move deploy-target validation to the deploy/projects domain boundary rather than host/orchestrator.
+ */
 function requireProjectDeployTargets(manifest: AppManifest) {
   const targets = manifest.deploy?.targets;
   if (!targets) {
@@ -365,6 +397,10 @@ function requireProjectDeployTargets(manifest: AppManifest) {
   return targets;
 }
 
+/***
+ * Report whether a filesystem path is accessible.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function exists(filePath: string): Promise<boolean> {
   try {
     await fs.access(filePath);
@@ -374,6 +410,7 @@ async function exists(filePath: string): Promise<boolean> {
   }
 }
 
+/*** Resolve the generated auth-provider mode from the manifest's global auth infrastructure ownership. */
 function resolveGeneratedAuthProvider(manifest: AppManifest): GeneratedAuthProvider {
   const { auth } = manifest.infra;
   if (auth?.scope === 'global' && auth.provider === 'supabase') {
@@ -382,6 +419,7 @@ function resolveGeneratedAuthProvider(manifest: AppManifest): GeneratedAuthProvi
   return null;
 }
 
+/*** Resolve the generated storage-provider mode when automatic storage should follow Supabase-owned auth/database infrastructure. */
 function resolveGeneratedStorageProvider(manifest: AppManifest): GeneratedStorageProvider {
   const { auth, database, storage } = manifest.infra;
   if (storage?.provider !== 'auto') return null;
