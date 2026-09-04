@@ -6,6 +6,9 @@ import {
   NATIVE_EVIDENCE_IOS_SCHEME,
 } from './constants';
 
+/*** Create the temporary generation-driver source used by the native capability evidence harness.
+ * @todo Move this acceptance-fixture source generator from src/host/smoke to test/smoke/nativeCapabilityEvidence.
+ */
 export function createGenerationDriverSource(workspaceRoot: string): string {
   return `import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
