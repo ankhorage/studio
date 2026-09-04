@@ -18,6 +18,7 @@ import type {
   ProjectStoreListingAssetLocation,
   StoreListingLocale,
 } from '@ankhorage/deploy/project';
+import { toStandaloneArrayBuffer } from '@ankhorage/utility/binary';
 
 import { ProjectDeployApiError } from './projectDeployApiError';
 import type { ProjectDeployMonetizationInspectionResult } from './projectDeployMonetizationInspectionResult';
@@ -71,7 +72,7 @@ export class ProjectDeployClient {
       {
         method: 'PUT',
         headers: { 'Content-Type': 'application/octet-stream' },
-        body: copyToArrayBuffer(data),
+        body: toStandaloneArrayBuffer(data),
       },
       parseListing,
     );
@@ -264,16 +265,6 @@ async function readJson(response: Response): Promise<unknown> {
   } catch {
     throw new ProjectDeployApiError('The Studio host returned a non-JSON Deploy response.', 502);
   }
-}
-
-/***
- * Copy a Uint8Array into an exact-size standalone ArrayBuffer.
- * @utility @ankhorage/utility/binary
- */
-function copyToArrayBuffer(data: Uint8Array): ArrayBuffer {
-  const buffer = new ArrayBuffer(data.byteLength);
-  new Uint8Array(buffer).set(data);
-  return buffer;
 }
 
 /*** Build the Studio deploy endpoint path for one project and suffix. @todo Keep deploy endpoint routing under src/deploy/. */

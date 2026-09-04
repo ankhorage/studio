@@ -1,4 +1,5 @@
 import type { EndpointTestResult } from '@ankhorage/data-sources';
+import { redactUrlQueryValues } from '@ankhorage/utility/url';
 
 import type { ExternalApiOperationTestResult } from '../../externalApiAuthoringContracts';
 
@@ -12,7 +13,7 @@ export function sanitizeExternalApiOperationTestResult(
   const request = result.request
     ? {
         method: result.request.method,
-        url: redactQueryValues(result.request.url),
+        url: redactUrlQueryValues(result.request.url),
         dryRun: result.request.dryRun,
       }
     : undefined;
@@ -29,20 +30,4 @@ export function sanitizeExternalApiOperationTestResult(
         diagnostics: result.diagnostics,
       }
     : { ok: false, request, response, diagnostics: result.diagnostics };
-}
-
-/***
- * Redact every query-parameter value from a URL while preserving the URL shape and tolerating invalid input.
- * @utility @ankhorage/utility/url
- */
-function redactQueryValues(rawUrl: string): string {
-  try {
-    const url = new URL(rawUrl);
-    for (const key of [...url.searchParams.keys()]) {
-      url.searchParams.set(key, '[redacted]');
-    }
-    return url.toString();
-  } catch {
-    return rawUrl.split('?')[0] ?? rawUrl;
-  }
 }
