@@ -71,6 +71,7 @@ export type ProjectSecretRemoveResult =
 export class ProjectSecretUsageError extends Error {
   readonly code: string;
 
+  /*** Create the domain error used when a secret reference cannot be inspected safely. */
   constructor(args: { readonly code: string; readonly message: string }) {
     super(args.message);
     this.name = 'ProjectSecretUsageError';
@@ -84,6 +85,10 @@ export class ProjectSecretService {
   private readonly createClient: (databaseUrl: string) => BunSupabaseVaultClient;
   private readonly resolveDatabaseUrl: (projectPath: string, target: string) => Promise<string>;
 
+  /***
+   * @todo Keep this service in the Secrets application/host boundary; it owns project secret-store lifecycle and trusted Vault access rather than generic persistence.
+   * Create the project-scoped secret application service with injectable trusted Vault boundaries.
+   */
   constructor(options: ProjectSecretServiceOptions) {
     this.projectManager = options.projectManager;
     this.workspaceRoot = options.workspaceRoot;
@@ -93,6 +98,7 @@ export class ProjectSecretService {
       ((projectPath, target) => resolveProjectSecretDatabaseUrl({ projectPath, target }));
   }
 
+  /*** List secret metadata for a project/environment scope with optional kind and provider filters. */
   list(input: {
     readonly projectId: string;
     readonly environment?: string;
@@ -108,6 +114,7 @@ export class ProjectSecretService {
     );
   }
 
+  /*** Read secret metadata for one project-scoped reference without resolving its payload. */
   getMetadata(input: {
     readonly projectId: string;
     readonly environment?: string;
@@ -121,6 +128,7 @@ export class ProjectSecretService {
     );
   }
 
+  /*** Create a new project secret through the configured Infra secret-store adapter. */
   create(input: {
     readonly projectId: string;
     readonly environment?: string;
@@ -140,6 +148,7 @@ export class ProjectSecretService {
     );
   }
 
+  /*** Replace the payload stored behind an existing project secret reference. */
   replace(input: {
     readonly projectId: string;
     readonly environment?: string;
@@ -155,6 +164,7 @@ export class ProjectSecretService {
     );
   }
 
+  /*** Remove one project secret directly from the configured secret store. */
   remove(input: {
     readonly projectId: string;
     readonly environment?: string;
@@ -168,6 +178,7 @@ export class ProjectSecretService {
     );
   }
 
+  /*** Resolve the trusted payload behind one project-scoped secret reference. */
   resolve(input: {
     readonly projectId: string;
     readonly environment?: string;
@@ -181,6 +192,7 @@ export class ProjectSecretService {
     );
   }
 
+  /*** Inspect the current project manifest and report every usage of a normalized secret reference. */
   async getUsages(input: {
     readonly projectId: string;
     readonly environment?: string;
@@ -195,6 +207,9 @@ export class ProjectSecretService {
     return findProjectSecretUsages({ manifest, ref: refResult.data });
   }
 
+  /***
+   * Remove a secret only after evaluating current manifest usages and requiring explicit confirmation for broken references.
+   */
   async removeGuarded(input: {
     readonly projectId: string;
     readonly environment?: string;
@@ -267,6 +282,7 @@ export class ProjectSecretService {
     }
   }
 
+  /*** Validate and upsert trusted OAuth provider credentials into the project secret store. */
   async configureOAuthProvider(
     input: ConfigureOAuthProviderInput,
   ): Promise<ConfigureOAuthProviderResult> {
@@ -333,6 +349,10 @@ export class ProjectSecretService {
     };
   }
 
+  /***
+   * @todo Reassess the duplicate manifest retry when the Projects/Secrets boundary is migrated; the second call currently repeats the same read without changing inputs.
+   * Read the current editable project manifest, retrying the same manager once on failure.
+   */
   private async readEditableManifest(projectId: string): Promise<AppManifest> {
     try {
       return await this.projectManager.getProjectManifest(projectId);
@@ -341,6 +361,7 @@ export class ProjectSecretService {
     }
   }
 
+  /*** Open the trusted project secret adapter for one operation and always close its Vault client afterward. */
   private async withAdapter<TResult>(
     projectId: string,
     operation: (
@@ -390,6 +411,7 @@ export class ProjectSecretService {
   }
 }
 
+/*** Build the canonical project/environment scope used by the Secret-store contract. */
 function createScope(projectId: string, environment = 'local') {
   return {
     projectId,
@@ -397,12 +419,20 @@ function createScope(projectId: string, environment = 'local') {
   };
 }
 
+/***
+ * @utility @ankhorage/utility/value
+ * Normalize optional user text to a trimmed non-empty string; this collapses to `asNonEmptyString`.
+ */
 function normalizeOptionalText(value: string | undefined): string | undefined {
   const normalized = value?.trim();
   if (!normalized) return undefined;
   return normalized;
 }
 
+/***
+ * @utility @ankhorage/utility/error
+ * Project a structured error to the public `{ code, message }` pair; this collapses to `pickCodeMessage`.
+ */
 function toPublicError(error: { readonly code: string; readonly message: string }) {
   return { code: error.code, message: error.message };
 }
