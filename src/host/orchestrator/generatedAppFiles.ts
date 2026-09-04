@@ -3,6 +3,8 @@ import {
   getExpoBarcodeScannerViewSource,
   getExpoReaderSurfaceViewSource,
 } from '@ankhorage/expo-runtime/planning';
+import { isMissingPathError, listFilesRecursive, removePath } from '@ankhorage/utility/node/fs';
+import { formatJavaScriptObjectKey } from '@ankhorage/utility/string';
 import { promises as fs } from 'fs';
 import path from 'path';
 
@@ -117,11 +119,14 @@ export function createGeneratedAppExtensionRegistrySource(args: {
   }
 
   const registryEntries = entries
-    .map(({ componentName, exportName }) => `  ${formatRegistryKey(componentName)}: ${exportName},`)
+    .map(
+      ({ componentName, exportName }) =>
+        `  ${formatJavaScriptObjectKey(componentName)}: ${exportName},`,
+    )
     .join('\n');
   const interactionPolicySupportEntries = [...interactionPolicySupportedComponents]
     .sort()
-    .map((componentName) => `  ${formatRegistryKey(componentName)}: true,`)
+    .map((componentName) => `  ${formatJavaScriptObjectKey(componentName)}: true,`)
     .join('\n');
 
   const componentRegistry = registryEntries
@@ -143,26 +148,6 @@ export function createGeneratedAppExtensionRegistrySource(args: {
   ]
     .filter((line, index, lines) => line.length > 0 || lines[index - 1]?.length !== 0)
     .join('\n');
-}
-
-/***
- * Format an arbitrary string as either a bare JavaScript identifier key or a JSON-quoted object key.
- * @utility @ankhorage/utility/string
- */
-function formatRegistryKey(key: string): string {
-  if (/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(key)) {
-    return key;
-  }
-
-  return JSON.stringify(key);
-}
-
-/***
- * Remove a filesystem path recursively while tolerating already-absent paths.
- * @utility @ankhorage/utility/node/fs
- */
-async function removePath(pathToRemove: string) {
-  await fs.rm(pathToRemove, { recursive: true, force: true });
 }
 
 /***
@@ -193,32 +178,7 @@ async function assertNoForbiddenSpecifiers(targetProjectPath: string) {
  * @utility @ankhorage/utility/node/fs
  */
 async function listSourceFiles(rootPath: string): Promise<string[]> {
-  let entries;
-  try {
-    entries = await fs.readdir(rootPath, { withFileTypes: true });
-  } catch (error) {
-    if (isMissingPathError(error)) return [];
-    throw error;
-  }
-
-  const files = [];
-  for (const entry of entries) {
-    const entryPath = path.join(rootPath, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...(await listSourceFiles(entryPath)));
-      continue;
-    }
-    if (entry.isFile() && /\.(?:[cm]?[jt]sx?|json)$/.test(entry.name)) {
-      files.push(entryPath);
-    }
-  }
-  return files;
-}
-
-/***
- * Detect a Node filesystem error indicating that a path does not exist.
- * @utility @ankhorage/utility/node/fs
- */
-function isMissingPathError(error: unknown): error is NodeJS.ErrnoException {
-  return error instanceof Error && 'code' in error && error.code === 'ENOENT';
+  return (await listFilesRecursive(rootPath)).filter((filePath) =>
+    /\.(?:[cm]?[jt]sx?|json)$/.test(filePath),
+  );
 }

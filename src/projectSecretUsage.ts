@@ -1,4 +1,6 @@
 import type { AppManifest } from '@ankhorage/contracts';
+import { chainComparators } from '@ankhorage/utility/sort';
+import { titleCaseIdentifier } from '@ankhorage/utility/string';
 
 export type ProjectSecretUsageCategory = 'oauth-provider' | 'project-config';
 
@@ -33,7 +35,7 @@ export function findProjectSecretUsages(input: {
     }
 
     const ownerId = provider.id;
-    const label = `${provider.label ?? titleCase(ownerId)} OAuth provider`;
+    const label = `${provider.label ?? titleCaseIdentifier(ownerId)} OAuth provider`;
     const path = `infra.auth.oauth.providers[${ownerId}].credentialsRef`;
     usages.set(
       `${path}:${input.ref}`,
@@ -59,22 +61,10 @@ export function findProjectSecretUsages(input: {
  * @utility @ankhorage/utility/sort
  */
 function compareSecretUsages(left: ProjectSecretUsage, right: ProjectSecretUsage): number {
-  return (
-    left.category.localeCompare(right.category) ||
-    left.path.localeCompare(right.path) ||
-    left.label.localeCompare(right.label) ||
-    (left.ownerId ?? '').localeCompare(right.ownerId ?? '')
-  );
-}
-
-/***
- * Convert hyphen-, underscore-, or whitespace-separated words to title case.
- * @utility @ankhorage/utility/string
- */
-function titleCase(value: string): string {
-  return value
-    .split(/[-_\s]+/u)
-    .filter(Boolean)
-    .map((part) => `${part.slice(0, 1).toUpperCase()}${part.slice(1)}`)
-    .join(' ');
+  return chainComparators<ProjectSecretUsage>([
+    (a, b) => a.category.localeCompare(b.category),
+    (a, b) => a.path.localeCompare(b.path),
+    (a, b) => a.label.localeCompare(b.label),
+    (a, b) => (a.ownerId ?? '').localeCompare(b.ownerId ?? ''),
+  ])(left, right);
 }
