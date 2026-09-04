@@ -21,13 +21,16 @@ type MediaStorageResolver = (args: {
   readonly workspaceRoot: string;
 }) => Promise<ProjectMediaStorageContext>;
 
+/*** Manage authoring media stored through the project's configured storage adapter. */
 export class ProjectMediaService {
+  /*** Construct the media service with project management, workspace location, and storage resolution. */
   constructor(
     private readonly projectManager: ProjectManager,
     private readonly workspaceRoot: string,
     private readonly resolveStorage: MediaStorageResolver = resolveProjectMediaStorage,
   ) {}
 
+  /*** Upload one authored media asset and project the storage response into the canonical media contract. */
   async ingest(projectId: string, input: ProjectMediaIngestInput): Promise<MediaAsset> {
     const storage = await this.getStorage(projectId);
     const path = createAuthoringMediaPath(input.assetId, input.name);
@@ -62,6 +65,7 @@ export class ProjectMediaService {
     };
   }
 
+  /*** Resolve one authoring storage reference to a signed URL after enforcing project-pool ownership. */
   async resolve(projectId: string, source: MediaStorageSource): Promise<string> {
     const storage = await this.getStorage(projectId);
     assertAuthoringStorageSource(source, storage.bucket);
@@ -70,6 +74,7 @@ export class ProjectMediaService {
     return resolved.data.asset.url;
   }
 
+  /*** Remove one authoring storage object after enforcing project-pool ownership. */
   async remove(projectId: string, source: MediaStorageSource): Promise<void> {
     const storage = await this.getStorage(projectId);
     assertAuthoringStorageSource(source, storage.bucket);
@@ -77,6 +82,7 @@ export class ProjectMediaService {
     if (!removed.ok) throw new Error(removed.error.message);
   }
 
+  /*** Resolve the active project's configured media storage context. */
   private getStorage(projectId: string) {
     return this.resolveStorage({
       projectId,
@@ -86,16 +92,22 @@ export class ProjectMediaService {
   }
 }
 
+/*** Build the storage-object path for one Studio-authored media asset. */
 export function createAuthoringMediaPath(assetId: string, fileName: string): string {
   return `authoring/${sanitizeSegment(assetId)}/${sanitizeFileName(fileName)}`;
 }
 
+/*** Verify that a storage reference belongs to the active project's authoring-media pool. */
 function assertAuthoringStorageSource(source: MediaStorageSource, bucket: string): void {
   if (source.bucket !== bucket || !source.path.startsWith('authoring/')) {
     throw new Error('Media storage reference is outside the project authoring pool.');
   }
 }
 
+/***
+ * Sanitize an arbitrary path segment to letters, digits, underscores, and hyphens with a fallback.
+ * @utility @ankhorage/utility/media
+ */
 function sanitizeSegment(value: string): string {
   return (
     value
@@ -105,6 +117,10 @@ function sanitizeSegment(value: string): string {
   );
 }
 
+/***
+ * Sanitize an arbitrary file name to a safe basename with a deterministic fallback.
+ * @utility @ankhorage/utility/media
+ */
 function sanitizeFileName(value: string): string {
   const baseName = value.trim().split(/[\\/]/).pop() ?? '';
   const normalized = baseName.replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^\.+/, '');
