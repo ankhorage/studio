@@ -3,6 +3,7 @@ import type { AppManifest, MediaAssetKind } from '@ankhorage/contracts';
 export interface ProjectCreationAsset {
   readonly assetId: string;
   readonly name: string;
+  readonly fileName?: string;
   readonly kind: MediaAssetKind;
   readonly body: Uint8Array;
   readonly contentType?: string;
