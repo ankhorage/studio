@@ -7,6 +7,7 @@ import { ThemeTypographySizeEditor } from './ThemeTypographySizeEditor';
 import { ThemeTypographyWeightEditor } from './ThemeTypographyWeightEditor';
 import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 
+/*** Compose heading, type-size, and font-weight editors for the active theme's global typography token set. */
 export function ThemeTypographyAdminPage() {
   const { selection } = useActiveThemeAdmin();
   return (
