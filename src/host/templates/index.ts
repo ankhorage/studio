@@ -1,6 +1,6 @@
 import { promises as fs } from 'node:fs';
 import { createRequire } from 'node:module';
-import { dirname, join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 
 import type { AppCategory, MediaAsset } from '@ankhorage/contracts';
 import {
@@ -94,6 +94,7 @@ async function readTemplateImageAsset(
   return {
     assetId: media.id,
     name: media.name,
+    fileName: getTemplateImageFileName(asset.targetPath),
     kind: media.kind,
     body,
     contentType: asset.contentType ?? media.contentType,
@@ -102,4 +103,9 @@ async function readTemplateImageAsset(
     height: media.metadata?.height,
     durationMs: media.metadata?.durationMs,
   };
+}
+
+/*** Extract the packaged file name used when materializing a template image into a generated project. */
+export function getTemplateImageFileName(targetPath: string): string {
+  return basename(targetPath);
 }

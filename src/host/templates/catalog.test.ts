@@ -1,13 +1,23 @@
 import { CATEGORY_PRESETS, listTemplates } from '@ankhorage/templates';
 import { expect, test } from 'bun:test';
 
-import { getTemplateCatalog } from './index';
+import { getTemplateImageFileName, getTemplateCatalog } from './index';
 
-test('keeps the category catalog valid when no standalone templates are published', () => {
-  expect(listTemplates()).toEqual([]);
-
+test('projects every published template into its category catalog', () => {
   const catalog = getTemplateCatalog();
   expect(catalog.categories).toHaveLength(Object.keys(CATEGORY_PRESETS).length);
-  expect(catalog.categories.every((category) => category.templateCount === 0)).toBe(true);
-  expect(catalog.categories.every((category) => category.templates.length === 0)).toBe(true);
+  expect(catalog.categories).toEqual(
+    expect.arrayContaining(
+      Object.keys(CATEGORY_PRESETS).map((category) =>
+        expect.objectContaining({
+          id: category,
+          templateCount: listTemplates(category as keyof typeof CATEGORY_PRESETS).length,
+        }),
+      ),
+    ),
+  );
+});
+
+test('preserves template image filenames independently from their display names', () => {
+  expect(getTemplateImageFileName('assets/images/home-hero.webp')).toBe('home-hero.webp');
 });

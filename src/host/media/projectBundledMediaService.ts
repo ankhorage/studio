@@ -9,6 +9,7 @@ import { removeProjectAuthoringAsset } from './removeProjectAuthoringAsset';
 export interface ProjectBundledMediaInput {
   readonly assetId: string;
   readonly name: string;
+  readonly fileName?: string;
   readonly kind: MediaAssetKind;
   readonly body: Uint8Array;
   readonly contentType?: string;
@@ -26,7 +27,8 @@ export class ProjectBundledMediaService {
   /*** Write one bundled authoring asset, regenerate its registry, and return canonical media metadata. */
   async bundle(projectId: string, input: ProjectBundledMediaInput): Promise<MediaAsset> {
     const projectPath = getProjectPath(this.workspaceRoot, projectId);
-    const bundledPath = createBundledAuthoringMediaPath(input.assetId, input.name);
+    const fileName = input.fileName ?? input.name;
+    const bundledPath = createBundledAuthoringMediaPath(input.assetId, fileName);
     await writeProjectAuthoringAsset(projectPath, bundledPath, input.body);
     await syncProjectBundledMediaRegistry(projectPath);
 
@@ -37,7 +39,7 @@ export class ProjectBundledMediaService {
       source: { kind: 'bundled', path: bundledPath },
       contentType: input.contentType,
       metadata: {
-        originalFileName: input.name,
+        originalFileName: fileName,
         sizeBytes: input.sizeBytes ?? input.body.byteLength,
         width: input.width,
         height: input.height,

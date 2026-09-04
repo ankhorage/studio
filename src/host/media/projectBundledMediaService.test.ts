@@ -73,6 +73,26 @@ describe('ProjectBundledMediaService', () => {
     expect(registry).not.toContain(asset.source.path);
   });
 
+  test('preserves a media display name while using its canonical asset filename', async () => {
+    const root = await createWorkspaceRoot();
+    const service = new ProjectBundledMediaService(root);
+
+    const asset = await service.bundle('demo', {
+      assetId: 'hero',
+      name: 'Morning grounding sunrise',
+      fileName: 'home-hero.webp',
+      kind: 'image',
+      body: new Uint8Array([1]),
+      contentType: 'image/webp',
+    });
+
+    expect(asset).toMatchObject({
+      name: 'Morning grounding sunrise',
+      source: { kind: 'bundled', path: 'assets/authoring/hero/home-hero.webp' },
+      metadata: { originalFileName: 'home-hero.webp' },
+    });
+  });
+
   test('does not overwrite an existing bundled authoring file', async () => {
     const root = await createWorkspaceRoot();
     const service = new ProjectBundledMediaService(root);

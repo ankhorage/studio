@@ -24,7 +24,7 @@ test('materializes project creation assets and persists their bundled media sour
           id: 'hero',
           name: 'Hero.png',
           kind: 'image' as const,
-          contentType: 'image/png',
+          contentType: 'image/webp',
           source: { kind: 'bundled' as const, path: 'assets/images/hero.png' },
         },
       },
@@ -38,9 +38,10 @@ test('materializes project creation assets and persists their bundled media sour
       {
         assetId: 'hero',
         name: 'Hero.png',
+        fileName: 'hero.webp',
         kind: 'image',
         body: new Uint8Array([1, 2, 3]),
-        contentType: 'image/png',
+        contentType: 'image/webp',
         width: 1200,
         height: 800,
       },
@@ -51,7 +52,9 @@ test('materializes project creation assets and persists their bundled media sour
   const hero = createdManifest.media?.assets.hero;
   expect(hero).toBeDefined();
   if (hero?.source.kind !== 'bundled') throw new Error('Expected bundled hero media.');
-  expect(hero.source.path).toBe('assets/authoring/hero/Hero.png');
+  expect(hero.name).toBe('Hero.png');
+  expect(hero.source.path).toBe('assets/authoring/hero/hero.webp');
+  expect(hero.metadata).toMatchObject({ originalFileName: 'hero.webp' });
   expect(hero.metadata).toMatchObject({ sizeBytes: 3, width: 1200, height: 800 });
   expect(new Uint8Array(await readFile(path.join(created.path, hero.source.path)))).toEqual(
     new Uint8Array([1, 2, 3]),
