@@ -7,6 +7,7 @@ import { ThemeTokenAction } from './ThemeTokenAction';
 import { updateTypographySize } from './themeTokenAuthoringModel';
 import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 
+/*** Render resolved typography size tokens with authored overrides, reset controls, and custom token creation. */
 export function ThemeTypographySizeEditor() {
   const { theme: resolvedTheme } = useZoraTheme();
   const { selection, updateTheme } = useActiveThemeAdmin();
@@ -14,12 +15,14 @@ export function ThemeTypographySizeEditor() {
   const [newValue, setNewValue] = useState('');
   if (!selection) return null;
 
+  /*** Set or remove one authored typography size token. */
   const updateSize = (key: string, value: number | undefined) => {
     updateTheme({
       tokens: updateTypographySize({ tokens: selection.theme.tokens, key, value }),
     });
   };
 
+  /*** Validate and insert one custom non-negative typography size token. */
   const addSize = () => {
     const key = newKey.trim();
     const value = parseNonNegativeNumber(newValue);
@@ -59,6 +62,7 @@ export function ThemeTypographySizeEditor() {
   );
 }
 
+/*** Render one typography size token with reset-to-inherited support. */
 function SizeRow(props: {
   readonly tokenKey: string;
   readonly value: number;
@@ -86,6 +90,10 @@ function SizeRow(props: {
   );
 }
 
+/***
+ * Parse a non-empty string as a finite non-negative number and return null for invalid input.
+ * @utility @ankhorage/utility/number
+ */
 function parseNonNegativeNumber(value: string): number | null {
   if (value.trim() === '') return null;
   const parsed = Number(value);
