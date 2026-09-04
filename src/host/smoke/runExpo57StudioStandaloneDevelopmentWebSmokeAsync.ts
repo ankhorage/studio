@@ -44,9 +44,6 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
     await pointerClickAsync(browser, 'button', 'Name');
     await pointerClickAsync(browser, 'button', 'Use light mode');
     await browser.waitForHydratedRoleAndNameAsync('button', 'Use dark mode');
-    await pointerClickAsync(browser, 'button', 'Workspace menu');
-    await pointerClickAsync(browser, 'button', 'Install workspace packages');
-    await browser.waitForBodyTextAsync('Packages installed');
 
     await pointerClickAsync(browser, 'button', 'New project');
     await browser.waitForLocationAsync({ pathname: '/create' });
@@ -74,6 +71,8 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
       search: '',
     });
     await browser.waitForBodyTextAsync('Project Detail');
+    await pointerClickAsync(browser, 'button', 'Install packages');
+    await browser.waitForBodyTextAsync('Project packages installed.');
 
     await browser.navigateAsync(`${appUrl}/projects/release-monitor?view=details`);
     await browser.waitForLocationAsync({
