@@ -1099,9 +1099,19 @@ export function setStudioManifestNavigatorType(
 
   return {
     ...manifest,
-    navigator: updateNavigatorAtPath(manifest.navigator, primaryNavigatorPath, (current) =>
-      createNavigatorWithType(current, type),
-    ),
+    navigator: {
+      ...(manifest.navigator.preset === undefined ? {} : { preset: manifest.navigator.preset }),
+      ...(manifest.navigator.flows === undefined ? {} : { flows: manifest.navigator.flows }),
+      ...(manifest.navigator.defaults === undefined
+        ? {}
+        : { defaults: manifest.navigator.defaults }),
+      ...(manifest.navigator.platforms === undefined
+        ? {}
+        : { platforms: manifest.navigator.platforms }),
+      ...updateNavigatorAtPath(manifest.navigator, primaryNavigatorPath, (current) =>
+        createNavigatorWithType(current, type),
+      ),
+    },
   };
 }
 

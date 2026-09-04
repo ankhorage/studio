@@ -19677,11 +19677,20 @@
       }
     },
     {
+      "name": "createNavigatorWithType",
+      "description": "Rebuild a navigator with one concrete discriminant and only shared navigator state.",
+      "sourceLocation": {
+        "filePath": "src/manifestState.ts",
+        "line": 1068,
+        "column": 1
+      }
+    },
+    {
       "name": "setStudioManifestNavigatorType",
       "description": "Change the primary navigator type when the requested navigator type is valid and different.\n@todo Move navigator authoring policy from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1071,
+        "line": 1091,
         "column": 1
       }
     },
@@ -19690,7 +19699,7 @@
       "description": "Change the primary navigator initial route when the requested sibling route is unique.\n@todo Move navigator authoring policy from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1093,
+        "line": 1122,
         "column": 1
       }
     },
@@ -19699,7 +19708,7 @@
       "description": "Set whether one route is visible in primary navigation while preserving the canonical visible representation.\n@todo Move route visibility authoring from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1121,
+        "line": 1150,
         "column": 1
       }
     },
@@ -19708,7 +19717,7 @@
       "description": "Reorder one uniquely named route within its navigator parent.\n@todo Move route ordering authoring from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1160,
+        "line": 1189,
         "column": 1
       }
     },
@@ -19717,7 +19726,7 @@
       "description": "Create a new screen from a template, generate a collision-free route, and make the new screen active.\n@todo Split screen creation between manifest screen state and routes/ instead of keeping both in one src-root function.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1193,
+        "line": 1222,
         "column": 1
       }
     },
@@ -19726,7 +19735,7 @@
       "description": "Delete a screen, remove route references and bindings for its subtree, and resolve a safe next active screen.\n@todo Split this cross-domain operation across manifest, routes/, bindings/, and selection application responsibilities.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1258,
+        "line": 1287,
         "column": 1
       }
     },
@@ -19735,7 +19744,7 @@
       "description": "Recursively remove a screen target from routes and prune nested navigators that become empty.\n@todo Move route cleanup from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1311,
+        "line": 1340,
         "column": 1
       }
     },
@@ -19744,7 +19753,7 @@
       "description": "Generate a route name that is unique among sibling routes by appending a numeric suffix when needed.\n@todo Move route-name generation from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1347,
+        "line": 1376,
         "column": 1
       }
     },
@@ -19753,7 +19762,7 @@
       "description": "Convert route path segments to the canonical pathname pattern used by Studio authoring.\n@todo Move canonical route-pattern logic from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1364,
+        "line": 1393,
         "column": 1
       }
     },
@@ -19762,7 +19771,7 @@
       "description": "Generate a route name that avoids both sibling-name and canonical-path collisions.\n@todo Move route-name collision policy from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1375,
+        "line": 1404,
         "column": 1
       }
     },
@@ -19771,7 +19780,7 @@
       "description": "Normalize arbitrary screen text into the lowercase hyphenated route-name form used by Studio.\n@todo Keep this semantic route-name normalization under routes/ rather than extracting it as a generic slug utility.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1400,
+        "line": 1429,
         "column": 1
       }
     },
@@ -19780,7 +19789,7 @@
       "description": "Collect canonical pathname patterns for every route in a nested navigator tree.\n@todo Move route-pattern traversal from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1414,
+        "line": 1443,
         "column": 1
       }
     },
@@ -19789,7 +19798,7 @@
       "description": "Deep-clone a UI node tree while assigning fresh identifiers and copying mutable node data.\n@todo Move UI-tree cloning from the src root into canvas/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1433,
+        "line": 1462,
         "column": 1
       }
     },
@@ -19798,7 +19807,7 @@
       "description": "Immutably update alias, style, and props for a node in a UI tree.\n@todo Move UI-tree mutation from the src root into canvas/ or properties/ according to final authoring ownership.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1451,
+        "line": 1480,
         "column": 1
       }
     },
@@ -19807,7 +19816,7 @@
       "description": "Immutably remove a node from a UI tree while preserving the remaining hierarchy.\n@todo Move UI-tree mutation from the src root into canvas/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1480,
+        "line": 1509,
         "column": 1
       }
     },
@@ -19816,7 +19825,7 @@
       "description": "Collect every node identifier in a UI subtree.\n@todo Move UI-tree traversal from the src root into canvas/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1500,
+        "line": 1529,
         "column": 1
       }
     },
@@ -19825,7 +19834,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1502,
+        "line": 1531,
         "column": 9
       }
     },
@@ -19834,7 +19843,7 @@
       "description": "Repair a navigator's initial-route field after route removal while preserving canonical omission when no initial route exists.\n@todo Move navigator normalization from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1514,
+        "line": 1543,
         "column": 1
       }
     },
@@ -19843,7 +19852,7 @@
       "description": "Narrow an unknown node style value to the string-or-number style record accepted by Studio node updates.\n@todo Keep this semantic style predicate with the canvas/properties authoring logic rather than treating it as a generic record utility.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1539,
+        "line": 1568,
         "column": 1
       }
     },
@@ -33103,6 +33112,12 @@
         "fromSymbol": "setStudioManifestNavigatorType",
         "toSymbol": "updateNavigatorAtPath",
         "callExpression": "updateNavigatorAtPath",
+        "sourcePath": "src/manifestState.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.ts",
+        "toSymbol": "createNavigatorWithType",
+        "callExpression": "createNavigatorWithType",
         "sourcePath": "src/manifestState.ts"
       },
       {

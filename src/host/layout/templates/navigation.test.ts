@@ -12,7 +12,11 @@ const manifest = {
 
 function createNavigator(type: NavigatorNode['type']): NavigatorNode {
   return {
-    type,
+    ...(type === 'tabs'
+      ? { type: 'tabs' as const }
+      : type === 'drawer'
+        ? { type: 'drawer' as const }
+        : { type: 'stack' as const }),
     initialRouteName: 'details',
     routes: [
       { name: 'home', screenId: 'home' },

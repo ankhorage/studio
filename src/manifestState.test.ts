@@ -673,6 +673,32 @@ describe('manifestState', () => {
     ).toBe(visible);
   });
 
+  test('preserves app navigator metadata and removes tab settings when changing the root type', () => {
+    const manifest = createManifest();
+    manifest.navigator = {
+      ...manifest.navigator,
+      type: 'tabs',
+      implementation: 'custom',
+      presentation: 'sidebar',
+      preset: 'root-stack-tabs',
+      flows: { authentication: true },
+      defaults: { tabs: { implementation: 'adaptive' } },
+      platforms: { web: { tabs: { implementation: 'javascript' } } },
+    };
+
+    const drawer = setStudioManifestNavigatorType(manifest, 'drawer');
+
+    expect(drawer.navigator).toEqual({
+      type: 'drawer',
+      routes: manifest.navigator.routes,
+      initialRouteName: manifest.navigator.initialRouteName,
+      preset: manifest.navigator.preset,
+      flows: manifest.navigator.flows,
+      defaults: manifest.navigator.defaults,
+      platforms: manifest.navigator.platforms,
+    });
+  });
+
   test('updates navigator, theme, and OAuth providers', () => {
     const manifest = createManifest();
     const drawer = setStudioManifestNavigatorType(manifest, 'drawer');
