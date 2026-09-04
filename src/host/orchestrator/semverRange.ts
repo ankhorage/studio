@@ -4,6 +4,10 @@ interface SemanticVersion {
   readonly patch: number;
 }
 
+/***
+ * Parse an exact three-part semantic version without prerelease/build metadata.
+ * @utility @ankhorage/utility/semver
+ */
 function parseSemanticVersion(value: string): SemanticVersion | null {
   const match = /^(\d+)\.(\d+)\.(\d+)$/u.exec(value);
   if (!match) {
@@ -17,10 +21,18 @@ function parseSemanticVersion(value: string): SemanticVersion | null {
   };
 }
 
+/***
+ * Compare semantic versions by major, minor, then patch.
+ * @utility @ankhorage/utility/semver
+ */
 function compareSemanticVersions(left: SemanticVersion, right: SemanticVersion): number {
   return left.major - right.major || left.minor - right.minor || left.patch - right.patch;
 }
 
+/***
+ * Return whether an exact semantic version satisfies an exact three-part caret range.
+ * @utility @ankhorage/utility/semver
+ */
 export function satisfiesCaretSemverRange(version: string, range: string): boolean {
   if (!range.startsWith('^')) {
     return false;
