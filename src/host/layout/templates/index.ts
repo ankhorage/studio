@@ -1,3 +1,4 @@
+/*** Audit coverage: exports-only entrypoint for generated layout and auth template sources. */
 export { getRootLayoutImportRequirements, getRootLayoutTsx } from './rootLayout';
 export { getNestedLayoutTsx } from './nestedLayout';
 export { getScreenTsx } from './screen';
