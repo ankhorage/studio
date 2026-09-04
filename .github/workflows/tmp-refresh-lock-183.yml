@@ -1,0 +1,32 @@
+name: Refresh issue 183 lockfile
+
+on:
+  push:
+    branches:
+      - 183-standalone-template-consumer
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 183-standalone-template-consumer
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - name: Refresh frozen-lockfile metadata
+        run: bun install
+      - name: Commit normalized lockfile
+        run: |
+          rm .github/workflows/tmp-refresh-lock-183.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add bun.lock .github/workflows/tmp-refresh-lock-183.yml
+          git commit -m 'chore: refresh standalone template lockfile'
+          git push origin HEAD:183-standalone-template-consumer
