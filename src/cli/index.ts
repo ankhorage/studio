@@ -23,7 +23,6 @@ const STUDIO_CAPABILITIES = [
   'studio.projects.create',
   'studio.projects.delete',
   'studio.projects.sync',
-  'studio.workspace.install',
 ] as const;
 
 const COMMANDS = [
@@ -57,12 +56,6 @@ const COMMANDS = [
     summary: 'Synchronize generated app host files.',
     examples: ['ankh studio projects sync shop'],
   },
-  {
-    path: ['workspace', 'install'],
-    capability: 'studio.workspace.install',
-    summary: 'Install packages required by the Studio workspace.',
-    examples: ['ankh studio workspace install'],
-  },
 ] as const;
 
 type CommandPath = (typeof COMMANDS)[number]['path'];
@@ -73,7 +66,6 @@ const handlers = [
   createHandler(['projects', 'create'], createProject),
   createHandler(['projects', 'delete'], deleteProject),
   createHandler(['projects', 'sync'], syncProject),
-  createHandler(['workspace', 'install'], installWorkspacePackages),
 ] as const;
 
 /*** Pair one canonical Studio command path with its runtime handler. */
@@ -180,18 +172,6 @@ async function syncProject(request: Parameters<AnkhCommandHandler>[0]) {
   try {
     const result = await studioHost.moduleManager.syncProject({ projectId, includeStudio: true });
     request.context.writeStdout(`${JSON.stringify(result, null, 2)}\n`);
-    return { exitCode: 0 };
-  } finally {
-    await studioHost.close();
-  }
-}
-
-/*** Install packages required by the current Studio workspace. */
-async function installWorkspacePackages(request: Parameters<AnkhCommandHandler>[0]) {
-  const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
-  try {
-    const result = await studioHost.projectManager.installWorkspacePackages();
-    request.context.writeStdout(`${JSON.stringify({ ...result, scope: 'workspace' }, null, 2)}\n`);
     return { exitCode: 0 };
   } finally {
     await studioHost.close();
