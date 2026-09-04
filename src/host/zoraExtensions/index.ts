@@ -34,6 +34,10 @@ const ZORA_TABLETOP_EXTENSION = {
 const KNOWN_ZORA_EXTENSIONS = [ZORA_CHESS_EXTENSION, ZORA_TABLETOP_EXTENSION] as const;
 const TABLETOP_TEMPLATE_IDS = new Set(['card-trainer', 'card_trainer', 'poker']);
 
+/***
+ * Resolve the ZORA extension set implied by one Studio template selection.
+ * @todo Move template-to-extension policy from the host edge to the templates/ZORA integration owner.
+ */
 export function resolveZoraExtensionsForTemplateSelection(
   selection: ProjectTemplateSelection,
 ): readonly ZoraExtensionDefinition[] {
@@ -48,12 +52,17 @@ export function resolveZoraExtensionsForTemplateSelection(
   return [];
 }
 
+/*** Resolve known ZORA extensions from dependency presence in a generated package manifest. */
 export function resolveZoraExtensionsFromDependencies(
   dependencies: Readonly<Record<string, string>>,
 ): readonly ZoraExtensionDefinition[] {
   return KNOWN_ZORA_EXTENSIONS.filter((extension) => extension.packageName in dependencies);
 }
 
+/***
+ * Merge extension lists by package name with later definitions replacing earlier definitions.
+ * @utility @ankhorage/utility/collection
+ */
 export function mergeZoraExtensions(
   ...extensionLists: readonly (readonly ZoraExtensionDefinition[])[]
 ): readonly ZoraExtensionDefinition[] {
@@ -68,6 +77,7 @@ export function mergeZoraExtensions(
   return [...extensions.values()];
 }
 
+/*** Merge dependency maps contributed by the active ZORA extensions. */
 export function collectZoraExtensionDependencies(
   extensions: readonly ZoraExtensionDefinition[],
 ): Record<string, string> {
