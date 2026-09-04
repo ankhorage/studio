@@ -40,7 +40,7 @@ export interface LaunchProjectResponse {
 
 export interface CreateProjectInput {
   category: AppCategory;
-  templateId: string;
+  slug: string;
   name: string;
 }
 
@@ -158,15 +158,15 @@ function parseSyncProjectResponse(value: unknown): SyncProjectResponse {
     throw new Error('Sync response was invalid');
   }
 
-  function parseInstallProjectPackagesResponse(value: unknown): InstallProjectPackagesResponse {
-    if (!isRecord(value) || value.success !== true || value.scope !== 'project') {
-      throw new Error('Install project packages response was invalid');
-    }
+  return { success: value.success };
+}
 
-    return { success: true, scope: 'project' };
+function parseInstallProjectPackagesResponse(value: unknown): InstallProjectPackagesResponse {
+  if (!isRecord(value) || value.success !== true || value.scope !== 'project') {
+    throw new Error('Install project packages response was invalid');
   }
 
-  return { success: value.success };
+  return { success: true, scope: 'project' };
 }
 
 function parseUpProjectInfrastructureResponse(value: unknown): UpProjectInfrastructureResponse {
@@ -196,18 +196,41 @@ function parseLaunchProjectResponse(value: unknown): LaunchProjectResponse {
   };
 }
 
-export const useProjects = () => {
+async function requestProjectAction<T>(
+  path: string,
+  options: RequestInit,
+  parse: (value: unknown) => T,
+): Promise<T> {
+  const response = await fetch(`${API_BASE}${path}`, options);
+  if (!response.ok) throw new Error(`Project action failed with ${response.status}`);
+  return parse(await readJson(response));
+}
+
+async function requestCreateProject(input: CreateProjectInput): Promise<CreateProjectResponse> {
+  const response = await fetch(`${API_BASE}/projects`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  });
+  if (!response.ok) {
+    const reason = parseProjectCreationFailure(await readError(response));
+    if (reason) throw new ProjectCreationError(reason);
+    throw new Error(`Project creation failed with ${response.status}`);
+  }
+  return parseCreateProjectResponse(await readJson(response));
+}
+
+export function useProjects() {
   const [projects, setProjects] = useState<StudioProjectSummary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const loadProjects = useCallback(async () => {
     try {
-      const data = await requestProjects();
-      setProjects(data);
+      setProjects(await requestProjects());
       setError(null);
-    } catch (err) {
-      console.error(err);
+    } catch (caught) {
+      console.error(caught);
       setError('Could not connect to the local Studio host. Run `ankh studio dev`.');
     } finally {
       setIsLoading(false);
@@ -219,76 +242,12 @@ export const useProjects = () => {
     await loadProjects();
   }, [loadProjects]);
 
-  const createProject = async (input: CreateProjectInput): Promise<CreateProjectResponse> => {
-    const res = await fetch(`${API_BASE}/projects`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(input),
-    });
-
-    if (!res.ok) {
-      const failure = parseProjectCreationFailure(await readError(res));
-      if (failure) {
-        throw new ProjectCreationError(failure);
-      }
-      throw new Error('Failed to create project');
-    }
-
-    const result = parseCreateProjectResponse(await readJson(res));
-    await refresh();
-    return result;
-  };
-
-  const deleteProject = async (projectId: string) => {
-    const res = await fetch(`${API_BASE}/projects/${projectId}`, {
-      method: 'DELETE',
-    });
-    if (!res.ok) throw new Error('Failed to delete project');
-    await refresh();
-  };
-
-  const syncProject = async (projectId: string): Promise<SyncProjectResponse> => {
-    const res = await fetch(`${API_BASE}/projects/${projectId}/sync`, {
-      method: 'POST',
-    });
-    if (!res.ok) throw new Error('Failed to sync project');
-    return parseSyncProjectResponse(await readJson(res));
-  };
-
-  const installProjectPackages = async (
-    projectId: string,
-  ): Promise<InstallProjectPackagesResponse> => {
-    const res = await fetch(`${API_BASE}/projects/${projectId}/packages/install`, {
-      method: 'POST',
-    });
-    if (!res.ok) throw new Error('Failed to install project packages');
-    return parseInstallProjectPackagesResponse(await readJson(res));
-  };
-
-  const upProjectInfrastructure = async (
-    projectId: string,
-  ): Promise<UpProjectInfrastructureResponse> => {
-    const res = await fetch(`${API_BASE}/projects/${projectId}/infra/up`, {
-      method: 'POST',
-    });
-    if (!res.ok) throw new Error('Failed to start project infrastructure');
-    return parseUpProjectInfrastructureResponse(await readJson(res));
-  };
-
-  const launchProject = async (projectId: string): Promise<LaunchProjectResponse> => {
-    const res = await fetch(`${API_BASE}/projects/${projectId}/launch`, {
-      method: 'POST',
-    });
-    if (!res.ok) throw new Error('Failed to open running app');
-    return parseLaunchProjectResponse(await readJson(res));
-  };
-
   useEffect(() => {
     let active = true;
     void requestProjects()
-      .then((data) => {
+      .then((nextProjects) => {
         if (!active) return;
-        setProjects(data);
+        setProjects(nextProjects);
         setError(null);
       })
       .catch((caught: unknown) => {
@@ -305,6 +264,55 @@ export const useProjects = () => {
     };
   }, []);
 
+  const createProject = useCallback(async (input: CreateProjectInput) => {
+    return await requestCreateProject(input);
+  }, []);
+
+  const deleteProject = useCallback(async (projectId: string) => {
+    const response = await fetch(`${API_BASE}/projects/${encodeURIComponent(projectId)}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) throw new Error(`Project deletion failed with ${response.status}`);
+  }, []);
+
+  const syncProject = useCallback(async (projectId: string): Promise<SyncProjectResponse> => {
+    return await requestProjectAction(
+      `/projects/${encodeURIComponent(projectId)}/sync`,
+      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' },
+      parseSyncProjectResponse,
+    );
+  }, []);
+
+  const installProjectPackages = useCallback(
+    async (projectId: string): Promise<InstallProjectPackagesResponse> => {
+      return await requestProjectAction(
+        `/projects/${encodeURIComponent(projectId)}/packages/install`,
+        { method: 'POST' },
+        parseInstallProjectPackagesResponse,
+      );
+    },
+    [],
+  );
+
+  const upProjectInfrastructure = useCallback(
+    async (projectId: string): Promise<UpProjectInfrastructureResponse> => {
+      return await requestProjectAction(
+        `/projects/${encodeURIComponent(projectId)}/infra/up`,
+        { method: 'POST' },
+        parseUpProjectInfrastructureResponse,
+      );
+    },
+    [],
+  );
+
+  const launchProject = useCallback(async (projectId: string): Promise<LaunchProjectResponse> => {
+    return await requestProjectAction(
+      `/projects/${encodeURIComponent(projectId)}/launch`,
+      { method: 'POST' },
+      parseLaunchProjectResponse,
+    );
+  }, []);
+
   return {
     projects,
     isLoading,
@@ -317,4 +325,4 @@ export const useProjects = () => {
     upProjectInfrastructure,
     launchProject,
   };
-};
+}
