@@ -5,6 +5,11 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -38,8 +43,11 @@ jobs:
       - name: Run Studio web smoke test
         run: bun run test:smoke:studio-web
 
+      - name: Validate packed Studio host artifact
+        run: bun run test:acceptance:packed-studio-host
+
   studio-standalone:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -60,14 +68,11 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Validate packed Studio host artifact
-        run: bun run test:acceptance:packed-studio-host
-
       - name: Validate standalone Studio registry consumer
         run: bun run test:acceptance:expo57-studio-standalone
 
   generated-app:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -92,7 +97,7 @@ jobs:
         run: bun run test:acceptance:expo57-generated-app
 
   generated-navigation:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -117,7 +122,7 @@ jobs:
         run: bun run test:acceptance:expo57-generated-navigation
 
   generated-capabilities:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 

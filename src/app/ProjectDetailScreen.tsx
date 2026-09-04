@@ -26,6 +26,7 @@ export function ProjectDetailScreen() {
     refresh,
     deleteProject,
     syncProject,
+    installProjectPackages,
     upProjectInfrastructure,
     launchProject,
   } = useProjects();
@@ -138,6 +139,19 @@ export function ProjectDetailScreen() {
                   void runAction('Sync', async () => {
                     await syncProject(project.id);
                     return 'Project synchronized.';
+                  })
+                }
+              />
+              <LifecycleAction
+                iconName="download-outline"
+                label="Install packages"
+                detail="Install dependencies using this generated app as the package root."
+                loading={activeAction === 'Install packages'}
+                disabled={activeAction !== null}
+                onPress={() =>
+                  void runAction('Install packages', async () => {
+                    await installProjectPackages(project.id);
+                    return 'Project packages installed.';
                   })
                 }
               />

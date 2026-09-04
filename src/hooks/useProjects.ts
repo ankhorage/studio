@@ -18,6 +18,11 @@ export interface SyncProjectResponse {
   success: boolean;
 }
 
+export interface InstallProjectPackagesResponse {
+  success: boolean;
+  scope: 'project';
+}
+
 export interface UpProjectInfrastructureResponse {
   success: boolean;
   skipped?: string;
@@ -156,6 +161,14 @@ function parseSyncProjectResponse(value: unknown): SyncProjectResponse {
   return { success: value.success };
 }
 
+function parseInstallProjectPackagesResponse(value: unknown): InstallProjectPackagesResponse {
+  if (!isRecord(value) || value.success !== true || value.scope !== 'project') {
+    throw new Error('Install project packages response was invalid');
+  }
+
+  return { success: true, scope: 'project' };
+}
+
 function parseUpProjectInfrastructureResponse(value: unknown): UpProjectInfrastructureResponse {
   if (!isRecord(value) || typeof value.success !== 'boolean') {
     throw new Error('Infrastructure response was invalid');
@@ -270,6 +283,17 @@ export function useProjects() {
     );
   }, []);
 
+  const installProjectPackages = useCallback(
+    async (projectId: string): Promise<InstallProjectPackagesResponse> => {
+      return await requestProjectAction(
+        `/projects/${encodeURIComponent(projectId)}/packages/install`,
+        { method: 'POST' },
+        parseInstallProjectPackagesResponse,
+      );
+    },
+    [],
+  );
+
   const upProjectInfrastructure = useCallback(
     async (projectId: string): Promise<UpProjectInfrastructureResponse> => {
       return await requestProjectAction(
@@ -297,6 +321,7 @@ export function useProjects() {
     createProject,
     deleteProject,
     syncProject,
+    installProjectPackages,
     upProjectInfrastructure,
     launchProject,
   };
