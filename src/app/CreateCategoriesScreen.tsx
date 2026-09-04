@@ -1,4 +1,3 @@
-import { router } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
@@ -13,6 +12,7 @@ import {
   ThemedWorkspaceTextInput,
   WorkspaceScreen,
 } from './workspace/WorkspacePrimitives';
+import { pushWorkspaceRoute } from './workspace/workspaceRouter';
 
 export function CreateCategoriesScreen() {
   const { catalog, isLoading, error, refresh } = useTemplateCatalog();
@@ -47,7 +47,9 @@ export function CreateCategoriesScreen() {
           query={searchQuery}
           results={results}
           onClear={() => setSearchQuery('')}
-          onPress={(template) => router.push(`/create/${template.category}/${template.slug}`)}
+          onPress={(template) =>
+            pushWorkspaceRoute(`/create/${template.category}/${template.slug}`)
+          }
         />
       ) : (
         <View style={styles.categoryGrid}>
@@ -55,7 +57,7 @@ export function CreateCategoriesScreen() {
             <CategoryCard
               key={category.id}
               category={category}
-              onPress={() => router.push(`/create/${category.id}`)}
+              onPress={() => pushWorkspaceRoute(`/create/${category.id}`)}
             />
           ))}
         </View>
