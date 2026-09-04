@@ -34,6 +34,10 @@ export interface ParsedProjectAuthRuntimeStatus {
   readonly appCallbackUrl?: string;
 }
 
+/***
+ * Observe generated Auth redirect configuration and runtime lifecycle status for one Studio project.
+ * @todo Keep this generated-infra observation under the auth domain's host adapter.
+ */
 export async function observeProjectAuthRuntimeDiagnostics(input: {
   readonly rootPath: string;
   readonly projectId: string;
@@ -127,6 +131,7 @@ export async function observeProjectAuthRuntimeDiagnostics(input: {
   };
 }
 
+/*** Resolve canonical Auth provider/site/callback URLs from generated infrastructure environment values. */
 export function resolveProjectAuthRedirectRuntime(input: {
   readonly environment: AuthRedirectEnvironment;
   readonly callbackRoute: string;
@@ -164,6 +169,7 @@ export function resolveProjectAuthRedirectRuntime(input: {
   };
 }
 
+/*** Parse bounded Auth provider callback and readiness values from generated infrastructure status output. */
 export function parseProjectAuthRuntimeStatus(stdout: string): ParsedProjectAuthRuntimeStatus {
   const providerRedirectUrl = readSafeStatusValue(
     stdout,
@@ -183,6 +189,10 @@ export function parseProjectAuthRuntimeStatus(stdout: string): ParsedProjectAuth
   };
 }
 
+/***
+ * Resolve an HTTP origin from a URL value or a localhost port fallback.
+ * @utility @ankhorage/utility/url
+ */
 function resolveOrigin(value: string | undefined, portValue: string | undefined): string | null {
   if (value?.trim()) {
     try {
@@ -196,6 +206,10 @@ function resolveOrigin(value: string | undefined, portValue: string | undefined)
   return port === null ? null : `http://127.0.0.1:${port}`;
 }
 
+/***
+ * Parse a valid TCP port number from an optional string.
+ * @utility @ankhorage/utility/number
+ */
 function parsePort(value: string | undefined): number | null {
   if (!value) return null;
   const port = Number.parseInt(value, 10);
@@ -203,6 +217,10 @@ function parsePort(value: string | undefined): number | null {
   return port;
 }
 
+/***
+ * Split an optional comma-separated string into trimmed non-empty values while preserving duplicates and order.
+ * @utility @ankhorage/utility/string
+ */
 function splitCommaSeparated(value: string | undefined): readonly string[] {
   if (!value) return [];
   return value
@@ -211,12 +229,20 @@ function splitCommaSeparated(value: string | undefined): readonly string[] {
     .filter(Boolean);
 }
 
+/***
+ * Read and trim one regex capture only when it is bounded and contains no whitespace.
+ * @utility @ankhorage/utility/string
+ */
 function readSafeStatusValue(stdout: string, pattern: RegExp): string | undefined {
   const value = pattern.exec(stdout)?.[1]?.trim();
   if (!value || value.length > 2048 || /\s/u.test(value)) return undefined;
   return value;
 }
 
+/***
+ * Return whether a string is an exact HTTP(S) URL candidate without wildcard syntax.
+ * @utility @ankhorage/utility/url
+ */
 function isExactWebCallbackUrl(value: string): boolean {
   return /^https?:\/\//u.test(value) && !value.includes('*');
 }
