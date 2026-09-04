@@ -29,6 +29,10 @@ interface MutableImportRequirement {
 const IMPORT_STATEMENT_PATTERN =
   /import\s+(?:type\s+)?[\s\S]*?\s+from\s+(['"])[^'"]+\1\s*;?|import\s+(['"])[^'"]+\2\s*;?/gu;
 
+/***
+ * Parse, merge, validate, sort, and render JavaScript/TypeScript import requirements into canonical generated source.
+ * @utility @ankhorage/utility/codegen/imports
+ */
 export function composeGeneratedImports(inputs: readonly GeneratedImportInput[]): string {
   const requirements = inputs.flatMap((input) =>
     typeof input === 'string' ? parseGeneratedImportFragment(input) : [input],
@@ -42,6 +46,7 @@ export function composeGeneratedImports(inputs: readonly GeneratedImportInput[])
     .join('\n\n');
 }
 
+/*** Order merged import requirements deterministically by module source. */
 function compareImportRequirements(
   left: MutableImportRequirement,
   right: MutableImportRequirement,
@@ -49,6 +54,7 @@ function compareImportRequirements(
   return left.source.localeCompare(right.source);
 }
 
+/*** Parse a text fragment containing only supported import statements into structured requirements. */
 function parseGeneratedImportFragment(fragment: string): GeneratedImportRequirement[] {
   const trimmed = fragment.trim();
   if (trimmed.length === 0) return [];
@@ -64,6 +70,7 @@ function parseGeneratedImportFragment(fragment: string): GeneratedImportRequirem
   return statements.map(parseGeneratedImportStatement);
 }
 
+/*** Parse one supported JavaScript/TypeScript import statement into a structured requirement. */
 function parseGeneratedImportStatement(statement: string): GeneratedImportRequirement {
   const sideEffectMatch = /^import\s+(['"])([^'"]+)\1\s*;?$/u.exec(statement);
   if (sideEffectMatch) {
@@ -83,6 +90,7 @@ function parseGeneratedImportStatement(statement: string): GeneratedImportRequir
   return parseImportClause(source, clause, typeOnly);
 }
 
+/*** Parse one import clause into default, namespace, and named binding requirements. */
 function parseImportClause(
   source: string,
   clause: string,
@@ -124,6 +132,7 @@ function parseImportClause(
   throw new Error(`Unsupported generated import clause: ${clause}`);
 }
 
+/*** Parse named import specifiers while preserving aliases and type-only semantics. */
 function parseNamedImports(clause: string, inheritedTypeOnly: boolean): GeneratedNamedImport[] {
   const body = clause.replace(/^\{/u, '').replace(/\}$/u, '').trim();
   if (body.length === 0) return [];
@@ -150,6 +159,7 @@ function parseNamedImports(clause: string, inheritedTypeOnly: boolean): Generate
     });
 }
 
+/*** Merge requirements by source while rejecting incompatible local binding ownership. */
 function mergeGeneratedImportRequirements(
   requirements: readonly GeneratedImportRequirement[],
 ): MutableImportRequirement[] {
@@ -197,6 +207,7 @@ function mergeGeneratedImportRequirements(
   return [...bySource.values()];
 }
 
+/*** Create the mutable aggregation state for one import source. */
 function createMutableRequirement(source: string): MutableImportRequirement {
   return {
     source,
@@ -205,6 +216,7 @@ function createMutableRequirement(source: string): MutableImportRequirement {
   };
 }
 
+/*** Merge one default or namespace binding and register its local-name ownership. */
 function mergeSingleBinding(
   current: string | undefined,
   incoming: string | undefined,
@@ -222,6 +234,7 @@ function mergeSingleBinding(
   return incoming;
 }
 
+/*** Merge one named import, upgrading type-only bindings when a runtime binding is also required. */
 function mergeNamedImport(
   requirement: MutableImportRequirement,
   incoming: GeneratedNamedImport,
@@ -248,6 +261,7 @@ function mergeNamedImport(
   });
 }
 
+/*** Reject local import names claimed by more than one incompatible import owner. */
 function registerLocalBinding(bindings: Map<string, string>, local: string, owner: string): void {
   const existing = bindings.get(local);
   if (existing && existing !== owner) {
@@ -258,6 +272,7 @@ function registerLocalBinding(bindings: Map<string, string>, local: string, owne
   bindings.set(local, owner);
 }
 
+/*** Render one merged import requirement into one or more canonical source statements. */
 function renderGeneratedImportRequirement(requirement: MutableImportRequirement): string[] {
   const statements: string[] = [];
   const namedImports = [...requirement.namedImports.values()].sort((left, right) =>
@@ -299,6 +314,7 @@ function renderGeneratedImportRequirement(requirement: MutableImportRequirement)
   return statements;
 }
 
+/*** Render a regular import statement from optional default and secondary clauses. */
 function renderImportStatement(
   source: string,
   defaultImport: string | undefined,
@@ -308,12 +324,14 @@ function renderImportStatement(
   return `import ${clause} from '${source}';`;
 }
 
+/*** Render named import entries in compact or multiline form based on their generated width. */
 function renderNamedClause(entries: readonly string[]): string {
   if (entries.length === 0) return '';
   const compact = entries.join(', ');
   return compact.length > 80 ? `{\n  ${entries.join(',\n  ')},\n}` : `{ ${compact} }`;
 }
 
+/*** Render one named import with its optional local alias. */
 function renderNamedImport(entry: GeneratedNamedImport): string {
   return entry.local ? `${entry.imported} as ${entry.local}` : entry.imported;
 }
