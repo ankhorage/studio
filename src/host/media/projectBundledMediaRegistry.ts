@@ -6,6 +6,7 @@ import { getExpoBundledMediaRegistrySource } from '@ankhorage/expo-runtime/bundl
 const AUTHORING_ASSETS_PATH = 'assets/authoring';
 const GENERATED_REGISTRY_PATH = 'src/generated/bundledMediaRegistry.ts';
 
+/*** Regenerate the Expo bundled-media registry from the project's authored asset files. */
 export async function syncProjectBundledMediaRegistry(projectPath: string): Promise<void> {
   const registryPath = path.join(projectPath, GENERATED_REGISTRY_PATH);
   const files = await listFiles(path.join(projectPath, AUTHORING_ASSETS_PATH));
@@ -25,6 +26,10 @@ export const bundledMediaRegistry: ExpoBundledMediaRegistry = {};
   await fs.writeFile(registryPath, source, 'utf8');
 }
 
+/***
+ * Recursively list files under a root in deterministic lexical order, returning an empty list when the root is absent.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function listFiles(rootPath: string): Promise<string[]> {
   let entries;
   try {
@@ -43,15 +48,27 @@ async function listFiles(rootPath: string): Promise<string[]> {
   return files;
 }
 
+/***
+ * Convert platform-specific path separators to portable forward slashes.
+ * @utility @ankhorage/utility/node/path
+ */
 function toPortablePath(value: string): string {
   return value.split(path.sep).join('/');
 }
 
+/***
+ * Convert a relative filesystem path to a portable relative module import path.
+ * @utility @ankhorage/utility/node/path
+ */
 function toRequirePath(value: string): string {
   const portable = toPortablePath(value);
   return portable.startsWith('.') ? portable : `./${portable}`;
 }
 
+/***
+ * Detect a Node filesystem error indicating that a path does not exist.
+ * @utility @ankhorage/utility/node/fs
+ */
 function isMissingPathError(error: unknown): error is NodeJS.ErrnoException {
   return error instanceof Error && 'code' in error && error.code === 'ENOENT';
 }
