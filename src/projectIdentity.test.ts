@@ -8,7 +8,6 @@ const existingProjects = [
     id: 'foo',
     name: 'Foo',
     path: '/workspace/apps/foo',
-    version: '1.0.0',
     isAnkhApp: true,
     category: 'developer_tools',
     activeTheme: {
