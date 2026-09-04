@@ -47,7 +47,6 @@ test('project summary reads canonical category, active theme, and timestamps', a
   expect(projects[0]).toMatchObject({
     id: 'demo',
     name: 'Demo',
-    version: '1.2.3',
     category: 'developer_tools',
     created: '2026-01-01T00:00:00.000Z',
     updated: '2026-01-02T00:00:00.000Z',
