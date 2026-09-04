@@ -5,12 +5,12 @@ import type {
   UiBindableValueFieldMeta,
   UiBindableValueMeta,
 } from '@ankhorage/contracts';
+import { readOwnProperty } from '@ankhorage/utility/object';
 
 import type {
   StudioBindingCompatibility,
   StudioBindingResponsePathOption,
 } from './bindingAuthoringContracts';
-import { readOwnProperty } from './utils/readOwnProperty';
 
 /***
  * Resolve a contracts data schema into the bindable value metadata used by Studio authoring.

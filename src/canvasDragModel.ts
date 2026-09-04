@@ -1,8 +1,8 @@
 import type { UiNode } from '@ankhorage/contracts';
+import { readOwnProperty } from '@ankhorage/utility/object';
 
 import type { CanvasDropZoneResolution, ValidCanvasDropZoneResolution } from './canvasDropZones';
 import type { PlacementKind } from './index';
-import { readOwnProperty } from './utils/readOwnProperty';
 
 export interface CanvasRect {
   readonly x: number;

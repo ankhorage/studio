@@ -5,10 +5,7 @@ import type {
   PropBinding,
   UiNode,
 } from '@ankhorage/contracts';
-
-import { deleteOwnProperty } from './utils/deleteOwnProperty';
-import { readOwnProperty } from './utils/readOwnProperty';
-import { setOwnProperty } from './utils/setOwnProperty';
+import { deleteOwnProperty, readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
 
 /***
  * Add or replace one Studio prop binding for a component node.

@@ -8,6 +8,7 @@ import type {
   UiComponentMetaRegistry,
   UiNode,
 } from '@ankhorage/contracts';
+import { readOwnProperty } from '@ankhorage/utility/object';
 
 import type {
   StudioBindingDiagnostic,
@@ -16,7 +17,6 @@ import type {
 } from './bindingAuthoringContracts';
 import { findStudioBindingOperationOption } from './bindingOperationModel';
 import { assessStudioBindingCompatibility } from './bindingSchemaModel';
-import { readOwnProperty } from './utils/readOwnProperty';
 
 /***
  * Diagnose all authored prop and event bindings for one Studio component node.

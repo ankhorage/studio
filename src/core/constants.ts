@@ -1,7 +1,7 @@
+import { readOwnProperty } from '@ankhorage/utility/object';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
-import { readOwnProperty } from '../utils/readOwnProperty';
 import { resolveStudioApiBase } from './apiBase';
 
 /***

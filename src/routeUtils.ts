@@ -1,4 +1,5 @@
 import type { AppManifest, NavigatorSpec } from '@ankhorage/contracts';
+import { readOwnProperty } from '@ankhorage/utility/object';
 
 import {
   collectScreenRouteEntries,
@@ -6,7 +7,6 @@ import {
   isRouteGroupSegment,
   resolveInitialScreenId,
 } from './manifestState';
-import { readOwnProperty } from './utils/readOwnProperty';
 
 export type { ScreenRouteEntry, ScreenRouteGroup } from './manifestState';
 export {

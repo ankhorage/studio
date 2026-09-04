@@ -1,5 +1,6 @@
+import { setOwnProperty } from '@ankhorage/utility/object';
+
 import type { StudioManifest } from './index';
-import { setOwnProperty } from './utils/setOwnProperty';
 
 interface RuntimeScreenSignature {
   id: string;

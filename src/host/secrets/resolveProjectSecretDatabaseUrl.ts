@@ -1,6 +1,5 @@
 import { resolveProjectInfrastructureDatabaseUrl } from '@ankhorage/infra/project';
-
-import { readOwnProperty } from '../../utils/readOwnProperty';
+import { readOwnProperty } from '@ankhorage/utility/object';
 
 const TRUSTED_HOST_DATABASE_URL_KEY = 'ANKH_SECRET_STORE_DATABASE_URL';
 
