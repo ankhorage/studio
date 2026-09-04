@@ -5,7 +5,6 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 import { applySystemTemplates } from '../manifestSystem';
-import { getProjectTemplate, type ProjectTemplateSelection } from '../templateRegistry';
 import {
   collectZoraExtensionDependencies,
   mergeZoraExtensions,
@@ -149,10 +148,6 @@ export class ProjectScaffolder {
       runtimePlan,
       zoraExtensions,
     });
-  }
-
-  getTemplate(selection: ProjectTemplateSelection): AppManifest {
-    return getProjectTemplate(selection);
   }
 
   async finalizeManifest(
