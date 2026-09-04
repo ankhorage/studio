@@ -3,12 +3,12 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
-import { createOAuthFixtureManifest, OAUTH_CALLBACK_ROUTE } from '@ankhorage/templates';
+import { OAUTH_CALLBACK_ROUTE } from '@ankhorage/templates';
 import { expect, test } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
-import { getTemplateCatalog } from './templateRegistry';
+import { createOAuthFixtureManifest } from './smoke/createOAuthFixtureManifest';
 
 const SECRET_SENTINEL = 'sentinel-phase3-consumer-secret-do-not-leak';
 const PROJECT_NAME = 'OAuth Fixture Consumer';
@@ -50,23 +50,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
 
     const projectManager = new ProjectManager(workspaceRoot);
     const moduleManager = new ModuleManager(workspaceRoot);
-    const template = getTemplateCatalog()
-      .categories.find((candidate) => candidate.id === 'developer_tools')
-      ?.templates.at(0);
-    if (!template) {
-      throw new Error('Published templates package returned no developer-tools template.');
-    }
-
-    const created = await projectManager.createProject(
-      PROJECT_NAME,
-      { category: 'developer_tools', templateId: template.templateId },
-      undefined,
-      { includeStudio: false },
-    );
-    expect(created.id).toBe(PROJECT_ID);
-
-    const createdManifest = await projectManager.getProjectManifest(created.id);
-    const fixtureManifest = createOAuthFixtureManifest({
+    const manifest = createOAuthFixtureManifest({
       category: 'developer_tools',
       fixture: 'google-apple',
       overrides: {
@@ -76,7 +60,6 @@ test('generates the released Google and Apple OAuth fixture through the real hos
         },
       },
     });
-    const manifest = { ...fixtureManifest, deploy: createdManifest.deploy };
     const oauth = manifest.infra.auth?.oauth;
     if (!oauth) {
       throw new Error('Combined OAuth fixture did not configure OAuth.');
@@ -85,7 +68,13 @@ test('generates the released Google and Apple OAuth fixture through the real hos
       provider.credentialsRef = `${SECRET_SENTINEL}/${provider.id}`;
     }
 
-    await projectManager.persistProjectManifest({ projectId: created.id, manifest });
+    const created = await projectManager.createProject(
+      PROJECT_NAME,
+      { manifest, assets: [] },
+      undefined,
+      { includeStudio: false },
+    );
+    expect(created.id).toBe(PROJECT_ID);
     await moduleManager.syncProject({ projectId: created.id, includeStudio: false });
 
     const persistedManifest = await projectManager.getProjectManifest(created.id);
