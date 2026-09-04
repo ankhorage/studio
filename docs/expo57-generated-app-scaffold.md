@@ -53,7 +53,7 @@ root package is classified below.
 `@ankhorage/zora-chess@^0.1.2` and `@ankhorage/zora-tabletop@^0.0.5` match their current
 released owner baselines.
 
-`apps/studio` has one direct Ankhorage dependency of its own: `@ankhorage/studio@^2.0.9`. That is the
+`apps/studio` has one direct Ankhorage dependency of its own: `@ankhorage/studio@^2.0.24`. That is the
 published package boundary the first-party app exercises without using `latest`; all of its
 remaining Ankhorage owners come through the released dependency graph audited below.
 

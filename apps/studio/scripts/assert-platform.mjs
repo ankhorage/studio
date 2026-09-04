@@ -15,7 +15,7 @@ if (!/^bun@\d+\.\d+\.\d+$/u.test(packageJson.packageManager ?? '')) {
     `Bun toolchain is ${String(packageJson.packageManager)}; expected a pinned bun@x.y.z version.`,
   );
 }
-assertEqual(packageJson.dependencies?.['@ankhorage/studio'], '^2.0.9', 'Studio release range');
+assertEqual(packageJson.dependencies?.['@ankhorage/studio'], '^2.0.24', 'Studio release range');
 if (!/^\^\d+\.\d+\.\d+$/u.test(packageJson.dependencies?.['@ankhorage/expo-runtime'] ?? '')) {
   fail('Expo Runtime release range must be a pinned caret range.');
 }

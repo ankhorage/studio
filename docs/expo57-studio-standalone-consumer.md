@@ -6,7 +6,7 @@ tooling, Expo CLI, configuration, CNG, and native-build contract and uses Expo R
 ## Consumer contract
 
 The application declares Node 24, Bun 1.3.14, every imported Runtime dependency, and every invoked
-tool directly. Its `@ankhorage/studio` range is `^2.0.9`; Expo Runtime `^3.0.10` supplies the sole
+tool directly. Its `@ankhorage/studio` range is `^2.0.24`; Expo Runtime `^3.0.10` supplies the sole
 `EXPO_PLATFORM` authority used by `platform:check`. Ordinary application scripts never invoke a
 parent build, and TypeScript has no parent source or `dist` alias.
 
