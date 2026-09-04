@@ -7,6 +7,7 @@ const existingProject = {
   id: 'release-monitor',
   name: 'Release Monitor',
   path: '/workspace/apps/release-monitor',
+  version: '1.0.0',
   isAnkhApp: true,
   category: 'music_audio',
   activeTheme: {
