@@ -50,9 +50,15 @@ type PartialPackageScripts = Partial<PackageScripts>;
 const REQUIRED_MANAGED_SCRIPT_NAMES = ['lint', 'lint:fix', 'format', 'format:check'] as const;
 const TARGET_SCRIPT_NAMES = ['android', 'ios', 'web'] as const;
 
+/***
+ * Materialize and synchronize generated Expo project scaffold files, dependencies, tooling configuration, assets and target-specific scripts.
+ * @todo Move project scaffold generation from host/orchestrator into the projects/templates generation domain; host should invoke it through an adapter boundary.
+ */
 export class ProjectScaffolder {
+  /*** Bind scaffold generation to one Studio workspace root. */
   constructor(private readonly rootPath: string) {}
 
+  /*** Create the initial generated project directory, package/tooling configuration, managed app files and default assets. */
   async scaffoldProject(
     projectPath: string,
     appName: string,
@@ -96,6 +102,7 @@ export class ProjectScaffolder {
     await this.copyDefaultAssets(projectPath);
   }
 
+  /*** Reconcile an existing generated project's managed scaffold while preserving app-owned package metadata and extension dependencies. */
   async syncProjectScaffold(
     projectPath: string,
     appName: string,
@@ -150,6 +157,7 @@ export class ProjectScaffolder {
     });
   }
 
+  /*** Finalize and persist the canonical project manifest with project-owned identity/category/timestamps and system templates applied. */
   async finalizeManifest(
     projectPath: string,
     templateData: AppManifest,
@@ -182,6 +190,7 @@ export class ProjectScaffolder {
     return manifest;
   }
 
+  /*** Write the generated Expo app.config.ts for current identity, deploy targets, splash and runtime plan. */
   private async writeAppConfig(
     dir: string,
     name: string,
@@ -197,6 +206,7 @@ export class ProjectScaffolder {
     );
   }
 
+  /*** Create or remove the managed Android run script according to the current Android deploy target. */
   private async syncAndroidRunScript(
     dir: string,
     targets: AppDeployTargets,
@@ -213,6 +223,7 @@ export class ProjectScaffolder {
     await fs.writeFile(scriptPath, getAndroidRunTs({ projectId, includeStudio }), 'utf8');
   }
 
+  /*** Write the generated package.json with canonical owner dependencies plus selected ZORA extension dependencies. */
   private async writePackageJson(
     dir: string,
     slug: string,
@@ -241,6 +252,7 @@ export class ProjectScaffolder {
     );
   }
 
+  /*** Read the existing generated package manifest when present so synchronization can preserve app-owned metadata/dependencies. */
   private async readPackageJson(packageJsonPath: string): Promise<ExtendedPackageJsonShape | null> {
     if (!(await exists(packageJsonPath))) {
       return null;
@@ -254,10 +266,15 @@ export class ProjectScaffolder {
     };
   }
 
+  /*** Write the generated TypeScript configuration. */
   private async writeTsConfig(dir: string) {
     await fs.writeFile(path.join(dir, 'tsconfig.json'), getTsConfigJson(), 'utf8');
   }
 
+  /***
+   * Write generated ESLint configuration files.
+   * @todo Stop generating eslint.local.config.mjs/local rule overrides; generated apps must satisfy the canonical Ankhorage lint rules directly.
+   */
   private async writeEslintConfig(dir: string) {
     await Promise.all([
       fs.writeFile(path.join(dir, 'eslint.config.mjs'), getEslintConfigMjs(), 'utf8'),
@@ -265,6 +282,7 @@ export class ProjectScaffolder {
     ]);
   }
 
+  /*** Write generated canonical and local Prettier configuration files. */
   private async writePrettierConfig(dir: string) {
     await Promise.all([
       fs.writeFile(path.join(dir, '.prettierrc.js'), getPrettierRcJs(), 'utf8'),
@@ -272,6 +290,7 @@ export class ProjectScaffolder {
     ]);
   }
 
+  /*** Ensure generated projects ignore Expo's local .expo directory without disturbing existing gitignore content. */
   private async ensureExpoGitIgnore(dir: string) {
     const gitIgnorePath = path.join(dir, '.gitignore');
     const existing = (await exists(gitIgnorePath)) ? await fs.readFile(gitIgnorePath, 'utf8') : '';
@@ -281,6 +300,7 @@ export class ProjectScaffolder {
     await fs.writeFile(gitIgnorePath, `${existing}${separator}.expo/\n`, 'utf8');
   }
 
+  /*** Populate generated project icon/splash/favicon assets from repository defaults or deterministic 1x1 PNG fallbacks. */
   private async copyDefaultAssets(targetProjectPath: string) {
     const templateAssetsPath = path.join(this.rootPath, 'packages/cli/templates/assets');
     const targetAssetsPath = path.join(targetProjectPath, 'assets');
@@ -327,6 +347,10 @@ export class ProjectScaffolder {
   }
 }
 
+/***
+ * Return whether one filesystem path is accessible.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function exists(filePath: string) {
   try {
     await fs.access(filePath);
@@ -336,6 +360,7 @@ async function exists(filePath: string) {
   }
 }
 
+/*** Add dependency requirements from selected ZORA extensions to a generated package manifest. */
 function withZoraExtensionDependencies(
   packageJson: PackageJsonShape,
   zoraExtensions: readonly ZoraExtensionDefinition[],
@@ -349,6 +374,7 @@ function withZoraExtensionDependencies(
   };
 }
 
+/*** Reconcile Studio-managed package dependencies/devDependencies/scripts while preserving unrelated app-owned package metadata. */
 function mergePackageJson(
   existing: ExtendedPackageJsonShape | null,
   template: ExtendedPackageJsonShape,
@@ -409,6 +435,7 @@ function mergePackageJson(
   };
 }
 
+/*** Merge app-owned scripts with generated template scripts while force-owning canonical quality scripts and current platform target scripts. */
 function mergeScripts(
   existingScripts: PartialPackageScripts,
   templateScripts: PackageScripts,
@@ -435,6 +462,10 @@ function mergeScripts(
   return mergedScripts;
 }
 
+/***
+ * Find one named package script in a partial scripts record.
+ * @utility @ankhorage/utility/package
+ */
 function findScript(scripts: PartialPackageScripts, scriptName: string): string | undefined {
   return Object.entries(scripts).find(([candidate]) => candidate === scriptName)?.[1];
 }
