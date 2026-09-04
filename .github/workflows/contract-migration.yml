@@ -49,7 +49,7 @@ jobs:
           bun install
           bun run format
           bun run docs
-          if git grep -n 'NavigatorSpec' -- ':!CHANGELOG.md'; then
+          if git grep -n 'NavigatorSpec' -- ':!CHANGELOG.md' ':!.github/workflows/contract-migration.yml'; then
             echo 'NavigatorSpec remains after migration' >&2
             exit 1
           fi
