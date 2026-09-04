@@ -5,6 +5,7 @@ import path from 'node:path';
 
 import { startStudioHostServer } from '../http/server';
 import { ProjectManager } from '../orchestrator/projectManager';
+import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { assertInstalledRegistryPackageAsync } from './assertInstalledRegistryPackageAsync';
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
@@ -297,12 +298,9 @@ async function createProjectAsync(
     readonly rootNavigator?: 'drawer' | 'tabs';
   },
 ): Promise<NavigationProject> {
-  const created = await manager.createProject(
-    options.name,
-    { category: 'developer_tools', templateId: 'default' },
-    undefined,
-    { includeStudio: options.includeStudio },
-  );
+  const created = await manager.createProject(options.name, createSmokeProjectSource(), undefined, {
+    includeStudio: options.includeStudio,
+  });
   const baseManifest = await manager.getProjectManifest(created.id);
   const manifest = createExpo57NavigationFixtureManifest(baseManifest, {
     auth: options.auth,

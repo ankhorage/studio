@@ -10,10 +10,7 @@ import type { AnkhCommandHandler, AnkhRuntimeCommandProvider } from '@ankhorage/
 
 import { createStudioHost } from '../host/createStudioHost';
 import { startStudioHostServer } from '../host/http/server';
-import {
-  getProjectTemplateSource,
-  type ProjectTemplateSelection,
-} from '../host/templates';
+import { getProjectTemplateSource, type ProjectTemplateSelection } from '../host/templates';
 import { resolveWorkspaceRoot } from '../host/utils/workspaceRoot';
 
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';

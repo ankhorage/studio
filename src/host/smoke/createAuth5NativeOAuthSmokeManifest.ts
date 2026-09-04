@@ -1,5 +1,5 @@
 import type { AppManifest } from '@ankhorage/contracts';
-import { createOAuthFixtureManifest } from '@ankhorage/templates';
+import { createOAuthFixtureManifest } from './createOAuthFixtureManifest';
 
 import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig.js';
 

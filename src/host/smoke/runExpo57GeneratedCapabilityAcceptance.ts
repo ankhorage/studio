@@ -2,6 +2,7 @@ import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/
 import path from 'node:path';
 
 import { ProjectManager } from '../orchestrator/projectManager';
+import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { assertExpo57GeneratedCapabilityContractAsync } from './assertExpo57GeneratedCapabilityContractAsync';
 import { assertExpo57GeneratedCapabilityNativePrebuildAsync } from './assertExpo57GeneratedCapabilityNativePrebuildAsync';
 import { assertExpo57GeneratedCapabilityOwnerGraphAsync } from './assertExpo57GeneratedCapabilityOwnerGraphAsync';
@@ -27,7 +28,7 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
     const manager = new ProjectManager(workspaceRoot);
     const created = await manager.createProject(
       'Expo 57 Generated Capability Acceptance',
-      { category: 'developer_tools', templateId: 'default' },
+      createSmokeProjectSource(),
       undefined,
       { includeStudio: false },
     );

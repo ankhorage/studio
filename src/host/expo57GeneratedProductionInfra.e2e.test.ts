@@ -12,6 +12,7 @@ import {
   stopAllProjectInfraPortForwards,
 } from './orchestrator/infraSession';
 import { ProjectManager } from './orchestrator/projectManager';
+import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';
 import { upProjectInfrastructure } from './orchestrator/studioInfraUp';
 import { assertNoBrowserErrors } from './smoke/assertNoBrowserErrors';
 import { ChromeNavigationSession } from './smoke/ChromeNavigationSession';
@@ -37,7 +38,7 @@ productionInfraTest(
       await createWorkspaceAsync(workspaceRoot);
       const created = await manager.createProject(
         'Expo 57 Production Infra',
-        { category: 'developer_tools', templateId: 'default' },
+        createSmokeProjectSource(),
         undefined,
         { includeStudio: false },
       );

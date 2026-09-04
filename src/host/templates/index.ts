@@ -55,7 +55,9 @@ export async function getProjectTemplateSource(
   return {
     manifest: artifact.manifest,
     assets: await Promise.all(
-      artifact.assets.map((asset) => readTemplateImageAsset(artifact.manifest.media?.assets, asset)),
+      artifact.assets.map((asset) =>
+        readTemplateImageAsset(artifact.manifest.media?.assets, asset),
+      ),
     ),
   };
 }
@@ -78,7 +80,9 @@ async function readTemplateImageAsset(
 ): Promise<ProjectCreationAsset> {
   const media = mediaAssets?.[asset.mediaId];
   if (!media) {
-    throw new Error(`Template image '${asset.mediaId}' is missing from its manifest media registry.`);
+    throw new Error(
+      `Template image '${asset.mediaId}' is missing from its manifest media registry.`,
+    );
   }
   const body = await fs.readFile(join(TEMPLATES_PACKAGE_ROOT, asset.sourcePath));
   return {

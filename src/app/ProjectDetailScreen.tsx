@@ -110,7 +110,9 @@ export function ProjectDetailScreen() {
                 { backgroundColor: project.activeTheme.light.primaryColor },
               ]}
             />
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', gap: 8 }}>
+            <View
+              style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', gap: 8 }}
+            >
               <Heading level={2} text={project.name} />
               <Text color="neutral" emphasis="muted" variant="caption">
                 #{project.id}

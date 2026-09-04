@@ -5,6 +5,7 @@ import path from 'node:path';
 import type { AppManifest, ScreenSpec } from '@ankhorage/contracts';
 
 import { ProjectManager } from '../orchestrator/projectManager';
+import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
@@ -73,7 +74,7 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
   const projectManager = new ProjectManager(workspaceRoot);
   const created = await projectManager.createProject(
     'Expo 57 Generated App Acceptance',
-    { category: 'developer_tools', templateId: 'default' },
+    createSmokeProjectSource(),
     undefined,
     { includeStudio: false },
   );
