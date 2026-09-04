@@ -35,7 +35,7 @@ export interface LaunchProjectResponse {
 
 export interface CreateProjectInput {
   category: AppCategory;
-  templateId: string;
+  slug: string;
   name: string;
 }
 
@@ -74,7 +74,6 @@ function isProject(value: unknown): value is StudioProjectSummary {
     typeof value.id === 'string' &&
     typeof value.name === 'string' &&
     typeof value.path === 'string' &&
-    typeof value.version === 'string' &&
     typeof value.isAnkhApp === 'boolean' &&
     isAppCategory(value.category) &&
     (value.created === undefined || typeof value.created === 'string') &&
