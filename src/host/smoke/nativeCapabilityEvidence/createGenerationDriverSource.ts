@@ -6,6 +6,10 @@ import {
   NATIVE_EVIDENCE_IOS_SCHEME,
 } from './constants';
 
+/***
+ * Generate the standalone Bun driver that creates the native-capability evidence app through a released Studio package and patches its development-only native dependencies.
+ * @todo Move this acceptance-source generator from production src/host/smoke to test/smoke with the native-evidence harness.
+ */
 export function createGenerationDriverSource(workspaceRoot: string): string {
   return `import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
