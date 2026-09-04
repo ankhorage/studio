@@ -1,3 +1,4 @@
+/*** Audit coverage: exports-only entrypoint for the Studio host edge. */
 export type { ProjectDeployReleaseInspectionResult } from '../projectDeployReleaseInspectionResult';
 export type { ProjectDeployRuntimeInput } from '../projectDeployRuntimeInput';
 export { createTrustedEndpointTestFetch } from './apis/createTrustedEndpointTestFetch';
