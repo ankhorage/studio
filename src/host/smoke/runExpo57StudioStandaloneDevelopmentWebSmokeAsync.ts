@@ -7,6 +7,9 @@ import { reserveTcpPortAsync } from './reserveTcpPortAsync';
 
 const HTTP_TIMEOUT_MS = 120_000;
 
+/*** Run the standalone Studio development-Web browser acceptance flow against a real Expo dev server.
+ * @todo Move this end-to-end smoke flow from src/host/smoke to test/smoke.
+ */
 export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options: {
   readonly apiUrl: string;
   readonly categoryId: string;
@@ -110,11 +113,15 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
   }
 }
 
+/*** Collect child-process stdout/stderr chunks into one mutable output buffer.
+ * @utility @ankhorage/utility/node/process
+ */
 function collectOutput(processToCollect: ChildProcessWithoutNullStreams, output: string[]): void {
   processToCollect.stdout.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
   processToCollect.stderr.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
 }
 
+/*** Delete the deterministic host project used by the standalone browser acceptance flow. */
 async function deleteHostProjectAsync(apiUrl: string, projectId: string): Promise<void> {
   const response = await fetch(`${apiUrl}/projects/${encodeURIComponent(projectId)}`, {
     method: 'DELETE',
@@ -124,6 +131,7 @@ async function deleteHostProjectAsync(apiUrl: string, projectId: string): Promis
   }
 }
 
+/*** Wait for a browser control to hydrate before dispatching a real pointer click through CDP. */
 async function pointerClickAsync(
   browser: ChromeNavigationSession,
   role: string,
@@ -134,6 +142,9 @@ async function pointerClickAsync(
   await browser.clickByRoleAndNameAsync(role, name, occurrence);
 }
 
+/*** Stop a detached child process group and wait briefly for graceful exit.
+ * @utility @ankhorage/utility/node/process
+ */
 async function stopProcessAsync(processToStop: ChildProcessWithoutNullStreams): Promise<void> {
   if (!processToStop.pid || processToStop.exitCode !== null) return;
   try {
@@ -147,6 +158,9 @@ async function stopProcessAsync(processToStop: ChildProcessWithoutNullStreams): 
   ]);
 }
 
+/*** Wait for an HTTP endpoint while failing early when its watched process exits.
+ * @utility @ankhorage/utility/http
+ */
 async function waitForHttpAsync(
   url: string,
   processToWatch: ChildProcessWithoutNullStreams,
