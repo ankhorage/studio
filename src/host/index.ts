@@ -1,3 +1,6 @@
+/***
+ * Public Studio host subpath surface; intentionally exports only and owns no implementation.
+ */
 export type { ProjectDeployReleaseInspectionResult } from '../projectDeployReleaseInspectionResult';
 export type { ProjectDeployRuntimeInput } from '../projectDeployRuntimeInput';
 export { createTrustedEndpointTestFetch } from './apis/createTrustedEndpointTestFetch';
