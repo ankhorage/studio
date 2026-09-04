@@ -1,4 +1,5 @@
 import type { UiNode } from '@ankhorage/contracts';
+import { filterBy } from '@ankhorage/utility/array';
 
 import type {
   NodePlacement,
@@ -94,5 +95,5 @@ export function resolveCanvasDropZones(args: {
 export function getValidCanvasDropZones(
   zones: readonly CanvasDropZoneResolution[],
 ): readonly ValidCanvasDropZoneResolution[] {
-  return zones.filter((zone): zone is ValidCanvasDropZoneResolution => zone.status === 'valid');
+  return filterBy(zones, (zone): zone is ValidCanvasDropZoneResolution => zone.status === 'valid');
 }
