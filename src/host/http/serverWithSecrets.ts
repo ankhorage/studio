@@ -7,8 +7,9 @@ import { registerProjectDeployRoutes } from './deployRoutes';
 import { registerProjectSecretRoutes } from './secretRoutes';
 import { createStudioHostServer, type StartStudioHostServerOptions } from './server';
 
-/**
- * Starts the Studio host with trusted auth, secret, and external API bridges registered.
+/***
+ * Start the trusted Studio host edge with auth, secret, external API, and deploy routes registered.
+ * @todo Keep this as host composition only; domain services and policies belong to their owning domains.
  */
 export async function startStudioHostServerWithSecrets(
   options: number | StartStudioHostServerOptions = {},
