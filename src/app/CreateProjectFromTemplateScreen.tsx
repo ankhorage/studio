@@ -19,11 +19,8 @@ import {
 import { resolveCreateProjectFormState } from './workspace/createProjectFormState';
 import { resolveWorkspaceCategoryParam } from './workspace/routeParams';
 
-/***
- * Render the final create-project workspace screen, combining selected template context, project-name validation, creation orchestration and navigation to the created project.
- */
 export function CreateProjectFromTemplateScreen() {
-  const { category, categoryParam, templateId } = useTemplateRouteParams();
+  const { category, categoryParam, slug } = useTemplateRouteParams();
   const { catalog, isLoading, error, refresh } = useTemplateCatalog();
   const {
     projects,
@@ -35,7 +32,7 @@ export function CreateProjectFromTemplateScreen() {
   const selectedCategory = category
     ? catalog.categories.find((entry) => entry.id === category)
     : undefined;
-  const template = selectedCategory?.templates.find((entry) => entry.templateId === templateId);
+  const template = selectedCategory?.templates.find((entry) => entry.slug === slug);
   const [projectName, setProjectName] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -52,7 +49,6 @@ export function CreateProjectFromTemplateScreen() {
     [projectName, projects, projectsLoading, projectsError, template, isCreating],
   );
 
-  /*** Submit a validated project-creation request, route to the new project on success, and expose domain/transport failures to the form. */
   async function handleCreate() {
     if (!category || !template || formState.validation?.ok !== true) return;
     setIsCreating(true);
@@ -60,7 +56,7 @@ export function CreateProjectFromTemplateScreen() {
     try {
       const result = await createProject({
         category,
-        templateId: template.templateId,
+        slug: template.slug,
         name: projectName,
       });
       router.replace(`/projects/${result.id}`);
@@ -107,7 +103,7 @@ export function CreateProjectFromTemplateScreen() {
             </Text>
             <Heading level={2} text={template.name} />
             <Text color="neutral" emphasis="muted">
-              {template.description}
+              #{template.slug}
             </Text>
           </View>
           <View style={styles.lifecyclePanel}>
@@ -150,22 +146,17 @@ export function CreateProjectFromTemplateScreen() {
   );
 }
 
-/***
- * Read and normalize the category/template route parameters used by the create-project screen.
- */
+/*** Resolve the category and standalone template slug from the Expo Router params. */
 function useTemplateRouteParams() {
-  const params = useLocalSearchParams<{ category?: string; templateId?: string }>();
+  const params = useLocalSearchParams<{ category?: string; slug?: string }>();
   const category = resolveWorkspaceCategoryParam(firstParam(params.category));
   return {
     ...category,
-    templateId: firstParam(params.templateId),
+    slug: firstParam(params.slug),
   };
 }
 
-/***
- * Normalize a scalar-or-array route/search parameter to its first string value, falling back to an empty string.
- * @utility @ankhorage/utility/url
- */
+/*** Normalize one scalar-or-array Expo Router parameter. */
 function firstParam(value: string | string[] | undefined): string {
   return Array.isArray(value) ? (value[0] ?? '') : (value ?? '');
 }

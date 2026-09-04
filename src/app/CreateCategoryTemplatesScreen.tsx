@@ -12,9 +12,6 @@ import {
 } from './workspace/WorkspacePrimitives';
 import { resolveWorkspaceCategoryParam } from './workspace/routeParams';
 
-/***
- * Render the category-specific template selection screen with route validation, catalog loading/error states and template navigation.
- */
 export function CreateCategoryTemplatesScreen() {
   const { category, categoryParam } = useCategoryRouteParams();
   const { catalog, isLoading, error, refresh } = useTemplateCatalog();
@@ -51,7 +48,7 @@ export function CreateCategoryTemplatesScreen() {
             <TemplateCard
               key={template.id}
               template={template}
-              onPress={() => router.push(`/create/${category}/${template.templateId}`)}
+              onPress={() => router.push(`/create/${category}/${template.slug}`)}
             />
           ))}
         </View>
@@ -60,18 +57,11 @@ export function CreateCategoryTemplatesScreen() {
   );
 }
 
-/***
- * Read the category search parameter from Expo Router and resolve it through the workspace category contract.
- */
 function useCategoryRouteParams() {
   const params = useLocalSearchParams<{ category?: string }>();
   return resolveWorkspaceCategoryParam(firstParam(params.category));
 }
 
-/***
- * Normalize a scalar-or-array route/search parameter to its first string value, falling back to an empty string.
- * @utility @ankhorage/utility/url
- */
 function firstParam(value: string | string[] | undefined): string {
   return Array.isArray(value) ? (value[0] ?? '') : (value ?? '');
 }

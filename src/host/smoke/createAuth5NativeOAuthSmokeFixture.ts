@@ -2,9 +2,9 @@ import { OAUTH_CALLBACK_ROUTE } from '@ankhorage/templates';
 
 import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
-import { getTemplateCatalog } from '../templateRegistry';
 import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig';
 import { createAuth5NativeOAuthSmokeManifest } from './createAuth5NativeOAuthSmokeManifest';
+import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { prepareAuth5NativeOAuthSmokeWorkspace } from './prepareAuth5NativeOAuthSmokeWorkspace';
 
 export interface Auth5NativeOAuthSmokeFixture {
@@ -14,23 +14,15 @@ export interface Auth5NativeOAuthSmokeFixture {
   readonly workspaceRoot: string;
 }
 
-/*** Create a generated project fixture for Auth 5 native OAuth smoke acceptance.
- * @todo Move this smoke-fixture orchestrator from src/host/smoke to test/smoke.
- */
 export async function createAuth5NativeOAuthSmokeFixture(
   workspaceRoot: string,
 ): Promise<Auth5NativeOAuthSmokeFixture> {
   await prepareAuth5NativeOAuthSmokeWorkspace(workspaceRoot);
   const projectManager = new ProjectManager(workspaceRoot);
   const moduleManager = new ModuleManager(workspaceRoot);
-  const template = getTemplateCatalog()
-    .categories.find((candidate) => candidate.id === 'developer_tools')
-    ?.templates.at(0);
-  if (!template) throw new Error('Developer-tools template is unavailable.');
-
   const created = await projectManager.createProject(
     AUTH5_NATIVE_OAUTH_SMOKE.projectName,
-    { category: 'developer_tools', templateId: template.templateId },
+    createSmokeProjectSource(),
     undefined,
     { includeStudio: false },
   );

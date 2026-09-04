@@ -19,7 +19,7 @@ test('apps/studio exposes the canonical workspace Expo routes', async () => {
     'src/app/projects/[projectId].tsx': 'ProjectDetailScreen',
     'src/app/create/index.tsx': 'CreateCategoriesScreen',
     'src/app/create/[category]/index.tsx': 'CreateCategoryTemplatesScreen',
-    'src/app/create/[category]/[templateId].tsx': 'CreateProjectFromTemplateScreen',
+    'src/app/create/[category]/[slug].tsx': 'CreateProjectFromTemplateScreen',
   };
 
   for (const [routePath, screenName] of Object.entries(routes)) {
@@ -44,6 +44,6 @@ test('apps/studio owns a canonical AppManifest for the Studio workspace app', as
     '/projects/:projectId',
     '/create',
     '/create/:category',
-    '/create/:category/:templateId',
+    '/create/:category/:slug',
   ]);
 });

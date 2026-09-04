@@ -16,6 +16,7 @@ import { upProjectInfrastructure } from './orchestrator/studioInfraUp';
 import { assertNoBrowserErrors } from './smoke/assertNoBrowserErrors';
 import { ChromeNavigationSession } from './smoke/ChromeNavigationSession';
 import { createExpo57NavigationFixtureManifest } from './smoke/createExpo57NavigationFixtureManifest';
+import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';
 import { createStaticExportServer } from './smoke/createStaticExportServer';
 import { reserveTcpPortAsync } from './smoke/reserveTcpPortAsync';
 import { resolveAppOwnedExpoCliAsync } from './smoke/resolveAppOwnedExpoCliAsync';
@@ -37,7 +38,7 @@ productionInfraTest(
       await createWorkspaceAsync(workspaceRoot);
       const created = await manager.createProject(
         'Expo 57 Production Infra',
-        { category: 'developer_tools', templateId: 'default' },
+        createSmokeProjectSource(),
         undefined,
         { includeStudio: false },
       );

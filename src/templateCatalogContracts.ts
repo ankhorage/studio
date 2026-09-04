@@ -2,9 +2,8 @@ import type { AppCategory, ThemeConfig } from '@ankhorage/contracts';
 
 export interface TemplateCatalogTemplate {
   id: string;
-  templateId: string;
+  slug: string;
   name: string;
-  description: string;
 }
 
 export interface TemplateCatalogCategory {

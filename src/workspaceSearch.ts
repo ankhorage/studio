@@ -1,18 +1,10 @@
 import type { ProjectSortKey, StudioProjectSummary } from './projectWorkspaceContracts';
 import type { TemplateCatalog, TemplateEntry } from './templateCatalogContracts';
 
-/***
- * Normalize free-text search input for case-insensitive matching.
- * @utility @ankhorage/utility/search
- */
 function normalize(s: string): string {
   return s.trim().toLowerCase();
 }
 
-/***
- * Score an already-normalized target by exact, prefix, or substring match quality.
- * @utility @ankhorage/utility/search
- */
 function scoreText(target: string, query: string): number {
   if (!query) return 0;
   if (target === query) return 100;
@@ -21,10 +13,6 @@ function scoreText(target: string, query: string): number {
   return 0;
 }
 
-/***
- * Compare Studio projects by configured name or most-recent activity ordering.
- * @todo Move project sorting behavior under src/projects/ or src/workspace/ with its owning project list use case.
- */
 function compareProjects(a: StudioProjectSummary, b: StudioProjectSummary, sort: ProjectSortKey) {
   if (sort === 'name-asc') {
     return a.name.localeCompare(b.name);
@@ -37,10 +25,6 @@ function compareProjects(a: StudioProjectSummary, b: StudioProjectSummary, sort:
   return normalizedBTime - normalizedATime || a.name.localeCompare(b.name);
 }
 
-/***
- * Filter and sort Studio project summaries using workspace search fields and project sort policy.
- * @todo Move project search behavior under src/projects/ or src/workspace/ rather than a direct src/ file.
- */
 export function filterAndSortProjects(
   projects: readonly StudioProjectSummary[],
   queryRaw: string,
@@ -66,10 +50,6 @@ export function filterAndSortProjects(
     .map((entry) => entry.project);
 }
 
-/***
- * Flatten the categorized Studio template catalog into entries carrying their category metadata.
- * @todo Move template catalog projection under src/templates/.
- */
 function getTemplateEntries(catalog: TemplateCatalog): TemplateEntry[] {
   return catalog.categories.flatMap((category) =>
     category.templates.map((template) => ({
@@ -80,10 +60,6 @@ function getTemplateEntries(catalog: TemplateCatalog): TemplateEntry[] {
   );
 }
 
-/***
- * Filter Studio template entries by their searchable authored and category fields.
- * @todo Move template search behavior under src/templates/.
- */
 export function filterAndSortTemplates(
   catalog: TemplateCatalog,
   queryRaw: string,
@@ -97,8 +73,7 @@ export function filterAndSortTemplates(
       const score = Math.max(
         scoreText(normalize(template.name), query),
         scoreText(normalize(template.id), query),
-        scoreText(normalize(template.templateId), query),
-        scoreText(normalize(template.description), query),
+        scoreText(normalize(template.slug), query),
         scoreText(normalize(template.category), query),
         scoreText(normalize(template.categoryLabel), query),
       );

@@ -7,16 +7,11 @@ import { reserveTcpPortAsync } from './reserveTcpPortAsync';
 
 const HTTP_TIMEOUT_MS = 120_000;
 
-/*** Run the standalone Studio development-Web browser acceptance flow against a real Expo dev server.
- * @todo Move this end-to-end smoke flow from src/host/smoke to test/smoke.
- */
 export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options: {
   readonly apiUrl: string;
   readonly categoryId: string;
   readonly categoryLabel: string;
   readonly fixtureRoot: string;
-  readonly templateId: string;
-  readonly templateName: string;
 }): Promise<void> {
   const [debugPort, expoPort] = await Promise.all([
     reserveTcpPortAsync('Standalone Studio Chrome'),
@@ -49,9 +44,6 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
     await pointerClickAsync(browser, 'button', 'Name');
     await pointerClickAsync(browser, 'button', 'Use light mode');
     await browser.waitForHydratedRoleAndNameAsync('button', 'Use dark mode');
-    await pointerClickAsync(browser, 'button', 'Workspace menu');
-    await pointerClickAsync(browser, 'button', 'Install workspace packages');
-    await browser.waitForBodyTextAsync('Packages installed');
 
     await pointerClickAsync(browser, 'button', 'New project');
     await browser.waitForLocationAsync({ pathname: '/create' });
@@ -67,17 +59,9 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
     await browser.waitForLocationAsync({ pathname: '/create', search: '?source=standalone' });
     await pointerClickAsync(browser, 'button', `Browse ${options.categoryLabel} templates`);
     await browser.waitForLocationAsync({ pathname: `/create/${options.categoryId}` });
-    await pointerClickAsync(browser, 'button', `Select ${options.templateName}`);
-    const templatePath = `/create/${options.categoryId}/${options.templateId}`;
-    await browser.waitForLocationAsync({ pathname: templatePath });
-    await browser.waitForBodyTextAsync('Project name');
-
-    await browser.goBackAsync();
-    await browser.waitForLocationAsync({ pathname: `/create/${options.categoryId}` });
-    await browser.goForwardAsync();
-    await browser.waitForLocationAsync({ pathname: templatePath });
-    await browser.reloadAsync();
-    await browser.waitForBodyTextAsync('Project name');
+    await browser.waitForBodyTextAsync('No templates in this category');
+    await pointerClickAsync(browser, 'button', 'Back to categories');
+    await browser.waitForLocationAsync({ pathname: '/create' });
 
     await browser.navigateAsync(`${appUrl}/`);
     await browser.waitForBodyTextAsync('Release Monitor');
@@ -87,6 +71,8 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
       search: '',
     });
     await browser.waitForBodyTextAsync('Project Detail');
+    await pointerClickAsync(browser, 'button', 'Install packages');
+    await browser.waitForBodyTextAsync('Project packages installed.');
 
     await browser.navigateAsync(`${appUrl}/projects/release-monitor?view=details`);
     await browser.waitForLocationAsync({
@@ -113,15 +99,11 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
   }
 }
 
-/*** Collect child-process stdout/stderr chunks into one mutable output buffer.
- * @utility @ankhorage/utility/node/process
- */
 function collectOutput(processToCollect: ChildProcessWithoutNullStreams, output: string[]): void {
   processToCollect.stdout.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
   processToCollect.stderr.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
 }
 
-/*** Delete the deterministic host project used by the standalone browser acceptance flow. */
 async function deleteHostProjectAsync(apiUrl: string, projectId: string): Promise<void> {
   const response = await fetch(`${apiUrl}/projects/${encodeURIComponent(projectId)}`, {
     method: 'DELETE',
@@ -131,7 +113,6 @@ async function deleteHostProjectAsync(apiUrl: string, projectId: string): Promis
   }
 }
 
-/*** Wait for a browser control to hydrate before dispatching a real pointer click through CDP. */
 async function pointerClickAsync(
   browser: ChromeNavigationSession,
   role: string,
@@ -142,9 +123,6 @@ async function pointerClickAsync(
   await browser.clickByRoleAndNameAsync(role, name, occurrence);
 }
 
-/*** Stop a detached child process group and wait briefly for graceful exit.
- * @utility @ankhorage/utility/node/process
- */
 async function stopProcessAsync(processToStop: ChildProcessWithoutNullStreams): Promise<void> {
   if (!processToStop.pid || processToStop.exitCode !== null) return;
   try {
@@ -158,9 +136,6 @@ async function stopProcessAsync(processToStop: ChildProcessWithoutNullStreams): 
   ]);
 }
 
-/*** Wait for an HTTP endpoint while failing early when its watched process exits.
- * @utility @ankhorage/utility/http
- */
 async function waitForHttpAsync(
   url: string,
   processToWatch: ChildProcessWithoutNullStreams,

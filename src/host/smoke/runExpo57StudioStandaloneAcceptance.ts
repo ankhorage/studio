@@ -3,7 +3,6 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 
 import { startStudioHostServerWithSecrets } from '../http/serverWithSecrets';
-import { getTemplateCatalog } from '../templateRegistry';
 import { assertExpo57StudioNativePrebuildAsync } from './assertExpo57StudioNativePrebuildAsync';
 import { assertExpo57StudioStandaloneContractAsync } from './assertExpo57StudioStandaloneContractAsync';
 import { createExpo57StudioHostFixtureAsync } from './createExpo57StudioHostFixtureAsync';
@@ -13,10 +12,9 @@ import { runExpo57StudioStandaloneDevelopmentWebSmokeAsync } from './runExpo57St
 import { runExpo57StudioStandaloneStaticWebSmokeAsync } from './runExpo57StudioStandaloneStaticWebSmokeAsync';
 
 const COMMAND_TIMEOUT_MS = 300_000;
+const ACCEPTANCE_CATEGORY = 'developer_tools' as const;
+const ACCEPTANCE_CATEGORY_LABEL = 'Developer Tools';
 
-/*** Run the full standalone Studio acceptance matrix against registry-installed dependencies.
- * @todo Move this end-to-end acceptance orchestrator from src/host/smoke to test/acceptance.
- */
 export async function runExpo57StudioStandaloneAcceptance(
   options: {
     readonly keepFixture?: boolean;
@@ -48,8 +46,7 @@ export async function runExpo57StudioStandaloneAcceptance(
       repositoryRoot,
     });
 
-    const { category, template } = resolveTemplateSelection();
-    await createExpo57StudioHostFixtureAsync(hostWorkspaceRoot, category.id);
+    await createExpo57StudioHostFixtureAsync(hostWorkspaceRoot, ACCEPTANCE_CATEGORY);
     const hostPort = 3000;
     host = await startStudioHostServerWithSecrets({
       host: '127.0.0.1',
@@ -59,11 +56,9 @@ export async function runExpo57StudioStandaloneAcceptance(
     const apiUrl = `http://127.0.0.1:${hostPort}/api`;
     await runExpo57StudioStandaloneDevelopmentWebSmokeAsync({
       apiUrl,
-      categoryId: category.id,
-      categoryLabel: category.label,
+      categoryId: ACCEPTANCE_CATEGORY,
+      categoryLabel: ACCEPTANCE_CATEGORY_LABEL,
       fixtureRoot,
-      templateId: template.templateId,
-      templateName: template.name,
     });
     await runStaticAndNativeOutputChecksAsync({ apiUrl, cacheRoot, fixtureRoot });
     await assertExpo57StudioNativePrebuildAsync(fixtureRoot);
@@ -81,7 +76,6 @@ export async function runExpo57StudioStandaloneAcceptance(
   }
 }
 
-/*** Assert that the standalone fixture lockfile still matches its expected digest. */
 async function assertLockfileUnchangedAsync(
   fixtureRoot: string,
   expectedDigest: string,
@@ -91,7 +85,6 @@ async function assertLockfileUnchangedAsync(
     throw new Error('Standalone acceptance mutated its frozen lockfile.');
 }
 
-/*** Create a registry lockfile, perform a cold frozen install, and return its digest. */
 async function createLockfileAndInstallAsync(
   fixtureRoot: string,
   cacheRoot: string,
@@ -120,7 +113,6 @@ async function createLockfileAndInstallAsync(
   return lockfileDigest;
 }
 
-/*** Create isolated Bun/Expo cache environment variables for standalone acceptance. */
 function createCommandEnvironment(cacheRoot: string): Readonly<Record<string, string>> {
   return {
     __UNSAFE_EXPO_HOME_DIRECTORY: path.join(cacheRoot, 'expo-home'),
@@ -130,22 +122,10 @@ function createCommandEnvironment(cacheRoot: string): Readonly<Record<string, st
   };
 }
 
-/*** Return the SHA-256 hex digest of binary content.
- * @utility @ankhorage/utility/node/crypto
- */
 function hash(value: Uint8Array): string {
   return createHash('sha256').update(value).digest('hex');
 }
 
-/*** Select the first template-bearing catalog category for standalone acceptance. */
-function resolveTemplateSelection() {
-  const category = getTemplateCatalog().categories.find((entry) => entry.templates.length > 0);
-  const [template] = category?.templates ?? [];
-  if (!category || !template) throw new Error('Template catalog has no standalone fixture entry.');
-  return { category, template };
-}
-
-/*** Run the registry-installed standalone app's quality and compatibility checks. */
 async function runAppOwnedQualityChecksAsync(
   fixtureRoot: string,
   cacheRoot: string,
@@ -171,7 +151,6 @@ async function runAppOwnedQualityChecksAsync(
   }
 }
 
-/*** Run static Web, native JavaScript exports, browser smoke, and clean native prebuild. */
 async function runStaticAndNativeOutputChecksAsync(options: {
   readonly apiUrl: string;
   readonly cacheRoot: string;

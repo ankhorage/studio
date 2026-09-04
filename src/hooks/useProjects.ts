@@ -18,6 +18,11 @@ export interface SyncProjectResponse {
   success: boolean;
 }
 
+export interface InstallProjectPackagesResponse {
+  success: boolean;
+  scope: 'project';
+}
+
 export interface UpProjectInfrastructureResponse {
   success: boolean;
   skipped?: string;
@@ -35,38 +40,25 @@ export interface LaunchProjectResponse {
 
 export interface CreateProjectInput {
   category: AppCategory;
-  templateId: string;
+  slug: string;
   name: string;
 }
 
 export class ProjectCreationError extends Error {
-  /*** Create a project-creation error from the canonical validation failure returned by Studio. */
   constructor(readonly reason: ProjectCreationValidationFailure) {
     super(reason.message);
     this.name = 'ProjectCreationError';
   }
 }
 
-/***
- * Return whether an unknown value is any non-null JavaScript object, including arrays.
- * @utility @ankhorage/utility/object
- */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
 
-/***
- * Validate one authored theme-mode configuration.
- * @todo Move reusable ThemeConfig validation beside its contracts/theme owner.
- */
 function isThemeModeConfig(value: unknown): value is ThemeConfig['light'] {
   return isRecord(value) && typeof value.primaryColor === 'string' && isColorHarmony(value.harmony);
 }
 
-/***
- * Validate an authored ThemeConfig returned in a project summary.
- * @todo Move reusable ThemeConfig validation beside its contracts/theme owner.
- */
 function isThemeConfig(value: unknown): value is ThemeConfig {
   return (
     isRecord(value) &&
@@ -77,15 +69,10 @@ function isThemeConfig(value: unknown): value is ThemeConfig {
   );
 }
 
-/***
- * Return whether an unknown value is a supported active theme mode or absence.
- * @todo Move this guard beside the AppManifest theme-mode contract.
- */
 function isActiveThemeMode(value: unknown): value is AppManifest['activeThemeMode'] {
   return value === 'dark' || value === 'light' || value === undefined;
 }
 
-/*** Validate one project summary returned by the Studio host. */
 function isProject(value: unknown): value is StudioProjectSummary {
   return (
     isRecord(value) &&
@@ -102,18 +89,10 @@ function isProject(value: unknown): value is StudioProjectSummary {
   );
 }
 
-/***
- * Decode a Response body as JSON without applying domain validation.
- * @utility @ankhorage/utility/http
- */
 async function readJson(response: Response): Promise<unknown> {
   return await response.json();
 }
 
-/***
- * Attempt to decode a Response body as JSON and return null when decoding fails.
- * @utility @ankhorage/utility/http
- */
 async function readError(response: Response): Promise<unknown> {
   try {
     return await readJson(response);
@@ -122,7 +101,6 @@ async function readError(response: Response): Promise<unknown> {
   }
 }
 
-/*** Validate an unknown Studio host payload as a project-summary list. */
 function parseProjectList(value: unknown): StudioProjectSummary[] {
   if (!Array.isArray(value) || !value.every(isProject)) {
     throw new Error('Projects response was not a valid project list');
@@ -131,17 +109,12 @@ function parseProjectList(value: unknown): StudioProjectSummary[] {
   return value;
 }
 
-/***
- * Fetch and validate the current Studio project list.
- * @todo Move concrete project-list HTTP access into the projects package-edge adapter.
- */
 async function requestProjects(): Promise<StudioProjectSummary[]> {
   const response = await fetch(`${API_BASE}/projects`);
   if (!response.ok) throw new Error('Failed to fetch projects');
   return parseProjectList(await readJson(response));
 }
 
-/*** Validate and normalize the host response after creating a project. */
 function parseCreateProjectResponse(value: unknown): CreateProjectResponse {
   if (
     !isRecord(value) ||
@@ -159,7 +132,6 @@ function parseCreateProjectResponse(value: unknown): CreateProjectResponse {
   };
 }
 
-/*** Parse a known project-creation validation failure or return null for an unrelated payload. */
 function parseProjectCreationFailure(value: unknown): ProjectCreationValidationFailure | null {
   if (!isRecord(value) || typeof value.code !== 'string' || typeof value.message !== 'string') {
     return null;
@@ -181,10 +153,6 @@ function parseProjectCreationFailure(value: unknown): ProjectCreationValidationF
   };
 }
 
-/***
- * Validate a generic response carrying a boolean success field.
- * @utility @ankhorage/utility/validation
- */
 function parseSyncProjectResponse(value: unknown): SyncProjectResponse {
   if (!isRecord(value) || typeof value.success !== 'boolean') {
     throw new Error('Sync response was invalid');
@@ -193,7 +161,14 @@ function parseSyncProjectResponse(value: unknown): SyncProjectResponse {
   return { success: value.success };
 }
 
-/*** Validate and normalize the project-infrastructure startup response. */
+function parseInstallProjectPackagesResponse(value: unknown): InstallProjectPackagesResponse {
+  if (!isRecord(value) || value.success !== true || value.scope !== 'project') {
+    throw new Error('Install project packages response was invalid');
+  }
+
+  return { success: true, scope: 'project' };
+}
+
 function parseUpProjectInfrastructureResponse(value: unknown): UpProjectInfrastructureResponse {
   if (!isRecord(value) || typeof value.success !== 'boolean') {
     throw new Error('Infrastructure response was invalid');
@@ -207,7 +182,6 @@ function parseUpProjectInfrastructureResponse(value: unknown): UpProjectInfrastr
   };
 }
 
-/*** Validate and normalize the response returned when Studio launches a project. */
 function parseLaunchProjectResponse(value: unknown): LaunchProjectResponse {
   if (!isRecord(value) || typeof value.success !== 'boolean') {
     throw new Error('Open running app response was invalid');
@@ -222,100 +196,58 @@ function parseLaunchProjectResponse(value: unknown): LaunchProjectResponse {
   };
 }
 
-/***
- * Own React project-list state while exposing project create/delete/sync/infra/launch operations.
- * @todo Split project HTTP/application operations from the React hook and move the hook beside the projects UI/application owner.
- */
-export const useProjects = () => {
+async function requestProjectAction<T>(
+  path: string,
+  options: RequestInit,
+  parse: (value: unknown) => T,
+): Promise<T> {
+  const response = await fetch(`${API_BASE}${path}`, options);
+  if (!response.ok) throw new Error(`Project action failed with ${response.status}`);
+  return parse(await readJson(response));
+}
+
+async function requestCreateProject(input: CreateProjectInput): Promise<CreateProjectResponse> {
+  const response = await fetch(`${API_BASE}/projects`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  });
+  if (!response.ok) {
+    const reason = parseProjectCreationFailure(await readError(response));
+    if (reason) throw new ProjectCreationError(reason);
+    throw new Error(`Project creation failed with ${response.status}`);
+  }
+  return parseCreateProjectResponse(await readJson(response));
+}
+
+export function useProjects() {
   const [projects, setProjects] = useState<StudioProjectSummary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  /*** Reload the current project list and update hook loading/error state. */
   const loadProjects = useCallback(async () => {
     try {
-      const data = await requestProjects();
-      setProjects(data);
+      setProjects(await requestProjects());
       setError(null);
-    } catch (err) {
-      console.error(err);
+    } catch (caught) {
+      console.error(caught);
       setError('Could not connect to the local Studio host. Run `ankh studio dev`.');
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  /*** Mark the project list as loading and run a fresh load. */
   const refresh = useCallback(async () => {
     setIsLoading(true);
     await loadProjects();
   }, [loadProjects]);
 
-  /*** Create a project through the host API and refresh the project list after success. */
-  const createProject = async (input: CreateProjectInput): Promise<CreateProjectResponse> => {
-    const res = await fetch(`${API_BASE}/projects`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(input),
-    });
-
-    if (!res.ok) {
-      const failure = parseProjectCreationFailure(await readError(res));
-      if (failure) {
-        throw new ProjectCreationError(failure);
-      }
-      throw new Error('Failed to create project');
-    }
-
-    const result = parseCreateProjectResponse(await readJson(res));
-    await refresh();
-    return result;
-  };
-
-  /*** Delete a project through the host API and refresh the list after success. */
-  const deleteProject = async (projectId: string) => {
-    const res = await fetch(`${API_BASE}/projects/${projectId}`, {
-      method: 'DELETE',
-    });
-    if (!res.ok) throw new Error('Failed to delete project');
-    await refresh();
-  };
-
-  /*** Request regeneration/synchronization of one project and validate the success response. */
-  const syncProject = async (projectId: string): Promise<SyncProjectResponse> => {
-    const res = await fetch(`${API_BASE}/projects/${projectId}/sync`, {
-      method: 'POST',
-    });
-    if (!res.ok) throw new Error('Failed to sync project');
-    return parseSyncProjectResponse(await readJson(res));
-  };
-
-  /*** Start infrastructure for one project and normalize the host result. */
-  const upProjectInfrastructure = async (
-    projectId: string,
-  ): Promise<UpProjectInfrastructureResponse> => {
-    const res = await fetch(`${API_BASE}/projects/${projectId}/infra/up`, {
-      method: 'POST',
-    });
-    if (!res.ok) throw new Error('Failed to start project infrastructure');
-    return parseUpProjectInfrastructureResponse(await readJson(res));
-  };
-
-  /*** Launch one project and normalize the host launch response. */
-  const launchProject = async (projectId: string): Promise<LaunchProjectResponse> => {
-    const res = await fetch(`${API_BASE}/projects/${projectId}/launch`, {
-      method: 'POST',
-    });
-    if (!res.ok) throw new Error('Failed to open running app');
-    return parseLaunchProjectResponse(await readJson(res));
-  };
-
   useEffect(() => {
     let active = true;
     void requestProjects()
-      .then((data) => {
+      .then((nextProjects) => {
         if (!active) return;
-        setProjects(data);
+        setProjects(nextProjects);
         setError(null);
       })
       .catch((caught: unknown) => {
@@ -332,6 +264,55 @@ export const useProjects = () => {
     };
   }, []);
 
+  const createProject = useCallback(async (input: CreateProjectInput) => {
+    return await requestCreateProject(input);
+  }, []);
+
+  const deleteProject = useCallback(async (projectId: string) => {
+    const response = await fetch(`${API_BASE}/projects/${encodeURIComponent(projectId)}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) throw new Error(`Project deletion failed with ${response.status}`);
+  }, []);
+
+  const syncProject = useCallback(async (projectId: string): Promise<SyncProjectResponse> => {
+    return await requestProjectAction(
+      `/projects/${encodeURIComponent(projectId)}/sync`,
+      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' },
+      parseSyncProjectResponse,
+    );
+  }, []);
+
+  const installProjectPackages = useCallback(
+    async (projectId: string): Promise<InstallProjectPackagesResponse> => {
+      return await requestProjectAction(
+        `/projects/${encodeURIComponent(projectId)}/packages/install`,
+        { method: 'POST' },
+        parseInstallProjectPackagesResponse,
+      );
+    },
+    [],
+  );
+
+  const upProjectInfrastructure = useCallback(
+    async (projectId: string): Promise<UpProjectInfrastructureResponse> => {
+      return await requestProjectAction(
+        `/projects/${encodeURIComponent(projectId)}/infra/up`,
+        { method: 'POST' },
+        parseUpProjectInfrastructureResponse,
+      );
+    },
+    [],
+  );
+
+  const launchProject = useCallback(async (projectId: string): Promise<LaunchProjectResponse> => {
+    return await requestProjectAction(
+      `/projects/${encodeURIComponent(projectId)}/launch`,
+      { method: 'POST' },
+      parseLaunchProjectResponse,
+    );
+  }, []);
+
   return {
     projects,
     isLoading,
@@ -340,7 +321,8 @@ export const useProjects = () => {
     createProject,
     deleteProject,
     syncProject,
+    installProjectPackages,
     upProjectInfrastructure,
     launchProject,
   };
-};
+}

@@ -1,4 +1,4 @@
-import { Heading } from '@ankhorage/zora';
+import { Heading, Text } from '@ankhorage/zora';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
@@ -17,9 +17,6 @@ import {
   WorkspaceScreen,
 } from './workspace/WorkspacePrimitives';
 
-/***
- * Render one project workspace detail screen with metadata, lifecycle actions, host feedback and delete confirmation.
- */
 export function ProjectDetailScreen() {
   const { projectId } = useProjectRouteParams();
   const {
@@ -29,6 +26,7 @@ export function ProjectDetailScreen() {
     refresh,
     deleteProject,
     syncProject,
+    installProjectPackages,
     upProjectInfrastructure,
     launchProject,
   } = useProjects();
@@ -36,10 +34,6 @@ export function ProjectDetailScreen() {
   const [activeAction, setActiveAction] = useState<string | null>(null);
   const [message, setMessage] = useState<{ tone: 'success' | 'error'; text: string } | null>(null);
 
-  /***
-   * Execute one project lifecycle UI action with shared busy state, success/error messaging and project-list refresh.
-   * @todo Replace the local unknown-error message fallback with the canonical `@ankhorage/utility/error` primitive during Utility consumption.
-   */
   async function runAction(label: string, action: () => Promise<string>) {
     setActiveAction(label);
     setMessage(null);
@@ -58,7 +52,6 @@ export function ProjectDetailScreen() {
     }
   }
 
-  /*** Launch the generated app, validate the returned URL and open it through the platform adapter/fallback. */
   const handleOpenRunningApp = () =>
     runAction('Open running app', async () => {
       const response: LaunchProjectResponse = await launchProject(projectId);
@@ -76,7 +69,6 @@ export function ProjectDetailScreen() {
         : `Running app opened at ${url}.`;
     });
 
-  /*** Confirm project deletion, execute the delete lifecycle and return to the project overview. */
   const handleDelete = () => {
     if (!project) return;
     confirmDelete(
@@ -119,15 +111,16 @@ export function ProjectDetailScreen() {
                 { backgroundColor: project.activeTheme.light.primaryColor },
               ]}
             />
-            <Heading level={2} text={project.name} />
+            <View style={styles.nameSlugRow}>
+              <Heading level={2} text={project.name} />
+              <Text color="neutral" emphasis="muted" variant="caption">
+                #{project.id}
+              </Text>
+            </View>
             <MetadataRows
               rows={[
-                ['Project ID', project.id],
-                ['Version', project.version],
-                ['Category', formatCategory(project.category)],
-                ['Path', project.path],
-                ['Created', formatDate(project.created)],
-                ['Updated', formatDate(project.updated)],
+                ['App category', formatCategory(project.category)],
+                ['Creation', formatDate(project.created)],
               ]}
             />
           </View>
@@ -146,6 +139,19 @@ export function ProjectDetailScreen() {
                   void runAction('Sync', async () => {
                     await syncProject(project.id);
                     return 'Project synchronized.';
+                  })
+                }
+              />
+              <LifecycleAction
+                iconName="download-outline"
+                label="Install packages"
+                detail="Install dependencies using this generated app as the package root."
+                loading={activeAction === 'Install packages'}
+                disabled={activeAction !== null}
+                onPress={() =>
+                  void runAction('Install packages', async () => {
+                    await installProjectPackages(project.id);
+                    return 'Project packages installed.';
                   })
                 }
               />
@@ -187,16 +193,13 @@ export function ProjectDetailScreen() {
   );
 }
 
-/*** Read and normalize the projectId route parameter used by the project-detail screen. */
+/*** Resolve the active project ID from Expo Router params. */
 function useProjectRouteParams() {
   const params = useLocalSearchParams<{ projectId?: string }>();
   return { projectId: firstParam(params.projectId) };
 }
 
-/***
- * Normalize a scalar-or-array route/search parameter to its first string value, falling back to an empty string.
- * @utility @ankhorage/utility/url
- */
+/*** Normalize one scalar-or-array Expo Router parameter. */
 function firstParam(value: string | string[] | undefined): string {
   return Array.isArray(value) ? (value[0] ?? '') : (value ?? '');
 }

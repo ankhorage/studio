@@ -11,10 +11,6 @@ export interface CreateProjectFormState {
   projectListState: 'loading' | 'error' | 'ready';
 }
 
-/***
- * Derive the create-project form state from project-list availability, project-name validation, template availability, and in-flight creation state.
- * @todo Move this durable workspace/project form policy out of the `app/` composition edge and into the owning `workspace/` or `projects/` application domain.
- */
 export function resolveCreateProjectFormState(args: {
   projectName: string;
   existingProjects: readonly StudioProjectSummary[];

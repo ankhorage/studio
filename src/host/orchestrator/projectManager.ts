@@ -14,10 +14,11 @@ import {
 } from '../../projectIdentity';
 import { GeneratedAppFileGenerator } from '../layout/layoutGenerator';
 import { applySystemTemplates } from '../manifestSystem';
+import { ProjectBundledMediaService } from '../media/projectBundledMediaService';
 import type { LayoutMutation } from '../modules/layout';
-import type { ProjectTemplateSelection } from '../templateRegistry';
-import { resolveZoraExtensionsForTemplateSelection } from '../zoraExtensions';
+import { resolveZoraExtensionsForManifest } from '../zoraExtensions';
 import { GeneratedRouteFileOwnership } from './GeneratedRouteFileOwnership';
+import type { ProjectCreationSource } from './projectCreationSource';
 import { readProjectStudioInclusion, writeProjectStudioInclusion } from './projectGenerationState';
 import { getAppsRoot, getProjectPath } from './projectPaths';
 import { ProjectStore, type ProjectSummary } from './projectStore';
@@ -30,19 +31,15 @@ interface ProjectManagerDependencies {
   readonly runProjectInfrastructureLifecycle: typeof runProjectInfrastructureLifecycle;
 }
 
-/***
- * Coordinate Studio project creation, persistence, scaffold generation, runtime sync, and Infrastructure lifecycle.
- * @todo Move this root manager from generic `host/orchestrator` into the `projects/` application domain with explicit host adapters.
- */
 export class ProjectManager {
   private readonly store: ProjectStore;
   private readonly scaffolder: ProjectScaffolder;
   private readonly appFiles: GeneratedAppFileGenerator;
   private readonly generatedRouteFiles: GeneratedRouteFileOwnership;
+  private readonly bundledMedia: ProjectBundledMediaService;
   private readonly dependencies: ProjectManagerDependencies;
   private readonly appsRoot: string;
 
-  /*** Construct the project application coordinator and its current host-side collaborators. */
   constructor(
     private readonly rootPath: string,
     dependencies: Partial<ProjectManagerDependencies> = {},
@@ -52,18 +49,17 @@ export class ProjectManager {
     this.scaffolder = new ProjectScaffolder(rootPath);
     this.appFiles = new GeneratedAppFileGenerator();
     this.generatedRouteFiles = new GeneratedRouteFileOwnership();
+    this.bundledMedia = new ProjectBundledMediaService(rootPath);
     this.dependencies = {
       runProjectInfrastructureLifecycle,
       ...dependencies,
     };
   }
 
-  /*** List current Studio projects through the project store. */
   async listProjects(): Promise<ProjectSummary[]> {
     return this.store.listProjects();
   }
 
-  /*** Tear down deployed Infrastructure when necessary and remove one Studio project. */
   async deleteProject(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
     let infraDestroyed = false;
@@ -87,10 +83,9 @@ export class ProjectManager {
     return { success: true, infraDestroyed, projectFilesDeleted: true };
   }
 
-  /*** Validate, scaffold, finalize, generate, and initialize Infrastructure for a new Studio project. */
   async createProject(
     name: string,
-    templateSelection: ProjectTemplateSelection,
+    source: ProjectCreationSource,
     onProjectCreated?: (projectId: string) => Promise<void>,
     options: { includeStudio?: boolean } = {},
   ) {
@@ -110,10 +105,11 @@ export class ProjectManager {
       });
     }
 
-    const templateData = this.scaffolder.getTemplate(templateSelection);
+    const templateData = source.manifest;
+    const { category } = templateData.metadata;
     const deploy = templateData.deploy ?? createDefaultAppDeployManifest(slug);
     const scaffoldManifest = applySystemTemplates({ ...templateData, deploy });
-    const zoraExtensions = resolveZoraExtensionsForTemplateSelection(templateSelection);
+    const zoraExtensions = resolveZoraExtensionsForManifest(scaffoldManifest);
     await this.scaffolder.scaffoldProject(projectPath, name, slug, {
       includeStudio,
       authProvider: resolveGeneratedAuthProvider(scaffoldManifest),
@@ -125,12 +121,17 @@ export class ProjectManager {
     });
     await writeProjectStudioInclusion(projectPath, includeStudio);
 
+    const materializedTemplate = await this.materializeCreationAssets(
+      slug,
+      templateData,
+      source.assets,
+    );
     const manifest = await this.scaffolder.finalizeManifest(
       projectPath,
-      templateData,
+      materializedTemplate,
       name,
       slug,
-      templateSelection.category,
+      category,
       deploy,
     );
     const runtimePlan = resolveExpoRuntimePlan(manifest);
@@ -144,18 +145,15 @@ export class ProjectManager {
     return { success: true, id: slug, path: projectPath };
   }
 
-  /*** Install workspace package dependencies through the bounded Bun-install runtime helper. */
-  async installWorkspacePackages() {
-    await runWorkspaceInstall(this.rootPath);
-    return { success: true };
+  async installProjectPackages(projectId: string) {
+    await runWorkspaceInstall(getProjectPath(this.rootPath, projectId));
+    return { success: true, scope: 'project' as const };
   }
 
-  /*** Read one project's canonical manifest. */
   async getProjectManifest(projectId: string): Promise<AppManifest> {
     return this.store.readManifest(projectId);
   }
 
-  /*** Apply system templates and persist one project's canonical manifest without regenerating files. */
   async persistProjectManifest(args: {
     projectId: string;
     manifest: AppManifest;
@@ -164,7 +162,6 @@ export class ProjectManager {
     return this.store.writeManifest(args.projectId, normalizedManifest);
   }
 
-  /*** Persist a manifest, optionally regenerate the current project scaffold/routes, and synchronize Infrastructure. */
   async saveProjectManifest(args: {
     projectId: string;
     manifest: AppManifest;
@@ -196,7 +193,6 @@ export class ProjectManager {
     return { success: true };
   }
 
-  /*** Synchronize one generated project's runtime/scaffold from its current canonical manifest. */
   async syncProjectRuntime(args: {
     projectId: string;
     mutations: LayoutMutation[];
@@ -225,7 +221,6 @@ export class ProjectManager {
     return { success: true };
   }
 
-  /*** Regenerate and write only the root layout while preserving current route ownership. */
   async rebuildRootLayout(args: { projectId: string; mutations: LayoutMutation[] }) {
     const { projectId, mutations } = args;
     const manifest = await this.getProjectManifest(projectId);
@@ -245,7 +240,6 @@ export class ProjectManager {
     return { success: true };
   }
 
-  /*** Alias the project sync use case to current runtime synchronization. */
   async syncProject(args: {
     projectId: string;
     mutations: LayoutMutation[];
@@ -254,21 +248,40 @@ export class ProjectManager {
     return this.syncProjectRuntime(args);
   }
 
-  /*** Regenerate one project's Infrastructure from its current canonical manifest. */
   async regenerateInfrastructure(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
     const manifest = await this.getProjectManifest(projectId);
     return syncProjectInfrastructure({ projectId, projectPath, manifest });
   }
 
-  /*** Inspect one project's current generated/deployed Infrastructure state. */
   async getInfrastructureStatus(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
     const manifest = await this.getProjectManifest(projectId);
     return inspectProjectInfrastructure({ projectId, projectPath, manifest });
   }
 
-  /*** Destroy one project's Infrastructure while preserving lifecycle diagnostics in a Studio error. */
+  /*** Materialize source images through Studio's existing bundled-media path before manifest persistence. */
+  private async materializeCreationAssets(
+    projectId: string,
+    manifest: AppManifest,
+    assets: ProjectCreationSource['assets'],
+  ): Promise<AppManifest> {
+    if (assets.length === 0) return manifest;
+
+    const mediaAssets = { ...(manifest.media?.assets ?? {}) };
+    for (const asset of assets) {
+      mediaAssets[asset.assetId] = await this.bundledMedia.bundle(projectId, asset);
+    }
+
+    return {
+      ...manifest,
+      media: {
+        ...(manifest.media ?? {}),
+        assets: mediaAssets,
+      },
+    };
+  }
+
   private async destroyProjectInfrastructure(
     projectId: string,
     projectPath: string,
@@ -289,7 +302,6 @@ export class ProjectManager {
     }
   }
 
-  /*** Generate authored app files, write them, and initialize or reconcile route ownership. */
   private async writeGeneratedFiles(
     projectPath: string,
     manifest: AppManifest,
@@ -315,21 +327,15 @@ export class ProjectManager {
     }
   }
 
-  /***
-   * Ensure a text file's parent directory exists and write UTF-8 content.
-   * @utility @ankhorage/utility/node/fs
-   */
   private async writeText(absPath: string, content: string) {
     await fs.mkdir(path.dirname(absPath), { recursive: true });
     await fs.writeFile(absPath, content, 'utf8');
   }
 
-  /*** Resolve requested Studio inclusion or fall back to the persisted current generation-state flag. */
   private async shouldIncludeStudio(projectPath: string, requested?: boolean) {
     return requested ?? (await readProjectStudioInclusion(projectPath));
   }
 
-  /*** Synchronize the package scaffold and persist the resolved Studio-inclusion generation state. */
   private async syncProjectScaffold(
     projectPath: string,
     projectId: string,
@@ -349,7 +355,6 @@ export class ProjectManager {
   }
 }
 
-/*** Require canonical Deploy targets before a project scaffold can be regenerated. */
 function requireProjectDeployTargets(manifest: AppManifest) {
   const targets = manifest.deploy?.targets;
   if (!targets) {
@@ -360,10 +365,6 @@ function requireProjectDeployTargets(manifest: AppManifest) {
   return targets;
 }
 
-/***
- * Return whether a filesystem path exists.
- * @utility @ankhorage/utility/node/fs
- */
 async function exists(filePath: string): Promise<boolean> {
   try {
     await fs.access(filePath);
@@ -373,7 +374,6 @@ async function exists(filePath: string): Promise<boolean> {
   }
 }
 
-/*** Resolve the generated Auth runtime provider implied by the canonical project manifest. */
 function resolveGeneratedAuthProvider(manifest: AppManifest): GeneratedAuthProvider {
   const { auth } = manifest.infra;
   if (auth?.scope === 'global' && auth.provider === 'supabase') {
@@ -382,7 +382,6 @@ function resolveGeneratedAuthProvider(manifest: AppManifest): GeneratedAuthProvi
   return null;
 }
 
-/*** Resolve the generated storage runtime provider implied by canonical Infra configuration. */
 function resolveGeneratedStorageProvider(manifest: AppManifest): GeneratedStorageProvider {
   const { auth, database, storage } = manifest.infra;
   if (storage?.provider !== 'auto') return null;
