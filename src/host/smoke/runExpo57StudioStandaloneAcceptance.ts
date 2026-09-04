@@ -14,6 +14,9 @@ import { runExpo57StudioStandaloneStaticWebSmokeAsync } from './runExpo57StudioS
 
 const COMMAND_TIMEOUT_MS = 300_000;
 
+/*** Run the full standalone Studio acceptance matrix against registry-installed dependencies.
+ * @todo Move this end-to-end acceptance orchestrator from src/host/smoke to test/acceptance.
+ */
 export async function runExpo57StudioStandaloneAcceptance(
   options: {
     readonly keepFixture?: boolean;
@@ -78,6 +81,7 @@ export async function runExpo57StudioStandaloneAcceptance(
   }
 }
 
+/*** Assert that the standalone fixture lockfile still matches its expected digest. */
 async function assertLockfileUnchangedAsync(
   fixtureRoot: string,
   expectedDigest: string,
@@ -87,6 +91,7 @@ async function assertLockfileUnchangedAsync(
     throw new Error('Standalone acceptance mutated its frozen lockfile.');
 }
 
+/*** Create a registry lockfile, perform a cold frozen install, and return its digest. */
 async function createLockfileAndInstallAsync(
   fixtureRoot: string,
   cacheRoot: string,
@@ -115,6 +120,7 @@ async function createLockfileAndInstallAsync(
   return lockfileDigest;
 }
 
+/*** Create isolated Bun/Expo cache environment variables for standalone acceptance. */
 function createCommandEnvironment(cacheRoot: string): Readonly<Record<string, string>> {
   return {
     __UNSAFE_EXPO_HOME_DIRECTORY: path.join(cacheRoot, 'expo-home'),
@@ -124,10 +130,14 @@ function createCommandEnvironment(cacheRoot: string): Readonly<Record<string, st
   };
 }
 
+/*** Return the SHA-256 hex digest of binary content.
+ * @utility @ankhorage/utility/node/crypto
+ */
 function hash(value: Uint8Array): string {
   return createHash('sha256').update(value).digest('hex');
 }
 
+/*** Select the first template-bearing catalog category for standalone acceptance. */
 function resolveTemplateSelection() {
   const category = getTemplateCatalog().categories.find((entry) => entry.templates.length > 0);
   const [template] = category?.templates ?? [];
@@ -135,6 +145,7 @@ function resolveTemplateSelection() {
   return { category, template };
 }
 
+/*** Run the registry-installed standalone app's quality and compatibility checks. */
 async function runAppOwnedQualityChecksAsync(
   fixtureRoot: string,
   cacheRoot: string,
@@ -160,6 +171,7 @@ async function runAppOwnedQualityChecksAsync(
   }
 }
 
+/*** Run static Web, native JavaScript exports, browser smoke, and clean native prebuild. */
 async function runStaticAndNativeOutputChecksAsync(options: {
   readonly apiUrl: string;
   readonly cacheRoot: string;
