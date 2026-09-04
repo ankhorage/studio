@@ -3,6 +3,7 @@ import type { ScreenSpec } from '@ankhorage/contracts';
 import { escapeStringLiteral } from '../utils/escapeStringLiteral';
 import { toSafeComponentName } from './utils/strings';
 
+/*** Generate a runtime-rendered Expo Router screen wrapper for one canonical manifest screen. */
 export function getScreenTsx(args: { screenId: string; screenDef: ScreenSpec }) {
   const { screenId, screenDef } = args;
   const safeName = toSafeComponentName(screenDef.name);
