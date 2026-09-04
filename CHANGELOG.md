@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.22
+
+### Patch Changes
+
+- 323bba2: Consume portable standalone templates by category and slug, materialize bundled template assets during project creation, and simplify Studio template/project metadata to the current standalone contract.
+
 ## 2.0.21
 
 ### Patch Changes
