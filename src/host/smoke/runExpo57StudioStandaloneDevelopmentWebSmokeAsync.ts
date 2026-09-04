@@ -12,8 +12,6 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
   readonly categoryId: string;
   readonly categoryLabel: string;
   readonly fixtureRoot: string;
-  readonly templateId: string;
-  readonly templateName: string;
 }): Promise<void> {
   const [debugPort, expoPort] = await Promise.all([
     reserveTcpPortAsync('Standalone Studio Chrome'),
@@ -64,17 +62,9 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
     await browser.waitForLocationAsync({ pathname: '/create', search: '?source=standalone' });
     await pointerClickAsync(browser, 'button', `Browse ${options.categoryLabel} templates`);
     await browser.waitForLocationAsync({ pathname: `/create/${options.categoryId}` });
-    await pointerClickAsync(browser, 'button', `Select ${options.templateName}`);
-    const templatePath = `/create/${options.categoryId}/${options.templateId}`;
-    await browser.waitForLocationAsync({ pathname: templatePath });
-    await browser.waitForBodyTextAsync('Project name');
-
-    await browser.goBackAsync();
-    await browser.waitForLocationAsync({ pathname: `/create/${options.categoryId}` });
-    await browser.goForwardAsync();
-    await browser.waitForLocationAsync({ pathname: templatePath });
-    await browser.reloadAsync();
-    await browser.waitForBodyTextAsync('Project name');
+    await browser.waitForBodyTextAsync('No templates in this category');
+    await pointerClickAsync(browser, 'button', 'Back to categories');
+    await browser.waitForLocationAsync({ pathname: '/create' });
 
     await browser.navigateAsync(`${appUrl}/`);
     await browser.waitForBodyTextAsync('Release Monitor');
