@@ -2,6 +2,10 @@ import { Text, useZoraTheme } from '@ankhorage/zora';
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 
+/***
+ * Render a bordered theme-token action button used by token editors.
+ * @todo Replace with canonical ZORA Button instead of maintaining a Studio-local generic action primitive.
+ */
 export function ThemeTokenAction(props: { readonly label: string; readonly onPress: () => void }) {
   const { theme } = useZoraTheme();
   return (
