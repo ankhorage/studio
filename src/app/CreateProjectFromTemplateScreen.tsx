@@ -1,5 +1,5 @@
 import { Heading, Text } from '@ankhorage/zora';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
@@ -18,6 +18,7 @@ import {
 } from './workspace/WorkspacePrimitives';
 import { resolveCreateProjectFormState } from './workspace/createProjectFormState';
 import { resolveWorkspaceCategoryParam } from './workspace/routeParams';
+import { replaceWorkspaceRoute } from './workspace/workspaceRouter';
 
 export function CreateProjectFromTemplateScreen() {
   const { category, categoryParam, slug } = useTemplateRouteParams();
@@ -59,7 +60,7 @@ export function CreateProjectFromTemplateScreen() {
         slug: template.slug,
         name: projectName,
       });
-      router.replace(`/projects/${result.id}`);
+      replaceWorkspaceRoute(`/projects/${result.id}`);
     } catch (caught) {
       console.error(caught);
       setSubmitError(
@@ -86,14 +87,14 @@ export function CreateProjectFromTemplateScreen() {
           title="Category not found"
           detail={`The requested template category "${categoryParam}" is not available.`}
           actionLabel="Back to categories"
-          onAction={() => router.replace('/create')}
+          onAction={() => replaceWorkspaceRoute('/create')}
         />
       ) : !template ? (
         <EmptyState
           title="Template not found"
           detail="The selected template is not available."
           actionLabel="Back to templates"
-          onAction={() => router.replace(`/create/${selectedCategory.id}`)}
+          onAction={() => replaceWorkspaceRoute(`/create/${selectedCategory.id}`)}
         />
       ) : (
         <View style={styles.createLayout}>

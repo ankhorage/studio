@@ -1,5 +1,17 @@
 # @ankhorage/studio
 
+## 2.0.25
+
+### Patch Changes
+
+- b973c9b: Release focused web controls before Workspace route transitions so assistive technology is not hidden while it retains focus.
+
+## 2.0.24
+
+### Patch Changes
+
+- 60cffb1: Consume canonical Utility own-property and interaction scheduling APIs instead of retaining duplicated Studio implementations.
+
 ## 2.0.23
 
 ### Patch Changes
