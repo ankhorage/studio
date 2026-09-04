@@ -1064,6 +1064,26 @@ export function updateNavigatorAtPath(
   };
 }
 
+/*** Rebuild a navigator with one concrete discriminant and only shared navigator state. */
+function createNavigatorWithType(current: NavigatorNode, type: NavigatorType): NavigatorNode {
+  const shared = {
+    routes: current.routes,
+    ...(current.initialRouteName === undefined
+      ? {}
+      : { initialRouteName: current.initialRouteName }),
+    ...(current.options === undefined ? {} : { options: current.options }),
+  };
+
+  switch (type) {
+    case 'stack':
+      return { ...shared, type: 'stack' };
+    case 'tabs':
+      return { ...shared, type: 'tabs' };
+    case 'drawer':
+      return { ...shared, type: 'drawer' };
+  }
+}
+
 /***
  * Change the primary navigator type when the requested navigator type is valid and different.
  * @todo Move navigator authoring policy from the src root into routes/.
@@ -1079,10 +1099,9 @@ export function setStudioManifestNavigatorType(
 
   return {
     ...manifest,
-    navigator: updateNavigatorAtPath(manifest.navigator, primaryNavigatorPath, (current) => ({
-      ...current,
-      type,
-    })),
+    navigator: updateNavigatorAtPath(manifest.navigator, primaryNavigatorPath, (current) =>
+      createNavigatorWithType(current, type),
+    ),
   };
 }
 
