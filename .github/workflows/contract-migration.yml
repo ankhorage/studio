@@ -1,0 +1,65 @@
+name: Contract Migration
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - name: Apply released navigator contract migration
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+
+          const roots = ['src', 'test', 'scripts', 'apps'];
+          const extensions = new Set(['.ts', '.tsx']);
+          function visit(root) {
+            if (!fs.existsSync(root)) return;
+            for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
+              const full = path.join(root, entry.name);
+              if (entry.isDirectory()) visit(full);
+              else if (extensions.has(path.extname(entry.name))) {
+                const before = fs.readFileSync(full, 'utf8');
+                const after = before.replaceAll('NavigatorSpec', 'NavigatorNode');
+                if (after !== before) fs.writeFileSync(full, after);
+              }
+            }
+          }
+          roots.forEach(visit);
+
+          const packagePath = 'package.json';
+          const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+          pkg.dependencies['@ankhorage/contracts'] = '^10.0.0';
+          fs.writeFileSync(packagePath, `${JSON.stringify(pkg, null, 2)}\n`);
+          NODE
+          bun install
+          bun run format
+          bun run docs
+          if git grep -n 'NavigatorSpec' -- ':!CHANGELOG.md'; then
+            echo 'NavigatorSpec remains after migration' >&2
+            exit 1
+          fi
+      - name: Commit generated migration
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add package.json bun.lock src test scripts apps docs README.md .changeset 2>/dev/null || true
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'refactor: adopt app navigator manifest contract'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
