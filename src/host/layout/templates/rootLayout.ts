@@ -130,7 +130,7 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
   const studioFinalJsx = finalJsx.replace('{output}', '{studioOutput}');
 
   const appHeaderHelpers = `
-function findRouteByScreenId(navigator: NavigatorSpec, screenId: string): RouteDefinition | null {
+function findRouteByScreenId(navigator: NavigatorNode, screenId: string): RouteDefinition | null {
   for (const route of navigator.routes) {
     if (route.screenId === screenId) {
       return route;

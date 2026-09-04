@@ -1,0 +1,8 @@
+sequenceDiagram
+  participant participant_createStudioInstancePropertyPatch as createStudioInstancePropertyPatch
+  participant participant_withoutOwnProperty as withoutOwnProperty
+  participant participant_withOwnProperty as withOwnProperty
+  participant_createStudioInstancePropertyPatch->>participant_withoutOwnProperty: withoutOwnProperty()
+  participant_withoutOwnProperty-->>participant_createStudioInstancePropertyPatch: return
+  participant_createStudioInstancePropertyPatch->>participant_withOwnProperty: withOwnProperty()
+  participant_withOwnProperty-->>participant_createStudioInstancePropertyPatch: return

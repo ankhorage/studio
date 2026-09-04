@@ -3,7 +3,7 @@ import type {
   AuthOAuthProviderConfig,
   ComponentDataBindingRegistry,
   DataSourceRegistry,
-  NavigatorSpec,
+  NavigatorNode,
   NavigatorType,
   RouteDefinition,
   ScreenSpec,
@@ -78,7 +78,7 @@ export interface StudioScreenNavigationEntry {
 
 export interface StudioScreenNavigationModel {
   primaryNavigatorPath: string[];
-  primaryNavigator: NavigatorSpec;
+  primaryNavigator: NavigatorNode;
   screens: StudioScreenNavigationEntry[];
   diagnostics: StudioScreenNavigationDiagnostic[];
 }
@@ -369,7 +369,7 @@ export function resolveStudioScreenAppPath(
  * @todo Move navigation traversal and diagnostics from the src root into routes/.
  */
 function collectNavigationModelReferences(args: {
-  navigator: NavigatorSpec;
+  navigator: NavigatorNode;
   screens: StudioManifest['screens'];
   primaryNavigatorPath: string[];
   parentPath: string[];
@@ -533,7 +533,7 @@ export function listScreenIdsInRouteOrder(routes: RouteDefinition[]): string[] {
  * @todo Move initial-route resolution from the src root into routes/.
  */
 export function resolveInitialScreenId(
-  navigator: NavigatorSpec,
+  navigator: NavigatorNode,
   screens?: AppManifest['screens'],
 ): string | null {
   if (screens && !hasCanonicalStudioScreenRegistryIdentity(screens)) return null;
@@ -1021,9 +1021,9 @@ export function insertRouteAtParentPath(
  * @todo Move navigator lookup from the src root into routes/.
  */
 export function findNavigatorAtPath(
-  navigator: NavigatorSpec,
+  navigator: NavigatorNode,
   parentPath: string[],
-): NavigatorSpec | null {
+): NavigatorNode | null {
   if (parentPath.length === 0) return navigator;
 
   const [segment, ...rest] = parentPath;
@@ -1041,10 +1041,10 @@ export function findNavigatorAtPath(
  * @todo Move navigator-tree mutation from the src root into routes/.
  */
 export function updateNavigatorAtPath(
-  navigator: NavigatorSpec,
+  navigator: NavigatorNode,
   parentPath: string[],
-  updater: (current: NavigatorSpec) => NavigatorSpec,
-): NavigatorSpec {
+  updater: (current: NavigatorNode) => NavigatorNode,
+): NavigatorNode {
   if (parentPath.length === 0) return updater(navigator);
 
   const [segment, ...rest] = parentPath;
@@ -1511,7 +1511,7 @@ function collectNodeIds(root: UiNode): Set<string> {
  * Repair a navigator's initial-route field after route removal while preserving canonical omission when no initial route exists.
  * @todo Move navigator normalization from the src root into routes/.
  */
-function normalizeNavigatorAfterRouteUpdate(navigator: NavigatorSpec): NavigatorSpec {
+function normalizeNavigatorAfterRouteUpdate(navigator: NavigatorNode): NavigatorNode {
   const nextRoutes = navigator.routes;
   let nextInitialRouteName = navigator.initialRouteName;
 
