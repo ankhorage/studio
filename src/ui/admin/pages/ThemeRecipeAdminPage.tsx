@@ -9,6 +9,7 @@ import { type ThemeRecipeAuthoringKind, updateThemeRecipeField } from './themeRe
 import { resolveThemeRecipeTokenOptions } from './themeRecipeTokenOptions';
 import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 
+/*** Render one ZORA component/pattern theme recipe and persist field overrides into the canonical active Studio theme. */
 export function ThemeRecipeAdminPage(props: {
   readonly kind: ThemeRecipeAuthoringKind;
   readonly recipeName: string | null;
@@ -31,6 +32,7 @@ export function ThemeRecipeAdminPage(props: {
       ? selection.theme.recipes?.components
       : selection.theme.recipes?.patterns;
   const overrides = bucket?.[recipeName];
+  /*** Apply one recipe field override or restore inheritance by removing it from the authored theme. */
   const updateField = (fieldName: string, value: ThemeRecipeOverrideValue | undefined) => {
     updateTheme({
       recipes: updateThemeRecipeField({
@@ -74,6 +76,7 @@ export function ThemeRecipeAdminPage(props: {
   );
 }
 
+/*** Render the theme-recipe fallback for missing active themes or invalid recipe metadata. */
 function Unavailable(props: { readonly message: string }) {
   return (
     <AdminScroll>
