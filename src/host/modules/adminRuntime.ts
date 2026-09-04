@@ -1,4 +1,5 @@
 import type { UiNode } from '@ankhorage/contracts';
+import { isRecord } from '@ankhorage/utility/object';
 
 export interface HostModuleAdminInvocation {
   readonly operation: string;
@@ -67,12 +68,4 @@ function isHostModuleAdminRuntime(value: unknown): value is HostModuleAdminRunti
   return (
     isRecord(value) && value.kind === 'module-admin-runtime' && typeof value.execute === 'function'
   );
-}
-
-/***
- * Narrow an unknown non-array object to a string-keyed record.
- * @utility @ankhorage/utility/object
- */
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

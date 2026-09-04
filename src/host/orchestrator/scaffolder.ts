@@ -1,6 +1,7 @@
 import type { AppCategory, AppManifest, SplashScreenSpec } from '@ankhorage/contracts';
 import type { AppDeployManifest, AppDeployTargets } from '@ankhorage/contracts/deploy';
 import type { ExpoRuntimePlan } from '@ankhorage/expo-runtime/planning';
+import { pathExists } from '@ankhorage/utility/node/fs';
 import { promises as fs } from 'fs';
 import path from 'path';
 
@@ -254,7 +255,7 @@ export class ProjectScaffolder {
 
   /*** Read the existing generated package manifest when present so synchronization can preserve app-owned metadata/dependencies. */
   private async readPackageJson(packageJsonPath: string): Promise<ExtendedPackageJsonShape | null> {
-    if (!(await exists(packageJsonPath))) {
+    if (!(await pathExists(packageJsonPath))) {
       return null;
     }
 
@@ -293,7 +294,9 @@ export class ProjectScaffolder {
   /*** Ensure generated projects ignore Expo's local .expo directory without disturbing existing gitignore content. */
   private async ensureExpoGitIgnore(dir: string) {
     const gitIgnorePath = path.join(dir, '.gitignore');
-    const existing = (await exists(gitIgnorePath)) ? await fs.readFile(gitIgnorePath, 'utf8') : '';
+    const existing = (await pathExists(gitIgnorePath))
+      ? await fs.readFile(gitIgnorePath, 'utf8')
+      : '';
     if (existing.split(/\r?\n/gu).includes('.expo/')) return;
 
     const separator = existing.length > 0 && !existing.endsWith('\n') ? '\n' : '';
@@ -311,7 +314,7 @@ export class ProjectScaffolder {
     await fs.mkdir(targetAssetsPath, { recursive: true });
     await fs.mkdir(splashAssetsPath, { recursive: true });
 
-    const templateExists = await exists(templateAssetsPath);
+    const templateExists = await pathExists(templateAssetsPath);
     if (!templateExists) {
       const png1x1 = Buffer.from(
         'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
@@ -329,7 +332,7 @@ export class ProjectScaffolder {
     for (const asset of assets) {
       const src = path.join(templateAssetsPath, asset);
       const dest = path.join(targetProjectPath, 'assets', asset);
-      if (await exists(src)) {
+      if (await pathExists(src)) {
         await fs.copyFile(src, dest);
       }
     }
@@ -338,25 +341,12 @@ export class ProjectScaffolder {
       const src = path.join(templateAssetsPath, asset);
       const defaultSplashSrc = path.join(templateAssetsPath, 'splash.png');
       const dest = path.join(splashAssetsPath, asset);
-      if (await exists(src)) {
+      if (await pathExists(src)) {
         await fs.copyFile(src, dest);
-      } else if (await exists(defaultSplashSrc)) {
+      } else if (await pathExists(defaultSplashSrc)) {
         await fs.copyFile(defaultSplashSrc, dest);
       }
     }
-  }
-}
-
-/***
- * Return whether one filesystem path is accessible.
- * @utility @ankhorage/utility/node/fs
- */
-async function exists(filePath: string) {
-  try {
-    await fs.access(filePath);
-    return true;
-  } catch {
-    return false;
   }
 }
 
