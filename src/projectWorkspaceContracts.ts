@@ -4,7 +4,6 @@ export interface StudioProjectSummary {
   id: string;
   name: string;
   path: string;
-  version: string;
   isAnkhApp: boolean;
   category: AppCategory;
   created?: string;
