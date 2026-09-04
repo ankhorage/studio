@@ -1,3 +1,6 @@
+import { isMissingPathError, writeJsonFileAtomic } from '@ankhorage/utility/node/fs';
+import { normalizePortablePath } from '@ankhorage/utility/node/path';
+import { isRecord } from '@ankhorage/utility/object';
 import { promises as fs } from 'fs';
 import path from 'path';
 
@@ -75,22 +78,6 @@ function createRouteLedger(projectPath: string, generatedPaths: readonly string[
   };
 }
 
-/***
- * Detect a Node filesystem error indicating that a path does not exist.
- * @utility @ankhorage/utility/node/fs
- */
-function isMissingPathError(error: unknown): error is NodeJS.ErrnoException {
-  return error instanceof Error && 'code' in error && error.code === 'ENOENT';
-}
-
-/***
- * Narrow an unknown object to a string-keyed record.
- * @utility @ankhorage/utility/object
- */
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null;
-}
-
 /*** Validate the persisted route-ledger contract before applying generated-file ownership. */
 function isRouteLedger(value: unknown): value is RouteLedger {
   return (
@@ -108,7 +95,7 @@ function isRouteLedger(value: unknown): value is RouteLedger {
  * @utility @ankhorage/utility/node/path
  */
 function normalizeRelativePath(filePath: string): string {
-  return path.posix.normalize(filePath.replace(/\\/gu, '/'));
+  return normalizePortablePath(filePath);
 }
 
 /*** Read, parse, validate, normalize, and revalidate the required generated-route ownership ledger. */
@@ -183,8 +170,5 @@ function resolveProjectFile(projectPath: string, relativePath: string): string {
  */
 async function writeRouteLedger(projectPath: string, ledger: RouteLedger): Promise<void> {
   const ledgerPath = resolveProjectFile(projectPath, ROUTE_LEDGER_REL_PATH);
-  await fs.mkdir(path.dirname(ledgerPath), { recursive: true });
-  const temporaryPath = `${ledgerPath}.${process.pid}.${Date.now()}.tmp`;
-  await fs.writeFile(temporaryPath, `${JSON.stringify(ledger, null, 2)}\n`, 'utf8');
-  await fs.rename(temporaryPath, ledgerPath);
+  await writeJsonFileAtomic(ledgerPath, ledger);
 }
