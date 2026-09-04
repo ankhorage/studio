@@ -22,7 +22,7 @@ import {
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
 import { satisfiesCaretSemverRange } from './orchestrator/semverRange';
-import { getProjectTemplate, getTemplateCatalog } from './templateRegistry';
+import { createAdminSmokeBaseManifest } from './smoke/createAdminSmokeBaseManifest';
 
 const adminWebSmokeTest = process.env.ANKH_STUDIO_ADMIN_WEB_SMOKE === '1' ? test : test.skip;
 const TEST_TIMEOUT_MS = 240_000;
@@ -103,10 +103,7 @@ const SMOKE_NAVIGATION_PROBE_SOURCE = `export function SmokeNavigationProbe() {
 }`;
 
 function createAdminSmokeManifest(): AppManifest {
-  const nutritionManifest = getProjectTemplate({
-    category: 'food_drink',
-    templateId: 'nutrition-catalog-scan',
-  });
+  const nutritionManifest = createAdminSmokeBaseManifest();
   const expo57RouteIcons: Readonly<Record<string, string>> = {
     products: 'cube-outline',
     profile: 'person-circle-outline',
@@ -1650,15 +1647,9 @@ async function createGeneratedAdminProject(workspaceRoot: string): Promise<strin
 
   const projectManager = new ProjectManager(workspaceRoot);
   const moduleManager = new ModuleManager(workspaceRoot);
-  const template = getTemplateCatalog()
-    .categories.find((candidate) => candidate.id === 'developer_tools')
-    ?.templates.at(0);
-  if (!template)
-    throw new Error('Published templates package returned no developer-tools template.');
-
   const created = await projectManager.createProject(
     'Generated Admin Web Smoke',
-    { category: 'developer_tools', templateId: template.templateId },
+    { manifest: createAdminSmokeManifest(), assets: [] },
     undefined,
     { includeStudio: true },
   );

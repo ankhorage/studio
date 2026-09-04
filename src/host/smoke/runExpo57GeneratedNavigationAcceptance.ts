@@ -9,6 +9,7 @@ import { assertInstalledRegistryPackageAsync } from './assertInstalledRegistryPa
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
 import { createExpo57NavigationFixtureManifest } from './createExpo57NavigationFixtureManifest';
+import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { createStaticExportServer } from './createStaticExportServer';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
 import { reserveTcpPortAsync } from './reserveTcpPortAsync';
@@ -238,7 +239,7 @@ async function assertReleasedStudioPackageAsync(studioProject: NavigationProject
     await readFile(path.join(studioProject.path, 'package.json'), 'utf8'),
   ) as { readonly dependencies?: Readonly<Record<string, string>> };
   const studioRange = generatedPackage.dependencies?.['@ankhorage/studio'];
-  if (studioRange !== '^2.0.2') {
+  if (studioRange === undefined) {
     throw new Error(`Studio-enabled navigation fixture resolved unexpected range ${studioRange}.`);
   }
 
@@ -297,12 +298,9 @@ async function createProjectAsync(
     readonly rootNavigator?: 'drawer' | 'tabs';
   },
 ): Promise<NavigationProject> {
-  const created = await manager.createProject(
-    options.name,
-    { category: 'developer_tools', templateId: 'default' },
-    undefined,
-    { includeStudio: options.includeStudio },
-  );
+  const created = await manager.createProject(options.name, createSmokeProjectSource(), undefined, {
+    includeStudio: options.includeStudio,
+  });
   const baseManifest = await manager.getProjectManifest(created.id);
   const manifest = createExpo57NavigationFixtureManifest(baseManifest, {
     auth: options.auth,

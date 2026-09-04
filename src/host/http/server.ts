@@ -13,7 +13,11 @@ import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { getProjectPath } from '../orchestrator/projectPaths';
 import { upProjectInfrastructure } from '../orchestrator/studioInfraUp';
-import { getTemplateCatalog, type ProjectTemplateSelection } from '../templateRegistry';
+import {
+  getProjectTemplateSource,
+  getTemplateCatalog,
+  type ProjectTemplateSelection,
+} from '../templates';
 import { trimOutputForApi } from '../utils/trimOutput';
 import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
 import { registerProjectMediaRoutes } from './mediaRoutes';
@@ -23,11 +27,12 @@ import { isOriginAllowed } from './security';
 
 const MAX_INFRA_RUNTIME_OUTPUT_CHARS = 12_000;
 
+/*** Parse one template selection from the trusted Studio project-create request body. */
 function resolveProjectTemplateSelection(body: {
   category?: unknown;
-  templateId?: unknown;
+  slug?: unknown;
 }): ProjectTemplateSelection | null {
-  if (typeof body.category !== 'string' || typeof body.templateId !== 'string') {
+  if (typeof body.category !== 'string' || typeof body.slug !== 'string') {
     return null;
   }
 
@@ -37,7 +42,7 @@ function resolveProjectTemplateSelection(body: {
 
   return {
     category: body.category,
-    templateId: body.templateId,
+    slug: body.slug,
   };
 }
 
@@ -76,17 +81,18 @@ export async function createStudioHostServer(args: {
     const { name, includeStudio = true } = req.body as {
       name?: unknown;
       category?: unknown;
-      templateId?: unknown;
+      slug?: unknown;
       includeStudio?: boolean;
     };
     const templateSelection = resolveProjectTemplateSelection(req.body as Record<string, unknown>);
 
     if (typeof name !== 'string' || !templateSelection) {
-      return reply.status(400).send({ error: 'Name, category, and templateId are required' });
+      return reply.status(400).send({ error: 'Name, category, and slug are required' });
     }
 
     try {
-      const result = await projectManager.createProject(name, templateSelection, undefined, {
+      const source = await getProjectTemplateSource(templateSelection);
+      const result = await projectManager.createProject(name, source, undefined, {
         includeStudio,
       });
       return result;
@@ -360,6 +366,7 @@ export async function startStudioHostServer(options: number | StartStudioHostSer
   return fastify;
 }
 
+/*** Trim infrastructure command output for one bounded HTTP response. */
 function formatRuntimeOutputForResponse(output: { stdout: string; stderr: string }) {
   const stdout = trimOutputForApi(output.stdout, MAX_INFRA_RUNTIME_OUTPUT_CHARS);
   const stderr = trimOutputForApi(output.stderr, MAX_INFRA_RUNTIME_OUTPUT_CHARS);

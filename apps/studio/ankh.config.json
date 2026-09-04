@@ -50,8 +50,8 @@
         "screenId": "create-category-templates"
       },
       {
-        "name": "create/[category]/[templateId]",
-        "path": "/create/:category/:templateId",
+        "name": "create/[category]/[slug]",
+        "path": "/create/:category/:slug",
         "screenId": "create-project"
       }
     ]

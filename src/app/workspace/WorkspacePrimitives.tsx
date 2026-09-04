@@ -98,14 +98,19 @@ export function ProjectOverviewCard(props: { project: StudioProjectSummary; onPr
     >
       <View style={[styles.themeStripe, { backgroundColor: accent }]} />
       <View style={styles.cardBody}>
-        <Text numberOfLines={1} variant="bodySmall" weight="semiBold">
-          {props.project.name}
+        <View style={styles.nameSlugRow}>
+          <Text numberOfLines={1} variant="bodySmall" weight="semiBold">
+            {props.project.name}
+          </Text>
+          <Text color="neutral" emphasis="muted" variant="caption">
+            #{props.project.id}
+          </Text>
+        </View>
+        <Text color="neutral" emphasis="muted" variant="caption">
+          {formatCategory(props.project.category)}
         </Text>
         <Text color="neutral" emphasis="muted" variant="caption">
-          {props.project.version} · {formatCategory(props.project.category)}
-        </Text>
-        <Text color="neutral" emphasis="muted" variant="caption">
-          Updated {formatDate(props.project.updated)}
+          Created {formatDate(props.project.created)}
         </Text>
       </View>
     </Pressable>
@@ -147,7 +152,7 @@ export function CategoryCard(props: { category: TemplateCatalogCategory; onPress
 }
 
 export function TemplateCard(props: {
-  template: { name: string; description: string };
+  template: { name: string; slug: string };
   onPress: () => void;
 }) {
   const { theme } = useZoraTheme();
@@ -173,7 +178,7 @@ export function TemplateCard(props: {
         {props.template.name}
       </Text>
       <Text color="neutral" emphasis="muted" variant="bodySmall">
-        {props.template.description}
+        #{props.template.slug}
       </Text>
     </Pressable>
   );
@@ -196,7 +201,7 @@ export function SearchResults(props: {
       {props.results.length === 0 ? (
         <EmptyState
           title="No matching templates"
-          detail="Search by template name, description, category label, or category ID."
+          detail="Search by template name, slug, category label, or category ID."
           actionLabel="Clear search"
           onAction={props.onClear}
         />
@@ -206,8 +211,8 @@ export function SearchResults(props: {
             <TemplateCard
               key={template.id}
               template={{
-                name: template.name,
-                description: `${template.categoryLabel}: ${template.description}`,
+                name: `${template.name} · ${template.categoryLabel}`,
+                slug: template.slug,
               }}
               onPress={() => props.onPress(template)}
             />
@@ -535,6 +540,12 @@ const styles = StyleSheet.create({
   cardBody: {
     padding: 14,
     gap: 8,
+  },
+  nameSlugRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'baseline',
+    gap: 6,
   },
   categoryGrid: {
     flexDirection: 'row',

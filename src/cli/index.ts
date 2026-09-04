@@ -10,7 +10,7 @@ import type { AnkhCommandHandler, AnkhRuntimeCommandProvider } from '@ankhorage/
 
 import { createStudioHost } from '../host/createStudioHost';
 import { startStudioHostServer } from '../host/http/server';
-import type { ProjectTemplateSelection } from '../host/templateRegistry';
+import { getProjectTemplateSource, type ProjectTemplateSelection } from '../host/templates';
 import { resolveWorkspaceRoot } from '../host/utils/workspaceRoot';
 
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
@@ -43,7 +43,7 @@ const COMMANDS = [
     path: ['projects', 'create'],
     capability: 'studio.projects.create',
     summary: 'Create a Studio project from a template.',
-    examples: ['ankh studio projects create --name Shop --category commerce --template blank'],
+    examples: ['ankh studio projects create --name Shop --category commerce --template shop'],
   },
   {
     path: ['projects', 'delete'],
@@ -76,6 +76,7 @@ const handlers = [
   createHandler(['workspace', 'install'], installWorkspacePackages),
 ] as const;
 
+/*** Pair one canonical Studio command path with its runtime handler. */
 function createHandler(path: CommandPath, handler: AnkhCommandHandler) {
   return { path, handler };
 }
@@ -91,14 +92,17 @@ const provider = {
 
 export default provider;
 
+/*** Resolve the installed Studio package root from the compiled CLI entrypoint. */
 function resolvePackageRoot() {
   return resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 }
 
+/*** Resolve the workspace root used by direct Studio CLI commands. */
 function resolveHostWorkspaceRoot() {
   return resolveWorkspaceRoot(resolvePackageRoot());
 }
 
+/*** Start the Studio host and first-party Studio application together. */
 async function runStudioDev() {
   const packageRoot = resolvePackageRoot();
   const projectRoot = resolveWorkspaceRoot(packageRoot);
@@ -130,72 +134,71 @@ async function runStudioDev() {
   }
 }
 
+/*** List current Studio projects through the shared ProjectManager. */
 async function listProjects(request: Parameters<AnkhCommandHandler>[0]) {
   const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
   try {
     const projects = await studioHost.projectManager.listProjects();
-    request.context.writeStdout(`${JSON.stringify(projects, null, 2)}
-`);
+    request.context.writeStdout(`${JSON.stringify(projects, null, 2)}\n`);
     return { exitCode: 0 };
   } finally {
     await studioHost.close();
   }
 }
 
+/*** Create one Studio project from a published standalone template. */
 async function createProject(request: Parameters<AnkhCommandHandler>[0]) {
   const input = parseCreateProjectArgs(request.argv);
   const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
   try {
-    const project = await studioHost.projectManager.createProject(input.name, {
-      category: input.category,
-      templateId: input.templateId,
-    });
-    request.context.writeStdout(`${JSON.stringify(project, null, 2)}
-`);
+    const source = await getProjectTemplateSource({ category: input.category, slug: input.slug });
+    const project = await studioHost.projectManager.createProject(input.name, source);
+    request.context.writeStdout(`${JSON.stringify(project, null, 2)}\n`);
     return { exitCode: 0 };
   } finally {
     await studioHost.close();
   }
 }
 
+/*** Delete one Studio project by ID. */
 async function deleteProject(request: Parameters<AnkhCommandHandler>[0]) {
   const projectId = requireProjectId(request.argv, 'projects delete');
   const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
   try {
     const result = await studioHost.projectManager.deleteProject(projectId);
-    request.context.writeStdout(`${JSON.stringify(result, null, 2)}
-`);
+    request.context.writeStdout(`${JSON.stringify(result, null, 2)}\n`);
     return { exitCode: 0 };
   } finally {
     await studioHost.close();
   }
 }
 
+/*** Synchronize one generated Studio project. */
 async function syncProject(request: Parameters<AnkhCommandHandler>[0]) {
   const projectId = requireProjectId(request.argv, 'projects sync');
   const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
   try {
     const result = await studioHost.moduleManager.syncProject({ projectId, includeStudio: true });
-    request.context.writeStdout(`${JSON.stringify(result, null, 2)}
-`);
+    request.context.writeStdout(`${JSON.stringify(result, null, 2)}\n`);
     return { exitCode: 0 };
   } finally {
     await studioHost.close();
   }
 }
 
+/*** Install packages required by the current Studio workspace. */
 async function installWorkspacePackages(request: Parameters<AnkhCommandHandler>[0]) {
   const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
   try {
     const result = await studioHost.projectManager.installWorkspacePackages();
-    request.context.writeStdout(`${JSON.stringify({ ...result, scope: 'workspace' }, null, 2)}
-`);
+    request.context.writeStdout(`${JSON.stringify({ ...result, scope: 'workspace' }, null, 2)}\n`);
     return { exitCode: 0 };
   } finally {
     await studioHost.close();
   }
 }
 
+/*** Read the required project ID positional argument for one Studio command. */
 function requireProjectId(argv: readonly string[], command: string) {
   const [projectId] = argv;
   if (projectId === undefined || projectId.trim() === '') {
@@ -204,22 +207,24 @@ function requireProjectId(argv: readonly string[], command: string) {
   return projectId;
 }
 
+/*** Parse project creation flags into one canonical template selection. */
 function parseCreateProjectArgs(argv: readonly string[]): {
   name: string;
   category: ProjectTemplateSelection['category'];
-  templateId: string;
+  slug: string;
 } {
   const name = readFlag(argv, '--name');
   const category = readFlag(argv, '--category');
-  const templateId = readFlag(argv, '--template');
-  if (name === null || category === null || templateId === null) {
+  const slug = readFlag(argv, '--template');
+  if (name === null || category === null || slug === null) {
     throw new Error(
-      'Usage: ankh studio projects create --name <name> --category <category> --template <templateId>',
+      'Usage: ankh studio projects create --name <name> --category <category> --template <slug>',
     );
   }
-  return { name, category: category as ProjectTemplateSelection['category'], templateId };
+  return { name, category: category as ProjectTemplateSelection['category'], slug };
 }
 
+/*** Read the non-empty value immediately following one CLI flag. */
 function readFlag(argv: readonly string[], flag: string) {
   const index = argv.indexOf(flag);
   const value = index === -1 ? undefined : argv[index + 1];

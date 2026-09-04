@@ -1,5 +1,6 @@
 import type { AnkhoragePermissionName, AppManifest } from '@ankhorage/contracts';
-import { createOAuthFixtureManifest } from '@ankhorage/templates';
+
+import { createOAuthFixtureManifest } from './createOAuthFixtureManifest';
 
 const EXPO57_CAPABILITY_PERMISSIONS = [
   'camera',

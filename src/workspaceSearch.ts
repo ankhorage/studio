@@ -73,8 +73,7 @@ export function filterAndSortTemplates(
       const score = Math.max(
         scoreText(normalize(template.name), query),
         scoreText(normalize(template.id), query),
-        scoreText(normalize(template.templateId), query),
-        scoreText(normalize(template.description), query),
+        scoreText(normalize(template.slug), query),
         scoreText(normalize(template.category), query),
         scoreText(normalize(template.categoryLabel), query),
       );
