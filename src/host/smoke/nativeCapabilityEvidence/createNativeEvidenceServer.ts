@@ -74,6 +74,9 @@ const EVIDENCE_RESULTS = new Set([
   'unsupported-kind',
 ]);
 
+/*** Start the deterministic local OAuth/permission/media evidence server used by native acceptance.
+ * @todo Move this acceptance fixture server from src/host/smoke to test/smoke/nativeCapabilityEvidence.
+ */
 export function createNativeEvidenceServer(options: {
   readonly port?: number;
   readonly workspaceRoot: string;
@@ -182,6 +185,7 @@ export function createNativeEvidenceServer(options: {
   });
 }
 
+/*** Create the deterministic OAuth authorization response for one evidence scenario. */
 function createAuthorizationResponse(url: URL, scenario: FixtureScenario): Response {
   const redirectTo = url.searchParams.get('redirect_to');
   if (!redirectTo || !isAllowedCallback(redirectTo)) {
@@ -202,6 +206,7 @@ function createAuthorizationResponse(url: URL, scenario: FixtureScenario): Respo
   return Response.redirect(callback, 302);
 }
 
+/*** Create a synthetic Supabase-compatible token response for OAuth evidence. */
 function createTokenResponse(): Response {
   return Response.json({
     access_token: crypto.randomUUID(),
@@ -218,6 +223,7 @@ function createTokenResponse(): Response {
   });
 }
 
+/*** Return whether a redirect URI matches one of the exact native evidence callback schemes. */
 function isAllowedCallback(value: string): boolean {
   try {
     const callback = new URL(value);
@@ -234,12 +240,14 @@ function isAllowedCallback(value: string): boolean {
   }
 }
 
+/*** Narrow an unknown value to one of the deterministic OAuth fixture scenarios. */
 function isFixtureScenario(value: unknown): value is FixtureScenario {
   return (
     value === 'hold' || value === 'malformed' || value === 'provider-denied' || value === 'success'
   );
 }
 
+/*** Normalize an untrusted evidence command into the accepted scenario/permission contract. */
 function normalizeEvidenceCommand(
   value: Readonly<Record<string, unknown>>,
 ): Omit<EvidenceCommand, 'revision'> | null {
@@ -249,6 +257,7 @@ function normalizeEvidenceCommand(
   return { permission: value.permission, scenario: value.scenario };
 }
 
+/*** Narrow an unknown value to a supported evidence scenario. */
 function isEvidenceScenario(value: unknown): value is EvidenceScenario {
   return (
     value === 'camera-availability' ||
@@ -268,6 +277,7 @@ function isEvidenceScenario(value: unknown): value is EvidenceScenario {
   );
 }
 
+/*** Return whether a permission identifier is allowed in redacted native evidence. */
 function isEvidencePermission(value: string): boolean {
   return [
     'camera',
@@ -281,6 +291,7 @@ function isEvidencePermission(value: string): boolean {
   ].includes(value);
 }
 
+/*** Validate and redact one untrusted evidence record before persistence. */
 function normalizeEvidenceRecord(value: Readonly<Record<string, unknown>>): EvidenceRecord | null {
   if (!isEvidenceScenario(value.scenario) || !isEvidenceResult(value.result)) return null;
   if (containsSensitiveText(value.scenario) || containsSensitiveText(value.result)) return null;
@@ -299,10 +310,14 @@ function normalizeEvidenceRecord(value: Readonly<Record<string, unknown>>): Evid
   return { details: Object.fromEntries(details), scenario: value.scenario, result: value.result };
 }
 
+/*** Narrow an unknown value to an allowlisted redacted evidence result. */
 function isEvidenceResult(value: unknown): value is string {
   return typeof value === 'string' && EVIDENCE_RESULTS.has(value);
 }
 
+/*** Read an HTTP request JSON body and return a record or an empty record on invalid input.
+ * @utility @ankhorage/utility/http
+ */
 async function readJsonRecordAsync(request: Request): Promise<Readonly<Record<string, unknown>>> {
   try {
     const value: unknown = await request.json();
@@ -312,14 +327,19 @@ async function readJsonRecordAsync(request: Request): Promise<Readonly<Record<st
   }
 }
 
+/*** Return whether an evidence detail key could expose sensitive material. */
 function containsSensitiveKey(value: string): boolean {
   return /authorization|body|code|credential|media|name|secret|token|uri/iu.test(value);
 }
 
+/*** Return whether an evidence string appears to contain sensitive OAuth/secret material. */
 function containsSensitiveText(value: string): boolean {
   return /access_token|authorization:|code=|refresh_token|secret=/iu.test(value);
 }
 
+/*** Narrow an unknown value to a plain non-array record.
+ * @utility @ankhorage/utility/object
+ */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
