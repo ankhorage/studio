@@ -21,11 +21,13 @@ const FONT_WEIGHTS = [
   'bold',
 ] as const;
 
+/*** Render resolved typography weight tokens as selectable CSS/React Native font-weight values with reset-to-inherited controls. */
 export function ThemeTypographyWeightEditor() {
   const { theme: resolvedTheme } = useZoraTheme();
   const { selection, updateTheme } = useActiveThemeAdmin();
   if (!selection) return null;
 
+  /*** Set or remove one authored typography weight token. */
   const updateWeight = (key: string, value: string | undefined) => {
     updateTheme({
       tokens: updateTypographyWeight({ tokens: selection.theme.tokens, key, value }),
@@ -49,6 +51,7 @@ export function ThemeTypographyWeightEditor() {
   );
 }
 
+/*** Render one typography weight token with explicit weight choices and reset-to-inherited behavior. */
 function WeightRow(props: {
   readonly tokenKey: string;
   readonly value: string;
