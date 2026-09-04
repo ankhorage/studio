@@ -7,6 +7,10 @@ import { reserveTcpPortAsync } from './reserveTcpPortAsync';
 
 const HTTP_TIMEOUT_MS = 120_000;
 
+/***
+ * Launch the standalone Studio development Web app and exercise project/category/detail navigation, pointer hit testing, theme toggling, icon fonts and host-backed project deletion in a real browser.
+ * @todo Move this development-Web acceptance smoke from production src/host/smoke to test/smoke.
+ */
 export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options: {
   readonly apiUrl: string;
   readonly categoryId: string;
@@ -99,11 +103,16 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
   }
 }
 
+/***
+ * Collect UTF-8 stdout and stderr chunks from a child process into a shared output buffer.
+ * @utility @ankhorage/utility/node/process
+ */
 function collectOutput(processToCollect: ChildProcessWithoutNullStreams, output: string[]): void {
   processToCollect.stdout.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
   processToCollect.stderr.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
 }
 
+/*** Delete one host fixture project through the standalone Studio HTTP API. */
 async function deleteHostProjectAsync(apiUrl: string, projectId: string): Promise<void> {
   const response = await fetch(`${apiUrl}/projects/${encodeURIComponent(projectId)}`, {
     method: 'DELETE',
@@ -113,6 +122,7 @@ async function deleteHostProjectAsync(apiUrl: string, projectId: string): Promis
   }
 }
 
+/*** Wait for an accessible browser control to hydrate and then dispatch a real pointer click through the Chrome session. */
 async function pointerClickAsync(
   browser: ChromeNavigationSession,
   role: string,
@@ -123,6 +133,10 @@ async function pointerClickAsync(
   await browser.clickByRoleAndNameAsync(role, name, occurrence);
 }
 
+/***
+ * Terminate a detached child-process group and wait briefly for exit without hanging the caller.
+ * @utility @ankhorage/utility/node/process
+ */
 async function stopProcessAsync(processToStop: ChildProcessWithoutNullStreams): Promise<void> {
   if (!processToStop.pid || processToStop.exitCode !== null) return;
   try {
@@ -136,6 +150,10 @@ async function stopProcessAsync(processToStop: ChildProcessWithoutNullStreams): 
   ]);
 }
 
+/***
+ * Poll an HTTP URL while supervising its child process, including recent process output in failures.
+ * @utility @ankhorage/utility/http
+ */
 async function waitForHttpAsync(
   url: string,
   processToWatch: ChildProcessWithoutNullStreams,
