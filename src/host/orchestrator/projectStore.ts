@@ -97,6 +97,7 @@ export class ProjectStore {
         id,
         name: manifest.metadata.name,
         path: projectPath,
+        version: manifest.metadata.version,
         isAnkhApp: true,
         category: manifest.metadata.category,
         created: manifest.metadata.created,
