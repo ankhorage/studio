@@ -1,216 +1,215 @@
 {
   "name": "@ankhorage/studio",
-  "version": "2.0.21",
-  "description": "Studio authoring package for Ankhorage apps",
+  "version": "2.0.17",
+  "private": false,
+  "description": "Standalone Studio authoring package for Ankhorage apps.",
   "license": "MIT",
-  "homepage": "https://github.com/ankhorage/studio#readme",
-  "bugs": {
-    "url": "https://github.com/ankhorage/studio/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ankhorage/studio.git"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "type": "module",
-  "main": "./dist/root.js",
-  "types": "./dist/root.d.ts",
-  "sideEffects": false,
-  "workspaces": [
-    ".",
-    "apps/*"
-  ],
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/root.d.ts",
-      "import": "./dist/root.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./admin": {
+      "types": "./dist/ankhAdmin.public.d.ts",
+      "import": "./dist/ankhAdmin.public.js"
     },
     "./app": {
       "types": "./dist/app/index.d.ts",
       "import": "./dist/app/index.js"
     },
-    "./cli": {
-      "types": "./dist/cli/index.d.ts",
-      "import": "./dist/cli/index.js"
+    "./auth-settings": {
+      "types": "./dist/authSettings.d.ts",
+      "import": "./dist/authSettings.js"
     },
-    "./runtime": {
-      "types": "./dist/runtime/index.d.ts",
-      "import": "./dist/runtime/index.js"
+    "./binding-authoring": {
+      "types": "./dist/bindingAuthoringContracts.d.ts",
+      "import": "./dist/bindingAuthoringContracts.js"
     },
-    "./runtime/actionSuppression": {
-      "types": "./dist/runtime/actionSuppression.d.ts",
-      "import": "./dist/runtime/actionSuppression.js"
-    },
-    "./runtime/appExtensionRegistry": {
-      "types": "./dist/runtime/appExtensionRegistry.d.ts",
-      "import": "./dist/runtime/appExtensionRegistry.js"
-    },
-    "./runtime/registry": {
-      "types": "./dist/runtime/registry.d.ts",
-      "import": "./dist/runtime/registry.js"
-    },
-    "./runtime/runtimeActions": {
-      "types": "./dist/runtime/runtimeActions.d.ts",
-      "import": "./dist/runtime/runtimeActions.js"
-    },
-    "./runtime/useRuntimeAction": {
-      "types": "./dist/runtime/useRuntimeAction.d.ts",
-      "import": "./dist/runtime/useRuntimeAction.js"
-    },
-    "./core/StudioContext": {
-      "types": "./dist/core/StudioContext.d.ts",
-      "import": "./dist/core/StudioContext.js"
-    },
-    "./core/StudioProvider": {
-      "types": "./dist/core/StudioProvider.d.ts",
-      "import": "./dist/core/StudioProvider.js"
-    },
-    "./core/studioPackageBoundary": {
-      "types": "./dist/core/studioPackageBoundary.d.ts",
-      "import": "./dist/core/studioPackageBoundary.js"
-    },
-    "./ui/AnkhStudio": {
-      "types": "./dist/ui/AnkhStudio.d.ts",
-      "import": "./dist/ui/AnkhStudio.js"
-    },
-    "./ui/useStudioAppBarAugmentation": {
-      "types": "./dist/ui/useStudioAppBarAugmentation.d.ts",
-      "import": "./dist/ui/useStudioAppBarAugmentation.js"
-    },
-    "./utils/treeUtils": {
-      "types": "./dist/utils/treeUtils.d.ts",
-      "import": "./dist/utils/treeUtils.js"
-    },
-    "./canvasDragModel": {
-      "types": "./dist/canvasDragModel.d.ts",
-      "import": "./dist/canvasDragModel.js"
-    },
-    "./canvasDropZones": {
-      "types": "./dist/canvasDropZones.d.ts",
-      "import": "./dist/canvasDropZones.js"
-    },
-    "./insertModalModel": {
-      "types": "./dist/insertModalModel.d.ts",
-      "import": "./dist/insertModalModel.js"
-    },
-    "./manifestState": {
-      "types": "./dist/manifestState.d.ts",
-      "import": "./dist/manifestState.js"
-    },
-    "./bindingAuthoringModel": {
+    "./binding-authoring-model": {
       "types": "./dist/bindingAuthoringModel.d.ts",
       "import": "./dist/bindingAuthoringModel.js"
     },
-    "./propertiesAuthoringModel": {
-      "types": "./dist/propertiesAuthoringModel.d.ts",
-      "import": "./dist/propertiesAuthoringModel.js"
+    "./binding-diagnostics-model": {
+      "types": "./dist/bindingDiagnosticsModel.d.ts",
+      "import": "./dist/bindingDiagnosticsModel.js"
     },
-    "./manifestSync": {
-      "types": "./dist/manifestSync.d.ts",
-      "import": "./dist/manifestSync.js"
+    "./binding-metadata-model": {
+      "types": "./dist/bindingMetadataModel.d.ts",
+      "import": "./dist/bindingMetadataModel.js"
     },
-    "./projectAuthHealth": {
-      "types": "./dist/projectAuthHealth.d.ts",
-      "import": "./dist/projectAuthHealth.js"
+    "./binding-mutation-model": {
+      "types": "./dist/bindingMutationModel.d.ts",
+      "import": "./dist/bindingMutationModel.js"
     },
-    "./projectSecretUsage": {
-      "types": "./dist/projectSecretUsage.d.ts",
-      "import": "./dist/projectSecretUsage.js"
+    "./binding-operation-model": {
+      "types": "./dist/bindingOperationModel.d.ts",
+      "import": "./dist/bindingOperationModel.js"
     },
-    "./routeUtils": {
-      "types": "./dist/routeUtils.d.ts",
-      "import": "./dist/routeUtils.js"
+    "./binding-schema-model": {
+      "types": "./dist/bindingSchemaModel.d.ts",
+      "import": "./dist/bindingSchemaModel.js"
     },
-    "./runtimeDiagnosticsModel": {
-      "types": "./dist/runtimeDiagnosticsModel.d.ts",
-      "import": "./dist/runtimeDiagnosticsModel.js"
+    "./canvas-drag-model": {
+      "types": "./dist/canvasDragModel.d.ts",
+      "import": "./dist/canvasDragModel.js"
     },
-    "./studioAdminRouteModel": {
-      "types": "./dist/studioAdminRouteModel.d.ts",
-      "import": "./dist/studioAdminRouteModel.js"
-    },
-    "./studioSelectionModel": {
-      "types": "./dist/studioSelectionModel.d.ts",
-      "import": "./dist/studioSelectionModel.js"
+    "./external-api-authoring": {
+      "types": "./dist/externalApiAuthoring/index.d.ts",
+      "import": "./dist/externalApiAuthoring/index.js"
     },
     "./host": {
       "types": "./dist/host/index.d.ts",
       "import": "./dist/host/index.js"
     },
-    "./externalApiAuthoring": {
-      "types": "./dist/externalApiAuthoring/index.d.ts",
-      "import": "./dist/externalApiAuthoring/index.js"
-    }
+    "./host/standalone": {
+      "types": "./dist/host/http/standalone.d.ts",
+      "import": "./dist/host/http/standalone.js"
+    },
+    "./insert-modal-model": {
+      "types": "./dist/insertModalModel.d.ts",
+      "import": "./dist/insertModalModel.js"
+    },
+    "./manifest-state": {
+      "types": "./dist/manifestState.d.ts",
+      "import": "./dist/manifestState.js"
+    },
+    "./module-admin": {
+      "types": "./dist/moduleAdmin.public.d.ts",
+      "import": "./dist/moduleAdmin.public.js"
+    },
+    "./module-admin-api": {
+      "types": "./dist/moduleAdminApi.d.ts",
+      "import": "./dist/moduleAdminApi.js"
+    },
+    "./native-client-deploy-boundary": {
+      "types": "./dist/nativeClientDeployBoundary.d.ts",
+      "import": "./dist/nativeClientDeployBoundary.js"
+    },
+    "./project-auth-api": {
+      "types": "./dist/projectAuthApi.d.ts",
+      "import": "./dist/projectAuthApi.js"
+    },
+    "./project-auth-health": {
+      "types": "./dist/projectAuthHealth.d.ts",
+      "import": "./dist/projectAuthHealth.js"
+    },
+    "./project-auth-runtime-diagnostics": {
+      "types": "./dist/projectAuthRuntimeDiagnostics.d.ts",
+      "import": "./dist/projectAuthRuntimeDiagnostics.js"
+    },
+    "./project-deploy-api": {
+      "types": "./dist/projectDeployApi.d.ts",
+      "import": "./dist/projectDeployApi.js"
+    },
+    "./project-deploy-asset-picker": {
+      "types": "./dist/projectDeployAssetPicker.d.ts",
+      "import": "./dist/projectDeployAssetPicker.js"
+    },
+    "./project-deploy-request": {
+      "types": "./dist/projectDeployRequest.d.ts",
+      "import": "./dist/projectDeployRequest.js"
+    },
+    "./project-oauth-setup": {
+      "types": "./dist/projectOAuthSetup.d.ts",
+      "import": "./dist/projectOAuthSetup.js"
+    },
+    "./project-secret-api": {
+      "types": "./dist/projectSecretApi.d.ts",
+      "import": "./dist/projectSecretApi.js"
+    },
+    "./project-secret-usage": {
+      "types": "./dist/projectSecretUsage.d.ts",
+      "import": "./dist/projectSecretUsage.js"
+    },
+    "./properties-authoring-model": {
+      "types": "./dist/propertiesAuthoringModel.d.ts",
+      "import": "./dist/propertiesAuthoringModel.js"
+    },
+    "./route-utils": {
+      "types": "./dist/routeUtils.d.ts",
+      "import": "./dist/routeUtils.js"
+    },
+    "./runtime": {
+      "types": "./dist/runtime/index.d.ts",
+      "import": "./dist/runtime/index.js"
+    },
+    "./runtime-diagnostics-model": {
+      "types": "./dist/runtimeDiagnosticsModel.d.ts",
+      "import": "./dist/runtimeDiagnosticsModel.js"
+    },
+    "./studio-admin-route-model": {
+      "types": "./dist/studioAdminRouteModel.d.ts",
+      "import": "./dist/studioAdminRouteModel.js"
+    },
+    "./studio-runtime-api": {
+      "types": "./dist/studioRuntimeApi.d.ts",
+      "import": "./dist/studioRuntimeApi.js"
+    },
+    "./studio-selection-model": {
+      "types": "./dist/studioSelectionModel.d.ts",
+      "import": "./dist/studioSelectionModel.js"
+    },
+    "./ui/app-bar-augmentation": {
+      "types": "./dist/ui/useStudioAppBarAugmentation.d.ts",
+      "import": "./dist/ui/useStudioAppBarAugmentation.js"
+    },
+    "./ui/app-bar-model": {
+      "types": "./dist/ui/studioAppBarModel.d.ts",
+      "import": "./dist/ui/studioAppBarModel.js"
+    },
+    "./ui/app-bar-actions": {
+      "types": "./dist/ui/createStudioAppBarActions.d.ts",
+      "import": "./dist/ui/createStudioAppBarActions.js"
+    },
+    "./ui/AnkhStudio": {
+      "types": "./dist/ui/AnkhStudio.d.ts",
+      "import": "./dist/ui/AnkhStudio.js"
+    },
+    "./ui/canvas-dnd-overlay": {
+      "types": "./dist/ui/canvas/StudioCanvasDndOverlay.d.ts",
+      "import": "./dist/ui/canvas/StudioCanvasDndOverlay.js"
+    },
+    "./ui/delete-dialog": {
+      "types": "./dist/ui/StudioDeleteDialog.d.ts",
+      "import": "./dist/ui/StudioDeleteDialog.js"
+    },
+    "./ui/insert-dialog": {
+      "types": "./dist/ui/StudioInsertDialog.d.ts",
+      "import": "./dist/ui/StudioInsertDialog.js"
+    },
+    "./package.json": "./package.json"
   },
-  "ankh": {
-    "category": "studio",
-    "provider": "./dist/cli/index.js",
-    "capabilities": [
-      "studio.dev",
-      "studio.projects.list",
-      "studio.projects.create",
-      "studio.projects.delete",
-      "studio.projects.sync",
-      "studio.workspace.install",
-      "studio.secrets.list",
-      "studio.secrets.create",
-      "studio.secrets.replace",
-      "studio.secrets.remove",
-      "studio.apis.connect",
-      "studio.apis.test"
-    ]
+  "bin": {
+    "ankhorage-studio-host": "./dist/host/http/standalone.js"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "typecheck": "tsc --noEmit -p tsconfig.json",
-    "type-check": "bun run typecheck",
-    "dev": "bun run dev:host & bun run dev:studio",
-    "dev:studio": "bun run --cwd apps/studio web",
-    "type-check:studio": "bun run --cwd apps/studio type-check",
-    "lint": "ankhorage-eslint . --max-warnings=0",
-    "lint:fix": "ankhorage-eslint . --fix --max-warnings=0",
+    "changeset": "ankhorage-changeset",
+    "changeset:status": "ankhorage-changeset status",
+    "check:expo57-generated-app": "bun run scripts/expo57-generated-app-acceptance.ts",
+    "check:expo57-generated-capabilities": "bun run scripts/expo57-generated-capability-acceptance.ts",
+    "check:expo57-generated-navigation": "bun run scripts/expo57-generated-navigation-acceptance.ts",
+    "check:expo57-native-capability-evidence": "bun run scripts/expo57-native-capability-evidence.ts",
+    "check:expo57-studio-standalone": "bun run scripts/expo57-studio-standalone-acceptance.ts",
+    "check:packed-studio-host": "bun run scripts/packed-studio-host-acceptance.ts",
+    "dev:studio": "bun --cwd apps/studio run start",
+    "docs": "paradox generate",
     "format": "ankhorage-prettier --write .",
     "format:check": "ankhorage-prettier --check .",
+    "knip:check": "ankhorage-knip",
+    "lint": "ankhorage-eslint . --max-warnings=0",
+    "lint:fix": "ankhorage-eslint . --fix --max-warnings=0",
     "test": "bun test",
-    "test:acceptance:expo57-generated-app": "bun scripts/expo57-generated-app-acceptance.ts",
-    "test:acceptance:expo57-generated-capabilities": "bun scripts/expo57-generated-capability-acceptance.ts",
-    "test:acceptance:expo57-auth-hidden-route-drawer": "bun scripts/expo57-generated-navigation-acceptance.ts --auth-hidden-route-drawer",
-    "test:acceptance:expo57-generated-navigation": "bun scripts/expo57-generated-navigation-acceptance.ts",
-    "test:acceptance:expo57-studio-standalone": "bun scripts/expo57-studio-standalone-acceptance.ts",
-    "test:acceptance:packed-studio-host": "bun scripts/packed-studio-host-acceptance.ts",
-    "test:e2e": "bun run test:e2e:generated-app-web && bun run test:e2e:infra",
-    "test:e2e:generated-app-web": "CHROME_PATH=\"${CHROME_PATH:-$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || printf '%s' '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')}\" ANKH_STUDIO_ADMIN_WEB_SMOKE=1 bun test src/host/generatedAdminExpoWeb.smoke.test.ts",
-    "test:e2e:infra": "ANKH_STUDIO_INFRA_E2E=1 bun test src/host/studioInfra.e2e.test.ts",
-    "test:e2e:expo57-production-infra": "ANKH_STUDIO_EXPO57_INFRA_E2E=1 bun test src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-    "test:smoke:studio-web": "ANKH_STUDIO_WORKSPACE_WEB_SMOKE=1 bun test src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-    "smoke:auth5-native:prepare": "bun scripts/auth5-native-oauth-smoke.ts",
-    "smoke:auth5-native:infra": "bun scripts/auth5-native-oauth-smoke-infra.ts",
-    "smoke:expo57-native": "bun scripts/expo57-native-capability-evidence.ts",
-    "docs": "paradox",
-    "changeset": "ankhorage-changeset",
-    "changeset:status": "ankhorage-changeset status --since=origin/main",
-    "version-packages": "ankhorage-changeset version",
-    "dev:host": "bun src/host/http/standalone.ts",
-    "test:host-smoke": "bun test src/host/hostLifecycle.smoke.test.ts",
-    "knip:check": "ankhorage-knip"
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
-  "keywords": [
-    "ankhorage",
-    "studio",
-    "authoring",
-    "react-native",
-    "app-builder",
-    "oauth",
-    "secret-store",
-    "supabase-vault"
-  ],
   "dependencies": {
     "@ankhorage/color-theory": "^0.3.0",
     "@ankhorage/contracts": "^8.2.0",
@@ -267,7 +266,7 @@
     "typescript": "~6.0.3"
   },
   "overrides": {
-    "@ankhorage/contracts": "^8.2.0"
+    "@ankhorage/contracts": "$@ankhorage/contracts"
   },
   "packageManager": "bun@1.4.0"
 }
