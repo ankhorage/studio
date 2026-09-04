@@ -1,4 +1,4 @@
-import type { ProjectTemplateSelection } from '../templateRegistry';
+import type { AppManifest, UiNode } from '@ankhorage/contracts';
 
 export interface ZoraExtensionDefinition {
   packageName: string;
@@ -32,20 +32,18 @@ const ZORA_TABLETOP_EXTENSION = {
 } satisfies ZoraExtensionDefinition;
 
 const KNOWN_ZORA_EXTENSIONS = [ZORA_CHESS_EXTENSION, ZORA_TABLETOP_EXTENSION] as const;
-const TABLETOP_TEMPLATE_IDS = new Set(['card-trainer', 'card_trainer', 'poker']);
 
-export function resolveZoraExtensionsForTemplateSelection(
-  selection: ProjectTemplateSelection,
+/*** Resolve extension packages from the component types actually used by one manifest. */
+export function resolveZoraExtensionsForManifest(
+  manifest: AppManifest,
 ): readonly ZoraExtensionDefinition[] {
-  if (selection.category === 'games' && selection.templateId === 'chess') {
-    return [ZORA_CHESS_EXTENSION];
+  const componentTypes = new Set<string>();
+  for (const screen of Object.values(manifest.screens)) {
+    collectNodeTypes(screen.root, componentTypes);
   }
-
-  if (selection.category === 'games' && TABLETOP_TEMPLATE_IDS.has(selection.templateId)) {
-    return [ZORA_TABLETOP_EXTENSION];
-  }
-
-  return [];
+  return KNOWN_ZORA_EXTENSIONS.filter((extension) =>
+    Object.keys(extension.components).some((componentType) => componentTypes.has(componentType)),
+  );
 }
 
 export function resolveZoraExtensionsFromDependencies(
@@ -77,4 +75,11 @@ export function collectZoraExtensionDependencies(
       ...(extension.dependencies ?? {}),
     };
   }, {});
+}
+
+/*** Collect component types recursively from one manifest UI node. */
+function collectNodeTypes(node: UiNode, componentTypes: Set<string>): void {
+  componentTypes.add(node.type);
+  node.children?.forEach((child) => collectNodeTypes(child, componentTypes));
+  node.repeat?.empty?.forEach((child) => collectNodeTypes(child, componentTypes));
 }
