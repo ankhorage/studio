@@ -1,5 +1,6 @@
 import { escapeStringLiteral } from '../utils/escapeStringLiteral';
 
+/*** Generate the root index placeholder used when the root layout canonicalizes navigation to another route. */
 export function getIndexRedirectRouteTsx(href: string): string {
   return `/**
  * The root layout owns auth bootstrap and canonicalizes / to '${escapeStringLiteral(href)}'.
