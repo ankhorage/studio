@@ -42,10 +42,12 @@ export interface HostModuleAdminRuntime {
   ) => Promise<unknown>;
 }
 
+/*** Resolve an unknown module contribution to the Studio host module-admin runtime contract. */
 export function resolveHostModuleAdminRuntime(value: unknown): HostModuleAdminRuntime | null {
   return isHostModuleAdminRuntime(value) ? value : null;
 }
 
+/*** Execute one validated module-admin operation against the host authoring context. */
 export async function executeHostModuleAdminRuntime(args: {
   readonly runtime: HostModuleAdminRuntime;
   readonly context: HostModuleAdminRuntimeContext;
@@ -60,12 +62,17 @@ export async function executeHostModuleAdminRuntime(args: {
   });
 }
 
+/*** Validate the semantic shape of a module-owned host admin runtime contribution. */
 function isHostModuleAdminRuntime(value: unknown): value is HostModuleAdminRuntime {
   return (
     isRecord(value) && value.kind === 'module-admin-runtime' && typeof value.execute === 'function'
   );
 }
 
+/***
+ * Narrow an unknown non-array object to a string-keyed record.
+ * @utility @ankhorage/utility/object
+ */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
