@@ -20,6 +20,10 @@ const OAUTH_CLOCK_OFFSET_STORAGE_KEY = 'ankh.acceptance.oauth-clock-offset-ms';
 const OAUTH_EXPIRED_CLOCK_OFFSET_MS = 11 * 60 * 1_000;
 const ROUTER_REWRITE_DISABLED = '1';
 
+/***
+ * Generate, install and validate the Expo 57 capability fixture across static checks, owner graph, browser OAuth/capability behavior and native prebuild while preserving its frozen lockfile.
+ * @todo Move this generated-capability acceptance orchestration from production src/host/smoke to test/smoke.
+ */
 export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-capabilities-'));
 
@@ -65,6 +69,7 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
   }
 }
 
+/*** Create the temporary Bun workspace root used to generate the capability acceptance app. */
 async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
   await mkdir(path.join(workspaceRoot, 'apps'), { recursive: true });
   await writeFile(
@@ -83,6 +88,7 @@ async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
   );
 }
 
+/*** Create the generated capability app's cross-platform Bun lockfile without installing dependencies. */
 async function createProjectLockfileAsync(projectRoot: string): Promise<void> {
   await runAcceptanceCommandAsync({
     args: ['install', '--lockfile-only', '--os=*', '--cpu=*'],
@@ -93,6 +99,7 @@ async function createProjectLockfileAsync(projectRoot: string): Promise<void> {
   });
 }
 
+/*** Run static source-stability checks, router/type validation, deterministic browser OAuth evidence and native platform exports for the capability fixture. */
 async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<void> {
   const sourceBeforeStaticChecks = await snapshotSourceTreeAsync(projectRoot);
   const expoCli = await resolveAppOwnedExpoCliAsync(projectRoot);
@@ -167,6 +174,7 @@ async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<v
   for (const command of buildCommands) await runGeneratedCommandAsync(projectRoot, command);
 }
 
+/*** Create a deterministic local Supabase Auth stub that counts OAuth authorization and token-exchange requests for browser acceptance. */
 function createAuthStubServer(): ReturnType<typeof Bun.serve> & {
   authorizationCount: number;
   tokenExchangeCount: number;
@@ -174,6 +182,7 @@ function createAuthStubServer(): ReturnType<typeof Bun.serve> & {
   const server = Bun.serve({
     hostname: '127.0.0.1',
     port: 0,
+    /*** Serve the deterministic CORS/Auth responses required by the generated OAuth browser acceptance flow. */
     fetch(request) {
       const { pathname } = new URL(request.url);
       const corsHeaders = {
@@ -220,6 +229,7 @@ function createAuthStubServer(): ReturnType<typeof Bun.serve> & {
   return server;
 }
 
+/*** Exercise generated sign-in/sign-up, OAuth expiry/replay/mismatch and hydrated capability rendering through the served static Web export. */
 async function runGeneratedCapabilityBrowserAcceptanceAsync(
   projectRoot: string,
   authStub: ReturnType<typeof createAuthStubServer>,
@@ -306,6 +316,7 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
   }
 }
 
+/*** Start one fresh OAuth authorization attempt through the generated sign-in UI and assert that it reaches the deterministic Auth stub. */
 async function startBrowserOAuthAttemptAsync(
   chrome: ChromeNavigationSession,
   rootUrl: string,
@@ -324,6 +335,10 @@ async function startBrowserOAuthAttemptAsync(
   }
 }
 
+/***
+ * Capture every file under a project's src tree as a deterministic relative-path-to-byte-content map.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function snapshotSourceTreeAsync(projectRoot: string): Promise<Map<string, Uint8Array>> {
   const sourceRoot = path.join(projectRoot, 'src');
   const entries = await readdir(sourceRoot, { recursive: true });
@@ -336,6 +351,10 @@ async function snapshotSourceTreeAsync(projectRoot: string): Promise<Map<string,
   return files;
 }
 
+/***
+ * Assert that a project's current src tree exactly matches a previously captured byte snapshot.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function assertSourceTreeUnchangedAsync(
   projectRoot: string,
   expected: ReadonlyMap<string, Uint8Array>,
@@ -352,6 +371,7 @@ async function assertSourceTreeUnchangedAsync(
   }
 }
 
+/*** Assert generated Router declarations are non-empty and contain the capability auth/app route evidence. */
 async function assertRouterTypesAsync(projectRoot: string): Promise<void> {
   const routerTypes = await readFile(
     path.join(projectRoot, '.expo', 'types', 'router.d.ts'),
@@ -365,6 +385,7 @@ async function assertRouterTypesAsync(projectRoot: string): Promise<void> {
   }
 }
 
+/*** Run one generated capability command with isolated Expo home, telemetry disabled and Router rewrite checks disabled. */
 async function runGeneratedCommandAsync(
   projectRoot: string,
   command: {
