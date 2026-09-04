@@ -2,7 +2,7 @@ import { promises as fs } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 
-import type { AppCategory } from '@ankhorage/contracts';
+import type { AppCategory, MediaAsset } from '@ankhorage/contracts';
 import {
   CATEGORY_PRESETS,
   createTemplateArtifact,
@@ -61,7 +61,9 @@ export async function getProjectTemplateSource(
 }
 
 /*** Convert one public template catalog entry to the Studio transport shape. */
-function createCatalogTemplate(template: ReturnType<typeof listTemplates>[number]): TemplateCatalogTemplate {
+function createCatalogTemplate(
+  template: ReturnType<typeof listTemplates>[number],
+): TemplateCatalogTemplate {
   return {
     id: `${template.category}/${template.slug}`,
     slug: template.slug,
@@ -71,11 +73,7 @@ function createCatalogTemplate(template: ReturnType<typeof listTemplates>[number
 
 /*** Read one published template image and preserve its canonical manifest media metadata. */
 async function readTemplateImageAsset(
-  mediaAssets: ProjectCreationSource['manifest']['media'] extends infer TMedia
-    ? TMedia extends { assets: infer TAssets }
-      ? TAssets
-      : never
-    : never,
+  mediaAssets: Readonly<Record<string, MediaAsset>> | undefined,
   asset: TemplateImageAsset,
 ): Promise<ProjectCreationAsset> {
   const media = mediaAssets?.[asset.mediaId];
