@@ -1,3 +1,4 @@
+/*** Generate the persisted OAuth transport-attempt state module for a generated app. */
 export function getAuthOAuthStateTs() {
   return `import { authSessionStorage } from './session';
 
