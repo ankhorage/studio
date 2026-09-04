@@ -11,6 +11,9 @@ import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 const CAMERA_DEPENDENCIES = ['@ankhorage/permissions', 'expo-camera'] as const;
 const COMMAND_TIMEOUT_MS = 300_000;
 
+/*** Run the complete Expo 57 generated-app acceptance flow in an isolated temporary workspace.
+ * @todo Move this end-to-end generated-app acceptance harness from src/host/smoke to test/acceptance.
+ */
 export async function runExpo57GeneratedAppAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-acceptance-'));
 
@@ -28,6 +31,7 @@ export async function runExpo57GeneratedAppAcceptanceAsync(): Promise<void> {
   }
 }
 
+/*** Assert that a camera-free generated app neither declares nor installs camera capability packages. */
 async function assertCameraFreeInstalledGraphAsync(projectRoot: string): Promise<void> {
   const packageJson = JSON.parse(
     await readFile(path.join(projectRoot, 'package.json'), 'utf8'),
@@ -53,6 +57,7 @@ async function assertCameraFreeInstalledGraphAsync(projectRoot: string): Promise
   }
 }
 
+/*** Create and normalize the generated application fixture used by Expo 57 acceptance. */
 async function createGeneratedProjectAsync(workspaceRoot: string): Promise<string> {
   await mkdir(path.join(workspaceRoot, 'apps'), { recursive: true });
   await writeFile(
@@ -107,6 +112,7 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
   return created.path;
 }
 
+/*** Create the generated app lockfile and return its SHA-256 fingerprint. */
 async function createProjectLockfileAsync(projectRoot: string): Promise<string> {
   await runAcceptanceCommandAsync({
     args: ['install', '--lockfile-only', '--os=*', '--cpu=*'],
@@ -118,10 +124,14 @@ async function createProjectLockfileAsync(projectRoot: string): Promise<string> 
   return hash(await readFile(path.join(projectRoot, 'bun.lock')));
 }
 
+/*** Return the SHA-256 hex digest of binary content.
+ * @utility @ankhorage/utility/node/crypto
+ */
 function hash(value: Uint8Array): string {
   return createHash('sha256').update(value).digest('hex');
 }
 
+/*** Resolve the screen targeted by the fixture manifest's initial route. */
 function resolveAcceptanceScreen(manifest: AppManifest): ScreenSpec {
   const { navigator, screens } = manifest;
   const initialRoute = navigator.routes.find((route) => route.name === navigator.initialRouteName);
@@ -130,6 +140,7 @@ function resolveAcceptanceScreen(manifest: AppManifest): ScreenSpec {
   return screen;
 }
 
+/*** Run lint, Expo checks, TypeScript, platform exports, and native prebuild for the generated app fixture. */
 async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
   await runAcceptanceCommandAsync({
     args: ['install', '--frozen-lockfile'],
