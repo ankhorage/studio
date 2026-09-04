@@ -1,5 +1,8 @@
 import type { AppManifest, ScreenSpec, UiNode } from '@ankhorage/contracts';
 
+/*** Create the deterministic Expo 57 navigation manifest used by route-generation acceptance.
+ * @todo Move this fixture manifest builder from src/host/smoke to test/smoke.
+ */
 export function createExpo57NavigationFixtureManifest(
   baseManifest: AppManifest,
   options: {
@@ -203,6 +206,7 @@ export function createExpo57NavigationFixtureManifest(
   };
 }
 
+/*** Create a navigation Button node for the navigation fixture manifest. */
 function createNavigationButton(
   id: string,
   label: string,
@@ -220,6 +224,7 @@ function createNavigationButton(
   };
 }
 
+/*** Create one simple screen definition used by the navigation acceptance fixture. */
 function createScreen(id: string, name: string, text: string, action?: UiNode): ScreenSpec {
   return {
     id,
