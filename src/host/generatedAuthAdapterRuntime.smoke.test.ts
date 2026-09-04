@@ -10,7 +10,7 @@ import { expect, test } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
-import { getTemplateCatalog } from './templateRegistry';
+import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';
 
 const execFile = promisify(execFileCallback);
 const PROJECT_NAME = 'Generated Auth Runtime';
@@ -130,16 +130,9 @@ async function createGeneratedProject(): Promise<{ workspaceRoot: string; projec
 
   const projectManager = new ProjectManager(workspaceRoot);
   const moduleManager = new ModuleManager(workspaceRoot);
-  const template = getTemplateCatalog()
-    .categories.find((candidate) => candidate.id === 'developer_tools')
-    ?.templates.at(0);
-  if (!template) {
-    throw new Error('Published templates package returned no developer-tools template.');
-  }
-
   const created = await projectManager.createProject(
     PROJECT_NAME,
-    { category: 'developer_tools', templateId: template.templateId },
+    createSmokeProjectSource(),
     undefined,
     { includeStudio: false },
   );

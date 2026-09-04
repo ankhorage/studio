@@ -1,4 +1,5 @@
 import type { AppManifest, ScreenSpec } from '@ankhorage/contracts';
+
 import { createOAuthFixtureManifest } from './createOAuthFixtureManifest';
 
 const READER_FORMATS = ['epub', 'pdf'] as const;

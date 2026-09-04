@@ -1,5 +1,5 @@
 import type { AppCategory, AppManifest } from '@ankhorage/contracts';
-import { resolveOAuthFixture, type OAuthFixtureId } from '@ankhorage/templates';
+import { type OAuthFixtureId, resolveOAuthFixture } from '@ankhorage/templates';
 
 import { createSmokeProjectSource } from './createSmokeProjectSource';
 

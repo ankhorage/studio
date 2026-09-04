@@ -106,7 +106,7 @@ export class ProjectManager {
     }
 
     const templateData = source.manifest;
-    const category = templateData.metadata.category;
+    const { category } = templateData.metadata;
     const deploy = templateData.deploy ?? createDefaultAppDeployManifest(slug);
     const scaffoldManifest = applySystemTemplates({ ...templateData, deploy });
     const zoraExtensions = resolveZoraExtensionsForManifest(scaffoldManifest);

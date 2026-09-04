@@ -12,11 +12,11 @@ import {
   stopAllProjectInfraPortForwards,
 } from './orchestrator/infraSession';
 import { ProjectManager } from './orchestrator/projectManager';
-import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';
 import { upProjectInfrastructure } from './orchestrator/studioInfraUp';
 import { assertNoBrowserErrors } from './smoke/assertNoBrowserErrors';
 import { ChromeNavigationSession } from './smoke/ChromeNavigationSession';
 import { createExpo57NavigationFixtureManifest } from './smoke/createExpo57NavigationFixtureManifest';
+import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';
 import { createStaticExportServer } from './smoke/createStaticExportServer';
 import { reserveTcpPortAsync } from './smoke/reserveTcpPortAsync';
 import { resolveAppOwnedExpoCliAsync } from './smoke/resolveAppOwnedExpoCliAsync';

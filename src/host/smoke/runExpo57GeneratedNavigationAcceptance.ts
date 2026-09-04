@@ -5,11 +5,11 @@ import path from 'node:path';
 
 import { startStudioHostServer } from '../http/server';
 import { ProjectManager } from '../orchestrator/projectManager';
-import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { assertInstalledRegistryPackageAsync } from './assertInstalledRegistryPackageAsync';
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
 import { createExpo57NavigationFixtureManifest } from './createExpo57NavigationFixtureManifest';
+import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { createStaticExportServer } from './createStaticExportServer';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
 import { reserveTcpPortAsync } from './reserveTcpPortAsync';

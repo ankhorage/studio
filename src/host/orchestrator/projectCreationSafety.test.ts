@@ -20,9 +20,7 @@ test('project creation rejects duplicate and reserved IDs before mutation', asyn
   const created = await manager.createProject('Foo', createSmokeProjectSource());
   expect(created.id).toBe('foo');
 
-  const duplicateError = await catchError(
-    manager.createProject('Foo', createSmokeProjectSource()),
-  );
+  const duplicateError = await catchError(manager.createProject('Foo', createSmokeProjectSource()));
   expect(duplicateError).toBeInstanceOf(ProjectCreationValidationError);
 
   const manifest = JSON.parse(
