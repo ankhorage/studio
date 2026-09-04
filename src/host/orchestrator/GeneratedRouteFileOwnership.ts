@@ -20,16 +20,23 @@ interface RouteLedger {
   readonly files: readonly string[];
 }
 
+/***
+ * Own the current generated-route ledger so Studio deletes only files it generated and still owns.
+ * @todo Move generated route-file ownership from generic `host/orchestrator` into the routes/projects generation domain.
+ */
 export class GeneratedRouteFileOwnership {
+  /*** Require valid route ownership state before an existing generated project can be synchronized. */
   async assertSyncable(projectPath: string): Promise<void> {
     await readRequiredRouteLedger(projectPath);
   }
 
+  /*** Initialize route ownership for a newly generated project and reject accidental reinitialization. */
   async initialize(projectPath: string, generatedPaths: readonly string[]): Promise<void> {
     await assertRouteLedgerMissing(projectPath);
     await writeRouteLedger(projectPath, createRouteLedger(projectPath, generatedPaths));
   }
 
+  /*** Reconcile route ownership, deleting only stale ledger-owned generated files before writing the next ledger. */
   async reconcile(projectPath: string, generatedPaths: readonly string[]): Promise<void> {
     const previousLedger = await readRequiredRouteLedger(projectPath);
     const nextLedger = createRouteLedger(projectPath, generatedPaths);
@@ -44,6 +51,7 @@ export class GeneratedRouteFileOwnership {
   }
 }
 
+/*** Require the route ledger to be absent before initializing ownership for a new project. */
 async function assertRouteLedgerMissing(projectPath: string): Promise<void> {
   const ledgerPath = resolveProjectFile(projectPath, ROUTE_LEDGER_REL_PATH);
   try {
@@ -56,6 +64,7 @@ async function assertRouteLedgerMissing(projectPath: string): Promise<void> {
   throw new Error(`Project route ownership state already exists at '${ledgerPath}'.`);
 }
 
+/*** Create canonical route ownership state from generated paths after normalization, deduplication, sorting, and ownership validation. */
 function createRouteLedger(projectPath: string, generatedPaths: readonly string[]): RouteLedger {
   const files = [...new Set(generatedPaths.map(normalizeRelativePath))].sort();
   for (const filePath of files) resolveGeneratedFile(projectPath, filePath);
@@ -66,14 +75,23 @@ function createRouteLedger(projectPath: string, generatedPaths: readonly string[
   };
 }
 
+/***
+ * Detect a Node filesystem error indicating that a path does not exist.
+ * @utility @ankhorage/utility/node/fs
+ */
 function isMissingPathError(error: unknown): error is NodeJS.ErrnoException {
   return error instanceof Error && 'code' in error && error.code === 'ENOENT';
 }
 
+/***
+ * Narrow an unknown object to a string-keyed record.
+ * @utility @ankhorage/utility/object
+ */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
 
+/*** Validate the persisted route-ledger contract before applying generated-file ownership. */
 function isRouteLedger(value: unknown): value is RouteLedger {
   return (
     isRecord(value) &&
@@ -85,10 +103,15 @@ function isRouteLedger(value: unknown): value is RouteLedger {
   );
 }
 
+/***
+ * Normalize a filesystem-style relative path to portable POSIX separators and dot-segment semantics.
+ * @utility @ankhorage/utility/node/path
+ */
 function normalizeRelativePath(filePath: string): string {
   return path.posix.normalize(filePath.replace(/\\/gu, '/'));
 }
 
+/*** Read, parse, validate, normalize, and revalidate the required generated-route ownership ledger. */
 async function readRequiredRouteLedger(projectPath: string): Promise<RouteLedger> {
   const ledgerPath = resolveProjectFile(projectPath, ROUTE_LEDGER_REL_PATH);
   let source: string;
@@ -127,6 +150,7 @@ async function readRequiredRouteLedger(projectPath: string): Promise<RouteLedger
   return { ...parsed, files };
 }
 
+/*** Resolve one ledger-owned generated route/auth file while rejecting paths outside the current route-generation ownership set. */
 function resolveGeneratedFile(projectPath: string, relativePath: string): string {
   const target = resolveProjectFile(projectPath, relativePath);
   const isGeneratedAppRoute = relativePath.startsWith('src/app/') && relativePath.endsWith('.tsx');
@@ -136,6 +160,10 @@ function resolveGeneratedFile(projectPath: string, relativePath: string): string
   return target;
 }
 
+/***
+ * Resolve a relative path beneath a root and reject absolute, root-self, or escaping paths.
+ * @utility @ankhorage/utility/node/path
+ */
 function resolveProjectFile(projectPath: string, relativePath: string): string {
   if (path.isAbsolute(relativePath)) {
     throw new Error(`Invalid generated route ownership path: ${relativePath}`);
@@ -149,6 +177,10 @@ function resolveProjectFile(projectPath: string, relativePath: string): string {
   return target;
 }
 
+/***
+ * Atomically persist the generated-route ownership ledger using a same-directory temporary JSON file.
+ * @todo Keep the route-ledger wrapper in the routes/projects domain and compose a generic Utility atomic JSON writer.
+ */
 async function writeRouteLedger(projectPath: string, ledger: RouteLedger): Promise<void> {
   const ledgerPath = resolveProjectFile(projectPath, ROUTE_LEDGER_REL_PATH);
   await fs.mkdir(path.dirname(ledgerPath), { recursive: true });
