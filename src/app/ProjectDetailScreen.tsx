@@ -1,4 +1,4 @@
-import { Heading } from '@ankhorage/zora';
+import { Heading, Text } from '@ankhorage/zora';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
@@ -110,15 +110,16 @@ export function ProjectDetailScreen() {
                 { backgroundColor: project.activeTheme.light.primaryColor },
               ]}
             />
-            <Heading level={2} text={project.name} />
+            <View style={styles.nameSlugRow}>
+              <Heading level={2} text={project.name} />
+              <Text color="neutral" emphasis="muted" variant="caption">
+                #{project.id}
+              </Text>
+            </View>
             <MetadataRows
               rows={[
-                ['Project ID', project.id],
-                ['Version', project.version],
-                ['Category', formatCategory(project.category)],
-                ['Path', project.path],
-                ['Created', formatDate(project.created)],
-                ['Updated', formatDate(project.updated)],
+                ['App category', formatCategory(project.category)],
+                ['Creation', formatDate(project.created)],
               ]}
             />
           </View>
@@ -178,11 +179,13 @@ export function ProjectDetailScreen() {
   );
 }
 
+/*** Resolve the active project ID from Expo Router params. */
 function useProjectRouteParams() {
   const params = useLocalSearchParams<{ projectId?: string }>();
   return { projectId: firstParam(params.projectId) };
 }
 
+/*** Normalize one scalar-or-array Expo Router parameter. */
 function firstParam(value: string | string[] | undefined): string {
   return Array.isArray(value) ? (value[0] ?? '') : (value ?? '');
 }

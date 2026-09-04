@@ -2,12 +2,18 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import type { BindingOperationRef, DataSourceDiagnostic, UiNode } from '@ankhorage/contracts';
+import type {
+  AppManifest,
+  BindingOperationRef,
+  DataSourceDiagnostic,
+  UiNode,
+} from '@ankhorage/contracts';
 import type { EndpointTestFetch, EndpointTestFetchInit } from '@ankhorage/data-sources';
 import {
   createRuntimeApiOperationExecutor,
   resolveRuntimeBindingValue,
 } from '@ankhorage/runtime/bindings';
+import { composeCategoryAppManifest } from '@ankhorage/templates';
 import { expect, test } from 'bun:test';
 
 import { StudioExternalApiService } from './apis/studioExternalApiService';
@@ -17,10 +23,22 @@ const NUTRITION_API_BASE_URL = 'https://api.ankhorage.com/v1/nutrition';
 const PRODUCTS_REQUEST_URL = `${NUTRITION_API_BASE_URL}/products?limit=50&offset=0`;
 const BARCODE = '7612345678901';
 const BARCODE_REQUEST_URL = `${NUTRITION_API_BASE_URL}/products/by-barcode/${BARCODE}`;
-const CATALOG_SCREEN_ID = 'food_drink-nutrition-catalog-scan-catalog';
-const PRODUCTS_GRID_ID = 'food_drink-nutrition-catalog-scan-products-grid';
-const SCANNER_ID = 'food_drink-nutrition-catalog-scan-scan-scanner';
+const ID_PREFIX = 'food_drink-nutrition-catalog-scan';
+const CATALOG_SCREEN_ID = `${ID_PREFIX}-catalog`;
+const PRODUCTS_GRID_ID = `${ID_PREFIX}-products-grid`;
+const SCANNER_ID = `${ID_PREFIX}-scan-scanner`;
 const PRODUCT = { id: 'product-1', barcode: BARCODE, name: 'Acceptance Product' } as const;
+
+const PRODUCTS_LIST_OPERATION = {
+  apiId: 'nutrition',
+  endpointId: 'products',
+  operationId: 'products.list',
+} as const satisfies BindingOperationRef;
+const BARCODE_OPERATION = {
+  apiId: 'nutrition',
+  endpointId: 'products',
+  operationId: 'products.getByBarcode',
+} as const satisfies BindingOperationRef;
 
 type OperationRepeatSource = Extract<
   NonNullable<NonNullable<UiNode['repeat']>['source']>,
@@ -37,12 +55,10 @@ test('generated Nutrition app executes canonical product bindings over external 
 
   try {
     const manager = new ProjectManager(workspaceRoot);
-    const created = await manager.createProject(
-      'Nutrition API E2E',
-      { category: 'food_drink', templateId: 'nutrition-catalog-scan' },
-      undefined,
-      { includeStudio: true },
-    );
+    const created = await manager.createProject('Nutrition API E2E', {
+      manifest: createNutritionApiFixtureManifest(),
+      assets: [],
+    });
     const manifest = await manager.getProjectManifest(created.id);
     const source = assertCanonicalNutritionManifest(manifest);
     const barcodeOperation = assertBarcodeOperation(manifest);
@@ -58,6 +74,147 @@ test('generated Nutrition app executes canonical product bindings over external 
     await rm(workspaceRoot, { recursive: true, force: true });
   }
 });
+
+function createNutritionApiFixtureManifest(): AppManifest {
+  const { manifest } = composeCategoryAppManifest({
+    category: 'food_drink',
+    name: 'Nutrition API E2E',
+    slug: 'nutrition-api-e2e',
+    navigator: {
+      type: 'stack',
+      initialRouteName: 'products',
+      routes: [
+        { name: 'products', path: 'products', screenId: CATALOG_SCREEN_ID },
+        { name: 'scan', path: 'scan', screenId: `${ID_PREFIX}-scan` },
+      ],
+    },
+    screens: {
+      [CATALOG_SCREEN_ID]: {
+        id: CATALOG_SCREEN_ID,
+        name: 'Products',
+        root: {
+          id: `${ID_PREFIX}-products-screen`,
+          type: 'Screen',
+          props: {},
+          children: [
+            {
+              id: PRODUCTS_GRID_ID,
+              type: 'Grid',
+              repeat: {
+                source: { kind: 'operation', operation: PRODUCTS_LIST_OPERATION, path: 'products' },
+                itemAlias: 'item',
+                keyPath: 'id',
+              },
+              children: [],
+            },
+          ],
+        },
+      },
+      [`${ID_PREFIX}-scan`]: {
+        id: `${ID_PREFIX}-scan`,
+        name: 'Scan',
+        root: {
+          id: `${ID_PREFIX}-scan-screen`,
+          type: 'Screen',
+          props: {},
+          children: [{ id: SCANNER_ID, type: 'BarcodeScannerView', props: {} }],
+        },
+      },
+    },
+  });
+
+  return {
+    ...manifest,
+    infra: {
+      ...manifest.infra,
+      apis: [
+        {
+          id: 'nutrition',
+          origin: 'external',
+          protocol: 'rest',
+          name: 'Nutrition API',
+          baseUrl: NUTRITION_API_BASE_URL,
+          endpoints: {
+            products: {
+              id: 'products',
+              kind: 'http',
+              path: '/products',
+              operations: {
+                'products.list': {
+                  id: 'products.list',
+                  endpointId: 'products',
+                  protocol: 'http',
+                  intent: 'read',
+                  method: 'GET',
+                  path: '/products',
+                  request: {
+                    parameters: [
+                      {
+                        name: 'limit',
+                        location: 'query',
+                        schema: { type: 'integer' },
+                        default: 50,
+                      },
+                      {
+                        name: 'offset',
+                        location: 'query',
+                        schema: { type: 'integer' },
+                        default: 0,
+                      },
+                    ],
+                  },
+                  pagination: {
+                    kind: 'limit-offset',
+                    limitParameter: 'limit',
+                    offsetParameter: 'offset',
+                  },
+                },
+                'products.getByBarcode': {
+                  id: 'products.getByBarcode',
+                  endpointId: 'products',
+                  protocol: 'http',
+                  intent: 'read',
+                  method: 'GET',
+                  path: '/products/by-barcode/:barcode',
+                  request: {
+                    parameters: [
+                      {
+                        name: 'barcode',
+                        location: 'path',
+                        required: true,
+                        schema: { type: 'string' },
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+    dataBindings: {
+      [SCANNER_ID]: {
+        componentId: SCANNER_ID,
+        componentType: 'BarcodeScannerView',
+        events: {
+          barcodeScanned: [
+            {
+              target: { kind: 'operation', operation: BARCODE_OPERATION },
+              input: {
+                barcode: {
+                  kind: 'source',
+                  source: { kind: 'event', path: 'payload.value' },
+                  transforms: ['trim'],
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  };
+}
 
 async function createWorkspaceRoot(): Promise<string> {
   const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'studio-nutrition-api-e2e-'));
@@ -92,11 +249,7 @@ function assertCanonicalNutritionManifest(
   if (source?.kind !== 'operation') {
     throw new Error('Generated Nutrition products grid is missing its canonical operation source.');
   }
-  expect(source.operation).toEqual({
-    apiId: 'nutrition',
-    endpointId: 'products',
-    operationId: 'products.list',
-  });
+  expect(source.operation).toEqual(PRODUCTS_LIST_OPERATION);
   return source;
 }
 
@@ -112,11 +265,7 @@ function assertBarcodeOperation(
   if (eventBinding?.target.kind !== 'operation') {
     throw new Error('Generated Nutrition scanner is missing its barcode lookup operation.');
   }
-  expect(eventBinding.target.operation).toEqual({
-    apiId: 'nutrition',
-    endpointId: 'products',
-    operationId: 'products.getByBarcode',
-  });
+  expect(eventBinding.target.operation).toEqual(BARCODE_OPERATION);
   expect(eventBinding.input).toMatchObject({
     barcode: {
       kind: 'source',

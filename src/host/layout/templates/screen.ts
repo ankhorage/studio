@@ -63,10 +63,9 @@ export default function ${safeName}Screen() {
   const global = useGlobalSearchParams<SearchParams>();
   const routeParams = useMemo(() => ({ ...global, ...local }), [global, local]);
 
-  const currentScreenId =
-    resolveScreenIdParam(local.screenId) ??
-    resolveScreenIdParam(global.screenId) ??
-    '${escapeStringLiteral(screenId)}';
+  const localScreenId = resolveScreenIdParam(local.screenId);
+  const globalScreenId = resolveScreenIdParam(global.screenId);
+  const currentScreenId = localScreenId ?? globalScreenId ?? '${escapeStringLiteral(screenId)}';
   const screenConfig = Object.values(runtimeManifest.screens).find(
     (candidate) => candidate.id === currentScreenId,
   );

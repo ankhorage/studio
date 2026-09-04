@@ -10,6 +10,8 @@ import type { FastifyInstance } from 'fastify';
 
 const studioWorkspaceWebSmokeTest =
   process.env.ANKH_STUDIO_WORKSPACE_WEB_SMOKE === '1' ? test : test.skip;
+const FIXTURE_CATEGORY = 'developer_tools' as const;
+const FIXTURE_CATEGORY_LABEL = 'Developer Tools';
 const FIXTURE_PROJECT_ID = 'release-monitor';
 const FIXTURE_PROJECT_NAME = 'Release Monitor';
 const HTTP_TIMEOUT_MS = 120_000;
@@ -42,8 +44,7 @@ studioWorkspaceWebSmokeTest(
     const appUrl = `http://127.0.0.1:${expoPort}`;
 
     try {
-      const { category, template } = await getSmokeTemplateSelection();
-      await createSmokeWorkspaceFixture(workspaceRoot, category.id);
+      await createSmokeWorkspaceFixture(workspaceRoot, FIXTURE_CATEGORY);
 
       const { startStudioHostServerWithSecrets } = await import('./http/serverWithSecrets');
       studioHost = await startStudioHostServerWithSecrets({
@@ -69,17 +70,11 @@ studioWorkspaceWebSmokeTest(
           'New project',
         ]);
 
-        await expectRouteText(page, `${appUrl}/create`, ['New Project', category.label]);
+        await expectRouteText(page, `${appUrl}/create`, ['New Project', FIXTURE_CATEGORY_LABEL]);
 
-        await expectRouteText(page, `${appUrl}/create/${category.id}`, [
-          category.label,
-          template.name,
-        ]);
-
-        await expectRouteText(page, `${appUrl}/create/${category.id}/${template.templateId}`, [
-          'Create Project',
-          template.name,
-          'Project name',
+        await expectRouteText(page, `${appUrl}/create/${FIXTURE_CATEGORY}`, [
+          FIXTURE_CATEGORY_LABEL,
+          'No templates in this category',
         ]);
 
         await expectRouteText(page, `${appUrl}/projects/${FIXTURE_PROJECT_ID}`, [
@@ -96,7 +91,7 @@ studioWorkspaceWebSmokeTest(
           'not-a-category',
         ]);
 
-        await expectRouteText(page, `${appUrl}/create/${category.id}/not-a-template`, [
+        await expectRouteText(page, `${appUrl}/create/${FIXTURE_CATEGORY}/not-a-template`, [
           'Template not found',
         ]);
       } finally {
@@ -111,16 +106,6 @@ studioWorkspaceWebSmokeTest(
   },
   TEST_TIMEOUT_MS,
 );
-
-async function getSmokeTemplateSelection() {
-  const { getTemplateCatalog } = await import('./templateRegistry');
-  const category = getTemplateCatalog().categories.find((entry) => entry.templates.length > 0);
-  const [template] = category?.templates ?? [];
-  if (category === undefined || template === undefined) {
-    throw new Error('Published templates package returned no templates.');
-  }
-  return { category, template };
-}
 
 async function createSmokeWorkspaceFixture(
   workspaceRoot: string,

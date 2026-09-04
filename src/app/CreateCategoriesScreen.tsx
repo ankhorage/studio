@@ -47,7 +47,7 @@ export function CreateCategoriesScreen() {
           query={searchQuery}
           results={results}
           onClear={() => setSearchQuery('')}
-          onPress={(template) => router.push(`/create/${template.category}/${template.templateId}`)}
+          onPress={(template) => router.push(`/create/${template.category}/${template.slug}`)}
         />
       ) : (
         <View style={styles.categoryGrid}>

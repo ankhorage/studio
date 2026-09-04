@@ -14,10 +14,11 @@ import {
 } from '../../projectIdentity';
 import { GeneratedAppFileGenerator } from '../layout/layoutGenerator';
 import { applySystemTemplates } from '../manifestSystem';
+import { ProjectBundledMediaService } from '../media/projectBundledMediaService';
 import type { LayoutMutation } from '../modules/layout';
-import type { ProjectTemplateSelection } from '../templateRegistry';
-import { resolveZoraExtensionsForTemplateSelection } from '../zoraExtensions';
+import { resolveZoraExtensionsForManifest } from '../zoraExtensions';
 import { GeneratedRouteFileOwnership } from './GeneratedRouteFileOwnership';
+import type { ProjectCreationSource } from './projectCreationSource';
 import { readProjectStudioInclusion, writeProjectStudioInclusion } from './projectGenerationState';
 import { getAppsRoot, getProjectPath } from './projectPaths';
 import { ProjectStore, type ProjectSummary } from './projectStore';
@@ -35,6 +36,7 @@ export class ProjectManager {
   private readonly scaffolder: ProjectScaffolder;
   private readonly appFiles: GeneratedAppFileGenerator;
   private readonly generatedRouteFiles: GeneratedRouteFileOwnership;
+  private readonly bundledMedia: ProjectBundledMediaService;
   private readonly dependencies: ProjectManagerDependencies;
   private readonly appsRoot: string;
 
@@ -47,6 +49,7 @@ export class ProjectManager {
     this.scaffolder = new ProjectScaffolder(rootPath);
     this.appFiles = new GeneratedAppFileGenerator();
     this.generatedRouteFiles = new GeneratedRouteFileOwnership();
+    this.bundledMedia = new ProjectBundledMediaService(rootPath);
     this.dependencies = {
       runProjectInfrastructureLifecycle,
       ...dependencies,
@@ -82,7 +85,7 @@ export class ProjectManager {
 
   async createProject(
     name: string,
-    templateSelection: ProjectTemplateSelection,
+    source: ProjectCreationSource,
     onProjectCreated?: (projectId: string) => Promise<void>,
     options: { includeStudio?: boolean } = {},
   ) {
@@ -102,10 +105,11 @@ export class ProjectManager {
       });
     }
 
-    const templateData = this.scaffolder.getTemplate(templateSelection);
+    const templateData = source.manifest;
+    const { category } = templateData.metadata;
     const deploy = templateData.deploy ?? createDefaultAppDeployManifest(slug);
     const scaffoldManifest = applySystemTemplates({ ...templateData, deploy });
-    const zoraExtensions = resolveZoraExtensionsForTemplateSelection(templateSelection);
+    const zoraExtensions = resolveZoraExtensionsForManifest(scaffoldManifest);
     await this.scaffolder.scaffoldProject(projectPath, name, slug, {
       includeStudio,
       authProvider: resolveGeneratedAuthProvider(scaffoldManifest),
@@ -117,12 +121,17 @@ export class ProjectManager {
     });
     await writeProjectStudioInclusion(projectPath, includeStudio);
 
+    const materializedTemplate = await this.materializeCreationAssets(
+      slug,
+      templateData,
+      source.assets,
+    );
     const manifest = await this.scaffolder.finalizeManifest(
       projectPath,
-      templateData,
+      materializedTemplate,
       name,
       slug,
-      templateSelection.category,
+      category,
       deploy,
     );
     const runtimePlan = resolveExpoRuntimePlan(manifest);
@@ -249,6 +258,28 @@ export class ProjectManager {
     const projectPath = getProjectPath(this.rootPath, projectId);
     const manifest = await this.getProjectManifest(projectId);
     return inspectProjectInfrastructure({ projectId, projectPath, manifest });
+  }
+
+  /*** Materialize source images through Studio's existing bundled-media path before manifest persistence. */
+  private async materializeCreationAssets(
+    projectId: string,
+    manifest: AppManifest,
+    assets: ProjectCreationSource['assets'],
+  ): Promise<AppManifest> {
+    if (assets.length === 0) return manifest;
+
+    const mediaAssets = { ...(manifest.media?.assets ?? {}) };
+    for (const asset of assets) {
+      mediaAssets[asset.assetId] = await this.bundledMedia.bundle(projectId, asset);
+    }
+
+    return {
+      ...manifest,
+      media: {
+        ...(manifest.media ?? {}),
+        assets: mediaAssets,
+      },
+    };
   }
 
   private async destroyProjectInfrastructure(

@@ -24,9 +24,8 @@ function isCatalogCategory(value: unknown): value is TemplateCatalogCategory {
       (template) =>
         isRecord(template) &&
         typeof template.id === 'string' &&
-        typeof template.templateId === 'string' &&
-        typeof template.name === 'string' &&
-        typeof template.description === 'string',
+        typeof template.slug === 'string' &&
+        typeof template.name === 'string',
     )
   );
 }

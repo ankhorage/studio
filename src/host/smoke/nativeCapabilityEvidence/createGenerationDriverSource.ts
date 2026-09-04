@@ -12,7 +12,7 @@ export function createGenerationDriverSource(workspaceRoot: string): string {
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { PERMISSIONS } from '@ankhorage/permissions';
 import { ProjectManager } from '@ankhorage/studio/host';
-import { createOAuthFixtureManifest } from '@ankhorage/templates';
+import { composeCategoryAppManifest, resolveOAuthFixture } from '@ankhorage/templates';
 
 const workspaceRoot = ${JSON.stringify(workspaceRoot)};
 await mkdir(\`\${workspaceRoot}/apps\`, { recursive: true });
@@ -31,23 +31,61 @@ await Bun.write(
 );
 await Bun.write(\`\${workspaceRoot}/bunfig.toml\`, '[install]\\nlinker = "hoisted"\\n');
 
-const manager = new ProjectManager(workspaceRoot);
-const created = await manager.createProject(
-  'Expo 57 Native Capability Evidence',
-  { category: 'developer_tools', templateId: 'default' },
-  undefined,
-  { includeStudio: false },
-);
-const baseManifest = createOAuthFixtureManifest({
+const oauth = resolveOAuthFixture('google').oauth;
+const composed = composeCategoryAppManifest({
   category: 'developer_tools',
-  fixture: 'google',
-  overrides: {
-    metadata: {
-      name: 'Expo 57 Native Capability Evidence',
-      slug: '${NATIVE_EVIDENCE_APP_ID}',
+  name: 'Expo 57 Native Capability Evidence',
+  slug: '${NATIVE_EVIDENCE_APP_ID}',
+  navigator: {
+    type: 'stack',
+    initialRouteName: 'index',
+    routes: [{ name: 'index', screenId: 'native-evidence' }],
+  },
+  screens: {
+    'native-evidence': {
+      id: 'native-evidence',
+      name: 'Native evidence',
+      requires: {
+        capabilities: [{ capability: 'barcodeScanner' }],
+        permissions: PERMISSIONS.map((permission) => ({ permission })),
+      },
+      root: {
+        id: 'native-evidence-screen',
+        type: 'Screen',
+        props: { testID: 'native-evidence-screen' },
+        children: [
+          {
+            id: 'native-evidence-scanner',
+            type: 'BarcodeScannerView',
+            props: {
+              description: 'Generated Expo capability native evidence',
+              permissionStatus: 'unknown',
+              testID: 'native-evidence-scanner',
+              title: 'Scan a barcode',
+            },
+          },
+        ],
+      },
     },
   },
 });
+const baseManifest = {
+  ...composed.manifest,
+  infra: {
+    ...composed.manifest.infra,
+    auth: {
+      ...composed.manifest.infra.auth,
+      oauth,
+    },
+  },
+};
+const manager = new ProjectManager(workspaceRoot);
+const created = await manager.createProject(
+  'Expo 57 Native Capability Evidence',
+  { manifest: baseManifest, assets: [] },
+  undefined,
+  { includeStudio: false },
+);
 await manager.saveProjectManifest({
   projectId: created.id,
   mutations: [],
@@ -66,38 +104,6 @@ await manager.saveProjectManifest({
           scheme: '${NATIVE_EVIDENCE_IOS_SCHEME}',
         },
         web: { enabled: true },
-      },
-    },
-    navigator: {
-      type: 'stack',
-      initialRouteName: 'index',
-      routes: [{ name: 'index', screenId: 'native-evidence' }],
-    },
-    screens: {
-      'native-evidence': {
-        id: 'native-evidence',
-        name: 'Native evidence',
-        requires: {
-          capabilities: [{ capability: 'barcodeScanner' }],
-          permissions: PERMISSIONS.map((permission) => ({ permission })),
-        },
-        root: {
-          id: 'native-evidence-screen',
-          type: 'Screen',
-          props: { testID: 'native-evidence-screen' },
-          children: [
-            {
-              id: 'native-evidence-scanner',
-              type: 'BarcodeScannerView',
-              props: {
-                description: 'Generated Expo capability native evidence',
-                permissionStatus: 'unknown',
-                testID: 'native-evidence-scanner',
-                title: 'Scan a barcode',
-              },
-            },
-          ],
-        },
       },
     },
   },
