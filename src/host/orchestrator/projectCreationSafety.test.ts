@@ -5,7 +5,7 @@ import path from 'node:path';
 import { expect, test } from 'bun:test';
 
 import { ProjectCreationValidationError } from '../../projectIdentity';
-import { getTemplateCatalog } from '../templateRegistry';
+import { createSmokeProjectSource } from '../smoke/createSmokeProjectSource';
 import { ProjectManager } from './projectManager';
 
 test('project creation rejects duplicate and reserved IDs before mutation', async () => {
@@ -16,21 +16,12 @@ test('project creation rejects duplicate and reserved IDs before mutation', asyn
     JSON.stringify({ name: '@ankhorage/studio', private: true, workspaces: ['apps/*'] }),
   );
 
-  const template = getTemplateCatalog().categories[0]?.templates[0];
-  const category = getTemplateCatalog().categories[0]?.id;
-  if (!template || !category) {
-    throw new Error('Template catalog returned no templates.');
-  }
-
   const manager = new ProjectManager(workspaceRoot);
-  const created = await manager.createProject('Foo', {
-    category,
-    templateId: template.templateId,
-  });
+  const created = await manager.createProject('Foo', createSmokeProjectSource());
   expect(created.id).toBe('foo');
 
   const duplicateError = await catchError(
-    manager.createProject('Foo', { category, templateId: template.templateId }),
+    manager.createProject('Foo', createSmokeProjectSource()),
   );
   expect(duplicateError).toBeInstanceOf(ProjectCreationValidationError);
 
@@ -38,10 +29,10 @@ test('project creation rejects duplicate and reserved IDs before mutation', asyn
     await readFile(path.join(workspaceRoot, 'apps', 'foo', 'ankh.config.json'), 'utf8'),
   ) as { metadata: { name: string; category: string } };
   expect(manifest.metadata.name).toBe('Foo');
-  expect(manifest.metadata.category).toBe(category);
+  expect(manifest.metadata.category).toBe('developer_tools');
 
   const reservedError = await catchError(
-    manager.createProject('Studio', { category, templateId: template.templateId }),
+    manager.createProject('Studio', createSmokeProjectSource()),
   );
   expect(reservedError).toBeInstanceOf(ProjectCreationValidationError);
   expect(await stat(path.join(workspaceRoot, 'apps', 'studio'))).toBeDefined();
