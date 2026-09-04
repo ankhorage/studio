@@ -16,6 +16,7 @@ interface AuthScreenTemplateArgs {
   oauthProviders?: readonly GeneratedOAuthProviderPlan[];
 }
 
+/*** Generate the thin route component that binds a generated auth screen to its initial mode and title. */
 export function getAuthScreenTsx(args: AuthScreenTemplateArgs) {
   const safeName = toSafeComponentName(args.screenName);
   return `import { GeneratedAuthScreen } from '@/screens/auth-screen';
@@ -26,6 +27,7 @@ export default function ${safeName}Screen() {
 `;
 }
 
+/*** Generate the shared auth screen runtime component used by sign-in and sign-up route wrappers. */
 export function getAuthScreenRuntimeTsx(
   args: Omit<AuthScreenTemplateArgs, 'initialMode' | 'screenName' | 'title'>,
 ) {
@@ -161,6 +163,7 @@ const styles = StyleSheet.create({
 `;
 }
 
+/*** Render the optional OAuth provider controls injected into the generated shared auth screen. */
 function getOAuthViewSource(): string {
   return `
       <OAuthProviderList
