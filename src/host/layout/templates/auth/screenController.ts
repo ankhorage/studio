@@ -2,6 +2,10 @@ import type { GeneratedOAuthProviderPlan } from '../../auth/resolveAuthLayoutPla
 import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
 import { routeNameToGroupedHref } from '../utils/routes';
 
+/***
+ * Serialize a string list as a compact single-quoted JavaScript array literal.
+ * @utility @ankhorage/utility/string
+ */
 function serializeStringArrayLiteral(values: readonly string[]): string {
   return `[${values.map((value) => `'${escapeStringLiteral(value)}'`).join(', ')}]`;
 }
@@ -17,6 +21,7 @@ interface AuthScreenControllerTemplateArgs {
   oauthProviders?: readonly GeneratedOAuthProviderPlan[];
 }
 
+/*** Generate the stateful auth-screen controller module for a generated app. */
 export function getAuthScreenControllerTs(args: AuthScreenControllerTemplateArgs) {
   const oauthEnabled = (args.oauthProviders?.length ?? 0) > 0;
   const oauthImport = oauthEnabled
@@ -225,6 +230,7 @@ function getErrorMessage(caught: unknown): string {
 `;
 }
 
+/*** Render the OAuth controller fragment injected into the generated auth-screen controller when OAuth is enabled. */
 function getOAuthControllerSource(): string {
   return `
   async function handleOAuthProviderPress(providerId: string) {
