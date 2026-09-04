@@ -11,7 +11,7 @@ const EXPO_FONT_RANGE = EXPO_PLATFORM.packages.font.version;
 const REQUIRED_ROUTE_EVIDENCE = [
   '/create',
   '/create/[category]',
-  '/create/[category]/[templateId]',
+  '/create/[category]/[slug]',
   '/projects/[projectId]',
 ] as const;
 
