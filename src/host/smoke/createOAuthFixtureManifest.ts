@@ -25,6 +25,8 @@ export function createOAuthFixtureManifest(args: {
       ...base.infra,
       auth: {
         ...base.infra.auth,
+        scope: base.infra.auth?.scope ?? 'global',
+        provider: base.infra.auth?.provider ?? 'supabase',
         oauth: fixture.oauth,
       },
     },
