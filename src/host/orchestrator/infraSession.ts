@@ -25,6 +25,10 @@ const defaultDependencies: InfraSessionDependencies = {
   runProjectInfrastructureLifecycle,
 };
 
+/***
+ * Ensure one generated project's Infrastructure runtime session is available and remember it for shutdown cleanup.
+ * @todo Move Studio Infrastructure-session orchestration out of generic `host/orchestrator` into the owning projects/infra host edge.
+ */
 export async function ensureProjectInfrastructureRuntimeSession(
   args: PortForwardSession,
   dependencies: InfraSessionDependencies = defaultDependencies,
@@ -38,6 +42,10 @@ export async function ensureProjectInfrastructureRuntimeSession(
   portForwardSessions.set(sessionKey(args), args);
 }
 
+/***
+ * Resolve and ensure the web port-forward session required to launch a generated project.
+ * @todo Keep this Studio launch-session use case with project/infra application ownership rather than generic orchestration.
+ */
 export async function ensureProjectWebLaunchSession(
   args: PortForwardSession,
   dependencies: InfraSessionDependencies = defaultDependencies,
@@ -58,6 +66,10 @@ export async function ensureProjectWebLaunchSession(
   return { started, url: endpoint.url };
 }
 
+/***
+ * Stop every remembered project Infrastructure port-forward while tolerating stale external sessions during shutdown.
+ * @todo Move global Studio Infrastructure shutdown coordination to the project/infra application edge.
+ */
 export async function stopAllProjectInfraPortForwards(): Promise<void> {
   const sessions = [...portForwardSessions.values()];
   portForwardSessions.clear();
@@ -77,10 +89,15 @@ export async function stopAllProjectInfraPortForwards(): Promise<void> {
   );
 }
 
+/***
+ * Build a stable compound key from project path, project id, and target.
+ * @utility @ankhorage/utility/string
+ */
 function sessionKey(args: PortForwardSession): string {
   return `${args.projectPath}:${args.projectId}:${args.target}`;
 }
 
+/*** Preserve Infrastructure script diagnostics while appending the Studio-specific regeneration guidance. */
 function withInfrastructureUpGuidance(error: unknown, projectId: string): Error {
   const guidance = `Run Infrastructure Up to regenerate project '${projectId}' infrastructure before retrying.`;
   if (error instanceof InfraScriptExecutionError) {
