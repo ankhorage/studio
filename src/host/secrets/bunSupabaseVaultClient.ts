@@ -9,11 +9,9 @@ export interface BunSupabaseVaultClient extends SupabaseVaultSqlClient {
   close(): Promise<void>;
 }
 
-/**
- * Trusted server-only PostgreSQL transport for the Supabase Vault adapter.
- *
- * The connection URL must come from Studio host configuration or the generated local Supabase
- * environment. It must never be read from an application manifest or exposed to browser code.
+/***
+ * @todo Keep this concrete Bun/PostgreSQL transport at the Secrets host edge; it is an adapter for the Supabase Vault owner, not a generic Utility capability.
+ * Create the trusted server-only PostgreSQL client used by the Supabase Vault adapter.
  */
 export function createBunSupabaseVaultClient(databaseUrl: string): BunSupabaseVaultClient {
   const normalizedUrl = databaseUrl.trim();
@@ -58,6 +56,10 @@ export function createBunSupabaseVaultClient(databaseUrl: string): BunSupabaseVa
   };
 }
 
+/***
+ * @utility @ankhorage/utility/value
+ * Assert that an unknown database result is an array before exposing it to a typed row boundary.
+ */
 function assertRows<TRow extends Record<string, unknown>>(value: unknown): readonly TRow[] {
   if (!Array.isArray(value)) {
     throw new Error('Supabase Vault query returned an unexpected result shape.');
