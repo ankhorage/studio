@@ -8,24 +8,34 @@ import { getProjectPath } from './projectPaths';
 
 export type ProjectSummary = StudioProjectSummary;
 
+/*** Signal that an existing Studio project is missing its canonical manifest file. */
 export class ProjectManifestNotFoundError extends Error {
+  /*** Construct the missing-manifest error for one project id. */
   constructor(projectId: string) {
     super(`Project '${projectId}' is missing canonical ankh.config.json.`);
     this.name = 'ProjectManifestNotFoundError';
   }
 }
 
+/***
+ * Persist and query Studio project manifests and summaries beneath one workspace root.
+ * @todo Move project persistence from generic `host/orchestrator` into the `projects/` domain host adapter.
+ */
 export class ProjectStore {
+  /*** Construct the project store for one Studio workspace root. */
   constructor(private readonly rootPath: string) {}
 
+  /*** Resolve one validated Studio project path. */
   private getProjectPath(projectId: string) {
     return getProjectPath(this.rootPath, projectId);
   }
 
+  /*** Resolve the canonical manifest path for one Studio project. */
   private getManifestPath(projectId: string) {
     return path.join(this.getProjectPath(projectId), 'ankh.config.json');
   }
 
+  /*** List valid generated Studio projects by reading canonical manifests from workspace app directories. */
   async listProjects(): Promise<ProjectSummary[]> {
     const appsRoot = path.join(this.rootPath, 'apps');
     try {
@@ -43,12 +53,14 @@ export class ProjectStore {
     }
   }
 
+  /*** Delete one generated Studio project directory recursively. */
   async deleteProject(projectId: string) {
     const projectPath = this.getProjectPath(projectId);
     await fs.rm(projectPath, { recursive: true, force: true });
     return true;
   }
 
+  /*** Read and validate the canonical manifest for an existing Studio project. */
   async readManifest(projectId: string): Promise<AppManifest> {
     const projectPath = this.getProjectPath(projectId);
     const manifestPath = this.getManifestPath(projectId);
@@ -64,6 +76,7 @@ export class ProjectStore {
     throw new ProjectManifestNotFoundError(projectId);
   }
 
+  /*** Normalize and atomically persist the canonical manifest for an existing Studio project. */
   async writeManifest(projectId: string, manifest: AppManifest): Promise<AppManifest> {
     const projectPath = this.getProjectPath(projectId);
     if (!(await exists(projectPath))) {
@@ -75,6 +88,7 @@ export class ProjectStore {
     return updated;
   }
 
+  /*** Read, immutably update, and persist one project's canonical manifest. */
   async mutateManifest(
     projectId: string,
     updater: (manifest: AppManifest) => AppManifest,
@@ -83,6 +97,7 @@ export class ProjectStore {
     return this.writeManifest(projectId, updater(current));
   }
 
+  /*** Read a project summary only when the package and canonical manifest are both present and valid. */
   private async readProjectSummary(id: string): Promise<ProjectSummary | null> {
     try {
       const projectPath = getProjectPath(this.rootPath, id);
@@ -111,6 +126,7 @@ export class ProjectStore {
   }
 }
 
+/*** Apply project-owned slug and updated timestamp metadata before manifest persistence. */
 function normalizeManifestForProject(projectId: string, manifest: AppManifest): AppManifest {
   return {
     ...manifest,
@@ -122,6 +138,7 @@ function normalizeManifestForProject(projectId: string, manifest: AppManifest): 
   };
 }
 
+/*** Validate a manifest read for project-summary projection and preserve canonical AppManifest typing. */
 function parseProjectSummaryManifest(value: unknown): AppManifest {
   if (!isAppManifest(value)) {
     throw new Error('Project manifest does not contain canonical Studio metadata.');
@@ -130,6 +147,7 @@ function parseProjectSummaryManifest(value: unknown): AppManifest {
   return value;
 }
 
+/*** Validate a canonical project manifest read from persistent storage. */
 function parseReadableAppManifest(value: unknown): AppManifest {
   if (!isAppManifest(value)) {
     throw new Error('Project manifest is not a canonical AppManifest.');
@@ -138,6 +156,7 @@ function parseReadableAppManifest(value: unknown): AppManifest {
   return value;
 }
 
+/*** Resolve the manifest's active theme and reject dangling active-theme ids. */
 function resolveActiveTheme(manifest: AppManifest): ThemeConfig {
   const activeTheme = manifest.themes.find((theme) => theme.id === manifest.activeThemeId);
   if (!activeTheme) {
@@ -147,6 +166,10 @@ function resolveActiveTheme(manifest: AppManifest): ThemeConfig {
   return activeTheme;
 }
 
+/***
+ * Return whether a filesystem path exists.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function exists(filePath: string): Promise<boolean> {
   try {
     await fs.access(filePath);
@@ -156,6 +179,10 @@ async function exists(filePath: string): Promise<boolean> {
   }
 }
 
+/***
+ * Atomically serialize a value as pretty JSON through a same-directory temporary file.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function writeJsonAtomic(filePath: string, value: unknown): Promise<void> {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   const temporaryPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
