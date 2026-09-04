@@ -12,6 +12,10 @@ import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 const CAMERA_DEPENDENCIES = ['@ankhorage/permissions', 'expo-camera'] as const;
 const COMMAND_TIMEOUT_MS = 300_000;
 
+/***
+ * Create a generated standalone Expo 57 app, perform a cold frozen install and full static/native validation, and assert that acceptance leaves its lockfile unchanged.
+ * @todo Move this generated-app acceptance orchestration from production src/host/smoke to test/smoke.
+ */
 export async function runExpo57GeneratedAppAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-acceptance-'));
 
@@ -29,6 +33,7 @@ export async function runExpo57GeneratedAppAcceptanceAsync(): Promise<void> {
   }
 }
 
+/*** Assert that the camera-free generated app neither declares nor transitively installs camera capability dependencies. */
 async function assertCameraFreeInstalledGraphAsync(projectRoot: string): Promise<void> {
   const packageJson = JSON.parse(
     await readFile(path.join(projectRoot, 'package.json'), 'utf8'),
@@ -54,6 +59,7 @@ async function assertCameraFreeInstalledGraphAsync(projectRoot: string): Promise
   }
 }
 
+/*** Create the minimal standalone acceptance project and replace its initial manifest screen with a camera-free generated screen. */
 async function createGeneratedProjectAsync(workspaceRoot: string): Promise<string> {
   await mkdir(path.join(workspaceRoot, 'apps'), { recursive: true });
   await writeFile(
@@ -108,6 +114,7 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
   return created.path;
 }
 
+/*** Create the generated app-owned cross-platform Bun lockfile and return its content fingerprint. */
 async function createProjectLockfileAsync(projectRoot: string): Promise<string> {
   await runAcceptanceCommandAsync({
     args: ['install', '--lockfile-only', '--os=*', '--cpu=*'],
@@ -119,10 +126,15 @@ async function createProjectLockfileAsync(projectRoot: string): Promise<string> 
   return hash(await readFile(path.join(projectRoot, 'bun.lock')));
 }
 
+/***
+ * Compute a SHA-256 hex digest for byte content.
+ * @utility @ankhorage/utility/crypto
+ */
 function hash(value: Uint8Array): string {
   return createHash('sha256').update(value).digest('hex');
 }
 
+/*** Resolve the manifest screen routed by the navigator's current initial route for acceptance mutation. */
 function resolveAcceptanceScreen(manifest: AppManifest): ScreenSpec {
   const { navigator, screens } = manifest;
   const initialRoute = navigator.routes.find((route) => route.name === navigator.initialRouteName);
@@ -131,6 +143,7 @@ function resolveAcceptanceScreen(manifest: AppManifest): ScreenSpec {
   return screen;
 }
 
+/*** Run cold installation, graph checks, lint, Expo compatibility/Doctor, typecheck, platform exports and clean native prebuild for the generated app. */
 async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
   await runAcceptanceCommandAsync({
     args: ['install', '--frozen-lockfile'],
