@@ -5,6 +5,10 @@ const BUN_INSTALL_HARD_TIMEOUT_MS = 10 * 60_000;
 const BUN_INSTALL_KILL_GRACE_MS = 5_000;
 type TimerHandle = ReturnType<typeof setTimeout>;
 
+/***
+ * Run `bun install` for a workspace with bounded spawn/runtime timeouts and escalating termination safeguards.
+ * @utility @ankhorage/utility/node/process
+ */
 export async function runWorkspaceInstall(rootPath: string): Promise<void> {
   const command = 'bun install';
 
@@ -22,12 +26,14 @@ export async function runWorkspaceInstall(rootPath: string): Promise<void> {
     let killTimeout: TimerHandle | undefined;
     let settled = false;
 
+    /*** Clear all lifecycle timeout handles associated with the spawned process. */
     const clearTimers = () => {
       clearTimeout(spawnTimeout);
       if (hardTimeout) clearTimeout(hardTimeout);
       if (killTimeout) clearTimeout(killTimeout);
     };
 
+    /*** Reject the process lifecycle exactly once while clearing pending timeout work. */
     const rejectOnce = (error: Error) => {
       if (settled) return;
       settled = true;
@@ -35,6 +41,10 @@ export async function runWorkspaceInstall(rootPath: string): Promise<void> {
       reject(error);
     };
 
+    /***
+     * Terminate an overdue process with SIGTERM/SIGKILL escalation and reject the lifecycle once.
+     * @utility @ankhorage/utility/node/process
+     */
     const rejectWithTimeout = (reason: string) => {
       if (settled) return;
 
