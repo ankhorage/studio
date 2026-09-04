@@ -1,3 +1,6 @@
+/*** Create the generated React controller source that drives native capability evidence scenarios.
+ * @todo Move this acceptance-fixture source generator from src/host/smoke to test/smoke/nativeCapabilityEvidence.
+ */
 export function createNativeEvidenceControllerSource(): string {
   return `import { isPermission, type Permission } from '@ankhorage/permissions';
 import { useLocalSearchParams, useRouter } from 'expo-router';
