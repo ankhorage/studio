@@ -281,16 +281,13 @@ export function useProjects() {
     [],
   );
 
-  const launchProject = useCallback(
-    async (projectId: string): Promise<LaunchProjectResponse> => {
-      return await requestProjectAction(
-        `/projects/${encodeURIComponent(projectId)}/launch`,
-        { method: 'POST' },
-        parseLaunchProjectResponse,
-      );
-    },
-    [],
-  );
+  const launchProject = useCallback(async (projectId: string): Promise<LaunchProjectResponse> => {
+    return await requestProjectAction(
+      `/projects/${encodeURIComponent(projectId)}/launch`,
+      { method: 'POST' },
+      parseLaunchProjectResponse,
+    );
+  }, []);
 
   return {
     projects,
