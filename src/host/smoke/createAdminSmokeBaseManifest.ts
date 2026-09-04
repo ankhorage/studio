@@ -3,7 +3,10 @@ import { composeCategoryAppManifest } from '@ankhorage/templates';
 
 const ID_PREFIX = 'food_drink-nutrition-catalog-scan';
 
-/*** Create the local Runtime/editor fixture used by the generated-admin smoke test. */
+/***
+ * Create the local Runtime/editor fixture used by the generated-admin smoke test.
+ * @todo Move this smoke fixture builder from production src/host/smoke to test/smoke with the acceptance harness.
+ */
 export function createAdminSmokeBaseManifest(): AppManifest {
   return composeCategoryAppManifest({
     category: 'food_drink',
