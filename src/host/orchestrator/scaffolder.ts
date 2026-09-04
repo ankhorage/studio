@@ -51,9 +51,15 @@ type PartialPackageScripts = Partial<PackageScripts>;
 const REQUIRED_MANAGED_SCRIPT_NAMES = ['lint', 'lint:fix', 'format', 'format:check'] as const;
 const TARGET_SCRIPT_NAMES = ['android', 'ios', 'web'] as const;
 
+/***
+ * Materialize and synchronize the generated standalone-app scaffold owned by Studio project generation.
+ * @todo Move scaffold/template generation from generic `host/orchestrator` into `projects/` + `templates/` ownership.
+ */
 export class ProjectScaffolder {
+  /*** Construct the project scaffolder for one Studio workspace root. */
   constructor(private readonly rootPath: string) {}
 
+  /*** Create the initial generated-app directories, package/config files, runtime files, and default assets. */
   async scaffoldProject(
     projectPath: string,
     appName: string,
@@ -97,6 +103,7 @@ export class ProjectScaffolder {
     await this.copyDefaultAssets(projectPath);
   }
 
+  /*** Reconcile managed scaffold files while preserving app-owned package metadata and third-party dependencies. */
   async syncProjectScaffold(
     projectPath: string,
     appName: string,
@@ -151,10 +158,12 @@ export class ProjectScaffolder {
     });
   }
 
+  /*** Resolve the selected canonical project template manifest. */
   getTemplate(selection: ProjectTemplateSelection): AppManifest {
     return getProjectTemplate(selection);
   }
 
+  /*** Stamp project identity/category/deploy metadata, apply system templates, and persist the final canonical manifest. */
   async finalizeManifest(
     projectPath: string,
     templateData: AppManifest,
@@ -187,6 +196,7 @@ export class ProjectScaffolder {
     return manifest;
   }
 
+  /*** Generate and write the managed Expo app configuration. */
   private async writeAppConfig(
     dir: string,
     name: string,
@@ -202,6 +212,7 @@ export class ProjectScaffolder {
     );
   }
 
+  /*** Create or remove the managed Android run helper according to enabled deploy targets. */
   private async syncAndroidRunScript(
     dir: string,
     targets: AppDeployTargets,
@@ -218,6 +229,7 @@ export class ProjectScaffolder {
     await fs.writeFile(scriptPath, getAndroidRunTs({ projectId, includeStudio }), 'utf8');
   }
 
+  /*** Generate and write the managed package.json including selected ZORA extension dependencies. */
   private async writePackageJson(
     dir: string,
     slug: string,
@@ -246,6 +258,7 @@ export class ProjectScaffolder {
     );
   }
 
+  /*** Read an existing generated-app package.json when present. */
   private async readPackageJson(packageJsonPath: string): Promise<ExtendedPackageJsonShape | null> {
     if (!(await exists(packageJsonPath))) {
       return null;
@@ -259,10 +272,12 @@ export class ProjectScaffolder {
     };
   }
 
+  /*** Write the managed generated-app TypeScript configuration. */
   private async writeTsConfig(dir: string) {
     await fs.writeFile(path.join(dir, 'tsconfig.json'), getTsConfigJson(), 'utf8');
   }
 
+  /*** Write the managed shared/local ESLint configuration files for a generated app. */
   private async writeEslintConfig(dir: string) {
     await Promise.all([
       fs.writeFile(path.join(dir, 'eslint.config.mjs'), getEslintConfigMjs(), 'utf8'),
@@ -270,6 +285,7 @@ export class ProjectScaffolder {
     ]);
   }
 
+  /*** Write the managed shared/local Prettier configuration files for a generated app. */
   private async writePrettierConfig(dir: string) {
     await Promise.all([
       fs.writeFile(path.join(dir, '.prettierrc.js'), getPrettierRcJs(), 'utf8'),
@@ -277,6 +293,7 @@ export class ProjectScaffolder {
     ]);
   }
 
+  /*** Ensure generated Expo state is ignored without disturbing app-owned .gitignore content. */
   private async ensureExpoGitIgnore(dir: string) {
     const gitIgnorePath = path.join(dir, '.gitignore');
     const existing = (await exists(gitIgnorePath)) ? await fs.readFile(gitIgnorePath, 'utf8') : '';
@@ -286,6 +303,7 @@ export class ProjectScaffolder {
     await fs.writeFile(gitIgnorePath, `${existing}${separator}.expo/\n`, 'utf8');
   }
 
+  /*** Copy canonical default app/splash assets or materialize deterministic fallback PNGs when templates are absent. */
   private async copyDefaultAssets(targetProjectPath: string) {
     const templateAssetsPath = path.join(this.rootPath, 'packages/cli/templates/assets');
     const targetAssetsPath = path.join(targetProjectPath, 'assets');
@@ -332,6 +350,10 @@ export class ProjectScaffolder {
   }
 }
 
+/***
+ * Return whether a filesystem path exists.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function exists(filePath: string) {
   try {
     await fs.access(filePath);
@@ -341,6 +363,7 @@ async function exists(filePath: string) {
   }
 }
 
+/*** Merge ZORA extension package dependencies into a generated package.json dependency record. */
 function withZoraExtensionDependencies(
   packageJson: PackageJsonShape,
   zoraExtensions: readonly ZoraExtensionDefinition[],
@@ -354,6 +377,7 @@ function withZoraExtensionDependencies(
   };
 }
 
+/*** Reconcile managed generated-app dependencies/scripts while preserving app-owned package metadata and unmanaged dependencies. */
 function mergePackageJson(
   existing: ExtendedPackageJsonShape | null,
   template: ExtendedPackageJsonShape,
@@ -414,6 +438,7 @@ function mergePackageJson(
   };
 }
 
+/*** Merge app-owned scripts with required managed lint/format commands and target-dependent launch scripts. */
 function mergeScripts(
   existingScripts: PartialPackageScripts,
   templateScripts: PackageScripts,
@@ -440,6 +465,10 @@ function mergeScripts(
   return mergedScripts;
 }
 
+/***
+ * Read a named script from a partial script record.
+ * @utility @ankhorage/utility/object
+ */
 function findScript(scripts: PartialPackageScripts, scriptName: string): string | undefined {
   return Object.entries(scripts).find(([candidate]) => candidate === scriptName)?.[1];
 }
