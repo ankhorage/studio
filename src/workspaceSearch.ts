@@ -40,6 +40,7 @@ export function filterAndSortProjects(
         scoreText(normalize(project.name), query),
         scoreText(normalize(project.id), query),
         scoreText(normalize(project.category), query),
+        scoreText(normalize(project.version), query),
       );
 
       return { project, score };
