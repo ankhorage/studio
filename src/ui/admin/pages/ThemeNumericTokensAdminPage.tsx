@@ -15,6 +15,7 @@ const COPY: Record<NumericThemeTokenFamily, { title: string; description: string
   },
 };
 
+/*** Render one numeric theme-token family with inherited/resolved values, authored overrides, reset actions, and token creation. */
 export function ThemeNumericTokensAdminPage(props: { readonly family: NumericThemeTokenFamily }) {
   const { theme: resolvedTheme } = useZoraTheme();
   const { selection, updateTheme } = useActiveThemeAdmin();
@@ -25,6 +26,7 @@ export function ThemeNumericTokensAdminPage(props: { readonly family: NumericThe
   if (!selection) return <ThemeUnavailable />;
   const resolved = resolvedTheme[props.family];
   const authored = selection.theme.tokens?.[props.family];
+  /*** Set or remove one authored numeric token override and persist the updated theme token tree. */
   const updateValue = (key: string, value: number | undefined) => {
     const tokens = updateNumericThemeToken({
       tokens: selection.theme.tokens,
@@ -35,6 +37,7 @@ export function ThemeNumericTokensAdminPage(props: { readonly family: NumericThe
     updateTheme({ tokens });
   };
 
+  /*** Validate and insert a newly named non-negative numeric theme token. */
   const addToken = () => {
     const key = newKey.trim();
     const value = parseNonNegativeNumber(newValue);
@@ -74,6 +77,7 @@ export function ThemeNumericTokensAdminPage(props: { readonly family: NumericThe
   );
 }
 
+/*** Render one resolved numeric token with editable value and reset control for authored overrides. */
 function NumericTokenRow(props: {
   readonly tokenKey: string;
   readonly value: number;
@@ -103,6 +107,10 @@ function NumericTokenRow(props: {
   );
 }
 
+/***
+ * Render a bordered theme-token action.
+ * @todo Reuse canonical ZORA Button instead of a local generic action primitive.
+ */
 function Action(props: { readonly label: string; readonly onPress: () => void }) {
   const { theme } = useZoraTheme();
   return (
@@ -118,6 +126,7 @@ function Action(props: { readonly label: string; readonly onPress: () => void })
   );
 }
 
+/*** Render the numeric-token page fallback when no active theme is available. */
 function ThemeUnavailable() {
   return (
     <AdminScroll>
@@ -129,6 +138,10 @@ function ThemeUnavailable() {
   );
 }
 
+/***
+ * Parse a non-empty string as a finite non-negative number and return null for invalid input.
+ * @utility @ankhorage/utility/number
+ */
 function parseNonNegativeNumber(value: string): number | null {
   if (value.trim() === '') return null;
   const parsed = Number(value);
