@@ -14,6 +14,9 @@ export interface Auth5NativeOAuthSmokeFixture {
   readonly workspaceRoot: string;
 }
 
+/*** Create a generated project fixture for Auth 5 native OAuth smoke acceptance.
+ * @todo Move this smoke-fixture orchestrator from src/host/smoke to test/smoke.
+ */
 export async function createAuth5NativeOAuthSmokeFixture(
   workspaceRoot: string,
 ): Promise<Auth5NativeOAuthSmokeFixture> {
