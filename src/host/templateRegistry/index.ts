@@ -21,10 +21,12 @@ type IndexedProjectTemplate = TemplateCatalogTemplate & {
   category: AppCategory;
 };
 
+/*** Build the Studio-local compound identifier used for one published template selection. */
 function createProjectTemplateId(selection: ProjectTemplateSelection): string {
   return `${selection.category}/${selection.templateId}`;
 }
 
+/*** Project a published category preset into the seed expected by the starter-template package. */
 function createSeed(category: AppCategory): TemplateSeed {
   const preset = Object.entries(CATEGORY_PRESETS).find(([id]) => id === category)?.[1];
   if (!preset) throw new Error(`Unknown app category '${category}'.`);
@@ -41,6 +43,7 @@ function createSeed(category: AppCategory): TemplateSeed {
   };
 }
 
+/*** Materialize one canonical AppManifest from the selected published starter template. */
 function buildProjectTemplate(selection: ProjectTemplateSelection): AppManifest {
   return createStarterTemplate(createSeed(selection.category), {
     templateId: selection.templateId,
@@ -50,6 +53,10 @@ function buildProjectTemplate(selection: ProjectTemplateSelection): AppManifest 
 const PROJECT_TEMPLATE_INDEX = createTemplateIndex();
 const PROJECT_TEMPLATE_CATALOG = createTemplateCatalog();
 
+/***
+ * Resolve one Studio project template from the published template registry.
+ * @todo Move this template-selection application policy from the host edge to the templates domain.
+ */
 export function getProjectTemplate(selection: ProjectTemplateSelection): AppManifest {
   const summary = PROJECT_TEMPLATE_INDEX.find(
     (template) =>
@@ -65,6 +72,10 @@ export function getProjectTemplate(selection: ProjectTemplateSelection): AppMani
   return buildProjectTemplate(selection);
 }
 
+/***
+ * Return a defensive copy of the Studio template catalog exposed to authoring clients.
+ * @todo Move catalog projection from the host edge to the templates domain.
+ */
 export function getTemplateCatalog(): TemplateCatalog {
   return {
     categories: PROJECT_TEMPLATE_CATALOG.categories.map((category) => ({
@@ -75,6 +86,7 @@ export function getTemplateCatalog(): TemplateCatalog {
   };
 }
 
+/*** Index every published starter-template summary by Studio category and template identifier. */
 function createTemplateIndex(): readonly IndexedProjectTemplate[] {
   return listStarterTemplateSummaries().map((summary) => {
     const selection = {
@@ -92,6 +104,7 @@ function createTemplateIndex(): readonly IndexedProjectTemplate[] {
   });
 }
 
+/*** Build the category-oriented catalog used by Studio template-selection screens. */
 function createTemplateCatalog(): TemplateCatalog {
   const categories = Object.entries(CATEGORY_PRESETS).map(([categoryId, preset]) => {
     const category = categoryId as AppCategory;
