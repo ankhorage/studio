@@ -3,6 +3,9 @@ import { createOAuthFixtureManifest } from '@ankhorage/templates';
 
 const READER_FORMATS = ['epub', 'pdf'] as const;
 
+/*** Create the Expo 57 reader-parity manifest used by EPUB/PDF acceptance fixtures.
+ * @todo Move this fixture manifest builder from src/host/smoke to test/smoke.
+ */
 export function createExpo57ReaderFixtureManifest(): AppManifest {
   const manifest = createOAuthFixtureManifest({
     category: 'books_reading',
@@ -99,6 +102,7 @@ export function createExpo57ReaderFixtureManifest(): AppManifest {
   };
 }
 
+/*** Create one reader-surface screen for a specific fixture format. */
 function createReaderScreen(format: (typeof READER_FORMATS)[number]): ScreenSpec {
   return {
     id: format,
@@ -123,6 +127,7 @@ function createReaderScreen(format: (typeof READER_FORMATS)[number]): ScreenSpec
   };
 }
 
+/*** Create an event-source binding value for a fixture event payload path. */
 function eventValue(path: string) {
   return { kind: 'source' as const, source: { kind: 'event' as const, path } };
 }
