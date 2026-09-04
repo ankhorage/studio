@@ -50,7 +50,7 @@ test('materializes project creation assets and persists their bundled media sour
   const createdManifest = await manager.getProjectManifest(created.id);
   const hero = createdManifest.media?.assets.hero;
   expect(hero).toBeDefined();
-  if (!hero || hero.source.kind !== 'bundled') throw new Error('Expected bundled hero media.');
+  if (hero?.source.kind !== 'bundled') throw new Error('Expected bundled hero media.');
   expect(hero.source.path).toBe('assets/authoring/hero/Hero.png');
   expect(hero.metadata).toMatchObject({ sizeBytes: 3, width: 1200, height: 800 });
   expect(new Uint8Array(await readFile(path.join(created.path, hero.source.path)))).toEqual(
