@@ -1,5 +1,5 @@
 sequenceDiagram
-  participant participant_isStyleRecord as isStyleRecord
   participant participant_updateNodeInTree as updateNodeInTree
-  participant_updateNodeInTree->>participant_isStyleRecord: isStyleRecord()
-  participant_isStyleRecord-->>participant_updateNodeInTree: return
+  participant participant_updateTreeNode as updateTreeNode
+  participant_updateNodeInTree->>participant_updateTreeNode: updateTreeNode()
+  participant_updateTreeNode-->>participant_updateNodeInTree: return

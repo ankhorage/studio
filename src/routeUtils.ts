@@ -1,4 +1,4 @@
-import type { AppManifest, NavigatorSpec } from '@ankhorage/contracts';
+import type { AppManifest, NavigatorNode } from '@ankhorage/contracts';
 import { readOwnProperty } from '@ankhorage/utility/object';
 import {
   normalizePathnameSegments,
@@ -41,7 +41,7 @@ interface ScreenRouteMatch {
  * @todo Move Studio/contracts screen resolution under src/routes/ or the shared runtime owner; keep generic route matching in Utility.
  */
 export function resolveScreenIdForPathname(
-  navigator: NavigatorSpec,
+  navigator: NavigatorNode,
   pathname: string,
   screens?: AppManifest['screens'],
 ): string | null {

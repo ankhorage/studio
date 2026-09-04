@@ -1,10 +1,10 @@
-import type { NavigatorSpec } from '@ankhorage/contracts';
+import type { NavigatorNode } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
 
 import type { BuiltNavigatorJsx } from './navigation';
 import { getNestedLayoutTsx } from './nestedLayout';
 
-const NODE: NavigatorSpec = {
+const NODE: NavigatorNode = {
   type: 'tabs',
   routes: [{ name: 'index', screenId: 'index' }],
 };

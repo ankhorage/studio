@@ -38,18 +38,21 @@ graph TD
   module_src_app_CreateCategoriesScreen_tsx["src/app/CreateCategoriesScreen.tsx"]
   package__ankhorage_studio -.-> module_src_app_CreateCategoriesScreen_tsx
   module_src_app_CreateCategoriesScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_CreateCategoriesScreen_tsx --> module_src_app_workspace_workspaceRouter_ts
   module_src_app_CreateCategoriesScreen_tsx --> module_src_hooks_useTemplateCatalog_ts
   module_src_app_CreateCategoriesScreen_tsx --> module_src_workspaceSearch_ts
   module_src_app_CreateCategoryTemplatesScreen_tsx["src/app/CreateCategoryTemplatesScreen.tsx"]
   package__ankhorage_studio -.-> module_src_app_CreateCategoryTemplatesScreen_tsx
   module_src_app_CreateCategoryTemplatesScreen_tsx --> module_src_app_workspace_routeParams_ts
   module_src_app_CreateCategoryTemplatesScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_CreateCategoryTemplatesScreen_tsx --> module_src_app_workspace_workspaceRouter_ts
   module_src_app_CreateCategoryTemplatesScreen_tsx --> module_src_hooks_useTemplateCatalog_ts
   module_src_app_CreateProjectFromTemplateScreen_tsx["src/app/CreateProjectFromTemplateScreen.tsx"]
   package__ankhorage_studio -.-> module_src_app_CreateProjectFromTemplateScreen_tsx
   module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_app_workspace_createProjectFormState_ts
   module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_app_workspace_routeParams_ts
   module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_app_workspace_workspaceRouter_ts
   module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_hooks_useProjects_ts
   module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_hooks_useTemplateCatalog_ts
   module_src_app_index_ts["src/app/index.ts"]
@@ -57,18 +60,20 @@ graph TD
   module_src_app_ProjectDetailScreen_tsx["src/app/ProjectDetailScreen.tsx"]
   package__ankhorage_studio -.-> module_src_app_ProjectDetailScreen_tsx
   module_src_app_ProjectDetailScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_ProjectDetailScreen_tsx --> module_src_app_workspace_workspaceRouter_ts
   module_src_app_ProjectDetailScreen_tsx --> module_src_hooks_useProjects_ts
   module_src_app_ProjectDetailScreen_tsx --> module_src_workspacePlatform_ts
   module_src_app_ProjectsOverviewScreen_tsx["src/app/ProjectsOverviewScreen.tsx"]
   package__ankhorage_studio -.-> module_src_app_ProjectsOverviewScreen_tsx
   module_src_app_ProjectsOverviewScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_ProjectsOverviewScreen_tsx --> module_src_app_workspace_workspaceRouter_ts
   module_src_app_ProjectsOverviewScreen_tsx --> module_src_hooks_useProjects_ts
   module_src_app_ProjectsOverviewScreen_tsx --> module_src_projectWorkspaceContracts_ts
   module_src_app_ProjectsOverviewScreen_tsx --> module_src_workspaceSearch_ts
   module_src_app_StudioApp_tsx["src/app/StudioApp.tsx"]
   package__ankhorage_studio -.-> module_src_app_StudioApp_tsx
   module_src_app_StudioApp_tsx --> module_src_app_workspace_navigation_ts
-  module_src_app_StudioApp_tsx --> module_src_hooks_useWorkspaceActions_ts
+  module_src_app_StudioApp_tsx --> module_src_app_workspace_workspaceRouter_ts
   module_src_app_studioWorkspaceRoutes_test_ts["src/app/studioWorkspaceRoutes.test.ts"]
   package__ankhorage_studio -.-> module_src_app_studioWorkspaceRoutes_test_ts
   module_src_app_workspace_createProjectFormState_test_ts["src/app/workspace/createProjectFormState.test.ts"]
@@ -94,6 +99,9 @@ graph TD
   package__ankhorage_studio -.-> module_src_app_workspace_WorkspacePrimitives_tsx
   module_src_app_workspace_WorkspacePrimitives_tsx --> module_src_projectWorkspaceContracts_ts
   module_src_app_workspace_WorkspacePrimitives_tsx --> module_src_templateCatalogContracts_ts
+  module_src_app_workspace_workspaceRouter_ts["src/app/workspace/workspaceRouter.ts"]
+  package__ankhorage_studio -.-> module_src_app_workspace_workspaceRouter_ts
+  module_src_app_workspace_workspaceRouter_ts --> module_src_app_workspace_navigation_ts
   module_src_authSettings_test_ts["src/authSettings.test.ts"]
   package__ankhorage_studio -.-> module_src_authSettings_test_ts
   module_src_authSettings_test_ts --> module_src_authSettings_ts
@@ -111,7 +119,6 @@ graph TD
   module_src_bindingDiagnosticsModel_ts --> module_src_bindingAuthoringContracts_ts
   module_src_bindingDiagnosticsModel_ts --> module_src_bindingOperationModel_ts
   module_src_bindingDiagnosticsModel_ts --> module_src_bindingSchemaModel_ts
-  module_src_bindingDiagnosticsModel_ts --> module_src_utils_readOwnProperty_ts
   module_src_bindingManifestPersistence_test_ts["src/bindingManifestPersistence.test.ts"]
   package__ankhorage_studio -.-> module_src_bindingManifestPersistence_test_ts
   module_src_bindingManifestPersistence_test_ts --> module_src_core_studioManifestDraftModel_ts
@@ -125,9 +132,6 @@ graph TD
   module_src_bindingMutationAcceptance_test_ts --> module_src_bindingAuthoringModel_ts
   module_src_bindingMutationModel_ts["src/bindingMutationModel.ts"]
   package__ankhorage_studio -.-> module_src_bindingMutationModel_ts
-  module_src_bindingMutationModel_ts --> module_src_utils_deleteOwnProperty_ts
-  module_src_bindingMutationModel_ts --> module_src_utils_readOwnProperty_ts
-  module_src_bindingMutationModel_ts --> module_src_utils_setOwnProperty_ts
   module_src_bindingOperationModel_ts["src/bindingOperationModel.ts"]
   package__ankhorage_studio -.-> module_src_bindingOperationModel_ts
   module_src_bindingOperationModel_ts --> module_src_bindingAuthoringContracts_ts
@@ -135,7 +139,6 @@ graph TD
   module_src_bindingSchemaModel_ts["src/bindingSchemaModel.ts"]
   package__ankhorage_studio -.-> module_src_bindingSchemaModel_ts
   module_src_bindingSchemaModel_ts --> module_src_bindingAuthoringContracts_ts
-  module_src_bindingSchemaModel_ts --> module_src_utils_readOwnProperty_ts
   module_src_canExecuteProjectDeployRelease_test_ts["src/canExecuteProjectDeployRelease.test.ts"]
   package__ankhorage_studio -.-> module_src_canExecuteProjectDeployRelease_test_ts
   module_src_canExecuteProjectDeployRelease_test_ts --> module_src_canExecuteProjectDeployRelease_ts
@@ -155,7 +158,6 @@ graph TD
   package__ankhorage_studio -.-> module_src_canvasDragModel_ts
   module_src_canvasDragModel_ts --> module_src_canvasDropZones_ts
   module_src_canvasDragModel_ts --> module_src_index_ts
-  module_src_canvasDragModel_ts --> module_src_utils_readOwnProperty_ts
   module_src_canvasDropZones_test_ts["src/canvasDropZones.test.ts"]
   package__ankhorage_studio -.-> module_src_canvasDropZones_test_ts
   module_src_canvasDropZones_test_ts --> module_src_canvasDropZones_ts
@@ -167,7 +169,7 @@ graph TD
   package__ankhorage_studio -.-> module_src_cli_index_ts
   module_src_cli_index_ts --> module_src_host_createStudioHost_ts
   module_src_cli_index_ts --> module_src_host_http_server_ts
-  module_src_cli_index_ts --> module_src_host_templateRegistry_index_ts
+  module_src_cli_index_ts --> module_src_host_templates_index_ts
   module_src_cli_index_ts --> module_src_host_utils_workspaceRoot_ts
   module_src_contractGuards_test_ts["src/contractGuards.test.ts"]
   package__ankhorage_studio -.-> module_src_contractGuards_test_ts
@@ -182,7 +184,6 @@ graph TD
   module_src_core_constants_ts["src/core/constants.ts"]
   package__ankhorage_studio -.-> module_src_core_constants_ts
   module_src_core_constants_ts --> module_src_core_apiBase_ts
-  module_src_core_constants_ts --> module_src_utils_readOwnProperty_ts
   module_src_core_mediaAuthoringHostClient_ts["src/core/mediaAuthoringHostClient.ts"]
   package__ankhorage_studio -.-> module_src_core_mediaAuthoringHostClient_ts
   module_src_core_mediaAuthoringHostClient_ts --> module_src_core_constants_ts
@@ -261,9 +262,6 @@ graph TD
   module_src_hooks_useTemplateCatalog_ts --> module_src_contractGuards_ts
   module_src_hooks_useTemplateCatalog_ts --> module_src_core_constants_ts
   module_src_hooks_useTemplateCatalog_ts --> module_src_templateCatalogContracts_ts
-  module_src_hooks_useWorkspaceActions_ts["src/hooks/useWorkspaceActions.ts"]
-  package__ankhorage_studio -.-> module_src_hooks_useWorkspaceActions_ts
-  module_src_hooks_useWorkspaceActions_ts --> module_src_core_constants_ts
   module_src_host_apis_createProjectEndpointCredentialResolver_ts["src/host/apis/createProjectEndpointCredentialResolver.ts"]
   package__ankhorage_studio -.-> module_src_host_apis_createProjectEndpointCredentialResolver_ts
   module_src_host_apis_createProjectEndpointCredentialResolver_ts --> module_src_host_secrets_projectSecretService_ts
@@ -364,6 +362,7 @@ graph TD
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --> module_src_host_smoke_ChromeNavigationSession_ts
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
+  module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --> module_src_host_smoke_createStaticExportServer_ts
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --> module_src_host_smoke_reserveTcpPortAsync_ts
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --> module_src_host_smoke_resolveAppOwnedExpoCliAsync_ts
@@ -374,13 +373,13 @@ graph TD
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_semverRange_ts
-  module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_smoke_createAdminSmokeBaseManifest_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_moduleAdminContracts_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts["src/host/generatedAuthAdapterRuntime.smoke.test.ts"]
   package__ankhorage_studio -.-> module_src_host_generatedAuthAdapterRuntime_smoke_test_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
-  module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_generatedNativeOAuthLifecycle_e2e_test_ts["src/host/generatedNativeOAuthLifecycle.e2e.test.ts"]
   package__ankhorage_studio -.-> module_src_host_generatedNativeOAuthLifecycle_e2e_test_ts
   module_src_host_generatedNativeOAuthLifecycle_e2e_test_ts --> module_src_host_layout_templates_auth_oauth_ts
@@ -399,7 +398,7 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_hostLifecycle_smoke_test_ts
   module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
-  module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_hostOwnership_test_ts["src/host/hostOwnership.test.ts"]
   package__ankhorage_studio -.-> module_src_host_hostOwnership_test_ts
   module_src_host_hostOwnership_test_ts --> module_src_host_http_security_ts
@@ -469,7 +468,7 @@ graph TD
   module_src_host_http_server_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_studioInfraUp_ts
-  module_src_host_http_server_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_http_server_ts --> module_src_host_templates_index_ts
   module_src_host_http_server_ts --> module_src_host_utils_trimOutput_ts
   module_src_host_http_server_ts --> module_src_host_utils_workspaceRoot_ts
   module_src_host_http_server_ts --> module_src_projectIdentity_ts
@@ -684,7 +683,7 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_oauthFixtureConsumer_smoke_test_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
-  module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_smoke_createOAuthFixtureManifest_ts
   module_src_host_orchestrator_androidRunTemplate_test_ts["src/host/orchestrator/androidRunTemplate.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_androidRunTemplate_test_ts
   module_src_host_orchestrator_androidRunTemplate_test_ts --> module_src_host_orchestrator_scaffolder_ts
@@ -723,11 +722,17 @@ graph TD
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_orchestrator_resolveMutations_ts
   module_src_host_orchestrator_moduleManager_ts --> module_src_manifestState_ts
   module_src_host_orchestrator_moduleManager_ts --> module_src_moduleAdminContracts_ts
+  module_src_host_orchestrator_projectCreationAssets_test_ts["src/host/orchestrator/projectCreationAssets.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_projectCreationAssets_test_ts
+  module_src_host_orchestrator_projectCreationAssets_test_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectCreationAssets_test_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts["src/host/orchestrator/projectCreationSafety.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectCreationSafety_test_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_orchestrator_projectManager_ts
-  module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_projectIdentity_ts
+  module_src_host_orchestrator_projectCreationSource_ts["src/host/orchestrator/projectCreationSource.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_projectCreationSource_ts
   module_src_host_orchestrator_projectGenerationState_test_ts["src/host/orchestrator/projectGenerationState.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectGenerationState_test_ts
   module_src_host_orchestrator_projectGenerationState_test_ts --> module_src_host_orchestrator_projectGenerationState_ts
@@ -737,8 +742,10 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_layout_layoutGenerator_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_manifestSystem_index_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_media_projectBundledMediaService_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_modules_layout_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_GeneratedRouteFileOwnership_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectCreationSource_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectGenerationState_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectStore_ts
@@ -746,7 +753,6 @@ graph TD
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_scaffolder_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_workspaceRuntime_ts
-  module_src_host_orchestrator_projectManager_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_zoraExtensions_index_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_projectIdentity_ts
   module_src_host_orchestrator_projectManagerCurrentState_test_ts["src/host/orchestrator/projectManagerCurrentState.test.ts"]
@@ -778,7 +784,6 @@ graph TD
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_generatedAppFiles_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_projectTargets_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_templates_ts
-  module_src_host_orchestrator_scaffolder_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_zoraExtensions_index_ts
   module_src_host_orchestrator_semverRange_test_ts["src/host/orchestrator/semverRange.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_semverRange_test_ts
@@ -819,7 +824,6 @@ graph TD
   module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts --> module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
   module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts["src/host/secrets/resolveProjectSecretDatabaseUrl.ts"]
   package__ankhorage_studio -.-> module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
-  module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts --> module_src_utils_readOwnProperty_ts
   module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts["src/host/secrets/trustedOAuthInfraEnvironment.test.ts"]
   package__ankhorage_studio -.-> module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts
   module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
@@ -838,7 +842,6 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_ts
   module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_ts --> module_src_host_smoke_assertInstalledRegistryPackageAsync_ts
   module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_ts --> module_src_host_smoke_assertReactNativeOwnerGraphAsync_ts
-  module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_ts --> module_src_utils_readOwnProperty_ts
   module_src_host_smoke_assertExpo57StudioNativePrebuildAsync_ts["src/host/smoke/assertExpo57StudioNativePrebuildAsync.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_assertExpo57StudioNativePrebuildAsync_ts
   module_src_host_smoke_assertExpo57StudioStandaloneContractAsync_ts["src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"]
@@ -870,6 +873,8 @@ graph TD
   module_src_host_smoke_ChromeNavigationSession_ts["src/host/smoke/ChromeNavigationSession.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_ChromeNavigationSession_ts
   module_src_host_smoke_ChromeNavigationSession_ts --> module_src_host_smoke_getChromeNavigationIssue_ts
+  module_src_host_smoke_createAdminSmokeBaseManifest_ts["src/host/smoke/createAdminSmokeBaseManifest.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_createAdminSmokeBaseManifest_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts["src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
@@ -880,16 +885,18 @@ graph TD
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts
+  module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_smoke_prepareAuth5NativeOAuthSmokeWorkspace_ts
-  module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts["src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
+  module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts --> module_src_host_smoke_createOAuthFixtureManifest_ts
   module_src_host_smoke_createExpo57CapabilityFixtureManifest_test_ts["src/host/smoke/createExpo57CapabilityFixtureManifest.test.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createExpo57CapabilityFixtureManifest_test_ts
   module_src_host_smoke_createExpo57CapabilityFixtureManifest_test_ts --> module_src_host_smoke_createExpo57CapabilityFixtureManifest_ts
   module_src_host_smoke_createExpo57CapabilityFixtureManifest_ts["src/host/smoke/createExpo57CapabilityFixtureManifest.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createExpo57CapabilityFixtureManifest_ts
+  module_src_host_smoke_createExpo57CapabilityFixtureManifest_ts --> module_src_host_smoke_createOAuthFixtureManifest_ts
   module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts["src/host/smoke/createExpo57NavigationFixtureManifest.test.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts
   module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts --> module_src_host_layout_layoutGenerator_ts
@@ -901,10 +908,17 @@ graph TD
   module_src_host_smoke_createExpo57ReaderFixtureManifest_test_ts --> module_src_host_smoke_createExpo57ReaderFixtureManifest_ts
   module_src_host_smoke_createExpo57ReaderFixtureManifest_ts["src/host/smoke/createExpo57ReaderFixtureManifest.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createExpo57ReaderFixtureManifest_ts
+  module_src_host_smoke_createExpo57ReaderFixtureManifest_ts --> module_src_host_smoke_createOAuthFixtureManifest_ts
   module_src_host_smoke_createExpo57StudioHostFixtureAsync_ts["src/host/smoke/createExpo57StudioHostFixtureAsync.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createExpo57StudioHostFixtureAsync_ts
   module_src_host_smoke_createExpo57StudioStandaloneFixtureAsync_ts["src/host/smoke/createExpo57StudioStandaloneFixtureAsync.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createExpo57StudioStandaloneFixtureAsync_ts
+  module_src_host_smoke_createOAuthFixtureManifest_ts["src/host/smoke/createOAuthFixtureManifest.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_createOAuthFixtureManifest_ts
+  module_src_host_smoke_createOAuthFixtureManifest_ts --> module_src_host_smoke_createSmokeProjectSource_ts
+  module_src_host_smoke_createSmokeProjectSource_ts["src/host/smoke/createSmokeProjectSource.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_createSmokeProjectSource_ts
+  module_src_host_smoke_createSmokeProjectSource_ts --> module_src_host_orchestrator_projectCreationSource_ts
   module_src_host_smoke_createStaticExportServer_test_ts["src/host/smoke/createStaticExportServer.test.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createStaticExportServer_test_ts
   module_src_host_smoke_createStaticExportServer_test_ts --> module_src_host_smoke_createStaticExportServer_ts
@@ -997,6 +1011,7 @@ graph TD
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts["src/host/smoke/runExpo57GeneratedAppAcceptance.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_resolveAppOwnedExpoCliAsync_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts["src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"]
@@ -1008,6 +1023,7 @@ graph TD
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_ChromeNavigationSession_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_createExpo57CapabilityFixtureManifest_ts
+  module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_createStaticExportServer_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_generateExpoRouterTypesAsync_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_reserveTcpPortAsync_ts
@@ -1021,6 +1037,7 @@ graph TD
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_ChromeNavigationSession_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
+  module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_createStaticExportServer_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_generateExpoRouterTypesAsync_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_reserveTcpPortAsync_ts
@@ -1036,7 +1053,6 @@ graph TD
   module_src_host_smoke_runExpo57StudioStandaloneAcceptance_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
   module_src_host_smoke_runExpo57StudioStandaloneAcceptance_ts --> module_src_host_smoke_runExpo57StudioStandaloneDevelopmentWebSmokeAsync_ts
   module_src_host_smoke_runExpo57StudioStandaloneAcceptance_ts --> module_src_host_smoke_runExpo57StudioStandaloneStaticWebSmokeAsync_ts
-  module_src_host_smoke_runExpo57StudioStandaloneAcceptance_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_smoke_runExpo57StudioStandaloneDevelopmentWebSmokeAsync_ts["src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_runExpo57StudioStandaloneDevelopmentWebSmokeAsync_ts
   module_src_host_smoke_runExpo57StudioStandaloneDevelopmentWebSmokeAsync_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
@@ -1061,12 +1077,13 @@ graph TD
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_studioWorkspaceExpoWeb_smoke_test_ts["src/host/studioWorkspaceExpoWeb.smoke.test.ts"]
   package__ankhorage_studio -.-> module_src_host_studioWorkspaceExpoWeb_smoke_test_ts
-  module_src_host_templateRegistry_catalog_test_ts["src/host/templateRegistry/catalog.test.ts"]
-  package__ankhorage_studio -.-> module_src_host_templateRegistry_catalog_test_ts
-  module_src_host_templateRegistry_catalog_test_ts --> module_src_host_templateRegistry_index_ts
-  module_src_host_templateRegistry_index_ts["src/host/templateRegistry/index.ts"]
-  package__ankhorage_studio -.-> module_src_host_templateRegistry_index_ts
-  module_src_host_templateRegistry_index_ts --> module_src_templateCatalogContracts_ts
+  module_src_host_templates_catalog_test_ts["src/host/templates/catalog.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_templates_catalog_test_ts
+  module_src_host_templates_catalog_test_ts --> module_src_host_templates_index_ts
+  module_src_host_templates_index_ts["src/host/templates/index.ts"]
+  package__ankhorage_studio -.-> module_src_host_templates_index_ts
+  module_src_host_templates_index_ts --> module_src_host_orchestrator_projectCreationSource_ts
+  module_src_host_templates_index_ts --> module_src_templateCatalogContracts_ts
   module_src_host_utils_requirementsInference_ts["src/host/utils/requirementsInference.ts"]
   package__ankhorage_studio -.-> module_src_host_utils_requirementsInference_ts
   module_src_host_utils_trimOutput_ts["src/host/utils/trimOutput.ts"]
@@ -1075,7 +1092,6 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_utils_workspaceRoot_ts
   module_src_host_zoraExtensions_index_ts["src/host/zoraExtensions/index.ts"]
   package__ankhorage_studio -.-> module_src_host_zoraExtensions_index_ts
-  module_src_host_zoraExtensions_index_ts --> module_src_host_templateRegistry_index_ts
   module_src_index_test_ts["src/index.test.ts"]
   package__ankhorage_studio -.-> module_src_index_test_ts
   module_src_index_test_ts --> module_src_index_ts
@@ -1116,15 +1132,11 @@ graph TD
   module_src_manifestSync_ts["src/manifestSync.ts"]
   package__ankhorage_studio -.-> module_src_manifestSync_ts
   module_src_manifestSync_ts --> module_src_index_ts
-  module_src_manifestSync_ts --> module_src_utils_setOwnProperty_ts
   module_src_mediaAuthoringModel_test_ts["src/mediaAuthoringModel.test.ts"]
   package__ankhorage_studio -.-> module_src_mediaAuthoringModel_test_ts
   module_src_mediaAuthoringModel_test_ts --> module_src_mediaAuthoringModel_ts
   module_src_mediaAuthoringModel_ts["src/mediaAuthoringModel.ts"]
   package__ankhorage_studio -.-> module_src_mediaAuthoringModel_ts
-  module_src_mediaAuthoringModel_ts --> module_src_utils_deleteOwnProperty_ts
-  module_src_mediaAuthoringModel_ts --> module_src_utils_readOwnProperty_ts
-  module_src_mediaAuthoringModel_ts --> module_src_utils_setOwnProperty_ts
   module_src_mediaPickerAuthoring_ts["src/mediaPickerAuthoring.ts"]
   package__ankhorage_studio -.-> module_src_mediaPickerAuthoring_ts
   module_src_moduleAdmin_public_test_ts["src/moduleAdmin.public.test.ts"]
@@ -1225,7 +1237,6 @@ graph TD
   module_src_projectOAuthSetup_test_ts --> module_src_projectOAuthSetup_ts
   module_src_projectOAuthSetup_ts["src/projectOAuthSetup.ts"]
   package__ankhorage_studio -.-> module_src_projectOAuthSetup_ts
-  module_src_projectOAuthSetup_ts --> module_src_utils_readOwnProperty_ts
   module_src_projectSecretApi_test_ts["src/projectSecretApi.test.ts"]
   package__ankhorage_studio -.-> module_src_projectSecretApi_test_ts
   module_src_projectSecretApi_test_ts --> module_src_projectSecretApi_ts
@@ -1238,6 +1249,8 @@ graph TD
   module_src_projectSecretUsage_test_ts --> module_src_projectSecretUsage_ts
   module_src_projectSecretUsage_ts["src/projectSecretUsage.ts"]
   package__ankhorage_studio -.-> module_src_projectSecretUsage_ts
+  module_src_projectStructureSkill_test_ts["src/projectStructureSkill.test.ts"]
+  package__ankhorage_studio -.-> module_src_projectStructureSkill_test_ts
   module_src_projectWorkspaceContracts_ts["src/projectWorkspaceContracts.ts"]
   package__ankhorage_studio -.-> module_src_projectWorkspaceContracts_ts
   module_src_propertiesAuthoringModel_test_ts["src/propertiesAuthoringModel.test.ts"]
@@ -1258,7 +1271,6 @@ graph TD
   module_src_routeUtils_ts["src/routeUtils.ts"]
   package__ankhorage_studio -.-> module_src_routeUtils_ts
   module_src_routeUtils_ts --> module_src_manifestState_ts
-  module_src_routeUtils_ts --> module_src_utils_readOwnProperty_ts
   module_src_runtime_actionSuppression_ts["src/runtime/actionSuppression.ts"]
   package__ankhorage_studio -.-> module_src_runtime_actionSuppression_ts
   module_src_runtime_appExtensionRegistry_ts["src/runtime/appExtensionRegistry.ts"]
@@ -1284,7 +1296,6 @@ graph TD
   module_src_runtime_interactionPolicy_ts --> module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_interactionPolicyCore_ts["src/runtime/interactionPolicyCore.ts"]
   package__ankhorage_studio -.-> module_src_runtime_interactionPolicyCore_ts
-  module_src_runtime_interactionPolicyCore_ts --> module_src_utils_readOwnProperty_ts
   module_src_runtime_registry_tsx["src/runtime/registry.tsx"]
   package__ankhorage_studio -.-> module_src_runtime_registry_tsx
   module_src_runtime_runtimeActions_ts["src/runtime/runtimeActions.ts"]
@@ -1752,9 +1763,6 @@ graph TD
   module_src_ui_admin_pages_themeRecipeAuthoringModel_test_ts --> module_src_ui_admin_pages_themeRecipeAuthoringModel_ts
   module_src_ui_admin_pages_themeRecipeAuthoringModel_ts["src/ui/admin/pages/themeRecipeAuthoringModel.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_themeRecipeAuthoringModel_ts
-  module_src_ui_admin_pages_themeRecipeAuthoringModel_ts --> module_src_utils_deleteOwnProperty_ts
-  module_src_ui_admin_pages_themeRecipeAuthoringModel_ts --> module_src_utils_readOwnProperty_ts
-  module_src_ui_admin_pages_themeRecipeAuthoringModel_ts --> module_src_utils_setOwnProperty_ts
   module_src_ui_admin_pages_ThemeRecipeCatalog_tsx["src/ui/admin/pages/ThemeRecipeCatalog.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeRecipeCatalog_tsx
   module_src_ui_admin_pages_ThemeRecipeCatalog_tsx --> module_src_studioAdminRouteModel_ts
@@ -1773,9 +1781,6 @@ graph TD
   module_src_ui_admin_pages_themeTokenAuthoringModel_test_ts --> module_src_ui_admin_pages_themeTokenAuthoringModel_ts
   module_src_ui_admin_pages_themeTokenAuthoringModel_ts["src/ui/admin/pages/themeTokenAuthoringModel.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_themeTokenAuthoringModel_ts
-  module_src_ui_admin_pages_themeTokenAuthoringModel_ts --> module_src_utils_deleteOwnProperty_ts
-  module_src_ui_admin_pages_themeTokenAuthoringModel_ts --> module_src_utils_readOwnProperty_ts
-  module_src_ui_admin_pages_themeTokenAuthoringModel_ts --> module_src_utils_setOwnProperty_ts
   module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx["src/ui/admin/pages/ThemeTypographyAdminPage.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx
   module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
@@ -1857,12 +1862,6 @@ graph TD
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_StudioInsertDialog_tsx
   module_src_upsertExternalApi_ts["src/upsertExternalApi.ts"]
   package__ankhorage_studio -.-> module_src_upsertExternalApi_ts
-  module_src_utils_deleteOwnProperty_ts["src/utils/deleteOwnProperty.ts"]
-  package__ankhorage_studio -.-> module_src_utils_deleteOwnProperty_ts
-  module_src_utils_readOwnProperty_ts["src/utils/readOwnProperty.ts"]
-  package__ankhorage_studio -.-> module_src_utils_readOwnProperty_ts
-  module_src_utils_setOwnProperty_ts["src/utils/setOwnProperty.ts"]
-  package__ankhorage_studio -.-> module_src_utils_setOwnProperty_ts
   module_src_utils_treeUtils_ts["src/utils/treeUtils.ts"]
   package__ankhorage_studio -.-> module_src_utils_treeUtils_ts
   module_src_utils_treeUtils_ts --> module_src_index_ts

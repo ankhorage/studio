@@ -1,10 +1,10 @@
-import type { NavigatorSpec } from '@ankhorage/contracts';
+import type { NavigatorNode } from '@ankhorage/contracts';
 
 import type { BuiltNavigatorJsx } from './navigation';
 import { joinNonEmptyLines } from './utils/strings';
 
 /*** Generate a nested Expo Router layout around one already-built navigator source fragment. */
-export function getNestedLayoutTsx(args: { node: NavigatorSpec; navigator: BuiltNavigatorJsx }) {
+export function getNestedLayoutTsx(args: { node: NavigatorNode; navigator: BuiltNavigatorJsx }) {
   const { node, navigator } = args;
   const themeHook = navigator.usesTheme ? '  const { theme } = useZoraTheme();\n' : '';
   const moduleDeclarations = navigator.usesTheme ? '' : navigator.declarations;
@@ -60,7 +60,7 @@ ${themeHook}${scopedDeclarations ? `${scopedDeclarations}\n` : ''}  return (
 }
 
 /*** Resolve a valid generated initial route from a navigator, falling back to its first route or index. */
-function resolveGeneratedInitialRouteName(node: NavigatorSpec): string {
+function resolveGeneratedInitialRouteName(node: NavigatorNode): string {
   const routeNames = new Set(node.routes.map((route) => route.name));
 
   if (node.initialRouteName && routeNames.has(node.initialRouteName)) {

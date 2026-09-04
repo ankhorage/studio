@@ -1,4 +1,4 @@
-import type { AppManifest, NavigatorSpec } from '@ankhorage/contracts';
+import type { AppManifest, NavigatorNode } from '@ankhorage/contracts';
 import { describe, expect, test } from 'bun:test';
 
 import { buildNavigatorJsx } from './navigation';
@@ -10,9 +10,13 @@ const manifest = {
   },
 } as unknown as AppManifest;
 
-function createNavigator(type: NavigatorSpec['type']): NavigatorSpec {
+function createNavigator(type: NavigatorNode['type']): NavigatorNode {
   return {
-    type,
+    ...(type === 'tabs'
+      ? { type: 'tabs' as const }
+      : type === 'drawer'
+        ? { type: 'drawer' as const }
+        : { type: 'stack' as const }),
     initialRouteName: 'details',
     routes: [
       { name: 'home', screenId: 'home' },

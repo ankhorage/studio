@@ -1,19 +1,14 @@
 sequenceDiagram
   participant participant_collectObjectPaths as collectObjectPaths
   participant participant_collectStudioResponsePaths as collectStudioResponsePaths
-  participant participant_readOwnProperty as readOwnProperty
   participant participant_resolveSchemaFields as resolveSchemaFields
-  participant participant_resolveSchemaRef as resolveSchemaRef
+  participant participant_resolveSchemaReference as resolveSchemaReference
   participant participant_resolveSchemaType as resolveSchemaType
   participant participant_resolveSingleSchemaType as resolveSingleSchemaType
   participant participant_resolveStudioSchemaValueMeta as resolveStudioSchemaValueMeta
   participant_collectStudioResponsePaths->>participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
-  participant_resolveStudioSchemaValueMeta->>participant_resolveSchemaRef: resolveSchemaRef()
-  participant_resolveSchemaRef->>participant_readOwnProperty: readOwnProperty()
-  participant_readOwnProperty-->>participant_resolveSchemaRef: return
-  participant_resolveSchemaRef->>participant_resolveSchemaRef: resolveSchemaRef()
-  participant_resolveSchemaRef-->>participant_resolveSchemaRef: return
-  participant_resolveSchemaRef-->>participant_resolveStudioSchemaValueMeta: return
+  participant_resolveStudioSchemaValueMeta->>participant_resolveSchemaReference: resolveSchemaReference()
+  participant_resolveSchemaReference-->>participant_resolveStudioSchemaValueMeta: return
   participant_resolveStudioSchemaValueMeta->>participant_resolveSchemaType: resolveSchemaType()
   participant_resolveSchemaType->>participant_resolveSingleSchemaType: resolveSingleSchemaType()
   participant_resolveSingleSchemaType-->>participant_resolveSchemaType: return
@@ -24,8 +19,8 @@ sequenceDiagram
   participant_resolveStudioSchemaValueMeta-->>participant_resolveStudioSchemaValueMeta: return
   participant_resolveStudioSchemaValueMeta-->>participant_collectStudioResponsePaths: return
   participant_collectStudioResponsePaths->>participant_collectObjectPaths: collectObjectPaths()
-  participant_collectObjectPaths->>participant_resolveSchemaRef: resolveSchemaRef()
-  participant_resolveSchemaRef-->>participant_collectObjectPaths: return
+  participant_collectObjectPaths->>participant_resolveSchemaReference: resolveSchemaReference()
+  participant_resolveSchemaReference-->>participant_collectObjectPaths: return
   participant_collectObjectPaths->>participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
   participant_resolveStudioSchemaValueMeta-->>participant_collectObjectPaths: return
   participant_collectObjectPaths->>participant_collectObjectPaths: collectObjectPaths()

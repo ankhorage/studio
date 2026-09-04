@@ -212,7 +212,7 @@
   ],
   "dependencies": {
     "@ankhorage/color-theory": "^0.3.0",
-    "@ankhorage/contracts": "^8.2.0",
+    "@ankhorage/contracts": "^10.0.0",
     "@ankhorage/data-sources": "^2.0.0",
     "@ankhorage/deploy": "^0.12.0",
     "@ankhorage/expo-runtime": "^3.2.7",

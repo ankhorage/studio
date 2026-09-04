@@ -2,7 +2,7 @@ import {
   type AppManifest,
   type AuthOAuthProviderConfig,
   type IconSpec,
-  type NavigatorSpec,
+  type NavigatorNode,
   resolveAuthFlow,
   type RouteDefinition,
 } from '@ankhorage/contracts';
@@ -89,8 +89,8 @@ export interface EnabledAuthLayoutPlan extends BaseAuthLayoutPlan {
   postSignInRoute: string;
   postSignInRouteName: string;
   oauth?: AuthOAuthLayoutPlan;
-  appNavigator: NavigatorSpec;
-  authNavigator: NavigatorSpec;
+  appNavigator: NavigatorNode;
+  authNavigator: NavigatorNode;
 }
 
 export type AuthLayoutPlan = DisabledAuthLayoutPlan | EnabledAuthLayoutPlan;
@@ -333,7 +333,7 @@ function buildGeneratedFilePlans(
 
 /*** Collect route files that should render generated sign-in/sign-up screens. */
 function collectAuthScreenFiles(
-  navigator: NavigatorSpec,
+  navigator: NavigatorNode,
   currentRel: string,
   authRouteNames: {
     signInRouteName: string;
@@ -344,7 +344,7 @@ function collectAuthScreenFiles(
   const files: AuthGeneratedFilePlan[] = [];
 
   /*** Walk nested navigators while retaining the generated relative route path. */
-  const visit = (node: NavigatorSpec, parentRel: string) => {
+  const visit = (node: NavigatorNode, parentRel: string) => {
     for (const route of node.routes) {
       const nextRel = parentRel ? path.join(parentRel, route.name) : route.name;
 
@@ -382,7 +382,7 @@ function resolveRouteScreenFilePath(routeRel: string): string {
 /*** Reuse already-grouped app/auth navigators when the manifest explicitly contains both groups. */
 function getGroupedAuthNavigators(
   manifest: AppManifest,
-): { appNavigator: NavigatorSpec; authNavigator: NavigatorSpec } | null {
+): { appNavigator: NavigatorNode; authNavigator: NavigatorNode } | null {
   if (manifest.navigator.type !== 'stack') {
     return null;
   }
@@ -402,10 +402,10 @@ function getGroupedAuthNavigators(
 
 /*** Ensure the authenticated navigator contains the generated sign-out route when required. */
 function ensureAuthSignOutRoute(
-  navigator: NavigatorSpec,
+  navigator: NavigatorNode,
   includeAuthSignOutRoute: boolean,
   signOutRouteName: string,
-): NavigatorSpec {
+): NavigatorNode {
   if (
     !includeAuthSignOutRoute ||
     navigator.routes.some((route) => route.name === signOutRouteName)
@@ -427,12 +427,12 @@ function ensureAuthSignOutRoute(
 
 /*** Ensure both canonical global-auth entry routes exist in the auth navigator. */
 function ensureGlobalAuthEntryRoutes(
-  navigator: NavigatorSpec,
+  navigator: NavigatorNode,
   authRouteNames: {
     signInRouteName: string;
     signUpRouteName: string;
   },
-): NavigatorSpec {
+): NavigatorNode {
   const withSignIn = ensureGlobalAuthEntryRoute(navigator, {
     routeName: authRouteNames.signInRouteName,
     routeLabel: DEFAULT_SIGN_IN_LABEL,
@@ -448,13 +448,13 @@ function ensureGlobalAuthEntryRoutes(
 
 /*** Ensure one generated public auth entry route exists without replacing an authored route. */
 function ensureGlobalAuthEntryRoute(
-  navigator: NavigatorSpec,
+  navigator: NavigatorNode,
   args: {
     routeName: string;
     routeLabel: string;
     defaultScreenId: string;
   },
-): NavigatorSpec {
+): NavigatorNode {
   const { routeName, routeLabel, defaultScreenId } = args;
   if (hasRouteName(navigator.routes, routeName)) {
     return navigator;
@@ -481,7 +481,7 @@ function partitionRootNavigatorForAuth(
   publicRoutes: string[],
   includeAuthSignOutRoute: boolean,
   signOutRouteName: string,
-): { appNavigator: NavigatorSpec; authNavigator: NavigatorSpec } {
+): { appNavigator: NavigatorNode; authNavigator: NavigatorNode } {
   const publicRouteSet = new Set(publicRoutes);
   const appRoutes = manifest.navigator.routes.filter((route) => !publicRouteSet.has(route.name));
   const authRoutes = manifest.navigator.routes.filter((route) => publicRouteSet.has(route.name));
@@ -494,7 +494,7 @@ function partitionRootNavigatorForAuth(
     includeAuthSignOutRoute,
     signOutRouteName,
   );
-  const authNavigator: NavigatorSpec = {
+  const authNavigator: NavigatorNode = {
     type: 'stack',
     initialRouteName: signInRoute,
     routes: [...authRoutes],
@@ -508,7 +508,7 @@ function buildGeneratedAuthRoute(args: {
   routeName: string;
   routeLabel: string;
   screenId: string;
-  navigatorType: NavigatorSpec['type'];
+  navigatorType: NavigatorNode['type'];
 }): RouteDefinition {
   const { routeName, routeLabel, screenId, navigatorType } = args;
 

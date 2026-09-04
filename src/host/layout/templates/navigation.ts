@@ -1,4 +1,4 @@
-import type { AppManifest, NavigatorSpec, RouteDefinition } from '@ankhorage/contracts';
+import type { AppManifest, NavigatorNode, RouteDefinition } from '@ankhorage/contracts';
 
 import { escapeStringLiteral } from '../utils/escapeStringLiteral';
 
@@ -65,7 +65,7 @@ function getStackOptionsTsx(includeStudio: boolean): string {
  * Generate the declaration and JSX fragments required for the manifest navigator type and report which generated runtime imports it needs.
  */
 export function buildNavigatorJsx(args: {
-  navigator: NavigatorSpec;
+  navigator: NavigatorNode;
   manifest: AppManifest;
   includeStudio: boolean;
 }): BuiltNavigatorJsx {
@@ -86,7 +86,7 @@ export function buildNavigatorJsx(args: {
  * Generate tab-navigator declarations and JSX, preferring the ZORA route-map integration when every route belongs in primary navigation and falling back to Expo Router options otherwise.
  */
 function buildTabsNavigatorJsx(args: {
-  navigator: NavigatorSpec;
+  navigator: NavigatorNode;
   manifest: AppManifest;
   includeStudio: boolean;
 }): BuiltNavigatorJsx {
@@ -158,7 +158,7 @@ ${screens}
  * Generate drawer-navigator declarations and JSX, preferring the ZORA route-map integration when every route belongs in primary navigation and falling back to Expo Router options otherwise.
  */
 function buildDrawerNavigatorJsx(args: {
-  navigator: NavigatorSpec;
+  navigator: NavigatorNode;
   manifest: AppManifest;
   includeStudio: boolean;
 }): BuiltNavigatorJsx {
@@ -230,7 +230,7 @@ ${screens}
  * Generate stack-navigator declarations and JSX for the manifest routes.
  */
 function buildStackNavigatorJsx(args: {
-  navigator: NavigatorSpec;
+  navigator: NavigatorNode;
   manifest: AppManifest;
   includeStudio: boolean;
 }): BuiltNavigatorJsx {
