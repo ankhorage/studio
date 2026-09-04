@@ -5,6 +5,10 @@ import path from 'node:path';
 
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 
+/***
+ * Start an app-owned Expo process until Expo Router emits its generated route types, then tear the process down.
+ * @todo Move this Expo acceptance helper out of src/host into test/smoke and consume the canonical Node utilities marked below.
+ */
 export async function generateExpoRouterTypesAsync(options: {
   readonly env?: Readonly<Record<string, string>>;
   readonly label: string;
@@ -47,6 +51,10 @@ export async function generateExpoRouterTypesAsync(options: {
   }
 }
 
+/***
+ * Collect UTF-8 stdout and stderr chunks from a child process into a shared sink.
+ * @utility @ankhorage/utility/node/process
+ */
 function collectProcessOutput(
   processToCollect: ChildProcessWithoutNullStreams,
   output: string[],
@@ -55,6 +63,10 @@ function collectProcessOutput(
   processToCollect.stderr.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
 }
 
+/***
+ * Return whether a filesystem path exists while rethrowing non-missing filesystem failures.
+ * @utility @ankhorage/utility/node/fs
+ */
 async function pathExistsAsync(targetPath: string): Promise<boolean> {
   try {
     await stat(targetPath);
@@ -65,6 +77,10 @@ async function pathExistsAsync(targetPath: string): Promise<boolean> {
   }
 }
 
+/***
+ * Reserve an ephemeral loopback TCP port and release the reservation before returning it.
+ * @utility @ankhorage/utility/node/net
+ */
 async function reservePortAsync(): Promise<number> {
   return new Promise((resolve, reject) => {
     const server = createServer();
@@ -80,6 +96,10 @@ async function reservePortAsync(): Promise<number> {
   });
 }
 
+/***
+ * Stop a detached child-process group with a SIGTERM/SIGKILL fallback lifecycle.
+ * @utility @ankhorage/utility/node/process
+ */
 async function stopProcessAsync(processToStop: ChildProcessWithoutNullStreams): Promise<void> {
   if (!processToStop.pid || processToStop.exitCode !== null) return;
   try {
@@ -90,6 +110,10 @@ async function stopProcessAsync(processToStop: ChildProcessWithoutNullStreams): 
   await waitForProcessExitAsync(processToStop);
 }
 
+/***
+ * Wait for a child process to exit, escalating to SIGKILL after the bounded grace period.
+ * @utility @ankhorage/utility/node/process
+ */
 function waitForProcessExitAsync(processToWaitFor: ChildProcessWithoutNullStreams): Promise<void> {
   if (processToWaitFor.exitCode !== null) return Promise.resolve();
   return new Promise((resolve) => {
