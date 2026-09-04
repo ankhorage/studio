@@ -3,6 +3,9 @@ import { createOAuthFixtureManifest } from '@ankhorage/templates';
 
 import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig.js';
 
+/*** Create the deterministic Auth 5 native OAuth manifest used by smoke acceptance.
+ * @todo Move this smoke-fixture manifest builder from src/host/smoke to test/smoke.
+ */
 export function createAuth5NativeOAuthSmokeManifest(): AppManifest {
   return {
     ...createOAuthFixtureManifest({
