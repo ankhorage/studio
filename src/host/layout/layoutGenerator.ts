@@ -22,9 +22,9 @@ import {
   composeGeneratedImports,
   type GeneratedImportRequirement,
 } from './generatedImportComposer';
+import { createNavigatorGenerationBindings } from './navigator/createNavigatorGenerationBindings';
+import { generateNavigatorLayoutFiles } from './navigator/generateNavigatorLayoutFiles';
 import {
-  buildNavigatorJsx,
-  type BuiltNavigatorJsx,
   getAuthAdapterTs,
   getAuthFormTs,
   getAuthNavigationTs,
@@ -37,11 +37,11 @@ import {
   getAuthScreenTsx,
   getAuthSessionTs,
   getIndexRedirectRouteTsx,
-  getNestedLayoutTsx,
   getRootLayoutImportRequirements,
   getRootLayoutTsx,
   getScreenTsx,
   getSignOutScreenTsx,
+  type RootNavigationContent,
 } from './templates';
 import { routeNameToHref } from './templates/utils/routes';
 
@@ -172,13 +172,6 @@ export class GeneratedAppFileGenerator {
     };
 
     const walk = (node: NavigatorNode, currentRel: string) => {
-      if (currentRel !== '') {
-        files.push({
-          path: normalizeRel(path.join(appRootRel, currentRel, '_layout.tsx')),
-          content: this.getLayoutTemplate(node, manifest, includeStudio),
-        });
-      }
-
       if (!Array.isArray(node.routes)) return;
 
       node.routes.forEach((route: RouteDefinition) => {
@@ -233,6 +226,30 @@ export class GeneratedAppFileGenerator {
       });
     };
 
+    const navigatorRoots = authLayoutPlan.enabled
+      ? [
+          { navigator: authLayoutPlan.appNavigator, rootDirectory: 'src/app/(app)' },
+          ...(authLayoutPlan.authNavigator.routes.length > 0
+            ? [{ navigator: authLayoutPlan.authNavigator, rootDirectory: 'src/app/(auth)' }]
+            : []),
+        ]
+      : [{ navigator: manifest.navigator, rootDirectory: 'src/app/(app)' }];
+    const navigatorBindings = createNavigatorGenerationBindings({
+      authEnabled: authLayoutPlan.enabled,
+      manifest,
+      roots: navigatorRoots,
+    });
+    files.push(...navigatorBindings.files);
+    for (const root of navigatorRoots) {
+      files.push(
+        ...generateNavigatorLayoutFiles({
+          ...root,
+          bindings: navigatorBindings.bindings,
+          targets,
+        }),
+      );
+    }
+
     if (authLayoutPlan.enabled) {
       files.push({
         path: normalizeRel(path.join('src/app/_layout.tsx')),
@@ -267,10 +284,10 @@ export class GeneratedAppFileGenerator {
         });
       }
 
-      walk(prepareNavigatorForGeneratedRoutes(authLayoutPlan.appNavigator), '(app)');
+      walk(authLayoutPlan.appNavigator, '(app)');
 
       if (authLayoutPlan.authNavigator.routes.length > 0) {
-        walk(prepareNavigatorForGeneratedRoutes(authLayoutPlan.authNavigator), '(auth)');
+        walk(authLayoutPlan.authNavigator, '(auth)');
       }
     } else {
       files.push({
@@ -279,7 +296,7 @@ export class GeneratedAppFileGenerator {
       });
 
       addStudioAdminRouteFiles();
-      walk(prepareNavigatorForGeneratedRoutes(manifest.navigator), '');
+      walk(manifest.navigator, '(app)');
     }
 
     return files;
@@ -313,16 +330,12 @@ export class GeneratedAppFileGenerator {
         <Stack.Screen key="auth" name="(auth)" />
       </Stack.Protected>${oauthCallbackStackScreen}${studioAdminStackScreen}
     </Stack>`;
-    const innerNavigation: BuiltNavigatorJsx = {
+    const innerNavigation: RootNavigationContent = {
       declarations: `const rootStackScreenOptions = {
   headerShown: false,
 };`,
       jsx: innerNavigationJsx,
       usesTheme: false,
-      usesIcon: false,
-      usesZoraTabBar: false,
-      usesZoraDrawerContent: false,
-      usesZoraNavigationRouteMap: false,
     };
 
     const moduleImports = mutations.flatMap((m) => m.imports);
@@ -405,24 +418,16 @@ export class GeneratedAppFileGenerator {
     includeStudio: boolean,
     runtimePlan?: ExpoRuntimePlan,
   ): string {
-    const rootNavigator = prepareNavigatorForGeneratedRoutes(manifest.navigator);
-    const innerNavigation = buildNavigatorJsx({
-      navigator: rootNavigator,
-      manifest,
-      includeStudio,
-    });
-    const needsIcon = innerNavigation.usesIcon;
-    const needsZoraTabBar = innerNavigation.usesZoraTabBar;
-    const needsZoraDrawerContent = innerNavigation.usesZoraDrawerContent;
-    const needsZoraNavigationRouteMap = innerNavigation.usesZoraNavigationRouteMap;
+    const innerNavigation: RootNavigationContent = {
+      declarations: '',
+      jsx: '<Slot />',
+      usesTheme: false,
+    };
     const runtimeLayoutIntegration = resolveExpoRuntimeLayoutIntegration(runtimePlan);
 
     const coreImports = [
       `import type { AppManifest${includeStudio ? ', NavigatorNode, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
       ...runtimeLayoutIntegration.imports,
-      needsZoraNavigationRouteMap
-        ? `import type { ZoraNavigationRouteMap } from '@ankhorage/zora';`
-        : '',
       `import { ${[
         'AppShell',
         'ZoraProvider',
@@ -430,9 +435,6 @@ export class GeneratedAppFileGenerator {
         includeStudio ? 'ZORA_COMPONENT_META' : '',
         'useZoraTheme',
         includeStudio ? 'AppBar' : '',
-        needsZoraTabBar ? 'ZoraTabBar' : '',
-        needsZoraDrawerContent ? 'ZoraDrawerContent' : '',
-        needsIcon ? 'Icon' : '',
       ]
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
@@ -445,15 +447,7 @@ export class GeneratedAppFileGenerator {
             } satisfies GeneratedImportRequirement,
           ]
         : []),
-      needsZoraTabBar ? `import type { BottomTabBarProps } from 'expo-router/js-tabs';` : '',
-      needsZoraDrawerContent
-        ? `import type { DrawerContentComponentProps } from 'expo-router/drawer';`
-        : '',
-      rootNavigator.type === 'tabs'
-        ? `import { ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'useRouter'} } from 'expo-router';\nimport { Tabs } from 'expo-router/js-tabs';`
-        : rootNavigator.type === 'drawer'
-          ? `import { ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'useRouter'} } from 'expo-router';\nimport { Drawer } from 'expo-router/drawer';`
-          : `import { Stack${includeStudio ? ', useGlobalSearchParams, usePathname' : ', useRouter'} } from 'expo-router';`,
+      `import { Slot${includeStudio ? ', useGlobalSearchParams, usePathname' : ', useRouter'} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import React, { ${includeStudio ? 'useEffect, ' : ''}useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
@@ -487,6 +481,7 @@ export class GeneratedAppFileGenerator {
       allHooks,
       innerNavigation,
       includeStudio,
+      initialRouteNameOverride: '(app)',
       runtimeActionHookName: includeStudio ? undefined : 'useGeneratedRuntimeAction',
       runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(
         getGeneratedRuntimeRegistryDeclarations(includeStudio),
@@ -574,14 +569,6 @@ export class GeneratedAppFileGenerator {
         throw new Error(`Unsupported generated auth file kind: ${filePlan.kind}`);
     }
   }
-
-  /***
-   * Generate one nested navigator layout module for a manifest navigator node.
-   */
-  private getLayoutTemplate(node: NavigatorNode, manifest: AppManifest, includeStudio: boolean) {
-    const navigator = buildNavigatorJsx({ navigator: node, manifest, includeStudio });
-    return getNestedLayoutTsx({ node, navigator });
-  }
 }
 
 /***
@@ -664,83 +651,4 @@ export default function AnkhAdminRoute() {
  */
 function normalizeRel(p: string) {
   return p.replace(/\\/g, '/');
-}
-
-/***
- * Normalize a manifest navigator recursively for generated Expo Router routes and lift hidden tab routes behind a stack wrapper when required.
- */
-function prepareNavigatorForGeneratedRoutes(navigator: NavigatorNode): NavigatorNode {
-  const normalizedRoutes = navigator.routes.map((route) => prepareRouteForGeneratedRoutes(route));
-  const normalizedInitialRouteName = resolveValidGeneratedInitialRouteName(
-    navigator.initialRouteName
-      ? normalizeGeneratedRouteName(navigator.initialRouteName)
-      : undefined,
-    normalizedRoutes,
-  );
-  const normalizedNavigator: NavigatorNode = {
-    ...navigator,
-    ...(normalizedInitialRouteName ? { initialRouteName: normalizedInitialRouteName } : {}),
-    routes: normalizedRoutes,
-  };
-
-  if (normalizedNavigator.type !== 'tabs') return normalizedNavigator;
-
-  const visibleRoutes = normalizedNavigator.routes.filter(
-    (route) => route.showInPrimaryNavigation !== false,
-  );
-  const hiddenRoutes = normalizedNavigator.routes.filter(
-    (route) => route.showInPrimaryNavigation === false,
-  );
-  if (hiddenRoutes.length === 0) return normalizedNavigator;
-
-  return {
-    type: 'stack',
-    initialRouteName: '(tabs)',
-    routes: [
-      {
-        name: '(tabs)',
-        navigator: {
-          ...normalizedNavigator,
-          initialRouteName: resolveValidGeneratedInitialRouteName(
-            normalizedNavigator.initialRouteName,
-            visibleRoutes,
-          ),
-          routes: visibleRoutes,
-        },
-      },
-      ...hiddenRoutes,
-    ],
-  };
-}
-
-/***
- * Normalize one route name and recursively prepare its nested navigator for generated Expo Router output.
- */
-function prepareRouteForGeneratedRoutes(route: RouteDefinition): RouteDefinition {
-  return {
-    ...route,
-    name: normalizeGeneratedRouteName(route.name),
-    ...(route.navigator ? { navigator: prepareNavigatorForGeneratedRoutes(route.navigator) } : {}),
-  };
-}
-
-/***
- * Normalize an Expo Router route name by trimming whitespace and surrounding slashes, falling back to the index route when empty.
- * @utility @ankhorage/utility/route
- */
-function normalizeGeneratedRouteName(routeName: string): string {
-  const normalized = routeName.trim().replace(/^\/+/, '').replace(/\/+$/, '');
-  return normalized.length > 0 ? normalized : 'index';
-}
-
-/***
- * Keep the requested generated initial route when it exists in the route set, otherwise fall back to the first generated route or index.
- */
-function resolveValidGeneratedInitialRouteName(
-  initialRouteName: string | undefined,
-  routes: readonly RouteDefinition[],
-): string {
-  const routeNames = new Set(routes.map((route) => route.name));
-  if (initialRouteName && routeNames.has(initialRouteName)) return initialRouteName;
-  return routes[0]?.name ?? 'index';
 }

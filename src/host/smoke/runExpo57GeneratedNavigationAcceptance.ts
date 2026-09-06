@@ -179,6 +179,10 @@ async function assertGeneratedNavigationContractAsync(project: NavigationProject
     await readFile(path.join(project.path, 'package.json'), 'utf8'),
   ) as { readonly dependencies?: Readonly<Record<string, string>> };
   const dependencies = packageJson.dependencies ?? {};
+  const navigatorRange = dependencies['@ankhorage/navigator'];
+  if (navigatorRange === undefined) {
+    throw new Error(`${project.id} does not declare the Navigator owner package.`);
+  }
 
   for (const dependency of Object.keys(dependencies)) {
     if (dependency.startsWith('@react-navigation/')) {
@@ -202,28 +206,22 @@ async function assertGeneratedNavigationContractAsync(project: NavigationProject
     }
   }
 
-  if (!generatedSource.includes("from 'expo-router/js-tabs'")) {
+  if (!generatedSource.includes('from "expo-router/js-tabs"')) {
     throw new Error(`${project.id} does not consume Router-owned JavaScript tabs.`);
   }
-  if (!generatedSource.includes("from 'expo-router/drawer'")) {
+  if (!generatedSource.includes('from "expo-router/drawer"')) {
     throw new Error(`${project.id} does not consume Router-owned Drawer APIs.`);
   }
-  if (!generatedSource.includes('<ZoraTabBar {...props} routeMap={routeMap} />')) {
-    throw new Error(`${project.id} does not generate the direct custom ZORA tab bridge.`);
-  }
-  if (!generatedSource.includes('<ZoraDrawerContent {...props} routeMap={routeMap} />')) {
-    throw new Error(`${project.id} does not generate the direct custom ZORA drawer bridge.`);
-  }
-  const appRoot = path.join(project.path, 'src', 'app', ...(project.auth ? ['(app)'] : []));
+  const appRoot = path.join(project.path, 'src', 'app', '(app)');
   const hiddenRoute = path.join(appRoot, 'hidden-tabs', 'secret.tsx');
-  const hiddenTabsLayout = path.join(appRoot, 'hidden-tabs', '(tabs)', '_layout.tsx');
+  const hiddenTabsLayout = path.join(appRoot, 'hidden-tabs', '_layout.tsx');
   if (!(await pathExistsAsync(hiddenRoute)) || !(await pathExistsAsync(hiddenTabsLayout))) {
     throw new Error(
       `${project.id} does not preserve its hidden route outside the visible tab group.`,
     );
   }
-  if ((await readFile(hiddenTabsLayout, 'utf8')).includes('name="secret"')) {
-    throw new Error(`${project.id} exposes its hidden route in the visible tab navigator.`);
+  if (!(await readFile(hiddenTabsLayout, 'utf8')).includes('"href":null')) {
+    throw new Error(`${project.id} does not hide its direct JavaScript tab route.`);
   }
   if (generatedSource.includes('Parameters<typeof Zora')) {
     throw new Error(`${project.id} still contains a ZORA navigation compatibility cast.`);
@@ -241,6 +239,13 @@ async function assertGeneratedNavigationContractAsync(project: NavigationProject
       }
     }
   }
+
+  await assertInstalledRegistryPackageAsync({
+    installationRoot: project.path,
+    lockfile: await readFile(path.join(project.path, 'bun.lock'), 'utf8'),
+    packageName: '@ankhorage/navigator',
+    range: navigatorRange,
+  });
 }
 
 /*** Assert that a Studio-enabled generated navigation fixture installs its declared Studio range from the registry. */

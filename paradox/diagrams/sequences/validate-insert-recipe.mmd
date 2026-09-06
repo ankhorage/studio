@@ -1,6 +1,7 @@
 sequenceDiagram
   participant participant_normalizeRel as normalizeRel
   participant participant_resolveRouteScreenFilePath as resolveRouteScreenFilePath
+  participant participant_toSourceAlias as toSourceAlias
   participant participant_validateInsertRecipe as validateInsertRecipe
   participant participant_visit as visit
   participant_validateInsertRecipe->>participant_visit: visit()
@@ -11,6 +12,10 @@ sequenceDiagram
   participant_resolveRouteScreenFilePath->>participant_normalizeRel: normalizeRel()
   participant_normalizeRel-->>participant_resolveRouteScreenFilePath: return
   participant_resolveRouteScreenFilePath-->>participant_visit: return
+  participant_visit->>participant_visit: visit()
+  participant_visit->>participant_toSourceAlias: toSourceAlias()
+  participant_toSourceAlias-->>participant_visit: return
+  participant_visit-->>participant_visit: return
   participant_visit-->>participant_visit: return
   participant_visit-->>participant_visit: return
   participant_visit-->>participant_visit: return

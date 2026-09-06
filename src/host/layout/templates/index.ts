@@ -1,9 +1,7 @@
 /*** Audit coverage: exports-only entrypoint for generated layout and auth template sources. */
 export { getRootLayoutImportRequirements, getRootLayoutTsx } from './rootLayout';
-export { getNestedLayoutTsx } from './nestedLayout';
+export type { RootNavigationContent } from './rootLayout';
 export { getScreenTsx } from './screen';
-export { buildNavigatorJsx } from './navigation';
-export type { BuiltNavigatorJsx } from './navigation';
 export { getAuthSessionTs } from './auth/session';
 export { getSignOutScreenTsx } from './auth/signOut';
 export { getAuthAdapterTs } from './auth/adapter';

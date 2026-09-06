@@ -25,6 +25,8 @@ const DEFAULT_SIGN_IN_LABEL = 'Sign in';
 const DEFAULT_SIGN_UP_SCREEN_ID = 'screen-auth-sign-up';
 const DEFAULT_SIGN_UP_LABEL = 'Sign up';
 const PUBLIC_GUARD = 'public';
+const GENERATED_SIGN_OUT_SCREEN_ID = 'generated-auth-sign-out';
+const AUTH_TABS_GROUP = '(tabs)';
 
 export interface ResolveAuthLayoutPlanInput {
   manifest: AppManifest;
@@ -413,15 +415,26 @@ function ensureAuthSignOutRoute(
     return navigator;
   }
 
+  const signOutRoute: RouteDefinition = {
+    name: signOutRouteName,
+    screenId: GENERATED_SIGN_OUT_SCREEN_ID,
+    ...(navigator.type === 'stack' ? {} : { showInPrimaryNavigation: false }),
+  };
+
+  if (navigator.type === 'tabs') {
+    return {
+      type: 'stack',
+      initialRouteName: AUTH_TABS_GROUP,
+      routes: [
+        { name: AUTH_TABS_GROUP, navigator },
+        { ...signOutRoute, showInPrimaryNavigation: false },
+      ],
+    };
+  }
+
   return {
     ...navigator,
-    routes: [
-      ...navigator.routes,
-      {
-        name: signOutRouteName,
-        ...(navigator.type === 'stack' ? {} : { showInPrimaryNavigation: false }),
-      },
-    ],
+    routes: [...navigator.routes, signOutRoute],
   };
 }
 

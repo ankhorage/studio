@@ -89,6 +89,7 @@ describe('@ankhorage/studio', () => {
     expect(owns).toContain('Studio command and event contracts');
     expect(owns).toContain('Studio authoring model helpers');
     expect(consumes).toContain('@ankhorage/contracts');
+    expect(consumes).toContain('@ankhorage/navigator');
     expect(consumes).toContain('@ankhorage/runtime');
     expect(doesNotOwn).toContain('Expo runtime planning');
     expect(doesNotOwn).toContain('React Native UI components');
