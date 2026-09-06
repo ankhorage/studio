@@ -1,0 +1,8 @@
+sequenceDiagram
+  participant participant_findByKey as findByKey
+  participant participant_findStudioBindingOperationOption as findStudioBindingOperationOption
+  participant participant_toOperationKey as toOperationKey
+  participant_findStudioBindingOperationOption->>participant_findByKey: findByKey()
+  participant_findByKey-->>participant_findStudioBindingOperationOption: return
+  participant_findStudioBindingOperationOption->>participant_toOperationKey: toOperationKey()
+  participant_toOperationKey-->>participant_findStudioBindingOperationOption: return

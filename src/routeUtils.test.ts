@@ -1,4 +1,4 @@
-import type { AppManifest, NavigatorSpec, RouteDefinition } from '@ankhorage/contracts';
+import type { AppManifest, NavigatorNode, RouteDefinition } from '@ankhorage/contracts';
 import { describe, expect, test } from 'bun:test';
 
 import {
@@ -51,7 +51,7 @@ describe('routeUtils', () => {
         { name: 'index', screenId: 'screen-home' },
         { name: 'scan', screenId: 'screen-scan' },
       ],
-    } satisfies NavigatorSpec;
+    } satisfies NavigatorNode;
 
     expect(resolveScreenIdForPathname(navigator, '/')).toBe('screen-home');
     expect(resolveScreenIdForPathname(navigator, '/scan/?source=camera#result')).toBe(
@@ -79,7 +79,7 @@ describe('routeUtils', () => {
         },
         { name: 'scan', screenId: 'screen-scan' },
       ],
-    } satisfies NavigatorSpec;
+    } satisfies NavigatorNode;
 
     expect(resolveScreenIdForPathname(navigator, '/products')).toBe('screen-catalog');
     expect(resolveScreenIdForPathname(navigator, '/')).toBe('screen-catalog');
@@ -111,7 +111,7 @@ describe('routeUtils', () => {
           },
         },
       ],
-    } satisfies NavigatorSpec;
+    } satisfies NavigatorNode;
 
     expect(resolveScreenIdForPathname(navigator, '/account')).toBe('screen-account');
     expect(resolveScreenIdForPathname(navigator, '/account/settings?panel=profile')).toBe(
@@ -155,7 +155,7 @@ describe('routeUtils', () => {
           },
         },
       ],
-    } satisfies NavigatorSpec;
+    } satisfies NavigatorNode;
 
     expect(resolveScreenIdForPathname(navigator, '/')).toBe('screen-products');
     expect(resolveScreenIdForPathname(navigator, '/products')).toBe('screen-products');
@@ -180,7 +180,7 @@ describe('routeUtils', () => {
         { name: 'profile', screenId: 'screen-missing' },
         { name: 'settings', screenId: 'screen-settings' },
       ],
-    } satisfies NavigatorSpec;
+    } satisfies NavigatorNode;
     const screens = {
       'screen-home': {
         id: 'screen-home',
@@ -202,7 +202,7 @@ describe('routeUtils', () => {
     const navigator = {
       type: 'stack',
       routes: [{ name: 'home', screenId: 'registry-home' }],
-    } satisfies NavigatorSpec;
+    } satisfies NavigatorNode;
     const screens = {
       'registry-home': {
         id: 'stable-home',

@@ -6,7 +6,7 @@
       "name": "@ankhorage/studio",
       "dependencies": {
         "@ankhorage/color-theory": "^0.3.0",
-        "@ankhorage/contracts": "^8.2.0",
+        "@ankhorage/contracts": "^10.0.0",
         "@ankhorage/data-sources": "^2.0.0",
         "@ankhorage/deploy": "^0.12.0",
         "@ankhorage/expo-runtime": "^3.2.7",
@@ -101,14 +101,14 @@
     },
   },
   "overrides": {
-    "@ankhorage/contracts": "^8.2.0",
+    "@ankhorage/contracts": "^10.0.0",
   },
   "packages": {
     "@ankhorage/ankh": ["@ankhorage/ankh@0.8.9", "", { "dependencies": { "@ankhorage/contracts": "^8.0.2", "@ankhorage/devtools": "^1.10.4", "@ankhorage/doctor": "^0.10.6", "yaml": "^2.8.1" }, "bin": { "ankh": "dist/bin.js" } }, "sha512-OwUePE2BrG2jtLXIuJ1F4JVhN3Bbpl0nQV9DsN6ilq09Zdh1yj9DfGp/W9/knEod9qukwUi3+yiPXMPoV8g3VA=="],
 
     "@ankhorage/color-theory": ["@ankhorage/color-theory@0.3.0", "", { "dependencies": { "culori": "^4.0.2" } }, "sha512-M6McHR2obnslpPESe84xr1E/1PuGKlb1S6ypDzNhkVdwJXS9gL53GDALfqszi5QyQNxQHFNyCOVnnzaQlGn52g=="],
 
-    "@ankhorage/contracts": ["@ankhorage/contracts@8.2.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.3.0" } }, "sha512-2ZD99/z/1KbGmK4kSi7gP42U9LjkGLlxXZwb5U/Et3PWKxsy2SP8PUj9plJSZHAXy4AJh01G4j4TUQ1bYq0LvQ=="],
+    "@ankhorage/contracts": ["@ankhorage/contracts@10.0.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.3.0" } }, "sha512-Wwl5dQVcMA4Uk4AM6A+gAeoCM8dJphRa0ljKAZhjgI6szzMrzsPsklArXdk4tE9DhjiVh6Af5+9OuIpPn35U2g=="],
 
     "@ankhorage/data-sources": ["@ankhorage/data-sources@2.0.1", "", { "dependencies": { "@ankhorage/contracts": "^8.0.1" } }, "sha512-+lxLV0esVtHkvrk9JNFiFdJ94LYF9atGKjcFQfu2cGD7JVI58HbmJyFFHdAUYTh9pWusP2Rdh2IMNOdpX7C7Jw=="],
 

@@ -1,4 +1,5 @@
 sequenceDiagram
   participant participant_findNodeById as findNodeById
-  participant_findNodeById->>participant_findNodeById: findNodeById()
-  participant_findNodeById-->>participant_findNodeById: return
+  participant participant_findTreeNode as findTreeNode
+  participant_findNodeById->>participant_findTreeNode: findTreeNode()
+  participant_findTreeNode-->>participant_findNodeById: return

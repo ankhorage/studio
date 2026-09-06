@@ -25,6 +25,7 @@ graph LR
   module_src_app_workspace_routeParams_test_ts["src/app/workspace/routeParams.test.ts"]
   module_src_app_workspace_routeParams_ts["src/app/workspace/routeParams.ts"]
   module_src_app_workspace_WorkspacePrimitives_tsx["src/app/workspace/WorkspacePrimitives.tsx"]
+  module_src_app_workspace_workspaceRouter_ts["src/app/workspace/workspaceRouter.ts"]
   module_src_authSettings_test_ts["src/authSettings.test.ts"]
   module_src_authSettings_ts["src/authSettings.ts"]
   module_src_bindingAuthoringContracts_ts["src/bindingAuthoringContracts.ts"]
@@ -68,7 +69,6 @@ graph LR
   module_src_externalApiAuthoringContracts_ts["src/externalApiAuthoringContracts.ts"]
   module_src_hooks_useProjects_ts["src/hooks/useProjects.ts"]
   module_src_hooks_useTemplateCatalog_ts["src/hooks/useTemplateCatalog.ts"]
-  module_src_hooks_useWorkspaceActions_ts["src/hooks/useWorkspaceActions.ts"]
   module_src_host_apis_createProjectEndpointCredentialResolver_ts["src/host/apis/createProjectEndpointCredentialResolver.ts"]
   module_src_host_apis_createTrustedEndpointTestFetch_ts["src/host/apis/createTrustedEndpointTestFetch.ts"]
   module_src_host_apis_createTrustedExternalApiFetch_ts["src/host/apis/createTrustedExternalApiFetch.ts"]
@@ -185,7 +185,9 @@ graph LR
   module_src_host_orchestrator_infraSession_test_ts["src/host/orchestrator/infraSession.test.ts"]
   module_src_host_orchestrator_infraSession_ts["src/host/orchestrator/infraSession.ts"]
   module_src_host_orchestrator_moduleManager_ts["src/host/orchestrator/moduleManager.ts"]
+  module_src_host_orchestrator_projectCreationAssets_test_ts["src/host/orchestrator/projectCreationAssets.test.ts"]
   module_src_host_orchestrator_projectCreationSafety_test_ts["src/host/orchestrator/projectCreationSafety.test.ts"]
+  module_src_host_orchestrator_projectCreationSource_ts["src/host/orchestrator/projectCreationSource.ts"]
   module_src_host_orchestrator_projectGenerationState_test_ts["src/host/orchestrator/projectGenerationState.test.ts"]
   module_src_host_orchestrator_projectGenerationState_ts["src/host/orchestrator/projectGenerationState.ts"]
   module_src_host_orchestrator_projectManager_ts["src/host/orchestrator/projectManager.ts"]
@@ -226,6 +228,7 @@ graph LR
   module_src_host_smoke_assertStudioWebIconFontsAsync_ts["src/host/smoke/assertStudioWebIconFontsAsync.ts"]
   module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts["src/host/smoke/auth5NativeOAuthSmokeConfig.ts"]
   module_src_host_smoke_ChromeNavigationSession_ts["src/host/smoke/ChromeNavigationSession.ts"]
+  module_src_host_smoke_createAdminSmokeBaseManifest_ts["src/host/smoke/createAdminSmokeBaseManifest.ts"]
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts["src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"]
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts["src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"]
   module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts["src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"]
@@ -237,6 +240,8 @@ graph LR
   module_src_host_smoke_createExpo57ReaderFixtureManifest_ts["src/host/smoke/createExpo57ReaderFixtureManifest.ts"]
   module_src_host_smoke_createExpo57StudioHostFixtureAsync_ts["src/host/smoke/createExpo57StudioHostFixtureAsync.ts"]
   module_src_host_smoke_createExpo57StudioStandaloneFixtureAsync_ts["src/host/smoke/createExpo57StudioStandaloneFixtureAsync.ts"]
+  module_src_host_smoke_createOAuthFixtureManifest_ts["src/host/smoke/createOAuthFixtureManifest.ts"]
+  module_src_host_smoke_createSmokeProjectSource_ts["src/host/smoke/createSmokeProjectSource.ts"]
   module_src_host_smoke_createStaticExportServer_test_ts["src/host/smoke/createStaticExportServer.test.ts"]
   module_src_host_smoke_createStaticExportServer_ts["src/host/smoke/createStaticExportServer.ts"]
   module_src_host_smoke_expo57StudioStandaloneFixture_test_ts["src/host/smoke/expo57StudioStandaloneFixture.test.ts"]
@@ -271,8 +276,8 @@ graph LR
   module_src_host_smoke_runPackedStudioHostAcceptance_ts["src/host/smoke/runPackedStudioHostAcceptance.ts"]
   module_src_host_studioInfra_e2e_test_ts["src/host/studioInfra.e2e.test.ts"]
   module_src_host_studioWorkspaceExpoWeb_smoke_test_ts["src/host/studioWorkspaceExpoWeb.smoke.test.ts"]
-  module_src_host_templateRegistry_catalog_test_ts["src/host/templateRegistry/catalog.test.ts"]
-  module_src_host_templateRegistry_index_ts["src/host/templateRegistry/index.ts"]
+  module_src_host_templates_catalog_test_ts["src/host/templates/catalog.test.ts"]
+  module_src_host_templates_index_ts["src/host/templates/index.ts"]
   module_src_host_utils_requirementsInference_ts["src/host/utils/requirementsInference.ts"]
   module_src_host_utils_trimOutput_ts["src/host/utils/trimOutput.ts"]
   module_src_host_utils_workspaceRoot_ts["src/host/utils/workspaceRoot.ts"]
@@ -325,6 +330,7 @@ graph LR
   module_src_projectSecretApi_ts["src/projectSecretApi.ts"]
   module_src_projectSecretUsage_test_ts["src/projectSecretUsage.test.ts"]
   module_src_projectSecretUsage_ts["src/projectSecretUsage.ts"]
+  module_src_projectStructureSkill_test_ts["src/projectStructureSkill.test.ts"]
   module_src_projectWorkspaceContracts_ts["src/projectWorkspaceContracts.ts"]
   module_src_propertiesAuthoringModel_test_ts["src/propertiesAuthoringModel.test.ts"]
   module_src_propertiesAuthoringModel_ts["src/propertiesAuthoringModel.ts"]
@@ -477,9 +483,6 @@ graph LR
   module_src_ui_useStudioAppBarAugmentation_test_ts["src/ui/useStudioAppBarAugmentation.test.ts"]
   module_src_ui_useStudioAppBarAugmentation_ts["src/ui/useStudioAppBarAugmentation.ts"]
   module_src_upsertExternalApi_ts["src/upsertExternalApi.ts"]
-  module_src_utils_deleteOwnProperty_ts["src/utils/deleteOwnProperty.ts"]
-  module_src_utils_readOwnProperty_ts["src/utils/readOwnProperty.ts"]
-  module_src_utils_setOwnProperty_ts["src/utils/setOwnProperty.ts"]
   module_src_utils_treeUtils_ts["src/utils/treeUtils.ts"]
   module_src_workspacePlatform_test_ts["src/workspacePlatform.test.ts"]
   module_src_workspacePlatform_ts["src/workspacePlatform.ts"]
@@ -496,25 +499,30 @@ graph LR
   module_scripts_packed_studio_host_acceptance_ts --> module_src_host_smoke_runPackedStudioHostAcceptance_ts
   module_src_ankhAdmin_public_test_ts --> module_src_root_ts
   module_src_app_CreateCategoriesScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_CreateCategoriesScreen_tsx --> module_src_app_workspace_workspaceRouter_ts
   module_src_app_CreateCategoriesScreen_tsx --> module_src_hooks_useTemplateCatalog_ts
   module_src_app_CreateCategoriesScreen_tsx --> module_src_workspaceSearch_ts
   module_src_app_CreateCategoryTemplatesScreen_tsx --> module_src_app_workspace_routeParams_ts
   module_src_app_CreateCategoryTemplatesScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_CreateCategoryTemplatesScreen_tsx --> module_src_app_workspace_workspaceRouter_ts
   module_src_app_CreateCategoryTemplatesScreen_tsx --> module_src_hooks_useTemplateCatalog_ts
   module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_app_workspace_createProjectFormState_ts
   module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_app_workspace_routeParams_ts
   module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_app_workspace_workspaceRouter_ts
   module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_hooks_useProjects_ts
   module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_hooks_useTemplateCatalog_ts
   module_src_app_ProjectDetailScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_ProjectDetailScreen_tsx --> module_src_app_workspace_workspaceRouter_ts
   module_src_app_ProjectDetailScreen_tsx --> module_src_hooks_useProjects_ts
   module_src_app_ProjectDetailScreen_tsx --> module_src_workspacePlatform_ts
   module_src_app_ProjectsOverviewScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_ProjectsOverviewScreen_tsx --> module_src_app_workspace_workspaceRouter_ts
   module_src_app_ProjectsOverviewScreen_tsx --> module_src_hooks_useProjects_ts
   module_src_app_ProjectsOverviewScreen_tsx --> module_src_projectWorkspaceContracts_ts
   module_src_app_ProjectsOverviewScreen_tsx --> module_src_workspaceSearch_ts
   module_src_app_StudioApp_tsx --> module_src_app_workspace_navigation_ts
-  module_src_app_StudioApp_tsx --> module_src_hooks_useWorkspaceActions_ts
+  module_src_app_StudioApp_tsx --> module_src_app_workspace_workspaceRouter_ts
   module_src_app_workspace_createProjectFormState_test_ts --> module_src_app_workspace_createProjectFormState_ts
   module_src_app_workspace_createProjectFormState_test_ts --> module_src_projectWorkspaceContracts_ts
   module_src_app_workspace_createProjectFormState_ts --> module_src_projectIdentity_ts
@@ -524,24 +532,20 @@ graph LR
   module_src_app_workspace_routeParams_ts --> module_src_contractGuards_ts
   module_src_app_workspace_WorkspacePrimitives_tsx --> module_src_projectWorkspaceContracts_ts
   module_src_app_workspace_WorkspacePrimitives_tsx --> module_src_templateCatalogContracts_ts
+  module_src_app_workspace_workspaceRouter_ts --> module_src_app_workspace_navigation_ts
   module_src_authSettings_test_ts --> module_src_authSettings_ts
   module_src_bindingAuthoringModel_test_ts --> module_src_bindingAuthoringModel_ts
   module_src_bindingDiagnosticsModel_ts --> module_src_bindingAuthoringContracts_ts
   module_src_bindingDiagnosticsModel_ts --> module_src_bindingOperationModel_ts
   module_src_bindingDiagnosticsModel_ts --> module_src_bindingSchemaModel_ts
-  module_src_bindingDiagnosticsModel_ts --> module_src_utils_readOwnProperty_ts
   module_src_bindingManifestPersistence_test_ts --> module_src_core_studioManifestDraftModel_ts
   module_src_bindingManifestPersistence_test_ts --> module_src_index_ts
   module_src_bindingManifestPersistence_test_ts --> module_src_manifestSync_ts
   module_src_bindingMetadataModel_ts --> module_src_bindingAuthoringContracts_ts
   module_src_bindingMutationAcceptance_test_ts --> module_src_bindingAuthoringModel_ts
-  module_src_bindingMutationModel_ts --> module_src_utils_deleteOwnProperty_ts
-  module_src_bindingMutationModel_ts --> module_src_utils_readOwnProperty_ts
-  module_src_bindingMutationModel_ts --> module_src_utils_setOwnProperty_ts
   module_src_bindingOperationModel_ts --> module_src_bindingAuthoringContracts_ts
   module_src_bindingOperationModel_ts --> module_src_bindingSchemaModel_ts
   module_src_bindingSchemaModel_ts --> module_src_bindingAuthoringContracts_ts
-  module_src_bindingSchemaModel_ts --> module_src_utils_readOwnProperty_ts
   module_src_canExecuteProjectDeployRelease_test_ts --> module_src_canExecuteProjectDeployRelease_ts
   module_src_canExecuteProjectDeployRelease_test_ts --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_canExecuteProjectDeployRelease_ts --> module_src_projectDeployReleaseInspectionResult_ts
@@ -551,18 +555,16 @@ graph LR
   module_src_canvasDragModel_test_ts --> module_src_canvasDropZones_ts
   module_src_canvasDragModel_ts --> module_src_canvasDropZones_ts
   module_src_canvasDragModel_ts --> module_src_index_ts
-  module_src_canvasDragModel_ts --> module_src_utils_readOwnProperty_ts
   module_src_canvasDropZones_test_ts --> module_src_canvasDropZones_ts
   module_src_canvasDropZones_test_ts --> module_src_index_ts
   module_src_canvasDropZones_ts --> module_src_index_ts
   module_src_cli_index_ts --> module_src_host_createStudioHost_ts
   module_src_cli_index_ts --> module_src_host_http_server_ts
-  module_src_cli_index_ts --> module_src_host_templateRegistry_index_ts
+  module_src_cli_index_ts --> module_src_host_templates_index_ts
   module_src_cli_index_ts --> module_src_host_utils_workspaceRoot_ts
   module_src_contractGuards_test_ts --> module_src_contractGuards_ts
   module_src_core_apiBase_test_ts --> module_src_core_apiBase_ts
   module_src_core_constants_ts --> module_src_core_apiBase_ts
-  module_src_core_constants_ts --> module_src_utils_readOwnProperty_ts
   module_src_core_mediaAuthoringHostClient_ts --> module_src_core_constants_ts
   module_src_core_mediaAuthoringHostClient_ts --> module_src_core_mediaRemovalCoordinator_ts
   module_src_core_mediaAuthoringHostClient_ts --> module_src_mediaPickerAuthoring_ts
@@ -605,7 +607,6 @@ graph LR
   module_src_hooks_useTemplateCatalog_ts --> module_src_contractGuards_ts
   module_src_hooks_useTemplateCatalog_ts --> module_src_core_constants_ts
   module_src_hooks_useTemplateCatalog_ts --> module_src_templateCatalogContracts_ts
-  module_src_hooks_useWorkspaceActions_ts --> module_src_core_constants_ts
   module_src_host_apis_createProjectEndpointCredentialResolver_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_apis_createTrustedEndpointTestFetch_ts --> module_src_host_apis_requestTrustedExternalApi_ts
   module_src_host_apis_createTrustedExternalApiFetch_ts --> module_src_host_apis_requestTrustedExternalApi_ts
@@ -662,6 +663,7 @@ graph LR
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --> module_src_host_smoke_ChromeNavigationSession_ts
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
+  module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --> module_src_host_smoke_createStaticExportServer_ts
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --> module_src_host_smoke_reserveTcpPortAsync_ts
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --> module_src_host_smoke_resolveAppOwnedExpoCliAsync_ts
@@ -670,11 +672,11 @@ graph LR
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_semverRange_ts
-  module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_smoke_createAdminSmokeBaseManifest_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_moduleAdminContracts_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
-  module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_generatedNativeOAuthLifecycle_e2e_test_ts --> module_src_host_layout_templates_auth_oauth_ts
   module_src_host_generatedNativeOAuthLifecycle_e2e_test_ts --> module_src_host_layout_templates_auth_oauthCompletion_ts
   module_src_host_generatedNativeOAuthLifecycle_e2e_test_ts --> module_src_host_layout_templates_auth_oauthState_ts
@@ -685,7 +687,7 @@ graph LR
   module_src_host_generatedOAuthLifecycle_e2e_test_ts --> module_src_host_layout_templates_auth_oauthState_ts
   module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
-  module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_hostOwnership_test_ts --> module_src_host_http_security_ts
   module_src_host_hostOwnership_test_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_hostOwnership_test_ts --> module_src_host_utils_workspaceRoot_ts
@@ -725,7 +727,7 @@ graph LR
   module_src_host_http_server_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_studioInfraUp_ts
-  module_src_host_http_server_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_http_server_ts --> module_src_host_templates_index_ts
   module_src_host_http_server_ts --> module_src_host_utils_trimOutput_ts
   module_src_host_http_server_ts --> module_src_host_utils_workspaceRoot_ts
   module_src_host_http_server_ts --> module_src_projectIdentity_ts
@@ -814,7 +816,7 @@ graph LR
   module_src_host_modules_catalog_ts --> module_src_moduleAdminContracts_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
-  module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_smoke_createOAuthFixtureManifest_ts
   module_src_host_orchestrator_androidRunTemplate_test_ts --> module_src_host_orchestrator_scaffolder_ts
   module_src_host_orchestrator_androidRunTemplate_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts --> module_src_host_orchestrator_projectTargets_ts
@@ -833,14 +835,18 @@ graph LR
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_orchestrator_resolveMutations_ts
   module_src_host_orchestrator_moduleManager_ts --> module_src_manifestState_ts
   module_src_host_orchestrator_moduleManager_ts --> module_src_moduleAdminContracts_ts
+  module_src_host_orchestrator_projectCreationAssets_test_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectCreationAssets_test_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_orchestrator_projectManager_ts
-  module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_projectIdentity_ts
   module_src_host_orchestrator_projectGenerationState_test_ts --> module_src_host_orchestrator_projectGenerationState_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_layout_layoutGenerator_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_manifestSystem_index_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_media_projectBundledMediaService_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_modules_layout_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_GeneratedRouteFileOwnership_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectCreationSource_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectGenerationState_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectStore_ts
@@ -848,7 +854,6 @@ graph LR
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_scaffolder_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_workspaceRuntime_ts
-  module_src_host_orchestrator_projectManager_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_zoraExtensions_index_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_projectIdentity_ts
   module_src_host_orchestrator_projectManagerCurrentState_test_ts --> module_src_host_orchestrator_GeneratedRouteFileOwnership_ts
@@ -864,7 +869,6 @@ graph LR
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_generatedAppFiles_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_projectTargets_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_templates_ts
-  module_src_host_orchestrator_scaffolder_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_zoraExtensions_index_ts
   module_src_host_orchestrator_semverRange_test_ts --> module_src_host_orchestrator_semverRange_ts
   module_src_host_orchestrator_studioInfraUp_test_ts --> module_src_host_orchestrator_studioInfraUp_ts
@@ -881,14 +885,12 @@ graph LR
   module_src_host_secrets_projectSecretService_ts --> module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
   module_src_host_secrets_projectSecretService_ts --> module_src_projectSecretUsage_ts
   module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts --> module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
-  module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts --> module_src_utils_readOwnProperty_ts
   module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_test_ts --> module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_ts
   module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_ts --> module_src_host_smoke_assertInstalledRegistryPackageAsync_ts
   module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_ts --> module_src_host_smoke_assertReactNativeOwnerGraphAsync_ts
-  module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_ts --> module_src_utils_readOwnProperty_ts
   module_src_host_smoke_assertExpo57StudioStandaloneContractAsync_ts --> module_src_host_smoke_assertInstalledRegistryPackageAsync_ts
   module_src_host_smoke_assertExpo57StudioStandaloneContractAsync_ts --> module_src_host_smoke_assertReactNativeOwnerGraphAsync_ts
   module_src_host_smoke_assertInstalledRegistryPackageAsync_test_ts --> module_src_host_smoke_assertInstalledRegistryPackageAsync_ts
@@ -904,13 +906,18 @@ graph LR
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts
+  module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_smoke_prepareAuth5NativeOAuthSmokeWorkspace_ts
-  module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
+  module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts --> module_src_host_smoke_createOAuthFixtureManifest_ts
   module_src_host_smoke_createExpo57CapabilityFixtureManifest_test_ts --> module_src_host_smoke_createExpo57CapabilityFixtureManifest_ts
+  module_src_host_smoke_createExpo57CapabilityFixtureManifest_ts --> module_src_host_smoke_createOAuthFixtureManifest_ts
   module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts --> module_src_host_layout_layoutGenerator_ts
   module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
   module_src_host_smoke_createExpo57ReaderFixtureManifest_test_ts --> module_src_host_smoke_createExpo57ReaderFixtureManifest_ts
+  module_src_host_smoke_createExpo57ReaderFixtureManifest_ts --> module_src_host_smoke_createOAuthFixtureManifest_ts
+  module_src_host_smoke_createOAuthFixtureManifest_ts --> module_src_host_smoke_createSmokeProjectSource_ts
+  module_src_host_smoke_createSmokeProjectSource_ts --> module_src_host_orchestrator_projectCreationSource_ts
   module_src_host_smoke_createStaticExportServer_test_ts --> module_src_host_smoke_createStaticExportServer_ts
   module_src_host_smoke_expo57StudioStandaloneFixture_test_ts --> module_src_host_smoke_assertExpo57StudioStandaloneContractAsync_ts
   module_src_host_smoke_expo57StudioStandaloneFixture_test_ts --> module_src_host_smoke_createExpo57StudioStandaloneFixtureAsync_ts
@@ -951,6 +958,7 @@ graph LR
   module_src_host_smoke_runAuth5NativeOAuthSmoke_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts
   module_src_host_smoke_runAuth5NativeOAuthSmokeInfra_ts --> module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_resolveAppOwnedExpoCliAsync_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
@@ -960,6 +968,7 @@ graph LR
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_ChromeNavigationSession_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_createExpo57CapabilityFixtureManifest_ts
+  module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_createStaticExportServer_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_generateExpoRouterTypesAsync_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_reserveTcpPortAsync_ts
@@ -971,6 +980,7 @@ graph LR
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_ChromeNavigationSession_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
+  module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_createStaticExportServer_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_generateExpoRouterTypesAsync_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_reserveTcpPortAsync_ts
@@ -984,7 +994,6 @@ graph LR
   module_src_host_smoke_runExpo57StudioStandaloneAcceptance_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
   module_src_host_smoke_runExpo57StudioStandaloneAcceptance_ts --> module_src_host_smoke_runExpo57StudioStandaloneDevelopmentWebSmokeAsync_ts
   module_src_host_smoke_runExpo57StudioStandaloneAcceptance_ts --> module_src_host_smoke_runExpo57StudioStandaloneStaticWebSmokeAsync_ts
-  module_src_host_smoke_runExpo57StudioStandaloneAcceptance_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_smoke_runExpo57StudioStandaloneDevelopmentWebSmokeAsync_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
   module_src_host_smoke_runExpo57StudioStandaloneDevelopmentWebSmokeAsync_ts --> module_src_host_smoke_assertStudioWebIconFontsAsync_ts
   module_src_host_smoke_runExpo57StudioStandaloneDevelopmentWebSmokeAsync_ts --> module_src_host_smoke_ChromeNavigationSession_ts
@@ -999,9 +1008,9 @@ graph LR
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
-  module_src_host_templateRegistry_catalog_test_ts --> module_src_host_templateRegistry_index_ts
-  module_src_host_templateRegistry_index_ts --> module_src_templateCatalogContracts_ts
-  module_src_host_zoraExtensions_index_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_templates_catalog_test_ts --> module_src_host_templates_index_ts
+  module_src_host_templates_index_ts --> module_src_host_orchestrator_projectCreationSource_ts
+  module_src_host_templates_index_ts --> module_src_templateCatalogContracts_ts
   module_src_index_test_ts --> module_src_index_ts
   module_src_index_ts --> module_src_authSettings_ts
   module_src_index_ts --> module_src_mediaAuthoringModel_ts
@@ -1021,11 +1030,7 @@ graph LR
   module_src_manifestSync_test_ts --> module_src_index_ts
   module_src_manifestSync_test_ts --> module_src_manifestSync_ts
   module_src_manifestSync_ts --> module_src_index_ts
-  module_src_manifestSync_ts --> module_src_utils_setOwnProperty_ts
   module_src_mediaAuthoringModel_test_ts --> module_src_mediaAuthoringModel_ts
-  module_src_mediaAuthoringModel_ts --> module_src_utils_deleteOwnProperty_ts
-  module_src_mediaAuthoringModel_ts --> module_src_utils_readOwnProperty_ts
-  module_src_mediaAuthoringModel_ts --> module_src_utils_setOwnProperty_ts
   module_src_moduleAdmin_public_test_ts --> module_src_index_ts
   module_src_moduleAdmin_public_test_ts --> module_src_root_ts
   module_src_moduleAdminApi_test_ts --> module_src_moduleAdminApi_ts
@@ -1064,7 +1069,6 @@ graph LR
   module_src_projectIdentity_test_ts --> module_src_projectWorkspaceContracts_ts
   module_src_projectIdentity_ts --> module_src_projectWorkspaceContracts_ts
   module_src_projectOAuthSetup_test_ts --> module_src_projectOAuthSetup_ts
-  module_src_projectOAuthSetup_ts --> module_src_utils_readOwnProperty_ts
   module_src_projectSecretApi_test_ts --> module_src_projectSecretApi_ts
   module_src_projectSecretApi_ts --> module_src_projectSecretUsage_ts
   module_src_projectSecretApi_ts --> module_src_secretResponseGuard_ts
@@ -1073,13 +1077,11 @@ graph LR
   module_src_routeUtils_public_test_ts --> module_src_routeUtils_ts
   module_src_routeUtils_test_ts --> module_src_routeUtils_ts
   module_src_routeUtils_ts --> module_src_manifestState_ts
-  module_src_routeUtils_ts --> module_src_utils_readOwnProperty_ts
   module_src_runtime_indicatorRefreshCoordinator_test_ts --> module_src_runtime_indicatorRefreshCoordinator_ts
   module_src_runtime_indicatorSettleCoordinator_test_ts --> module_src_runtime_indicatorSettleCoordinator_ts
   module_src_runtime_interactionPolicy_test_ts --> module_src_runtime_actionSuppression_ts
   module_src_runtime_interactionPolicy_test_ts --> module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_interactionPolicy_ts --> module_src_runtime_interactionPolicyCore_ts
-  module_src_runtime_interactionPolicyCore_ts --> module_src_utils_readOwnProperty_ts
   module_src_runtime_runtimeNodeMeasurement_test_ts --> module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_stationarySelection_public_test_ts --> module_src_runtime_index_ts
   module_src_runtime_stationarySelection_ts --> module_src_canvasDragModel_ts
@@ -1327,16 +1329,10 @@ graph LR
   module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx --> module_src_ui_admin_pages_themeRecipeTokenOptions_ts
   module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx --> module_src_ui_admin_pages_useActiveThemeAdmin_ts
   module_src_ui_admin_pages_themeRecipeAuthoringModel_test_ts --> module_src_ui_admin_pages_themeRecipeAuthoringModel_ts
-  module_src_ui_admin_pages_themeRecipeAuthoringModel_ts --> module_src_utils_deleteOwnProperty_ts
-  module_src_ui_admin_pages_themeRecipeAuthoringModel_ts --> module_src_utils_readOwnProperty_ts
-  module_src_ui_admin_pages_themeRecipeAuthoringModel_ts --> module_src_utils_setOwnProperty_ts
   module_src_ui_admin_pages_ThemeRecipeCatalog_tsx --> module_src_studioAdminRouteModel_ts
   module_src_ui_admin_pages_ThemeRecipeFieldEditor_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_themeRecipeTokenOptions_test_ts --> module_src_ui_admin_pages_themeRecipeTokenOptions_ts
   module_src_ui_admin_pages_themeTokenAuthoringModel_test_ts --> module_src_ui_admin_pages_themeTokenAuthoringModel_ts
-  module_src_ui_admin_pages_themeTokenAuthoringModel_ts --> module_src_utils_deleteOwnProperty_ts
-  module_src_ui_admin_pages_themeTokenAuthoringModel_ts --> module_src_utils_readOwnProperty_ts
-  module_src_ui_admin_pages_themeTokenAuthoringModel_ts --> module_src_utils_setOwnProperty_ts
   module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx --> module_src_ui_admin_pages_ThemeTypographyHeadingEditor_tsx
   module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx --> module_src_ui_admin_pages_ThemeTypographySizeEditor_tsx

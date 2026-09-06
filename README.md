@@ -3,7 +3,7 @@
 
 # @ankhorage/studio
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v2.0.18](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v2.0.26](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
 
 Standalone Studio authoring package for Ankhorage apps.
 
@@ -36,13 +36,18 @@ Manage Studio development and projects through the Ankh CLI.
 - [collectStudioMediaAssetUsages sequence](././paradox/diagrams/sequences/collect-studio-media-asset-usages.mmd)
 - [collectStudioResponsePaths sequence](././paradox/diagrams/sequences/collect-studio-response-paths.mmd)
 - [createNodeFromCatalogEntry sequence](././paradox/diagrams/sequences/create-node-from-catalog-entry.mmd)
+- [createStudioInstancePropertyPatch sequence](././paradox/diagrams/sequences/create-studio-instance-property-patch.mmd)
 - [createStudioMediaAssetId sequence](././paradox/diagrams/sequences/create-studio-media-asset-id.mmd)
 - [createStudioUrlMediaAsset sequence](././paradox/diagrams/sequences/create-studio-url-media-asset.mmd)
 - [diagnoseStudioComponentBindings sequence](././paradox/diagrams/sequences/diagnose-studio-component-bindings.mmd)
 - [findNodeById sequence](././paradox/diagrams/sequences/find-node-by-id.mmd)
+- [findStudioBindingOperationOption sequence](././paradox/diagrams/sequences/find-studio-binding-operation-option.mmd)
+- [generateStudioId sequence](././paradox/diagrams/sequences/generate-studio-id.mmd)
+- [removeNodeFromTree sequence](././paradox/diagrams/sequences/remove-node-from-tree.mmd)
 - [removeStudioEventBinding sequence](././paradox/diagrams/sequences/remove-studio-event-binding.mmd)
 - [removeStudioMediaAsset sequence](././paradox/diagrams/sequences/remove-studio-media-asset.mmd)
 - [removeStudioPropBinding sequence](././paradox/diagrams/sequences/remove-studio-prop-binding.mmd)
+- [resolveDefaultInsertPlacement sequence](././paradox/diagrams/sequences/resolve-default-insert-placement.mmd)
 - [resolveInsertPlacement sequence](././paradox/diagrams/sequences/resolve-insert-placement.mmd)
 - [resolveStudioInstancePropertyGroups sequence](././paradox/diagrams/sequences/resolve-studio-instance-property-groups.mmd)
 - [resolveStudioSchemaValueMeta sequence](././paradox/diagrams/sequences/resolve-studio-schema-value-meta.mmd)

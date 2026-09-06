@@ -120,7 +120,7 @@ export function createExpo57NavigationFixtureManifest(
             ],
           }
         : {
-            type: rootNavigator,
+            ...(rootNavigator === 'tabs' ? { type: 'tabs' as const } : { type: 'drawer' as const }),
             initialRouteName: 'index',
             routes: [
               {

@@ -1,4 +1,4 @@
-import type { NavigatorSpec, RouteDefinition } from '@ankhorage/contracts';
+import type { NavigatorNode, RouteDefinition } from '@ankhorage/contracts';
 import { describe, expect, test } from 'bun:test';
 
 import type { ScreenRouteEntry, ScreenRouteGroup } from './routeUtils';
@@ -69,7 +69,7 @@ describe('routeUtils public exports', () => {
   });
 
   test('uses navigator update exports', () => {
-    const navigator: NavigatorSpec = { type: 'tabs', routes: buildRoutes() };
+    const navigator: NavigatorNode = { type: 'tabs', routes: buildRoutes() };
     const nested = findNavigatorAtPath(navigator, ['(app)']);
     const updated = updateNavigatorAtPath(navigator, ['(app)'], (current) => ({
       ...current,

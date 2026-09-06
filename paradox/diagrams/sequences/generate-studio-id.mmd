@@ -1,0 +1,5 @@
+sequenceDiagram
+  participant participant_createUtilityCompactId as createUtilityCompactId
+  participant participant_generateStudioId as generateStudioId
+  participant_generateStudioId->>participant_createUtilityCompactId: createUtilityCompactId()
+  participant_createUtilityCompactId-->>participant_generateStudioId: return

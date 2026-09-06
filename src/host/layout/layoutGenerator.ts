@@ -1,4 +1,4 @@
-import type { AppManifest, NavigatorSpec, RouteDefinition } from '@ankhorage/contracts';
+import type { AppManifest, NavigatorNode, RouteDefinition } from '@ankhorage/contracts';
 import type { AppDeployTargets } from '@ankhorage/contracts/deploy';
 import {
   type ExpoRuntimePlan,
@@ -171,7 +171,7 @@ export class GeneratedAppFileGenerator {
       );
     };
 
-    const walk = (node: NavigatorSpec, currentRel: string) => {
+    const walk = (node: NavigatorNode, currentRel: string) => {
       if (currentRel !== '') {
         files.push({
           path: normalizeRel(path.join(appRootRel, currentRel, '_layout.tsx')),
@@ -331,7 +331,7 @@ export class GeneratedAppFileGenerator {
 
     const allImports = composeGeneratedImports([
       ...getRootLayoutImportRequirements(includeStudio),
-      `import type { AppManifest${includeStudio ? ', NavigatorSpec, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
+      `import type { AppManifest${includeStudio ? ', NavigatorNode, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
       ...runtimeLayoutIntegration.imports,
       `import { ${[
         'AppShell',
@@ -418,7 +418,7 @@ export class GeneratedAppFileGenerator {
     const runtimeLayoutIntegration = resolveExpoRuntimeLayoutIntegration(runtimePlan);
 
     const coreImports = [
-      `import type { AppManifest${includeStudio ? ', NavigatorSpec, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
+      `import type { AppManifest${includeStudio ? ', NavigatorNode, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
       ...runtimeLayoutIntegration.imports,
       needsZoraNavigationRouteMap
         ? `import type { ZoraNavigationRouteMap } from '@ankhorage/zora';`
@@ -578,7 +578,7 @@ export class GeneratedAppFileGenerator {
   /***
    * Generate one nested navigator layout module for a manifest navigator node.
    */
-  private getLayoutTemplate(node: NavigatorSpec, manifest: AppManifest, includeStudio: boolean) {
+  private getLayoutTemplate(node: NavigatorNode, manifest: AppManifest, includeStudio: boolean) {
     const navigator = buildNavigatorJsx({ navigator: node, manifest, includeStudio });
     return getNestedLayoutTsx({ node, navigator });
   }
@@ -669,7 +669,7 @@ function normalizeRel(p: string) {
 /***
  * Normalize a manifest navigator recursively for generated Expo Router routes and lift hidden tab routes behind a stack wrapper when required.
  */
-function prepareNavigatorForGeneratedRoutes(navigator: NavigatorSpec): NavigatorSpec {
+function prepareNavigatorForGeneratedRoutes(navigator: NavigatorNode): NavigatorNode {
   const normalizedRoutes = navigator.routes.map((route) => prepareRouteForGeneratedRoutes(route));
   const normalizedInitialRouteName = resolveValidGeneratedInitialRouteName(
     navigator.initialRouteName
@@ -677,7 +677,7 @@ function prepareNavigatorForGeneratedRoutes(navigator: NavigatorSpec): Navigator
       : undefined,
     normalizedRoutes,
   );
-  const normalizedNavigator: NavigatorSpec = {
+  const normalizedNavigator: NavigatorNode = {
     ...navigator,
     ...(normalizedInitialRouteName ? { initialRouteName: normalizedInitialRouteName } : {}),
     routes: normalizedRoutes,

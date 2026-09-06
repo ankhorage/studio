@@ -1,5 +1,13 @@
 # @ankhorage/studio
 
+## 2.0.27
+
+### Patch Changes
+
+- f4ceea5: Adopt the released `AppNavigatorManifest`/`NavigatorNode` contract model from `@ankhorage/contracts@10` without changing Studio navigation behavior.
+
+  Preserve app-level navigator metadata when switching the root navigator type, while removing settings specific to the previous navigator type.
+
 ## 2.0.26
 
 ### Patch Changes
