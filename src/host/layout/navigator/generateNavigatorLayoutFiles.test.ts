@@ -33,7 +33,7 @@ describe('generateNavigatorLayoutFiles', () => {
       'src/app/(app)/_layout.tsx',
     ]);
     expect(files.find(({ path }) => path.endsWith('/_layout.tsx'))?.content).toContain(
-      '"href":"/train"',
+      "href: '/train'",
     );
     expect(files.find(({ path }) => path.endsWith('/_layout.ios.tsx'))?.content).toContain(
       'expo-router/unstable-native-tabs',

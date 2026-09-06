@@ -18,7 +18,9 @@ describe('ankhorage-project-structure managed skill', () => {
     const utilitiesText = readFileSync(projectStructureUtilitiesPath, 'utf8');
     const manifestText = readFileSync(managedManifestPath, 'utf8');
 
-    expect(skillText).toContain('Load `ankhorage-coding-rules` when available.');
+    expect(skillText).toContain(
+      'Load `ankhorage-coding-rules` as the complementary implementation and testing authority.',
+    );
     expect(skillText).not.toContain('ankhorage-package-structure');
     expect(utilitiesText).not.toContain('ankhorage-package-structure');
     expect(manifestText).not.toContain('ankhorage-package-structure');

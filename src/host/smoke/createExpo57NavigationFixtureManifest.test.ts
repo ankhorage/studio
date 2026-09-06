@@ -50,9 +50,9 @@ describe('Expo 57 generated navigation acceptance fixture', () => {
     expect(paths).toContain('src/app/(app)/hidden-tabs/secret.tsx');
     expect(hiddenTabsLayout).toBeDefined();
     expect(hiddenTabsLayout).toContain('name="secret"');
-    expect(hiddenTabsLayout).toContain('"href":null');
-    expect(source).toContain('from "expo-router/js-tabs"');
-    expect(source).toContain('from "expo-router/drawer"');
+    expect(hiddenTabsLayout).toContain('href: null');
+    expect(source).toContain("from 'expo-router/js-tabs'");
+    expect(source).toContain("from 'expo-router/drawer'");
     expect(source).not.toContain('<ZoraTabBar');
     expect(source).not.toContain('<ZoraDrawerContent');
     expect(source).not.toContain('@react-navigation/');
@@ -98,7 +98,7 @@ describe('Expo 57 generated navigation acceptance fixture', () => {
     expect(rootLayout).toBeDefined();
     expect(rootLayout).toContain("import { type Href, Slot, useRouter } from 'expo-router';");
     expect(navigatorLayout).toContain(
-      rootNavigator === 'tabs' ? 'from "@ankhorage/navigator/tabs"' : 'from "expo-router/drawer"',
+      rootNavigator === 'tabs' ? "from '@ankhorage/navigator/tabs'" : "from 'expo-router/drawer'",
     );
     expect(rootLayout).toContain('type Href');
     expect(navigatorLayout).not.toContain('ZoraTabBar');

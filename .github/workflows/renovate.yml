@@ -6,15 +6,23 @@ on:
       - opened
       - reopened
       - synchronize
+      - labeled
+
+concurrency:
+  group: renovate-${{ github.repository }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 permissions:
+  checks: read
   contents: read
+  issues: read
   pull-requests: read
+  statuses: read
 
 jobs:
   changeset:
     if: >-
-      github.actor == 'renovate[bot]' &&
+      (github.actor == 'renovate[bot]' || github.actor == 'ankhorage-renovate-sync[bot]') &&
       github.event.pull_request.head.repo.full_name == github.repository &&
       startsWith(github.event.pull_request.head.ref, 'renovate/')
     uses: ankhorage/renovate/.github/workflows/changeset.yml@5111b745e01d09afafbe55e89e7e8c60771515ff

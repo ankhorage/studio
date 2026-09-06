@@ -147,7 +147,7 @@ describe('generated auth root bootstrap', () => {
     expect(rootLayout).toContain("initialRouteName: '(app)'");
     expect(appLayout).toContain('initialRouteName="(tabs)"');
     expect(tabsLayout).toContain('initialRouteName="products"');
-    expect(tabsLayout).toContain('"href":"/products"');
+    expect(tabsLayout).toContain("href: '/products'");
     expect(paths).toContain('src/app/(app)/(tabs)/products.tsx');
   });
 
