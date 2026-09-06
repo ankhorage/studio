@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.28
+
+### Patch Changes
+
+- f6ae6a6: Restore a single Contracts dependency graph for Studio builds and generate ZORA navigation icons from either provider names or bundled SVG sources.
+
 ## 2.0.27
 
 ### Patch Changes
