@@ -78,7 +78,7 @@ function AppBarBrand() {
   );
 }
 
-type IoniconsIconName = Extract<IconProps, { provider?: 'Ionicons' }>['name'];
+type IoniconsIconName = Extract<IconProps, { name: unknown; provider?: 'Ionicons' }>['name'];
 
 function IconButton(props: { label: string; iconName: IoniconsIconName; onPress: () => void }) {
   const { theme } = useZoraTheme();

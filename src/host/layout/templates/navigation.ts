@@ -1,4 +1,10 @@
-import type { AppManifest, NavigatorNode, RouteDefinition } from '@ankhorage/contracts';
+import type {
+  AppManifest,
+  MediaAsset,
+  MediaAssetReference,
+  NavigatorNode,
+  RouteDefinition,
+} from '@ankhorage/contracts';
 
 import { escapeStringLiteral } from '../utils/escapeStringLiteral';
 
@@ -305,16 +311,12 @@ function buildTabsScreenFallbackJsx(
     .map((line) => `  ${line}`)
     .join('\n');
 
-  const iconProvider = route.icon?.provider
-    ? ` provider="${escapeStringLiteral(resolveIconProvider(route.icon.provider))}"`
-    : '';
-
   return {
     declaration: [
       route.icon
         ? `function ${iconFunctionName}({ color, size }: { color: string; size: number }) {
   return (
-    <Icon name="${escapeStringLiteral(route.icon.name)}"${iconProvider} color={color} size={size} />
+    <Icon${buildRouteIconJsxProps(route.icon, manifest)} color={color} size={size} />
   );
 }`
         : '',
@@ -375,7 +377,7 @@ function buildDrawerScreenFallbackJsx(
       route.icon
         ? `function ${iconFunctionName}({ color, size }: { color: string; size: number }) {
   return (
-    <Icon name="${escapeStringLiteral(route.icon.name)}"${route.icon.provider ? ` provider="${escapeStringLiteral(route.icon.provider)}"` : ''} color={color} size={size} />
+    <Icon${buildRouteIconJsxProps(route.icon, manifest)} color={color} size={size} />
   );
 }`
         : '',
@@ -443,7 +445,7 @@ function buildRouteMapDeclaration(args: {
       const label = resolveRouteLabel(route, manifest);
       const key = escapeStringLiteral(route.name);
       const routeKey = /^[A-Za-z_$][A-Za-z0-9_$]*$/u.test(key) ? key : `'${key}'`;
-      const iconSpec = route.icon ? buildRouteIconLiteral(route.icon) : '';
+      const iconSpec = route.icon ? buildRouteIconLiteral(route.icon, manifest) : '';
       const iconLine = iconSpec.length > 0 ? `\n    icon: ${iconSpec},` : '';
 
       return `  ${routeKey}: {\n    label: '${label}',${iconLine}\n  }`;
@@ -456,17 +458,67 @@ function buildRouteMapDeclaration(args: {
 /***
  * Generate a serialized ZORA route-icon object literal from manifest icon metadata.
  */
-function buildRouteIconLiteral(icon: NonNullable<RouteDefinition['icon']>): string {
+function buildRouteIconLiteral(
+  icon: NonNullable<RouteDefinition['icon']>,
+  manifest: AppManifest,
+): string {
+  const presentation = buildRouteIconPresentationLiteral(icon);
+  if ('source' in icon && icon.source !== undefined) {
+    return `{ source: ${buildResolvedIconSourceExpression(icon.source, manifest)}${presentation} }`;
+  }
+  if (icon.name === undefined) throw new Error('Named navigation icon is missing its name.');
   const provider = icon.provider
     ? `, provider: '${escapeStringLiteral(resolveIconProvider(icon.provider))}'`
     : '';
+  return `{ name: '${escapeStringLiteral(icon.name)}'${provider}${presentation} }`;
+}
+
+/*** Generate JSX props for either a named or media-backed navigation icon. */
+function buildRouteIconJsxProps(
+  icon: NonNullable<RouteDefinition['icon']>,
+  manifest: AppManifest,
+): string {
+  if ('source' in icon && icon.source !== undefined) {
+    return ` source={${buildResolvedIconSourceExpression(icon.source, manifest)}}`;
+  }
+  if (icon.name === undefined) throw new Error('Named navigation icon is missing its name.');
+  const provider = icon.provider
+    ? ` provider="${escapeStringLiteral(resolveIconProvider(icon.provider))}"`
+    : '';
+  return ` name="${escapeStringLiteral(icon.name)}"${provider}`;
+}
+
+/*** Generate optional authored icon presentation fields shared by named and SVG sources. */
+function buildRouteIconPresentationLiteral(icon: NonNullable<RouteDefinition['icon']>): string {
   const size =
     icon.size === undefined
       ? ''
       : `, size: ${typeof icon.size === 'number' ? icon.size : `'${escapeStringLiteral(String(icon.size))}'`}`;
   const color = icon.color ? `, color: '${escapeStringLiteral(icon.color)}'` : '';
 
-  return `{ name: '${escapeStringLiteral(icon.name)}'${provider}${size}${color} }`;
+  return `${size}${color}`;
+}
+
+/*** Resolve one portable media reference to a synchronous generated navigation icon source. */
+function buildResolvedIconSourceExpression(
+  reference: MediaAssetReference,
+  manifest: AppManifest,
+): string {
+  const asset = Reflect.get(manifest.media?.assets ?? {}, reference.mediaId) as
+    MediaAsset | undefined;
+  if (asset === undefined) {
+    throw new Error(`Navigation icon media '${reference.mediaId}' is missing from the manifest.`);
+  }
+  switch (asset.source.kind) {
+    case 'bundled':
+      return `bundledMediaRegistry['${escapeStringLiteral(asset.source.path)}']`;
+    case 'url':
+      return `'${escapeStringLiteral(asset.source.url)}'`;
+    case 'storage':
+      throw new Error(
+        `Navigation icon media '${reference.mediaId}' requires asynchronous storage resolution.`,
+      );
+  }
 }
 
 /***

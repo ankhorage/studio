@@ -122,4 +122,74 @@ describe('generated primary navigation visibility', () => {
     );
     expect(built.declarations).not.toContain("provider: 'material-community'");
   });
+
+  test('resolves bundled SVG route icons through the generated media registry', () => {
+    const built = buildNavigatorJsx({
+      navigator: {
+        ...createNavigator('tabs'),
+        routes: [
+          {
+            name: 'home',
+            screenId: 'home',
+            icon: { source: { mediaId: 'home-icon' }, size: 24, color: 'primary' },
+          },
+          { name: 'details', screenId: 'details' },
+        ],
+      },
+      manifest: {
+        ...manifest,
+        media: {
+          assets: {
+            'home-icon': {
+              id: 'home-icon',
+              name: 'Home icon',
+              kind: 'image',
+              contentType: 'image/svg+xml',
+              source: { kind: 'bundled', path: 'assets/icons/home.svg' },
+            },
+          },
+        },
+      },
+      includeStudio: false,
+    });
+
+    expect(built.declarations).toContain(
+      "icon: { source: bundledMediaRegistry['assets/icons/home.svg'], size: 24, color: 'primary' }",
+    );
+  });
+
+  test('resolves bundled SVG route icons in hidden-route fallback renderers', () => {
+    const built = buildNavigatorJsx({
+      navigator: {
+        ...createNavigator('tabs'),
+        routes: [
+          {
+            name: 'home',
+            screenId: 'home',
+            showInPrimaryNavigation: false,
+            icon: { source: { mediaId: 'home-icon' } },
+          },
+        ],
+      },
+      manifest: {
+        ...manifest,
+        media: {
+          assets: {
+            'home-icon': {
+              id: 'home-icon',
+              name: 'Home icon',
+              kind: 'image',
+              contentType: 'image/svg+xml',
+              source: { kind: 'bundled', path: 'assets/icons/home.svg' },
+            },
+          },
+        },
+      },
+      includeStudio: false,
+    });
+
+    expect(built.declarations).toContain(
+      "<Icon source={bundledMediaRegistry['assets/icons/home.svg']} color={color} size={size} />",
+    );
+  });
 });
