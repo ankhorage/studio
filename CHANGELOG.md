@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.1.1
+
+### Patch Changes
+
+- 14956ea: Consume Navigator's formatted generation release, keep standalone Studio checks version-agnostic, and publish releases directly from main.
+
 ## 2.1.0
 
 ### Minor Changes
