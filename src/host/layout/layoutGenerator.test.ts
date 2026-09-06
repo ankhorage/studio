@@ -232,7 +232,7 @@ describe('GeneratedAppFileGenerator', () => {
       includeStudio: true,
     });
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
-    const screen = files.find((file) => file.path === 'src/app/index.tsx')?.content ?? '';
+    const screen = files.find((file) => file.path === 'src/app/(app)/index.tsx')?.content ?? '';
 
     expect(rootLayout).toContain(`import {
   AppBar,
@@ -289,7 +289,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain(
       "import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';",
     );
-    expect(rootLayout).toContain('import { type Href, Stack,');
+    expect(rootLayout).toContain('import { type Href, Slot,');
     expect(rootLayout).toContain('router: { push: (href) => router.push(href as Href) }');
     expect(rootLayout).toContain('function useGeneratedRuntimeAction()');
     expect(rootLayout).toContain('const { executeAction } = useGeneratedRuntimeAction();');

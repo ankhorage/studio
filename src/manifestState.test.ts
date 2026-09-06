@@ -675,9 +675,13 @@ describe('manifestState', () => {
 
   test('preserves app navigator metadata and removes tab settings when changing the root type', () => {
     const manifest = createManifest();
+    const currentNavigator = manifest.navigator;
     manifest.navigator = {
-      ...manifest.navigator,
       type: 'tabs',
+      routes: currentNavigator.routes,
+      ...(currentNavigator.initialRouteName
+        ? { initialRouteName: currentNavigator.initialRouteName }
+        : {}),
       implementation: 'custom',
       presentation: 'sidebar',
       preset: 'root-stack-tabs',

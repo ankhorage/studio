@@ -105,6 +105,7 @@ export const STUDIO_PACKAGE_BOUNDARY: StudioPackageBoundary = {
     '@ankhorage/deploy',
     '@ankhorage/runtime',
     '@ankhorage/expo-runtime',
+    '@ankhorage/navigator',
     '@ankhorage/orchestrator',
     'standalone module-owned host contributions',
     '@ankhorage/templates',

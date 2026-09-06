@@ -1065,13 +1065,15 @@ export function updateNavigatorAtPath(
 }
 
 /*** Rebuild a navigator with one concrete discriminant and only shared navigator state. */
-function createNavigatorWithType(current: NavigatorNode, type: NavigatorType): NavigatorNode {
+function createNavigatorWithType(
+  current: NavigatorNode,
+  type: NavigatorType,
+): NavigatorNode | null {
   const shared = {
     routes: current.routes,
     ...(current.initialRouteName === undefined
       ? {}
       : { initialRouteName: current.initialRouteName }),
-    ...(current.options === undefined ? {} : { options: current.options }),
   };
 
   switch (type) {
@@ -1081,6 +1083,16 @@ function createNavigatorWithType(current: NavigatorNode, type: NavigatorType): N
       return { ...shared, type: 'tabs' };
     case 'drawer':
       return { ...shared, type: 'drawer' };
+    case 'slot':
+      return { ...shared, type: 'slot' };
+    case 'split-view': {
+      const primaryScreenId = current.routes.find((route) => route.screenId)?.screenId;
+      return primaryScreenId
+        ? { ...shared, type: 'split-view', columns: { primary: { screenId: primaryScreenId } } }
+        : null;
+    }
+    case 'custom':
+      return null;
   }
 }
 
@@ -1096,6 +1108,8 @@ export function setStudioManifestNavigatorType(
   const primaryNavigatorPath = getPrimaryNavigatorPath(manifest.navigator.routes);
   const currentNavigator = findNavigatorAtPath(manifest.navigator, primaryNavigatorPath);
   if (!currentNavigator || currentNavigator.type === type) return manifest;
+  const nextNavigator = createNavigatorWithType(currentNavigator, type);
+  if (!nextNavigator) return manifest;
 
   return {
     ...manifest,
@@ -1108,9 +1122,7 @@ export function setStudioManifestNavigatorType(
       ...(manifest.navigator.platforms === undefined
         ? {}
         : { platforms: manifest.navigator.platforms }),
-      ...updateNavigatorAtPath(manifest.navigator, primaryNavigatorPath, (current) =>
-        createNavigatorWithType(current, type),
-      ),
+      ...updateNavigatorAtPath(manifest.navigator, primaryNavigatorPath, () => nextNavigator),
     },
   };
 }

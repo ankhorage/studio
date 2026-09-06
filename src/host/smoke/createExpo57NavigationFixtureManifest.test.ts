@@ -40,20 +40,21 @@ describe('Expo 57 generated navigation acceptance fixture', () => {
     const source = files.map((file) => file.content).join('\n');
     const paths = files.map((file) => file.path);
     const hiddenTabsLayout = files.find(
-      (file) => file.path === 'src/app/hidden-tabs/(tabs)/_layout.tsx',
+      (file) => file.path === 'src/app/(app)/hidden-tabs/_layout.tsx',
     )?.content;
 
-    expect(paths).toContain('src/app/(tabs)/_layout.tsx');
-    expect(paths).toContain('src/app/(tabs)/profile/[id].tsx');
-    expect(paths).toContain('src/app/(tabs)/catalog/_layout.tsx');
-    expect(paths).toContain('src/app/hidden-tabs/(tabs)/_layout.tsx');
-    expect(paths).toContain('src/app/hidden-tabs/secret.tsx');
+    expect(paths).toContain('src/app/(app)/(tabs)/_layout.tsx');
+    expect(paths).toContain('src/app/(app)/(tabs)/profile/[id].tsx');
+    expect(paths).toContain('src/app/(app)/(tabs)/catalog/_layout.tsx');
+    expect(paths).toContain('src/app/(app)/hidden-tabs/_layout.tsx');
+    expect(paths).toContain('src/app/(app)/hidden-tabs/secret.tsx');
     expect(hiddenTabsLayout).toBeDefined();
-    expect(hiddenTabsLayout).not.toContain('name="secret"');
-    expect(source).toContain("from 'expo-router/js-tabs'");
-    expect(source).toContain("from 'expo-router/drawer'");
-    expect(source).toContain('<ZoraTabBar {...props} routeMap={routeMap} />');
-    expect(source).toContain('<ZoraDrawerContent {...props} routeMap={routeMap} />');
+    expect(hiddenTabsLayout).toContain('name="secret"');
+    expect(hiddenTabsLayout).toContain('"href":null');
+    expect(source).toContain('from "expo-router/js-tabs"');
+    expect(source).toContain('from "expo-router/drawer"');
+    expect(source).not.toContain('<ZoraTabBar');
+    expect(source).not.toContain('<ZoraDrawerContent');
     expect(source).not.toContain('@react-navigation/');
     expect(source).not.toContain('Parameters<typeof Zora');
   });
@@ -90,18 +91,18 @@ describe('Expo 57 generated navigation acceptance fixture', () => {
       includeStudio: false,
     });
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content;
+    const navigatorLayout = files.find(
+      (file) => file.path === 'src/app/(app)/_layout.tsx',
+    )?.content;
 
     expect(rootLayout).toBeDefined();
-    expect(rootLayout).toContain(
-      rootNavigator === 'tabs' ? "from 'expo-router/js-tabs'" : "from 'expo-router/drawer'",
-    );
-    expect(rootLayout).toContain(
-      rootNavigator === 'tabs' ? 'BottomTabBarProps' : 'DrawerContentComponentProps',
-    );
-    expect(rootLayout).toContain(
-      rootNavigator === 'tabs' ? '<ZoraTabBar {...props}' : '<ZoraDrawerContent {...props}',
+    expect(rootLayout).toContain("import { type Href, Slot, useRouter } from 'expo-router';");
+    expect(navigatorLayout).toContain(
+      rootNavigator === 'tabs' ? 'from "@ankhorage/navigator/tabs"' : 'from "expo-router/drawer"',
     );
     expect(rootLayout).toContain('type Href');
+    expect(navigatorLayout).not.toContain('ZoraTabBar');
+    expect(navigatorLayout).not.toContain('ZoraDrawerContent');
     expect(rootLayout).not.toContain('@react-navigation/');
   });
 });

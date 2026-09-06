@@ -99,6 +99,33 @@ describe('resolveAuthLayoutPlan', () => {
     expect(plan.authNavigator.routes.map((route) => route.name)).toEqual(['login', 'register']);
   });
 
+  it('keeps auth sign-out outside a root Tabs presentation without changing public paths', () => {
+    const manifest = createManifest();
+    manifest.navigator = {
+      type: 'tabs',
+      initialRouteName: 'train',
+      routes: [{ name: 'train', path: '/train', screenId: 'dashboard' }],
+    };
+
+    const plan = resolveAuthLayoutPlan({ manifest });
+
+    expect(plan.enabled).toBe(true);
+    if (!plan.enabled) throw new Error('Expected auth layout to be enabled.');
+    expect(plan.appNavigator).toEqual({
+      type: 'stack',
+      initialRouteName: '(tabs)',
+      routes: [
+        { name: '(tabs)', navigator: manifest.navigator },
+        {
+          name: 'sign-out',
+          screenId: 'generated-auth-sign-out',
+          showInPrimaryNavigation: false,
+        },
+      ],
+    });
+    expect(plan.appNavigator.routes[0]?.navigator?.routes[0]?.path).toBe('/train');
+  });
+
   it('plans one sanitized OAuth runtime and callback from infra.auth.oauth', () => {
     const plan = resolveAuthLayoutPlan({
       manifest: createManifest({ oauth: createOAuth() }),

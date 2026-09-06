@@ -212,11 +212,12 @@
   ],
   "dependencies": {
     "@ankhorage/color-theory": "^0.3.0",
-    "@ankhorage/contracts": "^10.1.0",
+    "@ankhorage/contracts": "^11.0.0",
     "@ankhorage/data-sources": "^2.0.0",
     "@ankhorage/deploy": "^0.12.0",
     "@ankhorage/expo-runtime": "^3.2.10",
     "@ankhorage/infra": "^4.1.6",
+    "@ankhorage/navigator": "^1.5.1",
     "@ankhorage/orchestrator": "^0.3.1",
     "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.1",
     "@ankhorage/orchestrator-module-expo-localization": "^0.6.0",
@@ -226,7 +227,7 @@
     "@ankhorage/supabase-auth": "^1.2.7",
     "@ankhorage/supabase-storage": "^0.2.0",
     "@ankhorage/supabase-vault": "^0.2.5",
-    "@ankhorage/templates": "^9.3.1",
+    "@ankhorage/templates": "^9.3.2",
     "@ankhorage/utility": "^0.3.0",
     "@ankhorage/zora": "^4.2.0",
     "@ankhorage/zora-chess": "^0.1.2",
@@ -267,7 +268,7 @@
     "typescript": "~6.0.3"
   },
   "overrides": {
-    "@ankhorage/contracts": "10.1.0"
+    "@ankhorage/contracts": "11.0.0"
   },
   "packageManager": "bun@1.4.0"
 }

@@ -59,6 +59,8 @@ export function createExpo57NavigationFixtureManifest(
                 label: 'Application',
                 navigator: {
                   type: 'tabs',
+                  implementation: 'javascript',
+                  presentation: 'bottom',
                   initialRouteName: 'index',
                   routes: [
                     {
@@ -68,10 +70,17 @@ export function createExpo57NavigationFixtureManifest(
                       screenId: 'navigation-home',
                     },
                     {
-                      name: 'profile/[id]',
+                      name: 'profile',
                       label: 'Profile',
                       icon: { name: 'person-outline', provider: 'Ionicons' },
-                      screenId: 'navigation-profile',
+                      navigator: {
+                        type: 'stack',
+                        initialRouteName: 'index',
+                        routes: [
+                          { name: 'index', screenId: 'navigation-profile-index' },
+                          { name: '[id]', screenId: 'navigation-profile' },
+                        ],
+                      },
                     },
                     {
                       name: 'catalog',
@@ -104,6 +113,8 @@ export function createExpo57NavigationFixtureManifest(
                 label: 'Hidden-route fixture',
                 navigator: {
                   type: 'tabs',
+                  implementation: 'javascript',
+                  presentation: 'bottom',
                   initialRouteName: 'index',
                   routes: [
                     { name: 'index', label: 'Visible', screenId: 'navigation-visible' },
@@ -172,6 +183,11 @@ export function createExpo57NavigationFixtureManifest(
                   tab: 'advanced',
                 },
               ),
+            ),
+            'navigation-profile-index': createScreen(
+              'navigation-profile-index',
+              'Profile Index',
+              'Profile Route',
             ),
             'navigation-secret': createScreen(
               'navigation-secret',

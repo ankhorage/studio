@@ -2,7 +2,12 @@ import type { AppManifest } from '@ankhorage/contracts';
 
 import type { LayoutMutation } from '../../modules/layout';
 import type { GeneratedImportRequirement } from '../generatedImportComposer';
-import type { BuiltNavigatorJsx } from './navigation';
+
+export interface RootNavigationContent {
+  declarations: string;
+  jsx: string;
+  usesTheme: boolean;
+}
 
 interface RootLayoutAuthRuntimeConfig {
   signInRoute: string;
@@ -18,7 +23,7 @@ interface GetRootLayoutTsxArgs {
   mutations: LayoutMutation[];
   allImports: string;
   allHooks: string;
-  innerNavigation: BuiltNavigatorJsx;
+  innerNavigation: RootNavigationContent;
   includeStudio: boolean;
   authRuntime?: RootLayoutAuthRuntimeConfig;
   initialRouteNameOverride?: string;

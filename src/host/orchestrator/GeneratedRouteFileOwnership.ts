@@ -16,6 +16,11 @@ const GENERATED_AUTH_FILE_PATHS = new Set([
   'src/auth/session.ts',
   'src/screens/auth-screen.tsx',
 ]);
+const GENERATED_NAVIGATOR_BINDING_FILE_PATHS = new Set([
+  'src/generated/navigatorGuardBindings.ts',
+  'src/generated/navigatorIconBindings.ts',
+  'src/generated/navigatorScreenBindings.ts',
+]);
 
 interface RouteLedger {
   readonly schemaVersion: 1;
@@ -141,7 +146,11 @@ async function readRequiredRouteLedger(projectPath: string): Promise<RouteLedger
 function resolveGeneratedFile(projectPath: string, relativePath: string): string {
   const target = resolveProjectFile(projectPath, relativePath);
   const isGeneratedAppRoute = relativePath.startsWith('src/app/') && relativePath.endsWith('.tsx');
-  if (!isGeneratedAppRoute && !GENERATED_AUTH_FILE_PATHS.has(relativePath)) {
+  if (
+    !isGeneratedAppRoute &&
+    !GENERATED_AUTH_FILE_PATHS.has(relativePath) &&
+    !GENERATED_NAVIGATOR_BINDING_FILE_PATHS.has(relativePath)
+  ) {
     throw new Error(`Path is outside current route-generation ownership: ${relativePath}`);
   }
   return target;

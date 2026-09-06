@@ -15,9 +15,11 @@ import { EXPO_PLATFORM, type ExpoPlatformPackage } from '@ankhorage/expo-runtime
 
 export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
-const CONTRACTS_VERSION = '^8.0.1';
+const CONTRACTS_VERSION = '^11.0.0';
+const CONTRACTS_OVERRIDE_VERSION = '11.0.0';
 const DATA_SOURCES_VERSION = '^2.0.0';
 const RUNTIME_VERSION = '^2.2.0';
+const NAVIGATOR_VERSION = '^1.5.1';
 const STUDIO_VERSION = '^2.0.20';
 const UTILITY_VERSION = '^0.2.0';
 const SUPABASE_AUTH_VERSION = '^1.2.5';
@@ -897,6 +899,7 @@ export function getPackageJson(args: {
       '@ankhorage/contracts': CONTRACTS_VERSION,
       '@ankhorage/data-sources': DATA_SOURCES_VERSION,
       '@ankhorage/expo-runtime': EXPO_RUNTIME_VERSION,
+      '@ankhorage/navigator': NAVIGATOR_VERSION,
       '@ankhorage/runtime': RUNTIME_VERSION,
       ...(includeStudio ? { '@ankhorage/studio': STUDIO_VERSION } : {}),
       ...(authProvider !== null ? { '@ankhorage/utility': UTILITY_VERSION } : {}),
@@ -946,6 +949,9 @@ export function getPackageJson(args: {
         EXPO_PLATFORM.packages.splashScreen,
         EXPO_PLATFORM.packages.statusBar,
       ]),
+    },
+    overrides: {
+      '@ankhorage/contracts': CONTRACTS_OVERRIDE_VERSION,
     },
     devDependencies: {
       '@ankhorage/devtools': DEVTOOLS_VERSION,

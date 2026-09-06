@@ -145,8 +145,9 @@ describe('generated auth root bootstrap', () => {
     expect(authNavigation).toContain("currentPath === '/' && postSignInPath !== '/'");
     expect(authNavigation).toContain('AUTH_POST_SIGN_IN_ROUTE_TARGET');
     expect(rootLayout).toContain("initialRouteName: '(app)'");
-    expect(appLayout).toContain("initialRouteName: '(tabs)'");
-    expect(tabsLayout).toContain("initialRouteName: 'products'");
+    expect(appLayout).toContain('initialRouteName="(tabs)"');
+    expect(tabsLayout).toContain('initialRouteName="products"');
+    expect(tabsLayout).toContain('"href":"/products"');
     expect(paths).toContain('src/app/(app)/(tabs)/products.tsx');
   });
 
@@ -159,7 +160,7 @@ describe('generated auth root bootstrap', () => {
       const adminLayout =
         files.find((file) => file.path === 'src/app/ankh/_layout.tsx')?.content ?? '';
 
-      expect(paths).toContain('src/app/index.tsx');
+      expect(paths).toContain('src/app/(app)/index.tsx');
       expect(paths).not.toContain('src/app/(auth)/sign-in.tsx');
       expect(paths).not.toContain('src/auth/navigation.ts');
       expect(rootLayout).not.toContain('useGeneratedAuthNavigation');

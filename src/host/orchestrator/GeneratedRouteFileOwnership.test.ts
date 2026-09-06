@@ -30,6 +30,25 @@ describe('GeneratedRouteFileOwnership', () => {
     await ownership.assertSyncable(projectPath);
   });
 
+  it('owns only the exact generated Navigator binding modules', async () => {
+    const projectPath = await createProjectPath();
+    const ownership = new GeneratedRouteFileOwnership();
+
+    await ownership.initialize(projectPath, [
+      'src/generated/navigatorGuardBindings.ts',
+      'src/generated/navigatorIconBindings.ts',
+      'src/generated/navigatorScreenBindings.ts',
+    ]);
+
+    expect(await readLedger(projectPath)).toMatchObject({
+      files: [
+        'src/generated/navigatorGuardBindings.ts',
+        'src/generated/navigatorIconBindings.ts',
+        'src/generated/navigatorScreenBindings.ts',
+      ],
+    });
+  });
+
   it('requires route ownership state before project sync', async () => {
     const projectPath = await createProjectPath();
     const ownership = new GeneratedRouteFileOwnership();
