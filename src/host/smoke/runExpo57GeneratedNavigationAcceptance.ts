@@ -206,10 +206,10 @@ async function assertGeneratedNavigationContractAsync(project: NavigationProject
     }
   }
 
-  if (!generatedSource.includes('from "expo-router/js-tabs"')) {
+  if (!generatedSource.includes("from 'expo-router/js-tabs'")) {
     throw new Error(`${project.id} does not consume Router-owned JavaScript tabs.`);
   }
-  if (!generatedSource.includes('from "expo-router/drawer"')) {
+  if (!generatedSource.includes("from 'expo-router/drawer'")) {
     throw new Error(`${project.id} does not consume Router-owned Drawer APIs.`);
   }
   const appRoot = path.join(project.path, 'src', 'app', '(app)');
@@ -220,7 +220,7 @@ async function assertGeneratedNavigationContractAsync(project: NavigationProject
       `${project.id} does not preserve its hidden route outside the visible tab group.`,
     );
   }
-  if (!(await readFile(hiddenTabsLayout, 'utf8')).includes('"href":null')) {
+  if (!(await readFile(hiddenTabsLayout, 'utf8')).includes('href: null')) {
     throw new Error(`${project.id} does not hide its direct JavaScript tab route.`);
   }
   if (generatedSource.includes('Parameters<typeof Zora')) {

@@ -368,7 +368,9 @@ const shouldMountAppHeader =
     : '';
   const indentedStudioShellBlock =
     studioShellBlock.length > 0 ? `\n${indentGeneratedBlock(studioShellBlock)}\n` : '\n';
-  const indentedInnerNavigationJsx = `    ${innerNavigation.jsx}`;
+  const innerContentReturn = innerNavigation.jsx.includes('\n')
+    ? `return (\n    ${innerNavigation.jsx}\n  );`
+    : `return ${innerNavigation.jsx};`;
   const generatedAppShell =
     finalJsx === '{output}'
       ? '<AppShell>{output}</AppShell>'
@@ -605,9 +607,7 @@ function GeneratedStatusBar() {
 }
 
 function InnerContent(${innerContentSignature}) {${innerContentReadyHook}
-${innerThemeHook}${innerContentPendingBoundary}  return (
-${indentedInnerNavigationJsx}
-  );
+${innerThemeHook}${innerContentPendingBoundary}  ${innerContentReturn}
 }
 `.trimStart();
 }

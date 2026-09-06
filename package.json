@@ -215,11 +215,11 @@
     "@ankhorage/contracts": "^11.0.0",
     "@ankhorage/data-sources": "^2.0.0",
     "@ankhorage/deploy": "^0.12.0",
-    "@ankhorage/expo-runtime": "^3.2.10",
+    "@ankhorage/expo-runtime": "^3.2.12",
     "@ankhorage/infra": "^4.1.6",
-    "@ankhorage/navigator": "^1.5.1",
+    "@ankhorage/navigator": "^1.5.2",
     "@ankhorage/orchestrator": "^0.3.1",
-    "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.1",
+    "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.4",
     "@ankhorage/orchestrator-module-expo-localization": "^0.6.0",
     "@ankhorage/permissions": "^0.2.3",
     "@ankhorage/react-native-reanimated-dnd-web": "^0.4.0",
@@ -235,7 +235,7 @@
     "@fastify/cors": "^11.2.0",
     "expo-document-picker": "~57.0.1",
     "expo-file-system": "~57.0.6",
-    "expo-image-picker": "~57.0.15",
+    "expo-image-picker": "~57.0.16",
     "fastify": "^5.7.4"
   },
   "peerDependencies": {
@@ -244,9 +244,9 @@
     "@react-native-vector-icons/fontawesome5": "^13.1.3",
     "@react-native-vector-icons/fontawesome6": "^13.1.3",
     "@react-native-vector-icons/ionicons": "^13.1.3",
-    "expo": "57.0.19",
+    "expo": "57.0.20",
     "expo-constants": "~57.0.17",
-    "expo-router": "~57.0.18",
+    "expo-router": "~57.0.19",
     "expo-status-bar": "~57.0.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -260,15 +260,15 @@
   },
   "devDependencies": {
     "@ankhorage/ankh": "^0.8.9",
-    "@ankhorage/devtools": "^1.10.5",
+    "@ankhorage/devtools": "^1.11.6",
     "@ankhorage/paradox": "^0.1.24",
-    "@types/bun": "^1.4.0",
+    "@types/bun": "^1.4.1",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.14",
     "typescript": "~6.0.3"
   },
   "overrides": {
-    "@ankhorage/contracts": "11.0.0"
+    "@ankhorage/contracts": "$@ankhorage/contracts"
   },
-  "packageManager": "bun@1.4.0"
+  "packageManager": "bun@1.4.2"
 }

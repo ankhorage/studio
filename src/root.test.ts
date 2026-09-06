@@ -45,7 +45,7 @@ test('keeps the package root and first-party apps in Studio workspace installs',
   }
   const contractsRange = packageJson.dependencies?.['@ankhorage/contracts'];
   expect(contractsRange).toMatch(CARET_SEMVER_RANGE);
-  expect(packageJson.overrides?.['@ankhorage/contracts']).toBe(contractsRange?.slice(1));
+  expect(packageJson.overrides?.['@ankhorage/contracts']).toBe('$@ankhorage/contracts');
   const expoRuntimeRange = packageJson.dependencies?.['@ankhorage/expo-runtime'];
   expect(expoRuntimeRange).toMatch(CARET_SEMVER_RANGE);
   expect(packageJson.dependencies?.['@ankhorage/runtime']).toMatch(CARET_SEMVER_RANGE);
