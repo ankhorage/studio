@@ -1,5 +1,15 @@
 # @ankhorage/studio
 
+## 2.1.0
+
+### Minor Changes
+
+- 6ed2c29: Generate Expo Router layout files through the standalone Navigator capability and include its runtime dependency in generated apps.
+
+### Patch Changes
+
+- 6ed2c29: Restore a single Contracts dependency graph for Studio builds and generate ZORA navigation icons from either provider names or bundled SVG sources.
+
 ## 2.0.28
 
 ### Patch Changes
