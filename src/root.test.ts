@@ -43,8 +43,9 @@ test('keeps the package root and first-party apps in Studio workspace installs',
     expect(match).not.toBeNull();
     expect(reactNativePeerRange).toBe(`${match?.[1]}.${match?.[2]}.x`);
   }
-  expect(packageJson.dependencies?.['@ankhorage/contracts']).toMatch(CARET_SEMVER_RANGE);
-  expect(packageJson.overrides?.['@ankhorage/contracts']).toBe('$@ankhorage/contracts');
+  const contractsRange = packageJson.dependencies?.['@ankhorage/contracts'];
+  expect(contractsRange).toMatch(CARET_SEMVER_RANGE);
+  expect(packageJson.overrides?.['@ankhorage/contracts']).toBe(contractsRange?.slice(1));
   const expoRuntimeRange = packageJson.dependencies?.['@ankhorage/expo-runtime'];
   expect(expoRuntimeRange).toMatch(CARET_SEMVER_RANGE);
   expect(packageJson.dependencies?.['@ankhorage/runtime']).toMatch(CARET_SEMVER_RANGE);

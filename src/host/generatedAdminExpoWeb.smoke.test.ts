@@ -152,9 +152,10 @@ function createAdminSmokeManifest(): AppManifest {
           ...(route.icon
             ? {
                 icon: {
-                  ...route.icon,
                   name: expo57RouteIcons[route.name] ?? 'ellipse-outline',
                   provider: 'Ionicons',
+                  ...(route.icon.size === undefined ? {} : { size: route.icon.size }),
+                  ...(route.icon.color === undefined ? {} : { color: route.icon.color }),
                 },
               }
             : {}),

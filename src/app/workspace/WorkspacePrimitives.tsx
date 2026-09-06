@@ -17,7 +17,7 @@ import type { TemplateCatalogCategory, TemplateEntry } from '../../templateCatal
 
 export { styles };
 
-type IoniconsIconName = Extract<IconProps, { provider?: 'Ionicons' }>['name'];
+type IoniconsIconName = Extract<IconProps, { name: unknown; provider?: 'Ionicons' }>['name'];
 
 export function WorkspaceScreen(props: {
   title: string;
