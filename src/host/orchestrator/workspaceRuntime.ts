@@ -6,7 +6,7 @@ const BUN_INSTALL_KILL_GRACE_MS = 5_000;
 type TimerHandle = ReturnType<typeof setTimeout>;
 
 /***
- * Run `bun install` for a workspace with bounded spawn/runtime timeouts and escalating termination safeguards.
+ * Run `bun install` inside an independent generated-project package root with bounded lifecycle safeguards.
  * @utility @ankhorage/utility/node/process
  */
 export async function runWorkspaceInstall(rootPath: string): Promise<void> {

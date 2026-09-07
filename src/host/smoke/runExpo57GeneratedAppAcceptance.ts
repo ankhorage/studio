@@ -5,6 +5,7 @@ import path from 'node:path';
 import type { AppManifest, ScreenSpec } from '@ankhorage/contracts';
 
 import { ProjectManager } from '../orchestrator/projectManager';
+import { assertReactNativeOwnerGraphAsync } from './assertReactNativeOwnerGraphAsync';
 import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
@@ -21,7 +22,6 @@ export async function runExpo57GeneratedAppAcceptanceAsync(): Promise<void> {
 
   try {
     const projectRoot = await createGeneratedProjectAsync(workspaceRoot);
-    await rm(path.join(workspaceRoot, 'package.json'));
     const lockfileDigest = await createProjectLockfileAsync(projectRoot);
     await runAcceptanceChecksAsync(projectRoot);
     const finalDigest = hash(await readFile(path.join(projectRoot, 'bun.lock')));
@@ -59,6 +59,23 @@ async function assertCameraFreeInstalledGraphAsync(projectRoot: string): Promise
   }
 }
 
+/*** Assert the generated app owns one physical Surface runtime so React context providers and consumers share identity. */
+async function assertGeneratedAppOwnerGraphAsync(projectRoot: string): Promise<void> {
+  const packageJson = JSON.parse(
+    await readFile(path.join(projectRoot, 'package.json'), 'utf8'),
+  ) as { readonly dependencies?: Readonly<Record<string, string>> };
+  const reactNativeVersion = packageJson.dependencies?.['react-native'];
+  if (!reactNativeVersion) {
+    throw new Error('Generated app does not declare its React Native runtime version.');
+  }
+  await assertReactNativeOwnerGraphAsync({
+    installationRoot: projectRoot,
+    reactNativeVersion,
+    requiredOwnerRanges: {},
+    singletonOwnerPackages: ['@ankhorage/surface'],
+  });
+}
+
 /*** Create the minimal standalone acceptance project and replace its initial manifest screen with a camera-free generated screen. */
 async function createGeneratedProjectAsync(workspaceRoot: string): Promise<string> {
   await mkdir(path.join(workspaceRoot, 'apps'), { recursive: true });
@@ -69,7 +86,7 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
         name: '@ankhorage/expo57-generated-app-acceptance',
         packageManager: 'bun@1.3.14',
         private: true,
-        workspaces: ['apps/*'],
+        workspaces: ['apps/studio'],
       },
       null,
       2,
@@ -153,6 +170,7 @@ async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
     timeoutMs: COMMAND_TIMEOUT_MS,
   });
   await assertCameraFreeInstalledGraphAsync(projectRoot);
+  await assertGeneratedAppOwnerGraphAsync(projectRoot);
   const expoCli = await resolveAppOwnedExpoCliAsync(projectRoot);
 
   const commands = [

@@ -42,7 +42,6 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
       mutations: [],
     });
     await assertExpo57GeneratedCapabilityContractAsync(created.path);
-    await rm(path.join(workspaceRoot, 'package.json'));
     await rm(path.join(created.path, 'node_modules'), { force: true, recursive: true });
     await createProjectLockfileAsync(created.path);
     const lockedDependencies = await readFile(path.join(created.path, 'bun.lock'));
@@ -79,7 +78,7 @@ async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
         name: '@ankhorage/expo57-generated-capability-acceptance',
         packageManager: 'bun@1.3.14',
         private: true,
-        workspaces: ['apps/*'],
+        workspaces: ['apps/studio'],
       },
       null,
       2,

@@ -43,6 +43,7 @@ export async function assertExpo57GeneratedCapabilityOwnerGraphAsync(
       '@ankhorage/surface': requireDependencyRange(zoraPackage, '@ankhorage/surface'),
       '@ankhorage/zora': requireDependencyRange(projectPackage, '@ankhorage/zora'),
     },
+    singletonOwnerPackages: ['@ankhorage/surface'],
   });
 
   for (const forbiddenPackage of ['expo-av', 'expo-permissions']) {

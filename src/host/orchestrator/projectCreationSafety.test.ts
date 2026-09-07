@@ -13,7 +13,7 @@ test('project creation rejects duplicate and reserved IDs before mutation', asyn
   await mkdir(path.join(workspaceRoot, 'apps', 'studio'), { recursive: true });
   await writeFile(
     path.join(workspaceRoot, 'package.json'),
-    JSON.stringify({ name: '@ankhorage/studio', private: true, workspaces: ['apps/*'] }),
+    JSON.stringify({ name: '@ankhorage/studio', private: true, workspaces: ['apps/studio'] }),
   );
 
   const manager = new ProjectManager(workspaceRoot);

@@ -20,7 +20,7 @@
   "sideEffects": false,
   "workspaces": [
     ".",
-    "apps/*"
+    "apps/studio"
   ],
   "files": [
     "dist",
@@ -177,7 +177,7 @@
     "lint:fix": "ankhorage-eslint . --fix --max-warnings=0",
     "format": "ankhorage-prettier --write .",
     "format:check": "ankhorage-prettier --check .",
-    "test": "bun test",
+    "test": "bun test src",
     "test:acceptance:expo57-generated-app": "bun scripts/expo57-generated-app-acceptance.ts",
     "test:acceptance:expo57-generated-capabilities": "bun scripts/expo57-generated-capability-acceptance.ts",
     "test:acceptance:expo57-auth-hidden-route-drawer": "bun scripts/expo57-generated-navigation-acceptance.ts --auth-hidden-route-drawer",

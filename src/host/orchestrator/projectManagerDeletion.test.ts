@@ -73,7 +73,7 @@ async function createWorkspace(): Promise<string> {
   await mkdir(path.join(rootPath, 'apps', 'studio'), { recursive: true });
   await writeFile(
     path.join(rootPath, 'package.json'),
-    JSON.stringify({ name: '@ankhorage/studio-test', private: true, workspaces: ['apps/*'] }),
+    JSON.stringify({ name: '@ankhorage/studio-test', private: true, workspaces: ['apps/studio'] }),
   );
   return rootPath;
 }

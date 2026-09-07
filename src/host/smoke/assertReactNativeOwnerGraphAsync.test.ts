@@ -76,6 +76,22 @@ test('rejects multiple physical RN installations', async () => {
   ).rejects.toThrow('Expected one physical React Native installation, found 2');
 });
 
+test('rejects multiple physical singleton owner installations', async () => {
+  const root = await createGraphAsync();
+  await writePackageAsync(root, '@ankhorage/surface', '3.4.3', '0.86.x');
+  const nestedRoot = path.join(root, 'node_modules', '.bun', 'nested');
+  await writePackageAsync(nestedRoot, '@ankhorage/surface', '3.4.1', '0.86.x');
+
+  return expect(
+    assertReactNativeOwnerGraphAsync({
+      installationRoot: root,
+      reactNativeVersion: '0.86.3',
+      requiredOwnerRanges: { '@ankhorage/surface': '^3.4.0' },
+      singletonOwnerPackages: ['@ankhorage/surface'],
+    }),
+  ).rejects.toThrow('Expected one physical @ankhorage/surface installation, found 2');
+});
+
 async function createGraphAsync(): Promise<string> {
   const root = await mkdtemp(path.join('/tmp', 'ankh-rn-owner-graph-'));
   temporaryDirectories.push(root);

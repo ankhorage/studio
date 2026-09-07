@@ -124,7 +124,7 @@ async function createGeneratedProject(): Promise<{ workspaceRoot: string; projec
     JSON.stringify({
       name: '@ankhorage/studio-auth-runtime-smoke',
       private: true,
-      workspaces: ['apps/*'],
+      workspaces: ['apps/studio'],
     }),
   );
 
