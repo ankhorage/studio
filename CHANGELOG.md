@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.2.2
+
+### Patch Changes
+
+- de878bb: Import shared Navigator generation and platform contracts from `@ankhorage/contracts/navigator` while keeping executable navigation planning and generation in Navigator.
+
 ## 2.2.1
 
 ### Patch Changes
