@@ -15,10 +15,10 @@ import { EXPO_PLATFORM, type ExpoPlatformPackage } from '@ankhorage/expo-runtime
 
 export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
-const CONTRACTS_VERSION = '^11.0.0';
+const CONTRACTS_VERSION = '^12.0.1';
 const DATA_SOURCES_VERSION = '^2.0.0';
 const RUNTIME_VERSION = '^2.2.0';
-const NAVIGATOR_VERSION = '^2.0.2';
+const NAVIGATOR_VERSION = '^3.0.0';
 const STUDIO_VERSION = '^2.0.20';
 const UTILITY_VERSION = '^0.4.0';
 const SUPABASE_AUTH_VERSION = '^1.2.5';

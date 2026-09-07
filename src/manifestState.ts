@@ -1115,7 +1115,6 @@ export function setStudioManifestNavigatorType(
     ...manifest,
     navigator: {
       ...(manifest.navigator.preset === undefined ? {} : { preset: manifest.navigator.preset }),
-      ...(manifest.navigator.flows === undefined ? {} : { flows: manifest.navigator.flows }),
       ...(manifest.navigator.defaults === undefined
         ? {}
         : { defaults: manifest.navigator.defaults }),

@@ -66,6 +66,9 @@ describe('generated OAuth scaffold templates', () => {
     expect(pkg.private).toBe(true);
 
     expect(dependencies['@ankhorage/contracts']).toMatch(CARET_SEMVER_RANGE);
+    expect(dependencies['@ankhorage/contracts']).toBe(
+      studioPackage.dependencies?.['@ankhorage/contracts'],
+    );
     expect(dependencies['@ankhorage/data-sources']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/expo-runtime']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/navigator']).toMatch(CARET_SEMVER_RANGE);
