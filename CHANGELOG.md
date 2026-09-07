@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.2.1
+
+### Patch Changes
+
+- 530daa4: Keep generated applications outside the Studio Bun workspace so each app owns its installation and lockfile while the first-party Studio app remains a temporary workspace.
+
 ## 2.2.0
 
 ### Minor Changes
