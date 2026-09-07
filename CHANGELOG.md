@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.3.0
+
+### Minor Changes
+
+- 4bf9bea: Make the first-party Studio app and generated apps independent Bun package roots with app-owned lockfiles, installs, focused Devtools configuration, EAS configuration, and Metro ancestor isolation. Add dashboard GitHub repository connection through `@ankhorage/repository`.
+
 ## 2.2.3
 
 ### Patch Changes
