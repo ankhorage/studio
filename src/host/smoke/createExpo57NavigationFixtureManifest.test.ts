@@ -47,6 +47,7 @@ describe('Expo 57 generated navigation acceptance fixture', () => {
     expect(paths).toContain('src/app/(app)/(tabs)/profile/[id].tsx');
     expect(paths).toContain('src/app/(app)/(tabs)/catalog/_layout.tsx');
     expect(paths).toContain('src/app/(app)/hidden-tabs/_layout.tsx');
+    expect(paths).not.toContain('src/app/(app)/hidden-tabs/(tabs)/_layout.tsx');
     expect(paths).toContain('src/app/(app)/hidden-tabs/secret.tsx');
     expect(hiddenTabsLayout).toBeDefined();
     expect(hiddenTabsLayout).toContain('name="secret"');
