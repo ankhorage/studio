@@ -7,6 +7,7 @@ import type { AppManifest, ScreenSpec } from '@ankhorage/contracts';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { assertReactNativeOwnerGraphAsync } from './assertReactNativeOwnerGraphAsync';
 import { createSmokeProjectSource } from './createSmokeProjectSource';
+import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
@@ -172,6 +173,12 @@ async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
     '.bin',
     process.platform === 'win32' ? 'expo-doctor.cmd' : 'expo-doctor',
   );
+  await generateExpoRouterTypesAsync({
+    env: { __UNSAFE_EXPO_HOME_DIRECTORY: path.join(projectRoot, '.ankh', 'expo-home') },
+    label: 'Generated app Expo Router typed-route generation',
+    projectRoot,
+    timeoutMs: 120_000,
+  });
 
   const commands = [
     { args: ['run', 'lint'], command: 'bun', cwd: projectRoot, label: 'Generated app lint' },
