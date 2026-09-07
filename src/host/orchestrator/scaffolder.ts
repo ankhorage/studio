@@ -19,11 +19,10 @@ import {
   type GeneratedStorageProvider,
   getAndroidRunTs,
   getAppConfigTs,
-  getEslintConfigMjs,
-  getEslintLocalConfigMjs,
+  getEasJson,
+  getMetroConfigJs,
+  getMetroEmptyModuleJs,
   getPackageJson,
-  getPrettierLocalConfigJs,
-  getPrettierRcJs,
   getTsConfigJson,
 } from './templates';
 
@@ -48,8 +47,53 @@ type ExtendedPackageJsonShape = Omit<PackageJsonShape, 'dependencies'> & {
 type PackageScripts = PackageJsonShape['scripts'];
 type PartialPackageScripts = Partial<PackageScripts>;
 
-const REQUIRED_MANAGED_SCRIPT_NAMES = ['lint', 'lint:fix', 'format', 'format:check'] as const;
+const REQUIRED_MANAGED_SCRIPT_NAMES = [
+  'lint',
+  'lint:fix',
+  'format',
+  'format:check',
+  'knip:check',
+] as const;
 const TARGET_SCRIPT_NAMES = ['android', 'ios', 'web'] as const;
+const APP_PRETTIER_LOCAL_CONFIG = `module.exports = {
+  overrides: [
+    { files: ['ankh.config.json', 'eas.json', 'tsconfig.json'], options: { printWidth: 1 } },
+    { files: 'infra/**/*.{yaml,yml}', options: { singleQuote: false } },
+  ],
+};
+`;
+const APP_KNIP_CONFIG = `import { createKnipConfig } from '@ankhorage/devtools/knip';
+
+export default createKnipConfig({
+  ignore: ['metro.empty-module.js', 'src/generated/appExtensionRegistry.ts'],
+  ignoreBinaries: ['adb'],
+  ignoreDependencies: [
+    '@ankhorage/ankh',
+    '@ankhorage/data-sources',
+    '@ankhorage/navigator',
+    '@ankhorage/supabase-storage',
+    '@types/culori',
+    'expo-updates',
+  ],
+  ignoreFiles: [
+    '.prettierrc.js',
+    'eslint.config.mjs',
+    'eslint.local.config.mjs',
+    'prettier.local.config.js',
+  ],
+});
+`;
+const APP_PRETTIERIGNORE_ENTRIES = ['/.ankh/', '/infra/'] as const;
+const APP_GITIGNORE_ENTRIES = [
+  'node_modules/',
+  '.expo/',
+  'dist/',
+  'dist-*/',
+  'android/',
+  'ios/',
+  '.env*.local',
+  '.DS_Store',
+] as const;
 
 /***
  * Materialize and synchronize generated Expo project scaffold files, dependencies, tooling configuration, assets and target-specific scripts.
@@ -91,10 +135,13 @@ export class ProjectScaffolder {
     );
     await this.syncAndroidRunScript(projectPath, targets, slug, includeStudio);
     await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);
+    await this.writeEasConfig(projectPath);
+    await this.writeMetroConfig(projectPath);
     await this.writeTsConfig(projectPath);
-    await this.writeEslintConfig(projectPath);
-    await this.writePrettierConfig(projectPath);
-    await this.ensureExpoGitIgnore(projectPath);
+    await this.ensurePrettierLocalConfig(projectPath);
+    await this.ensurePrettierIgnore(projectPath);
+    await this.ensureKnipConfig(projectPath);
+    await this.ensureAppGitIgnore(projectPath);
     await syncGeneratedAppFiles(projectPath, {
       runtimePlan,
       zoraExtensions,
@@ -148,10 +195,13 @@ export class ProjectScaffolder {
     await fs.writeFile(packageJsonPath, `${JSON.stringify(nextPackageJson, null, 2)}\n`, 'utf8');
     await this.syncAndroidRunScript(projectPath, targets, slug, includeStudio);
     await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);
+    await this.writeEasConfig(projectPath);
+    await this.writeMetroConfig(projectPath);
     await this.writeTsConfig(projectPath);
-    await this.writeEslintConfig(projectPath);
-    await this.writePrettierConfig(projectPath);
-    await this.ensureExpoGitIgnore(projectPath);
+    await this.ensurePrettierLocalConfig(projectPath);
+    await this.ensurePrettierIgnore(projectPath);
+    await this.ensureKnipConfig(projectPath);
+    await this.ensureAppGitIgnore(projectPath);
     await syncGeneratedAppFiles(projectPath, {
       runtimePlan,
       zoraExtensions,
@@ -205,6 +255,19 @@ export class ProjectScaffolder {
       getAppConfigTs({ name, slug, targets, splashScreen, runtimePlan }),
       'utf8',
     );
+  }
+
+  /*** Write the generated app-owned EAS build and submit profiles. */
+  private async writeEasConfig(dir: string) {
+    await fs.writeFile(path.join(dir, 'eas.json'), getEasJson(), 'utf8');
+  }
+
+  /*** Write the minimal Expo 57 Metro resolver boundary that prevents ancestor package fallback. */
+  private async writeMetroConfig(dir: string) {
+    await Promise.all([
+      fs.writeFile(path.join(dir, 'metro.config.js'), getMetroConfigJs(), 'utf8'),
+      fs.writeFile(path.join(dir, 'metro.empty-module.js'), getMetroEmptyModuleJs(), 'utf8'),
+    ]);
   }
 
   /*** Create or remove the managed Android run script according to the current Android deploy target. */
@@ -272,35 +335,46 @@ export class ProjectScaffolder {
     await fs.writeFile(path.join(dir, 'tsconfig.json'), getTsConfigJson(), 'utf8');
   }
 
-  /***
-   * Write generated ESLint configuration files.
-   * @todo Stop generating eslint.local.config.mjs/local rule overrides; generated apps must satisfy the canonical Ankhorage lint rules directly.
-   */
-  private async writeEslintConfig(dir: string) {
-    await Promise.all([
-      fs.writeFile(path.join(dir, 'eslint.config.mjs'), getEslintConfigMjs(), 'utf8'),
-      fs.writeFile(path.join(dir, 'eslint.local.config.mjs'), getEslintLocalConfigMjs(), 'utf8'),
-    ]);
+  /*** Seed app-specific Prettier overrides once while leaving the canonical wrapper to Devtools. */
+  private async ensurePrettierLocalConfig(dir: string) {
+    const configPath = path.join(dir, 'prettier.local.config.js');
+    if (await pathExists(configPath)) return;
+    await fs.writeFile(configPath, APP_PRETTIER_LOCAL_CONFIG, 'utf8');
   }
 
-  /*** Write generated canonical and local Prettier configuration files. */
-  private async writePrettierConfig(dir: string) {
-    await Promise.all([
-      fs.writeFile(path.join(dir, '.prettierrc.js'), getPrettierRcJs(), 'utf8'),
-      fs.writeFile(path.join(dir, 'prettier.local.config.js'), getPrettierLocalConfigJs(), 'utf8'),
-    ]);
+  /*** Ignore machine-managed state and generated infrastructure in app-owned formatting checks. */
+  private async ensurePrettierIgnore(dir: string) {
+    const ignorePath = path.join(dir, '.prettierignore');
+    const existing = (await pathExists(ignorePath)) ? await fs.readFile(ignorePath, 'utf8') : '';
+    const lines = existing.split(/\r?\n/gu);
+    const missingEntries = APP_PRETTIERIGNORE_ENTRIES.filter((entry) => !lines.includes(entry));
+    if (missingEntries.length === 0) return;
+    const separator = existing.length > 0 && !existing.endsWith('\n') ? '\n' : '';
+    await fs.writeFile(ignorePath, `${existing}${separator}${missingEntries.join('\n')}\n`, 'utf8');
   }
 
-  /*** Ensure generated projects ignore Expo's local .expo directory without disturbing existing gitignore content. */
-  private async ensureExpoGitIgnore(dir: string) {
+  /*** Seed the standalone app's Devtools-backed Knip scope once without modeling parent/sibling workspaces. */
+  private async ensureKnipConfig(dir: string) {
+    const configPath = path.join(dir, 'knip.config.ts');
+    if (await pathExists(configPath)) return;
+    await fs.writeFile(configPath, APP_KNIP_CONFIG, 'utf8');
+  }
+
+  /*** Ensure every generated app owns complete transient, build, secret, and editor ignore rules. */
+  private async ensureAppGitIgnore(dir: string) {
     const gitIgnorePath = path.join(dir, '.gitignore');
     const existing = (await pathExists(gitIgnorePath))
       ? await fs.readFile(gitIgnorePath, 'utf8')
       : '';
-    if (existing.split(/\r?\n/gu).includes('.expo/')) return;
-
+    const lines = existing.split(/\r?\n/gu);
+    const missingEntries = APP_GITIGNORE_ENTRIES.filter((entry) => !lines.includes(entry));
+    if (missingEntries.length === 0) return;
     const separator = existing.length > 0 && !existing.endsWith('\n') ? '\n' : '';
-    await fs.writeFile(gitIgnorePath, `${existing}${separator}.expo/\n`, 'utf8');
+    await fs.writeFile(
+      gitIgnorePath,
+      `${existing}${separator}${missingEntries.join('\n')}\n`,
+      'utf8',
+    );
   }
 
   /*** Populate generated project icon/splash/favicon assets from repository defaults or deterministic 1x1 PNG fallbacks. */

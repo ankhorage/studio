@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.2.1",
+      "value": "v2.2.3",
       "color": "cb3837"
     },
     {
@@ -188,6 +188,12 @@
         "ProjectsOverviewScreen",
         "StudioApp"
       ]
+    },
+    {
+      "path": "src/app/ProjectDetailScreen.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
     },
     {
       "path": "src/app/ProjectDetailScreen.tsx",
@@ -731,6 +737,7 @@
         "src/projectWorkspaceContracts.ts"
       ],
       "exports": [
+        "ConnectProjectRepositoryResponse",
         "CreateProjectInput",
         "CreateProjectResponse",
         "InstallProjectPackagesResponse",
@@ -1852,9 +1859,9 @@
         "src/host/orchestrator/projectPaths.ts",
         "src/host/orchestrator/projectStore.ts",
         "src/host/orchestrator/projectTargets.ts",
+        "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
         "src/host/orchestrator/scaffolder.ts",
         "src/host/orchestrator/templates.ts",
-        "src/host/orchestrator/workspaceRuntime.ts",
         "src/host/zoraExtensions/index.ts",
         "src/projectIdentity.ts"
       ],
@@ -1882,6 +1889,12 @@
       "exports": ["assertProjectId", "getAppsRoot", "getProjectPath"]
     },
     {
+      "path": "src/host/orchestrator/projectRepositoryConnection.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/orchestrator/projectManager.ts"],
+      "exports": []
+    },
+    {
       "path": "src/host/orchestrator/projectStore.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1902,6 +1915,18 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["createDefaultAppDeployManifest"]
+    },
+    {
+      "path": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/orchestrator/reconcileProjectPackageRootAsync.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["reconcileProjectPackageRootAsync"]
     },
     {
       "path": "src/host/orchestrator/resolveMutations.ts",
@@ -1965,25 +1990,12 @@
         "GeneratedStorageProvider",
         "getAndroidRunTs",
         "getAppConfigTs",
-        "getEslintConfigMjs",
-        "getEslintLocalConfigMjs",
+        "getEasJson",
+        "getMetroConfigJs",
+        "getMetroEmptyModuleJs",
         "getPackageJson",
-        "getPrettierLocalConfigJs",
-        "getPrettierRcJs",
         "getTsConfigJson"
       ]
-    },
-    {
-      "path": "src/host/orchestrator/workspaceRuntime.test.ts",
-      "isEntrypoint": false,
-      "dependencies": ["src/host/orchestrator/workspaceRuntime.ts"],
-      "exports": []
-    },
-    {
-      "path": "src/host/orchestrator/workspaceRuntime.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": ["runWorkspaceInstall"]
     },
     {
       "path": "src/host/secrets/bunSupabaseVaultClient.ts",
@@ -10475,7 +10487,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/ProjectDetailScreen.tsx",
-        "line": 38,
+        "line": 39,
         "column": 3
       }
     },
@@ -10484,7 +10496,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/ProjectDetailScreen.tsx",
-        "line": 56,
+        "line": 57,
         "column": 9
       }
     },
@@ -10493,7 +10505,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/ProjectDetailScreen.tsx",
-        "line": 73,
+        "line": 74,
         "column": 9
       }
     },
@@ -10502,7 +10514,7 @@
       "description": "Resolve the active project ID from Expo Router params.",
       "sourceLocation": {
         "filePath": "src/app/ProjectDetailScreen.tsx",
-        "line": 198,
+        "line": 214,
         "column": 1
       }
     },
@@ -10511,7 +10523,7 @@
       "description": "Normalize one scalar-or-array Expo Router parameter.",
       "sourceLocation": {
         "filePath": "src/app/ProjectDetailScreen.tsx",
-        "line": 204,
+        "line": 220,
         "column": 1
       }
     },
@@ -12095,7 +12107,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 54,
+        "line": 65,
         "column": 1
       }
     },
@@ -12104,7 +12116,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 58,
+        "line": 69,
         "column": 1
       }
     },
@@ -12113,7 +12125,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 62,
+        "line": 73,
         "column": 1
       }
     },
@@ -12122,7 +12134,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 72,
+        "line": 83,
         "column": 1
       }
     },
@@ -12131,7 +12143,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 76,
+        "line": 87,
         "column": 1
       }
     },
@@ -12140,7 +12152,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 92,
+        "line": 103,
         "column": 1
       }
     },
@@ -12149,7 +12161,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 96,
+        "line": 107,
         "column": 1
       }
     },
@@ -12158,7 +12170,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 104,
+        "line": 115,
         "column": 1
       }
     },
@@ -12167,7 +12179,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 112,
+        "line": 123,
         "column": 1
       }
     },
@@ -12176,7 +12188,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 118,
+        "line": 129,
         "column": 1
       }
     },
@@ -12185,7 +12197,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 135,
+        "line": 146,
         "column": 1
       }
     },
@@ -12194,7 +12206,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 156,
+        "line": 167,
         "column": 1
       }
     },
@@ -12203,7 +12215,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 164,
+        "line": 175,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseConnectProjectRepositoryResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/hooks/useProjects.ts",
+        "line": 183,
         "column": 1
       }
     },
@@ -12212,7 +12233,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 172,
+        "line": 209,
         "column": 1
       }
     },
@@ -12221,7 +12242,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 185,
+        "line": 222,
         "column": 1
       }
     },
@@ -12230,7 +12251,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 199,
+        "line": 236,
         "column": 1
       }
     },
@@ -12239,7 +12260,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 209,
+        "line": 255,
         "column": 1
       }
     },
@@ -12248,7 +12269,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 223,
+        "line": 269,
         "column": 1
       }
     },
@@ -12635,7 +12656,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 135,
+        "line": 134,
         "column": 1
       }
     },
@@ -12644,7 +12665,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 166,
+        "line": 165,
         "column": 1
       }
     },
@@ -12653,7 +12674,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 177,
+        "line": 176,
         "column": 1
       }
     },
@@ -12662,7 +12683,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 184,
+        "line": 183,
         "column": 1
       }
     },
@@ -12671,7 +12692,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 188,
+        "line": 187,
         "column": 1
       }
     },
@@ -12680,7 +12701,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 198,
+        "line": 197,
         "column": 1
       }
     },
@@ -12689,7 +12710,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 227,
+        "line": 226,
         "column": 1
       }
     },
@@ -12698,7 +12719,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 240,
+        "line": 239,
         "column": 1
       }
     },
@@ -12914,7 +12935,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1671,
+        "line": 1670,
         "column": 1
       }
     },
@@ -12923,7 +12944,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1705,
+        "line": 1704,
         "column": 1
       }
     },
@@ -12932,7 +12953,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1734,
+        "line": 1733,
         "column": 1
       }
     },
@@ -12941,7 +12962,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2012,
+        "line": 2011,
         "column": 1
       }
     },
@@ -12950,7 +12971,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2035,
+        "line": 2034,
         "column": 1
       }
     },
@@ -12959,7 +12980,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2052,
+        "line": 2051,
         "column": 1
       }
     },
@@ -12968,7 +12989,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2068,
+        "line": 2067,
         "column": 1
       }
     },
@@ -12977,7 +12998,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2090,
+        "line": 2089,
         "column": 1
       }
     },
@@ -12986,7 +13007,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2119,
+        "line": 2118,
         "column": 1
       }
     },
@@ -12995,7 +13016,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2182,
+        "line": 2181,
         "column": 1
       }
     },
@@ -13004,7 +13025,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2246,
+        "line": 2245,
         "column": 1
       }
     },
@@ -13013,7 +13034,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2279,
+        "line": 2278,
         "column": 1
       }
     },
@@ -13022,7 +13043,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2293,
+        "line": 2292,
         "column": 1
       }
     },
@@ -13031,7 +13052,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2302,
+        "line": 2301,
         "column": 1
       }
     },
@@ -13040,7 +13061,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2318,
+        "line": 2317,
         "column": 1
       }
     },
@@ -13049,7 +13070,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2325,
+        "line": 2324,
         "column": 1
       }
     },
@@ -13058,7 +13079,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2331,
+        "line": 2330,
         "column": 1
       }
     },
@@ -13067,7 +13088,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2344,
+        "line": 2343,
         "column": 1
       }
     },
@@ -13076,7 +13097,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2361,
+        "line": 2360,
         "column": 1
       }
     },
@@ -13085,7 +13106,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2378,
+        "line": 2377,
         "column": 1
       }
     },
@@ -13094,7 +13115,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2384,
+        "line": 2383,
         "column": 1
       }
     },
@@ -13103,7 +13124,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2390,
+        "line": 2389,
         "column": 1
       }
     },
@@ -13112,7 +13133,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2406,
+        "line": 2405,
         "column": 1
       }
     },
@@ -13121,7 +13142,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2962,
+        "line": 2961,
         "column": 1
       }
     },
@@ -13130,7 +13151,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2977,
+        "line": 2976,
         "column": 1
       }
     },
@@ -13139,7 +13160,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2981,
+        "line": 2980,
         "column": 1
       }
     },
@@ -13148,7 +13169,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2990,
+        "line": 2989,
         "column": 1
       }
     },
@@ -13157,7 +13178,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 3001,
+        "line": 3000,
         "column": 1
       }
     },
@@ -13211,7 +13232,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 151,
+        "line": 150,
         "column": 1
       }
     },
@@ -13220,7 +13241,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 185,
+        "line": 186,
         "column": 1
       }
     },
@@ -13229,7 +13250,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 204,
+        "line": 206,
         "column": 1
       }
     },
@@ -13238,7 +13259,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 284,
+        "line": 286,
         "column": 1
       }
     },
@@ -13247,7 +13268,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 307,
+        "line": 309,
         "column": 1
       }
     },
@@ -14165,7 +14186,7 @@
       "description": "Resolve host options, construct Studio managers/server composition and listen on the requested local interface.",
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 360,
+        "line": 373,
         "column": 1
       }
     },
@@ -14174,7 +14195,7 @@
       "description": "Trim infrastructure command output for one bounded HTTP response.",
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 375,
+        "line": 388,
         "column": 1
       }
     },
@@ -14633,7 +14654,7 @@
       "description": "Build the generated root-layout imports that bridge Runtime, Expo Runtime and optional Studio authoring ownership.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 61,
+        "line": 58,
         "column": 1
       }
     },
@@ -14642,7 +14663,7 @@
       "description": "Build generated runtime registry declarations for standalone apps or Studio-enabled authoring apps.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 91,
+        "line": 88,
         "column": 1
       }
     },
@@ -14651,7 +14672,7 @@
       "description": "Trim, discard empty and join generated module-level declaration blocks with a blank line.\n@utility @ankhorage/utility/string",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 126,
+        "line": 123,
         "column": 1
       }
     },
@@ -14660,7 +14681,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 162,
+        "line": 159,
         "column": 11
       }
     },
@@ -14669,7 +14690,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 174,
+        "line": 171,
         "column": 11
       }
     },
@@ -14678,7 +14699,7 @@
       "description": "Generate the Studio Admin route-group layout, redirecting when generated global auth is unavailable and guarding production builds from the development Admin shell.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 577,
+        "line": 558,
         "column": 1
       }
     },
@@ -14687,7 +14708,7 @@
       "description": "Generate the complete Studio Admin route file set from the canonical Admin route registry.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 603,
+        "line": 584,
         "column": 1
       }
     },
@@ -14696,7 +14717,7 @@
       "description": "Resolve a canonical Studio Admin route definition to its generated Expo Router file path, preserving parent routes as index modules and dynamic parameters as bracket segments.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 613,
+        "line": 594,
         "column": 1
       }
     },
@@ -14705,7 +14726,7 @@
       "description": "Generate one Studio Admin Expo Router module that development-gates and renders the requested Admin route.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 634,
+        "line": 615,
         "column": 1
       }
     },
@@ -14714,7 +14735,7 @@
       "description": "Normalize a relative filesystem path to forward-slash separators for generated project files.\n@utility @ankhorage/utility/path",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 652,
+        "line": 633,
         "column": 1
       }
     },
@@ -15623,7 +15644,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 149,
+        "line": 178,
         "column": 1
       }
     },
@@ -15632,7 +15653,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 159,
+        "line": 188,
         "column": 1
       }
     },
@@ -15641,7 +15662,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 167,
+        "line": 196,
         "column": 1
       }
     },
@@ -15650,7 +15671,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 192,
+        "line": 225,
         "column": 1
       }
     },
@@ -15830,7 +15851,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectCreationAssets.test.ts",
-        "line": 64,
+        "line": 68,
         "column": 1
       }
     },
@@ -15839,7 +15860,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectCreationSafety.test.ts",
-        "line": 39,
+        "line": 50,
         "column": 1
       }
     },
@@ -15902,7 +15923,7 @@
       "description": "Require canonical deploy targets before project generation/synchronization.\n@todo Move deploy-target validation to the deploy/projects domain boundary rather than host/orchestrator.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 390,
+        "line": 416,
         "column": 1
       }
     },
@@ -15911,7 +15932,7 @@
       "description": "Report whether a filesystem path is accessible.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 404,
+        "line": 430,
         "column": 1
       }
     },
@@ -15920,7 +15941,7 @@
       "description": "Resolve the generated auth-provider mode from the manifest's global auth infrastructure ownership.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 414,
+        "line": 440,
         "column": 1
       }
     },
@@ -15929,7 +15950,25 @@
       "description": "Resolve the generated storage-provider mode when automatic storage should follow Supabase-owned auth/database infrastructure.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 423,
+        "line": 449,
+        "column": 1
+      }
+    },
+    {
+      "name": "readProjectPackageJson",
+      "description": "Read the generated app's package name used as the repository identity base.",
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectManager.ts",
+        "line": 457,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDefaultRepositoryName",
+      "description": "Derive the default repository name from the package name and enabled native target suffixes.",
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectManager.ts",
+        "line": 474,
         "column": 1
       }
     },
@@ -16024,6 +16063,15 @@
       }
     },
     {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectRepositoryConnection.test.ts",
+        "line": 69,
+        "column": 1
+      }
+    },
+    {
       "name": "normalizeManifestForProject",
       "description": "Normalize mutable project-owned manifest metadata before persistence.",
       "sourceLocation": {
@@ -16105,6 +16153,51 @@
       }
     },
     {
+      "name": "reconcileProjectPackageRootAsync",
+      "description": "Reconcile one generated app's install, Devtools app concerns, and frozen lockfile entirely inside its package root.\n@todo Move project package reconciliation from the host adapter area into the projects application boundary.",
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "runProjectCommandAsync",
+      "description": "Run one project-owned command with bounded start/runtime timeouts and escalating termination safeguards.",
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
+        "line": 47,
+        "column": 1
+      }
+    },
+    {
+      "name": "clearTimers",
+      "description": "Clear every timeout owned by this command lifecycle.",
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
+        "line": 68,
+        "column": 11
+      }
+    },
+    {
+      "name": "rejectOnce",
+      "description": "Reject this command exactly once and clear all pending timeout work.",
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
+        "line": 75,
+        "column": 11
+      }
+    },
+    {
+      "name": "rejectWithTimeout",
+      "description": "Terminate an overdue command and reject its lifecycle exactly once.",
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
+        "line": 83,
+        "column": 5
+      }
+    },
+    {
       "name": "resolveModuleLayoutMutations",
       "description": "Resolve layout mutations contributed by the selected host modules in module-id order.\n@todo Move module layout resolution from generic `host/orchestrator` into the `modules/` domain host integration.",
       "sourceLocation": {
@@ -16118,7 +16211,7 @@
       "description": "Add dependency requirements from selected ZORA extensions to a generated package manifest.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 354,
+        "line": 428,
         "column": 1
       }
     },
@@ -16127,7 +16220,7 @@
       "description": "Reconcile Studio-managed package dependencies/devDependencies/scripts while preserving unrelated app-owned package metadata.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 368,
+        "line": 442,
         "column": 1
       }
     },
@@ -16136,7 +16229,7 @@
       "description": "Merge app-owned scripts with generated template scripts while force-owning canonical quality scripts and current platform target scripts.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 429,
+        "line": 503,
         "column": 1
       }
     },
@@ -16145,7 +16238,7 @@
       "description": "Find one named package script in a partial scripts record.\n@utility @ankhorage/utility/package",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 459,
+        "line": 533,
         "column": 1
       }
     },
@@ -16163,7 +16256,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 31,
+        "line": 32,
         "column": 1
       }
     },
@@ -16172,7 +16265,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 39,
+        "line": 40,
         "column": 1
       }
     },
@@ -16181,7 +16274,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 81,
+        "line": 82,
         "column": 1
       }
     },
@@ -16190,7 +16283,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 91,
+        "line": 92,
         "column": 1
       }
     },
@@ -16199,7 +16292,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 95,
+        "line": 96,
         "column": 1
       }
     },
@@ -16208,7 +16301,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 111,
+        "line": 112,
         "column": 1
       }
     },
@@ -16217,7 +16310,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 133,
+        "line": 134,
         "column": 1
       }
     },
@@ -16226,7 +16319,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 145,
+        "line": 146,
         "column": 1
       }
     },
@@ -16235,7 +16328,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 173,
+        "line": 174,
         "column": 1
       }
     },
@@ -16244,7 +16337,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 219,
+        "line": 220,
         "column": 1
       }
     },
@@ -16253,43 +16346,34 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 858,
+        "line": 859,
         "column": 1
       }
     },
     {
-      "name": "getEslintConfigMjs",
+      "name": "getEasJson",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 969,
+        "line": 975,
         "column": 1
       }
     },
     {
-      "name": "getEslintLocalConfigMjs",
+      "name": "getMetroConfigJs",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 986,
+        "line": 991,
         "column": 1
       }
     },
     {
-      "name": "getPrettierRcJs",
+      "name": "getMetroEmptyModuleJs",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1001,
-        "column": 1
-      }
-    },
-    {
-      "name": "getPrettierLocalConfigJs",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1013,
+        "line": 1017,
         "column": 1
       }
     },
@@ -16298,7 +16382,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1023,
+        "line": 1021,
         "column": 1
       }
     },
@@ -16307,44 +16391,8 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1056,
+        "line": 1054,
         "column": 1
-      }
-    },
-    {
-      "name": "runWorkspaceInstall",
-      "description": "Run `bun install` inside an independent generated-project package root with bounded lifecycle safeguards.\n@utility @ankhorage/utility/node/process",
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/workspaceRuntime.ts",
-        "line": 12,
-        "column": 1
-      }
-    },
-    {
-      "name": "clearTimers",
-      "description": "Clear all lifecycle timeout handles associated with the spawned process.",
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/workspaceRuntime.ts",
-        "line": 30,
-        "column": 11
-      }
-    },
-    {
-      "name": "rejectOnce",
-      "description": "Reject the process lifecycle exactly once while clearing pending timeout work.",
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/workspaceRuntime.ts",
-        "line": 37,
-        "column": 11
-      }
-    },
-    {
-      "name": "rejectWithTimeout",
-      "description": "Terminate an overdue process with SIGTERM/SIGKILL escalation and reject the lifecycle once.\n@utility @ankhorage/utility/node/process",
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/workspaceRuntime.ts",
-        "line": 48,
-        "column": 11
       }
     },
     {
@@ -16676,7 +16724,7 @@
       "description": "Assert that every copied fixture file is a real file and does not embed a path back to the source repository.",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 77,
+        "line": 107,
         "column": 1
       }
     },
@@ -16685,7 +16733,7 @@
       "description": "Verify installed registry packages, React Native owner ranges and generated Expo Router declarations for the standalone fixture.",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 97,
+        "line": 127,
         "column": 1
       }
     },
@@ -16694,7 +16742,7 @@
       "description": "Reads the ZORA range owned by the installed registry Studio package.",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 149,
+        "line": 179,
         "column": 1
       }
     },
@@ -16703,7 +16751,7 @@
       "description": "Assert that fixture dependency ranges resolve from the registry and scripts do not reach outside the standalone package root.",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 166,
+        "line": 196,
         "column": 1
       }
     },
@@ -16712,7 +16760,7 @@
       "description": "Report whether a target path is equal to or nested within a parent path.\n@utility @ankhorage/utility/path",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 186,
+        "line": 216,
         "column": 1
       }
     },
@@ -16721,7 +16769,7 @@
       "description": "Recursively list filesystem entries under a root while skipping traversal into node_modules.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 195,
+        "line": 225,
         "column": 1
       }
     },
@@ -16730,7 +16778,7 @@
       "description": "Resolve the canonical Studio, Expo Runtime and Devtools release ranges required by a standalone fixture from repository-owned package manifests.",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 208,
+        "line": 238,
         "column": 1
       }
     },
@@ -16739,7 +16787,7 @@
       "description": "Resolve the Runtime, Studio and Surface ranges owned by the repository's current package graph for standalone acceptance.",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 245,
+        "line": 275,
         "column": 1
       }
     },
@@ -16748,7 +16796,7 @@
       "description": "Read and parse a package.json-compatible manifest from disk.\n@utility @ankhorage/utility/node/package",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 280,
+        "line": 310,
         "column": 1
       }
     },
@@ -16757,7 +16805,7 @@
       "description": "Require and return one dependency range from a selected package manifest dependency group.\n@utility @ankhorage/utility/package",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 288,
+        "line": 318,
         "column": 1
       }
     },
@@ -17099,7 +17147,7 @@
       "description": "Create the canonical application manifest embedded in the standalone Studio-host fixture.",
       "sourceLocation": {
         "filePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts",
-        "line": 43,
+        "line": 42,
         "column": 1
       }
     },
@@ -17108,7 +17156,7 @@
       "description": "Copy the Studio consumer surface into an external standalone acceptance fixture.\n@todo Move this fixture copier from src/host/smoke to test/smoke.",
       "sourceLocation": {
         "filePath": "src/host/smoke/createExpo57StudioStandaloneFixtureAsync.ts",
-        "line": 19,
+        "line": 26,
         "column": 1
       }
     },
@@ -17954,7 +18002,7 @@
       "description": "Assert that the camera-free generated app neither declares nor transitively installs camera capability dependencies.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 37,
+        "line": 44,
         "column": 1
       }
     },
@@ -17963,7 +18011,7 @@
       "description": "Assert the generated app owns one physical Surface runtime so React context providers and consumers share identity.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 63,
+        "line": 70,
         "column": 1
       }
     },
@@ -17972,16 +18020,7 @@
       "description": "Create the minimal standalone acceptance project and replace its initial manifest screen with a camera-free generated screen.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 80,
-        "column": 1
-      }
-    },
-    {
-      "name": "createProjectLockfileAsync",
-      "description": "Create the generated app-owned cross-platform Bun lockfile and return its content fingerprint.",
-      "sourceLocation": {
-        "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 135,
+        "line": 87,
         "column": 1
       }
     },
@@ -17990,7 +18029,7 @@
       "description": "Compute a SHA-256 hex digest for byte content.\n@utility @ankhorage/utility/crypto",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 150,
+        "line": 144,
         "column": 1
       }
     },
@@ -17999,7 +18038,7 @@
       "description": "Resolve the manifest screen routed by the navigator's current initial route for acceptance mutation.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 155,
+        "line": 149,
         "column": 1
       }
     },
@@ -18008,7 +18047,34 @@
       "description": "Run cold installation, graph checks, lint, Expo compatibility, typecheck, platform exports and clean native prebuild for the generated app.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 164,
+        "line": 158,
+        "column": 1
+      }
+    },
+    {
+      "name": "copyRelocatedProjectAsync",
+      "description": "Copy a generated app without installed/transient output to an unrelated standalone root.",
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
+        "line": 234,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertParentOnlyDependencyCannotBundleAsync",
+      "description": "Prove Metro cannot satisfy a generated-app import from an ancestor-only package installation.",
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
+        "line": 248,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertStaleLockfileFailsAsync",
+      "description": "Prove a package mutation without lockfile reconciliation fails the frozen-install contract.",
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
+        "line": 293,
         "column": 1
       }
     },
@@ -18035,7 +18101,7 @@
       "description": "Create the generated capability app's cross-platform Bun lockfile without installing dependencies.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 91,
+        "line": 90,
         "column": 1
       }
     },
@@ -18044,7 +18110,7 @@
       "description": "Run static source-stability checks, router/type validation, deterministic browser OAuth evidence and native platform exports for the capability fixture.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 102,
+        "line": 101,
         "column": 1
       }
     },
@@ -18053,7 +18119,7 @@
       "description": "Create a deterministic local Supabase Auth stub that counts OAuth authorization and token-exchange requests for browser acceptance.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 176,
+        "line": 175,
         "column": 1
       }
     },
@@ -18062,7 +18128,7 @@
       "description": "Exercise generated sign-in/sign-up, OAuth expiry/replay/mismatch and hydrated capability rendering through the served static Web export.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 231,
+        "line": 230,
         "column": 1
       }
     },
@@ -18071,7 +18137,7 @@
       "description": "Start one fresh OAuth authorization attempt through the generated sign-in UI and assert that it reaches the deterministic Auth stub.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 318,
+        "line": 317,
         "column": 1
       }
     },
@@ -18080,7 +18146,7 @@
       "description": "Capture every file under a project's src tree as a deterministic relative-path-to-byte-content map.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 340,
+        "line": 339,
         "column": 1
       }
     },
@@ -18089,7 +18155,7 @@
       "description": "Assert that a project's current src tree exactly matches a previously captured byte snapshot.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 356,
+        "line": 355,
         "column": 1
       }
     },
@@ -18098,7 +18164,7 @@
       "description": "Assert generated Router declarations are non-empty and contain the capability auth/app route evidence.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 373,
+        "line": 372,
         "column": 1
       }
     },
@@ -18107,7 +18173,7 @@
       "description": "Run one generated capability command with isolated Expo home, telemetry disabled and Router rewrite checks disabled.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 387,
+        "line": 386,
         "column": 1
       }
     },
@@ -18197,7 +18263,7 @@
       "description": "Create one generated project's app-owned lockfile, cold-install it frozen and return the pre-install lockfile digest.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 371,
+        "line": 370,
         "column": 1
       }
     },
@@ -18206,7 +18272,7 @@
       "description": "Compute a SHA-256 hex digest for byte content.\n@utility @ankhorage/utility/crypto",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 393,
+        "line": 392,
         "column": 1
       }
     },
@@ -18215,7 +18281,7 @@
       "description": "Recursively list JavaScript/TypeScript source files beneath a source root.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 401,
+        "line": 400,
         "column": 1
       }
     },
@@ -18224,7 +18290,7 @@
       "description": "Report whether a filesystem path currently exists, propagating non-ENOENT stat failures.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 416,
+        "line": 415,
         "column": 1
       }
     },
@@ -18233,7 +18299,7 @@
       "description": "Run one acceptance command with isolated Expo home, telemetry disabled and optional Router rewrite-check disabling.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 427,
+        "line": 426,
         "column": 1
       }
     },
@@ -18242,7 +18308,7 @@
       "description": "Exercise dynamic/static routes, browser history, nested tabs/drawer and hidden-route direct navigation in the generated development Web app.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 442,
+        "line": 441,
         "column": 1
       }
     },
@@ -18251,7 +18317,7 @@
       "description": "Launch the generated project's Expo Web development server and execute a caller-supplied Chrome smoke scenario against it.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 489,
+        "line": 488,
         "column": 1
       }
     },
@@ -18260,7 +18326,7 @@
       "description": "Validate one root-tabs/root-drawer fixture's generated bridge, typed Router boundary, lint and typecheck.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 527,
+        "line": 526,
         "column": 1
       }
     },
@@ -18269,7 +18335,7 @@
       "description": "Run typed-route generation, navigation lint, Expo compatibility/Doctor, TypeScript and Web/native exports for one generated navigation fixture.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 567,
+        "line": 566,
         "column": 1
       }
     },
@@ -18278,7 +18344,7 @@
       "description": "Exercise the served static navigation export at mobile and desktop widths using real pointer navigation and overflow assertions.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 624,
+        "line": 623,
         "column": 1
       }
     },
@@ -18287,7 +18353,7 @@
       "description": "Assert signed-out global-auth navigation redirects protected generated content to the sign-in route without leaking protected UI.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 645,
+        "line": 644,
         "column": 1
       }
     },
@@ -18296,7 +18362,7 @@
       "description": "Exercise global-auth Studio bootstrap, signed-out Admin denial, authenticated post-sign-in routing and Back-to-app behavior.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 661,
+        "line": 660,
         "column": 1
       }
     },
@@ -18305,7 +18371,7 @@
       "description": "Exercise the explicit development auth bypass and verify direct Studio Admin access remains available without a stored session.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 712,
+        "line": 711,
         "column": 1
       }
     },
@@ -18314,7 +18380,7 @@
       "description": "Assert the auth-injected sign-out route is hidden in the Navigator-owned Drawer and exercise authenticated app/Admin navigation.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 738,
+        "line": 737,
         "column": 1
       }
     },
@@ -18323,7 +18389,7 @@
       "description": "Validate integrated/none auth-scope fixtures keep the public app root accessible and deny Studio Admin routes without a global session.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 784,
+        "line": 783,
         "column": 1
       }
     },
@@ -18332,7 +18398,7 @@
       "description": "Poll an HTTP endpoint until it responds below the 5xx range, including caller-provided diagnostics on timeout.\n@utility @ankhorage/utility/http",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 818,
+        "line": 817,
         "column": 1
       }
     },
@@ -18341,7 +18407,7 @@
       "description": "Collect UTF-8 stdout and stderr chunks from a child process into a shared output buffer.\n@utility @ankhorage/utility/node/process",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 835,
+        "line": 834,
         "column": 1
       }
     },
@@ -18350,7 +18416,7 @@
       "description": "Terminate a detached child-process group, falling back to the direct child when group signaling is unavailable.\n@utility @ankhorage/utility/node/process",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 847,
+        "line": 846,
         "column": 1
       }
     },
@@ -18374,7 +18440,7 @@
     },
     {
       "name": "createLockfileAndInstallAsync",
-      "description": "Create the standalone registry lockfile, perform a cold frozen install, assert lockfile stability and return its digest.",
+      "description": "Perform a cold frozen install from the app-owned lockfile, assert stability and return its digest.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
         "line": 94,
@@ -18386,7 +18452,7 @@
       "description": "Build the isolated Bun/Expo cache environment used by standalone acceptance commands.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
-        "line": 123,
+        "line": 114,
         "column": 1
       }
     },
@@ -18395,7 +18461,7 @@
       "description": "Compute a SHA-256 hex digest for byte content.\n@utility @ankhorage/utility/crypto",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
-        "line": 136,
+        "line": 127,
         "column": 1
       }
     },
@@ -18404,7 +18470,7 @@
       "description": "Run the standalone app-owned platform, type, lint, format, Expo Doctor and React Compiler quality gates.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
-        "line": 141,
+        "line": 132,
         "column": 1
       }
     },
@@ -18413,7 +18479,7 @@
       "description": "Run static Web, Android and iOS exports plus served static-Web smoke and clean native prebuild for the standalone fixture.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
-        "line": 167,
+        "line": 159,
         "column": 1
       }
     },
@@ -18773,7 +18839,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 138,
+        "line": 137,
         "column": 1
       }
     },
@@ -18782,7 +18848,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 185,
+        "line": 184,
         "column": 1
       }
     },
@@ -18791,7 +18857,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 203,
+        "line": 202,
         "column": 1
       }
     },
@@ -18800,7 +18866,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 224,
+        "line": 223,
         "column": 1
       }
     },
@@ -18809,7 +18875,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 240,
+        "line": 239,
         "column": 1
       }
     },
@@ -18818,7 +18884,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 263,
+        "line": 262,
         "column": 1
       }
     },
@@ -18827,7 +18893,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 272,
+        "line": 271,
         "column": 1
       }
     },
@@ -18836,7 +18902,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 289,
+        "line": 288,
         "column": 1
       }
     },
@@ -18845,7 +18911,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 406,
+        "line": 405,
         "column": 1
       }
     },
@@ -18854,7 +18920,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 423,
+        "line": 422,
         "column": 1
       }
     },
@@ -18863,7 +18929,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 438,
+        "line": 437,
         "column": 1
       }
     },
@@ -18872,7 +18938,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 449,
+        "line": 448,
         "column": 1
       }
     },
@@ -18881,7 +18947,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 458,
+        "line": 457,
         "column": 1
       }
     },
@@ -18890,7 +18956,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 464,
+        "line": 463,
         "column": 1
       }
     },
@@ -28307,17 +28373,17 @@
       },
       {
         "fromPath": "src/host/orchestrator/projectManager.ts",
+        "toPath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectManager.ts",
         "toPath": "src/host/orchestrator/scaffolder.ts",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
         "fromPath": "src/host/orchestrator/projectManager.ts",
         "toPath": "src/host/orchestrator/templates.ts",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromPath": "src/host/orchestrator/projectManager.ts",
-        "toPath": "src/host/orchestrator/workspaceRuntime.ts",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -28334,6 +28400,11 @@
         "fromPath": "src/host/orchestrator/projectManagerDeletion.test.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
         "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectRepositoryConnection.test.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/orchestrator/projectRepositoryConnection.test.ts"
       },
       {
         "fromPath": "src/host/orchestrator/projectStore.ts",
@@ -28354,6 +28425,11 @@
         "fromPath": "src/host/orchestrator/projectStoreSummary.test.ts",
         "toPath": "src/host/orchestrator/projectStore.ts",
         "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts",
+        "toPath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts"
       },
       {
         "fromPath": "src/host/orchestrator/resolveMutations.ts",
@@ -28424,11 +28500,6 @@
         "fromPath": "src/host/orchestrator/templates.test.ts",
         "toPath": "src/host/orchestrator/templates.ts",
         "sourcePath": "src/host/orchestrator/templates.test.ts"
-      },
-      {
-        "fromPath": "src/host/orchestrator/workspaceRuntime.test.ts",
-        "toPath": "src/host/orchestrator/workspaceRuntime.ts",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
       },
       {
         "fromPath": "src/host/secrets/projectSecretService.test.ts",
@@ -36975,6 +37046,24 @@
         "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
       },
       {
+        "fromSymbol": "src/app/ProjectDetailScreen.test.ts",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/app/ProjectDetailScreen.test.ts"
+      },
+      {
+        "fromSymbol": "src/app/ProjectDetailScreen.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/app/ProjectDetailScreen.test.ts"
+      },
+      {
+        "fromSymbol": "src/app/ProjectDetailScreen.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/app/ProjectDetailScreen.test.ts"
+      },
+      {
         "fromSymbol": "ProjectDetailScreen",
         "toSymbol": "useProjectRouteParams",
         "callExpression": "useProjectRouteParams",
@@ -37080,6 +37169,12 @@
         "fromSymbol": "src/app/ProjectDetailScreen.tsx",
         "toSymbol": "installProjectPackages",
         "callExpression": "installProjectPackages",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "src/app/ProjectDetailScreen.tsx",
+        "toSymbol": "connectProjectRepository",
+        "callExpression": "connectProjectRepository",
         "sourcePath": "src/app/ProjectDetailScreen.tsx"
       },
       {
@@ -38295,6 +38390,12 @@
         "sourcePath": "src/hooks/useProjects.ts"
       },
       {
+        "fromSymbol": "parseConnectProjectRepositoryResponse",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/hooks/useProjects.ts"
+      },
+      {
         "fromSymbol": "parseUpProjectInfrastructureResponse",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
@@ -38302,6 +38403,18 @@
       },
       {
         "fromSymbol": "parseLaunchProjectResponse",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/hooks/useProjects.ts"
+      },
+      {
+        "fromSymbol": "requestProjectAction",
+        "toSymbol": "readError",
+        "callExpression": "readError",
+        "sourcePath": "src/hooks/useProjects.ts"
+      },
+      {
+        "fromSymbol": "requestProjectAction",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/hooks/useProjects.ts"
@@ -40156,6 +40269,12 @@
       },
       {
         "fromSymbol": "writeRuntimeSmokeNodeModules",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "writeRuntimeSmokeNodeModules",
         "toSymbol": "symlink",
         "callExpression": "symlink",
         "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
@@ -40170,6 +40289,12 @@
         "fromSymbol": "writeRuntimeSmokeNodeModules",
         "toSymbol": "writeStubPackage",
         "callExpression": "writeStubPackage",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "writeStubPackage",
+        "toSymbol": "rm",
+        "callExpression": "rm",
         "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
       },
       {
@@ -45514,6 +45639,12 @@
       },
       {
         "fromSymbol": "src/host/http/server.ts",
+        "toSymbol": "connectProjectRepository",
+        "callExpression": "projectManager.connectProjectRepository",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/server.ts",
         "toSymbol": "regenerateInfrastructure",
         "callExpression": "projectManager.regenerateInfrastructure",
         "sourcePath": "src/host/http/server.ts"
@@ -48208,6 +48339,12 @@
       },
       {
         "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toSymbol": "stat",
+        "callExpression": "stat",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
         "toSymbol": "catchError",
         "callExpression": "catchError",
         "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
@@ -48220,8 +48357,8 @@
       },
       {
         "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
-        "toSymbol": "stat",
-        "callExpression": "stat",
+        "toSymbol": "syncProjectRuntime",
+        "callExpression": "manager.syncProjectRuntime",
         "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
       },
       {
@@ -48478,6 +48615,12 @@
       },
       {
         "fromSymbol": "createProject",
+        "toSymbol": "reconcileProjectPackageRootAsync",
+        "callExpression": "this.dependencies.reconcileProjectPackageRootAsync",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "createProject",
         "toSymbol": "syncProjectInfrastructure",
         "callExpression": "syncProjectInfrastructure",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
@@ -48490,14 +48633,50 @@
       },
       {
         "fromSymbol": "installProjectPackages",
-        "toSymbol": "runWorkspaceInstall",
-        "callExpression": "runWorkspaceInstall",
+        "toSymbol": "reconcileProjectPackageRootAsync",
+        "callExpression": "this.dependencies.reconcileProjectPackageRootAsync",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
         "fromSymbol": "installProjectPackages",
         "toSymbol": "getProjectPath",
         "callExpression": "getProjectPath",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "connectProjectRepository",
+        "toSymbol": "getProjectPath",
+        "callExpression": "getProjectPath",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "connectProjectRepository",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "this.getProjectManifest",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "connectProjectRepository",
+        "toSymbol": "readProjectPackageJson",
+        "callExpression": "readProjectPackageJson",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "connectProjectRepository",
+        "toSymbol": "reconcileProjectPackageRootAsync",
+        "callExpression": "this.dependencies.reconcileProjectPackageRootAsync",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "connectProjectRepository",
+        "toSymbol": "connectGitHubRepositoryAsync",
+        "callExpression": "this.dependencies.connectGitHubRepositoryAsync",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "connectProjectRepository",
+        "toSymbol": "createDefaultRepositoryName",
+        "callExpression": "createDefaultRepositoryName",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -48568,6 +48747,12 @@
       },
       {
         "fromSymbol": "saveProjectManifest",
+        "toSymbol": "reconcileProjectPackageRootAsync",
+        "callExpression": "this.dependencies.reconcileProjectPackageRootAsync",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "saveProjectManifest",
         "toSymbol": "syncProjectInfrastructure",
         "callExpression": "syncProjectInfrastructure",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
@@ -48612,6 +48797,12 @@
         "fromSymbol": "syncProjectRuntime",
         "toSymbol": "writeGeneratedFiles",
         "callExpression": "this.writeGeneratedFiles",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "syncProjectRuntime",
+        "toSymbol": "reconcileProjectPackageRootAsync",
+        "callExpression": "this.dependencies.reconcileProjectPackageRootAsync",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -48939,6 +49130,72 @@
         "sourcePath": "src/host/orchestrator/projectPaths.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/projectRepositoryConnection.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/orchestrator/projectRepositoryConnection.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectRepositoryConnection.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/orchestrator/projectRepositoryConnection.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectRepositoryConnection.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/orchestrator/projectRepositoryConnection.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectRepositoryConnection.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/orchestrator/projectRepositoryConnection.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectRepositoryConnection.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/orchestrator/projectRepositoryConnection.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectRepositoryConnection.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/orchestrator/projectRepositoryConnection.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectRepositoryConnection.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/projectRepositoryConnection.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectRepositoryConnection.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/orchestrator/projectRepositoryConnection.test.ts"
+      },
+      {
+        "fromSymbol": "reconcileProjectPackageRootAsync",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/projectRepositoryConnection.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectRepositoryConnection.test.ts",
+        "toSymbol": "connectProjectRepository",
+        "callExpression": "manager.connectProjectRepository",
+        "sourcePath": "src/host/orchestrator/projectRepositoryConnection.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectRepositoryConnection.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/projectRepositoryConnection.test.ts"
+      },
+      {
         "fromSymbol": "getProjectPath",
         "toSymbol": "getProjectPath",
         "callExpression": "getProjectPath",
@@ -49179,6 +49436,126 @@
         "sourcePath": "src/host/orchestrator/projectTargets.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts",
+        "toSymbol": "reconcileProjectPackageRootAsync",
+        "callExpression": "reconcileProjectPackageRootAsync",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts"
+      },
+      {
+        "fromSymbol": "reconcileProjectPackageRootAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts"
+      },
+      {
+        "fromSymbol": "reconcileProjectPackageRootAsync",
+        "toSymbol": "access",
+        "callExpression": "access",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
+        "toSymbol": "rejectWithTimeout",
+        "callExpression": "rejectWithTimeout",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts"
+      },
+      {
+        "fromSymbol": "rejectOnce",
+        "toSymbol": "clearTimers",
+        "callExpression": "clearTimers",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts"
+      },
+      {
+        "fromSymbol": "rejectOnce",
+        "toSymbol": "reject",
+        "callExpression": "reject",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts"
+      },
+      {
+        "fromSymbol": "rejectWithTimeout",
+        "toSymbol": "rejectOnce",
+        "callExpression": "rejectOnce",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
+        "toSymbol": "rejectOnce",
+        "callExpression": "rejectOnce",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
+        "toSymbol": "clearTimers",
+        "callExpression": "clearTimers",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
+        "toSymbol": "reject",
+        "callExpression": "reject",
+        "sourcePath": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts"
+      },
+      {
         "fromSymbol": "resolveModuleLayoutMutations",
         "toSymbol": "getHostModule",
         "callExpression": "getHostModule",
@@ -49210,26 +49587,44 @@
       },
       {
         "fromSymbol": "scaffoldProject",
+        "toSymbol": "writeEasConfig",
+        "callExpression": "this.writeEasConfig",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "scaffoldProject",
+        "toSymbol": "writeMetroConfig",
+        "callExpression": "this.writeMetroConfig",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "scaffoldProject",
         "toSymbol": "writeTsConfig",
         "callExpression": "this.writeTsConfig",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
         "fromSymbol": "scaffoldProject",
-        "toSymbol": "writeEslintConfig",
-        "callExpression": "this.writeEslintConfig",
+        "toSymbol": "ensurePrettierLocalConfig",
+        "callExpression": "this.ensurePrettierLocalConfig",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
         "fromSymbol": "scaffoldProject",
-        "toSymbol": "writePrettierConfig",
-        "callExpression": "this.writePrettierConfig",
+        "toSymbol": "ensurePrettierIgnore",
+        "callExpression": "this.ensurePrettierIgnore",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
         "fromSymbol": "scaffoldProject",
-        "toSymbol": "ensureExpoGitIgnore",
-        "callExpression": "this.ensureExpoGitIgnore",
+        "toSymbol": "ensureKnipConfig",
+        "callExpression": "this.ensureKnipConfig",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "scaffoldProject",
+        "toSymbol": "ensureAppGitIgnore",
+        "callExpression": "this.ensureAppGitIgnore",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
@@ -49294,26 +49689,44 @@
       },
       {
         "fromSymbol": "syncProjectScaffold",
+        "toSymbol": "writeEasConfig",
+        "callExpression": "this.writeEasConfig",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "syncProjectScaffold",
+        "toSymbol": "writeMetroConfig",
+        "callExpression": "this.writeMetroConfig",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "syncProjectScaffold",
         "toSymbol": "writeTsConfig",
         "callExpression": "this.writeTsConfig",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
         "fromSymbol": "syncProjectScaffold",
-        "toSymbol": "writeEslintConfig",
-        "callExpression": "this.writeEslintConfig",
+        "toSymbol": "ensurePrettierLocalConfig",
+        "callExpression": "this.ensurePrettierLocalConfig",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
         "fromSymbol": "syncProjectScaffold",
-        "toSymbol": "writePrettierConfig",
-        "callExpression": "this.writePrettierConfig",
+        "toSymbol": "ensurePrettierIgnore",
+        "callExpression": "this.ensurePrettierIgnore",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
         "fromSymbol": "syncProjectScaffold",
-        "toSymbol": "ensureExpoGitIgnore",
-        "callExpression": "this.ensureExpoGitIgnore",
+        "toSymbol": "ensureKnipConfig",
+        "callExpression": "this.ensureKnipConfig",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "syncProjectScaffold",
+        "toSymbol": "ensureAppGitIgnore",
+        "callExpression": "this.ensureAppGitIgnore",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
@@ -49332,6 +49745,24 @@
         "fromSymbol": "writeAppConfig",
         "toSymbol": "getAppConfigTs",
         "callExpression": "getAppConfigTs",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "writeEasConfig",
+        "toSymbol": "getEasJson",
+        "callExpression": "getEasJson",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "writeMetroConfig",
+        "toSymbol": "getMetroConfigJs",
+        "callExpression": "getMetroConfigJs",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "writeMetroConfig",
+        "toSymbol": "getMetroEmptyModuleJs",
+        "callExpression": "getMetroEmptyModuleJs",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
@@ -49365,31 +49796,25 @@
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
-        "fromSymbol": "writeEslintConfig",
-        "toSymbol": "getEslintConfigMjs",
-        "callExpression": "getEslintConfigMjs",
+        "fromSymbol": "ensurePrettierLocalConfig",
+        "toSymbol": "pathExists",
+        "callExpression": "pathExists",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
-        "fromSymbol": "writeEslintConfig",
-        "toSymbol": "getEslintLocalConfigMjs",
-        "callExpression": "getEslintLocalConfigMjs",
+        "fromSymbol": "ensurePrettierIgnore",
+        "toSymbol": "pathExists",
+        "callExpression": "pathExists",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
-        "fromSymbol": "writePrettierConfig",
-        "toSymbol": "getPrettierRcJs",
-        "callExpression": "getPrettierRcJs",
+        "fromSymbol": "ensureKnipConfig",
+        "toSymbol": "pathExists",
+        "callExpression": "pathExists",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
-        "fromSymbol": "writePrettierConfig",
-        "toSymbol": "getPrettierLocalConfigJs",
-        "callExpression": "getPrettierLocalConfigJs",
-        "sourcePath": "src/host/orchestrator/scaffolder.ts"
-      },
-      {
-        "fromSymbol": "ensureExpoGitIgnore",
+        "fromSymbol": "ensureAppGitIgnore",
         "toSymbol": "pathExists",
         "callExpression": "pathExists",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
@@ -49528,26 +49953,20 @@
       },
       {
         "fromSymbol": "src/host/orchestrator/templates.test.ts",
-        "toSymbol": "getPrettierRcJs",
-        "callExpression": "getPrettierRcJs",
+        "toSymbol": "getEasJson",
+        "callExpression": "getEasJson",
         "sourcePath": "src/host/orchestrator/templates.test.ts"
       },
       {
         "fromSymbol": "src/host/orchestrator/templates.test.ts",
-        "toSymbol": "getPrettierLocalConfigJs",
-        "callExpression": "getPrettierLocalConfigJs",
+        "toSymbol": "getMetroConfigJs",
+        "callExpression": "getMetroConfigJs",
         "sourcePath": "src/host/orchestrator/templates.test.ts"
       },
       {
         "fromSymbol": "src/host/orchestrator/templates.test.ts",
-        "toSymbol": "getEslintConfigMjs",
-        "callExpression": "getEslintConfigMjs",
-        "sourcePath": "src/host/orchestrator/templates.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/templates.test.ts",
-        "toSymbol": "getEslintLocalConfigMjs",
-        "callExpression": "getEslintLocalConfigMjs",
+        "toSymbol": "getMetroEmptyModuleJs",
+        "callExpression": "getMetroEmptyModuleJs",
         "sourcePath": "src/host/orchestrator/templates.test.ts"
       },
       {
@@ -49681,126 +50100,6 @@
         "toSymbol": "createPlatformDependencyMap",
         "callExpression": "createPlatformDependencyMap",
         "sourcePath": "src/host/orchestrator/templates.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
-        "toSymbol": "afterEach",
-        "callExpression": "afterEach",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
-        "toSymbol": "rm",
-        "callExpression": "rm",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
-        "toSymbol": "mkdtemp",
-        "callExpression": "mkdtemp",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
-        "toSymbol": "tmpdir",
-        "callExpression": "tmpdir",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
-        "toSymbol": "mkdir",
-        "callExpression": "mkdir",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
-        "toSymbol": "writeFile",
-        "callExpression": "writeFile",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
-        "toSymbol": "runWorkspaceInstall",
-        "callExpression": "runWorkspaceInstall",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.ts",
-        "toSymbol": "spawn",
-        "callExpression": "spawn",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.ts",
-        "toSymbol": "rejectWithTimeout",
-        "callExpression": "rejectWithTimeout",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.ts"
-      },
-      {
-        "fromSymbol": "rejectOnce",
-        "toSymbol": "clearTimers",
-        "callExpression": "clearTimers",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.ts"
-      },
-      {
-        "fromSymbol": "rejectOnce",
-        "toSymbol": "reject",
-        "callExpression": "reject",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.ts"
-      },
-      {
-        "fromSymbol": "rejectWithTimeout",
-        "toSymbol": "clearTimers",
-        "callExpression": "clearTimers",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.ts"
-      },
-      {
-        "fromSymbol": "rejectWithTimeout",
-        "toSymbol": "reject",
-        "callExpression": "reject",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.ts",
-        "toSymbol": "rejectOnce",
-        "callExpression": "rejectOnce",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.ts",
-        "toSymbol": "clearTimers",
-        "callExpression": "clearTimers",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.ts",
-        "toSymbol": "resolve",
-        "callExpression": "resolve",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/workspaceRuntime.ts",
-        "toSymbol": "reject",
-        "callExpression": "reject",
-        "sourcePath": "src/host/orchestrator/workspaceRuntime.ts"
       },
       {
         "fromSymbol": "query",
@@ -52252,14 +52551,14 @@
       },
       {
         "fromSymbol": "runExpo57GeneratedAppAcceptanceAsync",
-        "toSymbol": "createProjectLockfileAsync",
-        "callExpression": "createProjectLockfileAsync",
+        "toSymbol": "assertParentOnlyDependencyCannotBundleAsync",
+        "callExpression": "assertParentOnlyDependencyCannotBundleAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
         "fromSymbol": "runExpo57GeneratedAppAcceptanceAsync",
-        "toSymbol": "runAcceptanceChecksAsync",
-        "callExpression": "runAcceptanceChecksAsync",
+        "toSymbol": "copyRelocatedProjectAsync",
+        "callExpression": "copyRelocatedProjectAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
@@ -52272,6 +52571,18 @@
         "fromSymbol": "runExpo57GeneratedAppAcceptanceAsync",
         "toSymbol": "readFile",
         "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedAppAcceptanceAsync",
+        "toSymbol": "runAcceptanceChecksAsync",
+        "callExpression": "runAcceptanceChecksAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedAppAcceptanceAsync",
+        "toSymbol": "assertStaleLockfileFailsAsync",
+        "callExpression": "assertStaleLockfileFailsAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
@@ -52347,24 +52658,6 @@
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
-        "fromSymbol": "createProjectLockfileAsync",
-        "toSymbol": "runAcceptanceCommandAsync",
-        "callExpression": "runAcceptanceCommandAsync",
-        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
-      },
-      {
-        "fromSymbol": "createProjectLockfileAsync",
-        "toSymbol": "hash",
-        "callExpression": "hash",
-        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
-      },
-      {
-        "fromSymbol": "createProjectLockfileAsync",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
-        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
-      },
-      {
         "fromSymbol": "hash",
         "toSymbol": "createHash",
         "callExpression": "createHash",
@@ -52392,6 +52685,60 @@
         "fromSymbol": "runAcceptanceChecksAsync",
         "toSymbol": "resolveAppOwnedExpoCliAsync",
         "callExpression": "resolveAppOwnedExpoCliAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "copyRelocatedProjectAsync",
+        "toSymbol": "cp",
+        "callExpression": "cp",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertParentOnlyDependencyCannotBundleAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertParentOnlyDependencyCannotBundleAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertParentOnlyDependencyCannotBundleAsync",
+        "toSymbol": "resolveAppOwnedExpoCliAsync",
+        "callExpression": "resolveAppOwnedExpoCliAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertParentOnlyDependencyCannotBundleAsync",
+        "toSymbol": "runAcceptanceCommandAsync",
+        "callExpression": "runAcceptanceCommandAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertParentOnlyDependencyCannotBundleAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertStaleLockfileFailsAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertStaleLockfileFailsAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertStaleLockfileFailsAsync",
+        "toSymbol": "runAcceptanceCommandAsync",
+        "callExpression": "runAcceptanceCommandAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
@@ -53512,18 +53859,6 @@
       },
       {
         "fromSymbol": "createLockfileAndInstallAsync",
-        "toSymbol": "runAcceptanceCommandAsync",
-        "callExpression": "runAcceptanceCommandAsync",
-        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
-      },
-      {
-        "fromSymbol": "createLockfileAndInstallAsync",
-        "toSymbol": "rm",
-        "callExpression": "rm",
-        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
-      },
-      {
-        "fromSymbol": "createLockfileAndInstallAsync",
         "toSymbol": "readFile",
         "callExpression": "readFile",
         "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
@@ -53532,6 +53867,12 @@
         "fromSymbol": "createLockfileAndInstallAsync",
         "toSymbol": "hash",
         "callExpression": "hash",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createLockfileAndInstallAsync",
+        "toSymbol": "runAcceptanceCommandAsync",
+        "callExpression": "runAcceptanceCommandAsync",
         "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
       },
       {

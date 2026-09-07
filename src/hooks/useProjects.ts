@@ -23,6 +23,17 @@ export interface InstallProjectPackagesResponse {
   scope: 'project';
 }
 
+export interface ConnectProjectRepositoryResponse {
+  status: 'already-connected' | 'connected';
+  repository: {
+    owner: string;
+    name: string;
+    url: string;
+    defaultBranch: 'main';
+  };
+  appCommitSha?: string;
+}
+
 export interface UpProjectInfrastructureResponse {
   success: boolean;
   skipped?: string;
@@ -169,6 +180,32 @@ function parseInstallProjectPackagesResponse(value: unknown): InstallProjectPack
   return { success: true, scope: 'project' };
 }
 
+function parseConnectProjectRepositoryResponse(value: unknown): ConnectProjectRepositoryResponse {
+  if (
+    !isRecord(value) ||
+    (value.status !== 'connected' && value.status !== 'already-connected') ||
+    !isRecord(value.repository) ||
+    typeof value.repository.owner !== 'string' ||
+    typeof value.repository.name !== 'string' ||
+    typeof value.repository.url !== 'string' ||
+    value.repository.defaultBranch !== 'main' ||
+    (value.appCommitSha !== undefined && typeof value.appCommitSha !== 'string')
+  ) {
+    throw new Error('Connect GitHub response was invalid');
+  }
+
+  return {
+    status: value.status,
+    repository: {
+      owner: value.repository.owner,
+      name: value.repository.name,
+      url: value.repository.url,
+      defaultBranch: 'main',
+    },
+    ...(typeof value.appCommitSha === 'string' ? { appCommitSha: value.appCommitSha } : {}),
+  };
+}
+
 function parseUpProjectInfrastructureResponse(value: unknown): UpProjectInfrastructureResponse {
   if (!isRecord(value) || typeof value.success !== 'boolean') {
     throw new Error('Infrastructure response was invalid');
@@ -202,7 +239,16 @@ async function requestProjectAction<T>(
   parse: (value: unknown) => T,
 ): Promise<T> {
   const response = await fetch(`${API_BASE}${path}`, options);
-  if (!response.ok) throw new Error(`Project action failed with ${response.status}`);
+  if (!response.ok) {
+    const failure = await readError(response);
+    const message =
+      isRecord(failure) && typeof failure.message === 'string'
+        ? failure.message
+        : isRecord(failure) && typeof failure.error === 'string'
+          ? failure.error
+          : `Project action failed with ${response.status}`;
+    throw new Error(message);
+  }
   return parse(await readJson(response));
 }
 
@@ -294,6 +340,17 @@ export function useProjects() {
     [],
   );
 
+  const connectProjectRepository = useCallback(
+    async (projectId: string): Promise<ConnectProjectRepositoryResponse> => {
+      return await requestProjectAction(
+        `/projects/${encodeURIComponent(projectId)}/repository/connect`,
+        { method: 'POST' },
+        parseConnectProjectRepositoryResponse,
+      );
+    },
+    [],
+  );
+
   const upProjectInfrastructure = useCallback(
     async (projectId: string): Promise<UpProjectInfrastructureResponse> => {
       return await requestProjectAction(
@@ -322,6 +379,7 @@ export function useProjects() {
     deleteProject,
     syncProject,
     installProjectPackages,
+    connectProjectRepository,
     upProjectInfrastructure,
     launchProject,
   };

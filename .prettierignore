@@ -3,6 +3,4 @@ node_modules
 bun.lock
 *.tsbuildinfo
 /apps/studio/expo-env.d.ts
-/apps/*
-!/apps/studio/
-!/apps/studio/**
+/apps/

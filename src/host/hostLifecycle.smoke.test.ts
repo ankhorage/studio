@@ -13,6 +13,7 @@ async function collectSourceFiles(root: string): Promise<string[]> {
   const nested = await Promise.all(
     entries.map(async (entry) => {
       const target = path.join(root, entry.name);
+      if (entry.name === 'node_modules') return [];
       if (entry.isDirectory()) return collectSourceFiles(target);
       return /\.(?:json|js|ts|tsx)$/u.test(entry.name) ? [target] : [];
     }),
@@ -25,10 +26,12 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
   await mkdir(path.join(workspaceRoot, 'apps', 'studio'), { recursive: true });
   await writeFile(
     path.join(workspaceRoot, 'package.json'),
-    JSON.stringify({ name: '@ankhorage/studio', private: true, workspaces: ['apps/studio'] }),
+    JSON.stringify({ name: '@ankhorage/studio', private: true }),
   );
 
-  const projectManager = new ProjectManager(workspaceRoot);
+  const projectManager = new ProjectManager(workspaceRoot, {
+    runProjectInfrastructureLifecycle: () => Promise.resolve({ stderr: '', stdout: '' }),
+  });
   const moduleManager = new ModuleManager(workspaceRoot);
   const created = await projectManager.createProject('Host Smoke App', createSmokeProjectSource());
   expect(created.success).toBe(true);

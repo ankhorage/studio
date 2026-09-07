@@ -18,10 +18,6 @@
   "main": "./dist/root.js",
   "types": "./dist/root.d.ts",
   "sideEffects": false,
-  "workspaces": [
-    ".",
-    "apps/studio"
-  ],
   "files": [
     "dist",
     "README.md",
@@ -169,10 +165,9 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "type-check": "bun run typecheck",
     "dev": "bun run dev:host & bun run dev:studio",
-    "dev:studio": "bun run --cwd apps/studio web",
-    "type-check:studio": "bun run --cwd apps/studio type-check",
+    "dev:studio": "bun install --cwd apps/studio --frozen-lockfile && bun run --cwd apps/studio web",
+    "typecheck:studio": "bun install --cwd apps/studio --frozen-lockfile && bun run --cwd apps/studio typecheck",
     "lint": "ankhorage-eslint . --max-warnings=0",
     "lint:fix": "ankhorage-eslint . --fix --max-warnings=0",
     "format": "ankhorage-prettier --write .",
@@ -223,6 +218,7 @@
     "@ankhorage/orchestrator-module-expo-localization": "^0.6.0",
     "@ankhorage/permissions": "^0.2.3",
     "@ankhorage/react-native-reanimated-dnd-web": "^0.4.0",
+    "@ankhorage/repository": "^0.4.1",
     "@ankhorage/runtime": "^2.2.1",
     "@ankhorage/supabase-auth": "^1.2.7",
     "@ankhorage/supabase-storage": "^0.2.0",

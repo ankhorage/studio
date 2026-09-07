@@ -18,10 +18,7 @@ import {
   type EnabledAuthLayoutPlan,
   resolveAuthLayoutPlan,
 } from './auth/resolveAuthLayoutPlan';
-import {
-  composeGeneratedImports,
-  type GeneratedImportRequirement,
-} from './generatedImportComposer';
+import { composeGeneratedImports } from './generatedImportComposer';
 import { createNavigatorGenerationBindings } from './navigator/createNavigatorGenerationBindings';
 import { generateNavigatorLayoutFiles } from './navigator/generateNavigatorLayoutFiles';
 import {
@@ -99,7 +96,7 @@ function useGeneratedRuntimeAction() {
     ({ action }) =>
       executeExpoRuntimeAction({
         action,
-        router: { push: (href) => router.push(href as Href) },
+        router: { push: (href) => router.push(href) },
         mode,
         setMode,
       }),
@@ -357,14 +354,6 @@ export class GeneratedAppFileGenerator {
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
-      ...(!includeStudio
-        ? [
-            {
-              source: 'expo-router',
-              namedImports: [{ imported: 'Href', typeOnly: true }],
-            },
-          ]
-        : []),
       `import { Stack, ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'useRouter'} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import { useEffect, useMemo } from 'react';`,
@@ -439,14 +428,6 @@ export class GeneratedAppFileGenerator {
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
-      ...(!includeStudio
-        ? [
-            {
-              source: 'expo-router',
-              namedImports: [{ imported: 'Href', typeOnly: true }],
-            } satisfies GeneratedImportRequirement,
-          ]
-        : []),
       `import { Slot${includeStudio ? ', useGlobalSearchParams, usePathname' : ', useRouter'} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import React, { ${includeStudio ? 'useEffect, ' : ''}useMemo } from 'react';`,

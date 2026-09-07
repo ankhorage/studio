@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import type { AppManifest, ScreenSpec } from '@ankhorage/contracts';
@@ -19,17 +19,24 @@ const COMMAND_TIMEOUT_MS = 300_000;
  */
 export async function runExpo57GeneratedAppAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-acceptance-'));
+  const relocatedProjectRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-relocated-'));
 
   try {
     const projectRoot = await createGeneratedProjectAsync(workspaceRoot);
-    const lockfileDigest = await createProjectLockfileAsync(projectRoot);
-    await runAcceptanceChecksAsync(projectRoot);
-    const finalDigest = hash(await readFile(path.join(projectRoot, 'bun.lock')));
+    await assertParentOnlyDependencyCannotBundleAsync(workspaceRoot, projectRoot);
+    await copyRelocatedProjectAsync(projectRoot, relocatedProjectRoot);
+    const lockfileDigest = hash(await readFile(path.join(relocatedProjectRoot, 'bun.lock')));
+    await runAcceptanceChecksAsync(relocatedProjectRoot);
+    await assertStaleLockfileFailsAsync(relocatedProjectRoot);
+    const finalDigest = hash(await readFile(path.join(relocatedProjectRoot, 'bun.lock')));
     if (finalDigest !== lockfileDigest) {
       throw new Error('Generated app acceptance mutated its frozen lockfile.');
     }
   } finally {
-    await rm(workspaceRoot, { force: true, recursive: true });
+    await Promise.all([
+      rm(workspaceRoot, { force: true, recursive: true }),
+      rm(relocatedProjectRoot, { force: true, recursive: true }),
+    ]);
   }
 }
 
@@ -84,9 +91,8 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
     `${JSON.stringify(
       {
         name: '@ankhorage/expo57-generated-app-acceptance',
-        packageManager: 'bun@1.3.14',
+        packageManager: 'bun@1.4.2',
         private: true,
-        workspaces: ['apps/studio'],
       },
       null,
       2,
@@ -131,18 +137,6 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
   return created.path;
 }
 
-/*** Create the generated app-owned cross-platform Bun lockfile and return its content fingerprint. */
-async function createProjectLockfileAsync(projectRoot: string): Promise<string> {
-  await runAcceptanceCommandAsync({
-    args: ['install', '--lockfile-only', '--os=*', '--cpu=*'],
-    command: 'bun',
-    cwd: projectRoot,
-    label: 'Create generated app-owned lockfile',
-    timeoutMs: COMMAND_TIMEOUT_MS,
-  });
-  return hash(await readFile(path.join(projectRoot, 'bun.lock')));
-}
-
 /***
  * Compute a SHA-256 hex digest for byte content.
  * @utility @ankhorage/utility/crypto
@@ -172,15 +166,34 @@ async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
   await assertCameraFreeInstalledGraphAsync(projectRoot);
   await assertGeneratedAppOwnerGraphAsync(projectRoot);
   const expoCli = await resolveAppOwnedExpoCliAsync(projectRoot);
+  const expoDoctorCli = path.join(
+    projectRoot,
+    'node_modules',
+    '.bin',
+    process.platform === 'win32' ? 'expo-doctor.cmd' : 'expo-doctor',
+  );
 
   const commands = [
     { args: ['run', 'lint'], command: 'bun', cwd: projectRoot, label: 'Generated app lint' },
+    {
+      args: ['run', 'format:check'],
+      command: 'bun',
+      cwd: projectRoot,
+      label: 'Generated app format',
+    },
+    {
+      args: ['run', 'knip:check'],
+      command: 'bun',
+      cwd: projectRoot,
+      label: 'Generated app Knip',
+    },
     {
       args: ['install', '--check'],
       command: expoCli,
       cwd: projectRoot,
       label: 'Expo dependency compatibility',
     },
+    { args: [], command: expoDoctorCli, cwd: projectRoot, label: 'Expo Doctor' },
     { args: ['run', 'typecheck'], command: 'bun', cwd: projectRoot, label: 'TypeScript 6' },
     {
       args: ['export', '--platform', 'web', '--output-dir', 'dist-web', '--clear'],
@@ -215,4 +228,92 @@ async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
       timeoutMs: COMMAND_TIMEOUT_MS,
     });
   }
+}
+
+/*** Copy a generated app without installed/transient output to an unrelated standalone root. */
+async function copyRelocatedProjectAsync(sourceRoot: string, targetRoot: string): Promise<void> {
+  await cp(sourceRoot, targetRoot, {
+    recursive: true,
+    filter: (source) => {
+      const relativePath = path.relative(sourceRoot, source);
+      const [firstSegment] = relativePath.split(path.sep);
+      return !['node_modules', '.expo', 'dist-web', 'dist-android', 'dist-ios'].includes(
+        firstSegment ?? '',
+      );
+    },
+  });
+}
+
+/*** Prove Metro cannot satisfy a generated-app import from an ancestor-only package installation. */
+async function assertParentOnlyDependencyCannotBundleAsync(
+  workspaceRoot: string,
+  projectRoot: string,
+): Promise<void> {
+  const dependencyRoot = path.join(workspaceRoot, 'node_modules', 'parent-only-dependency');
+  const probePath = path.join(projectRoot, 'src', 'app', 'parent-only-probe.tsx');
+  await mkdir(dependencyRoot, { recursive: true });
+  await Promise.all([
+    writeFile(
+      path.join(dependencyRoot, 'package.json'),
+      `${JSON.stringify({ name: 'parent-only-dependency', main: 'index.js', version: '1.0.0' })}\n`,
+      'utf8',
+    ),
+    writeFile(path.join(dependencyRoot, 'index.js'), "module.exports = 'ancestor';\n", 'utf8'),
+    writeFile(
+      probePath,
+      `import { Text } from 'react-native';\nimport parentOnly from 'parent-only-dependency';\n\nexport default function ParentOnlyProbe() {\n  return <Text>{parentOnly}</Text>;\n}\n`,
+      'utf8',
+    ),
+  ]);
+
+  const expoCli = await resolveAppOwnedExpoCliAsync(projectRoot);
+  let failed = false;
+  try {
+    await runAcceptanceCommandAsync({
+      args: ['export', '--platform', 'web', '--output-dir', 'dist-parent-probe', '--clear'],
+      command: expoCli,
+      cwd: projectRoot,
+      label: 'Reject parent-only Metro dependency',
+      timeoutMs: COMMAND_TIMEOUT_MS,
+    });
+  } catch {
+    failed = true;
+  } finally {
+    await Promise.all([
+      rm(probePath, { force: true }),
+      rm(path.join(projectRoot, 'dist-parent-probe'), { force: true, recursive: true }),
+    ]);
+  }
+  if (!failed) {
+    throw new Error('Metro bundled a dependency available only from the Studio parent root.');
+  }
+}
+
+/*** Prove a package mutation without lockfile reconciliation fails the frozen-install contract. */
+async function assertStaleLockfileFailsAsync(projectRoot: string): Promise<void> {
+  const packageJsonPath = path.join(projectRoot, 'package.json');
+  const originalPackageJson = await readFile(packageJsonPath, 'utf8');
+  const packageJson = JSON.parse(originalPackageJson) as {
+    dependencies?: Record<string, string>;
+  };
+  packageJson.dependencies = {
+    ...(packageJson.dependencies ?? {}),
+    'stale-lockfile-probe': '1.0.0',
+  };
+  await writeFile(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`, 'utf8');
+  let failed = false;
+  try {
+    await runAcceptanceCommandAsync({
+      args: ['install', '--frozen-lockfile'],
+      command: 'bun',
+      cwd: projectRoot,
+      label: 'Reject stale generated app lockfile',
+      timeoutMs: COMMAND_TIMEOUT_MS,
+    });
+  } catch {
+    failed = true;
+  } finally {
+    await writeFile(packageJsonPath, originalPackageJson, 'utf8');
+  }
+  if (!failed) throw new Error('Frozen install accepted a stale generated app lockfile.');
 }

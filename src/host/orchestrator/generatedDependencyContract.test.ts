@@ -76,7 +76,7 @@ describe('generated app dependency contract', () => {
     expectStudioAuthoringDependencies(studioDependencies, 'defined');
   });
 
-  it('preserves app-owned Expo configuration files while synchronizing current output', async () => {
+  it('preserves app-owned entry configuration while enforcing the project-isolated Metro boundary', async () => {
     const { projectPath, scaffolder } = await createScaffoldHarness();
     await scaffolder.scaffoldProject(projectPath, 'Fixture', 'fixture');
     await Promise.all(
@@ -94,11 +94,14 @@ describe('generated app dependency contract', () => {
     expect(files).toContain('index.js');
     expect(files).toContain('metro.config.js');
     await Promise.all(
-      ['babel.config.js', 'index.js', 'metro.config.js'].map(async (fileName) => {
+      ['babel.config.js', 'index.js'].map(async (fileName) => {
         expect(await readFile(path.join(projectPath, fileName), 'utf8')).toBe(
           `app-owned ${fileName}`,
         );
       }),
+    );
+    expect(await readFile(path.join(projectPath, 'metro.config.js'), 'utf8')).toContain(
+      'config.resolver.blockList = [',
     );
   });
 
@@ -140,8 +143,34 @@ describe('generated app dependency contract', () => {
       targets: WEB_TARGETS,
     });
 
-    expect(await readFile(path.join(projectPath, '.gitignore'), 'utf8')).toBe(
-      'app-owned-cache/\n.expo/\n',
+    expect((await readFile(path.join(projectPath, '.gitignore'), 'utf8')).split('\n')).toEqual([
+      'app-owned-cache/',
+      'node_modules/',
+      '.expo/',
+      'dist/',
+      'dist-*/',
+      'android/',
+      'ios/',
+      '.env*.local',
+      '.DS_Store',
+      '',
+    ]);
+  });
+
+  it('ignores machine-managed state without replacing app-owned formatting rules', async () => {
+    const { projectPath, scaffolder } = await createScaffoldHarness();
+    await scaffolder.scaffoldProject(projectPath, 'Fixture', 'fixture');
+    await writeFile(path.join(projectPath, '.prettierignore'), 'app-owned-output/');
+
+    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
+      targets: WEB_TARGETS,
+    });
+    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
+      targets: WEB_TARGETS,
+    });
+
+    expect((await readFile(path.join(projectPath, '.prettierignore'), 'utf8')).split('\n')).toEqual(
+      ['app-owned-output/', '/.ankh/', '/infra/', ''],
     );
   });
 });
@@ -166,6 +195,7 @@ async function readGeneratedDependencies(projectPath: string): Promise<Record<st
 
 function expectRuntimePeers(
   {
+    '@expo/metro-runtime': metroRuntime,
     '@react-native-picker/picker': nativePicker,
     '@react-native-vector-icons/ionicons': ionicons,
     'expo-font': expoFont,
@@ -173,6 +203,7 @@ function expectRuntimePeers(
   expected?: Record<string, string>,
 ) {
   if (expected === undefined) {
+    expect(metroRuntime).toBe(EXPO_PLATFORM.packages.metroRuntime.version);
     expect(nativePicker).toBeDefined();
     expect(ionicons).toBeDefined();
     expect(expoFont).toBe(EXPO_PLATFORM.packages.font.version);
@@ -180,10 +211,12 @@ function expectRuntimePeers(
   }
 
   const {
+    '@expo/metro-runtime': expectedMetroRuntime,
     '@react-native-picker/picker': expectedNativePicker,
     '@react-native-vector-icons/ionicons': expectedIonicons,
     'expo-font': expectedExpoFont,
   } = expected;
+  expect(metroRuntime).toBe(expectedMetroRuntime);
   expect(nativePicker).toBe(expectedNativePicker);
   expect(ionicons).toBe(expectedIonicons);
   expect(expoFont).toBe(expectedExpoFont);

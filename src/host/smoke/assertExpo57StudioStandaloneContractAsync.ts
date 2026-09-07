@@ -58,6 +58,36 @@ export async function assertExpo57StudioStandaloneContractAsync(options: {
   }
   assertRegistryDependencyRanges(packageJson);
 
+  if (packageJson.scripts?.['knip:check'] !== 'ankhorage-knip') {
+    throw new Error('Standalone Studio fixture does not own the canonical Knip command.');
+  }
+  const [easConfig, metroConfig, metroEmptyModule, knipConfig] = await Promise.all([
+    readFile(path.join(fixtureRoot, 'eas.json'), 'utf8'),
+    readFile(path.join(fixtureRoot, 'metro.config.js'), 'utf8'),
+    readFile(path.join(fixtureRoot, 'metro.empty-module.js'), 'utf8'),
+    readFile(path.join(fixtureRoot, 'knip.config.ts'), 'utf8'),
+  ]);
+  const parsedEasConfig = JSON.parse(easConfig) as { readonly build?: unknown };
+  if (parsedEasConfig.build === undefined) {
+    throw new Error('Standalone Studio fixture does not own EAS build profiles.');
+  }
+  if (
+    !metroConfig.includes('const ancestorNodeModules = new RegExp(') ||
+    !metroConfig.includes('config.resolver.blockList = [') ||
+    metroConfig.includes('watchFolders') ||
+    metroConfig.includes('disableHierarchicalLookup') ||
+    metroConfig.includes('nodeModulesPaths') ||
+    metroConfig.includes('extraNodeModules')
+  ) {
+    throw new Error('Standalone Studio fixture has an invalid Metro package-root boundary.');
+  }
+  if (metroEmptyModule !== 'module.exports = {};\n') {
+    throw new Error('Standalone Studio fixture has an invalid Metro empty-module boundary.');
+  }
+  if (!knipConfig.includes("from '@ankhorage/devtools/knip'")) {
+    throw new Error('Standalone Studio fixture does not own Devtools-backed Knip configuration.');
+  }
+
   const tsconfig = await readFile(path.join(fixtureRoot, 'tsconfig.json'), 'utf8');
   if (tsconfig.includes('../../') || tsconfig.includes('dist/root.d.ts')) {
     throw new Error('Standalone Studio TypeScript configuration reaches into parent output.');

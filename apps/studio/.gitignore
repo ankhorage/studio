@@ -6,3 +6,5 @@ dist-*/
 expo-env.d.ts
 ios/
 node_modules/
+.env*.local
+.DS_Store

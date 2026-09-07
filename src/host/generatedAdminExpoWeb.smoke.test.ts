@@ -1642,7 +1642,6 @@ async function createGeneratedAdminProject(workspaceRoot: string): Promise<strin
     JSON.stringify({
       name: '@ankhorage/studio-admin-web-smoke',
       private: true,
-      workspaces: ['apps/studio'],
     }),
   );
 

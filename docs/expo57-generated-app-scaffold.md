@@ -17,7 +17,8 @@ The scaffold consumes these released owners:
 | `@ankhorage/react-native-reanimated-dnd-web`       | `^0.4.0`                  | Studio authoring drag-and-drop                                                   |
 | `@ankhorage/orchestrator-module-expo-localization` | `^0.6.0`                  | localization module host/admin contribution                                      |
 | `@ankhorage/orchestrator-module-expo-google-fonts` | `^0.2.1`                  | Google Fonts module host contribution                                            |
-| `@ankhorage/devtools`                              | `^1.7.0`                  | generated and repository quality tooling                                         |
+| `@ankhorage/devtools`                              | `^1.12.0`                 | generated app-owned quality tooling                                              |
+| `@ankhorage/ankh`                                  | `^0.8.11`                 | app-owned Devtools CLI                                                           |
 
 No generated dependency uses `workspace:`, `link:`, `file:`, a Git branch or a sibling-source path.
 Standalone output omits `@ankhorage/studio` and binds actions through Expo Runtime 3's public action
@@ -100,7 +101,7 @@ The comparison fixture was created with the actual Expo command
 | Typed routes              | Use `experiments.typedRoutes: true` and include `.expo/types/**/*.ts` plus `expo-env.d.ts` in TypeScript.                                                                                                                                         |
 | React Compiler            | Use `experiments.reactCompiler: true`. Expo 57 owns the automatic Babel setup; no broad opt-out is generated.                                                                                                                                     |
 | Babel                     | Use the Expo default: no generated `babel.config.js`, module-resolver alias or explicit Worklets plugin. Expo resolves the required `@` and `@root` TypeScript paths.                                                                             |
-| Metro                     | Use the Expo default: no generated `metro.config.js` or singleton `resolveRequest`. Expo supports Bun workspaces and symlinks.                                                                                                                    |
+| Metro                     | Extend Expo's default config with a focused block list for dependencies resolved from ancestor `node_modules` directories. App-local dependencies retain Expo defaults.                                                                           |
 | TypeScript                | Use the platform-owned `~6.0.3` with additional Ankhorage strictness, Node types for generated scripts and the `@`/`@root` source aliases.                                                                                                        |
 | Expo modules              | Use only modules required by Router, generated Runtime capabilities, optional Studio authoring and optional auth. Expo default showcase-only packages are intentionally omitted.                                                                  |
 | ZORA native peers         | Use the released ZORA 3/Surface 3 `@react-native-vector-icons/*` peer contract.                                                                                                                                                                   |
@@ -111,11 +112,11 @@ The comparison fixture was created with the actual Expo command
 | iOS                       | Expo 57 owns the iOS 16.4/Xcode 26.4 native baseline. Ankhorage adds only manifest-derived bundle identity and scheme.                                                                                                                            |
 | App presentation defaults | Orientation, example-template icons and showcase UI remain intentionally app/template-owned rather than hard-coded platform policy. Existing generated icon assets and web favicon remain supported.                                              |
 | Navigation implementation | Stack and hooks come from `expo-router`, JavaScript Tabs and their props from `expo-router/js-tabs`, and Drawer plus its content props from `expo-router/drawer`. Generated source and manifests own no direct `@react-navigation/*` integration. |
-| Project-root isolation    | Workspace/lockfile ownership remains unchanged for issue #180. A clean disposable fixture is acceptance evidence only.                                                                                                                            |
+| Project-root isolation    | Generate an independent Bun package root with its own `node_modules`, `bun.lock`, focused Devtools configuration, `eas.json`, quality scripts, and full application `.gitignore`.                                                                 |
 
-The Babel and Metro removals follow Expo's default-first configuration guidance. A custom file must
-return only when a current generated-app reproduction proves that Expo defaults fail and the
-surviving override has focused behavioral coverage.
+The Babel default follows Expo's default-first configuration guidance. The focused Metro block list
+exists solely to enforce the standalone package boundary and has a negative acceptance test proving
+that an ancestor-only dependency cannot bundle while keeping Expo Doctor's default-config checks valid.
 
 ## Acceptance boundary
 
@@ -126,6 +127,8 @@ package root:
 ```bash
 bun install --frozen-lockfile
 bun run lint
+bun run format:check
+bun run knip:check
 expo install --check
 expo-doctor
 bun run typecheck
@@ -139,10 +142,11 @@ Native export and clean prebuild validate JavaScript bundling and CNG/config gen
 claims of native binary compilation.
 
 The package-owned `test:acceptance:expo57-generated-app` runner creates this fixture through
-`ProjectManager` for every pull request and push to `main`. Its dedicated CI job selects Node 24,
-starts from a cold frozen install, and executes the app-owned lint and platform commands from the
-generated project directory. After ProjectManager generation, the runner removes its temporary
-workspace wrapper. The generated app is both the package root and installation root; its lockfile,
+`ProjectManager` for every pull request and push to `main`. It copies the generated project to an
+unrelated temporary root, starts from a cold frozen install, and executes app-owned quality and
+platform commands there. The runner also proves a stale manifest fails frozen installation without
+changing the lockfile and that Metro rejects an import available only from an ancestor directory.
+The generated app is both the package root and installation root; its lockfile,
 `node_modules/.bin/expo`, and all execution remain app-owned. Standalone layouts import the focused
 `@ankhorage/expo-runtime/action-bridge` entrypoint, so camera-free manifests do not declare or
 install `@ankhorage/permissions` or `expo-camera`; the acceptance runner asserts both the generated
@@ -192,10 +196,10 @@ this CI job, so Drawer gestures and native Back remain explicitly unclaimed.
 
 ## Architectural impact
 
-Generated apps and `apps/studio` now share Expo's ordinary Router entry, compiler, Babel, Metro,
-TypeScript, web and CNG defaults. Studio contributes authoring capabilities through released Runtime,
+Generated apps and `apps/studio` now share Expo's ordinary Router entry, compiler, Babel,
+TypeScript, web and CNG defaults plus the same focused Metro isolation rule. Studio contributes authoring capabilities through released Runtime,
 ZORA, adapter and module contracts instead of maintaining an upgraded copy of the Expo platform.
 Generated navigation now also consumes the same stable Expo Router 57 entry points and typed-route
 toolchain an ordinary Expo app uses, while ZORA navigation UI remains the shared app-facing layer.
 This narrows the architectural distance between the first-party Studio app and any generated
-Ankhorage app without implementing issue #265 or #180.
+Ankhorage app while keeping every application package, lockfile, tool configuration, and install graph independently owned.

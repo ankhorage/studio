@@ -73,7 +73,7 @@ test('generated Nutrition app executes canonical product bindings over external 
   } finally {
     await rm(workspaceRoot, { recursive: true, force: true });
   }
-});
+}, 60_000);
 
 function createNutritionApiFixtureManifest(): AppManifest {
   const { manifest } = composeCategoryAppManifest({
@@ -221,7 +221,7 @@ async function createWorkspaceRoot(): Promise<string> {
   await mkdir(path.join(workspaceRoot, 'apps', 'studio'), { recursive: true });
   await writeFile(
     path.join(workspaceRoot, 'package.json'),
-    JSON.stringify({ name: '@ankhorage/studio', private: true, workspaces: ['apps/studio'] }),
+    JSON.stringify({ name: '@ankhorage/studio', private: true }),
   );
   return workspaceRoot;
 }

@@ -19,7 +19,6 @@ export async function createExpo57StudioHostFixtureAsync(
         {
           name: '@ankhorage/studio-standalone-host-fixture',
           private: true,
-          workspaces: ['apps/studio'],
         },
         null,
         2,

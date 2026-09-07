@@ -5,15 +5,16 @@ tooling, Expo CLI, configuration, CNG, and native-build contract and uses Expo R
 
 ## Consumer contract
 
-The application declares Node 24, Bun 1.3.14, every imported Runtime dependency, and every invoked
-tool directly. Its `@ankhorage/studio` range is `^2.0.24`; Expo Runtime `^3.0.10` supplies the sole
+The application declares Node 24, Bun 1.4.2, every imported Runtime dependency, and every invoked
+tool directly. Its `@ankhorage/studio` range is `^2.2.3`; Expo Runtime `^3.2.12` supplies the sole
 `EXPO_PLATFORM` authority used by `platform:check`. Ordinary application scripts never invoke a
 parent build, and TypeScript has no parent source or `dist` alias.
 
 Before TypeScript runs, the app-owned Expo CLI generates typed Router declarations. The platform
 check rejects unresolved package ownership, parent scripts, and non-release dependency sources.
-Expo-default Babel and Metro behavior remains unchanged, React Compiler is enabled through Expo
-configuration, and app-owned source/configuration files remain outside Studio generator ownership.
+Expo-default Babel remains unchanged, React Compiler is enabled through Expo configuration, and a
+focused Metro block list rejects dependencies resolved from ancestor package roots. App-owned source/configuration files
+remain outside Studio generator ownership.
 
 The app uses static Web output, stable native schemes and application identifiers, and the scoped
 React Native Vector Icons config plugins required to register linked fonts on iOS. It declares
@@ -29,11 +30,11 @@ Run the complete consumer proof with:
 bun run test:acceptance:expo57-studio-standalone
 ```
 
-The harness copies only committed application consumer files into a fresh directory outside the
-checkout. That directory is both package root and installation root; a separate temporary host
+The harness copies the committed application consumer files, including its app-owned `bun.lock`,
+into a fresh directory outside the checkout. That directory is both package root and installation root; a separate temporary host
 fixture serves only the HTTP behavior exercised by the application.
 
-The acceptance performs a cold frozen install, verifies registry provenance and the physical
+The acceptance performs a cold frozen install without regenerating the lockfile, verifies registry provenance and the physical
 dependency graph, requires one compatible React Native 0.86.3 installation, and hashes the lockfile
 before and after all checks. It then runs the platform assertion, Router type generation,
 TypeScript, lint, formatting, Expo dependency compatibility, Expo Doctor, React Compiler health,

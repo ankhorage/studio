@@ -124,7 +124,6 @@ async function createGeneratedProject(): Promise<{ workspaceRoot: string; projec
     JSON.stringify({
       name: '@ankhorage/studio-auth-runtime-smoke',
       private: true,
-      workspaces: ['apps/studio'],
     }),
   );
 
@@ -143,21 +142,23 @@ async function createGeneratedProject(): Promise<{ workspaceRoot: string; projec
   });
   await moduleManager.syncProject({ projectId: created.id, includeStudio: false });
   await writeRuntimeSmokeScript(created.path);
-  await writeRuntimeSmokeNodeModules(workspaceRoot);
+  await writeRuntimeSmokeNodeModules(created.path);
 
   return { workspaceRoot, projectRoot: created.path };
 }
 
-async function writeRuntimeSmokeNodeModules(workspaceRoot: string): Promise<void> {
-  const nodeModulesRoot = path.join(workspaceRoot, 'node_modules');
+async function writeRuntimeSmokeNodeModules(projectRoot: string): Promise<void> {
+  const nodeModulesRoot = path.join(projectRoot, 'node_modules');
   const ankhorageRoot = path.join(nodeModulesRoot, '@ankhorage');
 
   await mkdir(ankhorageRoot, { recursive: true });
+  await rm(path.join(ankhorageRoot, 'contracts'), { force: true, recursive: true });
   await symlink(
     await realpath(path.join(process.cwd(), 'node_modules/@ankhorage/contracts')),
     path.join(ankhorageRoot, 'contracts'),
     'dir',
   );
+  await rm(path.join(ankhorageRoot, 'supabase-auth'), { force: true, recursive: true });
   await symlink(
     await realpath(path.join(process.cwd(), 'node_modules/@ankhorage/supabase-auth')),
     path.join(ankhorageRoot, 'supabase-auth'),
@@ -188,6 +189,7 @@ async function writeStubPackage(
   files: Readonly<Record<string, string>>,
 ): Promise<void> {
   const packageRoot = path.join(nodeModulesRoot, name);
+  await rm(packageRoot, { force: true, recursive: true });
   await mkdir(packageRoot, { recursive: true });
   await writeFile(
     path.join(packageRoot, 'package.json'),
