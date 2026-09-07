@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.3.3
+
+### Patch Changes
+
+- 56789d2: Lint generated standalone and capability apps against their final Expo Router type declarations, and keep generated auth apps on Studio's compatible Utility range.
+
 ## 2.3.2
 
 ### Patch Changes
