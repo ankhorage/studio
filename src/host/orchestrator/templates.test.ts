@@ -65,7 +65,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/contracts']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/data-sources']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/expo-runtime']).toMatch(CARET_SEMVER_RANGE);
-    expect(dependencies['@ankhorage/navigator']).toBe('^1.5.2');
+    expect(dependencies['@ankhorage/navigator']).toBe('^1.5.3');
     expect(pkg.overrides).toEqual({ '@ankhorage/contracts': '11.0.0' });
     expect(dependencies['@ankhorage/permissions']).toBeUndefined();
     expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();

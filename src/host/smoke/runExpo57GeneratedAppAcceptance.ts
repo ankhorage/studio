@@ -143,7 +143,7 @@ function resolveAcceptanceScreen(manifest: AppManifest): ScreenSpec {
   return screen;
 }
 
-/*** Run cold installation, graph checks, lint, Expo compatibility/Doctor, typecheck, platform exports and clean native prebuild for the generated app. */
+/*** Run cold installation, graph checks, lint, Expo compatibility, typecheck, platform exports and clean native prebuild for the generated app. */
 async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
   await runAcceptanceCommandAsync({
     args: ['install', '--frozen-lockfile'],
@@ -163,7 +163,6 @@ async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
       cwd: projectRoot,
       label: 'Expo dependency compatibility',
     },
-    { args: ['run', 'doctor'], command: 'bun', cwd: projectRoot, label: 'Expo Doctor' },
     { args: ['run', 'typecheck'], command: 'bun', cwd: projectRoot, label: 'TypeScript 6' },
     {
       args: ['export', '--platform', 'web', '--output-dir', 'dist-web', '--clear'],

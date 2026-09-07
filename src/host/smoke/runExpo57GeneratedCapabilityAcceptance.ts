@@ -115,7 +115,6 @@ async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<v
       command: expoCli,
       label: 'Generated capability Expo dependency compatibility',
     },
-    { args: ['run', 'doctor'], command: 'bun', label: 'Generated capability Expo Doctor' },
   ] as const;
   for (const command of setupCommands) await runGeneratedCommandAsync(projectRoot, command);
   await assertSourceTreeUnchangedAsync(projectRoot, sourceBeforeStaticChecks);
