@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.1.4
+
+### Patch Changes
+
+- 93d9afa: Use the released Navigator SVG source support and updated SharkPrey template for project generation.
+
 ## 2.1.3
 
 ### Patch Changes
