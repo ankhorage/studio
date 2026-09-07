@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.3.2
+
+### Patch Changes
+
+- 1f9db46: Keep generated Expo Router runtime actions fully linted without rule suppressions.
+
 ## 2.3.1
 
 ### Patch Changes
