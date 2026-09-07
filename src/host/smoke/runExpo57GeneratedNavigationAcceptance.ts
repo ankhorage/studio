@@ -740,16 +740,12 @@ async function runAuthHiddenRouteDrawerStudioNavigationSmokeAsync(
     'utf8',
   );
   const signOutScreen =
-    /<Drawer\.Screen key="sign-out" name="sign-out" options=\{([^}]+)\} \/>/u.exec(appLayout);
-  const signOutOptionsName = signOutScreen?.[1];
-  if (!signOutOptionsName) {
+    /<Drawer\.Screen\s+name="sign-out"\s+options=\{\{([\s\S]*?)\}\}\s*\/>/u.exec(appLayout);
+  const signOutOptions = signOutScreen?.[1];
+  if (!signOutOptions) {
     throw new Error(`${project.id} does not generate the auth-injected sign-out Drawer route.`);
   }
-  const hiddenSignOutOptions = new RegExp(
-    `const\\s+${signOutOptionsName}\\s*=\\s*\\{[\\s\\S]*?drawerItemStyle:\\s*\\{\\s*display:\\s*'none'\\s*\\}[\\s\\S]*?\\};`,
-    'u',
-  );
-  if (!hiddenSignOutOptions.test(appLayout)) {
+  if (!/drawerItemStyle:\s*\{\s*display:\s*'none'\s*\}/u.test(signOutOptions)) {
     throw new Error(`${project.id} exposes the auth-injected sign-out route in its Drawer.`);
   }
 
