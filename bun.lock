@@ -11,7 +11,7 @@
         "@ankhorage/deploy": "^0.12.0",
         "@ankhorage/expo-runtime": "^3.2.12",
         "@ankhorage/infra": "^4.1.6",
-        "@ankhorage/navigator": "^1.5.2",
+        "@ankhorage/navigator": "^1.5.3",
         "@ankhorage/orchestrator": "^0.3.1",
         "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.4",
         "@ankhorage/orchestrator-module-expo-localization": "^0.6.0",
@@ -123,7 +123,7 @@
 
     "@ankhorage/infra": ["@ankhorage/infra@4.1.6", "", { "dependencies": { "@ankhorage/contracts": "^8.0.2", "@ankhorage/supabase-vault": "^0.2.6" }, "bin": { "ankhorage-infra": "dist/cli/bin.js" } }, "sha512-sMpczkAT0nwO4yQOW/SXCOmR5J6/6U1t/z73W5Mi4t0yOVN4f4xmkVxUi/CxtdZ7xQF9ZVsWo8z+w6ELZ0ntmg=="],
 
-    "@ankhorage/navigator": ["@ankhorage/navigator@1.5.2", "", { "dependencies": { "@ankhorage/contracts": "^11.0.0" }, "peerDependencies": { "@ankhorage/surface": "^3.4.1", "@react-native-vector-icons/fontawesome": "^13.1.3", "@react-native-vector-icons/fontawesome5": "^13.1.3", "@react-native-vector-icons/fontawesome6": "^13.1.3", "@react-native-vector-icons/ionicons": "^13.1.3", "@react-native-vector-icons/material-design-icons": "^13.1.3", "expo-router": ">=57.0.0 <58.0.0", "react": "19.2.3", "react-native": "0.86.x", "react-native-safe-area-context": ">=5.6.0 <6.0.0", "react-native-web": "~0.21.0" } }, "sha512-KtarvIZ4fq88n2+1mTjaM5ferzuAHyFP6/6YBHgOQl/qE7ZgBx+nV9Rn2JiXXspgJRZrvfIOSN8IGRkxo3kcvw=="],
+    "@ankhorage/navigator": ["@ankhorage/navigator@1.5.3", "", { "dependencies": { "@ankhorage/contracts": "^11.0.0" }, "peerDependencies": { "@ankhorage/surface": "^3.4.1", "@react-native-vector-icons/fontawesome": "^13.1.3", "@react-native-vector-icons/fontawesome5": "^13.1.3", "@react-native-vector-icons/fontawesome6": "^13.1.3", "@react-native-vector-icons/ionicons": "^13.1.3", "@react-native-vector-icons/material-design-icons": "^13.1.3", "expo-router": ">=57.0.0 <58.0.0", "react": "19.2.3", "react-native": "0.86.x", "react-native-safe-area-context": ">=5.6.0 <6.0.0", "react-native-web": "~0.21.0" } }, "sha512-Wpy5++ys3kgIIIvyaWR4ZCNjp71SmlMcV/8niTlpOxUh3haX++k0ir+Zs6TdKisIxOE/BdOb1esGFrLwsAZF0g=="],
 
     "@ankhorage/orchestrator": ["@ankhorage/orchestrator@0.3.2", "", {}, "sha512-ghFIKSNL0+PnlmYRw5jIbc9Q9qTCUDzhqcaO7TSNoKU3Ap8jX3EOCAgFfJyFUEVqlujKmmMIMkLgRED2dBYcmQ=="],
 

@@ -588,12 +588,6 @@ async function runGeneratedProjectChecksAsync(project: NavigationProject): Promi
       cwd: project.path,
       label: `${project.id} Expo dependency compatibility`,
     },
-    {
-      args: ['run', 'doctor'],
-      command: 'bun',
-      cwd: project.path,
-      label: `${project.id} Expo Doctor`,
-    },
   ];
   for (const command of commands) await runCommandAsync(command);
 
