@@ -1,5 +1,8 @@
 import type { AppManifest, NavigatorNode, RouteDefinition } from '@ankhorage/contracts';
-import type { NavigatorGenerationBindings, NavigatorScreenModule } from '@ankhorage/navigator';
+import type {
+  NavigatorGenerationBindings,
+  NavigatorScreenModule,
+} from '@ankhorage/contracts/navigator';
 
 import type { GeneratedFile } from '../layoutGenerator';
 import { escapeStringLiteral } from '../utils/escapeStringLiteral';

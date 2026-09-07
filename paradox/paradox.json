@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.0.27",
+      "value": "v2.2.1",
       "color": "cb3837"
     },
     {
@@ -686,6 +686,40 @@
         "ExternalApiOperationTestResult",
         "ExternalApiProtocol",
         "ManualRestApiRequest"
+      ]
+    },
+    {
+      "path": "src/features/selection/adapters/nativeElementMeasurement.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/features/selection/adapters/nativeElementMeasurement.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/features/selection/adapters/nativeElementMeasurement.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "intersectNativeElementRects",
+        "measureNativeElement",
+        "measureNativeRuntimeNodeElement",
+        "NativeElementLike",
+        "NativeElementRect"
+      ]
+    },
+    {
+      "path": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/features/selection/application/nativeSelectionSamplingCoordinator.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/features/selection/application/nativeSelectionSamplingCoordinator.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createNativeSelectionSamplingCoordinator",
+        "NativeSelectionFrameScheduler",
+        "NativeSelectionSamplingCoordinator"
       ]
     },
     {
@@ -1940,6 +1974,12 @@
       ]
     },
     {
+      "path": "src/host/orchestrator/workspaceRuntime.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/orchestrator/workspaceRuntime.ts"],
+      "exports": []
+    },
+    {
       "path": "src/host/orchestrator/workspaceRuntime.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -2412,6 +2452,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/host/orchestrator/projectManager.ts",
+        "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
         "src/host/smoke/createSmokeProjectSource.ts",
         "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
         "src/host/smoke/runAcceptanceCommandAsync.ts"
@@ -3583,13 +3624,16 @@
     {
       "path": "src/runtime/runtimeNodeMeasurement.test.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/runtime/runtimeNodeMeasurement.ts"],
+      "dependencies": [
+        "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "src/runtime/runtimeNodeMeasurement.ts"
+      ],
       "exports": []
     },
     {
       "path": "src/runtime/runtimeNodeMeasurement.ts",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": ["src/features/selection/adapters/nativeElementMeasurement.ts"],
       "exports": [
         "ActiveResizeTargetCoordinator",
         "createActiveResizeTargetCoordinator",
@@ -3599,9 +3643,7 @@
         "getActiveRuntimeNodeMeasurements",
         "hasActiveRuntimeNodeMeasurements",
         "MeasuredRect",
-        "measureNativeRuntimeNodeView",
         "measureRuntimeNodeIndicators",
-        "NativeMeasurableView",
         "ResizeTargetObserver",
         "RuntimeNodeIndicatorRect",
         "RuntimeNodeMeasurement",
@@ -3635,6 +3677,8 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/canvasDragModel.ts",
+        "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "src/features/selection/application/nativeSelectionSamplingCoordinator.ts",
         "src/index.ts",
         "src/runtime/indicatorRefreshCoordinator.ts",
         "src/runtime/indicatorSettleCoordinator.ts",
@@ -11930,6 +11974,123 @@
       }
     },
     {
+      "name": "createElement",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/selection/adapters/nativeElementMeasurement.test.ts",
+        "line": 13,
+        "column": 1
+      }
+    },
+    {
+      "name": "isVisibleNativeElementRect",
+      "description": "Return whether a measured rectangle is finite and has a visible area.",
+      "sourceLocation": {
+        "filePath": "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "intersectNativeElementRects",
+      "description": "Intersect two native viewport rectangles, returning null when they do not overlap.",
+      "sourceLocation": {
+        "filePath": "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "line": 32,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNativeScrollViewport",
+      "description": "Return whether a public native element is a scroll viewport that can clip descendants.",
+      "sourceLocation": {
+        "filePath": "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "line": 47,
+        "column": 1
+      }
+    },
+    {
+      "name": "clipToNativeScrollViewports",
+      "description": "Clip a rendered host rectangle to every connected native scroll viewport above it.",
+      "sourceLocation": {
+        "filePath": "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "line": 52,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectFirstRenderedNativeHosts",
+      "description": "Find the first positive-area authored host on each branch beneath a layout-neutral recorder.",
+      "sourceLocation": {
+        "filePath": "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "line": 78,
+        "column": 1
+      }
+    },
+    {
+      "name": "unionNativeElementRects",
+      "description": "Compute the smallest rectangle containing every supplied native rectangle.",
+      "sourceLocation": {
+        "filePath": "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "line": 97,
+        "column": 1
+      }
+    },
+    {
+      "name": "measureNativeElement",
+      "description": "Measure one connected native element directly in viewport coordinates.",
+      "sourceLocation": {
+        "filePath": "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "line": 110,
+        "column": 1
+      }
+    },
+    {
+      "name": "measureNativeRuntimeNodeElement",
+      "description": "Measure the authored native hosts beneath a layout-neutral Runtime node recorder.",
+      "sourceLocation": {
+        "filePath": "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "line": 120,
+        "column": 1
+      }
+    },
+    {
+      "name": "createFrameProbe",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "createNativeSelectionSamplingCoordinator",
+      "description": "Run one cancellable native selection measurement per frame while the caller remains eligible.",
+      "sourceLocation": {
+        "filePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.ts",
+        "line": 13,
+        "column": 1
+      }
+    },
+    {
+      "name": "scheduleNext",
+      "description": "Schedule the next sample only while the coordinator is active and eligible.",
+      "sourceLocation": {
+        "filePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.ts",
+        "line": 22,
+        "column": 3
+      }
+    },
+    {
+      "name": "runSample",
+      "description": "Execute one sample and continue after it settles without allowing overlapping measurements.",
+      "sourceLocation": {
+        "filePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.ts",
+        "line": 31,
+        "column": 3
+      }
+    },
+    {
       "name": "isRecord",
       "description": null,
       "sourceLocation": {
@@ -12456,7 +12617,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 112,
+        "line": 111,
         "column": 1
       }
     },
@@ -12465,7 +12626,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 118,
+        "line": 117,
         "column": 1
       }
     },
@@ -12474,7 +12635,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 136,
+        "line": 135,
         "column": 1
       }
     },
@@ -12483,7 +12644,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 167,
+        "line": 166,
         "column": 1
       }
     },
@@ -12492,7 +12653,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 178,
+        "line": 177,
         "column": 1
       }
     },
@@ -12501,7 +12662,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 185,
+        "line": 184,
         "column": 1
       }
     },
@@ -12510,7 +12671,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 189,
+        "line": 188,
         "column": 1
       }
     },
@@ -12519,7 +12680,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 199,
+        "line": 198,
         "column": 1
       }
     },
@@ -12528,7 +12689,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 228,
+        "line": 227,
         "column": 1
       }
     },
@@ -12537,7 +12698,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "line": 241,
+        "line": 240,
         "column": 1
       }
     },
@@ -14571,7 +14732,7 @@
       "description": "Build the narrow module/symbol registry consumed by Navigator without forwarding AppManifest.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 28,
+        "line": 31,
         "column": 1
       }
     },
@@ -14580,7 +14741,7 @@
       "description": "Collect only screens rendered directly by a Navigator layout instead of cloning the app registry.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 92,
+        "line": 95,
         "column": 1
       }
     },
@@ -14589,7 +14750,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 94,
+        "line": 97,
         "column": 9
       }
     },
@@ -14598,7 +14759,7 @@
       "description": "Map each routed screen ID to its first deterministic Studio-generated route module.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 122,
+        "line": 125,
         "column": 1
       }
     },
@@ -14607,7 +14768,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 124,
+        "line": 127,
         "column": 9
       }
     },
@@ -14616,7 +14777,7 @@
       "description": "Bind only auth partition guards whose behavior is already established by the root shell.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 138,
+        "line": 141,
         "column": 1
       }
     },
@@ -14625,7 +14786,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 143,
+        "line": 146,
         "column": 9
       }
     },
@@ -14634,7 +14795,7 @@
       "description": "Emit a manifest-projected icon source registry for bundled and URL-backed SVG references.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 163,
+        "line": 166,
         "column": 1
       }
     },
@@ -14643,7 +14804,7 @@
       "description": "Collect unique media-backed route icon references in stable traversal order.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 201,
+        "line": 204,
         "column": 1
       }
     },
@@ -14652,7 +14813,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 203,
+        "line": 206,
         "column": 9
       }
     },
@@ -14661,7 +14822,7 @@
       "description": "Convert a generated file path below src into its stable alias without an extension.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 216,
+        "line": 219,
         "column": 1
       }
     },
@@ -14670,7 +14831,7 @@
       "description": "Generate Navigator-owned layouts for enabled targets while leaving root-shell and screen ownership in Studio.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 25,
+        "line": 24,
         "column": 1
       }
     },
@@ -14679,7 +14840,7 @@
       "description": "Resolve enabled targets with Web first so its source remains the universal fallback file.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 56,
+        "line": 55,
         "column": 1
       }
     },
@@ -14688,7 +14849,7 @@
       "description": "Read one deploy target without dynamic object injection.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 63,
+        "line": 62,
         "column": 1
       }
     },
@@ -14697,7 +14858,7 @@
       "description": "Plan and generate one platform without passing any AppManifest state to Navigator.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 75,
+        "line": 74,
         "column": 1
       }
     },
@@ -14706,7 +14867,7 @@
       "description": "Project Studio-owned public route paths into the navigator slice required by headless tabs.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 99,
+        "line": 98,
         "column": 1
       }
     },
@@ -14715,7 +14876,7 @@
       "description": "Resolve one safe route segment to its canonical public path while omitting groups and index.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 116,
+        "line": 115,
         "column": 1
       }
     },
@@ -14724,7 +14885,7 @@
       "description": "Read the concrete semantic version from Expo Runtime's package range.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 135,
+        "line": 134,
         "column": 1
       }
     },
@@ -14733,7 +14894,7 @@
       "description": "Add an Expo platform suffix to a generated TypeScript layout path.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 143,
+        "line": 142,
         "column": 1
       }
     },
@@ -16152,7 +16313,7 @@
     },
     {
       "name": "runWorkspaceInstall",
-      "description": "Run `bun install` for a workspace with bounded spawn/runtime timeouts and escalating termination safeguards.\n@utility @ankhorage/utility/node/process",
+      "description": "Run `bun install` inside an independent generated-project package root with bounded lifecycle safeguards.\n@utility @ankhorage/utility/node/process",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/workspaceRuntime.ts",
         "line": 12,
@@ -16470,7 +16631,7 @@
       "description": "Read and parse a package.json file from disk.\n@utility @ankhorage/utility/node/package",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts",
-        "line": 59,
+        "line": 60,
         "column": 1
       }
     },
@@ -16479,7 +16640,7 @@
       "description": "Require a string dependency range for one package name from a package manifest.\n@utility @ankhorage/utility/node/package",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts",
-        "line": 67,
+        "line": 68,
         "column": 1
       }
     },
@@ -16668,7 +16829,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
-        "line": 79,
+        "line": 95,
         "column": 1
       }
     },
@@ -16677,7 +16838,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
-        "line": 91,
+        "line": 107,
         "column": 1
       }
     },
@@ -16686,7 +16847,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
-        "line": 105,
+        "line": 121,
         "column": 1
       }
     },
@@ -16704,7 +16865,7 @@
       "description": "Discover all reachable physical node_modules roots, including Bun store and nested package installations.\n@utility @ankhorage/utility/node/package",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
-        "line": 100,
+        "line": 110,
         "column": 1
       }
     },
@@ -16713,7 +16874,7 @@
       "description": "Return whether a filesystem target resolves to a directory.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
-        "line": 146,
+        "line": 156,
         "column": 1
       }
     },
@@ -16722,7 +16883,7 @@
       "description": "Return whether a filesystem target exists.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
-        "line": 154,
+        "line": 164,
         "column": 1
       }
     },
@@ -17433,7 +17594,7 @@
       "description": "Run Devtools synchronization twice and assert both idempotent output and a byte-stable lockfile.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 139,
+        "line": 128,
         "column": 1
       }
     },
@@ -17442,7 +17603,7 @@
       "description": "Assert exact installed package versions for every expected owner in a generated installation root.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 163,
+        "line": 152,
         "column": 1
       }
     },
@@ -17451,7 +17612,7 @@
       "description": "Assert that clean native prebuild output contains the expected Android permissions/scheme and iOS URL/usage-description evidence.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 176,
+        "line": 165,
         "column": 1
       }
     },
@@ -17460,7 +17621,7 @@
       "description": "Assert generated Expo Router declarations are non-empty and contain the native-evidence acceptance routes, returning their byte size.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 205,
+        "line": 194,
         "column": 1
       }
     },
@@ -17469,7 +17630,7 @@
       "description": "Create a cross-platform Bun lockfile, perform a cold frozen install, assert lockfile stability and return its SHA-256 fingerprint.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 217,
+        "line": 206,
         "column": 1
       }
     },
@@ -17478,7 +17639,7 @@
       "description": "Inject the Expo development-client plugin into the generated app config for native evidence execution.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 244,
+        "line": 233,
         "column": 1
       }
     },
@@ -17487,7 +17648,7 @@
       "description": "Add the React Compiler healthcheck dependency to the generated native-evidence app tooling.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 260,
+        "line": 249,
         "column": 1
       }
     },
@@ -17496,7 +17657,7 @@
       "description": "Require the native-evidence workspace path to be absolute and not already exist.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 282,
+        "line": 271,
         "column": 1
       }
     },
@@ -17505,7 +17666,7 @@
       "description": "Assert that released Studio auth generation wires Expo Crypto random bytes into the generated OAuth adapter.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 298,
+        "line": 287,
         "column": 1
       }
     },
@@ -17514,7 +17675,7 @@
       "description": "Assert that package metadata has the requested package name and exact version.\n@utility @ankhorage/utility/package",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 314,
+        "line": 303,
         "column": 1
       }
     },
@@ -17523,7 +17684,7 @@
       "description": "Read, parse and validate a package.json-compatible file as a non-array object record.\n@utility @ankhorage/utility/node/package",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 332,
+        "line": 321,
         "column": 1
       }
     },
@@ -17532,7 +17693,7 @@
       "description": "Build the command environment required by the Expo native-evidence acceptance workspace, including isolated Expo home and optional task TMPDIR.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 339,
+        "line": 328,
         "column": 1
       }
     },
@@ -17541,7 +17702,7 @@
       "description": "Read the current process PATH as a string, falling back to an empty path.\n@utility @ankhorage/utility/node/env",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 356,
+        "line": 345,
         "column": 1
       }
     },
@@ -17550,7 +17711,7 @@
       "description": "Read one Bun environment variable only when its runtime value is a string.\n@utility @ankhorage/utility/node/env",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 364,
+        "line": 353,
         "column": 1
       }
     },
@@ -17559,7 +17720,7 @@
       "description": "Recursively locate and read the generated iOS Info.plist under an iOS native-project root.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 371,
+        "line": 360,
         "column": 1
       }
     },
@@ -17568,7 +17729,7 @@
       "description": "Resolve the @ankhorage/templates range declared by the exact released Studio version from registry metadata.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 387,
+        "line": 376,
         "column": 1
       }
     },
@@ -17577,7 +17738,7 @@
       "description": "Resolve an accessible Node 24 executable from PATH for the Expo native-evidence fixture.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 431,
+        "line": 420,
         "column": 1
       }
     },
@@ -17586,7 +17747,7 @@
       "description": "Extract a completed/total check-count pair from command output using a caller-provided regular expression.\n@utility @ankhorage/utility/string",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 450,
+        "line": 439,
         "column": 1
       }
     },
@@ -17595,7 +17756,7 @@
       "description": "Export native-evidence JavaScript for web, Android and iOS and regenerate clean native development-client projects.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 457,
+        "line": 446,
         "column": 1
       }
     },
@@ -17604,7 +17765,7 @@
       "description": "Run formatting, lint, Expo compatibility/doctor, router types, TypeScript, React Compiler and multi-platform export checks for native evidence.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 484,
+        "line": 473,
         "column": 1
       }
     },
@@ -17613,7 +17774,7 @@
       "description": "Run one Bun command through the shared acceptance command runner and discard captured output.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 541,
+        "line": 530,
         "column": 1
       }
     },
@@ -17622,7 +17783,7 @@
       "description": "Run one Bun command through the shared acceptance command runner and return its captured output.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 558,
+        "line": 547,
         "column": 1
       }
     },
@@ -17631,7 +17792,7 @@
       "description": "Resolve the app-owned Expo CLI and run one Expo command with telemetry disabled.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 576,
+        "line": 565,
         "column": 1
       }
     },
@@ -17640,7 +17801,7 @@
       "description": "Collect installed version/check metadata and persist the native-evidence baseline JSON with lockfile and executable provenance.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 594,
+        "line": 583,
         "column": 1
       }
     },
@@ -17649,7 +17810,7 @@
       "description": "Run an executable with --version and require a successful non-empty version string.\n@utility @ankhorage/utility/node/process",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 653,
+        "line": 642,
         "column": 1
       }
     },
@@ -17658,7 +17819,7 @@
       "description": "Write the temporary released-Studio generator package manifest with the requested dependency set.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 663,
+        "line": 652,
         "column": 1
       }
     },
@@ -17667,7 +17828,7 @@
       "description": "Write the native-evidence client/controller/scenario/screen modules and expose the evidence route in the generated root layout.",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 684,
+        "line": 673,
         "column": 1
       }
     },
@@ -17676,7 +17837,7 @@
       "description": "Narrow an unknown value to a non-null, non-array object record.\n@utility @ankhorage/utility/object",
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 738,
+        "line": 727,
         "column": 1
       }
     },
@@ -17784,7 +17945,7 @@
       "description": "Create a generated standalone Expo 57 app, perform a cold frozen install and full static/native validation, and assert that acceptance leaves its lockfile unchanged.\n@todo Move this generated-app acceptance orchestration from production src/host/smoke to test/smoke.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 19,
+        "line": 20,
         "column": 1
       }
     },
@@ -17798,11 +17959,20 @@
       }
     },
     {
+      "name": "assertGeneratedAppOwnerGraphAsync",
+      "description": "Assert the generated app owns one physical Surface runtime so React context providers and consumers share identity.",
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
+        "line": 63,
+        "column": 1
+      }
+    },
+    {
       "name": "createGeneratedProjectAsync",
       "description": "Create the minimal standalone acceptance project and replace its initial manifest screen with a camera-free generated screen.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 63,
+        "line": 80,
         "column": 1
       }
     },
@@ -17811,7 +17981,7 @@
       "description": "Create the generated app-owned cross-platform Bun lockfile and return its content fingerprint.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 118,
+        "line": 135,
         "column": 1
       }
     },
@@ -17820,7 +17990,7 @@
       "description": "Compute a SHA-256 hex digest for byte content.\n@utility @ankhorage/utility/crypto",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 133,
+        "line": 150,
         "column": 1
       }
     },
@@ -17829,16 +17999,16 @@
       "description": "Resolve the manifest screen routed by the navigator's current initial route for acceptance mutation.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 138,
+        "line": 155,
         "column": 1
       }
     },
     {
       "name": "runAcceptanceChecksAsync",
-      "description": "Run cold installation, graph checks, lint, Expo compatibility/Doctor, typecheck, platform exports and clean native prebuild for the generated app.",
+      "description": "Run cold installation, graph checks, lint, Expo compatibility, typecheck, platform exports and clean native prebuild for the generated app.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 147,
+        "line": 164,
         "column": 1
       }
     },
@@ -17856,7 +18026,7 @@
       "description": "Create the temporary Bun workspace root used to generate the capability acceptance app.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 73,
+        "line": 72,
         "column": 1
       }
     },
@@ -17865,7 +18035,7 @@
       "description": "Create the generated capability app's cross-platform Bun lockfile without installing dependencies.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 92,
+        "line": 91,
         "column": 1
       }
     },
@@ -17874,7 +18044,7 @@
       "description": "Run static source-stability checks, router/type validation, deterministic browser OAuth evidence and native platform exports for the capability fixture.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 103,
+        "line": 102,
         "column": 1
       }
     },
@@ -17883,7 +18053,7 @@
       "description": "Create a deterministic local Supabase Auth stub that counts OAuth authorization and token-exchange requests for browser acceptance.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 178,
+        "line": 176,
         "column": 1
       }
     },
@@ -17892,7 +18062,7 @@
       "description": "Exercise generated sign-in/sign-up, OAuth expiry/replay/mismatch and hydrated capability rendering through the served static Web export.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 233,
+        "line": 231,
         "column": 1
       }
     },
@@ -17901,7 +18071,7 @@
       "description": "Start one fresh OAuth authorization attempt through the generated sign-in UI and assert that it reaches the deterministic Auth stub.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 320,
+        "line": 318,
         "column": 1
       }
     },
@@ -17910,7 +18080,7 @@
       "description": "Capture every file under a project's src tree as a deterministic relative-path-to-byte-content map.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 342,
+        "line": 340,
         "column": 1
       }
     },
@@ -17919,7 +18089,7 @@
       "description": "Assert that a project's current src tree exactly matches a previously captured byte snapshot.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 358,
+        "line": 356,
         "column": 1
       }
     },
@@ -17928,7 +18098,7 @@
       "description": "Assert generated Router declarations are non-empty and contain the capability auth/app route evidence.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 375,
+        "line": 373,
         "column": 1
       }
     },
@@ -17937,7 +18107,7 @@
       "description": "Run one generated capability command with isolated Expo home, telemetry disabled and Router rewrite checks disabled.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 389,
+        "line": 387,
         "column": 1
       }
     },
@@ -17955,7 +18125,7 @@
       "description": "Generate the full navigation fixture matrix and validate Router-owned tabs/drawer, auth scopes, Studio Admin navigation, dynamic/static routes, Web behavior and frozen lockfiles.\n@todo Move this generated navigation acceptance matrix from production src/host/smoke to test/smoke.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 63,
+        "line": 62,
         "column": 1
       }
     },
@@ -17964,7 +18134,7 @@
       "description": "Assert that a generated navigation project uses Router-owned navigation APIs, keeps hidden routes out of visible navigators and emits protected auth groups when required.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 177,
+        "line": 175,
         "column": 1
       }
     },
@@ -17973,7 +18143,7 @@
       "description": "Assert that a Studio-enabled generated navigation fixture installs its declared Studio range from the registry.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 252,
+        "line": 250,
         "column": 1
       }
     },
@@ -17982,7 +18152,7 @@
       "description": "Assert that generated Expo Router declarations are non-empty and contain the required navigation route evidence.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 271,
+        "line": 269,
         "column": 1
       }
     },
@@ -17991,7 +18161,7 @@
       "description": "Generate Expo Router type declarations for one navigation fixture under the isolated acceptance environment.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 295,
+        "line": 293,
         "column": 1
       }
     },
@@ -18000,7 +18170,7 @@
       "description": "Create and persist one generated navigation fixture variant from the shared navigation acceptance manifest.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 308,
+        "line": 306,
         "column": 1
       }
     },
@@ -18009,7 +18179,7 @@
       "description": "Create the focused global-auth Drawer fixture whose auth-injected sign-out route must remain hidden from primary navigation.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 341,
+        "line": 339,
         "column": 1
       }
     },
@@ -18018,7 +18188,7 @@
       "description": "Create the temporary Bun workspace root used by generated navigation acceptance fixtures.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 354,
+        "line": 352,
         "column": 1
       }
     },
@@ -18027,7 +18197,7 @@
       "description": "Create one generated project's app-owned lockfile, cold-install it frozen and return the pre-install lockfile digest.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 373,
+        "line": 371,
         "column": 1
       }
     },
@@ -18036,7 +18206,7 @@
       "description": "Compute a SHA-256 hex digest for byte content.\n@utility @ankhorage/utility/crypto",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 395,
+        "line": 393,
         "column": 1
       }
     },
@@ -18045,7 +18215,7 @@
       "description": "Recursively list JavaScript/TypeScript source files beneath a source root.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 403,
+        "line": 401,
         "column": 1
       }
     },
@@ -18054,7 +18224,7 @@
       "description": "Report whether a filesystem path currently exists, propagating non-ENOENT stat failures.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 418,
+        "line": 416,
         "column": 1
       }
     },
@@ -18063,7 +18233,7 @@
       "description": "Run one acceptance command with isolated Expo home, telemetry disabled and optional Router rewrite-check disabling.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 429,
+        "line": 427,
         "column": 1
       }
     },
@@ -18072,7 +18242,7 @@
       "description": "Exercise dynamic/static routes, browser history, nested tabs/drawer and hidden-route direct navigation in the generated development Web app.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 444,
+        "line": 442,
         "column": 1
       }
     },
@@ -18081,7 +18251,7 @@
       "description": "Launch the generated project's Expo Web development server and execute a caller-supplied Chrome smoke scenario against it.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 491,
+        "line": 489,
         "column": 1
       }
     },
@@ -18090,7 +18260,7 @@
       "description": "Validate one root-tabs/root-drawer fixture's generated bridge, typed Router boundary, lint and typecheck.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 529,
+        "line": 527,
         "column": 1
       }
     },
@@ -18099,7 +18269,7 @@
       "description": "Run typed-route generation, navigation lint, Expo compatibility/Doctor, TypeScript and Web/native exports for one generated navigation fixture.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 563,
+        "line": 567,
         "column": 1
       }
     },
@@ -18108,7 +18278,7 @@
       "description": "Exercise the served static navigation export at mobile and desktop widths using real pointer navigation and overflow assertions.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 627,
+        "line": 624,
         "column": 1
       }
     },
@@ -18117,7 +18287,7 @@
       "description": "Assert signed-out global-auth navigation redirects protected generated content to the sign-in route without leaking protected UI.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 648,
+        "line": 645,
         "column": 1
       }
     },
@@ -18126,7 +18296,7 @@
       "description": "Exercise global-auth Studio bootstrap, signed-out Admin denial, authenticated post-sign-in routing and Back-to-app behavior.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 664,
+        "line": 661,
         "column": 1
       }
     },
@@ -18135,16 +18305,16 @@
       "description": "Exercise the explicit development auth bypass and verify direct Studio Admin access remains available without a stored session.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 715,
+        "line": 712,
         "column": 1
       }
     },
     {
       "name": "runAuthHiddenRouteDrawerStudioNavigationSmokeAsync",
-      "description": "Assert the auth-injected sign-out route is hidden in the themed Drawer fallback and exercise authenticated app/Admin navigation.",
+      "description": "Assert the auth-injected sign-out route is hidden in the Navigator-owned Drawer and exercise authenticated app/Admin navigation.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 741,
+        "line": 738,
         "column": 1
       }
     },
@@ -18153,7 +18323,7 @@
       "description": "Validate integrated/none auth-scope fixtures keep the public app root accessible and deny Studio Admin routes without a global session.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 794,
+        "line": 784,
         "column": 1
       }
     },
@@ -18162,7 +18332,7 @@
       "description": "Poll an HTTP endpoint until it responds below the 5xx range, including caller-provided diagnostics on timeout.\n@utility @ankhorage/utility/http",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 828,
+        "line": 818,
         "column": 1
       }
     },
@@ -18171,7 +18341,7 @@
       "description": "Collect UTF-8 stdout and stderr chunks from a child process into a shared output buffer.\n@utility @ankhorage/utility/node/process",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 845,
+        "line": 835,
         "column": 1
       }
     },
@@ -18180,7 +18350,7 @@
       "description": "Terminate a detached child-process group, falling back to the direct child when group signaling is unavailable.\n@utility @ankhorage/utility/node/process",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 857,
+        "line": 847,
         "column": 1
       }
     },
@@ -21533,7 +21703,7 @@
       }
     },
     {
-      "name": "createObserverProbe",
+      "name": "createNativeElement",
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.test.ts",
@@ -21542,11 +21712,20 @@
       }
     },
     {
+      "name": "createObserverProbe",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "line": 39,
+        "column": 1
+      }
+    },
+    {
       "name": "createTargetMeasurement",
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.test.ts",
-        "line": 52,
+        "line": 70,
         "column": 1
       }
     },
@@ -21555,7 +21734,7 @@
       "description": "Decide whether one runtime-node measurement change can affect currently visible Studio indicators.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 51,
+        "line": 57,
         "column": 1
       }
     },
@@ -21564,7 +21743,7 @@
       "description": "Decide whether Studio should render selected-node chrome for the active platform/edit state.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 67,
+        "line": 73,
         "column": 1
       }
     },
@@ -21578,20 +21757,11 @@
       }
     },
     {
-      "name": "measureNativeRuntimeNodeView",
-      "description": "Measure a React-Native-like view in window coordinates and reject zero-area results as absent.\n@utility @ankhorage/utility/react-native/measurement",
-      "sourceLocation": {
-        "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 107,
-        "column": 1
-      }
-    },
-    {
       "name": "createNativeRuntimeNodeMeasurement",
       "description": "Adapt a native measurable view into Studio's runtime-node measurement contract.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 119,
+        "line": 104,
         "column": 1
       }
     },
@@ -21600,7 +21770,7 @@
       "description": "Create a keyed multi-value registry with idempotent unregister callbacks and optional change notifications.\n@utility @ankhorage/utility/registry",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 135,
+        "line": 120,
         "column": 1
       }
     },
@@ -21609,7 +21779,7 @@
       "description": "Prefer authored-root measurements when present, otherwise keep every runtime measurement for the node.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 172,
+        "line": 157,
         "column": 1
       }
     },
@@ -21618,7 +21788,7 @@
       "description": "Select runtime-node measurements whose geometry is currently relevant to Studio edit indicators.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 182,
+        "line": 167,
         "column": 1
       }
     },
@@ -21627,7 +21797,7 @@
       "description": "Return whether Studio currently has at least one active runtime-node measurement.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 202,
+        "line": 187,
         "column": 1
       }
     },
@@ -21636,7 +21806,7 @@
       "description": "Measure active runtime nodes and project their window geometry into canvas-relative indicator rectangles.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 215,
+        "line": 200,
         "column": 1
       }
     },
@@ -21645,7 +21815,7 @@
       "description": "Synchronize an observer with the union of resize targets exposed by active measurements plus additional targets.\n@utility @ankhorage/utility/observer",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 294,
+        "line": 285,
         "column": 1
       }
     },
@@ -21654,7 +21824,7 @@
       "description": "Create the React-Native-style absolute overlay props used to render Studio selected-node chrome around a measured rectangle.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 341,
+        "line": 332,
         "column": 1
       }
     },
@@ -21663,7 +21833,7 @@
       "description": "Detect a DOM-like element that exposes child traversal and bounding-rectangle measurement.\n@utility @ankhorage/utility/web",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 87,
+        "line": 96,
         "column": 1
       }
     },
@@ -21672,7 +21842,7 @@
       "description": "Resolve an unknown React-Native view value to a DOM resize target only on the web platform.\n@utility @ankhorage/utility/react-native/web",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 101,
+        "line": 110,
         "column": 1
       }
     },
@@ -21681,7 +21851,7 @@
       "description": "Recursively collect every descendant DOM resize target from a DOM-like value when running on web.\n@utility @ankhorage/utility/web",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 109,
+        "line": 118,
         "column": 1
       }
     },
@@ -21690,7 +21860,7 @@
       "description": "Convert a left/top/width/height rectangle into the package's x/y measured-rectangle shape.\n@utility @ankhorage/utility/geometry",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 124,
+        "line": 133,
         "column": 1
       }
     },
@@ -21699,7 +21869,7 @@
       "description": "Measure a DOM-like element, falling through zero-area wrappers to the rendered descendant boxes they contain.\n@utility @ankhorage/utility/web",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 137,
+        "line": 146,
         "column": 1
       }
     },
@@ -21708,7 +21878,7 @@
       "description": "Measure a React-Native view in window coordinates across web and native, returning null for a missing view.\n@utility @ankhorage/utility/react-native/measurement",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 150,
+        "line": 159,
         "column": 1
       }
     },
@@ -21717,7 +21887,7 @@
       "description": "Measure the rendered descendant boxes of a web view and return their union rectangle.\n@utility @ankhorage/utility/web",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 166,
+        "line": 175,
         "column": 1
       }
     },
@@ -21726,7 +21896,7 @@
       "description": "Measure one authored web view directly and treat zero-area geometry as absent.\n@utility @ankhorage/utility/web",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 184,
+        "line": 193,
         "column": 1
       }
     },
@@ -21735,7 +21905,7 @@
       "description": "Compare ordered indicator-rectangle collections by identity flags and sub-pixel geometry tolerance.\n@utility @ankhorage/utility/geometry",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 197,
+        "line": 206,
         "column": 1
       }
     },
@@ -21744,7 +21914,7 @@
       "description": "Expose the measurement ref/layout callbacks used by Studio-rendered unsupported nodes.\n@todo Move this Studio React measurement hook to the selection/canvas app edge; it composes reusable measurement primitives but is not generic runtime behavior.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 225,
+        "line": 234,
         "column": 1
       }
     },
@@ -21753,7 +21923,7 @@
       "description": "Wrap one rendered Studio runtime node so pointer/touch interactions and geometry can be recorded for stationary selection and unsupported-node indicators.\n@todo Keep this React-Native gesture/measurement adapter at the Studio selection/canvas app edge instead of generic `runtime/` ownership.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 264,
+        "line": 273,
         "column": 1
       }
     },
@@ -21762,7 +21932,7 @@
       "description": "Record one normalized pointer/touch interaction for this node when selection recording is enabled.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 275,
+        "line": 284,
         "column": 3
       }
     },
@@ -21771,7 +21941,7 @@
       "description": "Normalize a React-Native pointer-down event into the stationary-selection pointer input contract.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 284,
+        "line": 293,
         "column": 3
       }
     },
@@ -21780,7 +21950,7 @@
       "description": "Normalize a React-Native touch-start event into the stationary-selection touch input contract.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 296,
+        "line": 305,
         "column": 3
       }
     },
@@ -21789,7 +21959,7 @@
       "description": "Complete the currently pending pointer/touch interaction when the platform signals end or cancellation.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 306,
+        "line": 315,
         "column": 3
       }
     },
@@ -21798,7 +21968,7 @@
       "description": "Request fresh indicator geometry after this recorder's layout changes.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 311,
+        "line": 320,
         "column": 3
       }
     },
@@ -21807,7 +21977,7 @@
       "description": "Create Studio's runtime-node wrapper that records stationary selection and unsupported-node measurement around eligible rendered nodes.\n@todo Move this Studio/ZORA selection wrapper to the selection/canvas app edge; it is package integration rather than generic runtime policy.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 405,
+        "line": 414,
         "column": 1
       }
     },
@@ -21816,7 +21986,7 @@
       "description": "Coordinate Studio stationary tap selection, drag interaction, node measurement, indicator refresh, and selected/unsupported chrome rendering.\n@todo Split this large React composition into the Studio selection/canvas app edge; the reusable coordinators and measurement primitives should remain independent owners.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 457,
+        "line": 462,
         "column": 1
       }
     },
@@ -21825,7 +21995,7 @@
       "description": "Request updated indicator geometry after any captured web scroll.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 756,
+        "line": 870,
         "column": 11
       }
     },
@@ -21834,7 +22004,7 @@
       "description": "Request updated indicator geometry after a web viewport resize.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 758,
+        "line": 872,
         "column": 11
       }
     },
@@ -27082,8 +27252,18 @@
       },
       {
         "fromPath": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toPath": "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromPath": "src/runtime/runtimeNodeMeasurement.test.ts",
         "toPath": "src/runtime/runtimeNodeMeasurement.ts",
         "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromPath": "src/runtime/runtimeNodeMeasurement.ts",
+        "toPath": "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
       },
       {
         "fromPath": "src/runtime/stationarySelection.public.test.ts",
@@ -27093,6 +27273,16 @@
       {
         "fromPath": "src/runtime/stationarySelection.ts",
         "toPath": "src/canvasDragModel.ts",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.ts",
+        "toPath": "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.ts",
+        "toPath": "src/features/selection/application/nativeSelectionSamplingCoordinator.ts",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -28236,6 +28426,11 @@
         "sourcePath": "src/host/orchestrator/templates.test.ts"
       },
       {
+        "fromPath": "src/host/orchestrator/workspaceRuntime.test.ts",
+        "toPath": "src/host/orchestrator/workspaceRuntime.ts",
+        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
+      },
+      {
         "fromPath": "src/host/secrets/projectSecretService.test.ts",
         "toPath": "src/authSettings.ts",
         "sourcePath": "src/host/secrets/projectSecretService.test.ts"
@@ -28533,6 +28728,11 @@
       {
         "fromPath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
+        "toPath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
@@ -28979,6 +29179,16 @@
         "fromPath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
         "toPath": "src/ui/canvas/canvasDndInteraction.ts",
         "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromPath": "src/features/selection/adapters/nativeElementMeasurement.test.ts",
+        "toPath": "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.test.ts"
+      },
+      {
+        "fromPath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
+        "toPath": "src/features/selection/application/nativeSelectionSamplingCoordinator.ts",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"
       },
       {
         "fromPath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
@@ -38344,12 +38554,6 @@
       },
       {
         "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
-        "toSymbol": "rm",
-        "callExpression": "rm",
-        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
         "toSymbol": "installFromCleanLockfileAsync",
         "callExpression": "installFromCleanLockfileAsync",
         "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
@@ -38436,6 +38640,12 @@
         "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
         "toSymbol": "execFile",
         "callExpression": "execFile",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
         "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
       },
       {
@@ -42099,9 +42309,9 @@
         "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
       },
       {
-        "fromSymbol": "measureInWindow",
-        "toSymbol": "callback",
-        "callExpression": "callback",
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "createNativeElement",
+        "callExpression": "createNativeElement",
         "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
       },
       {
@@ -42138,12 +42348,6 @@
         "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
         "toSymbol": "unregister",
         "callExpression": "unregister",
-        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
-      },
-      {
-        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
-        "toSymbol": "measureNativeRuntimeNodeView",
-        "callExpression": "measureNativeRuntimeNodeView",
         "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
       },
       {
@@ -42231,21 +42435,9 @@
         "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
       },
       {
-        "fromSymbol": "src/runtime/runtimeNodeMeasurement.ts",
-        "toSymbol": "measureInWindow",
-        "callExpression": "view.measureInWindow",
-        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
-      },
-      {
-        "fromSymbol": "src/runtime/runtimeNodeMeasurement.ts",
-        "toSymbol": "resolve",
-        "callExpression": "resolve",
-        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
-      },
-      {
         "fromSymbol": "measure",
-        "toSymbol": "measureNativeRuntimeNodeView",
-        "callExpression": "measureNativeRuntimeNodeView",
+        "toSymbol": "measureNativeElement",
+        "callExpression": "measureNativeElement",
         "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
       },
       {
@@ -42282,6 +42474,12 @@
         "fromSymbol": "src/runtime/runtimeNodeMeasurement.ts",
         "toSymbol": "unionMeasuredRects",
         "callExpression": "unionMeasuredRects",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.ts",
+        "toSymbol": "intersectNativeElementRects",
+        "callExpression": "intersectNativeElementRects",
         "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
       },
       {
@@ -42430,8 +42628,8 @@
       },
       {
         "fromSymbol": "measureRootView",
-        "toSymbol": "measureNativeRuntimeNodeView",
-        "callExpression": "measureNativeRuntimeNodeView",
+        "toSymbol": "measureNativeElement",
+        "callExpression": "measureNativeElement",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -42520,8 +42718,8 @@
       },
       {
         "fromSymbol": "measure",
-        "toSymbol": "measureNativeRuntimeNodeView",
-        "callExpression": "measureNativeRuntimeNodeView",
+        "toSymbol": "measureNativeRuntimeNodeElement",
+        "callExpression": "measureNativeRuntimeNodeElement",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -42580,6 +42778,12 @@
       },
       {
         "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "isRunning",
+        "callExpression": "nativeSelectionSamplingCoordinatorRef.current?.isRunning",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
         "toSymbol": "createIndicatorRefreshCoordinator",
         "callExpression": "createIndicatorRefreshCoordinator",
         "sourcePath": "src/runtime/stationarySelection.ts"
@@ -42592,8 +42796,32 @@
       },
       {
         "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "createNativeSelectionSamplingCoordinator",
+        "callExpression": "createNativeSelectionSamplingCoordinator",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "cancelPendingRefresh",
+        "callExpression": "refreshCoordinatorRef.current?.cancelPendingRefresh",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "start",
+        "callExpression": "nativeSelectionSamplingCoordinatorRef.current.start",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
         "toSymbol": "requestIndicatorRefresh",
         "callExpression": "requestIndicatorRefresh",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "shouldSampleNativeSelection",
+        "callExpression": "shouldSampleNativeSelection",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -42640,6 +42868,12 @@
       },
       {
         "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "stop",
+        "callExpression": "nativeSelectionSamplingCoordinatorRef.current?.stop",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
         "toSymbol": "setIndicatorRects",
         "callExpression": "setIndicatorRects",
         "sourcePath": "src/runtime/stationarySelection.ts"
@@ -42664,14 +42898,14 @@
       },
       {
         "fromSymbol": "src/runtime/stationarySelection.ts",
-        "toSymbol": "setActiveDragNodeId",
-        "callExpression": "setActiveDragNodeId",
+        "toSymbol": "startNativeSelectionSampling",
+        "callExpression": "startNativeSelectionSampling",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
         "fromSymbol": "src/runtime/stationarySelection.ts",
-        "toSymbol": "cancelPendingRefresh",
-        "callExpression": "refreshCoordinatorRef.current?.cancelPendingRefresh",
+        "toSymbol": "setActiveDragNodeId",
+        "callExpression": "setActiveDragNodeId",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -49449,6 +49683,66 @@
         "sourcePath": "src/host/orchestrator/templates.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
+        "toSymbol": "runWorkspaceInstall",
+        "callExpression": "runWorkspaceInstall",
+        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/workspaceRuntime.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/orchestrator/workspaceRuntime.test.ts"
+      },
+      {
         "fromSymbol": "src/host/orchestrator/workspaceRuntime.ts",
         "toSymbol": "spawn",
         "callExpression": "spawn",
@@ -51958,12 +52252,6 @@
       },
       {
         "fromSymbol": "runExpo57GeneratedAppAcceptanceAsync",
-        "toSymbol": "rm",
-        "callExpression": "rm",
-        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
-      },
-      {
-        "fromSymbol": "runExpo57GeneratedAppAcceptanceAsync",
         "toSymbol": "createProjectLockfileAsync",
         "callExpression": "createProjectLockfileAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
@@ -51987,6 +52275,12 @@
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
+        "fromSymbol": "runExpo57GeneratedAppAcceptanceAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
         "fromSymbol": "assertCameraFreeInstalledGraphAsync",
         "toSymbol": "readFile",
         "callExpression": "readFile",
@@ -51996,6 +52290,18 @@
         "fromSymbol": "assertCameraFreeInstalledGraphAsync",
         "toSymbol": "runAcceptanceCommandAsync",
         "callExpression": "runAcceptanceCommandAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertGeneratedAppOwnerGraphAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertGeneratedAppOwnerGraphAsync",
+        "toSymbol": "assertReactNativeOwnerGraphAsync",
+        "callExpression": "assertReactNativeOwnerGraphAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
@@ -52074,6 +52380,12 @@
         "fromSymbol": "runAcceptanceChecksAsync",
         "toSymbol": "assertCameraFreeInstalledGraphAsync",
         "callExpression": "assertCameraFreeInstalledGraphAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runAcceptanceChecksAsync",
+        "toSymbol": "assertGeneratedAppOwnerGraphAsync",
+        "callExpression": "assertGeneratedAppOwnerGraphAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
@@ -52438,12 +52750,6 @@
       },
       {
         "fromSymbol": "runExpo57AuthHiddenRouteDrawerAcceptanceAsync",
-        "toSymbol": "rm",
-        "callExpression": "rm",
-        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
-      },
-      {
-        "fromSymbol": "runExpo57AuthHiddenRouteDrawerAcceptanceAsync",
         "toSymbol": "installGeneratedProjectAsync",
         "callExpression": "installGeneratedProjectAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
@@ -52479,6 +52785,12 @@
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
+        "fromSymbol": "runExpo57AuthHiddenRouteDrawerAcceptanceAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
         "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
         "toSymbol": "mkdtemp",
         "callExpression": "mkdtemp",
@@ -52500,12 +52812,6 @@
         "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
         "toSymbol": "createAuthHiddenRouteDrawerStudioAsync",
         "callExpression": "createAuthHiddenRouteDrawerStudioAsync",
-        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
-      },
-      {
-        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
-        "toSymbol": "rm",
-        "callExpression": "rm",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
@@ -52608,6 +52914,12 @@
         "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
         "toSymbol": "readFile",
         "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
@@ -54271,6 +54583,228 @@
         "toSymbol": "resetDrag",
         "callExpression": "resetDrag",
         "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/features/selection/adapters/nativeElementMeasurement.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/adapters/nativeElementMeasurement.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/adapters/nativeElementMeasurement.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/adapters/nativeElementMeasurement.test.ts",
+        "toSymbol": "measureNativeElement",
+        "callExpression": "measureNativeElement",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/adapters/nativeElementMeasurement.test.ts",
+        "toSymbol": "createElement",
+        "callExpression": "createElement",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/adapters/nativeElementMeasurement.test.ts",
+        "toSymbol": "measureNativeRuntimeNodeElement",
+        "callExpression": "measureNativeRuntimeNodeElement",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/adapters/nativeElementMeasurement.test.ts",
+        "toSymbol": "intersectNativeElementRects",
+        "callExpression": "intersectNativeElementRects",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "clipToNativeScrollViewports",
+        "toSymbol": "isNativeScrollViewport",
+        "callExpression": "isNativeScrollViewport",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.ts"
+      },
+      {
+        "fromSymbol": "clipToNativeScrollViewports",
+        "toSymbol": "getBoundingClientRect",
+        "callExpression": "parent.getBoundingClientRect",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.ts"
+      },
+      {
+        "fromSymbol": "clipToNativeScrollViewports",
+        "toSymbol": "isVisibleNativeElementRect",
+        "callExpression": "isVisibleNativeElementRect",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.ts"
+      },
+      {
+        "fromSymbol": "clipToNativeScrollViewports",
+        "toSymbol": "intersectNativeElementRects",
+        "callExpression": "intersectNativeElementRects",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.ts"
+      },
+      {
+        "fromSymbol": "collectFirstRenderedNativeHosts",
+        "toSymbol": "getBoundingClientRect",
+        "callExpression": "element.getBoundingClientRect",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.ts"
+      },
+      {
+        "fromSymbol": "collectFirstRenderedNativeHosts",
+        "toSymbol": "isVisibleNativeElementRect",
+        "callExpression": "isVisibleNativeElementRect",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "toSymbol": "collectFirstRenderedNativeHosts",
+        "callExpression": "collectFirstRenderedNativeHosts",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.ts"
+      },
+      {
+        "fromSymbol": "measureNativeElement",
+        "toSymbol": "getBoundingClientRect",
+        "callExpression": "element.getBoundingClientRect",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.ts"
+      },
+      {
+        "fromSymbol": "measureNativeElement",
+        "toSymbol": "isVisibleNativeElementRect",
+        "callExpression": "isVisibleNativeElementRect",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "toSymbol": "clipToNativeScrollViewports",
+        "callExpression": "clipToNativeScrollViewports",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.ts"
+      },
+      {
+        "fromSymbol": "measureNativeRuntimeNodeElement",
+        "toSymbol": "unionNativeElementRects",
+        "callExpression": "unionNativeElementRects",
+        "sourcePath": "src/features/selection/adapters/nativeElementMeasurement.ts"
+      },
+      {
+        "fromSymbol": "flushOne",
+        "toSymbol": "__type",
+        "callExpression": "entry[1]",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
+        "toSymbol": "createFrameProbe",
+        "callExpression": "createFrameProbe",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
+        "toSymbol": "createNativeSelectionSamplingCoordinator",
+        "callExpression": "createNativeSelectionSamplingCoordinator",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
+        "toSymbol": "start",
+        "callExpression": "coordinator.start",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
+        "toSymbol": "pendingCount",
+        "callExpression": "frames.pendingCount",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
+        "toSymbol": "flushOne",
+        "callExpression": "frames.flushOne",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
+        "toSymbol": "resolveSample",
+        "callExpression": "resolveSample",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
+        "toSymbol": "stop",
+        "callExpression": "coordinator.stop",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
+        "toSymbol": "isRunning",
+        "callExpression": "coordinator.isRunning",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "scheduleNext",
+        "toSymbol": "shouldContinue",
+        "callExpression": "options.shouldContinue",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.ts"
+      },
+      {
+        "fromSymbol": "scheduleNext",
+        "toSymbol": "request",
+        "callExpression": "options.scheduler.request",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.ts"
+      },
+      {
+        "fromSymbol": "runSample",
+        "toSymbol": "shouldContinue",
+        "callExpression": "options.shouldContinue",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.ts"
+      },
+      {
+        "fromSymbol": "runSample",
+        "toSymbol": "sample",
+        "callExpression": "options.sample",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.ts"
+      },
+      {
+        "fromSymbol": "start",
+        "toSymbol": "shouldContinue",
+        "callExpression": "options.shouldContinue",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.ts"
+      },
+      {
+        "fromSymbol": "start",
+        "toSymbol": "scheduleNext",
+        "callExpression": "scheduleNext",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.ts"
+      },
+      {
+        "fromSymbol": "stop",
+        "toSymbol": "cancel",
+        "callExpression": "options.scheduler.cancel",
+        "sourcePath": "src/features/selection/application/nativeSelectionSamplingCoordinator.ts"
       },
       {
         "fromSymbol": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
