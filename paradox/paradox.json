@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.2.3",
+      "value": "v2.3.0",
       "color": "cb3837"
     },
     {
@@ -2236,9 +2236,18 @@
       "exports": ["createExpo57ReaderFixtureManifest"]
     },
     {
+      "path": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/templates.ts",
+        "src/host/smoke/createExpo57StudioHostFixtureAsync.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": ["src/host/orchestrator/templates.ts"],
       "exports": ["createExpo57StudioHostFixtureAsync"]
     },
     {
@@ -14672,7 +14681,7 @@
       "description": "Trim, discard empty and join generated module-level declaration blocks with a blank line.\n@utility @ankhorage/utility/string",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 123,
+        "line": 127,
         "column": 1
       }
     },
@@ -14681,7 +14690,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 159,
+        "line": 163,
         "column": 11
       }
     },
@@ -14690,7 +14699,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 171,
+        "line": 175,
         "column": 11
       }
     },
@@ -14699,7 +14708,7 @@
       "description": "Generate the Studio Admin route-group layout, redirecting when generated global auth is unavailable and guarding production builds from the development Admin shell.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 558,
+        "line": 562,
         "column": 1
       }
     },
@@ -14708,7 +14717,7 @@
       "description": "Generate the complete Studio Admin route file set from the canonical Admin route registry.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 584,
+        "line": 588,
         "column": 1
       }
     },
@@ -14717,7 +14726,7 @@
       "description": "Resolve a canonical Studio Admin route definition to its generated Expo Router file path, preserving parent routes as index modules and dynamic parameters as bracket segments.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 594,
+        "line": 598,
         "column": 1
       }
     },
@@ -14726,7 +14735,7 @@
       "description": "Generate one Studio Admin Expo Router module that development-gates and renders the requested Admin route.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 615,
+        "line": 619,
         "column": 1
       }
     },
@@ -14735,7 +14744,7 @@
       "description": "Normalize a relative filesystem path to forward-slash separators for generated project files.\n@utility @ankhorage/utility/path",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 633,
+        "line": 637,
         "column": 1
       }
     },
@@ -16256,7 +16265,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 32,
+        "line": 31,
         "column": 1
       }
     },
@@ -16265,7 +16274,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 40,
+        "line": 39,
         "column": 1
       }
     },
@@ -16274,7 +16283,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 82,
+        "line": 81,
         "column": 1
       }
     },
@@ -16283,7 +16292,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 92,
+        "line": 91,
         "column": 1
       }
     },
@@ -16292,7 +16301,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 96,
+        "line": 95,
         "column": 1
       }
     },
@@ -16301,7 +16310,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 112,
+        "line": 111,
         "column": 1
       }
     },
@@ -16310,7 +16319,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 134,
+        "line": 133,
         "column": 1
       }
     },
@@ -16319,7 +16328,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 146,
+        "line": 145,
         "column": 1
       }
     },
@@ -16328,7 +16337,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 174,
+        "line": 173,
         "column": 1
       }
     },
@@ -16337,7 +16346,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 220,
+        "line": 219,
         "column": 1
       }
     },
@@ -16346,7 +16355,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 859,
+        "line": 858,
         "column": 1
       }
     },
@@ -16355,7 +16364,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 975,
+        "line": 974,
         "column": 1
       }
     },
@@ -16364,7 +16373,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 991,
+        "line": 990,
         "column": 1
       }
     },
@@ -16373,7 +16382,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1017,
+        "line": 1016,
         "column": 1
       }
     },
@@ -16382,7 +16391,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1021,
+        "line": 1020,
         "column": 1
       }
     },
@@ -16391,7 +16400,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1054,
+        "line": 1053,
         "column": 1
       }
     },
@@ -17138,7 +17147,7 @@
       "description": "Write the deterministic standalone Studio-host workspace fixture used by Expo 57 acceptance.\n@todo Move this fixture writer from src/host/smoke to test/smoke.",
       "sourceLocation": {
         "filePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts",
-        "line": 9,
+        "line": 11,
         "column": 1
       }
     },
@@ -17147,7 +17156,7 @@
       "description": "Create the canonical application manifest embedded in the standalone Studio-host fixture.",
       "sourceLocation": {
         "filePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts",
-        "line": 42,
+        "line": 57,
         "column": 1
       }
     },
@@ -18209,7 +18218,7 @@
       "description": "Assert that a Studio-enabled generated navigation fixture installs its declared Studio range from the registry.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 250,
+        "line": 257,
         "column": 1
       }
     },
@@ -18218,7 +18227,7 @@
       "description": "Assert that generated Expo Router declarations are non-empty and contain the required navigation route evidence.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 269,
+        "line": 276,
         "column": 1
       }
     },
@@ -18227,7 +18236,7 @@
       "description": "Generate Expo Router type declarations for one navigation fixture under the isolated acceptance environment.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 293,
+        "line": 300,
         "column": 1
       }
     },
@@ -18236,7 +18245,7 @@
       "description": "Create and persist one generated navigation fixture variant from the shared navigation acceptance manifest.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 306,
+        "line": 313,
         "column": 1
       }
     },
@@ -18245,7 +18254,7 @@
       "description": "Create the focused global-auth Drawer fixture whose auth-injected sign-out route must remain hidden from primary navigation.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 339,
+        "line": 346,
         "column": 1
       }
     },
@@ -18254,7 +18263,7 @@
       "description": "Create the temporary Bun workspace root used by generated navigation acceptance fixtures.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 352,
+        "line": 359,
         "column": 1
       }
     },
@@ -18263,7 +18272,7 @@
       "description": "Create one generated project's app-owned lockfile, cold-install it frozen and return the pre-install lockfile digest.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 370,
+        "line": 377,
         "column": 1
       }
     },
@@ -18272,7 +18281,7 @@
       "description": "Compute a SHA-256 hex digest for byte content.\n@utility @ankhorage/utility/crypto",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 392,
+        "line": 399,
         "column": 1
       }
     },
@@ -18281,7 +18290,7 @@
       "description": "Recursively list JavaScript/TypeScript source files beneath a source root.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 400,
+        "line": 407,
         "column": 1
       }
     },
@@ -18290,7 +18299,7 @@
       "description": "Report whether a filesystem path currently exists, propagating non-ENOENT stat failures.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 415,
+        "line": 422,
         "column": 1
       }
     },
@@ -18299,7 +18308,7 @@
       "description": "Run one acceptance command with isolated Expo home, telemetry disabled and optional Router rewrite-check disabling.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 426,
+        "line": 433,
         "column": 1
       }
     },
@@ -18308,7 +18317,7 @@
       "description": "Exercise dynamic/static routes, browser history, nested tabs/drawer and hidden-route direct navigation in the generated development Web app.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 441,
+        "line": 448,
         "column": 1
       }
     },
@@ -18317,7 +18326,7 @@
       "description": "Launch the generated project's Expo Web development server and execute a caller-supplied Chrome smoke scenario against it.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 488,
+        "line": 495,
         "column": 1
       }
     },
@@ -18326,7 +18335,7 @@
       "description": "Validate one root-tabs/root-drawer fixture's generated bridge, typed Router boundary, lint and typecheck.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 526,
+        "line": 533,
         "column": 1
       }
     },
@@ -18335,7 +18344,7 @@
       "description": "Run typed-route generation, navigation lint, Expo compatibility/Doctor, TypeScript and Web/native exports for one generated navigation fixture.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 566,
+        "line": 573,
         "column": 1
       }
     },
@@ -18344,7 +18353,7 @@
       "description": "Exercise the served static navigation export at mobile and desktop widths using real pointer navigation and overflow assertions.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 623,
+        "line": 630,
         "column": 1
       }
     },
@@ -18353,7 +18362,7 @@
       "description": "Assert signed-out global-auth navigation redirects protected generated content to the sign-in route without leaking protected UI.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 644,
+        "line": 651,
         "column": 1
       }
     },
@@ -18362,7 +18371,7 @@
       "description": "Exercise global-auth Studio bootstrap, signed-out Admin denial, authenticated post-sign-in routing and Back-to-app behavior.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 660,
+        "line": 667,
         "column": 1
       }
     },
@@ -18371,7 +18380,7 @@
       "description": "Exercise the explicit development auth bypass and verify direct Studio Admin access remains available without a stored session.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 711,
+        "line": 718,
         "column": 1
       }
     },
@@ -18380,7 +18389,7 @@
       "description": "Assert the auth-injected sign-out route is hidden in the Navigator-owned Drawer and exercise authenticated app/Admin navigation.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 737,
+        "line": 744,
         "column": 1
       }
     },
@@ -18389,7 +18398,7 @@
       "description": "Validate integrated/none auth-scope fixtures keep the public app root accessible and deny Studio Admin routes without a global session.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 783,
+        "line": 790,
         "column": 1
       }
     },
@@ -18398,7 +18407,7 @@
       "description": "Poll an HTTP endpoint until it responds below the 5xx range, including caller-provided diagnostics on timeout.\n@utility @ankhorage/utility/http",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 817,
+        "line": 824,
         "column": 1
       }
     },
@@ -18407,7 +18416,7 @@
       "description": "Collect UTF-8 stdout and stderr chunks from a child process into a shared output buffer.\n@utility @ankhorage/utility/node/process",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 834,
+        "line": 841,
         "column": 1
       }
     },
@@ -18416,7 +18425,7 @@
       "description": "Terminate a detached child-process group, falling back to the direct child when group signaling is unavailable.\n@utility @ankhorage/utility/node/process",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 846,
+        "line": 853,
         "column": 1
       }
     },
@@ -28695,6 +28704,21 @@
         "fromPath": "src/host/smoke/createExpo57ReaderFixtureManifest.ts",
         "toPath": "src/host/smoke/createOAuthFixtureManifest.ts",
         "sourcePath": "src/host/smoke/createExpo57ReaderFixtureManifest.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts",
+        "toPath": "src/host/orchestrator/templates.ts",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts",
+        "toPath": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts",
+        "toPath": "src/host/orchestrator/templates.ts",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts"
       },
       {
         "fromPath": "src/host/smoke/createOAuthFixtureManifest.ts",
@@ -51792,6 +51816,60 @@
         "toSymbol": "eventValue",
         "callExpression": "eventValue",
         "sourcePath": "src/host/smoke/createExpo57ReaderFixtureManifest.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts",
+        "toSymbol": "createExpo57StudioHostFixtureAsync",
+        "callExpression": "createExpo57StudioHostFixtureAsync",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts",
+        "toSymbol": "getPackageJson",
+        "callExpression": "getPackageJson",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts"
+      },
+      {
+        "fromSymbol": "createExpo57StudioHostFixtureAsync",
+        "toSymbol": "getPackageJson",
+        "callExpression": "getPackageJson",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts"
       },
       {
         "fromSymbol": "createExpo57StudioHostFixtureAsync",
