@@ -6,7 +6,7 @@ import type {
   NavigatorRuntimePlatform,
 } from '@ankhorage/contracts/navigator';
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
-import { createNavigatorPlan, generateNavigatorFiles } from '@ankhorage/navigator';
+import { createNavigatorPlan, generateNavigator } from '@ankhorage/navigator';
 
 export interface NavigatorOwnedLayoutFile {
   path: string;
@@ -79,8 +79,15 @@ function generatePlatformLayouts(
     platform,
     expoRouterVersion: resolveExactVersion(EXPO_PLATFORM.navigation.expoRouter.version),
   });
-  if (!plan.supported) {
-    const diagnostics = plan.diagnostics
+  const result = generateNavigator(plan, input.bindings, {
+    rootDirectory: input.rootDirectory,
+    includeScreenFiles: false,
+  });
+  if (
+    result.support === 'unsupported' ||
+    result.diagnostics.some(({ severity }) => severity === 'error')
+  ) {
+    const diagnostics = result.diagnostics
       .filter(({ severity }) => severity === 'error')
       .map(({ code, path }) => `${code} at ${path}`)
       .join(', ');
@@ -88,10 +95,7 @@ function generatePlatformLayouts(
       `Navigator manifest is unsupported for ${platform}: ${diagnostics || 'adapter unavailable'}.`,
     );
   }
-  return generateNavigatorFiles(plan, input.bindings, {
-    rootDirectory: input.rootDirectory,
-    includeScreenFiles: false,
-  });
+  return result.files;
 }
 
 /*** Project Studio-owned public route paths into the navigator slice required by headless tabs. */

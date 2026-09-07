@@ -682,10 +682,9 @@ describe('manifestState', () => {
       ...(currentNavigator.initialRouteName
         ? { initialRouteName: currentNavigator.initialRouteName }
         : {}),
-      implementation: 'custom',
+      implementation: 'headless',
       presentation: 'sidebar',
-      preset: 'root-stack-tabs',
-      flows: { authentication: true },
+      preset: 'stack-tabs',
       defaults: { tabs: { implementation: 'adaptive' } },
       platforms: { web: { tabs: { implementation: 'javascript' } } },
     };
@@ -697,7 +696,6 @@ describe('manifestState', () => {
       routes: manifest.navigator.routes,
       initialRouteName: manifest.navigator.initialRouteName,
       preset: manifest.navigator.preset,
-      flows: manifest.navigator.flows,
       defaults: manifest.navigator.defaults,
       platforms: manifest.navigator.platforms,
     });

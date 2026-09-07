@@ -80,7 +80,7 @@ describe('createNavigatorGenerationBindings', () => {
   test('rejects asynchronous storage icons at the generation boundary', () => {
     const navigator: NavigatorNode = {
       type: 'tabs',
-      implementation: 'custom',
+      implementation: 'headless',
       presentation: 'bottom',
       routes: [
         { name: 'home', path: '/', icon: { source: { mediaId: 'stored-icon' } }, screenId: 'home' },
