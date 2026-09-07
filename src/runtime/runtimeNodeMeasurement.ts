@@ -1,3 +1,9 @@
+import {
+  intersectNativeElementRects,
+  measureNativeElement,
+  type NativeElementLike,
+} from '../features/selection/adapters/nativeElementMeasurement.js';
+
 export interface MeasuredRect {
   readonly x: number;
   readonly y: number;
@@ -69,13 +75,7 @@ export function shouldRenderSelectedNodeChrome(
   isEditMode: boolean,
   selectedNodeId: string | null,
 ): boolean {
-  return platform === 'web' && isEditMode && selectedNodeId !== null;
-}
-
-export interface NativeMeasurableView {
-  readonly measureInWindow: (
-    callback: (x: number, y: number, width: number, height: number) => void,
-  ) => void;
+  return ['android', 'ios', 'web'].includes(platform) && isEditMode && selectedNodeId !== null;
 }
 
 /***
@@ -100,29 +100,14 @@ export function unionMeasuredRects(rects: readonly MeasuredRect[]): MeasuredRect
   };
 }
 
-/***
- * Measure a React-Native-like view in window coordinates and reject zero-area results as absent.
- * @utility @ankhorage/utility/react-native/measurement
- */
-export function measureNativeRuntimeNodeView(
-  view: NativeMeasurableView,
-): Promise<MeasuredRect | null> {
-  return new Promise((resolve) => {
-    /*** Resolve the measurement promise from native window coordinates, returning null for a zero-area result. */
-    view.measureInWindow((x, y, width, height) => {
-      resolve(width > 0 && height > 0 ? { x, y, width, height } : null);
-    });
-  });
-}
-
 /*** Adapt a native measurable view into Studio's runtime-node measurement contract. */
 export function createNativeRuntimeNodeMeasurement(
-  view: NativeMeasurableView,
+  view: NativeElementLike,
   showUnsupportedIndicator: boolean,
 ): RuntimeNodeMeasurement<never> {
   return {
     /*** Measure the adapted native view in window coordinates. */
-    measure: () => measureNativeRuntimeNodeView(view),
+    measure: () => Promise.resolve(measureNativeElement(view)),
     showUnsupportedIndicator,
     source: 'authored-root',
   };
@@ -216,6 +201,7 @@ export async function measureRuntimeNodeIndicators<TResizeTarget>(options: {
   readonly isEditMode: boolean;
   readonly activeDragNodeId?: string | null;
   readonly canvasRootNodeId?: string | null;
+  readonly clipToRoot?: boolean;
   readonly rootRect: MeasuredRect | null;
   readonly runtimeNodes: RuntimeNodeMeasurements<TResizeTarget>;
   readonly selectedNodeId: string | null;
@@ -223,6 +209,7 @@ export async function measureRuntimeNodeIndicators<TResizeTarget>(options: {
   const {
     activeDragNodeId = null,
     canvasRootNodeId = null,
+    clipToRoot = false,
     isEditMode,
     rootRect,
     runtimeNodes,
@@ -244,9 +231,13 @@ export async function measureRuntimeNodeIndicators<TResizeTarget>(options: {
       const rects = await Promise.all(
         preferredMeasurements.map((measurement) => measurement.measure()),
       );
+      const unionRect = unionMeasuredRects(
+        rects.filter((rect): rect is MeasuredRect => rect !== null),
+      );
       return {
         nodeId,
-        rect: unionMeasuredRects(rects.filter((rect): rect is MeasuredRect => rect !== null)),
+        rect:
+          unionRect && clipToRoot ? intersectNativeElementRects(unionRect, rootRect) : unionRect,
         showUnsupportedIndicator: [...measurements].some(
           (measurement) => measurement.showUnsupportedIndicator,
         ),
@@ -342,6 +333,9 @@ export function createSelectedIndicatorViewProps(
   rect: RuntimeNodeIndicatorRect,
   borderColor: string,
 ): {
+  readonly accessible: false;
+  readonly accessibilityElementsHidden: true;
+  readonly importantForAccessibility: 'no-hide-descendants';
   readonly pointerEvents: 'none';
   readonly style: {
     readonly position: 'absolute';
@@ -355,6 +349,9 @@ export function createSelectedIndicatorViewProps(
   };
 } {
   return {
+    accessible: false,
+    accessibilityElementsHidden: true,
+    importantForAccessibility: 'no-hide-descendants',
     pointerEvents: 'none',
     style: {
       position: 'absolute',

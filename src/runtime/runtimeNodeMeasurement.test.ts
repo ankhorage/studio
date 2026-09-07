@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'bun:test';
 
+import type { NativeElementLike } from '../features/selection/adapters/nativeElementMeasurement';
 import {
   createActiveResizeTargetCoordinator,
   createNativeRuntimeNodeMeasurement,
   createRuntimeNodeMeasurementRegistry,
   createSelectedIndicatorViewProps,
   getActiveRuntimeNodeMeasurements,
-  measureNativeRuntimeNodeView,
   measureRuntimeNodeIndicators,
   type ResizeTargetObserver,
   type RuntimeNodeMeasurement,
@@ -16,6 +16,24 @@ import {
 
 interface TestTarget {
   readonly id: string;
+}
+
+function createNativeElement(
+  getRect: () => {
+    readonly x: number;
+    readonly y: number;
+    readonly width: number;
+    readonly height: number;
+  },
+): NativeElementLike {
+  return {
+    children: [],
+    getBoundingClientRect: getRect,
+    isConnected: true,
+    ownerDocument: {},
+    parentElement: null,
+    tagName: 'RN:View',
+  };
 }
 
 function createObserverProbe(): ResizeTargetObserver<TestTarget> & {
@@ -69,11 +87,7 @@ describe('native unsupported Runtime node measurement lifecycle', () => {
   it('measures an authored unsupported root and follows moved geometry', async () => {
     const registry = createRuntimeNodeMeasurementRegistry<never>();
     let rect = { x: 42, y: 86, width: 180, height: 44 };
-    const view = {
-      measureInWindow(callback: (x: number, y: number, width: number, height: number) => void) {
-        callback(rect.x, rect.y, rect.width, rect.height);
-      },
-    };
+    const view = createNativeElement(() => rect);
 
     const unregister = registry.register(
       'unsupported-extension-root',
@@ -119,28 +133,16 @@ describe('native unsupported Runtime node measurement lifecycle', () => {
     unregister();
     expect(registry.getMeasurements().has('unsupported-extension-root')).toBe(false);
   });
-
-  it('accepts positive measureInWindow geometry and rejects zero-sized roots', async () => {
-    expect(
-      await measureNativeRuntimeNodeView({
-        measureInWindow: (callback) => callback(20, 30, 40, 50),
-      }),
-    ).toEqual({ x: 20, y: 30, width: 40, height: 50 });
-    expect(
-      await measureNativeRuntimeNodeView({
-        measureInWindow: (callback) => callback(20, 30, 0, 50),
-      }),
-    ).toBeNull();
-  });
 });
 
-describe('active web Runtime node resize targets', () => {
-  it('renders exact non-intercepting selected chrome only on web in Edit mode', () => {
+describe('active Runtime node indicator measurements', () => {
+  it('renders exact non-intercepting selected chrome on supported platforms in Edit mode', () => {
     expect(shouldRenderSelectedNodeChrome('web', true, 'selected')).toBe(true);
     expect(shouldRenderSelectedNodeChrome('web', false, 'selected')).toBe(false);
     expect(shouldRenderSelectedNodeChrome('web', true, null)).toBe(false);
-    expect(shouldRenderSelectedNodeChrome('ios', true, 'selected')).toBe(false);
-    expect(shouldRenderSelectedNodeChrome('android', true, 'selected')).toBe(false);
+    expect(shouldRenderSelectedNodeChrome('ios', true, 'selected')).toBe(true);
+    expect(shouldRenderSelectedNodeChrome('android', true, 'selected')).toBe(true);
+    expect(shouldRenderSelectedNodeChrome('windows', true, 'selected')).toBe(false);
 
     expect(
       createSelectedIndicatorViewProps(
@@ -155,6 +157,9 @@ describe('active web Runtime node resize targets', () => {
         '#123456',
       ),
     ).toEqual({
+      accessible: false,
+      accessibilityElementsHidden: true,
+      importantForAccessibility: 'no-hide-descendants',
       pointerEvents: 'none',
       style: {
         position: 'absolute',
@@ -167,6 +172,34 @@ describe('active web Runtime node resize targets', () => {
         borderRadius: 4,
       },
     });
+  });
+
+  it('clips native indicator geometry to the canvas root', async () => {
+    const registry = createRuntimeNodeMeasurementRegistry<never>();
+    registry.register('selected', {
+      measure: () => Promise.resolve({ x: -10, y: 40, width: 50, height: 100 }),
+      showUnsupportedIndicator: false,
+      source: 'runtime-recorder',
+    });
+
+    expect(
+      await measureRuntimeNodeIndicators({
+        clipToRoot: true,
+        isEditMode: true,
+        rootRect: { x: 10, y: 20, width: 100, height: 80 },
+        runtimeNodes: registry.getMeasurements(),
+        selectedNodeId: 'selected',
+      }),
+    ).toEqual([
+      {
+        height: 60,
+        nodeId: 'selected',
+        showUnsupportedIndicator: false,
+        width: 30,
+        x: 0,
+        y: 20,
+      },
+    ]);
   });
 
   it('synchronizes registration only when the changed local node is active', () => {

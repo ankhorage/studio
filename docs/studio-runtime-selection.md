@@ -11,9 +11,9 @@ path. The handle and every drop target use `@ankhorage/react-native-reanimated-d
 so native and web share the adapter contract without `@ankhorage/studio/dnd*` wrapper APIs. Preview
 mounts no drag overlay and clears an active drag if mode changes.
 
-Starting a drag activates public geometry measurement for every rendered Runtime node. Web uses
-DOM descendant bounds and native uses `measureInWindow`; the root surface contributes its own
-bounds when native root instrumentation is intentionally absent. Before, inside, and after zones
+Starting a drag activates public geometry measurement for every rendered Runtime node. Web and
+Expo 57 native both use public element descendant bounds; the root surface contributes its own
+bounds. Before, inside, and after zones
 are resolved through caller-injected component metadata and the canonical `NodePlacement` rules.
 Invalid zones remain visible with their structured reason. A measured-bounds ghost includes the
 component label and the first useful authored text property. Cancellation and commit both release
@@ -24,14 +24,19 @@ Edit taps select the deepest intended node once, movement and scrolling cancel u
 selection, passive interaction preserves nested scrolling and authored state, and Preview restores
 authored interaction. PR #176 does not change that native interaction architecture.
 
-Selected-node chrome added by PR #176 is explicitly web-only. On React Native Web, the root
-selection surface measures the selected Runtime node and renders its outline with the current ZORA
-primary action semantic. The layout-neutral recorder contributes the bubbling node path and uses
-DOM descendant geometry without becoming an authored layout box. Web screen roots retain this
-recorder so Select parent can outline the root. Native screen roots are not instrumented solely for
-selected chrome, and supported native ZORA leaves, containers, and roots do not receive selected
-chrome in this PR. That follow-up is tracked in
-[issue #177](https://github.com/ankhorage/studio/issues/177).
+The root selection surface renders selected-node chrome on web, Android, and iOS with the current
+ZORA primary action semantic. The layout-neutral recorder contributes the bubbling node path and
+uses public descendant geometry without becoming an authored layout box. Measurement stops at the
+first positive-area host on each rendered branch, so a component is outlined by its authored outer
+host rather than by an inner control or overflowing descendant. Screen roots retain the same
+recorder with selection recording disabled, allowing Select parent to outline the actual root.
+
+Native measurement uses the DOM-like element-ref APIs supplied by React Native 0.86 through Expo
+57: `children`, `parentElement`, `getBoundingClientRect()`, `isConnected`, and `ownerDocument`.
+Disconnected, cross-document, non-finite, and zero-area geometry is rejected. Visible geometry is
+clipped to native scroll viewports and the selection canvas before projection into root-local
+coordinates. No ZORA or Surface component needs to forward a Studio ref or consume a Studio
+contract.
 
 Unsupported native extension components retain the established authored-root contract. Attach
 `useStudioUnsupportedNodeMeasurement()` from `@ankhorage/studio/runtime` to the extension's
@@ -47,10 +52,10 @@ return (
 );
 ```
 
-The hook registers that existing root through React Native's public `measureInWindow` API. Non-zero
-geometry is translated into coordinates owned by the root selection surface and drives only the
-distinct dashed unsupported indicator. Native layout events and a bounded scroll-settle sampler
-refresh it without a layout-changing wrapper or private React Native/Fabric APIs.
+The hook registers that existing root through the same public element-ref geometry API. Non-zero
+geometry is translated into coordinates owned by the root selection surface and drives the
+distinct dashed unsupported indicator without a layout-changing wrapper or private React
+Native/Fabric APIs.
 
 On web, Runtime-node registration stores a lazy `getResizeTargets()` callback. Descendants are not
 traversed and are not observed merely because a node rendered. Inactive registration changes also
@@ -62,13 +67,14 @@ set is deduplicated before diffing, a shared descendant is observed once and rem
 any active measurement still requires it.
 
 The unsupported-node visual indicator remains a distinct dashed layer rendered by the root
-selection surface. Web selected chrome and unsupported overlays both use `pointerEvents="none"` and
-never intercept authored input. Scroll, viewport resize, responsive layout, and authored-root
-`onLayout` refresh applicable geometry. Changing or clearing selection immediately removes the
-selection outline. Preview releases authoring ResizeObserver targets and renders neither
-selected chrome, unsupported chrome, nor canvas drag affordances. Unmount disconnects the observer
-and clears desired-target
-ownership; navigation and active measurement removal cancel pending work once no indicator remains.
+selection surface. Selected and unsupported overlays use `pointerEvents="none"`, remain hidden from
+accessibility, and never intercept authored input. Web uses captured scroll/resize events and
+`ResizeObserver`. Native samples only the mounted selected host subtree and root, with at most one
+non-overlapping measurement per animation frame, so momentum, nested/programmatic scrolling,
+orientation, keyboard, and content-driven layout changes stay aligned. Unchanged geometry does not
+commit React state. The native loop stops on Clear, invalid selection, Preview, backgrounding, or
+unmount; authored-root layout events and the bounded settle path continue to serve unsupported-only
+indicators. Preview renders no selected chrome, unsupported chrome, or canvas drag affordances.
 
 The generated Studio shell synchronizes the current app pathname into `StudioProvider`. Studio
 resolves the owning screen recursively from the manifest navigator, so selections on nested Stack,

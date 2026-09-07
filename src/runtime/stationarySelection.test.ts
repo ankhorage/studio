@@ -122,7 +122,7 @@ describe('stationarySelection RN integration', () => {
     expect(source).toContain('nodeId,');
     expect(source).toContain('if (view && ctx && nodeId)');
     expect(source).toContain('measureRuntimeNodeWebView(view)');
-    expect(source).toContain('measureNativeRuntimeNodeView(view)');
+    expect(source).toContain('measureNativeRuntimeNodeElement(view)');
     expect(source).toContain("source: 'runtime-recorder'");
     expect(source).toContain('measureRuntimeNodeIndicators({');
     expect(source).toContain('activeDragNodeId: activeDragNodeIdRef.current');
@@ -137,10 +137,10 @@ describe('stationarySelection RN integration', () => {
     expect(source).toContain('setActiveDragNodeId?.(null)');
   });
 
-  it('measures roots only on web without adding them to the stationary interaction path', () => {
+  it('measures roots on every platform without adding them to the stationary interaction path', () => {
     expect(source).toContain('recordSelection: !args.isRoot');
     expect(source).toContain('if (!ctx || !recordSelection || !nodeId)');
-    expect(source).toContain("if (args.isRoot && Platform.OS !== 'web')");
+    expect(source).not.toContain("if (args.isRoot && Platform.OS !== 'web')");
   });
 
   it('renders theme-semantic selected chrome without intercepting input', () => {
@@ -156,7 +156,7 @@ describe('stationarySelection RN integration', () => {
     );
   });
 
-  it('suppresses selected chrome synchronously on native, in Preview, or without selection', () => {
+  it('suppresses selected chrome synchronously in Preview or without selection', () => {
     expect(source).toContain('...(shouldRenderSelectedChrome');
     expect(source).toContain('rect.nodeId === selectedIndicatorNodeId');
   });
@@ -189,10 +189,10 @@ describe('stationarySelection RN integration', () => {
     expect(source).toContain('onTouchCancel: handleInteractionCompletion');
   });
 
-  it('uses public element geometry only for web indication measurement', () => {
-    expect(source).toContain("Platform.OS === 'web'");
+  it('uses public element geometry for web and native indication measurement', () => {
     expect(source).toContain('getBoundingClientRect');
     expect(source).toContain('measureRenderedBoxes(child)');
+    expect(source).toContain('measureNativeRuntimeNodeElement(view)');
     expect(source).not.toContain('findNodeHandle');
     expect(source).not.toContain('ReactNativePrivateInterface');
   });
@@ -206,6 +206,8 @@ describe('stationarySelection RN integration', () => {
     expect(source).toContain('onLayout: requestIndicatorRefresh');
     expect(source).toContain('onTouchMove: requestScrollIndicatorRefresh');
     expect(source).toContain('createIndicatorSettleCoordinator');
+    expect(source).toContain('createNativeSelectionSamplingCoordinator');
+    expect(source).toContain("AppState.addEventListener('change'");
     expect(source).not.toContain('measureNextFrame');
   });
 
