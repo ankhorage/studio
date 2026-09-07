@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.3.4
+
+### Patch Changes
+
+- 2111012: Update Ankhorage dependencies: `@ankhorage/contracts`, `@ankhorage/navigator`.
+
 ## 2.3.3
 
 ### Patch Changes
