@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.3.0",
+      "value": "v2.3.1",
       "color": "cb3837"
     },
     {
@@ -14681,7 +14681,7 @@
       "description": "Trim, discard empty and join generated module-level declaration blocks with a blank line.\n@utility @ankhorage/utility/string",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 127,
+        "line": 125,
         "column": 1
       }
     },
@@ -14690,7 +14690,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 163,
+        "line": 161,
         "column": 11
       }
     },
@@ -14699,7 +14699,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 175,
+        "line": 173,
         "column": 11
       }
     },
@@ -14708,7 +14708,7 @@
       "description": "Generate the Studio Admin route-group layout, redirecting when generated global auth is unavailable and guarding production builds from the development Admin shell.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 562,
+        "line": 560,
         "column": 1
       }
     },
@@ -14717,7 +14717,7 @@
       "description": "Generate the complete Studio Admin route file set from the canonical Admin route registry.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 588,
+        "line": 586,
         "column": 1
       }
     },
@@ -14726,7 +14726,7 @@
       "description": "Resolve a canonical Studio Admin route definition to its generated Expo Router file path, preserving parent routes as index modules and dynamic parameters as bracket segments.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 598,
+        "line": 596,
         "column": 1
       }
     },
@@ -14735,7 +14735,7 @@
       "description": "Generate one Studio Admin Expo Router module that development-gates and renders the requested Admin route.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 619,
+        "line": 617,
         "column": 1
       }
     },
@@ -14744,7 +14744,7 @@
       "description": "Normalize a relative filesystem path to forward-slash separators for generated project files.\n@utility @ankhorage/utility/path",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 637,
+        "line": 635,
         "column": 1
       }
     },
