@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.1.3
+
+### Patch Changes
+
+- 9295d15: Use Navigator 1.5.4 so generated Native and custom Tabs layouts pass the shared formatting checks.
+
 ## 2.1.2
 
 ### Patch Changes
