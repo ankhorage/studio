@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.3.1
+
+### Patch Changes
+
+- 838bb06: Keep generated standalone apps compatible with npm-backed Expo Doctor checks, preserve the typed Expo Router action boundary, and align navigation acceptance with the app-owned Metro isolation config.
+
 ## 2.3.0
 
 ### Minor Changes
