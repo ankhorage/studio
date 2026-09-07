@@ -44,7 +44,6 @@ test('generates the released Google and Apple OAuth fixture through the real hos
       JSON.stringify({
         name: '@ankhorage/studio-oauth-consumer-smoke',
         private: true,
-        workspaces: ['apps/studio'],
       }),
     );
 

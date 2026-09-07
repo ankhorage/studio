@@ -289,8 +289,8 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain(
       "import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';",
     );
-    expect(rootLayout).toContain('import { type Href, Slot,');
-    expect(rootLayout).toContain('router: { push: (href) => router.push(href as Href) }');
+    expect(rootLayout).toContain('import { Slot,');
+    expect(rootLayout).toContain('router: { push: (href) => router.push(href) }');
     expect(rootLayout).toContain('function useGeneratedRuntimeAction()');
     expect(rootLayout).toContain('const { executeAction } = useGeneratedRuntimeAction();');
     expect(rootLayout).toContain(

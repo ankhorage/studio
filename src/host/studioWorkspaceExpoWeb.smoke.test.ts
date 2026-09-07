@@ -118,7 +118,6 @@ async function createSmokeWorkspaceFixture(
     JSON.stringify({
       name: '@ankhorage/studio-workspace-web-smoke',
       private: true,
-      workspaces: ['apps/studio'],
     }),
   );
   await writeFile(

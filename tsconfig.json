@@ -22,5 +22,5 @@
     "knip.config.ts",
     "paradox.config.ts"
   ],
-  "exclude": ["dist", "node_modules", "apps/studio/node_modules", "apps/studio/dist"]
+  "exclude": ["dist", "node_modules", "apps"]
 }

@@ -16,7 +16,7 @@ The host resolves the nearest package named `@ankhorage/studio` that contains an
 
 Project IDs are derived from project names with the shared Studio project identity model. For example, `Release Monitor` derives to `release-monitor` and `Infra Health` derives to `infra-health`. The ID `studio` is reserved, and names that derive to `studio` are rejected before any filesystem mutation.
 
-The Studio workspace app owns project lifecycle management: listing projects, creating projects, opening a selected project detail screen, synchronizing generated project files, starting generated infrastructure, opening the infrastructure-hosted running app, deleting projects after confirmation, and installing packages inside a generated project's independent package root.
+The Studio app owns project lifecycle management: listing projects, creating projects, opening a selected project detail screen, synchronizing generated project files, starting generated infrastructure, opening the infrastructure-hosted running app, deleting projects after confirmation, installing packages inside a generated project's independent package root, and connecting that app to a private GitHub repository.
 
 Generated apps own their own `/ankh` administration workspace. The workspace Studio app does not route a selected generated project's `/ankh` pages as local Studio routes.
 
@@ -58,10 +58,13 @@ For local Infra, Studio consumes `@ankhorage/infra` 1.0.0 generated app-owned Mi
 
 Workspace lifecycle labels are explicit:
 
-- `Sync` promotes the Studio draft manifest where applicable, synchronizes the scaffold, regenerates generated routes/files, and synchronizes infrastructure artifacts. It does not start infrastructure.
+- `Sync` promotes the Studio draft manifest where applicable, synchronizes the scaffold, regenerates generated routes/files, reconciles app-owned dependencies and focused Devtools configuration, verifies the app-owned frozen lockfile, and synchronizes infrastructure artifacts. It does not start infrastructure.
 - `Infrastructure Up` regenerates infrastructure artifacts as required, resolves trusted environment/secrets, executes the generated infrastructure `up` lifecycle, and registers port-forward ownership.
 - `Open running app` starts or reuses the generated infrastructure app port-forward and opens the returned URL. It is not local Expo, web, iOS, or Android source startup.
-- `Install packages` runs the install operation inside the selected generated app. The app owns its `node_modules` and `bun.lock`; only the first-party `apps/studio` app remains in the root workspace temporarily.
+- `Install packages` reconciles the selected generated app from its own package root. The app owns its `node_modules`, `bun.lock`, focused Devtools configuration, and quality scripts.
+- `Connect GitHub` reconciles the app first, then delegates private repository creation and initial publication to `@ankhorage/repository`. Its default repository name comes from the package name with enabled `android` and `ios` targets appended as dash-separated suffixes.
+
+The repository root has no package-manager workspaces. `apps/studio` and every generated app are independent package roots with their own lockfile and install graph. Root tooling ignores `apps/` so application checks cannot silently consume the aggregate repository's dependency graph.
 
 Project summaries are read from canonical manifests. `metadata.category` uses the shared `AppCategory` type, and the active visual identity resolves from `activeThemeId` and `themes`. The template catalog endpoint returns grouped category data from the canonical template package and does not expose template versions.
 
@@ -91,5 +94,5 @@ That gated test exercises Studio orchestration against generated Infra without a
 
 - Port conflict: stop the process using port 3000 or set `ANKHORAGE_STUDIO_HOST_PORT` for the standalone host.
 - Native Studio connection failure: keep the native development client and development machine on the same LAN and verify that the client resolves the Studio API to the development machine's LAN address on port 3000. `EXPO_PUBLIC_API_URL` remains the explicit client override.
-- Package installation failure: run `bun install` at the Studio repository root and inspect the command output.
+- Package installation failure: run `bun install --frozen-lockfile` in the affected app root and inspect the command output.
 - Dashboard connection failure: start both services with `ankh studio dev`.

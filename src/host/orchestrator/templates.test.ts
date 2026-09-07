@@ -5,11 +5,10 @@ import { describe, expect, it } from 'bun:test';
 import {
   getAndroidRunTs,
   getAppConfigTs,
-  getEslintConfigMjs,
-  getEslintLocalConfigMjs,
+  getEasJson,
+  getMetroConfigJs,
+  getMetroEmptyModuleJs,
   getPackageJson,
-  getPrettierLocalConfigJs,
-  getPrettierRcJs,
 } from './templates';
 
 const WEB_TARGETS = { web: { enabled: true } } as const;
@@ -27,30 +26,28 @@ describe('generated OAuth scaffold templates', () => {
     expect(appConfig).toContain('...(config.plugins ?? []), ...GENERATED_PLUGINS');
   });
 
-  it('formats generated JSON and YAML serializers with their canonical output styles', () => {
-    const prettierConfig = getPrettierRcJs();
-    const localPrettierConfig = getPrettierLocalConfigJs();
+  it('generates app-owned EAS profiles and an isolated Expo 57 Metro resolver', () => {
+    const eas = JSON.parse(getEasJson()) as Record<string, unknown>;
+    const metro = getMetroConfigJs();
 
-    expect(prettierConfig).toContain("require('./prettier.local.config.js')");
-    expect(prettierConfig).toContain('localConfig.overrides');
-    expect(localPrettierConfig).toContain(
-      "{ files: ['ankh.config.json', 'tsconfig.json'], options: { printWidth: 1 } }",
-    );
-    expect(localPrettierConfig).toContain(
-      "{ files: 'infra/**/*.{yaml,yml}', options: { singleQuote: false } }",
-    );
-  });
-
-  it('keeps the manifest-to-typed-route Href boundary lint-stable', () => {
-    const eslintConfig = getEslintConfigMjs();
-    const localConfig = getEslintLocalConfigMjs();
-
-    expect(eslintConfig).toContain("import localConfig from './eslint.local.config.mjs'");
-    expect(eslintConfig).toContain("files: ['src/**/*.{ts,tsx}']");
-    expect(localConfig).toContain("files: ['src/app/_layout.tsx']");
-    expect(localConfig).toContain("{ typesToIgnore: ['Href'] }");
-    expect(localConfig).not.toContain("'@typescript-eslint/no-unnecessary-type-assertion': 'off'");
-    expect(localConfig).not.toContain('createConfig');
+    expect(eas).toMatchObject({
+      cli: { appVersionSource: 'remote' },
+      build: {
+        development: { developmentClient: true, distribution: 'internal' },
+        preview: { distribution: 'internal' },
+        production: { autoIncrement: true },
+      },
+      submit: { production: {} },
+    });
+    expect(metro).toContain('getDefaultConfig(__dirname)');
+    expect(metro).toContain("path.resolve(__dirname, 'metro.empty-module.js')");
+    expect(getMetroEmptyModuleJs()).toBe('module.exports = {};\n');
+    expect(metro).toContain('const ancestorNodeModules = new RegExp(');
+    expect(metro).toContain('config.resolver.blockList = [');
+    expect(metro).not.toContain('watchFolders');
+    expect(metro).not.toContain('disableHierarchicalLookup');
+    expect(metro).not.toContain('nodeModulesPaths');
+    expect(metro).not.toContain('extraNodeModules');
   });
 
   it('keeps the generated app dependency baseline aligned with Studio', async () => {
@@ -66,6 +63,7 @@ describe('generated OAuth scaffold templates', () => {
     });
     const dependencies = pkg.dependencies as Record<string, string>;
     const devDependencies = pkg.devDependencies as Record<string, string>;
+    expect(pkg.private).toBe(true);
 
     expect(dependencies['@ankhorage/contracts']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/data-sources']).toMatch(CARET_SEMVER_RANGE);
@@ -98,6 +96,11 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@expo/vector-icons']).toBeUndefined();
     expect(dependencies['babel-preset-expo']).toBeUndefined();
     expect(devDependencies['@ankhorage/devtools']).toMatch(CARET_SEMVER_RANGE);
+    expect(devDependencies['@ankhorage/ankh']).toMatch(CARET_SEMVER_RANGE);
+    expect(devDependencies['@types/bun']).toMatch(CARET_SEMVER_RANGE);
+    expect(pkg.packageManager).toMatch(/^bun@\d+\.\d+\.\d+$/u);
+    expect(pkg.scripts['knip:check']).toBe('ankhorage-knip');
+    expect(pkg.scripts.typecheck).toBe('tsc --noEmit -p tsconfig.json');
     expect(devDependencies[EXPO_PLATFORM.tooling.expoDoctor.name]).toBe(
       EXPO_PLATFORM.tooling.expoDoctor.version,
     );

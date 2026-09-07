@@ -175,7 +175,7 @@ async function createCompatibleInstalledVersionsAsync(
   ]);
   return {
     '@ankhorage/devtools': createCompatibleVersion(
-      requireDependencyRange(repositoryPackageJson.devDependencies, '@ankhorage/devtools'),
+      requireDependencyRange(studioPackageJson.devDependencies, '@ankhorage/devtools'),
     ),
     '@ankhorage/expo-runtime': createCompatibleVersion(
       requireDependencyRange(repositoryPackageJson.dependencies, '@ankhorage/expo-runtime'),

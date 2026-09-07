@@ -30,7 +30,11 @@ test('materializes project creation assets and persists their bundled media sour
       },
     },
   };
-  const manager = new ProjectManager(workspaceRoot);
+  const manager = new ProjectManager(workspaceRoot, {
+    reconcileProjectPackageRootAsync: async () => {
+      await Promise.resolve();
+    },
+  });
 
   const created = await manager.createProject('Asset Template', {
     manifest,
@@ -67,7 +71,7 @@ async function createWorkspaceRoot(): Promise<string> {
   await mkdir(path.join(root, 'apps'), { recursive: true });
   await writeFile(
     path.join(root, 'package.json'),
-    JSON.stringify({ name: '@ankhorage/studio', private: true, workspaces: ['apps/studio'] }),
+    JSON.stringify({ name: '@ankhorage/studio', private: true }),
   );
   return root;
 }

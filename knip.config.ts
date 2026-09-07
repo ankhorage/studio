@@ -26,18 +26,6 @@ export default {
         project: ['src/**/*.ts', 'src/**/*.tsx', 'paradox.config.ts'],
         ignoreFiles: ['paradox.config.ts'],
       },
-      'apps/studio': {
-        project: ['**/*.ts', '**/*.tsx'],
-        ignoreDependencies: [
-          '@react-native-vector-icons/fontawesome',
-          '@react-native-vector-icons/fontawesome5',
-          '@react-native-vector-icons/fontawesome6',
-          '@react-native-vector-icons/ionicons',
-          'expo-splash-screen',
-          'expo-updates',
-        ],
-      },
     },
   }),
-  ignoreWorkspaces: ['apps/nutrition'],
 };

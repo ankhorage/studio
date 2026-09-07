@@ -143,6 +143,19 @@ export async function createStudioHostServer(args: {
     }
   });
 
+  fastify.post('/api/projects/:id/repository/connect', async (req: FastifyRequest, reply) => {
+    try {
+      const { id } = req.params as { id: string };
+      const result = await projectManager.connectProjectRepository(id);
+      if (result.status === 'conflict') return reply.status(409).send(result);
+      if (result.status === 'recoverable-failure') return reply.status(502).send(result);
+      return result;
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      return reply.status(500).send({ error: message });
+    }
+  });
+
   fastify.post('/api/projects/:id/infra/generate', async (req: FastifyRequest, reply) => {
     const { id } = req.params as { id: string };
     try {

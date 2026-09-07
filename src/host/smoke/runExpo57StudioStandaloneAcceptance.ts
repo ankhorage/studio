@@ -90,21 +90,12 @@ async function assertLockfileUnchangedAsync(
     throw new Error('Standalone acceptance mutated its frozen lockfile.');
 }
 
-/*** Create the standalone registry lockfile, perform a cold frozen install, assert lockfile stability and return its digest. */
+/*** Perform a cold frozen install from the app-owned lockfile, assert stability and return its digest. */
 async function createLockfileAndInstallAsync(
   fixtureRoot: string,
   cacheRoot: string,
 ): Promise<string> {
   const environment = createCommandEnvironment(cacheRoot);
-  await runAcceptanceCommandAsync({
-    args: ['install', '--lockfile-only', '--os=*', '--cpu=*'],
-    command: 'bun',
-    cwd: fixtureRoot,
-    env: environment,
-    label: 'Create standalone Studio registry lockfile',
-    timeoutMs: COMMAND_TIMEOUT_MS,
-  });
-  await rm(path.join(fixtureRoot, 'node_modules'), { force: true, recursive: true });
   const lockfile = await readFile(path.join(fixtureRoot, 'bun.lock'));
   const lockfileDigest = hash(lockfile);
   await runAcceptanceCommandAsync({
@@ -144,7 +135,8 @@ async function runAppOwnedQualityChecksAsync(
 ): Promise<void> {
   const commands = [
     ['platform:check', 'Released Expo platform contract'],
-    ['type-check', 'Router types followed by TypeScript 6'],
+    ['typecheck', 'Router types followed by TypeScript 6'],
+    ['knip:check', 'Standalone Studio app Knip'],
     ['lint', 'Standalone Studio app lint'],
     ['format:check', 'Standalone Studio app format'],
     ['expo:check', 'Expo dependency compatibility'],

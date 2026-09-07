@@ -26,7 +26,8 @@ const SUPABASE_AUTH_VERSION = '^1.2.5';
 const SUPABASE_STORAGE_VERSION = '^0.2.0';
 const ZORA_VERSION = '^4.0.0';
 const EXPO_RUNTIME_VERSION = '^3.2.4';
-const DEVTOOLS_VERSION = '^1.6.0';
+const ANKH_VERSION = '^0.8.11';
+const DEVTOOLS_VERSION = '^1.12.0';
 
 function serializeStringLiteral(value: string): string {
   return `'${value
@@ -874,11 +875,12 @@ export function getPackageJson(args: {
   const runtimeDependencies = resolveExpoRuntimeDependencyMap(runtimePlan);
   const pkgJson = {
     name,
+    private: true,
     main: `${EXPO_PLATFORM.navigation.expoRouter.name}/entry`,
     engines: {
       node: EXPO_PLATFORM.tooling.node.version,
     },
-    packageManager: 'bun@1.3.14',
+    packageManager: 'bun@1.4.2',
     version: '1.0.0',
     scripts: {
       start: 'expo start',
@@ -889,11 +891,12 @@ export function getPackageJson(args: {
         ? { 'export:web': 'expo export --platform web --output-dir dist-web' }
         : {}),
       doctor: 'expo-doctor',
-      typecheck: 'tsc --noEmit',
+      typecheck: 'tsc --noEmit -p tsconfig.json',
       lint: 'ankhorage-eslint . --max-warnings=0',
       'lint:fix': 'ankhorage-eslint . --fix --max-warnings=0',
       format: 'ankhorage-prettier --write .',
       'format:check': 'ankhorage-prettier --check .',
+      'knip:check': 'ankhorage-knip',
     },
     dependencies: {
       '@ankhorage/contracts': CONTRACTS_VERSION,
@@ -931,6 +934,7 @@ export function getPackageJson(args: {
           ])
         : {}),
       ...createPlatformDependencyMap([
+        EXPO_PLATFORM.packages.metroRuntime,
         EXPO_PLATFORM.packages.font,
         EXPO_PLATFORM.runtime.expo,
         EXPO_PLATFORM.runtime.react,
@@ -954,9 +958,11 @@ export function getPackageJson(args: {
       '@ankhorage/contracts': CONTRACTS_OVERRIDE_VERSION,
     },
     devDependencies: {
+      '@ankhorage/ankh': ANKH_VERSION,
       '@ankhorage/devtools': DEVTOOLS_VERSION,
       [EXPO_PLATFORM.tooling.expoDoctor.name]: EXPO_PLATFORM.tooling.expoDoctor.version,
       [EXPO_PLATFORM.tooling.nodeTypes.name]: EXPO_PLATFORM.tooling.nodeTypes.version,
+      '@types/bun': '^1.4.1',
       '@types/react': '~19.2.2',
       '@types/culori': '^4.0.1',
       [EXPO_PLATFORM.tooling.typescript.name]: EXPO_PLATFORM.tooling.typescript.version,
@@ -966,58 +972,50 @@ export function getPackageJson(args: {
   return pkgJson;
 }
 
-export function getEslintConfigMjs() {
-  return `import { createConfig } from '@ankhorage/devtools/eslint';
-import localConfig from './eslint.local.config.mjs';
-
-const localEntries = Array.isArray(localConfig) ? localConfig : [localConfig];
-
-export default [
-  ...createConfig({
-    files: ['src/**/*.{ts,tsx}'],
-    project: ['./tsconfig.json'],
-    tsconfigRootDir: import.meta.dirname,
-  }),
-  ...localEntries,
-];
-`;
-}
-
-export function getEslintLocalConfigMjs() {
-  return `export default [
-  {
-    ignores: ['**/*.js', '**/*.cjs', '**/*.mjs', 'dist/**', '.expo/**'],
-  },
-  {
-    files: ['src/app/_layout.tsx'],
-    rules: {
-      '@typescript-eslint/no-unnecessary-type-assertion': ['error', { typesToIgnore: ['Href'] }],
+export function getEasJson() {
+  return `${JSON.stringify(
+    {
+      cli: { appVersionSource: 'remote' },
+      build: {
+        development: { developmentClient: true, distribution: 'internal' },
+        preview: { distribution: 'internal' },
+        production: { autoIncrement: true },
+      },
+      submit: { production: {} },
     },
-  },
+    null,
+    2,
+  )}\n`;
+}
+
+export function getMetroConfigJs() {
+  return `const path = require('node:path');
+const { getDefaultConfig } = require('expo/metro-config');
+
+const config = getDefaultConfig(__dirname);
+config.resolver.emptyModulePath = path.resolve(__dirname, 'metro.empty-module.js');
+const projectRootPrefix = escapeRegExp(path.resolve(__dirname)) + '[\\\\/]';
+const ancestorNodeModules = new RegExp('^(?!' + projectRootPrefix + ').*[\\\\/]node_modules[\\\\/]');
+const defaultBlockList = config.resolver.blockList;
+config.resolver.blockList = [
+  ...(Array.isArray(defaultBlockList)
+    ? defaultBlockList
+    : defaultBlockList
+      ? [defaultBlockList]
+      : []),
+  ancestorNodeModules,
 ];
+
+module.exports = config;
+
+function escapeRegExp(value) {
+  return value.replace(/[|\\\\{}()[\\]\\^$+*?.-]/g, '\\\\$&');
+}
 `;
 }
 
-export function getPrettierRcJs() {
-  return `const sharedConfig = require('@ankhorage/devtools/prettier');
-const localConfig = require('./prettier.local.config.js');
-
-module.exports = {
-  ...sharedConfig,
-  ...localConfig,
-  overrides: [...(sharedConfig.overrides ?? []), ...(localConfig.overrides ?? [])],
-};
-`;
-}
-
-export function getPrettierLocalConfigJs() {
-  return `module.exports = {
-  overrides: [
-    { files: ['ankh.config.json', 'tsconfig.json'], options: { printWidth: 1 } },
-    { files: 'infra/**/*.{yaml,yml}', options: { singleQuote: false } },
-  ],
-};
-`;
+export function getMetroEmptyModuleJs() {
+  return 'module.exports = {};\n';
 }
 
 export function getTsConfigJson() {

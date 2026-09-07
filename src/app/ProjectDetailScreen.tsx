@@ -28,6 +28,7 @@ export function ProjectDetailScreen() {
     deleteProject,
     syncProject,
     installProjectPackages,
+    connectProjectRepository,
     upProjectInfrastructure,
     launchProject,
   } = useProjects();
@@ -153,6 +154,21 @@ export function ProjectDetailScreen() {
                   void runAction('Install packages', async () => {
                     await installProjectPackages(project.id);
                     return 'Project packages installed.';
+                  })
+                }
+              />
+              <LifecycleAction
+                iconName="logo-github"
+                label="Connect GitHub"
+                detail="Publish the reconciled app snapshot to its private GitHub repository."
+                loading={activeAction === 'Connect GitHub'}
+                disabled={activeAction !== null}
+                onPress={() =>
+                  void runAction('Connect GitHub', async () => {
+                    const response = await connectProjectRepository(project.id);
+                    return response.status === 'already-connected'
+                      ? `GitHub repository already connected at ${response.repository.url}.`
+                      : `GitHub repository connected at ${response.repository.url}.`;
                   })
                 }
               />

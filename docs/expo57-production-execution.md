@@ -26,16 +26,16 @@ installation precisely; it is not a runtime or generator compatibility path.
 
 ## Permanent production gate
 
-Run the opt-in end-to-end gate on Node 24 LTS with Docker, Minikube, kubectl, Chrome, Bun 1.3.14,
+Run the opt-in end-to-end gate on Node 24 LTS with Docker, Minikube, kubectl, Chrome, Bun 1.4.2,
 and the released Infra package installed from the registry:
 
 ```bash
 bun run test:e2e:expo57-production-infra
 ```
 
-The gate creates a real application through `ProjectManager`, removes the temporary generation
-workspace wrapper, and makes the generated app itself the package and installation root. It removes
-`node_modules`, `.expo`, and the previous Web artifact, creates the app-owned lockfile, performs a
+The gate creates a real application through `ProjectManager` as an independent package and
+installation root, then relocates it outside the repository tree. It removes `node_modules`, `.expo`,
+and the previous Web artifact, retains the generated app-owned lockfile, performs a
 cold `bun install --frozen-lockfile`, and hashes the lockfile before and after execution. The
 generated Infra script then performs the static Web export with the app's own CLI and builds the app
 image. The generated Minikube lifecycle loads and serves that image.

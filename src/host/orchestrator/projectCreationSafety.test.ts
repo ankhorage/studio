@@ -13,12 +13,21 @@ test('project creation rejects duplicate and reserved IDs before mutation', asyn
   await mkdir(path.join(workspaceRoot, 'apps', 'studio'), { recursive: true });
   await writeFile(
     path.join(workspaceRoot, 'package.json'),
-    JSON.stringify({ name: '@ankhorage/studio', private: true, workspaces: ['apps/studio'] }),
+    JSON.stringify({ name: '@ankhorage/studio', private: true }),
   );
 
-  const manager = new ProjectManager(workspaceRoot);
+  const reconciledProjectPaths: string[] = [];
+  const manager = new ProjectManager(workspaceRoot, {
+    reconcileProjectPackageRootAsync: async (projectPath) => {
+      await Promise.resolve();
+      reconciledProjectPaths.push(projectPath);
+    },
+  });
   const created = await manager.createProject('Foo', createSmokeProjectSource());
   expect(created.id).toBe('foo');
+  expect(reconciledProjectPaths).toEqual([created.path]);
+  expect(await stat(path.join(created.path, 'eas.json'))).toBeDefined();
+  expect(await stat(path.join(created.path, 'metro.config.js'))).toBeDefined();
 
   const duplicateError = await catchError(manager.createProject('Foo', createSmokeProjectSource()));
   expect(duplicateError).toBeInstanceOf(ProjectCreationValidationError);
@@ -28,6 +37,8 @@ test('project creation rejects duplicate and reserved IDs before mutation', asyn
   ) as { metadata: { name: string; category: string } };
   expect(manifest.metadata.name).toBe('Foo');
   expect(manifest.metadata.category).toBe('developer_tools');
+  await manager.syncProjectRuntime({ projectId: created.id, mutations: [] });
+  expect(reconciledProjectPaths).toEqual([created.path, created.path]);
 
   const reservedError = await catchError(
     manager.createProject('Studio', createSmokeProjectSource()),
