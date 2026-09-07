@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.1.2
+
+### Patch Changes
+
+- 503c4f7: Use the released Navigator formatting fix and keep Expo Doctor on the standalone consumer gate.
+
 ## 2.1.1
 
 ### Patch Changes
