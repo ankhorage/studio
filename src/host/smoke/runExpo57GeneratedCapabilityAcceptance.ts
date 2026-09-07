@@ -101,6 +101,17 @@ async function createProjectLockfileAsync(projectRoot: string): Promise<void> {
 async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<void> {
   const sourceBeforeStaticChecks = await snapshotSourceTreeAsync(projectRoot);
   const expoCli = await resolveAppOwnedExpoCliAsync(projectRoot);
+  await generateExpoRouterTypesAsync({
+    env: {
+      __UNSAFE_EXPO_HOME_DIRECTORY: path.join(projectRoot, '.ankh', 'expo-home'),
+      EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED,
+    },
+    label: 'Generated capability Expo Router typed-route generation',
+    projectRoot,
+    timeoutMs: 120_000,
+  });
+  await assertRouterTypesAsync(projectRoot);
+
   const setupCommands = [
     {
       args: ['run', 'format:check'],
@@ -116,17 +127,6 @@ async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<v
   ] as const;
   for (const command of setupCommands) await runGeneratedCommandAsync(projectRoot, command);
   await assertSourceTreeUnchangedAsync(projectRoot, sourceBeforeStaticChecks);
-
-  await generateExpoRouterTypesAsync({
-    env: {
-      __UNSAFE_EXPO_HOME_DIRECTORY: path.join(projectRoot, '.ankh', 'expo-home'),
-      EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED,
-    },
-    label: 'Generated capability Expo Router typed-route generation',
-    projectRoot,
-    timeoutMs: 120_000,
-  });
-  await assertRouterTypesAsync(projectRoot);
 
   await runGeneratedCommandAsync(projectRoot, {
     args: ['run', 'typecheck'],

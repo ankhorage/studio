@@ -6953,7 +6953,7 @@
             </article>
             <article
               class="item"
-              data-search="src/host/smoke/runExpo57GeneratedAppAcceptance.ts src/host/orchestrator/projectManager.ts src/host/smoke/assertReactNativeOwnerGraphAsync.ts src/host/smoke/createSmokeProjectSource.ts src/host/smoke/resolveAppOwnedExpoCliAsync.ts src/host/smoke/runAcceptanceCommandAsync.ts runExpo57GeneratedAppAcceptanceAsync"
+              data-search="src/host/smoke/runExpo57GeneratedAppAcceptance.ts src/host/orchestrator/projectManager.ts src/host/smoke/assertReactNativeOwnerGraphAsync.ts src/host/smoke/createSmokeProjectSource.ts src/host/smoke/generateExpoRouterTypesAsync.ts src/host/smoke/resolveAppOwnedExpoCliAsync.ts src/host/smoke/runAcceptanceCommandAsync.ts runExpo57GeneratedAppAcceptanceAsync"
             >
               <h3>src/host/smoke/runExpo57GeneratedAppAcceptance.ts</h3>
               <p class="muted">Referenced module</p>
@@ -6961,6 +6961,7 @@
                 <strong>Dependencies:</strong> <code>src/host/orchestrator/projectManager.ts</code>,
                 <code>src/host/smoke/assertReactNativeOwnerGraphAsync.ts</code>,
                 <code>src/host/smoke/createSmokeProjectSource.ts</code>,
+                <code>src/host/smoke/generateExpoRouterTypesAsync.ts</code>,
                 <code>src/host/smoke/resolveAppOwnedExpoCliAsync.ts</code>,
                 <code>src/host/smoke/runAcceptanceCommandAsync.ts</code>
               </p>
@@ -17712,6 +17713,8 @@
                 module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt;
                 module_src_host_smoke_createSmokeProjectSource_ts
                 module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt;
+                module_src_host_smoke_generateExpoRouterTypesAsync_ts
+                module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt;
                 module_src_host_smoke_resolveAppOwnedExpoCliAsync_ts
                 module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt;
                 module_src_host_smoke_runAcceptanceCommandAsync_ts
@@ -19968,6 +19971,7 @@ graph TD
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt; module_src_host_smoke_assertReactNativeOwnerGraphAsync_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt; module_src_host_smoke_createSmokeProjectSource_ts
+  module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt; module_src_host_smoke_generateExpoRouterTypesAsync_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt; module_src_host_smoke_resolveAppOwnedExpoCliAsync_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt; module_src_host_smoke_runAcceptanceCommandAsync_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts[&quot;src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts&quot;]
@@ -22171,6 +22175,8 @@ graph TD
                 module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt;
                 module_src_host_smoke_createSmokeProjectSource_ts
                 module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt;
+                module_src_host_smoke_generateExpoRouterTypesAsync_ts
+                module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt;
                 module_src_host_smoke_resolveAppOwnedExpoCliAsync_ts
                 module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt;
                 module_src_host_smoke_runAcceptanceCommandAsync_ts
@@ -23851,6 +23857,7 @@ graph LR
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt; module_src_host_smoke_assertReactNativeOwnerGraphAsync_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt; module_src_host_smoke_createSmokeProjectSource_ts
+  module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt; module_src_host_smoke_generateExpoRouterTypesAsync_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt; module_src_host_smoke_resolveAppOwnedExpoCliAsync_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --&gt; module_src_host_smoke_runAcceptanceCommandAsync_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --&gt; module_src_host_orchestrator_projectManager_ts
@@ -37866,7 +37873,7 @@ sequenceDiagram
             >
               <h3>runExpo57GeneratedAppAcceptanceAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:20:1</code>
+                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:21:1</code>
               </p>
               <p>
                 Create a generated standalone Expo 57 app, perform a cold frozen install and full
@@ -37881,7 +37888,7 @@ sequenceDiagram
             >
               <h3>assertCameraFreeInstalledGraphAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:44:1</code>
+                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:45:1</code>
               </p>
               <p>
                 Assert that the camera-free generated app neither declares nor transitively installs
@@ -37894,7 +37901,7 @@ sequenceDiagram
             >
               <h3>assertGeneratedAppOwnerGraphAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:70:1</code>
+                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:71:1</code>
               </p>
               <p>
                 Assert the generated app owns one physical Surface runtime so React context
@@ -37907,7 +37914,7 @@ sequenceDiagram
             >
               <h3>createGeneratedProjectAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:87:1</code>
+                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:88:1</code>
               </p>
               <p>
                 Create the minimal standalone acceptance project and replace its initial manifest
@@ -37920,7 +37927,7 @@ sequenceDiagram
             >
               <h3>hash</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:144:1</code>
+                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:145:1</code>
               </p>
               <p>
                 Compute a SHA-256 hex digest for byte content. @utility @ankhorage/utility/crypto
@@ -37932,7 +37939,7 @@ sequenceDiagram
             >
               <h3>resolveAcceptanceScreen</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:149:1</code>
+                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:150:1</code>
               </p>
               <p>
                 Resolve the manifest screen routed by the navigator&#39;s current initial route for
@@ -37945,7 +37952,7 @@ sequenceDiagram
             >
               <h3>runAcceptanceChecksAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:158:1</code>
+                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:159:1</code>
               </p>
               <p>
                 Run cold installation, graph checks, lint, Expo compatibility, typecheck, platform
@@ -37958,7 +37965,7 @@ sequenceDiagram
             >
               <h3>copyRelocatedProjectAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:234:1</code>
+                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:241:1</code>
               </p>
               <p>
                 Copy a generated app without installed/transient output to an unrelated standalone
@@ -37971,7 +37978,7 @@ sequenceDiagram
             >
               <h3>assertParentOnlyDependencyCannotBundleAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:248:1</code>
+                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:255:1</code>
               </p>
               <p>
                 Prove Metro cannot satisfy a generated-app import from an ancestor-only package
@@ -37984,7 +37991,7 @@ sequenceDiagram
             >
               <h3>assertStaleLockfileFailsAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:293:1</code>
+                <code>src/host/smoke/runExpo57GeneratedAppAcceptance.ts:300:1</code>
               </p>
               <p>
                 Prove a package mutation without lockfile reconciliation fails the frozen-install

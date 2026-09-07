@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.3.1",
+      "value": "v2.3.2",
       "color": "cb3837"
     },
     {
@@ -2475,6 +2475,7 @@
         "src/host/orchestrator/projectManager.ts",
         "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
         "src/host/smoke/createSmokeProjectSource.ts",
+        "src/host/smoke/generateExpoRouterTypesAsync.ts",
         "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
         "src/host/smoke/runAcceptanceCommandAsync.ts"
       ],
@@ -18002,7 +18003,7 @@
       "description": "Create a generated standalone Expo 57 app, perform a cold frozen install and full static/native validation, and assert that acceptance leaves its lockfile unchanged.\n@todo Move this generated-app acceptance orchestration from production src/host/smoke to test/smoke.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 20,
+        "line": 21,
         "column": 1
       }
     },
@@ -18011,7 +18012,7 @@
       "description": "Assert that the camera-free generated app neither declares nor transitively installs camera capability dependencies.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 44,
+        "line": 45,
         "column": 1
       }
     },
@@ -18020,7 +18021,7 @@
       "description": "Assert the generated app owns one physical Surface runtime so React context providers and consumers share identity.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 70,
+        "line": 71,
         "column": 1
       }
     },
@@ -18029,7 +18030,7 @@
       "description": "Create the minimal standalone acceptance project and replace its initial manifest screen with a camera-free generated screen.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 87,
+        "line": 88,
         "column": 1
       }
     },
@@ -18038,7 +18039,7 @@
       "description": "Compute a SHA-256 hex digest for byte content.\n@utility @ankhorage/utility/crypto",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 144,
+        "line": 145,
         "column": 1
       }
     },
@@ -18047,7 +18048,7 @@
       "description": "Resolve the manifest screen routed by the navigator's current initial route for acceptance mutation.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 149,
+        "line": 150,
         "column": 1
       }
     },
@@ -18056,7 +18057,7 @@
       "description": "Run cold installation, graph checks, lint, Expo compatibility, typecheck, platform exports and clean native prebuild for the generated app.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 158,
+        "line": 159,
         "column": 1
       }
     },
@@ -18065,7 +18066,7 @@
       "description": "Copy a generated app without installed/transient output to an unrelated standalone root.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 234,
+        "line": 241,
         "column": 1
       }
     },
@@ -18074,7 +18075,7 @@
       "description": "Prove Metro cannot satisfy a generated-app import from an ancestor-only package installation.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 248,
+        "line": 255,
         "column": 1
       }
     },
@@ -18083,7 +18084,7 @@
       "description": "Prove a package mutation without lockfile reconciliation fails the frozen-install contract.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 293,
+        "line": 300,
         "column": 1
       }
     },
@@ -28833,6 +28834,11 @@
       {
         "fromPath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
         "toPath": "src/host/smoke/createSmokeProjectSource.ts",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
+        "toPath": "src/host/smoke/generateExpoRouterTypesAsync.ts",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
@@ -52766,6 +52772,12 @@
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
+        "fromSymbol": "runAcceptanceChecksAsync",
+        "toSymbol": "generateExpoRouterTypesAsync",
+        "callExpression": "generateExpoRouterTypesAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
         "fromSymbol": "copyRelocatedProjectAsync",
         "toSymbol": "cp",
         "callExpression": "cp",
@@ -52935,18 +52947,6 @@
       },
       {
         "fromSymbol": "runGeneratedCapabilityChecksAsync",
-        "toSymbol": "runGeneratedCommandAsync",
-        "callExpression": "runGeneratedCommandAsync",
-        "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
-      },
-      {
-        "fromSymbol": "runGeneratedCapabilityChecksAsync",
-        "toSymbol": "assertSourceTreeUnchangedAsync",
-        "callExpression": "assertSourceTreeUnchangedAsync",
-        "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
-      },
-      {
-        "fromSymbol": "runGeneratedCapabilityChecksAsync",
         "toSymbol": "generateExpoRouterTypesAsync",
         "callExpression": "generateExpoRouterTypesAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
@@ -52955,6 +52955,18 @@
         "fromSymbol": "runGeneratedCapabilityChecksAsync",
         "toSymbol": "assertRouterTypesAsync",
         "callExpression": "assertRouterTypesAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runGeneratedCapabilityChecksAsync",
+        "toSymbol": "runGeneratedCommandAsync",
+        "callExpression": "runGeneratedCommandAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runGeneratedCapabilityChecksAsync",
+        "toSymbol": "assertSourceTreeUnchangedAsync",
+        "callExpression": "assertSourceTreeUnchangedAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
       },
       {

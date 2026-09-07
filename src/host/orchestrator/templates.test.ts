@@ -111,7 +111,12 @@ describe('generated OAuth scaffold templates', () => {
     expect(Object.values(dependencies)).not.toContain('latest');
   });
 
-  it('pins the current auth and persistence adapter dependencies', () => {
+  it('pins the current auth and persistence adapter dependencies', async () => {
+    const studioPackage = (await Bun.file(
+      new URL('../../../package.json', import.meta.url),
+    ).json()) as {
+      readonly dependencies?: Readonly<Record<string, string>>;
+    };
     const pkg = getPackageJson({
       name: 'oauth-app',
       authProvider: 'supabase',
@@ -121,6 +126,9 @@ describe('generated OAuth scaffold templates', () => {
     const dependencies = pkg.dependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/utility']).toMatch(CARET_SEMVER_RANGE);
+    expect(dependencies['@ankhorage/utility']).toBe(
+      studioPackage.dependencies?.['@ankhorage/utility'],
+    );
     expect(dependencies['@ankhorage/supabase-auth']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/supabase-storage']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies[EXPO_PLATFORM.packages.crypto.name]).toBe(
