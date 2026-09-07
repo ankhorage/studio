@@ -2,6 +2,7 @@ import type { UiNode } from '@ankhorage/contracts';
 import { useZoraTheme, ZORA_COMPONENT_REGISTRY } from '@ankhorage/zora';
 import React from 'react';
 import {
+  AppState,
   type GestureResponderEvent,
   type LayoutChangeEvent,
   Platform,
@@ -11,6 +12,14 @@ import {
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 import { resolveCanvasDragSession } from '../canvasDragModel.js';
+import {
+  measureNativeElement,
+  measureNativeRuntimeNodeElement,
+} from '../features/selection/adapters/nativeElementMeasurement.js';
+import {
+  createNativeSelectionSamplingCoordinator,
+  type NativeSelectionSamplingCoordinator,
+} from '../features/selection/application/nativeSelectionSamplingCoordinator.js';
 import type { NodePlacement, StudioComponentMetaRegistry } from '../index.js';
 import { StudioCanvasDndOverlay } from '../ui/canvas/StudioCanvasDndOverlay.js';
 import {
@@ -29,7 +38,6 @@ import {
   getActiveRuntimeNodeMeasurements,
   hasActiveRuntimeNodeMeasurements,
   type MeasuredRect,
-  measureNativeRuntimeNodeView,
   measureRuntimeNodeIndicators,
   type RuntimeNodeIndicatorRect,
   type RuntimeNodeMeasurement,
@@ -59,6 +67,7 @@ const TrackerContext = React.createContext<TrackerContextValue | null>(null);
 const NATIVE_SETTLE_INTERVAL_MS = 60;
 const NATIVE_SETTLE_MAX_SAMPLES = 80;
 const NATIVE_SETTLE_STABLE_SAMPLE_COUNT = 3;
+type IndicatorRefreshScope = 'all' | 'selected';
 
 interface RuntimeNodeMeasurementContextValue {
   readonly registerView: (view: ViewRef) => () => void;
@@ -156,7 +165,7 @@ function measureRootView(view: ViewRef | null): Promise<MeasuredRect | null> {
     return Promise.resolve(toMeasuredRect(view.getBoundingClientRect()));
   }
 
-  return measureNativeRuntimeNodeView(view);
+  return Promise.resolve(measureNativeElement(view));
 }
 
 /***
@@ -328,7 +337,7 @@ function StudioNodeTouchRecorder(props: {
                 source: 'runtime-recorder',
               }
             : {
-                measure: () => measureNativeRuntimeNodeView(view),
+                measure: () => Promise.resolve(measureNativeRuntimeNodeElement(view)),
                 showUnsupportedIndicator,
                 source: 'runtime-recorder',
               },
@@ -423,10 +432,6 @@ export function createStudioStationarySelectionWrapNode(options?: {
       return args.rendered;
     }
 
-    if (args.isRoot && Platform.OS !== 'web') {
-      return args.rendered;
-    }
-
     const isSupported =
       Object.prototype.hasOwnProperty.call(ZORA_COMPONENT_REGISTRY, args.node.type) ||
       (thirdPartySupport != null &&
@@ -488,8 +493,13 @@ function StationaryTapSelector(props: {
   const inputStateRef = React.useRef<StationarySelectionInputState | null>(null);
   const refreshCoordinatorRef = React.useRef<IndicatorRefreshCoordinator | null>(null);
   const settleCoordinatorRef = React.useRef<IndicatorSettleCoordinator | null>(null);
+  const nativeSelectionSamplingCoordinatorRef =
+    React.useRef<NativeSelectionSamplingCoordinator | null>(null);
+  const nativeSamplingNeedsFullRefreshRef = React.useRef(true);
+  const appIsActiveRef = React.useRef(AppState.currentState === 'active');
+  const startNativeSelectionSamplingRef = React.useRef<() => void>(() => undefined);
   const refreshIndicatorRectsRef = React.useRef<
-    () => Promise<readonly RuntimeNodeIndicatorRect[] | null>
+    (scope?: IndicatorRefreshScope) => Promise<readonly RuntimeNodeIndicatorRect[] | null>
   >(() => Promise.resolve(null));
   const geometryRevisionRef = React.useRef(0);
   const mountedRef = React.useRef(true);
@@ -526,6 +536,13 @@ function StationaryTapSelector(props: {
 
   /*** Coalesce runtime-node geometry refresh requests through requestAnimationFrame. */
   const requestIndicatorRefresh = React.useCallback(() => {
+    if (
+      Platform.OS !== 'web' &&
+      nativeSelectionSamplingCoordinatorRef.current?.isRunning() === true
+    ) {
+      nativeSamplingNeedsFullRefreshRef.current = true;
+      return;
+    }
     refreshCoordinatorRef.current ??= createIndicatorRefreshCoordinator(
       () => {
         void refreshIndicatorRectsRef.current();
@@ -538,11 +555,47 @@ function StationaryTapSelector(props: {
     refreshCoordinatorRef.current.requestRefresh();
   }, []);
 
+  /*** Decide whether one selected native Runtime node should currently be sampled. */
+  const shouldSampleNativeSelection = React.useCallback(() => {
+    const selectedNodeId = measurementSelectedNodeIdRef.current;
+    return (
+      Platform.OS !== 'web' &&
+      appIsActiveRef.current &&
+      isEditModeRef.current &&
+      selectedNodeId !== null &&
+      runtimeNodesRef.current.has(selectedNodeId)
+    );
+  }, []);
+
+  /*** Start the native selected-node sampling loop when its lifecycle is eligible. */
+  const startNativeSelectionSampling = React.useCallback(() => {
+    if (Platform.OS === 'web') {
+      return;
+    }
+    nativeSelectionSamplingCoordinatorRef.current ??= createNativeSelectionSamplingCoordinator({
+      sample: () => {
+        const scope = nativeSamplingNeedsFullRefreshRef.current ? 'all' : 'selected';
+        nativeSamplingNeedsFullRefreshRef.current = false;
+        return refreshIndicatorRectsRef.current(scope);
+      },
+      scheduler: {
+        request: (callback) => requestAnimationFrame(callback),
+        cancel: (frameId) => cancelAnimationFrame(frameId),
+      },
+      shouldContinue: shouldSampleNativeSelection,
+    });
+    nativeSamplingNeedsFullRefreshRef.current = true;
+    refreshCoordinatorRef.current?.cancelPendingRefresh();
+    nativeSelectionSamplingCoordinatorRef.current.start();
+  }, [shouldSampleNativeSelection]);
+  startNativeSelectionSamplingRef.current = startNativeSelectionSampling;
+
   /*** Refresh immediately for scrolling and trigger native settle sampling while geometry can continue moving after the event. */
   const requestScrollIndicatorRefresh = React.useCallback(() => {
     requestIndicatorRefresh();
     if (
       Platform.OS === 'web' ||
+      shouldSampleNativeSelection() ||
       !hasActiveRuntimeNodeMeasurements(
         runtimeNodesRef.current,
         isEditModeRef.current,
@@ -567,7 +620,7 @@ function StationaryTapSelector(props: {
       stableSampleCount: NATIVE_SETTLE_STABLE_SAMPLE_COUNT,
     });
     settleCoordinatorRef.current.trigger();
-  }, [requestIndicatorRefresh]);
+  }, [requestIndicatorRefresh, shouldSampleNativeSelection]);
 
   /*** Synchronize the web ResizeObserver target set with currently active node measurements and the canvas root. */
   const syncActiveResizeTargets = React.useCallback(() => {
@@ -604,6 +657,7 @@ function StationaryTapSelector(props: {
       if (nodeIsActive) {
         syncActiveResizeTargets();
         requestIndicatorRefresh();
+        startNativeSelectionSamplingRef.current();
       }
 
       return () => {
@@ -636,11 +690,14 @@ function StationaryTapSelector(props: {
           ) {
             settleCoordinatorRef.current?.cancel();
           }
+          if (!shouldSampleNativeSelection()) {
+            nativeSelectionSamplingCoordinatorRef.current?.stop();
+          }
           requestIndicatorRefresh();
         }
       };
     },
-    [requestIndicatorRefresh, syncActiveResizeTargets],
+    [requestIndicatorRefresh, shouldSampleNativeSelection, syncActiveResizeTargets],
   );
 
   /*** Memoize the tracker-context adapter exposed to descendant runtime node recorders. */
@@ -658,47 +715,72 @@ function StationaryTapSelector(props: {
   );
 
   /*** Measure active runtime nodes, reject stale async results, and commit changed indicator rectangles. */
-  const refreshIndicatorRects = React.useCallback(async (): Promise<
-    readonly RuntimeNodeIndicatorRect[] | null
-  > => {
-    const geometryRevision = ++geometryRevisionRef.current;
-    if (
-      !hasActiveRuntimeNodeMeasurements(
-        runtimeNodesRef.current,
-        isEditModeRef.current,
-        measurementSelectedNodeIdRef.current,
-        activeDragNodeIdRef.current,
-      )
-    ) {
-      latestIndicatorRectsRef.current = [];
-      setIndicatorRects((current) => (current.length === 0 ? current : []));
-      return null;
-    }
+  const refreshIndicatorRects = React.useCallback(
+    async (
+      scope: IndicatorRefreshScope = 'all',
+    ): Promise<readonly RuntimeNodeIndicatorRect[] | null> => {
+      const selectedOnly = scope === 'selected';
+      const selectedNodeId = measurementSelectedNodeIdRef.current;
+      const scopedRuntimeNodes =
+        selectedOnly && selectedNodeId !== null
+          ? new Map([
+              [
+                selectedNodeId,
+                runtimeNodesRef.current.get(selectedNodeId) ?? new Set<RuntimeNodeMeasurement>(),
+              ],
+            ])
+          : runtimeNodesRef.current;
+      const scopedActiveDragNodeId = selectedOnly ? null : activeDragNodeIdRef.current;
+      const geometryRevision = ++geometryRevisionRef.current;
+      if (
+        !hasActiveRuntimeNodeMeasurements(
+          scopedRuntimeNodes,
+          isEditModeRef.current,
+          selectedNodeId,
+          scopedActiveDragNodeId,
+        )
+      ) {
+        if (selectedOnly) {
+          return latestIndicatorRectsRef.current;
+        }
+        latestIndicatorRectsRef.current = [];
+        setIndicatorRects((current) => (current.length === 0 ? current : []));
+        return null;
+      }
 
-    const rootRect = await measureRootView(rootViewRef.current);
-    if (!rootRect) {
-      return latestIndicatorRectsRef.current;
-    }
+      const rootRect = await measureRootView(rootViewRef.current);
+      if (!rootRect) {
+        return latestIndicatorRectsRef.current;
+      }
 
-    const nextRects = await measureRuntimeNodeIndicators({
-      isEditMode: isEditModeRef.current,
-      activeDragNodeId: activeDragNodeIdRef.current,
-      canvasRootNodeId: canvasInteraction?.rootNode?.id,
-      rootRect,
-      runtimeNodes: runtimeNodesRef.current,
-      selectedNodeId: measurementSelectedNodeIdRef.current,
-    });
+      const measuredRects = await measureRuntimeNodeIndicators({
+        isEditMode: isEditModeRef.current,
+        activeDragNodeId: scopedActiveDragNodeId,
+        canvasRootNodeId: canvasInteraction?.rootNode?.id,
+        clipToRoot: Platform.OS !== 'web',
+        rootRect,
+        runtimeNodes: scopedRuntimeNodes,
+        selectedNodeId,
+      });
 
-    if (!mountedRef.current || geometryRevision !== geometryRevisionRef.current) {
-      return mountedRef.current ? latestIndicatorRectsRef.current : null;
-    }
+      if (!mountedRef.current || geometryRevision !== geometryRevisionRef.current) {
+        return mountedRef.current ? latestIndicatorRectsRef.current : null;
+      }
 
-    latestIndicatorRectsRef.current = nextRects;
-    setIndicatorRects((current) =>
-      areIndicatorRectsEqual(current, nextRects) ? current : nextRects,
-    );
-    return nextRects;
-  }, [canvasInteraction?.rootNode?.id]);
+      const nextRects = selectedOnly
+        ? [
+            ...latestIndicatorRectsRef.current.filter((rect) => rect.nodeId !== selectedNodeId),
+            ...measuredRects,
+          ].sort((left, right) => left.nodeId.localeCompare(right.nodeId))
+        : measuredRects;
+      latestIndicatorRectsRef.current = nextRects;
+      setIndicatorRects((current) =>
+        areIndicatorRectsEqual(current, nextRects) ? current : nextRects,
+      );
+      return nextRects;
+    },
+    [canvasInteraction?.rootNode?.id],
+  );
   refreshIndicatorRectsRef.current = refreshIndicatorRects;
 
   React.useEffect(() => {
@@ -714,11 +796,18 @@ function StationaryTapSelector(props: {
     }
     syncActiveResizeTargets();
     requestIndicatorRefresh();
+    if (shouldSampleNativeSelection()) {
+      startNativeSelectionSampling();
+    } else {
+      nativeSelectionSamplingCoordinatorRef.current?.stop();
+    }
   }, [
     activeDragNodeId,
     measurementSelectedNodeId,
     props.isEditMode,
     requestIndicatorRefresh,
+    shouldSampleNativeSelection,
+    startNativeSelectionSampling,
     syncActiveResizeTargets,
   ]);
 
@@ -735,8 +824,33 @@ function StationaryTapSelector(props: {
       geometryRevisionRef.current += 1;
       refreshCoordinatorRef.current?.cancelPendingRefresh();
       settleCoordinatorRef.current?.cancel();
+      nativeSelectionSamplingCoordinatorRef.current?.stop();
     };
   }, []);
+
+  React.useEffect(() => {
+    if (Platform.OS === 'web') {
+      return;
+    }
+
+    appIsActiveRef.current = AppState.currentState === 'active';
+    if (appIsActiveRef.current) {
+      startNativeSelectionSampling();
+    }
+
+    const subscription = AppState.addEventListener('change', (nextState) => {
+      appIsActiveRef.current = nextState === 'active';
+      if (appIsActiveRef.current) {
+        requestIndicatorRefresh();
+        startNativeSelectionSampling();
+      } else {
+        geometryRevisionRef.current += 1;
+        nativeSelectionSamplingCoordinatorRef.current?.stop();
+      }
+    });
+
+    return () => subscription.remove();
+  }, [requestIndicatorRefresh, startNativeSelectionSampling]);
 
   React.useEffect(() => {
     if (Platform.OS !== 'web') {
@@ -872,6 +986,9 @@ function StationaryTapSelector(props: {
             nativeID: `studio-unsupported-indicator-${encodeURIComponent(rect.nodeId)}`,
             testID: `studio-unsupported-indicator-${rect.nodeId}`,
             pointerEvents: 'none',
+            accessible: false,
+            accessibilityElementsHidden: true,
+            importantForAccessibility: 'no-hide-descendants',
             style: {
               position: 'absolute',
               left: rect.x,
