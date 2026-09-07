@@ -1,13 +1,12 @@
 import type { AppDeployTargets } from '@ankhorage/contracts/deploy';
-import type { NavigatorNode } from '@ankhorage/contracts/navigator';
+import type {
+  NavigatorGeneratedFile,
+  NavigatorGenerationBindings,
+  NavigatorNode,
+  NavigatorRuntimePlatform,
+} from '@ankhorage/contracts/navigator';
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
-import {
-  createNavigatorPlan,
-  generateNavigatorFiles,
-  type NavigatorGeneratedFile,
-  type NavigatorGenerationBindings,
-  type NavigatorRuntimePlatform,
-} from '@ankhorage/navigator';
+import { createNavigatorPlan, generateNavigatorFiles } from '@ankhorage/navigator';
 
 export interface NavigatorOwnedLayoutFile {
   path: string;

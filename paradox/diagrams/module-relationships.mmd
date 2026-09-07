@@ -67,6 +67,10 @@ graph LR
   module_src_externalApiAuthoring_public_test_ts["src/externalApiAuthoring.public.test.ts"]
   module_src_externalApiAuthoring_index_ts["src/externalApiAuthoring/index.ts"]
   module_src_externalApiAuthoringContracts_ts["src/externalApiAuthoringContracts.ts"]
+  module_src_features_selection_adapters_nativeElementMeasurement_test_ts["src/features/selection/adapters/nativeElementMeasurement.test.ts"]
+  module_src_features_selection_adapters_nativeElementMeasurement_ts["src/features/selection/adapters/nativeElementMeasurement.ts"]
+  module_src_features_selection_application_nativeSelectionSamplingCoordinator_test_ts["src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"]
+  module_src_features_selection_application_nativeSelectionSamplingCoordinator_ts["src/features/selection/application/nativeSelectionSamplingCoordinator.ts"]
   module_src_hooks_useProjects_ts["src/hooks/useProjects.ts"]
   module_src_hooks_useTemplateCatalog_ts["src/hooks/useTemplateCatalog.ts"]
   module_src_host_apis_createProjectEndpointCredentialResolver_ts["src/host/apis/createProjectEndpointCredentialResolver.ts"]
@@ -205,6 +209,7 @@ graph LR
   module_src_host_orchestrator_studioInfraUp_ts["src/host/orchestrator/studioInfraUp.ts"]
   module_src_host_orchestrator_templates_test_ts["src/host/orchestrator/templates.test.ts"]
   module_src_host_orchestrator_templates_ts["src/host/orchestrator/templates.ts"]
+  module_src_host_orchestrator_workspaceRuntime_test_ts["src/host/orchestrator/workspaceRuntime.test.ts"]
   module_src_host_orchestrator_workspaceRuntime_ts["src/host/orchestrator/workspaceRuntime.ts"]
   module_src_host_secrets_bunSupabaseVaultClient_ts["src/host/secrets/bunSupabaseVaultClient.ts"]
   module_src_host_secrets_projectSecretService_test_ts["src/host/secrets/projectSecretService.test.ts"]
@@ -601,6 +606,8 @@ graph LR
   module_src_externalApiApi_ts --> module_src_core_constants_ts
   module_src_externalApiApi_ts --> module_src_externalApiAuthoringContracts_ts
   module_src_externalApiAuthoring_public_test_ts --> module_src_externalApiAuthoring_index_ts
+  module_src_features_selection_adapters_nativeElementMeasurement_test_ts --> module_src_features_selection_adapters_nativeElementMeasurement_ts
+  module_src_features_selection_application_nativeSelectionSamplingCoordinator_test_ts --> module_src_features_selection_application_nativeSelectionSamplingCoordinator_ts
   module_src_hooks_useProjects_ts --> module_src_contractGuards_ts
   module_src_hooks_useProjects_ts --> module_src_core_constants_ts
   module_src_hooks_useProjects_ts --> module_src_projectWorkspaceContracts_ts
@@ -876,6 +883,7 @@ graph LR
   module_src_host_orchestrator_studioInfraUp_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_studioInfraUp_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_orchestrator_templates_test_ts --> module_src_host_orchestrator_templates_ts
+  module_src_host_orchestrator_workspaceRuntime_test_ts --> module_src_host_orchestrator_workspaceRuntime_ts
   module_src_host_secrets_projectSecretService_test_ts --> module_src_authSettings_ts
   module_src_host_secrets_projectSecretService_test_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_secrets_projectSecretService_ts --> module_src_host_orchestrator_projectManager_ts
@@ -957,6 +965,7 @@ graph LR
   module_src_host_smoke_runAuth5NativeOAuthSmoke_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts
   module_src_host_smoke_runAuth5NativeOAuthSmokeInfra_ts --> module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_assertReactNativeOwnerGraphAsync_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_resolveAppOwnedExpoCliAsync_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
@@ -1081,9 +1090,13 @@ graph LR
   module_src_runtime_interactionPolicy_test_ts --> module_src_runtime_actionSuppression_ts
   module_src_runtime_interactionPolicy_test_ts --> module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_interactionPolicy_ts --> module_src_runtime_interactionPolicyCore_ts
+  module_src_runtime_runtimeNodeMeasurement_test_ts --> module_src_features_selection_adapters_nativeElementMeasurement_ts
   module_src_runtime_runtimeNodeMeasurement_test_ts --> module_src_runtime_runtimeNodeMeasurement_ts
+  module_src_runtime_runtimeNodeMeasurement_ts --> module_src_features_selection_adapters_nativeElementMeasurement_ts
   module_src_runtime_stationarySelection_public_test_ts --> module_src_runtime_index_ts
   module_src_runtime_stationarySelection_ts --> module_src_canvasDragModel_ts
+  module_src_runtime_stationarySelection_ts --> module_src_features_selection_adapters_nativeElementMeasurement_ts
+  module_src_runtime_stationarySelection_ts --> module_src_features_selection_application_nativeSelectionSamplingCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_index_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_indicatorRefreshCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_indicatorSettleCoordinator_ts

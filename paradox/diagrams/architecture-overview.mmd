@@ -252,6 +252,16 @@ graph TD
   package__ankhorage_studio -.-> module_src_externalApiAuthoring_index_ts
   module_src_externalApiAuthoringContracts_ts["src/externalApiAuthoringContracts.ts"]
   package__ankhorage_studio -.-> module_src_externalApiAuthoringContracts_ts
+  module_src_features_selection_adapters_nativeElementMeasurement_test_ts["src/features/selection/adapters/nativeElementMeasurement.test.ts"]
+  package__ankhorage_studio -.-> module_src_features_selection_adapters_nativeElementMeasurement_test_ts
+  module_src_features_selection_adapters_nativeElementMeasurement_test_ts --> module_src_features_selection_adapters_nativeElementMeasurement_ts
+  module_src_features_selection_adapters_nativeElementMeasurement_ts["src/features/selection/adapters/nativeElementMeasurement.ts"]
+  package__ankhorage_studio -.-> module_src_features_selection_adapters_nativeElementMeasurement_ts
+  module_src_features_selection_application_nativeSelectionSamplingCoordinator_test_ts["src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts"]
+  package__ankhorage_studio -.-> module_src_features_selection_application_nativeSelectionSamplingCoordinator_test_ts
+  module_src_features_selection_application_nativeSelectionSamplingCoordinator_test_ts --> module_src_features_selection_application_nativeSelectionSamplingCoordinator_ts
+  module_src_features_selection_application_nativeSelectionSamplingCoordinator_ts["src/features/selection/application/nativeSelectionSamplingCoordinator.ts"]
+  package__ankhorage_studio -.-> module_src_features_selection_application_nativeSelectionSamplingCoordinator_ts
   module_src_hooks_useProjects_ts["src/hooks/useProjects.ts"]
   package__ankhorage_studio -.-> module_src_hooks_useProjects_ts
   module_src_hooks_useProjects_ts --> module_src_contractGuards_ts
@@ -803,6 +813,9 @@ graph TD
   module_src_host_orchestrator_templates_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_templates_ts["src/host/orchestrator/templates.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_templates_ts
+  module_src_host_orchestrator_workspaceRuntime_test_ts["src/host/orchestrator/workspaceRuntime.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_workspaceRuntime_test_ts
+  module_src_host_orchestrator_workspaceRuntime_test_ts --> module_src_host_orchestrator_workspaceRuntime_ts
   module_src_host_orchestrator_workspaceRuntime_ts["src/host/orchestrator/workspaceRuntime.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_workspaceRuntime_ts
   module_src_host_secrets_bunSupabaseVaultClient_ts["src/host/secrets/bunSupabaseVaultClient.ts"]
@@ -1010,6 +1023,7 @@ graph TD
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts["src/host/smoke/runExpo57GeneratedAppAcceptance.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_assertReactNativeOwnerGraphAsync_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_resolveAppOwnedExpoCliAsync_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
@@ -1301,9 +1315,11 @@ graph TD
   package__ankhorage_studio -.-> module_src_runtime_runtimeActions_ts
   module_src_runtime_runtimeNodeMeasurement_test_ts["src/runtime/runtimeNodeMeasurement.test.ts"]
   package__ankhorage_studio -.-> module_src_runtime_runtimeNodeMeasurement_test_ts
+  module_src_runtime_runtimeNodeMeasurement_test_ts --> module_src_features_selection_adapters_nativeElementMeasurement_ts
   module_src_runtime_runtimeNodeMeasurement_test_ts --> module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_runtimeNodeMeasurement_ts["src/runtime/runtimeNodeMeasurement.ts"]
   package__ankhorage_studio -.-> module_src_runtime_runtimeNodeMeasurement_ts
+  module_src_runtime_runtimeNodeMeasurement_ts --> module_src_features_selection_adapters_nativeElementMeasurement_ts
   module_src_runtime_runtimeSurface_test_ts["src/runtime/runtimeSurface.test.ts"]
   package__ankhorage_studio -.-> module_src_runtime_runtimeSurface_test_ts
   module_src_runtime_stationarySelection_public_test_ts["src/runtime/stationarySelection.public.test.ts"]
@@ -1314,6 +1330,8 @@ graph TD
   module_src_runtime_stationarySelection_ts["src/runtime/stationarySelection.ts"]
   package__ankhorage_studio -.-> module_src_runtime_stationarySelection_ts
   module_src_runtime_stationarySelection_ts --> module_src_canvasDragModel_ts
+  module_src_runtime_stationarySelection_ts --> module_src_features_selection_adapters_nativeElementMeasurement_ts
+  module_src_runtime_stationarySelection_ts --> module_src_features_selection_application_nativeSelectionSamplingCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_index_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_indicatorRefreshCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_indicatorSettleCoordinator_ts
