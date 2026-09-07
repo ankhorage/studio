@@ -53,7 +53,12 @@ describe('generated OAuth scaffold templates', () => {
     expect(localConfig).not.toContain('createConfig');
   });
 
-  it('pins the current generated app dependency baseline', () => {
+  it('keeps the generated app dependency baseline aligned with Studio', async () => {
+    const studioPackage = (await Bun.file(
+      new URL('../../../package.json', import.meta.url),
+    ).json()) as {
+      readonly dependencies?: Readonly<Record<string, string>>;
+    };
     const pkg = getPackageJson({
       name: 'generated-app',
       includeStudio: true,
@@ -65,7 +70,10 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/contracts']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/data-sources']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/expo-runtime']).toMatch(CARET_SEMVER_RANGE);
-    expect(dependencies['@ankhorage/navigator']).toBe('^1.5.3');
+    expect(dependencies['@ankhorage/navigator']).toMatch(CARET_SEMVER_RANGE);
+    expect(dependencies['@ankhorage/navigator']).toBe(
+      studioPackage.dependencies?.['@ankhorage/navigator'],
+    );
     expect(pkg.overrides).toEqual({ '@ankhorage/contracts': '11.0.0' });
     expect(dependencies['@ankhorage/permissions']).toBeUndefined();
     expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();
