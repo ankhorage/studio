@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.2.3
+
+### Patch Changes
+
+- 0255370: Require the published Navigator formatting fix in Studio and newly generated applications.
+
 ## 2.2.2
 
 ### Patch Changes
