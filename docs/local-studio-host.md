@@ -16,7 +16,7 @@ The host resolves the nearest package named `@ankhorage/studio` that contains an
 
 Project IDs are derived from project names with the shared Studio project identity model. For example, `Release Monitor` derives to `release-monitor` and `Infra Health` derives to `infra-health`. The ID `studio` is reserved, and names that derive to `studio` are rejected before any filesystem mutation.
 
-The Studio workspace app owns project lifecycle management: listing projects, creating projects, opening a selected project detail screen, synchronizing generated project files, starting generated infrastructure, opening the infrastructure-hosted running app, deleting projects after confirmation, and installing workspace packages.
+The Studio workspace app owns project lifecycle management: listing projects, creating projects, opening a selected project detail screen, synchronizing generated project files, starting generated infrastructure, opening the infrastructure-hosted running app, deleting projects after confirmation, and installing packages inside a generated project's independent package root.
 
 Generated apps own their own `/ankh` administration workspace. The workspace Studio app does not route a selected generated project's `/ankh` pages as local Studio routes.
 
@@ -61,7 +61,7 @@ Workspace lifecycle labels are explicit:
 - `Sync` promotes the Studio draft manifest where applicable, synchronizes the scaffold, regenerates generated routes/files, and synchronizes infrastructure artifacts. It does not start infrastructure.
 - `Infrastructure Up` regenerates infrastructure artifacts as required, resolves trusted environment/secrets, executes the generated infrastructure `up` lifecycle, and registers port-forward ownership.
 - `Open running app` starts or reuses the generated infrastructure app port-forward and opens the returned URL. It is not local Expo, web, iOS, or Android source startup.
-- `Install workspace packages` runs the workspace-root install operation because the repository declares `apps/*` workspaces. It is application-level Studio UI, not a per-project action.
+- `Install packages` runs the install operation inside the selected generated app. The app owns its `node_modules` and `bun.lock`; only the first-party `apps/studio` app remains in the root workspace temporarily.
 
 Project summaries are read from canonical manifests. `metadata.category` uses the shared `AppCategory` type, and the active visual identity resolves from `activeThemeId` and `themes`. The template catalog endpoint returns grouped category data from the canonical template package and does not expose template versions.
 

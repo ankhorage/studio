@@ -153,7 +153,7 @@ export class ProjectManager {
     return { success: true, id: slug, path: projectPath };
   }
 
-  /*** Install packages inside one generated project's own workspace. */
+  /*** Install packages inside one generated project's independent package root. */
   async installProjectPackages(projectId: string) {
     await runWorkspaceInstall(getProjectPath(this.rootPath, projectId));
     return { success: true, scope: 'project' as const };

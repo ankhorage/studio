@@ -18,11 +18,12 @@ test('exports the Studio runtime symbols used by generated app layouts', async (
   );
 });
 
-test('keeps the package root and first-party apps in Studio workspace installs', async () => {
+test('keeps only the package root and first-party Studio app in workspace installs', async () => {
   const packageJson = (await Bun.file(new URL('../package.json', import.meta.url)).json()) as {
     readonly dependencies?: Readonly<Record<string, string>>;
     readonly overrides?: Readonly<Record<string, string>>;
     readonly peerDependencies?: Readonly<Record<string, string>>;
+    readonly scripts?: Readonly<Record<string, string>>;
     readonly workspaces?: readonly string[];
   };
   const appPackageJson = (await Bun.file(
@@ -32,7 +33,10 @@ test('keeps the package root and first-party apps in Studio workspace installs',
     readonly devDependencies?: Readonly<Record<string, string>>;
   };
 
-  expect(packageJson.workspaces).toEqual(['.', 'apps/*']);
+  expect(packageJson.workspaces).toEqual(['.', 'apps/studio']);
+  expect(packageJson.scripts?.test).toBe('bun test src');
+  const prettierIgnore = await Bun.file(new URL('../.prettierignore', import.meta.url)).text();
+  expect(prettierIgnore).toContain('/apps/*\n!/apps/studio/\n!/apps/studio/**');
   expect(packageJson.peerDependencies?.expo).toBe(EXPO_PLATFORM.runtime.expo.version);
   const reactNativePeerRange = packageJson.peerDependencies?.['react-native'];
   const appReactNativeVersion = appPackageJson.dependencies?.['react-native'];

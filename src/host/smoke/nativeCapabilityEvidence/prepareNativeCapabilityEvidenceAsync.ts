@@ -77,20 +77,8 @@ export async function prepareNativeCapabilityEvidenceAsync(workspaceRoot: string
   await configureNativeEvidenceDevelopmentClientAsync(appRoot);
   await configureNativeEvidenceToolingAsync(appRoot);
   await writeNativeEvidenceAppFilesAsync(appRoot);
-  await createLockfileAndColdInstallAsync(
-    workspaceRoot,
-    commandEnv,
-    'temporary generation workspace',
-  );
-  await assertDevtoolsSyncIdempotentAsync(
-    appRoot,
-    path.join(workspaceRoot, 'bun.lock'),
-    commandEnv,
-  );
-  await rm(path.join(workspaceRoot, 'node_modules'), { force: true, recursive: true });
-  await rm(path.join(workspaceRoot, 'bun.lock'));
-  await rm(path.join(workspaceRoot, 'package.json'));
-  await rm(path.join(workspaceRoot, 'bunfig.toml'));
+  await createLockfileAndColdInstallAsync(appRoot, commandEnv, 'native evidence app');
+  await assertDevtoolsSyncIdempotentAsync(appRoot, path.join(appRoot, 'bun.lock'), commandEnv);
   await rm(path.join(appRoot, 'node_modules'), { force: true, recursive: true });
   const lockfileFingerprint = await createLockfileAndColdInstallAsync(
     appRoot,
@@ -107,6 +95,7 @@ export async function prepareNativeCapabilityEvidenceAsync(workspaceRoot: string
       '@ankhorage/surface': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/surface'],
       '@ankhorage/zora': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/zora'],
     },
+    singletonOwnerPackages: ['@ankhorage/surface'],
   });
   await assertReleasedNativeOAuthWiringAsync(appRoot);
   const checkResults = await runGeneratedNativeEvidenceChecksAsync(appRoot, commandEnv);

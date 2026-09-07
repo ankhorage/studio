@@ -629,7 +629,7 @@ adminWebSmokeTest(
       const resolvedZoraPackage = JSON.parse(
         await readFile(path.join(resolvedZoraRoot, 'package.json'), 'utf8'),
       ) as { version?: string };
-      const generatedLockfile = await readFile(path.join(workspaceRoot, 'bun.lock'), 'utf8');
+      const generatedLockfile = await readFile(path.join(projectRoot, 'bun.lock'), 'utf8');
 
       expect(typeof resolvedZoraPackage.version).toBe('string');
       expect(
@@ -1642,7 +1642,7 @@ async function createGeneratedAdminProject(workspaceRoot: string): Promise<strin
     JSON.stringify({
       name: '@ankhorage/studio-admin-web-smoke',
       private: true,
-      workspaces: ['apps/*'],
+      workspaces: ['apps/studio'],
     }),
   );
 
@@ -1684,7 +1684,7 @@ async function installGeneratedProjectDependencies(
   await writeFile(packagePath, `${JSON.stringify(generatedPackage, null, 2)}\n`, 'utf8');
 
   const install = Bun.spawn(['bun', 'install', '--ignore-scripts'], {
-    cwd: workspaceRoot,
+    cwd: projectRoot,
     env: {
       ...process.env,
       CI: '1',

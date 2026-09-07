@@ -64,7 +64,6 @@ productionInfraTest(
         mutations: [],
       });
 
-      await rm(path.join(workspaceRoot, 'package.json'));
       const lockfileDigest = await installFromCleanLockfileAsync(created.path);
       await resolveAppOwnedExpoCliAsync(created.path);
       await assertGeneratedBuildUsesAppOwnedExpoCliAsync(created.path);
@@ -124,7 +123,7 @@ async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
         name: '@ankhorage/expo57-production-infra-acceptance',
         packageManager: 'bun@1.3.14',
         private: true,
-        workspaces: ['apps/*'],
+        workspaces: ['apps/studio'],
       },
       null,
       2,

@@ -34,7 +34,6 @@ export async function runExpo57AuthHiddenRouteDrawerAcceptanceAsync(): Promise<v
     await createWorkspaceAsync(workspaceRoot);
     const manager = new ProjectManager(workspaceRoot);
     const project = await createAuthHiddenRouteDrawerStudioAsync(manager);
-    await rm(path.join(workspaceRoot, 'package.json'));
     const expectedLockfileDigest = await installGeneratedProjectAsync(project);
     const studioHostPort = await reserveTcpPortAsync('auth hidden-route Drawer Studio host');
     studioHost = await startStudioHostServer({
@@ -119,7 +118,6 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
       rootTabs,
       rootDrawer,
     ] as const;
-    await rm(path.join(workspaceRoot, 'package.json'));
     const lockfileDigests = new Map<string, string>();
     for (const project of projects) {
       lockfileDigests.set(project.path, await installGeneratedProjectAsync(project));
@@ -360,7 +358,7 @@ async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
         name: '@ankhorage/expo57-navigation-acceptance',
         packageManager: 'bun@1.3.14',
         private: true,
-        workspaces: ['apps/*'],
+        workspaces: ['apps/studio'],
       },
       null,
       2,

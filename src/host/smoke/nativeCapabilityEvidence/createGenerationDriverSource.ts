@@ -27,7 +27,7 @@ await Bun.write(
       name: '@ankhorage/expo57-native-capability-evidence',
       packageManager: 'bun@1.3.14',
       private: true,
-      workspaces: ['apps/*'],
+      workspaces: ['apps/studio'],
     },
     null,
     2,

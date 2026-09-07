@@ -15,6 +15,7 @@ export async function assertReactNativeOwnerGraphAsync(options: {
   readonly installationRoot: string;
   readonly reactNativeVersion: string;
   readonly requiredOwnerRanges: Readonly<Record<string, string>>;
+  readonly singletonOwnerPackages?: readonly string[];
 }): Promise<void> {
   const nodeModulesRoots = await listNodeModulesRootsAsync(
     path.join(options.installationRoot, 'node_modules'),
@@ -73,6 +74,15 @@ export async function assertReactNativeOwnerGraphAsync(options: {
           `${packageName}@${String(packageJson.version)} requires incompatible React Native peer ${peerRange}; installed ${options.reactNativeVersion}.`,
         );
       }
+    }
+  }
+
+  for (const packageName of options.singletonOwnerPackages ?? []) {
+    const installations = [...(ownerPackages.get(packageName)?.keys() ?? [])].sort();
+    if (installations.length !== 1) {
+      throw new Error(
+        `Expected one physical ${packageName} installation, found ${installations.length}: ${installations.join(', ') || '<none>'}.`,
+      );
     }
   }
 
