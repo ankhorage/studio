@@ -730,7 +730,7 @@ async function runGlobalStudioAuthBypassNavigationSmokeAsync(
   );
 }
 
-/*** Assert the auth-injected sign-out route is hidden in the themed Drawer fallback and exercise authenticated app/Admin navigation. */
+/*** Assert the auth-injected sign-out route is hidden in the Navigator-owned Drawer and exercise authenticated app/Admin navigation. */
 async function runAuthHiddenRouteDrawerStudioNavigationSmokeAsync(
   project: NavigationProject,
   studioApiUrl: string,
@@ -739,9 +739,6 @@ async function runAuthHiddenRouteDrawerStudioNavigationSmokeAsync(
     path.join(project.path, 'src', 'app', '(app)', '_layout.tsx'),
     'utf8',
   );
-  if (!appLayout.includes('const { theme } = useZoraTheme();')) {
-    throw new Error(`${project.id} does not exercise the themed Drawer fallback.`);
-  }
   const signOutScreen =
     /<Drawer\.Screen key="sign-out" name="sign-out" options=\{([^}]+)\} \/>/u.exec(appLayout);
   const signOutOptionsName = signOutScreen?.[1];
