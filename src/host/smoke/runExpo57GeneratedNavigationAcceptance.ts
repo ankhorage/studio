@@ -530,13 +530,19 @@ async function runFocusedRootNavigatorChecksAsync(project: NavigationProject): P
   if (!project.rootNavigator) throw new Error(`${project.id} has no focused root navigator.`);
 
   const rootLayout = await readFile(path.join(project.path, 'src', 'app', '_layout.tsx'), 'utf8');
+  const navigatorLayout = await readFile(
+    path.join(project.path, 'src', 'app', '(app)', '_layout.tsx'),
+    'utf8',
+  );
   const expectedImport =
-    project.rootNavigator === 'tabs' ? "from 'expo-router/js-tabs'" : "from 'expo-router/drawer'";
-  const expectedBridge =
     project.rootNavigator === 'tabs'
-      ? '<ZoraTabBar {...props} routeMap={routeMap} />'
-      : '<ZoraDrawerContent {...props} routeMap={routeMap} />';
-  if (!rootLayout.includes(expectedImport) || !rootLayout.includes(expectedBridge)) {
+      ? "from '@ankhorage/navigator/tabs'"
+      : "from 'expo-router/drawer'";
+  if (
+    !navigatorLayout.includes(expectedImport) ||
+    navigatorLayout.includes('ZoraTabBar') ||
+    navigatorLayout.includes('ZoraDrawerContent')
+  ) {
     throw new Error(`${project.id} does not generate its ${project.rootNavigator} at the root.`);
   }
   if (!rootLayout.includes('type Href') || FORBIDDEN_REACT_NAVIGATION_IMPORT.test(rootLayout)) {
