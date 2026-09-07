@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.2.0
+
+### Minor Changes
+
+- f86c377: Show theme-aware selected Runtime node outlines on Android and iOS using Expo 57 public host geometry.
+
 ## 2.1.4
 
 ### Patch Changes
