@@ -198,10 +198,17 @@ async function assertGeneratedNavigationContractAsync(project: NavigationProject
     }
   }
 
-  for (const forbiddenFile of ['babel.config.js', 'metro.config.js']) {
-    if (await pathExistsAsync(path.join(project.path, forbiddenFile))) {
-      throw new Error(`${project.id} unexpectedly generated compatibility file ${forbiddenFile}.`);
-    }
+  if (await pathExistsAsync(path.join(project.path, 'babel.config.js'))) {
+    throw new Error(`${project.id} unexpectedly generated compatibility file babel.config.js.`);
+  }
+  const metroConfig = await readFile(path.join(project.path, 'metro.config.js'), 'utf8');
+  if (
+    !metroConfig.includes('ancestorNodeModules') ||
+    metroConfig.includes('disableHierarchicalLookup') ||
+    metroConfig.includes('extraNodeModules') ||
+    metroConfig.includes('nodeModulesPaths')
+  ) {
+    throw new Error(`${project.id} does not own the minimal Expo 57 ancestor-isolation boundary.`);
   }
 
   if (!generatedSource.includes("from 'expo-router/js-tabs'")) {

@@ -16,7 +16,6 @@ import { EXPO_PLATFORM, type ExpoPlatformPackage } from '@ankhorage/expo-runtime
 export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
 const CONTRACTS_VERSION = '^11.0.0';
-const CONTRACTS_OVERRIDE_VERSION = '11.0.0';
 const DATA_SOURCES_VERSION = '^2.0.0';
 const RUNTIME_VERSION = '^2.2.0';
 const NAVIGATOR_VERSION = '^2.0.2';
@@ -955,7 +954,7 @@ export function getPackageJson(args: {
       ]),
     },
     overrides: {
-      '@ankhorage/contracts': CONTRACTS_OVERRIDE_VERSION,
+      '@ankhorage/contracts': '$@ankhorage/contracts',
     },
     devDependencies: {
       '@ankhorage/ankh': ANKH_VERSION,

@@ -72,7 +72,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/navigator']).toBe(
       studioPackage.dependencies?.['@ankhorage/navigator'],
     );
-    expect(pkg.overrides).toEqual({ '@ankhorage/contracts': '11.0.0' });
+    expect(pkg.overrides).toEqual({ '@ankhorage/contracts': '$@ankhorage/contracts' });
     expect(dependencies['@ankhorage/permissions']).toBeUndefined();
     expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();
     expect(dependencies['@react-navigation/drawer']).toBeUndefined();

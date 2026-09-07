@@ -3,6 +3,8 @@ import path from 'node:path';
 
 import type { AppCategory, AppManifest } from '@ankhorage/contracts';
 
+import { getPackageJson } from '../orchestrator/templates';
+
 /*** Write the deterministic standalone Studio-host workspace fixture used by Expo 57 acceptance.
  * @todo Move this fixture writer from src/host/smoke to test/smoke.
  */
@@ -11,6 +13,7 @@ export async function createExpo57StudioHostFixtureAsync(
   category: AppCategory,
 ): Promise<void> {
   const projectRoot = path.join(workspaceRoot, 'apps', 'release-monitor');
+  const generatedPackage = getPackageJson({ name: 'release-monitor', targets: {} });
   await mkdir(projectRoot, { recursive: true });
   await Promise.all([
     writeFile(
@@ -27,7 +30,19 @@ export async function createExpo57StudioHostFixtureAsync(
     ),
     writeFile(
       path.join(projectRoot, 'package.json'),
-      `${JSON.stringify({ name: 'release-monitor', private: true, version: '1.0.0' }, null, 2)}\n`,
+      `${JSON.stringify(
+        {
+          name: 'release-monitor',
+          private: true,
+          version: '1.0.0',
+          devDependencies: {
+            '@ankhorage/ankh': generatedPackage.devDependencies['@ankhorage/ankh'],
+            '@ankhorage/devtools': generatedPackage.devDependencies['@ankhorage/devtools'],
+          },
+        },
+        null,
+        2,
+      )}\n`,
       'utf8',
     ),
     writeFile(
