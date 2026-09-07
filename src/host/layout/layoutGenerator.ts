@@ -97,8 +97,6 @@ function useGeneratedRuntimeAction() {
       executeExpoRuntimeAction({
         action,
         router: {
-          // Expo Router's generated route union narrows after type generation.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
           push: (href) => router.push(href as Href),
         },
         mode,

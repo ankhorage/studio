@@ -290,9 +290,7 @@ describe('GeneratedAppFileGenerator', () => {
       "import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';",
     );
     expect(rootLayout).toContain("import { type Href, Slot, useRouter } from 'expo-router';");
-    expect(rootLayout).toContain(
-      '// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion',
-    );
+    expect(rootLayout).not.toContain('eslint-disable');
     expect(rootLayout).toContain('push: (href) => router.push(href as Href)');
     expect(rootLayout).toContain('function useGeneratedRuntimeAction()');
     expect(rootLayout).toContain('const { executeAction } = useGeneratedRuntimeAction();');
