@@ -574,7 +574,6 @@ async function runGeneratedProjectChecksAsync(project: NavigationProject): Promi
             'src/app/(app)/(tabs)/_layout.tsx',
             'src/app/(app)/(tabs)/catalog/_layout.tsx',
             'src/app/(app)/hidden-tabs/_layout.tsx',
-            'src/app/(app)/hidden-tabs/(tabs)/_layout.tsx',
             '--max-warnings=0',
           ],
           command: 'bun',
