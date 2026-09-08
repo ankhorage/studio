@@ -170,16 +170,13 @@ export class ProjectManager {
   /*** Connect one reconciled project snapshot to its private GitHub repository through the Repository owner. */
   async connectProjectRepository(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
-    const [manifest, packageJson] = await Promise.all([
-      this.getProjectManifest(projectId),
-      readProjectPackageJson(projectPath),
-    ]);
+    const manifest = await this.getProjectManifest(projectId);
     await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
     await this.scaffolder.ensureAppGitIgnore(projectPath);
 
     return await this.dependencies.connectGitHubRepositoryAsync({
       projectPath,
-      name: createDefaultRepositoryName(packageJson.name, manifest),
+      name: `ankh-${manifest.metadata.slug}`,
       visibility: 'private',
     });
   }
@@ -452,39 +449,4 @@ function resolveGeneratedStorageProvider(manifest: AppManifest): GeneratedStorag
   if (storage?.provider !== 'auto') return null;
   const usesSupabase = auth?.provider === 'supabase' || database?.provider === 'supabase';
   return usesSupabase ? 'supabase' : null;
-}
-
-/*** Read the generated app's package name used as the repository identity base. */
-async function readProjectPackageJson(projectPath: string): Promise<{ readonly name: string }> {
-  const packageJson = JSON.parse(
-    await fs.readFile(path.join(projectPath, 'package.json'), 'utf8'),
-  ) as unknown;
-  if (
-    typeof packageJson !== 'object' ||
-    packageJson === null ||
-    !('name' in packageJson) ||
-    typeof packageJson.name !== 'string' ||
-    packageJson.name.trim() === ''
-  ) {
-    throw new Error(`Project package at ${projectPath} must declare a package name.`);
-  }
-  return { name: packageJson.name };
-}
-
-/*** Derive the default repository name from the package name and enabled native target suffixes. */
-function createDefaultRepositoryName(packageName: string, manifest: AppManifest): string {
-  const normalizedPackageName = packageName
-    .trim()
-    .replace(/^@/u, '')
-    .replace(/[^A-Za-z0-9._-]+/gu, '-')
-    .replace(/^-+|-+$/gu, '');
-  const nativeSuffixes = [
-    manifest.deploy?.targets.android?.enabled ? 'android' : null,
-    manifest.deploy?.targets.ios?.enabled ? 'ios' : null,
-  ].filter((suffix): suffix is string => suffix !== null);
-  const repositoryName = [normalizedPackageName, ...nativeSuffixes].join('-');
-  if (!repositoryName) {
-    throw new Error(`Project package name '${packageName}' cannot form a GitHub repository name.`);
-  }
-  return repositoryName;
 }
