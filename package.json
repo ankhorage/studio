@@ -159,7 +159,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "dev": "bun run dev:host & bun run dev:studio",
+    "dev": "bun run --no-orphans dev:host & bun run --no-orphans dev:studio",
     "dev:studio": "bun install --cwd apps/studio --frozen-lockfile && bun run --cwd apps/studio web",
     "typecheck:studio": "bun install --cwd apps/studio --frozen-lockfile && bun run --cwd apps/studio typecheck",
     "lint": "ankhorage-eslint . --max-warnings=0",
