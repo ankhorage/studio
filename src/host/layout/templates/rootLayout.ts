@@ -533,7 +533,9 @@ function StudioShell({
     }),
     [previewMode, studioWrapNode, studioResolveNodeProps],
   );
-  const studioOutput = (
+  const studioOutput = isStudioAdminPath(appPathname) ? (
+    output
+  ) : (
     <StationaryTapSelector
       canvasInteraction={{
         activeDragNodeId: activeCanvasDragNodeId,
