@@ -132,6 +132,8 @@ describe('generated auth root bootstrap', () => {
       files.find((file) => file.path === 'src/auth/navigation.ts')?.content ?? '';
     const appLayout =
       files.find((file) => file.path === 'src/app/(app)/_layout.tsx')?.content ?? '';
+    const authLayout =
+      files.find((file) => file.path === 'src/app/(auth)/_layout.tsx')?.content ?? '';
     const tabsLayout =
       files.find((file) => file.path === 'src/app/(app)/(tabs)/_layout.tsx')?.content ?? '';
 
@@ -146,6 +148,8 @@ describe('generated auth root bootstrap', () => {
     expect(authNavigation).toContain('AUTH_POST_SIGN_IN_ROUTE_TARGET');
     expect(rootLayout).toContain("initialRouteName: '(app)'");
     expect(appLayout).toContain('initialRouteName="(tabs)"');
+    expect(appLayout).toContain('headerShown: false');
+    expect(authLayout).not.toContain('screenOptions=');
     expect(tabsLayout).toContain('initialRouteName="products"');
     expect(tabsLayout).toContain("href: '/products'");
     expect(paths).toContain('src/app/(app)/(tabs)/products.tsx');

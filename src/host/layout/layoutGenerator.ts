@@ -236,12 +236,28 @@ export class GeneratedAppFileGenerator {
 
     const navigatorRoots = authLayoutPlan.enabled
       ? [
-          { navigator: authLayoutPlan.appNavigator, rootDirectory: 'src/app/(app)' },
+          {
+            navigator: authLayoutPlan.appNavigator,
+            rootDirectory: 'src/app/(app)',
+            externalHeaderVisible: includeStudio,
+          },
           ...(authLayoutPlan.authNavigator.routes.length > 0
-            ? [{ navigator: authLayoutPlan.authNavigator, rootDirectory: 'src/app/(auth)' }]
+            ? [
+                {
+                  navigator: authLayoutPlan.authNavigator,
+                  rootDirectory: 'src/app/(auth)',
+                  externalHeaderVisible: false,
+                },
+              ]
             : []),
         ]
-      : [{ navigator: manifest.navigator, rootDirectory: 'src/app/(app)' }];
+      : [
+          {
+            navigator: manifest.navigator,
+            rootDirectory: 'src/app/(app)',
+            externalHeaderVisible: includeStudio,
+          },
+        ];
     const navigatorBindings = createNavigatorGenerationBindings({
       authEnabled: authLayoutPlan.enabled,
       manifest,

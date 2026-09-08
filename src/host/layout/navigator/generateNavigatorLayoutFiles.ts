@@ -18,6 +18,7 @@ interface GenerateNavigatorLayoutFilesInput {
   rootDirectory: string;
   targets: AppDeployTargets;
   bindings: NavigatorGenerationBindings;
+  externalHeaderVisible?: boolean;
 }
 
 /*** Generate Navigator-owned layouts for enabled targets while leaving root-shell and screen ownership in Studio. */
@@ -75,7 +76,10 @@ function generatePlatformLayouts(
   input: GenerateNavigatorLayoutFilesInput,
   platform: NavigatorRuntimePlatform,
 ): readonly NavigatorGeneratedFile[] {
-  const plan = createNavigatorPlan(withGeneratedRoutePaths(input.navigator), {
+  const navigator = input.externalHeaderVisible
+    ? withExternalHeaderOwnership(input.navigator)
+    : input.navigator;
+  const plan = createNavigatorPlan(withGeneratedRoutePaths(navigator), {
     platform,
     expoRouterVersion: resolveExactVersion(EXPO_PLATFORM.navigation.expoRouter.version),
   });
@@ -96,6 +100,44 @@ function generatePlatformLayouts(
     );
   }
   return result.files;
+}
+
+/*** Suppress generated Stack headers when the integrating app shell declares its own visible header. */
+function withExternalHeaderOwnership(navigator: NavigatorNode): NavigatorNode {
+  const routes = navigator.routes.map((route) => ({
+    ...route,
+    ...(navigator.type === 'stack'
+      ? {
+          stackOptions: {
+            ...route.stackOptions,
+            headerShown: false,
+          },
+        }
+      : {}),
+    ...(route.navigator ? { navigator: withExternalHeaderOwnership(route.navigator) } : {}),
+  }));
+
+  if (navigator.type !== 'stack') return { ...navigator, routes };
+  if (navigator.implementation === 'javascript') {
+    return {
+      ...navigator,
+      options: { ...navigator.options, headerShown: false },
+      routes,
+    };
+  }
+  if (navigator.implementation === 'experimental') {
+    return {
+      ...navigator,
+      options: { ...navigator.options, headerShown: false },
+      routes,
+    };
+  }
+
+  return {
+    ...navigator,
+    options: { ...navigator.options, headerShown: false },
+    routes,
+  };
 }
 
 /*** Project Studio-owned public route paths into the navigator slice required by headless tabs. */
