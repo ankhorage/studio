@@ -56,6 +56,7 @@ test('reconciles generated state before connecting the project with its derived 
         'android/',
         'ios/',
         '.env*.local',
+        '/infra/minikube/.env',
         '.DS_Store',
         '',
       ]);
