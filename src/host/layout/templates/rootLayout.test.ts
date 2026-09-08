@@ -121,7 +121,7 @@ test('suppresses the normal Studio app header inside admin routes without auth r
   expect(generated).toContain('true;');
 });
 
-test('generates the current root-owned stationary selection composition for edit mode', () => {
+test('keeps admin routes outside the root-owned stationary selection composition', () => {
   const generated = getRootLayoutTsx({
     manifest: {
       navigator: {
@@ -140,6 +140,10 @@ test('generates the current root-owned stationary selection composition for edit
   });
 
   expect(generated).toContain('StationaryTapSelector');
+  expect(generated).toContain(`const studioOutput = isStudioAdminPath(appPathname) ? (
+    output
+  ) : (
+    <StationaryTapSelector`);
   expect(generated).toContain('createStudioStationarySelectionWrapNode');
   expect(generated).toContain('createStudioInteractionPolicyResolver');
   expect(generated).toContain('createStudioActionSuppressionConfig(previewMode)');
@@ -284,7 +288,7 @@ test('scopes Studio runtime selection config below StudioProvider', () => {
   expect(studioShellSource).toContain(
     '<RuntimeRendererConfigProvider value={studioRuntimeConfig}>',
   );
-  expect(studioShellSource).toContain('const studioOutput = (');
+  expect(studioShellSource).toContain('const studioOutput = isStudioAdminPath(appPathname) ? (');
   expect(studioShellSource).toContain('[previewMode, studioWrapNode, studioResolveNodeProps]');
 });
 
