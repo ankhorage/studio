@@ -17,7 +17,7 @@
         "@ankhorage/orchestrator-module-expo-localization": "^0.6.6",
         "@ankhorage/permissions": "^0.2.4",
         "@ankhorage/react-native-reanimated-dnd-web": "^0.4.0",
-        "@ankhorage/repository": "^0.4.4",
+        "@ankhorage/repository": "^0.4.5",
         "@ankhorage/runtime": "^2.2.8",
         "@ankhorage/supabase-auth": "^1.2.11",
         "@ankhorage/supabase-storage": "^0.2.5",
@@ -101,7 +101,7 @@
 
     "@ankhorage/react-native-reanimated-dnd-web": ["@ankhorage/react-native-reanimated-dnd-web@0.4.0", "", { "dependencies": { "react-native-reanimated-dnd": "~2.0.0" }, "peerDependencies": { "react": ">=18", "react-native": ">=0.80", "react-native-gesture-handler": ">=2.28", "react-native-reanimated": ">=4.2", "react-native-worklets": ">=0.7" }, "optionalPeers": ["react-native", "react-native-gesture-handler", "react-native-reanimated", "react-native-worklets"] }, "sha512-v8nzK9a/xcC0MhoUDj85TIx38Fm9OPAyZbRHPfH14xhxE3jHVOG95W1w8pJCa02QDZNupTnh09xxQxA23LKZag=="],
 
-    "@ankhorage/repository": ["@ankhorage/repository@0.4.4", "", { "dependencies": { "@ankhorage/contracts": "^12.0.1", "ignore": "^7.0.8" } }, "sha512-kllF5ca7+jjLR2VIg+Ace6K85o9x27SdVopUaDtQ/CkWlh99OObg/icodhxLZMjjimsZzpm8lJt4X5K/Efcc4w=="],
+    "@ankhorage/repository": ["@ankhorage/repository@0.4.5", "", { "dependencies": { "@ankhorage/contracts": "^12.0.1", "ignore": "^7.0.8" } }, "sha512-MOmprGy96ODi5nV2HiaURwsFc5fc3nmnKqi7zKPv1+fvOsC/jd01GzNGAI/9gGbV5uayR4MfpLWeZssabm5dwA=="],
 
     "@ankhorage/runtime": ["@ankhorage/runtime@2.2.8", "", { "dependencies": { "@ankhorage/contracts": "^11.0.0", "@ankhorage/data-sources": "^2.0.2" }, "peerDependencies": { "react": "19.2.3", "react-native": "0.86.x", "react-native-web": "~0.21.0" }, "optionalPeers": ["react-native-web"] }, "sha512-e8cdXcT73WESc96bqxF/igGlW/BLhoQBUZrLLLqq1DtgbLQABo+r2BsH/7B5oQCL5KhIJMarSju0zdLCgdH/+A=="],
 
