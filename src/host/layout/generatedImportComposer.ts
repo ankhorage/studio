@@ -295,7 +295,7 @@ function renderGeneratedImportRequirement(requirement: MutableImportRequirement)
       renderImportStatement(
         requirement.source,
         requirement.defaultImport,
-        renderNamedClause(named),
+        renderNamedClause(named, requirement.source, requirement.defaultImport),
       ),
     );
   }
@@ -324,11 +324,18 @@ function renderImportStatement(
   return `import ${clause} from '${source}';`;
 }
 
-/*** Render named import entries in compact or multiline form based on their generated width. */
-function renderNamedClause(entries: readonly string[]): string {
+/*** Render named import entries in compact or multiline form based on the complete generated statement width. */
+function renderNamedClause(
+  entries: readonly string[],
+  source: string,
+  defaultImport: string | undefined,
+): string {
   if (entries.length === 0) return '';
   const compact = entries.join(', ');
-  return compact.length > 80 ? `{\n  ${entries.join(',\n  ')},\n}` : `{ ${compact} }`;
+  const compactClause = `{ ${compact} }`;
+  const completeClause = [defaultImport, compactClause].filter(Boolean).join(', ');
+  const completeStatement = `import ${completeClause} from '${source}';`;
+  return completeStatement.length > 100 ? `{\n  ${entries.join(',\n  ')},\n}` : compactClause;
 }
 
 /*** Render one named import with its optional local alias. */

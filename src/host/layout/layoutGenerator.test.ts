@@ -294,6 +294,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('ZORA_CORE_PLUGIN');
     expect(rootLayout).toContain('...GENERATED_APP_ZORA_PLUGINS');
     expect(rootLayout).toContain('createComponentRegistry');
+    expect(rootLayout).not.toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
     expect(rootLayout).not.toContain("from '@ankhorage/studio/runtime'");
     expect(rootLayout).not.toContain('STUDIO_ZORA_PLUGIN_CATALOG');
   });
