@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.4.7
+
+### Patch Changes
+
+- 487c79f: Keep Studio admin routes outside the canvas stationary-selection gesture so form controls remain interactive.
+
 ## 2.4.6
 
 ### Patch Changes
