@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.4.6
+
+### Patch Changes
+
+- 0f21a4e: Ignore generated Minikube runtime state when preparing app repository snapshots.
+
 ## 2.4.5
 
 ### Patch Changes
