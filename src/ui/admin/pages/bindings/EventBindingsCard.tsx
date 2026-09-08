@@ -1,5 +1,10 @@
-import type { ComponentDataBindingRegistry, EventBinding, UiNode } from '@ankhorage/contracts';
-import { Button, Card, Text, ZORA_BINDABLE_COMPONENT_META } from '@ankhorage/zora';
+import type {
+  ComponentDataBindingRegistry,
+  EventBinding,
+  UiComponentMetaRegistry,
+  UiNode,
+} from '@ankhorage/contracts';
+import { Button, Card, Text } from '@ankhorage/zora';
 import { View } from 'react-native';
 
 import {
@@ -13,12 +18,13 @@ import { EventBindingComposer } from './EventBindingComposer';
 
 /*** Render bindable component events, existing event bindings, removal actions, and the composer for new action/operation bindings. */
 export function EventBindingsCard(props: {
+  readonly componentMeta: UiComponentMetaRegistry;
   readonly node: UiNode;
   readonly registry: ComponentDataBindingRegistry;
   readonly operations: readonly StudioBindingOperationOption[];
   readonly onChange: (registry: ComponentDataBindingRegistry) => void;
 }) {
-  const options = resolveStudioBindableEvents(props.node, ZORA_BINDABLE_COMPONENT_META);
+  const options = resolveStudioBindableEvents(props.node, props.componentMeta);
   const current = props.registry[props.node.id]?.events ?? {};
 
   return (

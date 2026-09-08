@@ -68,12 +68,14 @@ export function BindingsAdminPage({ nodeId }: { readonly nodeId: string | null }
         {node.alias ? <KeyValue label="Alias" value={node.alias} /> : null}
       </Card>
       <PropertyBindingsCard
+        componentMeta={studio.bindableComponentMeta}
         node={node}
         registry={registry}
         operations={operations}
         onChange={studio.updateDataBindings}
       />
       <EventBindingsCard
+        componentMeta={studio.bindableComponentMeta}
         node={node}
         registry={registry}
         operations={operations}

@@ -170,6 +170,63 @@ describe('binding operations and schemas', () => {
     expect(external?.responsePaths.map((entry) => entry.path)).toEqual(['', 'name', 'age']);
   });
 
+  test('enumerates the first item and its nested fields for array operation responses', () => {
+    const listApis: ApiDefinitionList = [
+      {
+        id: 'poker',
+        origin: 'external',
+        protocol: 'rest',
+        baseUrl: 'https://api.example.test',
+        endpoints: {
+          tasks: {
+            id: 'tasks',
+            kind: 'http',
+            operations: {
+              'tasks.list': {
+                id: 'tasks.list',
+                protocol: 'http',
+                intent: 'read',
+                response: {
+                  schema: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        communityCards: {
+                          type: 'array',
+                          items: {
+                            type: 'object',
+                            properties: {
+                              rank: { type: 'string' },
+                              suit: { type: 'string' },
+                            },
+                          },
+                        },
+                        prompt: { type: 'string' },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    ];
+
+    const [operation] = collectStudioBindingOperationOptions(listApis);
+
+    expect(operation?.responsePaths.map((entry) => entry.path)).toEqual([
+      '',
+      '0',
+      '0.communityCards',
+      '0.communityCards.0',
+      '0.communityCards.0.rank',
+      '0.communityCards.0.suit',
+      '0.prompt',
+    ]);
+  });
+
   test('reports meaningful schema compatibility', () => {
     expect(assessStudioBindingCompatibility({ type: 'string' }, { type: 'string' })).toBe(
       'compatible',

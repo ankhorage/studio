@@ -1,5 +1,5 @@
 import type { UiNode } from '@ankhorage/contracts';
-import { Card, Text, ZORA_COMPONENT_META } from '@ankhorage/zora';
+import { Card, Text } from '@ankhorage/zora';
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
@@ -46,8 +46,8 @@ export function PropertiesAdminPage({ nodeId }: { readonly nodeId: string | null
 /*** Render metadata and grouped instance-property editors for one resolved manifest node. */
 function ResolvedProperties({ node }: { readonly node: UiNode }) {
   const studio = useStudio();
-  const componentMeta = new Map(Object.entries(ZORA_COMPONENT_META)).get(node.type);
-  const groups = resolveStudioInstancePropertyGroups(node, ZORA_COMPONENT_META);
+  const componentMeta = new Map(Object.entries(studio.bindableComponentMeta)).get(node.type);
+  const groups = resolveStudioInstancePropertyGroups(node, studio.bindableComponentMeta);
   /*** Apply one instance-property value by deriving the canonical node patch and dispatching it through Studio. */
   const updateProperty = (propertyName: string, value: StudioInstancePropertyValue | undefined) => {
     studio.updateNode(node.id, createStudioInstancePropertyPatch(node, propertyName, value));

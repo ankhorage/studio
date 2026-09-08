@@ -1,4 +1,8 @@
-import type { ComponentDataBindingRegistry, UiNode } from '@ankhorage/contracts';
+import type {
+  ComponentDataBindingRegistry,
+  UiComponentMetaRegistry,
+  UiNode,
+} from '@ankhorage/contracts';
 import { Card, Text } from '@ankhorage/zora';
 import { View } from 'react-native';
 
@@ -8,18 +12,18 @@ import {
   upsertStudioPropBinding,
   type StudioBindingOperationOption,
 } from '../../../../bindingAuthoringModel';
-import { ZORA_BINDABLE_COMPONENT_META } from '@ankhorage/zora';
 import { bindingAdminStyles } from './bindingAdminStyles';
 import { PropertyBindingEditor } from './PropertyBindingEditor';
 
 /*** Render all metadata-exposed property bindings for one node and dispatch canonical registry updates from each editor. */
 export function PropertyBindingsCard(props: {
+  readonly componentMeta: UiComponentMetaRegistry;
   readonly node: UiNode;
   readonly registry: ComponentDataBindingRegistry;
   readonly operations: readonly StudioBindingOperationOption[];
   readonly onChange: (registry: ComponentDataBindingRegistry) => void;
 }) {
-  const options = resolveStudioBindableProps(props.node, ZORA_BINDABLE_COMPONENT_META);
+  const options = resolveStudioBindableProps(props.node, props.componentMeta);
   const current = props.registry[props.node.id]?.props ?? {};
 
   return (

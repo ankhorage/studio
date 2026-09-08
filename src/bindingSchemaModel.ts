@@ -44,7 +44,7 @@ export function collectStudioResponsePaths(
 ): readonly StudioBindingResponsePathOption[] {
   const root = resolveStudioSchemaValueMeta(schema, schemas);
   const paths: StudioBindingResponsePathOption[] = [{ path: '', label: 'Response', value: root }];
-  collectObjectPaths(schema, schemas, '', paths, new Set());
+  collectNestedPaths(schema, schemas, '', paths, new Set());
   return paths;
 }
 
@@ -67,11 +67,8 @@ export function assessStudioBindingCompatibility(
   return 'incompatible';
 }
 
-/***
- * Recursively append object-property response paths and their resolved binding metadata.
- * @todo Keep recursive binding response-path collection under src/bindings/.
- */
-function collectObjectPaths(
+/*** Recursively append object properties and representative first-array-item response paths with resolved binding metadata. */
+function collectNestedPaths(
   schema: DataSchema | undefined,
   schemas: DataSchemaRegistry | undefined,
   prefix: string,
@@ -79,7 +76,20 @@ function collectObjectPaths(
   seen: Set<string>,
 ): void {
   const resolved = resolveSchemaReference(schema, schemas, seen);
-  if (!resolved?.properties) return;
+  if (!resolved) return;
+
+  if (resolveSchemaType(resolved) === 'array' && resolved.items) {
+    const path = prefix ? `${prefix}.0` : '0';
+    paths.push({
+      path,
+      label: path,
+      value: resolveStudioSchemaValueMeta(resolved.items, schemas, seen),
+    });
+    collectNestedPaths(resolved.items, schemas, path, paths, new Set(seen));
+    return;
+  }
+
+  if (!resolved.properties) return;
   for (const [name, property] of Object.entries(resolved.properties)) {
     const path = prefix ? `${prefix}.${name}` : name;
     paths.push({
@@ -87,7 +97,7 @@ function collectObjectPaths(
       label: path,
       value: resolveStudioSchemaValueMeta(property, schemas, seen),
     });
-    collectObjectPaths(property, schemas, path, paths, new Set(seen));
+    collectNestedPaths(property, schemas, path, paths, new Set(seen));
   }
 }
 
