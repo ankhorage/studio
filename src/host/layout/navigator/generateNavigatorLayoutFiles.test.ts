@@ -6,6 +6,50 @@ import { generateNavigatorLayoutFiles } from './generateNavigatorLayoutFiles';
 const bindings = { guards: {}, screens: {} } as const;
 
 describe('generateNavigatorLayoutFiles', () => {
+  test('suppresses Stack headers when the external Studio app header owns the route', () => {
+    const files = generateNavigatorLayoutFiles({
+      bindings,
+      externalHeaderVisible: true,
+      navigator: {
+        type: 'stack',
+        initialRouteName: 'onboarding',
+        routes: [
+          { name: 'onboarding', screenId: 'onboarding' },
+          {
+            name: 'details',
+            screenId: 'details',
+            stackOptions: { headerShown: true, title: 'Details' },
+          },
+        ],
+      },
+      rootDirectory: 'src/app/(app)',
+      targets: { web: { enabled: true } },
+    });
+
+    const layout = files.find(({ path }) => path.endsWith('/_layout.tsx'))?.content;
+    expect(layout).toContain('screenOptions={{');
+    expect(layout).toContain('headerShown: false');
+    expect(layout).not.toContain('headerShown: true');
+    expect(layout).toContain("title: 'Details'");
+  });
+
+  test('preserves Stack header policy without an external app header', () => {
+    const files = generateNavigatorLayoutFiles({
+      bindings,
+      navigator: {
+        type: 'stack',
+        initialRouteName: 'onboarding',
+        routes: [{ name: 'onboarding', screenId: 'onboarding' }],
+      },
+      rootDirectory: 'src/app/(app)',
+      targets: { web: { enabled: true } },
+    });
+
+    const layout = files.find(({ path }) => path.endsWith('/_layout.tsx'))?.content;
+    expect(layout).not.toContain('screenOptions=');
+    expect(layout).not.toContain('headerShown: false');
+  });
+
   test('hides an unlabeled route-group Stack header that owns a nested navigator', () => {
     const files = generateNavigatorLayoutFiles({
       bindings,
