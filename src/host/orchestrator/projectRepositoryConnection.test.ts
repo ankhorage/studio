@@ -56,6 +56,7 @@ test('reconciles generated state before connecting with the canonical slug repos
         'android/',
         'ios/',
         '.env*',
+        '/infra/minikube/.state/',
         '.DS_Store',
         '',
       ]);

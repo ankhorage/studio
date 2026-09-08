@@ -138,6 +138,7 @@ describe('generated app dependency contract', () => {
       '\n',
     );
     expect(generatedGitIgnore).toContain('.env*');
+    expect(generatedGitIgnore).toContain('/infra/minikube/.state/');
     await writeFile(path.join(projectPath, '.gitignore'), 'app-owned-cache/');
 
     await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
@@ -157,6 +158,7 @@ describe('generated app dependency contract', () => {
       'android/',
       'ios/',
       '.env*',
+      '/infra/minikube/.state/',
       '.DS_Store',
       '',
     ]);
