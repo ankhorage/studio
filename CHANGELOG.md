@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.4.1
+
+### Patch Changes
+
+- 74c4deb: Suppress generated Navigator Stack headers when the Studio AppBar owns authenticated app chrome.
+
 ## 2.4.0
 
 ### Minor Changes
