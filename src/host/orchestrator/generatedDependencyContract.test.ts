@@ -131,14 +131,13 @@ describe('generated app dependency contract', () => {
     });
   });
 
-  it('ignores generated Expo state without replacing app-owned ignore rules', async () => {
+  it('ignores environment and generated Expo state without replacing app-owned rules', async () => {
     const { projectPath, scaffolder } = await createScaffoldHarness();
     await scaffolder.scaffoldProject(projectPath, 'Fixture', 'fixture');
     const generatedGitIgnore = (await readFile(path.join(projectPath, '.gitignore'), 'utf8')).split(
       '\n',
     );
-    expect(generatedGitIgnore).toContain('/infra/minikube/.env');
-    expect(generatedGitIgnore).toContain('/infra/minikube/.env.example');
+    expect(generatedGitIgnore).toContain('.env*');
     await writeFile(path.join(projectPath, '.gitignore'), 'app-owned-cache/');
 
     await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
@@ -157,9 +156,7 @@ describe('generated app dependency contract', () => {
       'dist-*/',
       'android/',
       'ios/',
-      '.env*.local',
-      '/infra/minikube/.env',
-      '/infra/minikube/.env.example',
+      '.env*',
       '.DS_Store',
       '',
     ]);

@@ -92,9 +92,7 @@ const APP_GITIGNORE_ENTRIES = [
   'dist-*/',
   'android/',
   'ios/',
-  '.env*.local',
-  '/infra/minikube/.env',
-  '/infra/minikube/.env.example',
+  '.env*',
   '.DS_Store',
 ] as const;
 
