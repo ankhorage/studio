@@ -19,20 +19,17 @@ test('declares generated runtime registries before composing them', () => {
       usesTheme: false,
     },
     includeStudio: false,
-    runtimeModuleDeclarations: `const ZORA_COMPONENT_REGISTRY = {};
-const APP_EXTENSION_COMPONENT_REGISTRY = {};
-`,
+    runtimeModuleDeclarations: 'const APP_COMPONENT_REGISTRY = {};',
   });
 
-  const registryDeclarationIndex = generated.indexOf('const ZORA_COMPONENT_REGISTRY = {};');
-  const registryCompositionIndex = generated.indexOf('const runtimeComponentRegistry = {');
+  const registryDeclarationIndex = generated.indexOf('const APP_COMPONENT_REGISTRY = {};');
+  const registryCompositionIndex = generated.indexOf(
+    'const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;',
+  );
 
   expect(registryDeclarationIndex).toBeGreaterThanOrEqual(0);
   expect(registryCompositionIndex).toBeGreaterThan(registryDeclarationIndex);
-  expect(generated).toContain(`const runtimeComponentRegistry = {
-  ...ZORA_COMPONENT_REGISTRY,
-  ...APP_EXTENSION_COMPONENT_REGISTRY,
-};`);
+  expect(generated).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
   expect(generated).not.toContain('createComponentRegistry');
 });
 
@@ -63,11 +60,11 @@ test('initializes the Studio provider with the runtime manifest', () => {
   });
 
   expect(generated).toContain('initialManifest={runtimeManifest}');
-  expect(generated).toContain(`const runtimeComponentRegistry = createComponentRegistry(
-  ZORA_COMPONENT_REGISTRY,
-  APP_EXTENSION_COMPONENT_REGISTRY,
-);`);
-  expect(generated).toContain('componentMeta={ZORA_COMPONENT_META}');
+  expect(generated).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
+  expect(generated).toContain('componentMeta={STUDIO_ZORA_PLUGIN_CATALOG.componentMeta}');
+  expect(generated).toContain(
+    'bindableComponentMeta={STUDIO_ZORA_PLUGIN_CATALOG.bindableComponentMeta}',
+  );
   expect(generated).toContain(
     'activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}',
   );
@@ -155,7 +152,7 @@ test('generates the current root-owned stationary selection composition for edit
   expect(generated).toContain('moveNodeToPlacement');
   expect(generated).toContain('setActiveDragNodeId: setActiveCanvasDragNodeId');
   expect(generated).toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
-  expect(generated).toContain('ZORA_COMPONENT_REGISTRY');
+  expect(generated).toContain('STUDIO_ZORA_PLUGIN_CATALOG.componentMeta');
 });
 
 test('keeps non-Studio generated output Studio-independent', () => {
@@ -176,8 +173,7 @@ test('keeps non-Studio generated output Studio-independent', () => {
     includeStudio: false,
   });
 
-  expect(generated).toContain('const runtimeComponentRegistry = {');
-  expect(generated).toContain('ZORA_COMPONENT_REGISTRY');
+  expect(generated).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
   expect(generated).not.toContain('createComponentRegistry');
   expect(generated).not.toContain('useStudio');
   expect(generated).not.toContain('StationaryTapSelector');
@@ -283,7 +279,7 @@ test('scopes Studio runtime selection config below StudioProvider', () => {
   expect(studioShellSource).toContain('wrapNode: studioWrapNode');
   expect(studioShellSource).not.toContain('registry: create');
   expect(
-    generated.match(/const runtimeComponentRegistry = createComponentRegistry\(/gu),
+    generated.match(/const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;/gu),
   ).toHaveLength(1);
   expect(studioShellSource).toContain(
     '<RuntimeRendererConfigProvider value={studioRuntimeConfig}>',

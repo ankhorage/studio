@@ -19,7 +19,8 @@ test('registers package-owned views without importing module operation semantics
 
 test('keeps the generic view host opaque and metadata-injected', () => {
   expect(hostSource).toContain('executeProjectModuleAdminOperation');
-  expect(hostSource).toContain('ZORA_COMPONENT_META');
+  expect(hostSource).toContain('componentMeta');
+  expect(hostSource).not.toContain("from '@ankhorage/zora/metadata'");
   expect(hostSource).not.toContain('expo-localization');
   expect(hostSource).not.toContain('dictionary.');
   expect(hostSource).not.toContain('link-translation-key');

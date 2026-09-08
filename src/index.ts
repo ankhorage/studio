@@ -8,6 +8,7 @@ import type {
   NavigatorType,
   ThemeConfig,
   ThemeModeConfig,
+  UiComponentMetaRegistry,
   UiNode,
 } from '@ankhorage/contracts';
 import { createCompactId as createUtilityCompactId } from '@ankhorage/utility/id';
@@ -400,6 +401,7 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   manifest: StudioManifest | null;
   rootNode: UiNode | null;
   componentMeta: StudioComponentMetaRegistry;
+  bindableComponentMeta: UiComponentMetaRegistry;
   selectNode: (id: StudioNodeId | null) => void;
   setActivePanelId: (panelId: StudioPanelId | null) => void;
   setActiveAdminRouteId: (routeId: StudioAdminRouteId) => void;

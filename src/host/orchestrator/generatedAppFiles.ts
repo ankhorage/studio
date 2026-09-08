@@ -74,30 +74,16 @@ export function createGeneratedAppExtensionRegistrySource(args: {
   zoraExtensions: readonly ZoraExtensionDefinition[];
 }): string {
   const externalImportLines = new Set<string>();
+  const pluginDescriptors = new Set<string>();
   const relativeImportLines = new Set<string>();
-  const interactionPolicySupportedComponents = new Set<string>();
-  const entries = args.zoraExtensions
-    .flatMap((extension) => {
-      const exportNames = Array.from(new Set(Object.values(extension.components))).sort();
-      externalImportLines.add(
-        `import { ${exportNames.join(', ')} } from '${extension.packageName}';`,
-      );
+  const entries: { componentName: string; exportName: string }[] = [];
 
-      for (const componentName of extension.interactionPolicySupportedComponents ?? []) {
-        if (!Object.prototype.hasOwnProperty.call(extension.components, componentName)) {
-          throw new Error(
-            `ZORA extension ${extension.packageName} declares interaction-policy support for unregistered component ${componentName}.`,
-          );
-        }
-        interactionPolicySupportedComponents.add(componentName);
-      }
-
-      return Object.entries(extension.components).map(([componentName, exportName]) => ({
-        componentName,
-        exportName,
-      }));
-    })
-    .sort((left, right) => left.componentName.localeCompare(right.componentName));
+  for (const extension of args.zoraExtensions) {
+    externalImportLines.add(
+      `import { ${extension.descriptorExportName} } from '${extension.packageName}';`,
+    );
+    pluginDescriptors.add(extension.descriptorExportName);
+  }
 
   if (args.usesExpoBarcodeScannerAdapter) {
     relativeImportLines.add(
@@ -124,17 +110,13 @@ export function createGeneratedAppExtensionRegistrySource(args: {
         `  ${formatJavaScriptObjectKey(componentName)}: ${exportName},`,
     )
     .join('\n');
-  const interactionPolicySupportEntries = [...interactionPolicySupportedComponents]
-    .sort()
-    .map((componentName) => `  ${formatJavaScriptObjectKey(componentName)}: true,`)
-    .join('\n');
 
   const componentRegistry = registryEntries
     ? `export const APP_EXTENSION_COMPONENT_REGISTRY: ComponentRegistry = {\n${registryEntries}\n};`
     : 'export const APP_EXTENSION_COMPONENT_REGISTRY: ComponentRegistry = {};';
-  const interactionPolicySupport = interactionPolicySupportEntries
-    ? `export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {\n${interactionPolicySupportEntries}\n} as const;`
-    : 'export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {} as const;';
+  const interactionPolicySupport =
+    'export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {} as const;';
+  const plugins = `export const APP_ZORA_PLUGINS = [${[...pluginDescriptors].sort().join(', ')}] as const;`;
 
   return [
     "import type { ComponentRegistry } from '@ankhorage/runtime';",
@@ -144,6 +126,8 @@ export function createGeneratedAppExtensionRegistrySource(args: {
     componentRegistry,
     '',
     interactionPolicySupport,
+    '',
+    plugins,
     '',
   ]
     .filter((line, index, lines) => line.length > 0 || lines[index - 1]?.length !== 0)
