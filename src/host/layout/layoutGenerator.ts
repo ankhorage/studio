@@ -57,7 +57,8 @@ export interface GeneratedAppFileGenerationOptions {
  */
 function getPackageOwnedRuntimeImports(includeStudio: boolean): string {
   const runtimeImports = `import {
-  ${includeStudio ? 'createComponentRegistry,\n  ' : ''}createRuntimeApiOperationExecutor,
+  createComponentRegistry,
+  createRuntimeApiOperationExecutor,
   ${includeStudio ? '' : 'type RuntimeActionExecutor,\n  '}
   RuntimeRendererConfigProvider,
   useOptionalManifestContext,
@@ -65,18 +66,15 @@ function getPackageOwnedRuntimeImports(includeStudio: boolean): string {
 ${
   includeStudio
     ? `import {
-  STUDIO_APP_EXTENSION_COMPONENT_REGISTRY,
-  STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+  STUDIO_ZORA_PLUGIN_CATALOG,
   useRuntimeAction,
 } from '@ankhorage/studio/runtime';`
     : `import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';`
 }
 import {
-  APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,${
-    includeStudio
-      ? '\n  APP_EXTENSION_INTERACTION_POLICY_SUPPORT as GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,'
-      : ''
-  }
+  APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
+  APP_EXTENSION_INTERACTION_POLICY_SUPPORT as GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+  ${includeStudio ? '' : 'APP_ZORA_PLUGINS as GENERATED_APP_ZORA_PLUGINS,'}
 } from '@/generated/appExtensionRegistry';`;
 
   return runtimeImports;
@@ -87,7 +85,18 @@ import {
  */
 function getGeneratedRuntimeRegistryDeclarations(includeStudio: boolean): string {
   if (!includeStudio) {
-    return `const APP_EXTENSION_COMPONENT_REGISTRY = GENERATED_APP_EXTENSION_COMPONENT_REGISTRY;
+    return `const APP_ZORA_PLUGIN_CATALOG = composeZoraPlugins([
+  ZORA_CORE_PLUGIN,
+  ...GENERATED_APP_ZORA_PLUGINS,
+]);
+const APP_COMPONENT_REGISTRY = createComponentRegistry(
+  APP_ZORA_PLUGIN_CATALOG.componentRegistry,
+  GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
+);
+const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
+  ...APP_ZORA_PLUGIN_CATALOG.interactionPolicySupportedComponents,
+  ...GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+} as const;
 
 function useGeneratedRuntimeAction() {
   const router = useRouter();
@@ -108,12 +117,12 @@ function useGeneratedRuntimeAction() {
 }`;
   }
 
-  return `const APP_EXTENSION_COMPONENT_REGISTRY = createComponentRegistry(
-  STUDIO_APP_EXTENSION_COMPONENT_REGISTRY,
+  return `const APP_COMPONENT_REGISTRY = createComponentRegistry(
+  STUDIO_ZORA_PLUGIN_CATALOG.componentRegistry,
   GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
 );
 const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
-  ...STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+  ...STUDIO_ZORA_PLUGIN_CATALOG.interactionPolicySupportedComponents,
   ...GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
 } as const;`;
 }
@@ -348,8 +357,8 @@ export class GeneratedAppFileGenerator {
       `import { ${[
         'AppShell',
         'ZoraProvider',
-        'ZORA_COMPONENT_REGISTRY',
-        includeStudio ? 'ZORA_COMPONENT_META' : '',
+        includeStudio ? '' : 'composeZoraPlugins',
+        includeStudio ? '' : 'ZORA_CORE_PLUGIN',
         'useZoraTheme',
         includeStudio ? 'AppBar' : '',
       ]
@@ -422,8 +431,8 @@ export class GeneratedAppFileGenerator {
       `import { ${[
         'AppShell',
         'ZoraProvider',
-        'ZORA_COMPONENT_REGISTRY',
-        includeStudio ? 'ZORA_COMPONENT_META' : '',
+        includeStudio ? '' : 'composeZoraPlugins',
+        includeStudio ? '' : 'ZORA_CORE_PLUGIN',
         'useZoraTheme',
         includeStudio ? 'AppBar' : '',
       ]

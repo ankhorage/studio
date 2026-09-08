@@ -349,7 +349,8 @@ const shouldMountAppHeader =
         projectId={ankhConfig.metadata.slug}
         initialManifest={runtimeManifest}
         activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}
-        componentMeta={ZORA_COMPONENT_META}
+        componentMeta={STUDIO_ZORA_PLUGIN_CATALOG.componentMeta}
+        bindableComponentMeta={STUDIO_ZORA_PLUGIN_CATALOG.bindableComponentMeta}
         mediaPicker={studioMediaPicker}
       >
         <StudioShell
@@ -380,15 +381,8 @@ const shouldMountAppHeader =
   const runtimeCredentialResolver = useStoredAuthSessionCredentialResolver
     ? '\n        credentialResolver: resolveRuntimeOperationCredential,'
     : '';
-  const runtimeComponentRegistryDeclaration = includeStudio
-    ? `const runtimeComponentRegistry = createComponentRegistry(
-  ZORA_COMPONENT_REGISTRY,
-  APP_EXTENSION_COMPONENT_REGISTRY,
-);`
-    : `const runtimeComponentRegistry = {
-  ...ZORA_COMPONENT_REGISTRY,
-  ...APP_EXTENSION_COMPONENT_REGISTRY,
-};`;
+  const runtimeComponentRegistryDeclaration =
+    'const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;';
   return `
 ${allImports}
 

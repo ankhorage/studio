@@ -4,6 +4,7 @@ import type {
   DataSourceRegistry,
   MediaAsset,
   NavigatorType,
+  UiComponentMetaRegistry,
   UiNode,
 } from '@ankhorage/contracts';
 import { DEFAULT_AUTH_FLOW } from '@ankhorage/contracts';
@@ -82,6 +83,7 @@ export interface StudioProviderProps {
   initialManifest?: StudioManifest | null;
   activePathname?: string;
   componentMeta: StudioComponentMetaRegistry;
+  bindableComponentMeta: UiComponentMetaRegistry;
   mediaPicker?: StudioMediaPickerAdapter;
 }
 
@@ -96,6 +98,7 @@ export const StudioProvider = ({
   initialManifest = null,
   activePathname,
   componentMeta,
+  bindableComponentMeta,
   mediaPicker,
 }: StudioProviderProps) => {
   const [manifest, setManifest] = useState<StudioManifest | null>(initialManifest);
@@ -463,6 +466,7 @@ export const StudioProvider = ({
       manifest,
       rootNode,
       componentMeta,
+      bindableComponentMeta,
       selectNode,
       setActivePanelId,
       setActiveAdminRouteId,
@@ -513,6 +517,7 @@ export const StudioProvider = ({
       projectId,
       rootNode,
       componentMeta,
+      bindableComponentMeta,
       saveStatus,
       selectedNodeId,
       updateManifest,

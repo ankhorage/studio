@@ -17,8 +17,12 @@ describe('Studio runtime surface', () => {
     expect(runtimeIndexSource).toContain("export * from './registry.js';");
     expect(runtimeIndexSource).toContain("export * from './runtimeActions.js';");
     expect(runtimeIndexSource).toContain("export * from './useRuntimeAction.js';");
-    expect(appExtensionRegistrySource).toContain('STUDIO_APP_EXTENSION_COMPONENT_REGISTRY');
-    expect(registrySource).toContain('STUDIO_APP_EXTENSION_COMPONENT_REGISTRY');
+    expect(appExtensionRegistrySource).toContain('composeZoraPlugins([');
+    expect(appExtensionRegistrySource).toContain('ZORA_CORE_PLUGIN');
+    expect(appExtensionRegistrySource).toContain('ZORA_CHESS_PLUGIN');
+    expect(appExtensionRegistrySource).toContain('ZORA_TABLETOP_PLUGIN');
+    expect(appExtensionRegistrySource).toContain('STUDIO_ZORA_PLUGIN_CATALOG');
+    expect(registrySource).toContain('STUDIO_ZORA_PLUGIN_CATALOG');
     expect(registrySource).not.toContain('createComponentRegistry');
     expect(registrySource).not.toContain('BASE_ZORA_COMPONENT_REGISTRY');
     expect(registrySource).not.toContain('ZORA_COMPONENT_REGISTRY');

@@ -1,5 +1,4 @@
-import type { UiComponentMetaRegistry } from '@ankhorage/contracts';
-import { Card, Text, ZORA_BINDABLE_COMPONENT_META } from '@ankhorage/zora';
+import { Card, Text } from '@ankhorage/zora';
 import React from 'react';
 
 import {
@@ -13,8 +12,6 @@ import { AdminHeader, AdminScroll, KeyValue } from '../adminPagePrimitives';
 import { BindingDiagnosticsCard } from './bindings/BindingDiagnosticsCard';
 import { EventBindingsCard } from './bindings/EventBindingsCard';
 import { PropertyBindingsCard } from './bindings/PropertyBindingsCard';
-
-const BINDABLE_COMPONENT_META: UiComponentMetaRegistry = ZORA_BINDABLE_COMPONENT_META;
 
 /***
  * Resolve the requested node into its owning screen and render canonical property/event binding editors plus diagnostics.
@@ -54,7 +51,7 @@ export function BindingsAdminPage({ nodeId }: { readonly nodeId: string | null }
   const diagnostics = diagnoseStudioComponentBindings({
     node,
     registry,
-    componentMeta: BINDABLE_COMPONENT_META,
+    componentMeta: studio.bindableComponentMeta,
     operations,
     actionTypes: Object.keys(ACTION_REGISTRY),
   });
@@ -65,7 +62,7 @@ export function BindingsAdminPage({ nodeId }: { readonly nodeId: string | null }
         title="Bindings"
         description="Bind component data and events through canonical manifest contracts. Studio authors; Runtime executes."
       />
-      <Card title={BINDABLE_COMPONENT_META[node.type]?.name ?? node.type}>
+      <Card title={studio.bindableComponentMeta[node.type]?.name ?? node.type}>
         <KeyValue label="Node ID" value={node.id} />
         <KeyValue label="Type" value={node.type} />
         {node.alias ? <KeyValue label="Alias" value={node.alias} /> : null}

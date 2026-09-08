@@ -234,35 +234,31 @@ describe('GeneratedAppFileGenerator', () => {
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
     const screen = files.find((file) => file.path === 'src/app/(app)/index.tsx')?.content ?? '';
 
-    expect(rootLayout).toContain(`import {
-  AppBar,
-  AppShell,
-  useZoraTheme,
-  ZORA_COMPONENT_META,
-  ZORA_COMPONENT_REGISTRY,
-  ZoraProvider,
-} from '@ankhorage/zora';`);
+    expect(rootLayout).toContain("from '@ankhorage/zora';");
+    expect(rootLayout).toContain('AppBar');
+    expect(rootLayout).toContain('AppShell');
+    expect(rootLayout).toContain('ZoraProvider');
     expect(rootLayout).toContain('createComponentRegistry');
-    expect(rootLayout).toContain('STUDIO_APP_EXTENSION_COMPONENT_REGISTRY');
-    expect(rootLayout).toContain('STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
+    expect(rootLayout).toContain('STUDIO_ZORA_PLUGIN_CATALOG');
     expect(rootLayout).toContain(
       'APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY',
     );
     expect(rootLayout).toContain(
       'APP_EXTENSION_INTERACTION_POLICY_SUPPORT as GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT',
     );
-    expect(rootLayout).toContain(`const APP_EXTENSION_COMPONENT_REGISTRY = createComponentRegistry(
-  STUDIO_APP_EXTENSION_COMPONENT_REGISTRY,
+    expect(rootLayout).toContain(`const APP_COMPONENT_REGISTRY = createComponentRegistry(
+  STUDIO_ZORA_PLUGIN_CATALOG.componentRegistry,
   GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
 );`);
     expect(rootLayout).toContain(`const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
-  ...STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+  ...STUDIO_ZORA_PLUGIN_CATALOG.interactionPolicySupportedComponents,
   ...GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
 } as const;`);
-    expect(rootLayout).toContain(`const runtimeComponentRegistry = createComponentRegistry(
-  ZORA_COMPONENT_REGISTRY,
-  APP_EXTENSION_COMPONENT_REGISTRY,
-);`);
+    expect(rootLayout).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
+    expect(rootLayout).toContain('componentMeta={STUDIO_ZORA_PLUGIN_CATALOG.componentMeta}');
+    expect(rootLayout).toContain(
+      'bindableComponentMeta={STUDIO_ZORA_PLUGIN_CATALOG.bindableComponentMeta}',
+    );
     expect(rootLayout).toContain('registry: runtimeComponentRegistry');
     expect(rootLayout).toContain(
       '<GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>',
@@ -294,12 +290,12 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('push: (href) => router.push(href as Href)');
     expect(rootLayout).toContain('function useGeneratedRuntimeAction()');
     expect(rootLayout).toContain('const { executeAction } = useGeneratedRuntimeAction();');
-    expect(rootLayout).toContain(
-      'const APP_EXTENSION_COMPONENT_REGISTRY = GENERATED_APP_EXTENSION_COMPONENT_REGISTRY;',
-    );
-    expect(rootLayout).not.toContain('createComponentRegistry');
+    expect(rootLayout).toContain('const APP_ZORA_PLUGIN_CATALOG = composeZoraPlugins([');
+    expect(rootLayout).toContain('ZORA_CORE_PLUGIN');
+    expect(rootLayout).toContain('...GENERATED_APP_ZORA_PLUGINS');
+    expect(rootLayout).toContain('createComponentRegistry');
     expect(rootLayout).not.toContain("from '@ankhorage/studio/runtime'");
-    expect(rootLayout).not.toContain('STUDIO_APP_EXTENSION_COMPONENT_REGISTRY');
+    expect(rootLayout).not.toContain('STUDIO_ZORA_PLUGIN_CATALOG');
   });
 
   test('derives Studio admin route files from the canonical registry', () => {

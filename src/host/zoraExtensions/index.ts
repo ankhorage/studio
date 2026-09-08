@@ -2,32 +2,26 @@ import type { AppManifest, UiNode } from '@ankhorage/contracts';
 
 export interface ZoraExtensionDefinition {
   packageName: string;
-  components: Record<string, string>;
+  descriptorExportName: string;
+  componentTypes: readonly string[];
   dependencies?: Record<string, string>;
-  interactionPolicySupportedComponents?: readonly string[];
 }
 
 const ZORA_CHESS_EXTENSION = {
   packageName: '@ankhorage/zora-chess',
-  components: {
-    ChessBoard: 'ChessBoard',
-    OpeningBook: 'OpeningBook',
-  },
+  descriptorExportName: 'ZORA_CHESS_PLUGIN',
+  componentTypes: ['ChessBoard', 'OpeningBook'],
   dependencies: {
-    '@ankhorage/zora-chess': 'latest',
+    '@ankhorage/zora-chess': '^0.2.0',
   },
 } satisfies ZoraExtensionDefinition;
 
 const ZORA_TABLETOP_EXTENSION = {
   packageName: '@ankhorage/zora-tabletop',
-  components: {
-    TabletopTable: 'TabletopTable',
-    Table: 'TabletopTable',
-    'zora-tabletop/Table': 'TabletopTable',
-    '@ankhorage/zora-tabletop/Table': 'TabletopTable',
-  },
+  descriptorExportName: 'ZORA_TABLETOP_PLUGIN',
+  componentTypes: ['TabletopTable'],
   dependencies: {
-    '@ankhorage/zora-tabletop': 'latest',
+    '@ankhorage/zora-tabletop': '^0.1.0',
   },
 } satisfies ZoraExtensionDefinition;
 
@@ -45,7 +39,7 @@ export function resolveZoraExtensionsForManifest(
     collectNodeTypes(screen.root, componentTypes);
   }
   return KNOWN_ZORA_EXTENSIONS.filter((extension) =>
-    Object.keys(extension.components).some((componentType) => componentTypes.has(componentType)),
+    extension.componentTypes.some((componentType) => componentTypes.has(componentType)),
   );
 }
 

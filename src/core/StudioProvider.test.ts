@@ -31,6 +31,7 @@ test('uses canonical manifestState mutations for provider authoring state', () =
 
 test('requires caller-injected component metadata for package-neutral placement', () => {
   expect(source).toContain('componentMeta: StudioComponentMetaRegistry');
+  expect(source).toContain('bindableComponentMeta: UiComponentMetaRegistry');
   expect(source).toContain('componentMeta,');
   expect(source).not.toContain("from '@ankhorage/zora'");
 });

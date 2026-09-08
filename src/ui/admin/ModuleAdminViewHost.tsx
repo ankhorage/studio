@@ -1,4 +1,3 @@
-import { ZORA_COMPONENT_META } from '@ankhorage/zora';
 import React from 'react';
 
 import { useStudio } from '../../core/StudioContext';
@@ -14,7 +13,7 @@ export function ModuleAdminViewHost(props: {
   readonly moduleId: string;
   readonly contribution: StudioModuleAdminViewContribution;
 }) {
-  const { projectId, refetchManifest } = useStudio();
+  const { componentMeta, projectId, refetchManifest } = useStudio();
   /*** Execute one module-owned admin operation against the current Studio project and inject canonical component metadata. */
   const execute = React.useCallback(
     async (operation: string, input?: unknown) =>
@@ -23,9 +22,9 @@ export function ModuleAdminViewHost(props: {
         moduleId: props.moduleId,
         operation,
         ...(input === undefined ? {} : { input }),
-        componentMeta: ZORA_COMPONENT_META,
+        componentMeta,
       }),
-    [projectId, props.moduleId],
+    [componentMeta, projectId, props.moduleId],
   );
   /*** Refresh the Studio manifest after a module contribution reports a project mutation. */
   const onProjectChange = React.useCallback(async () => {
