@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.3.8
+
+### Patch Changes
+
+- 39c554c: Exclude machine-managed `.ankh` state from generated project Git snapshots and reconcile the ignore rule before connecting existing projects to GitHub.
+
 ## 2.3.7
 
 ### Patch Changes
