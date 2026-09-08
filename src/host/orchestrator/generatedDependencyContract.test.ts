@@ -147,6 +147,7 @@ describe('generated app dependency contract', () => {
       'app-owned-cache/',
       'node_modules/',
       '.expo/',
+      '/.ankh/',
       'dist/',
       'dist-*/',
       'android/',

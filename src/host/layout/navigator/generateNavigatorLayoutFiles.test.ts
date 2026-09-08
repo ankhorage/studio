@@ -6,6 +6,32 @@ import { generateNavigatorLayoutFiles } from './generateNavigatorLayoutFiles';
 const bindings = { guards: {}, screens: {} } as const;
 
 describe('generateNavigatorLayoutFiles', () => {
+  test('hides an unlabeled route-group Stack header that owns a nested navigator', () => {
+    const files = generateNavigatorLayoutFiles({
+      bindings,
+      navigator: {
+        type: 'stack',
+        routes: [
+          {
+            name: '(tabs)',
+            navigator: {
+              type: 'tabs',
+              implementation: 'headless',
+              presentation: 'bottom',
+              routes: [{ name: 'train', path: '/train', screenId: 'train' }],
+            },
+          },
+        ],
+      },
+      rootDirectory: 'src/app/(app)',
+      targets: { web: { enabled: true } },
+    });
+
+    const layout = files.find(({ path }) => path.endsWith('/_layout.tsx'))?.content;
+    expect(layout).toContain('name="(tabs)"');
+    expect(layout).toContain('headerShown: false');
+  });
+
   test('generates released Navigator layouts below the Studio-owned app shell', () => {
     const navigator: NavigatorNode = {
       type: 'tabs',
