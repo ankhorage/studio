@@ -12,7 +12,7 @@ import {
 } from './templates';
 
 const WEB_TARGETS = { web: { enabled: true } } as const;
-const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
+const CARET_SEMVER_RANGE = /^\^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/u;
 
 describe('generated OAuth scaffold templates', () => {
   it('keeps generated Expo config plugin data outside the default export function', () => {
@@ -65,14 +65,14 @@ describe('generated OAuth scaffold templates', () => {
     const devDependencies = pkg.devDependencies as Record<string, string>;
     expect(pkg.private).toBe(true);
 
-    expect(dependencies['@ankhorage/contracts']).toMatch(CARET_SEMVER_RANGE);
-    expect(dependencies['@ankhorage/contracts']).toBe(
+    expectCompatibleCaretRanges(
+      dependencies['@ankhorage/contracts'],
       studioPackage.dependencies?.['@ankhorage/contracts'],
     );
     expect(dependencies['@ankhorage/data-sources']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/expo-runtime']).toMatch(CARET_SEMVER_RANGE);
-    expect(dependencies['@ankhorage/navigator']).toMatch(CARET_SEMVER_RANGE);
-    expect(dependencies['@ankhorage/navigator']).toBe(
+    expectCompatibleCaretRanges(
+      dependencies['@ankhorage/navigator'],
       studioPackage.dependencies?.['@ankhorage/navigator'],
     );
     expect(pkg.overrides).toEqual({ '@ankhorage/contracts': '$@ankhorage/contracts' });
@@ -112,6 +112,14 @@ describe('generated OAuth scaffold templates', () => {
       EXPO_PLATFORM.tooling.typescript.version,
     );
     expect(Object.values(dependencies)).not.toContain('latest');
+  });
+
+  it('distinguishes compatible caret release lines', () => {
+    expect(getCaretCompatibilityLine('^3.0.0')).toBe(getCaretCompatibilityLine('^3.1.0'));
+    expect(getCaretCompatibilityLine('^3.0.0')).not.toBe(getCaretCompatibilityLine('^4.0.0'));
+    expect(getCaretCompatibilityLine('^0.2.3')).toBe(getCaretCompatibilityLine('^0.2.4'));
+    expect(getCaretCompatibilityLine('^0.2.3')).not.toBe(getCaretCompatibilityLine('^0.3.0'));
+    expect(getCaretCompatibilityLine('^0.0.3')).not.toBe(getCaretCompatibilityLine('^0.0.4'));
   });
 
   it('pins the current auth and persistence adapter dependencies', async () => {
@@ -348,3 +356,21 @@ describe('generated OAuth scaffold templates', () => {
     expect(appConfig).toContain("output: 'static'");
   });
 });
+
+function expectCompatibleCaretRanges(
+  generatedRange: string | undefined,
+  studioRange: string | undefined,
+): void {
+  expect(generatedRange).toMatch(CARET_SEMVER_RANGE);
+  expect(studioRange).toMatch(CARET_SEMVER_RANGE);
+  expect(getCaretCompatibilityLine(generatedRange)).toBe(getCaretCompatibilityLine(studioRange));
+}
+
+function getCaretCompatibilityLine(range: string | undefined): string | null {
+  const match = CARET_SEMVER_RANGE.exec(range ?? '');
+  if (!match) return null;
+  const [, major, minor, patch] = match;
+  if (major !== '0') return major ?? null;
+  if (minor !== '0') return `${major}.${minor}`;
+  return `${major}.${minor}.${patch}`;
+}

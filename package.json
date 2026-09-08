@@ -153,13 +153,7 @@
       "studio.projects.list",
       "studio.projects.create",
       "studio.projects.delete",
-      "studio.projects.sync",
-      "studio.secrets.list",
-      "studio.secrets.create",
-      "studio.secrets.replace",
-      "studio.secrets.remove",
-      "studio.apis.connect",
-      "studio.apis.test"
+      "studio.projects.sync"
     ]
   },
   "scripts": {
