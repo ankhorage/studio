@@ -13,7 +13,7 @@ afterEach(async () => {
   await Promise.all(roots.splice(0).map((root) => rm(root, { force: true, recursive: true })));
 });
 
-test('reconciles generated state before connecting the project with its derived GitHub name', async () => {
+test('reconciles generated state before connecting with the canonical slug repository name', async () => {
   const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'studio-repository-connect-'));
   roots.push(workspaceRoot);
   const projectPath = path.join(workspaceRoot, 'apps', 'demo');
@@ -23,7 +23,7 @@ test('reconciles generated state before connecting the project with its derived 
   await Promise.all([
     writeFile(
       path.join(projectPath, 'package.json'),
-      `${JSON.stringify({ name: '@ankhorage/demo' })}\n`,
+      `${JSON.stringify({ name: '@unrelated/package-name' })}\n`,
       'utf8',
     ),
     writeFile(
@@ -55,7 +55,7 @@ test('reconciles generated state before connecting the project with its derived 
         'dist-*/',
         'android/',
         'ios/',
-        '.env*.local',
+        '.env*',
         '.DS_Store',
         '',
       ]);
@@ -65,8 +65,8 @@ test('reconciles generated state before connecting the project with its derived 
         status: 'connected',
         repository: {
           owner: 'ankhorage',
-          name: 'ankhorage-demo-android-ios',
-          url: 'https://github.com/ankhorage/ankhorage-demo-android-ios',
+          name: 'ankh-demo',
+          url: 'https://github.com/ankhorage/ankh-demo',
           defaultBranch: 'main',
         },
         appCommitSha: 'abc123',
@@ -79,7 +79,7 @@ test('reconciles generated state before connecting the project with its derived 
   expect(events).toEqual(['reconcile', 'connect']);
   expect(receivedOptions).toEqual({
     projectPath,
-    name: 'ankhorage-demo-android-ios',
+    name: 'ankh-demo',
     visibility: 'private',
   });
   expect(result.status).toBe('connected');
