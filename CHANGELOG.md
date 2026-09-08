@@ -1,5 +1,12 @@
 # @ankhorage/studio
 
+## 2.4.5
+
+### Patch Changes
+
+- aafbd7f: Name connected GitHub repositories from the canonical project slug as `ankh-{slug}`.
+- 13a4259: Ignore all environment files in standalone project repositories.
+
 ## 2.4.4
 
 ### Patch Changes
