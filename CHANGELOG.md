@@ -1,5 +1,17 @@
 # @ankhorage/studio
 
+## 2.3.6
+
+### Patch Changes
+
+- 3d49cb4: Update Ankhorage dependencies: `@ankhorage/data-sources`, `@ankhorage/deploy`, `@ankhorage/infra`, `@ankhorage/navigator`, `@ankhorage/orchestrator-module-expo-google-fonts`, `@ankhorage/orchestrator-module-expo-localization`, `@ankhorage/orchestrator`, `@ankhorage/permissions`, `@ankhorage/runtime`, `@ankhorage/supabase-auth`, `@ankhorage/supabase-storage`, `@ankhorage/supabase-vault`, `@ankhorage/templates`, `@ankhorage/zora-chess`, `@ankhorage/zora-tabletop`, `@ankhorage/zora`.
+
+## 2.3.5
+
+### Patch Changes
+
+- 8cc5e1c: Keep generated dependency validation compatible with automatic caret-range updates and publish only the CLI capabilities implemented by the Studio provider.
+
 ## 2.3.4
 
 ### Patch Changes
