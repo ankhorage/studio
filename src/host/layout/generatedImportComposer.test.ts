@@ -51,6 +51,20 @@ import {
 import { bundledMediaRegistry } from '@/generated/bundledMediaRegistry';`);
 });
 
+test('formats a named clause when its complete import statement exceeds the print width', () => {
+  const generated = composeGeneratedImports([
+    "import { AppShell, composeZoraPlugins, useZoraTheme, ZORA_CORE_PLUGIN, ZoraProvider } from '@ankhorage/zora';",
+  ]);
+
+  expect(generated).toBe(`import {
+  AppShell,
+  composeZoraPlugins,
+  useZoraTheme,
+  ZORA_CORE_PLUGIN,
+  ZoraProvider,
+} from '@ankhorage/zora';`);
+});
+
 test('rejects conflicting generated local bindings', () => {
   expect(() =>
     composeGeneratedImports([
