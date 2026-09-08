@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.3.5
+
+### Patch Changes
+
+- 8cc5e1c: Keep generated dependency validation compatible with automatic caret-range updates and publish only the CLI capabilities implemented by the Studio provider.
+
 ## 2.3.4
 
 ### Patch Changes
