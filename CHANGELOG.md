@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.4.3
+
+### Patch Changes
+
+- e512fc9: Expose composed ZORA plugin properties and bindings in Studio, including first-item paths for array API responses.
+
 ## 2.4.2
 
 ### Patch Changes
