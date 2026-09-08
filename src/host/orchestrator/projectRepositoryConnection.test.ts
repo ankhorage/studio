@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -13,13 +13,13 @@ afterEach(async () => {
   await Promise.all(roots.splice(0).map((root) => rm(root, { force: true, recursive: true })));
 });
 
-test('reconciles the project and derives the GitHub name from package and native targets', async () => {
+test('reconciles generated state before connecting the project with its derived GitHub name', async () => {
   const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'studio-repository-connect-'));
   roots.push(workspaceRoot);
   const projectPath = path.join(workspaceRoot, 'apps', 'demo');
   const events: string[] = [];
   let receivedOptions: unknown;
-  await mkdir(projectPath, { recursive: true });
+  await mkdir(path.join(projectPath, '.ankh', 'web-export', 'ankh'), { recursive: true });
   await Promise.all([
     writeFile(
       path.join(projectPath, 'package.json'),
@@ -31,6 +31,12 @@ test('reconciles the project and derives the GitHub name from package and native
       `${JSON.stringify(createManifest())}\n`,
       'utf8',
     ),
+    writeFile(path.join(projectPath, '.gitignore'), 'app-owned-cache/\n', 'utf8'),
+    writeFile(
+      path.join(projectPath, '.ankh', 'web-export', 'ankh', 'secrets.html'),
+      '<html></html>\n',
+      'utf8',
+    ),
   ]);
   const manager = new ProjectManager(workspaceRoot, {
     reconcileProjectPackageRootAsync: async (receivedPath) => {
@@ -40,6 +46,19 @@ test('reconciles the project and derives the GitHub name from package and native
     },
     connectGitHubRepositoryAsync: async (options) => {
       await Promise.resolve();
+      expect((await readFile(path.join(projectPath, '.gitignore'), 'utf8')).split('\n')).toEqual([
+        'app-owned-cache/',
+        'node_modules/',
+        '.expo/',
+        '/.ankh/',
+        'dist/',
+        'dist-*/',
+        'android/',
+        'ios/',
+        '.env*.local',
+        '.DS_Store',
+        '',
+      ]);
       events.push('connect');
       receivedOptions = options;
       return {
