@@ -1,5 +1,6 @@
 import type { UiNode } from '@ankhorage/contracts';
 import { ZORA_COMPONENT_META } from '@ankhorage/zora/metadata';
+import { ZORA_CHESS_COMPONENT_META } from '@ankhorage/zora-chess/metadata';
 import { describe, expect, test } from 'bun:test';
 
 import {
@@ -182,6 +183,31 @@ describe('instance Properties authoring model', () => {
     });
     expect(createStudioInstancePropertyPatch(node, 'source', { mediaId: 'other-image' })).toEqual({
       props: { alt: 'Mountain sunrise', source: { mediaId: 'other-image' } },
+    });
+  });
+
+  test('consumes released ChessBoard properties through the plugin metadata registry', () => {
+    const node: UiNode = {
+      id: 'chess-board',
+      type: 'ChessBoard',
+      props: { orientation: 'black', showCoordinates: true },
+    };
+
+    const fields = resolveStudioInstancePropertyFields(node, ZORA_CHESS_COMPONENT_META);
+
+    expect(fields.map((field) => field.name)).toEqual([
+      'fen',
+      'orientation',
+      'selectedSquare',
+      'legalTargets',
+      'disabled',
+      'showCoordinates',
+      'validateMoves',
+    ]);
+    expect(fields.find((field) => field.name === 'orientation')).toMatchObject({
+      editor: 'choice',
+      options: ['white', 'black'],
+      value: 'black',
     });
   });
 });
