@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.4.4
+
+### Patch Changes
+
+- 7f6474c: Keep incomplete primary-color input local until it is a valid six-digit hex color.
+
 ## 2.4.3
 
 ### Patch Changes
