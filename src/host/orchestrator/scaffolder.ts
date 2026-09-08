@@ -87,6 +87,7 @@ const APP_PRETTIERIGNORE_ENTRIES = ['/.ankh/', '/infra/'] as const;
 const APP_GITIGNORE_ENTRIES = [
   'node_modules/',
   '.expo/',
+  '/.ankh/',
   'dist/',
   'dist-*/',
   'android/',
@@ -361,7 +362,7 @@ export class ProjectScaffolder {
   }
 
   /*** Ensure every generated app owns complete transient, build, secret, and editor ignore rules. */
-  private async ensureAppGitIgnore(dir: string) {
+  async ensureAppGitIgnore(dir: string) {
     const gitIgnorePath = path.join(dir, '.gitignore');
     const existing = (await pathExists(gitIgnorePath))
       ? await fs.readFile(gitIgnorePath, 'utf8')

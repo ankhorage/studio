@@ -175,6 +175,7 @@ export class ProjectManager {
       readProjectPackageJson(projectPath),
     ]);
     await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
+    await this.scaffolder.ensureAppGitIgnore(projectPath);
 
     return await this.dependencies.connectGitHubRepositoryAsync({
       projectPath,
