@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.4.0
+
+### Minor Changes
+
+- 44eb00f: Compose installed ZORA plugins into Studio runtime, Toolbox, properties, bindings, placement, and generated app output.
+
 ## 2.3.8
 
 ### Patch Changes
