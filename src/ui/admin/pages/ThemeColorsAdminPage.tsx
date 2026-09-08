@@ -1,9 +1,10 @@
+import { parseHexColorOrThrow } from '@ankhorage/color-theory';
 import type { ThemeModeConfig } from '@ankhorage/contracts';
-import { Card, Text } from '@ankhorage/zora';
+import { Card, Input, Text } from '@ankhorage/zora';
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { AdminHeader, AdminScroll, Field, Input } from '../adminPagePrimitives';
+import { AdminHeader, AdminScroll, Field } from '../adminPagePrimitives';
 import { formatHarmonyLabel, SUPPORTED_COLOR_HARMONIES } from './adminThemeHarmony';
 import { createThemeModeUpdates } from './adminThemeModel';
 import { ThemeModeEditorSelector } from './ThemeModeEditorSelector';
@@ -29,9 +30,19 @@ export function ThemeColorsAdminPage() {
       <Card title={`${selection.theme.name} · ${selection.mode === 'light' ? 'Light' : 'Dark'}`}>
         <Field label="Primary color">
           <Input
-            value={selection.modeConfig.primaryColor}
+            key={`${selection.theme.id}:${selection.mode}:${selection.modeConfig.primaryColor}`}
+            defaultValue={selection.modeConfig.primaryColor}
             autoCapitalize="none"
-            onChangeText={(primaryColor) => updateMode({ primaryColor })}
+            autoCorrect={false}
+            maxLength={7}
+            onChangeText={(primaryColor) => {
+              try {
+                parseHexColorOrThrow(primaryColor);
+              } catch {
+                return;
+              }
+              updateMode({ primaryColor });
+            }}
           />
         </Field>
         <Field label="Harmony">
