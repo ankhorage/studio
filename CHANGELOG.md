@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.4.2
+
+### Patch Changes
+
+- a455d0e: Generate lint- and format-clean standalone ZORA runtime composition.
+
 ## 2.4.1
 
 ### Patch Changes
