@@ -34,6 +34,15 @@ test('uses the real ZORA mode authority without a second persisted editor mode',
   expect(colorsPage).not.toContain('as ThemeUpdates');
 });
 
+test('keeps incomplete primary colors inside the uncontrolled ZORA input', () => {
+  const source = readSibling('ThemeColorsAdminPage.tsx');
+
+  expect(source).toContain('defaultValue={selection.modeConfig.primaryColor}');
+  expect(source).toContain('onChangeText={(primaryColor) => {');
+  expect(source).toContain('parseHexColorOrThrow(primaryColor)');
+  expect(source).not.toContain('createThemePrimaryColorDraft');
+});
+
 test('keeps Theme root focused on canonical source and inheritance', () => {
   const source = readSibling('ThemeAdminPage.tsx');
 
