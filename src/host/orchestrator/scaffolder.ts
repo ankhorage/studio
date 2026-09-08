@@ -92,7 +92,7 @@ const APP_GITIGNORE_ENTRIES = [
   'dist-*/',
   'android/',
   'ios/',
-  '.env*.local',
+  '.env*',
   '.DS_Store',
 ] as const;
 

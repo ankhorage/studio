@@ -55,7 +55,7 @@ test('reconciles generated state before connecting with the canonical slug repos
         'dist-*/',
         'android/',
         'ios/',
-        '.env*.local',
+        '.env*',
         '.DS_Store',
         '',
       ]);
