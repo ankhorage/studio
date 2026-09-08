@@ -206,7 +206,7 @@
     "@ankhorage/deploy": "^0.12.5",
     "@ankhorage/expo-runtime": "^3.2.12",
     "@ankhorage/infra": "^4.1.10",
-    "@ankhorage/navigator": "^3.1.0",
+    "@ankhorage/navigator": "^3.2.0",
     "@ankhorage/orchestrator": "^0.3.2",
     "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.5",
     "@ankhorage/orchestrator-module-expo-localization": "^0.6.6",
