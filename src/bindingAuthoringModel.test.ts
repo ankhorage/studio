@@ -5,6 +5,7 @@ import type {
   UiComponentMetaRegistry,
   UiNode,
 } from '@ankhorage/contracts';
+import { ZORA_CHESS_COMPONENT_META } from '@ankhorage/zora-chess/metadata';
 import { describe, expect, test } from 'bun:test';
 
 import {
@@ -124,6 +125,17 @@ describe('binding authoring metadata', () => {
     expect(resolveStudioBindableEvents(button, componentMeta).map((entry) => entry.name)).toEqual([
       'press',
     ]);
+  });
+
+  test('derives ChessBoard props and events from the released plugin metadata', () => {
+    const chessBoard: UiNode = { id: 'chess-board', type: 'ChessBoard' };
+
+    expect(
+      resolveStudioBindableProps(chessBoard, ZORA_CHESS_COMPONENT_META).map((entry) => entry.name),
+    ).toEqual(['fen', 'orientation', 'selectedSquare', 'legalTargets', 'disabled']);
+    expect(
+      resolveStudioBindableEvents(chessBoard, ZORA_CHESS_COMPONENT_META).map((entry) => entry.name),
+    ).toEqual(['squarePress', 'moveAttempt', 'legalMove', 'invalidMove']);
   });
 });
 
