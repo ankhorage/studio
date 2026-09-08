@@ -2,4 +2,4 @@
 '@ankhorage/studio': patch
 ---
 
-Ignore the generated local Minikube environment in standalone project repositories.
+Ignore generated local Minikube environment files in standalone project repositories.

@@ -138,7 +138,7 @@ describe('generated app dependency contract', () => {
       '\n',
     );
     expect(generatedGitIgnore).toContain('/infra/minikube/.env');
-    expect(generatedGitIgnore).not.toContain('/infra/minikube/.env.example');
+    expect(generatedGitIgnore).toContain('/infra/minikube/.env.example');
     await writeFile(path.join(projectPath, '.gitignore'), 'app-owned-cache/');
 
     await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
@@ -159,6 +159,7 @@ describe('generated app dependency contract', () => {
       'ios/',
       '.env*.local',
       '/infra/minikube/.env',
+      '/infra/minikube/.env.example',
       '.DS_Store',
       '',
     ]);
