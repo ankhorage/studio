@@ -67,7 +67,7 @@ test('updates owner ranges before installs and runs only app-level Devtools conc
   ]);
 });
 
-test('runs full Devtools synchronization when preparing a standalone repository', async () => {
+test('updates Devtools before full synchronization when preparing a standalone repository', async () => {
   const { projectPath, ankhExecutable } = await createProjectRoot();
   const calls: { command: string; args: readonly string[]; cwd: string }[] = [];
 
@@ -81,6 +81,11 @@ test('runs full Devtools synchronization when preparing a standalone repository'
 
   expect(calls).toEqual([
     { command: 'bun', args: ['install'], cwd: projectPath },
+    {
+      command: 'bun',
+      args: ['update', '@ankhorage/devtools', '--latest'],
+      cwd: projectPath,
+    },
     { command: ankhExecutable, args: ['devtools', 'sync', '.'], cwd: projectPath },
     { command: 'bun', args: ['install', '--frozen-lockfile'], cwd: projectPath },
   ]);
