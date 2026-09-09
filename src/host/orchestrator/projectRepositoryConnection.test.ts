@@ -13,7 +13,7 @@ afterEach(async () => {
   await Promise.all(roots.splice(0).map((root) => rm(root, { force: true, recursive: true })));
 });
 
-test('reconciles generated state before connecting with the canonical slug repository name', async () => {
+test('prepares repository automation before connecting with the canonical slug repository name', async () => {
   const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'studio-repository-connect-'));
   roots.push(workspaceRoot);
   const projectPath = path.join(workspaceRoot, 'apps', 'demo');
@@ -39,9 +39,10 @@ test('reconciles generated state before connecting with the canonical slug repos
     ),
   ]);
   const manager = new ProjectManager(workspaceRoot, {
-    reconcileProjectPackageRootAsync: async (receivedPath) => {
+    reconcileProjectPackageRootAsync: async (receivedPath, reconcileOptions) => {
       await Promise.resolve();
       expect(receivedPath).toBe(projectPath);
+      expect(reconcileOptions?.devtoolsScope).toBe('repository');
       events.push('reconcile');
     },
     connectGitHubRepositoryAsync: async (options) => {
