@@ -2,6 +2,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 import { afterEach, expect, test } from 'bun:test';
 
 import { getGeneratedPackagePolicy } from './generatedPackagePolicy';
@@ -122,23 +123,23 @@ async function readGeneratedPackageJson(projectPath: string): Promise<{
   readonly devDependencies: Readonly<Record<string, string>>;
 }> {
   const value: unknown = JSON.parse(await readFile(path.join(projectPath, 'package.json'), 'utf8'));
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+  if (!isRecord(value)) {
     throw new Error('Generated package test fixture must contain an object.');
   }
-  const packageManager = Reflect.get(value, 'packageManager');
+  const packageManager = readOwnProperty(value, 'packageManager');
   if (typeof packageManager !== 'string') {
     throw new Error('Generated package test fixture must define packageManager.');
   }
   return {
     packageManager,
-    dependencies: readStringRecord(Reflect.get(value, 'dependencies'), 'dependencies'),
-    devDependencies: readStringRecord(Reflect.get(value, 'devDependencies'), 'devDependencies'),
+    dependencies: readStringRecord(readOwnProperty(value, 'dependencies'), 'dependencies'),
+    devDependencies: readStringRecord(readOwnProperty(value, 'devDependencies'), 'devDependencies'),
   };
 }
 
 /*** Read one string-valued dependency section from the generated package fixture. */
 function readStringRecord(value: unknown, label: string): Readonly<Record<string, string>> {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+  if (!isRecord(value)) {
     throw new Error(`Generated package test fixture must define ${label}.`);
   }
   return Object.fromEntries(
