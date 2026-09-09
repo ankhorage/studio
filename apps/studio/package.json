@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@ankhorage/expo-runtime": "^3.2.12",
-    "@ankhorage/studio": "^2.4.6",
+    "@ankhorage/studio": "^2.4.7",
     "@expo/metro-runtime": "~57.0.15",
     "@react-native-picker/picker": "2.11.4",
     "@react-native-vector-icons/fontawesome": "^13.1.3",
@@ -69,6 +69,8 @@
     "typescript": "~6.0.3"
   },
   "overrides": {
-    "@ankhorage/repository": "0.4.5"
+    "@ankhorage/repository": "0.4.5",
+    "@ankhorage/templates": "9.7.1",
+    "@ankhorage/zora": "4.5.0"
   }
 }
