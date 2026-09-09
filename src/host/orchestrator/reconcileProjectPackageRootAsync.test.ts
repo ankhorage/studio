@@ -1,12 +1,15 @@
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 import { afterEach, expect, test } from 'bun:test';
 
+import { getGeneratedPackagePolicy } from './generatedPackagePolicy';
 import { reconcileProjectPackageRootAsync } from './reconcileProjectPackageRootAsync';
+import { getPackageJson } from './templates';
 
 const temporaryDirectories: string[] = [];
+const WEB_TARGETS = { web: { enabled: true } } as const;
 
 afterEach(async () => {
   await Promise.all(
@@ -16,21 +19,28 @@ afterEach(async () => {
   );
 });
 
-test('runs installs and only app-level Devtools concerns from the project root', async () => {
-  const projectPath = await mkdtemp(path.join(tmpdir(), 'ankh-project-package-'));
-  temporaryDirectories.push(projectPath);
-  const ankhExecutable = path.join(projectPath, 'node_modules', '.bin', 'ankh');
-  await mkdir(path.dirname(ankhExecutable), { recursive: true });
-  await writeFile(ankhExecutable, '', 'utf8');
+test('updates owner ranges before installs and runs only app-level Devtools concerns', async () => {
+  const { projectPath, ankhExecutable } = await createProjectRoot();
   const calls: { command: string; args: readonly string[]; cwd: string }[] = [];
+  let firstInstallObserved = false;
 
   await reconcileProjectPackageRootAsync(projectPath, {
     runCommandAsync: async (command, args, cwd) => {
-      await Promise.resolve();
+      if (!firstInstallObserved && command === 'bun') {
+        firstInstallObserved = true;
+        const packageJson = await readGeneratedPackageJson(projectPath);
+        const policy = getGeneratedPackagePolicy();
+        expect(packageJson.packageManager).toBe(policy.packageManager);
+        expect(packageJson.dependencies['@ankhorage/utility']).toBe(policy.dependencies.utility);
+        expect(packageJson.devDependencies['@ankhorage/devtools']).toBe(
+          policy.devDependencies.devtools,
+        );
+      }
       calls.push({ command, args, cwd });
     },
   });
 
+  expect(firstInstallObserved).toBe(true);
   expect(calls).toEqual([
     { command: 'bun', args: ['install'], cwd: projectPath },
     {
@@ -58,11 +68,7 @@ test('runs installs and only app-level Devtools concerns from the project root',
 });
 
 test('runs full Devtools synchronization when preparing a standalone repository', async () => {
-  const projectPath = await mkdtemp(path.join(tmpdir(), 'ankh-project-repository-'));
-  temporaryDirectories.push(projectPath);
-  const ankhExecutable = path.join(projectPath, 'node_modules', '.bin', 'ankh');
-  await mkdir(path.dirname(ankhExecutable), { recursive: true });
-  await writeFile(ankhExecutable, '', 'utf8');
+  const { projectPath, ankhExecutable } = await createProjectRoot();
   const calls: { command: string; args: readonly string[]; cwd: string }[] = [];
 
   await reconcileProjectPackageRootAsync(projectPath, {
@@ -79,3 +85,36 @@ test('runs full Devtools synchronization when preparing a standalone repository'
     { command: 'bun', args: ['install', '--frozen-lockfile'], cwd: projectPath },
   ]);
 });
+
+/*** Create one generated project fixture with deliberately stale generator-owned package ranges. */
+async function createProjectRoot(): Promise<{
+  readonly projectPath: string;
+  readonly ankhExecutable: string;
+}> {
+  const projectPath = await mkdtemp(path.join(tmpdir(), 'ankh-project-package-'));
+  temporaryDirectories.push(projectPath);
+  const ankhExecutable = path.join(projectPath, 'node_modules', '.bin', 'ankh');
+  await mkdir(path.dirname(ankhExecutable), { recursive: true });
+  await writeFile(ankhExecutable, '', 'utf8');
+  const packageJson = getPackageJson({
+    name: 'fixture',
+    authProvider: 'supabase',
+    storageProvider: 'supabase',
+    targets: WEB_TARGETS,
+  });
+  await writeFile(
+    path.join(projectPath, 'package.json'),
+    `${JSON.stringify(packageJson, null, 2)}\n`,
+    'utf8',
+  );
+  return { projectPath, ankhExecutable };
+}
+
+/*** Read the generated package fields exercised by package-root reconciliation. */
+async function readGeneratedPackageJson(projectPath: string): Promise<{
+  readonly packageManager: string;
+  readonly dependencies: Readonly<Record<string, string>>;
+  readonly devDependencies: Readonly<Record<string, string>>;
+}> {
+  return JSON.parse(await readFile(path.join(projectPath, 'package.json'), 'utf8'));
+}
