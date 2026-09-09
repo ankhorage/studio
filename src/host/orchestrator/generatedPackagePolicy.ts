@@ -8,12 +8,12 @@ export function getGeneratedPackagePolicy(): GeneratedPackagePolicy {
   return GENERATED_PACKAGE_POLICY;
 }
 
-const GENERATED_PACKAGE_POLICY = readGeneratedPackagePolicy();
 const REQUIRE = createRequire(import.meta.url);
 const STUDIO_PACKAGE_JSON_URL = new URL('../../../package.json', import.meta.url);
 const COLOR_THEORY_PACKAGE_JSON_PATH = REQUIRE.resolve('@ankhorage/color-theory/package.json');
 const SEMVER_PATTERN = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u;
 const BUN_PACKAGE_MANAGER_PATTERN = /^bun@\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u;
+const GENERATED_PACKAGE_POLICY = readGeneratedPackagePolicy();
 
 interface GeneratedPackagePolicy {
   readonly packageManager: string;
@@ -151,7 +151,9 @@ function readPackageManifest(
 /*** Read and validate Studio's exact package version. */
 function readStudioVersion(studio: Readonly<Record<string, unknown>>): string {
   const version = readRequiredString(studio, 'version', 'Studio');
-  if (!SEMVER_PATTERN.test(version)) throw new Error('Studio package.json version must be exact semver.');
+  if (!SEMVER_PATTERN.test(version)) {
+    throw new Error('Studio package.json version must be exact semver.');
+  }
   return version;
 }
 
@@ -171,7 +173,9 @@ function readRequiredSection(
   ownerName: string,
 ): Readonly<Record<string, unknown>> {
   const section = readOwnProperty(manifest, sectionName);
-  if (!isRecord(section)) throw new Error(`${ownerName} package.json ${sectionName} must be an object.`);
+  if (!isRecord(section)) {
+    throw new Error(`${ownerName} package.json ${sectionName} must be an object.`);
+  }
   return section;
 }
 
