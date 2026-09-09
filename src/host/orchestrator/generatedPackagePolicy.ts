@@ -130,11 +130,7 @@ function readGeneratedPeerDependencies(
       '@react-native-vector-icons/fontawesome6',
       'Studio',
     ),
-    ionicons: readRequiredString(
-      peerDependencies,
-      '@react-native-vector-icons/ionicons',
-      'Studio',
-    ),
+    ionicons: readRequiredString(peerDependencies, '@react-native-vector-icons/ionicons', 'Studio'),
   };
 }
 
