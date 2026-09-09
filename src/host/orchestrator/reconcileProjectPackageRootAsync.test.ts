@@ -110,11 +110,38 @@ async function createProjectRoot(): Promise<{
   return { projectPath, ankhExecutable };
 }
 
-/*** Read the generated package fields exercised by package-root reconciliation. */
+/*** Read and validate the generated package fields exercised by package-root reconciliation. */
 async function readGeneratedPackageJson(projectPath: string): Promise<{
   readonly packageManager: string;
   readonly dependencies: Readonly<Record<string, string>>;
   readonly devDependencies: Readonly<Record<string, string>>;
 }> {
-  return JSON.parse(await readFile(path.join(projectPath, 'package.json'), 'utf8'));
+  const value: unknown = JSON.parse(await readFile(path.join(projectPath, 'package.json'), 'utf8'));
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    throw new Error('Generated package test fixture must contain an object.');
+  }
+  const packageManager = Reflect.get(value, 'packageManager');
+  if (typeof packageManager !== 'string') {
+    throw new Error('Generated package test fixture must define packageManager.');
+  }
+  return {
+    packageManager,
+    dependencies: readStringRecord(Reflect.get(value, 'dependencies'), 'dependencies'),
+    devDependencies: readStringRecord(Reflect.get(value, 'devDependencies'), 'devDependencies'),
+  };
+}
+
+/*** Read one string-valued dependency section from the generated package fixture. */
+function readStringRecord(value: unknown, label: string): Readonly<Record<string, string>> {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    throw new Error(`Generated package test fixture must define ${label}.`);
+  }
+  return Object.fromEntries(
+    Object.entries(value).map(([key, entry]) => {
+      if (typeof entry !== 'string') {
+        throw new Error(`Generated package test fixture ${label}.${key} must be a string.`);
+      }
+      return [key, entry] as const;
+    }),
+  );
 }
