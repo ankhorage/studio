@@ -1,4 +1,5 @@
 import type { UiNode } from '@ankhorage/contracts';
+import { ZORA_COMPONENT_META } from '@ankhorage/zora/metadata';
 import { describe, expect, test } from 'bun:test';
 
 import {
@@ -226,6 +227,32 @@ describe('@ankhorage/studio', () => {
 
     expect(insertion.insertedNodeId).toBe('text-created');
     expect(findNodeById(insertion.root, 'text-created')?.props).toEqual({ children: 'Text' });
+  });
+
+  test('exposes the ZORA RadioGroup as an enabled insert-catalog entry', () => {
+    const entry = buildInsertCatalogEntries({ componentMeta: ZORA_COMPONENT_META }).find(
+      (candidate) => candidate.id === 'component:RadioGroup',
+    );
+
+    expect(entry).toMatchObject({
+      componentType: 'RadioGroup',
+      kind: 'component',
+      label: 'Radio button group',
+      status: 'enabled',
+    });
+
+    if (!entry) {
+      throw new Error('Expected the ZORA RadioGroup catalog entry.');
+    }
+
+    expect(
+      createNodeFromCatalogEntry(entry, ZORA_COMPONENT_META, () => 'radio-group-created'),
+    ).toEqual({
+      id: 'radio-group-created',
+      type: 'RadioGroup',
+      props: ZORA_COMPONENT_META.RadioGroup?.blueprint?.defaultProps,
+      children: [],
+    });
   });
 
   test('moves a node to a resolved placement', () => {

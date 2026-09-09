@@ -69,6 +69,8 @@
     "typescript": "~6.0.3"
   },
   "overrides": {
-    "@ankhorage/repository": "0.4.5"
+    "@ankhorage/repository": "0.4.5",
+    "@ankhorage/templates": "9.7.1",
+    "@ankhorage/zora": "4.5.0"
   }
 }

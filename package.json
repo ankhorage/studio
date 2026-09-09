@@ -1,6 +1,6 @@
 {
   "name": "@ankhorage/studio",
-  "version": "2.4.7",
+  "version": "2.4.8",
   "description": "Studio authoring package for Ankhorage apps",
   "license": "MIT",
   "homepage": "https://github.com/ankhorage/studio#readme",
@@ -217,8 +217,8 @@
     "@ankhorage/supabase-auth": "^1.2.11",
     "@ankhorage/supabase-storage": "^0.2.5",
     "@ankhorage/supabase-vault": "^0.2.11",
-    "@ankhorage/templates": "^9.7.1",
     "@ankhorage/utility": "^0.6.0",
+    "@ankhorage/templates": "^9.7.1",
     "@ankhorage/zora": "^4.5.0",
     "@ankhorage/zora-chess": "^0.2.0",
     "@ankhorage/zora-tabletop": "^0.1.0",

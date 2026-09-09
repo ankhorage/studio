@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.4.8
+
+### Patch Changes
+
+- 3572825: Expose ZORA's RadioGroup in the Studio insert toolbox and load the released SharkPrey template.
+
 ## 2.4.7
 
 ### Patch Changes
