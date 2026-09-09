@@ -2,8 +2,10 @@ import { spawn } from 'node:child_process';
 import { access } from 'node:fs/promises';
 import path from 'node:path';
 
+import { syncGeneratedPackagePolicyAsync } from './syncGeneratedPackagePolicyAsync';
+
 /***
- * Reconcile one generated app's install, Devtools concerns, and frozen lockfile entirely inside its package root.
+ * Reconcile one generated app's package policy, install, Devtools concerns, and frozen lockfile entirely inside its package root.
  * @todo Move project package reconciliation from the host adapter area into the projects application boundary.
  */
 export async function reconcileProjectPackageRootAsync(
@@ -11,6 +13,7 @@ export async function reconcileProjectPackageRootAsync(
   options: ProjectPackageReconciliationOptions = {},
 ): Promise<void> {
   const runCommandAsync = options.runCommandAsync ?? runProjectCommandAsync;
+  await syncGeneratedPackagePolicyAsync(projectPath);
   await runCommandAsync('bun', ['install'], projectPath);
 
   const ankhExecutable = path.join(
