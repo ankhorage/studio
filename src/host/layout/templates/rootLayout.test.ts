@@ -92,7 +92,13 @@ test('initializes the Studio provider with the runtime manifest', () => {
   expect(generated).not.toContain('resolveZoraProviderTheme');
   expect(generated).not.toContain('setThemeConfig');
   expect(generated).not.toContain('useRef(');
-  expect(generated).toContain('<AppBar title={appHeaderTitle} actions={studioAppBar.actions} />');
+  expect(generated).toContain('const appHeaderBackVisible = resolveStudioAppHeaderBackVisible({');
+  expect(generated).toContain(
+    'onBackPress={appHeaderBackVisible ? () => router.back() : undefined}',
+  );
+  expect(generated).toContain("icon={{ name: 'arrow-back-outline' }}");
+  expect(generated).toContain('label="Back"');
+  expect(generated).toContain('onPress={onBackPress}');
   expect(generated).not.toContain('appMode={studioAppBar.appMode}');
   expect(generated).not.toContain('overflow={studioAppBar.overflow}');
   expect(generated).toContain('<GeneratedStatusBar />');

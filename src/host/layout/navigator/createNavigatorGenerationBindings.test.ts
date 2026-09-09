@@ -70,6 +70,9 @@ describe('createNavigatorGenerationBindings', () => {
     expect(
       result.files.find(({ path }) => path.endsWith('navigatorIconBindings.ts'))?.content,
     ).toContain("case 'train-icon':");
+    expect(
+      result.files.find(({ path }) => path.endsWith('navigatorIconBindings.ts'))?.content,
+    ).toContain("return requireBundledNavigatorIconSource('assets/authoring/train.svg');");
     expect(result.files.map(({ path }) => path)).toEqual([
       'src/generated/navigatorScreenBindings.ts',
       'src/generated/navigatorGuardBindings.ts',

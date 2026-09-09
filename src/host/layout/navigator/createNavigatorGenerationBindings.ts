@@ -179,7 +179,7 @@ function createIconBindingFile(
     }
     const source =
       asset.source.kind === 'bundled'
-        ? `bundledMediaRegistry['${escapeStringLiteral(asset.source.path)}']`
+        ? `requireBundledNavigatorIconSource('${escapeStringLiteral(asset.source.path)}')`
         : `'${escapeStringLiteral(asset.source.url)}'`;
     return `    case '${escapeStringLiteral(mediaId)}':
       return ${source};`;
@@ -188,6 +188,15 @@ function createIconBindingFile(
   return {
     path: 'src/generated/navigatorIconBindings.ts',
     content: `import { bundledMediaRegistry } from '@/generated/bundledMediaRegistry';
+
+/*** Resolve one manifest-validated bundled navigation icon without exposing an optional source. */
+function requireBundledNavigatorIconSource(path: string) {
+  const source = bundledMediaRegistry[path];
+  if (source === undefined) {
+    throw new Error(\`Bundled navigation icon source '\${path}' is unavailable.\`);
+  }
+  return source;
+}
 
 export function resolveNavigatorIconSource(reference: { mediaId: string }) {
   switch (reference.mediaId) {

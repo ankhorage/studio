@@ -373,11 +373,12 @@ export class GeneratedAppFileGenerator {
         includeStudio ? '' : 'ZORA_CORE_PLUGIN',
         'useZoraTheme',
         includeStudio ? 'AppBar' : '',
+        includeStudio ? 'IconButton' : '',
       ]
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
-      `import { Stack, ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'type Href, useRouter'} } from 'expo-router';`,
+      `import { Stack, ${includeStudio ? 'useGlobalSearchParams, usePathname, useRouter' : 'type Href, useRouter'} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import { useEffect, useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
@@ -447,11 +448,12 @@ export class GeneratedAppFileGenerator {
         includeStudio ? '' : 'ZORA_CORE_PLUGIN',
         'useZoraTheme',
         includeStudio ? 'AppBar' : '',
+        includeStudio ? 'IconButton' : '',
       ]
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
-      `import { Slot${includeStudio ? ', useGlobalSearchParams, usePathname' : ', type Href, useRouter'} } from 'expo-router';`,
+      `import { Slot${includeStudio ? ', useGlobalSearchParams, usePathname, useRouter' : ', type Href, useRouter'} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import React, { ${includeStudio ? 'useEffect, ' : ''}useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,

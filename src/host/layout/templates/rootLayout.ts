@@ -172,6 +172,15 @@ function resolveAppHeaderTitleForScreenId(
   return route?.label ?? screen.title ?? screen.name;
 }
 
+/*** Resolve whether the active route explicitly requests back navigation in the external app bar. */
+function resolveAppHeaderBackVisibleForScreenId(
+  manifest: AppManifest,
+  screenId: string | null | undefined,
+): boolean {
+  if (!screenId) return false;
+  return findRouteByScreenId(manifest.navigator, screenId)?.stackOptions?.headerBackVisible === true;
+}
+
 function resolveStudioAppHeaderTitle(args: {
   runtimeManifest: AppManifest;
   studioManifest: AppManifest | null;
@@ -190,6 +199,31 @@ function resolveStudioAppHeaderTitle(args: {
   }
 
   return resolveAppHeaderTitle(runtimeManifest, pathname);
+}
+
+/*** Resolve back-button visibility from the same runtime or preview route that owns the app-bar title. */
+function resolveStudioAppHeaderBackVisible(args: {
+  runtimeManifest: AppManifest;
+  studioManifest: AppManifest | null;
+  previewMode: boolean;
+  activeScreenId: string | null;
+  pathname: string;
+}): boolean {
+  const { runtimeManifest, studioManifest, previewMode, activeScreenId, pathname } = args;
+
+  if (previewMode) {
+    return resolveAppHeaderBackVisibleForScreenId(
+      studioManifest ?? runtimeManifest,
+      activeScreenId,
+    );
+  }
+
+  const screenId = resolveScreenIdForPathname(
+    runtimeManifest.navigator,
+    pathname,
+    runtimeManifest.screens,
+  );
+  return resolveAppHeaderBackVisibleForScreenId(runtimeManifest, screenId);
 }
 `;
 
@@ -469,6 +503,7 @@ function StudioShell({
   appLocation: string;
   shouldMountAppHeader: boolean;
 }) {
+  const router = useRouter();
   const {
     activeCanvasDragNodeId,
     activeScreenId,
@@ -513,8 +548,18 @@ function StudioShell({
     activeScreenId,
     pathname: appPathname,
   });
+  const appHeaderBackVisible = resolveStudioAppHeaderBackVisible({
+    runtimeManifest,
+    studioManifest,
+    previewMode,
+    activeScreenId,
+    pathname: appPathname,
+  });
   const header = shouldMountAppHeader ? (
-    <StudioAppHeader appHeaderTitle={appHeaderTitle} />
+    <StudioAppHeader
+      appHeaderTitle={appHeaderTitle}
+      onBackPress={appHeaderBackVisible ? () => router.back() : undefined}
+    />
   ) : undefined;
   const studioRuntimeManifest = studioManifest ?? runtimeManifest;
   const activeStudioTheme =
@@ -566,12 +611,32 @@ function StudioShell({
   );
 }
 
-function StudioAppHeader({ appHeaderTitle }: { appHeaderTitle: string }) {
+function StudioAppHeader({
+  appHeaderTitle,
+  onBackPress,
+}: {
+  appHeaderTitle: string;
+  onBackPress?: () => void;
+}) {
   const studioAppBar = useStudioAppBarAugmentation();
 
   return (
     <>
-      <AppBar title={appHeaderTitle} actions={studioAppBar.actions} />
+      <AppBar
+        title={appHeaderTitle}
+        leading={
+          onBackPress ? (
+            <IconButton
+              icon={{ name: 'arrow-back-outline' }}
+              label="Back"
+              variant="ghost"
+              color="neutral"
+              onPress={onBackPress}
+            />
+          ) : undefined
+        }
+        actions={studioAppBar.actions}
+      />
       {studioAppBar.overlays}
     </>
   );
