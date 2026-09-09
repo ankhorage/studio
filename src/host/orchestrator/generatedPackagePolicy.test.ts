@@ -1,13 +1,13 @@
 import { expect, test } from 'bun:test';
 
 import { getGeneratedPackagePolicy } from './generatedPackagePolicy';
-import { getGeneratedPackageJson } from './getGeneratedPackageJson';
+import { getPackageJson } from './templates';
 
 const WEB_TARGETS = { web: { enabled: true } } as const;
 
 test('derives generated dependency ranges from owner package metadata', () => {
   const policy = getGeneratedPackagePolicy();
-  const packageJson = getGeneratedPackageJson({
+  const packageJson = getPackageJson({
     name: 'fixture',
     includeStudio: true,
     authProvider: 'supabase',
@@ -43,7 +43,7 @@ test('derives generated dependency ranges from owner package metadata', () => {
 });
 
 test('does not introduce optional generated dependencies when their capability is disabled', () => {
-  const packageJson = getGeneratedPackageJson({
+  const packageJson = getPackageJson({
     name: 'standalone',
     includeStudio: false,
     targets: WEB_TARGETS,
