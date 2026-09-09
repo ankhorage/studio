@@ -56,3 +56,26 @@ test('runs installs and only app-level Devtools concerns from the project root',
     { command: 'bun', args: ['install', '--frozen-lockfile'], cwd: projectPath },
   ]);
 });
+
+test('runs full Devtools synchronization when preparing a standalone repository', async () => {
+  const projectPath = await mkdtemp(path.join(tmpdir(), 'ankh-project-repository-'));
+  temporaryDirectories.push(projectPath);
+  const ankhExecutable = path.join(projectPath, 'node_modules', '.bin', 'ankh');
+  await mkdir(path.dirname(ankhExecutable), { recursive: true });
+  await writeFile(ankhExecutable, '', 'utf8');
+  const calls: { command: string; args: readonly string[]; cwd: string }[] = [];
+
+  await reconcileProjectPackageRootAsync(projectPath, {
+    devtoolsScope: 'repository',
+    runCommandAsync: async (command, args, cwd) => {
+      await Promise.resolve();
+      calls.push({ command, args, cwd });
+    },
+  });
+
+  expect(calls).toEqual([
+    { command: 'bun', args: ['install'], cwd: projectPath },
+    { command: ankhExecutable, args: ['devtools', 'sync', '.'], cwd: projectPath },
+    { command: 'bun', args: ['install', '--frozen-lockfile'], cwd: projectPath },
+  ]);
+});
