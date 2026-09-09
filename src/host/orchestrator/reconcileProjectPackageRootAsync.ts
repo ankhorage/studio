@@ -16,6 +16,10 @@ export async function reconcileProjectPackageRootAsync(
   await syncGeneratedPackagePolicyAsync(projectPath);
   await runCommandAsync('bun', ['install'], projectPath);
 
+  if (options.devtoolsScope === 'repository') {
+    await runCommandAsync('bun', ['update', '@ankhorage/devtools', '--latest'], projectPath);
+  }
+
   const ankhExecutable = path.join(
     projectPath,
     'node_modules',
