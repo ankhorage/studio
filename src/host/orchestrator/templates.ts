@@ -205,6 +205,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ...baseConfig,
     name: ${serializeStringLiteral(name)},
     slug: ${serializeStringLiteral(slug)},
+    owner: 'ankhorage',
     plugins: [...(config.plugins ?? []), ...GENERATED_PLUGINS],
     experiments: {
       ...config.experiments,
