@@ -171,7 +171,9 @@ export class ProjectManager {
   async connectProjectRepository(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
     const manifest = await this.getProjectManifest(projectId);
-    await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
+    await this.dependencies.reconcileProjectPackageRootAsync(projectPath, {
+      devtoolsScope: 'repository',
+    });
     await this.scaffolder.ensureAppGitIgnore(projectPath);
 
     return await this.dependencies.connectGitHubRepositoryAsync({

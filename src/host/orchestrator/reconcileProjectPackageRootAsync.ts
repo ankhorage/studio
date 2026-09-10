@@ -2,8 +2,10 @@ import { spawn } from 'node:child_process';
 import { access } from 'node:fs/promises';
 import path from 'node:path';
 
+import { syncGeneratedPackagePolicyAsync } from './syncGeneratedPackagePolicyAsync';
+
 /***
- * Reconcile one generated app's install, Devtools app concerns, and frozen lockfile entirely inside its package root.
+ * Reconcile one generated app's package policy, install, Devtools concerns, and frozen lockfile entirely inside its package root.
  * @todo Move project package reconciliation from the host adapter area into the projects application boundary.
  */
 export async function reconcileProjectPackageRootAsync(
@@ -11,7 +13,12 @@ export async function reconcileProjectPackageRootAsync(
   options: ProjectPackageReconciliationOptions = {},
 ): Promise<void> {
   const runCommandAsync = options.runCommandAsync ?? runProjectCommandAsync;
+  await syncGeneratedPackagePolicyAsync(projectPath);
   await runCommandAsync('bun', ['install'], projectPath);
+
+  if (options.devtoolsScope === 'repository') {
+    await runCommandAsync('bun', ['update', '@ankhorage/devtools', '--latest'], projectPath);
+  }
 
   const ankhExecutable = path.join(
     projectPath,
@@ -21,8 +28,12 @@ export async function reconcileProjectPackageRootAsync(
   );
   await access(ankhExecutable);
 
-  for (const scope of DEVTOOLS_APP_SCOPES) {
-    await runCommandAsync(ankhExecutable, ['devtools', scope, 'sync', '.'], projectPath);
+  if (options.devtoolsScope === 'repository') {
+    await runCommandAsync(ankhExecutable, ['devtools', 'sync', '.'], projectPath);
+  } else {
+    for (const scope of DEVTOOLS_APP_SCOPES) {
+      await runCommandAsync(ankhExecutable, ['devtools', scope, 'sync', '.'], projectPath);
+    }
   }
 
   await runCommandAsync('bun', ['install', '--frozen-lockfile'], projectPath);
@@ -34,6 +45,7 @@ const COMMAND_KILL_GRACE_MS = 5_000;
 const DEVTOOLS_APP_SCOPES = ['package', 'eslint', 'prettier', 'knip'] as const;
 
 interface ProjectPackageReconciliationOptions {
+  readonly devtoolsScope?: 'app' | 'repository';
   readonly runCommandAsync?: ProjectCommandRunner;
 }
 
