@@ -1,5 +1,13 @@
 # @ankhorage/studio
 
+## 2.4.10
+
+### Patch Changes
+
+- 605d390: Make generated app repositories inherit canonical Renovate and CI automation when connected to
+  GitHub, and reconcile generated dependency ranges from their Renovate-managed owner package
+  metadata before installation.
+
 ## 2.4.9
 
 ### Patch Changes
