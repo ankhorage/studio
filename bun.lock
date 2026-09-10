@@ -9,7 +9,7 @@
         "@ankhorage/contracts": "^12.0.1",
         "@ankhorage/data-sources": "^2.0.3",
         "@ankhorage/deploy": "^0.12.5",
-        "@ankhorage/expo-runtime": "^3.2.12",
+        "@ankhorage/expo-runtime": "^3.2.13",
         "@ankhorage/infra": "^4.1.10",
         "@ankhorage/navigator": "^3.2.4",
         "@ankhorage/orchestrator": "^0.3.2",
