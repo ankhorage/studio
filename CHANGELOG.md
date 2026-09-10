@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.4.9
+
+### Patch Changes
+
+- 93da1f6: Set ankhorage as the Expo owner in generated app config and keep the generated Utility dependency aligned with Studio.
+
 ## 2.4.8
 
 ### Patch Changes

@@ -26,6 +26,16 @@ describe('generated OAuth scaffold templates', () => {
     expect(appConfig).toContain('...(config.plugins ?? []), ...GENERATED_PLUGINS');
   });
 
+  it('declares the Ankhorage Expo owner in generated app config', () => {
+    const appConfig = getAppConfigTs({
+      name: 'Generated app',
+      slug: 'generated-app',
+      targets: { web: { enabled: true } },
+    });
+
+    expect(appConfig).toContain("owner: 'ankhorage'");
+  });
+
   it('generates app-owned EAS profiles and an isolated Expo 57 Metro resolver', () => {
     const eas = JSON.parse(getEasJson()) as Record<string, unknown>;
     const metro = getMetroConfigJs();
