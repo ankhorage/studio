@@ -1,5 +1,5 @@
 sequenceDiagram
-  participant participant_collectObjectPaths as collectObjectPaths
+  participant participant_collectNestedPaths as collectNestedPaths
   participant participant_collectStudioResponsePaths as collectStudioResponsePaths
   participant participant_resolveSchemaFields as resolveSchemaFields
   participant participant_resolveSchemaReference as resolveSchemaReference
@@ -18,11 +18,13 @@ sequenceDiagram
   participant_resolveStudioSchemaValueMeta->>participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
   participant_resolveStudioSchemaValueMeta-->>participant_resolveStudioSchemaValueMeta: return
   participant_resolveStudioSchemaValueMeta-->>participant_collectStudioResponsePaths: return
-  participant_collectStudioResponsePaths->>participant_collectObjectPaths: collectObjectPaths()
-  participant_collectObjectPaths->>participant_resolveSchemaReference: resolveSchemaReference()
-  participant_resolveSchemaReference-->>participant_collectObjectPaths: return
-  participant_collectObjectPaths->>participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
-  participant_resolveStudioSchemaValueMeta-->>participant_collectObjectPaths: return
-  participant_collectObjectPaths->>participant_collectObjectPaths: collectObjectPaths()
-  participant_collectObjectPaths-->>participant_collectObjectPaths: return
-  participant_collectObjectPaths-->>participant_collectStudioResponsePaths: return
+  participant_collectStudioResponsePaths->>participant_collectNestedPaths: collectNestedPaths()
+  participant_collectNestedPaths->>participant_resolveSchemaReference: resolveSchemaReference()
+  participant_resolveSchemaReference-->>participant_collectNestedPaths: return
+  participant_collectNestedPaths->>participant_resolveSchemaType: resolveSchemaType()
+  participant_resolveSchemaType-->>participant_collectNestedPaths: return
+  participant_collectNestedPaths->>participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
+  participant_resolveStudioSchemaValueMeta-->>participant_collectNestedPaths: return
+  participant_collectNestedPaths->>participant_collectNestedPaths: collectNestedPaths()
+  participant_collectNestedPaths-->>participant_collectNestedPaths: return
+  participant_collectNestedPaths-->>participant_collectStudioResponsePaths: return

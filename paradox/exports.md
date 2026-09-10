@@ -4,13 +4,13 @@
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:446:14`
+Source: `src/index.ts:448:14`
 
 ## ActionDefinition
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:360:1`
+Source: `src/index.ts:361:1`
 
 ### Members
 
@@ -60,7 +60,7 @@ Assess whether an actual bindable value shape can satisfy an expected Studio bin
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1427:1`
+Source: `src/index.ts:1429:1`
 
 Build and deterministically sort Studio's component/recipe insert catalog from component metadata and recipes.
 @todo Move insert-catalog construction from `src/index.ts` into the insert domain.
@@ -75,7 +75,7 @@ Build and deterministically sort Studio's component/recipe insert catalog from c
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:745:1`
+Source: `src/index.ts:747:1`
 
 Return whether Studio component metadata permits one child type under a parent type.
 @todo Move this component-placement policy from `src/index.ts` into the `canvas/` or insert-authoring domain.
@@ -90,7 +90,7 @@ Return whether Studio component metadata permits one child type under a parent t
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:597:14`
+Source: `src/index.ts:599:14`
 
 Deep-clone a UiNode tree while assigning fresh identifiers and shallow-cloning node props.
 @utility @ankhorage/utility/tree
@@ -154,7 +154,7 @@ Collect response-path options from a schema for Studio binding authoring.
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1340:1`
+Source: `src/index.ts:1342:1`
 
 Materialize one enabled component or recipe catalog entry into a fresh UiNode tree.
 @todo Move insert-catalog node creation from `src/index.ts` into the insert domain.
@@ -279,7 +279,7 @@ Diagnose all authored prop and event bindings for one Studio component node.
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:619:14`
+Source: `src/index.ts:621:14`
 
 Find the first node with a matching id in a depth-first tree traversal.
 @utility @ankhorage/utility/tree
@@ -311,7 +311,7 @@ Find an option through the canonical keyed array lookup utility.
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:588:14`
+Source: `src/index.ts:590:14`
 
 Generate a compact time/random identifier with an optional lowercase prefix.
 @utility @ankhorage/utility/id
@@ -327,7 +327,7 @@ Generate a compact time/random identifier with an optional lowercase prefix.
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1250:1`
+Source: `src/index.ts:1252:1`
 
 Resolve Studio's display label for an insert-catalog category, falling back to the raw category id.
 @todo Move insert-catalog presentation metadata out of `src/index.ts` into the insert domain.
@@ -342,7 +342,7 @@ Resolve Studio's display label for an insert-catalog category, falling back to t
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:338:1`
+Source: `src/index.ts:339:1`
 
 ### Members
 
@@ -363,7 +363,7 @@ Source: `src/index.ts:338:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:320:1`
+Source: `src/index.ts:321:1`
 
 ### Members
 
@@ -377,19 +377,19 @@ Source: `src/index.ts:320:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:297:1`
+Source: `src/index.ts:298:1`
 
 ## InsertCatalogEntry
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:348:1`
+Source: `src/index.ts:349:1`
 
 ## InsertCatalogEntryBase
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:326:1`
+Source: `src/index.ts:327:1`
 
 ### Members
 
@@ -409,19 +409,19 @@ Source: `src/index.ts:326:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:294:1`
+Source: `src/index.ts:295:1`
 
 ## InsertCatalogEntryStatus
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:295:1`
+Source: `src/index.ts:296:1`
 
 ## InsertCatalogRecipeEntry
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:343:1`
+Source: `src/index.ts:344:1`
 
 ### Members
 
@@ -442,7 +442,7 @@ Source: `src/index.ts:343:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1027:1`
+Source: `src/index.ts:1029:1`
 
 Create and insert one Studio node after validating its requested placement.
 @todo Move Studio insertion orchestration from `src/index.ts` into the insert/canvas domain.
@@ -457,7 +457,7 @@ Create and insert one Studio node after validating its requested placement.
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:962:1`
+Source: `src/index.ts:964:1`
 
 ### Members
 
@@ -472,7 +472,7 @@ Source: `src/index.ts:962:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:969:1`
+Source: `src/index.ts:971:1`
 
 ### Members
 
@@ -485,7 +485,7 @@ Source: `src/index.ts:969:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:305:1`
+Source: `src/index.ts:306:1`
 
 ### Members
 
@@ -501,7 +501,7 @@ Source: `src/index.ts:305:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:313:1`
+Source: `src/index.ts:314:1`
 
 ### Members
 
@@ -516,7 +516,7 @@ Source: `src/index.ts:313:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:300:1`
+Source: `src/index.ts:301:1`
 
 ### Members
 
@@ -545,7 +545,7 @@ List manifest media assets, optionally filter by kind, and sort them by name.
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1175:1`
+Source: `src/index.ts:1177:1`
 
 Execute a validated Studio node move as immutable removal followed by insertion.
 @todo Move node-move orchestration from `src/index.ts` into the canvas domain.
@@ -560,7 +560,7 @@ Execute a validated Studio node move as immutable removal followed by insertion.
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:1054:1`
+Source: `src/index.ts:1056:1`
 
 ### Members
 
@@ -575,7 +575,7 @@ Source: `src/index.ts:1054:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:1061:1`
+Source: `src/index.ts:1063:1`
 
 ### Members
 
@@ -588,7 +588,7 @@ Source: `src/index.ts:1061:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:255:1`
+Source: `src/index.ts:256:1`
 
 ### Members
 
@@ -603,13 +603,13 @@ Source: `src/index.ts:255:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:262:1`
+Source: `src/index.ts:263:1`
 
 ## PlacementFailureReason
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:275:1`
+Source: `src/index.ts:276:1`
 
 ### Members
 
@@ -622,19 +622,19 @@ Source: `src/index.ts:275:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:253:1`
+Source: `src/index.ts:254:1`
 
 ## PlacementResolutionResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:287:1`
+Source: `src/index.ts:288:1`
 
 ## PlacementValidationResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:280:1`
+Source: `src/index.ts:281:1`
 
 ## ProjectAuthDiagnostic
 
@@ -800,7 +800,7 @@ Parse an unknown value as an exact one-key media-reference object.
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:656:14`
+Source: `src/index.ts:658:14`
 
 Immutably remove a node by id from a UiNode tree and preserve unchanged branches by reference.
 @utility @ankhorage/utility/tree
@@ -868,7 +868,7 @@ Remove one Studio prop binding while leaving unrelated component bindings intact
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:917:1`
+Source: `src/index.ts:919:1`
 
 Resolve the preferred insertion placement by trying the selected node, its sibling position, then the screen root.
 @todo Move Studio default insertion policy from `src/index.ts` into the insert/canvas domain.
@@ -883,7 +883,7 @@ Resolve the preferred insertion placement by trying the selected node, its sibli
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1475:1`
+Source: `src/index.ts:1477:1`
 
 Resolve enabled/disabled insert-catalog state against the active screen and selected-node placement context.
 @todo Move context-sensitive insert catalog projection from `src/index.ts` into the insert/canvas application domain.
@@ -898,7 +898,7 @@ Resolve enabled/disabled insert-catalog state against the active screen and sele
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:852:1`
+Source: `src/index.ts:854:1`
 
 Resolve a requested inside/before/after insertion target to a validated Studio placement.
 @todo Move insertion-placement policy from `src/index.ts` into the `canvas/`/insert domain.
@@ -913,7 +913,7 @@ Resolve a requested inside/before/after insertion target to a validated Studio p
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1103:1`
+Source: `src/index.ts:1105:1`
 
 Validate and resolve a requested Studio node move after accounting for source removal and descendant/no-op invariants.
 @todo Move node-move policy from `src/index.ts` into the canvas domain.
@@ -1009,7 +1009,7 @@ Resolve a contracts data schema into the bindable value metadata used by Studio 
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:1213:14`
+Source: `src/index.ts:1215:14`
 
 | id             | label          | description                              | category |
 | -------------- | -------------- | ---------------------------------------- | -------- |
@@ -1021,13 +1021,13 @@ Source: `src/index.ts:1213:14`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:95:14`
+Source: `src/index.ts:96:14`
 
 ## STUDIO_PACKAGE_NAME
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:87:14`
+Source: `src/index.ts:88:14`
 
 @todo Make `src/index.ts` a public exports-only entrypoint. Package metadata, authoring contracts, tree editing, placement policy, templates and insert-catalog implementations need canonical owner modules and should only be re-exported here.
 
@@ -1035,13 +1035,13 @@ Source: `src/index.ts:87:14`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:129:14`
+Source: `src/index.ts:130:14`
 
 ## StudioActionPayloadField
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:352:1`
+Source: `src/index.ts:353:1`
 
 ### Members
 
@@ -1055,31 +1055,31 @@ Source: `src/index.ts:352:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:350:1`
+Source: `src/index.ts:351:1`
 
 ## StudioActionPayloadSchema
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:358:1`
+Source: `src/index.ts:359:1`
 
 ## StudioAdminRouteId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:173:1`
+Source: `src/index.ts:174:1`
 
 ## StudioAdminRoutePath
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:219:1`
+Source: `src/index.ts:220:1`
 
 ## StudioAdminStaticRoutePath
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:199:1`
+Source: `src/index.ts:200:1`
 
 ## StudioAuthoringComponentMeta
 
@@ -1216,13 +1216,13 @@ Source: `src/bindingAuthoringContracts.ts:29:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:384:1`
+Source: `src/index.ts:385:1`
 
 ## StudioComponentBlueprint
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:368:1`
+Source: `src/index.ts:369:1`
 
 ### Members
 
@@ -1235,7 +1235,7 @@ Source: `src/index.ts:368:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:373:1`
+Source: `src/index.ts:374:1`
 
 ### Members
 
@@ -1250,13 +1250,13 @@ Source: `src/index.ts:373:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:380:1`
+Source: `src/index.ts:381:1`
 
 ## StudioContextValue
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:399:1`
+Source: `src/index.ts:400:1`
 
 ### Members
 
@@ -1268,6 +1268,7 @@ Source: `src/index.ts:399:1`
 | activeScreenId                      | property | `string \| null`                                                                                          | yes      |             |
 | addScreen                           | property | `(name: string) => void`                                                                                  | yes      |             |
 | addTheme                            | property | `() => void`                                                                                              | yes      |             |
+| bindableComponentMeta               | property | `Readonly<Record<string, import("@ankhorage/contracts").UiComponentMeta>>`                                | yes      |             |
 | componentMeta                       | property | `StudioComponentMetaRegistry`                                                                             | yes      |             |
 | deleteMediaAsset                    | property | `(mediaId: string) => Promise<StudioMediaDeleteResult>`                                                   | yes      |             |
 | deleteNode                          | property | `(id: StudioNodeId) => void`                                                                              | yes      |             |
@@ -1316,13 +1317,13 @@ Source: `src/index.ts:399:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:392:1`
+Source: `src/index.ts:393:1`
 
 ## StudioIdGenerator
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:382:1`
+Source: `src/index.ts:383:1`
 
 ## StudioInstancePropertyEditorKind
 
@@ -1374,7 +1375,7 @@ Source: `src/propertiesAuthoringModel.ts:46:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:228:1`
+Source: `src/index.ts:229:1`
 
 ## StudioMediaAssetRemovalResult
 
@@ -1516,7 +1517,7 @@ Source: `src/moduleAdminContracts.ts:4:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:169:1`
+Source: `src/index.ts:170:1`
 
 ## StudioModuleOperationResult
 
@@ -1564,13 +1565,13 @@ Source: `src/moduleAdminContracts.ts:18:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:167:1`
+Source: `src/index.ts:168:1`
 
 ## StudioPackageBoundary
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:89:1`
+Source: `src/index.ts:90:1`
 
 ### Members
 
@@ -1584,13 +1585,13 @@ Source: `src/index.ts:89:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:172:1`
+Source: `src/index.ts:173:1`
 
 ## StudioProjectId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:165:1`
+Source: `src/index.ts:166:1`
 
 ## StudioProjectSummary
 
@@ -1617,25 +1618,25 @@ Source: `src/projectWorkspaceContracts.ts:3:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:163:1`
+Source: `src/index.ts:164:1`
 
 ## StudioSaveStatus
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:171:1`
+Source: `src/index.ts:172:1`
 
 ## StudioScreenId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:168:1`
+Source: `src/index.ts:169:1`
 
 ## StudioSelectionState
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:235:1`
+Source: `src/index.ts:236:1`
 
 ### Members
 
@@ -1651,13 +1652,13 @@ Source: `src/index.ts:235:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:166:1`
+Source: `src/index.ts:167:1`
 
 ## StudioSessionState
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:243:1`
+Source: `src/index.ts:244:1`
 
 ### Members
 
@@ -1732,19 +1733,19 @@ Source: `src/templateCatalogContracts.ts:24:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:230:1`
+Source: `src/index.ts:231:1`
 
 ## TPL_SCREEN_EMPTY
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:538:14`
+Source: `src/index.ts:540:14`
 
 ## updateNodeInTree
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:628:14`
+Source: `src/index.ts:630:14`
 
 Immutably update one UiNode by id while preserving Studio's alias/style versus props patch semantics.
 @utility @ankhorage/utility/tree
@@ -1796,7 +1797,7 @@ Add or replace one Studio prop binding for a component node.
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1273:1`
+Source: `src/index.ts:1275:1`
 
 Validate an insert recipe recursively against Studio component metadata and allowed-child constraints.
 @todo Move recipe validation from `src/index.ts` into the insert/templates domain.
@@ -1812,7 +1813,7 @@ Validate an insert recipe recursively against Studio component metadata and allo
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:761:1`
+Source: `src/index.ts:763:1`
 
 Validate one resolved Studio placement against parent existence, child policy, index bounds and sibling-reference invariants.
 @todo Move placement validation from the public entrypoint into the `canvas/` domain.

@@ -46,6 +46,7 @@ graph LR
   module_src_canvasDragModel_ts["src/canvasDragModel.ts"]
   module_src_canvasDropZones_test_ts["src/canvasDropZones.test.ts"]
   module_src_canvasDropZones_ts["src/canvasDropZones.ts"]
+  module_src_cli_index_test_ts["src/cli/index.test.ts"]
   module_src_cli_index_ts["src/cli/index.ts"]
   module_src_contractGuards_test_ts["src/contractGuards.test.ts"]
   module_src_contractGuards_ts["src/contractGuards.ts"]
@@ -181,10 +182,13 @@ graph LR
   module_src_host_modules_runtime_LocalFsTargetAdapter_ts["src/host/modules/runtime/LocalFsTargetAdapter.ts"]
   module_src_host_oauthFixtureConsumer_smoke_test_ts["src/host/oauthFixtureConsumer.smoke.test.ts"]
   module_src_host_orchestrator_androidRunTemplate_test_ts["src/host/orchestrator/androidRunTemplate.test.ts"]
+  module_src_host_orchestrator_applyGeneratedPackagePolicy_ts["src/host/orchestrator/applyGeneratedPackagePolicy.ts"]
   module_src_host_orchestrator_appTargetGeneration_test_ts["src/host/orchestrator/appTargetGeneration.test.ts"]
   module_src_host_orchestrator_generatedAppFiles_test_ts["src/host/orchestrator/generatedAppFiles.test.ts"]
   module_src_host_orchestrator_generatedAppFiles_ts["src/host/orchestrator/generatedAppFiles.ts"]
   module_src_host_orchestrator_generatedDependencyContract_test_ts["src/host/orchestrator/generatedDependencyContract.test.ts"]
+  module_src_host_orchestrator_generatedPackagePolicy_test_ts["src/host/orchestrator/generatedPackagePolicy.test.ts"]
+  module_src_host_orchestrator_generatedPackagePolicy_ts["src/host/orchestrator/generatedPackagePolicy.ts"]
   module_src_host_orchestrator_GeneratedRouteFileOwnership_test_ts["src/host/orchestrator/GeneratedRouteFileOwnership.test.ts"]
   module_src_host_orchestrator_GeneratedRouteFileOwnership_ts["src/host/orchestrator/GeneratedRouteFileOwnership.ts"]
   module_src_host_orchestrator_infraSession_test_ts["src/host/orchestrator/infraSession.test.ts"]
@@ -211,8 +215,10 @@ graph LR
   module_src_host_orchestrator_semverRange_ts["src/host/orchestrator/semverRange.ts"]
   module_src_host_orchestrator_studioInfraUp_test_ts["src/host/orchestrator/studioInfraUp.test.ts"]
   module_src_host_orchestrator_studioInfraUp_ts["src/host/orchestrator/studioInfraUp.ts"]
+  module_src_host_orchestrator_syncGeneratedPackagePolicyAsync_ts["src/host/orchestrator/syncGeneratedPackagePolicyAsync.ts"]
   module_src_host_orchestrator_templates_test_ts["src/host/orchestrator/templates.test.ts"]
   module_src_host_orchestrator_templates_ts["src/host/orchestrator/templates.ts"]
+  module_src_host_orchestrator_templateSources_ts["src/host/orchestrator/templateSources.ts"]
   module_src_host_secrets_bunSupabaseVaultClient_ts["src/host/secrets/bunSupabaseVaultClient.ts"]
   module_src_host_secrets_projectSecretService_test_ts["src/host/secrets/projectSecretService.test.ts"]
   module_src_host_secrets_projectSecretService_ts["src/host/secrets/projectSecretService.ts"]
@@ -418,6 +424,7 @@ graph LR
   module_src_ui_admin_pages_bindings_EventBindingsCard_tsx["src/ui/admin/pages/bindings/EventBindingsCard.tsx"]
   module_src_ui_admin_pages_bindings_PropertyBindingEditor_tsx["src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"]
   module_src_ui_admin_pages_bindings_PropertyBindingsCard_tsx["src/ui/admin/pages/bindings/PropertyBindingsCard.tsx"]
+  module_src_ui_admin_pages_BindingsAdminPage_test_ts["src/ui/admin/pages/BindingsAdminPage.test.ts"]
   module_src_ui_admin_pages_BindingsAdminPage_tsx["src/ui/admin/pages/BindingsAdminPage.tsx"]
   module_src_ui_admin_pages_deploy_DeployAuthoredStateCard_tsx["src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"]
   module_src_ui_admin_pages_deploy_DeployControlResultView_tsx["src/ui/admin/pages/deploy/DeployControlResultView.tsx"]
@@ -566,6 +573,7 @@ graph LR
   module_src_canvasDropZones_test_ts --> module_src_canvasDropZones_ts
   module_src_canvasDropZones_test_ts --> module_src_index_ts
   module_src_canvasDropZones_ts --> module_src_index_ts
+  module_src_cli_index_test_ts --> module_src_cli_index_ts
   module_src_cli_index_ts --> module_src_host_createStudioHost_ts
   module_src_cli_index_ts --> module_src_host_http_server_ts
   module_src_cli_index_ts --> module_src_host_templates_index_ts
@@ -828,6 +836,7 @@ graph LR
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_smoke_createOAuthFixtureManifest_ts
   module_src_host_orchestrator_androidRunTemplate_test_ts --> module_src_host_orchestrator_scaffolder_ts
   module_src_host_orchestrator_androidRunTemplate_test_ts --> module_src_host_orchestrator_templates_ts
+  module_src_host_orchestrator_applyGeneratedPackagePolicy_ts --> module_src_host_orchestrator_generatedPackagePolicy_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts --> module_src_host_orchestrator_projectTargets_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_generatedAppFiles_test_ts --> module_src_host_orchestrator_generatedAppFiles_ts
@@ -835,6 +844,8 @@ graph LR
   module_src_host_orchestrator_generatedAppFiles_ts --> module_src_host_zoraExtensions_index_ts
   module_src_host_orchestrator_generatedDependencyContract_test_ts --> module_src_host_orchestrator_scaffolder_ts
   module_src_host_orchestrator_generatedDependencyContract_test_ts --> module_src_host_orchestrator_templates_ts
+  module_src_host_orchestrator_generatedPackagePolicy_test_ts --> module_src_host_orchestrator_generatedPackagePolicy_ts
+  module_src_host_orchestrator_generatedPackagePolicy_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_GeneratedRouteFileOwnership_test_ts --> module_src_host_orchestrator_GeneratedRouteFileOwnership_ts
   module_src_host_orchestrator_infraSession_test_ts --> module_src_host_orchestrator_infraSession_ts
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_modules_adminRuntime_ts
@@ -873,7 +884,10 @@ graph LR
   module_src_host_orchestrator_projectStore_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectStore_ts --> module_src_projectWorkspaceContracts_ts
   module_src_host_orchestrator_projectStoreSummary_test_ts --> module_src_host_orchestrator_projectStore_ts
+  module_src_host_orchestrator_reconcileProjectPackageRootAsync_test_ts --> module_src_host_orchestrator_generatedPackagePolicy_ts
   module_src_host_orchestrator_reconcileProjectPackageRootAsync_test_ts --> module_src_host_orchestrator_reconcileProjectPackageRootAsync_ts
+  module_src_host_orchestrator_reconcileProjectPackageRootAsync_test_ts --> module_src_host_orchestrator_templates_ts
+  module_src_host_orchestrator_reconcileProjectPackageRootAsync_ts --> module_src_host_orchestrator_syncGeneratedPackagePolicyAsync_ts
   module_src_host_orchestrator_resolveMutations_ts --> module_src_host_modules_catalog_ts
   module_src_host_orchestrator_resolveMutations_ts --> module_src_host_modules_layout_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_manifestSystem_index_ts
@@ -887,7 +901,10 @@ graph LR
   module_src_host_orchestrator_studioInfraUp_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_studioInfraUp_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_studioInfraUp_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+  module_src_host_orchestrator_syncGeneratedPackagePolicyAsync_ts --> module_src_host_orchestrator_applyGeneratedPackagePolicy_ts
   module_src_host_orchestrator_templates_test_ts --> module_src_host_orchestrator_templates_ts
+  module_src_host_orchestrator_templates_ts --> module_src_host_orchestrator_applyGeneratedPackagePolicy_ts
+  module_src_host_orchestrator_templates_ts --> module_src_host_orchestrator_templateSources_ts
   module_src_host_secrets_projectSecretService_test_ts --> module_src_authSettings_ts
   module_src_host_secrets_projectSecretService_test_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_secrets_projectSecretService_ts --> module_src_host_orchestrator_projectManager_ts
