@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.5.2
+
+### Patch Changes
+
+- b95d90f: Resolve native splash media references to materialized bundled asset paths when generating Expo app configuration.
+
 ## 2.5.1
 
 ### Patch Changes
