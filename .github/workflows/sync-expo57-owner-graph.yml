@@ -1,0 +1,131 @@
+name: Sync Expo 57 owner graph
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'fix/493-remove-studio-owner-overrides'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout implementation branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+
+      - name: Select released Expo Runtime owner
+        run: |
+          cat > .tmp-select-expo-runtime.ts <<'BUN'
+          const root = await Bun.file('package.json').json();
+          const app = await Bun.file('apps/studio/package.json').json();
+
+          root.dependencies['@ankhorage/expo-runtime'] = '^3.2.14';
+          app.dependencies['@ankhorage/expo-runtime'] = '^3.2.14';
+
+          await Bun.write('package.json', `${JSON.stringify(root, null, 2)}\n`);
+          await Bun.write('apps/studio/package.json', `${JSON.stringify(app, null, 2)}\n`);
+          BUN
+          bun .tmp-select-expo-runtime.ts
+          rm .tmp-select-expo-runtime.ts
+          bun install
+
+      - name: Synchronize package manifests from EXPO_PLATFORM
+        run: |
+          cat > .tmp-sync-expo-platform.ts <<'BUN'
+          import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
+
+          const root = await Bun.file('package.json').json();
+          const app = await Bun.file('apps/studio/package.json').json();
+
+          root.dependencies['expo-document-picker'] = EXPO_PLATFORM.packages.documentPicker.version;
+          root.dependencies['expo-file-system'] = EXPO_PLATFORM.packages.fileSystem.version;
+          root.dependencies['expo-image-picker'] = EXPO_PLATFORM.packages.imagePicker.version;
+
+          root.peerDependencies.expo = EXPO_PLATFORM.runtime.expo.version;
+          root.peerDependencies['expo-constants'] = EXPO_PLATFORM.packages.constants.version;
+          root.peerDependencies['expo-router'] = EXPO_PLATFORM.navigation.expoRouter.version;
+          root.peerDependencies['expo-status-bar'] = EXPO_PLATFORM.packages.statusBar.version;
+          root.peerDependencies.react = EXPO_PLATFORM.runtime.react.version;
+          root.peerDependencies['react-dom'] = EXPO_PLATFORM.runtime.reactDom.version;
+          root.peerDependencies['react-native'] = '0.86.x';
+          root.peerDependencies['react-native-gesture-handler'] =
+            EXPO_PLATFORM.animation.gestureHandler.version;
+          root.peerDependencies['react-native-reanimated'] = EXPO_PLATFORM.animation.reanimated.version;
+          root.peerDependencies['react-native-safe-area-context'] =
+            EXPO_PLATFORM.navigation.safeArea.version;
+          root.peerDependencies['react-native-screens'] = EXPO_PLATFORM.navigation.screens.version;
+          root.peerDependencies['react-native-web'] = EXPO_PLATFORM.runtime.reactNativeWeb.version;
+          root.peerDependencies['react-native-worklets'] = EXPO_PLATFORM.animation.worklets.version;
+
+          root.devDependencies['@types/node'] = EXPO_PLATFORM.tooling.nodeTypes.version;
+          root.devDependencies['@types/react'] = EXPO_PLATFORM.tooling.reactTypes.version;
+          root.devDependencies.typescript = EXPO_PLATFORM.tooling.typescript.version;
+
+          app.dependencies['@expo/metro-runtime'] = EXPO_PLATFORM.packages.metroRuntime.version;
+          app.dependencies.expo = EXPO_PLATFORM.runtime.expo.version;
+          app.dependencies['expo-constants'] = EXPO_PLATFORM.packages.constants.version;
+          app.dependencies['expo-dev-client'] = EXPO_PLATFORM.packages.devClient.version;
+          app.dependencies['expo-font'] = EXPO_PLATFORM.packages.font.version;
+          app.dependencies['expo-linking'] = EXPO_PLATFORM.packages.linking.version;
+          app.dependencies['expo-router'] = EXPO_PLATFORM.navigation.expoRouter.version;
+          app.dependencies['expo-splash-screen'] = EXPO_PLATFORM.packages.splashScreen.version;
+          app.dependencies['expo-status-bar'] = EXPO_PLATFORM.packages.statusBar.version;
+          app.dependencies.react = EXPO_PLATFORM.runtime.react.version;
+          app.dependencies['react-dom'] = EXPO_PLATFORM.runtime.reactDom.version;
+          app.dependencies['react-native'] = EXPO_PLATFORM.runtime.reactNative.version;
+          app.dependencies['react-native-gesture-handler'] =
+            EXPO_PLATFORM.animation.gestureHandler.version;
+          app.dependencies['react-native-reanimated'] = EXPO_PLATFORM.animation.reanimated.version;
+          app.dependencies['react-native-safe-area-context'] =
+            EXPO_PLATFORM.navigation.safeArea.version;
+          app.dependencies['react-native-screens'] = EXPO_PLATFORM.navigation.screens.version;
+          app.dependencies['react-native-web'] = EXPO_PLATFORM.runtime.reactNativeWeb.version;
+          app.dependencies['react-native-worklets'] = EXPO_PLATFORM.animation.worklets.version;
+
+          app.devDependencies['@types/node'] = EXPO_PLATFORM.tooling.nodeTypes.version;
+          app.devDependencies['@types/react'] = EXPO_PLATFORM.tooling.reactTypes.version;
+          app.devDependencies['expo-doctor'] = EXPO_PLATFORM.tooling.expoDoctor.version;
+          app.devDependencies.typescript = EXPO_PLATFORM.tooling.typescript.version;
+
+          await Bun.write('package.json', `${JSON.stringify(root, null, 2)}\n`);
+          await Bun.write('apps/studio/package.json', `${JSON.stringify(app, null, 2)}\n`);
+          BUN
+          bun .tmp-sync-expo-platform.ts
+          rm .tmp-sync-expo-platform.ts
+          bun install
+          bun install --cwd apps/studio
+
+      - name: Commit synchronized manifests and lockfiles
+        run: |
+          if git diff --quiet -- package.json bun.lock apps/studio/package.json apps/studio/bun.lock; then
+            echo 'Studio owner graph is already current.'
+            exit 0
+          fi
+
+          unexpected="$(git diff --name-only | grep -Ev '^(package.json|bun.lock|apps/studio/package.json|apps/studio/bun.lock)$' || true)"
+          if [ -n "$unexpected" ]; then
+            echo 'Synchronization changed unexpected files:' >&2
+            printf '%s\n' "$unexpected" >&2
+            exit 1
+          fi
+
+          git config user.name 'ankhorage-platform-sync[bot]'
+          git config user.email 'ankhorage-platform-sync[bot]@users.noreply.github.com'
+          git add package.json bun.lock apps/studio/package.json apps/studio/bun.lock
+          git commit -m 'fix: align Studio with Expo Runtime 3.2.14'
+          git push origin HEAD:${{ github.head_ref }}
