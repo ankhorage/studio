@@ -47,10 +47,7 @@ jobs:
         run: bun run test:acceptance:packed-studio-host
 
   studio-standalone:
-    if: >-
-      github.event_name != 'pull_request' ||
-      (github.event.pull_request.head.repo.full_name == github.repository &&
-       github.head_ref == 'fix/493-remove-studio-owner-overrides')
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
