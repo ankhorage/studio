@@ -1,5 +1,12 @@
 # @ankhorage/studio
 
+## 2.5.1
+
+### Patch Changes
+
+- 31ffefd: Remove stale first-party Studio owner overrides and align the published Expo compatibility metadata with
+  `@ankhorage/expo-runtime@3.2.14`.
+
 ## 2.5.0
 
 ### Minor Changes
