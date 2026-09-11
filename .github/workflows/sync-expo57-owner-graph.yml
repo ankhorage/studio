@@ -42,7 +42,18 @@ jobs:
           BUN
           bun .tmp-select-expo-runtime.ts
           rm .tmp-select-expo-runtime.ts
-          bun install
+
+          for attempt in 1 2 3 4 5 6; do
+            rm -rf "$HOME/.bun/install/cache"
+            if bun install; then
+              break
+            fi
+            if [ "$attempt" = 6 ]; then
+              echo '@ankhorage/expo-runtime@3.2.14 is still unavailable from the registry.' >&2
+              exit 1
+            fi
+            sleep 5
+          done
 
       - name: Synchronize package manifests from EXPO_PLATFORM
         run: |
