@@ -123,7 +123,7 @@ describe('studioSelectionModel', () => {
     const catalogRoot = {
       id: 'catalog-root',
       type: 'Screen',
-      children: [{ id: 'search-input', type: 'Input' }],
+      children: [{ id: 'search-input', type: 'TextInput' }],
     };
     const detailRoot = {
       id: 'detail-root',

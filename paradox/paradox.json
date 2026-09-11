@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.4.8",
+      "value": "v2.4.10",
       "color": "cb3837"
     },
     {
@@ -2340,6 +2340,7 @@
       "path": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/host/orchestrator/generatedPackagePolicy.ts",
         "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
         "src/host/smoke/createExpo57StudioStandaloneFixtureAsync.ts"
       ],
@@ -16484,7 +16485,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.test.ts",
-        "line": 360,
+        "line": 370,
         "column": 1
       }
     },
@@ -16493,7 +16494,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.test.ts",
-        "line": 369,
+        "line": 379,
         "column": 1
       }
     },
@@ -16592,7 +16593,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 219,
+        "line": 220,
         "column": 1
       }
     },
@@ -16601,7 +16602,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 858,
+        "line": 859,
         "column": 1
       }
     },
@@ -16610,7 +16611,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 974,
+        "line": 975,
         "column": 1
       }
     },
@@ -16619,7 +16620,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 990,
+        "line": 991,
         "column": 1
       }
     },
@@ -16628,7 +16629,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1016,
+        "line": 1017,
         "column": 1
       }
     },
@@ -16637,7 +16638,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1020,
+        "line": 1021,
         "column": 1
       }
     },
@@ -16646,7 +16647,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1053,
+        "line": 1054,
         "column": 1
       }
     },
@@ -17465,7 +17466,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 160,
+        "line": 163,
         "column": 1
       }
     },
@@ -17474,7 +17475,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 166,
+        "line": 169,
         "column": 1
       }
     },
@@ -17483,7 +17484,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 204,
+        "line": 207,
         "column": 1
       }
     },
@@ -17492,7 +17493,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 211,
+        "line": 214,
         "column": 1
       }
     },
@@ -17501,7 +17502,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 222,
+        "line": 225,
         "column": 1
       }
     },
@@ -17510,7 +17511,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 242,
+        "line": 245,
         "column": 1
       }
     },
@@ -17519,7 +17520,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 246,
+        "line": 249,
         "column": 1
       }
     },
@@ -17528,7 +17529,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 255,
+        "line": 258,
         "column": 1
       }
     },
@@ -17537,7 +17538,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 277,
+        "line": 280,
         "column": 1
       }
     },
@@ -22781,7 +22782,7 @@
     },
     {
       "name": "AnkhAdminShell",
-      "description": "Compose the Studio administration app bar, responsive navigation drawer/sidebar, and routed page content.\n@todo Keep this as package-wide admin UI composition; route construction/availability/active-state policy belongs to the routes domain and reusable responsive primitives belong to ZORA.",
+      "description": "Compose the Studio administration app bar, responsive navigation modal/sidebar, and routed page content.\n@todo Keep this as package-wide admin UI composition; route construction/availability/active-state policy belongs to the routes domain and reusable responsive primitives belong to ZORA.",
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminShell.tsx",
         "line": 38,
@@ -22811,7 +22812,7 @@
       "description": "Render navigation entries from the Studio admin-route registry using current availability and hierarchy state.",
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 135,
+        "line": 134,
         "column": 1
       }
     },
@@ -29030,6 +29031,11 @@
         "fromPath": "src/host/smoke/createStaticExportServer.test.ts",
         "toPath": "src/host/smoke/createStaticExportServer.ts",
         "sourcePath": "src/host/smoke/createStaticExportServer.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toPath": "src/host/orchestrator/generatedPackagePolicy.ts",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
       },
       {
         "fromPath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
@@ -52684,6 +52690,12 @@
       },
       {
         "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toSymbol": "getGeneratedPackagePolicy",
+        "callExpression": "getGeneratedPackagePolicy",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
         "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
@@ -52740,6 +52752,12 @@
         "fromSymbol": "writeInstalledPackageAsync",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "writeInstalledPackageAsync",
+        "toSymbol": "getGeneratedPackagePolicy",
+        "callExpression": "getGeneratedPackagePolicy",
         "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
       },
       {

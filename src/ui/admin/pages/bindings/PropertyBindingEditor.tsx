@@ -1,5 +1,5 @@
 import type { PropBinding } from '@ankhorage/contracts';
-import { Button, Input, Select, Text } from '@ankhorage/zora';
+import { Button, Select, Text, TextInput } from '@ankhorage/zora';
 import { View } from 'react-native';
 
 import {
@@ -103,7 +103,7 @@ function PropertyBindingSourceFields(props: {
       );
     }
     return (
-      <Input
+      <TextInput
         value={formatStudioBindingLiteral(source.value)}
         onChangeText={(value) =>
           onChange({
@@ -117,7 +117,7 @@ function PropertyBindingSourceFields(props: {
 
   if (source.kind === 'state' || source.kind === 'context') {
     return (
-      <Input
+      <TextInput
         value={source.path}
         placeholder={source.kind === 'state' ? 'draft.customer.name' : 'session.user.name'}
         onChangeText={(path) => onChange({ ...binding, source: { ...source, path } })}

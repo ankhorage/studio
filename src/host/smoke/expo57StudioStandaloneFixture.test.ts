@@ -3,6 +3,7 @@ import path from 'node:path';
 
 import { afterEach, expect, test } from 'bun:test';
 
+import { getGeneratedPackagePolicy } from '../orchestrator/generatedPackagePolicy';
 import { assertExpo57StudioStandaloneContractAsync } from './assertExpo57StudioStandaloneContractAsync';
 import { createExpo57StudioStandaloneFixtureAsync } from './createExpo57StudioStandaloneFixtureAsync';
 
@@ -92,7 +93,9 @@ test('requires ZORA to satisfy the range declared by installed registry Studio',
       installed: true,
       repositoryRoot,
     }),
-  ).rejects.toThrow('@ankhorage/zora resolved 3.3.4; expected a released owner satisfying ^4.0.0.');
+  ).rejects.toThrow(
+    `@ankhorage/zora resolved 3.3.4; expected a released owner satisfying ${getGeneratedPackagePolicy().dependencies.zora}.`,
+  );
 });
 
 test('requires the standalone app to use the repository-selected Devtools range', async () => {
@@ -267,7 +270,7 @@ async function writeInstalledPackageAsync(
         ? { peerDependencies: { 'react-native': '0.86.x' } }
         : {}),
       ...(packageName === '@ankhorage/studio'
-        ? { dependencies: { '@ankhorage/zora': '^4.0.0' } }
+        ? { dependencies: { '@ankhorage/zora': getGeneratedPackagePolicy().dependencies.zora } }
         : {}),
       version,
     })}\n`,

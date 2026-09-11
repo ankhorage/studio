@@ -1,7 +1,7 @@
 import {
   AppBar,
-  Drawer,
   IconButton,
+  Modal,
   Show,
   SidebarLayout,
   Text,
@@ -32,7 +32,7 @@ export interface AnkhAdminShellProps {
 }
 
 /***
- * Compose the Studio administration app bar, responsive navigation drawer/sidebar, and routed page content.
+ * Compose the Studio administration app bar, responsive navigation modal/sidebar, and routed page content.
  * @todo Keep this as package-wide admin UI composition; route construction/availability/active-state policy belongs to the routes domain and reusable responsive primitives belong to ZORA.
  */
 export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
@@ -105,15 +105,14 @@ export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
         }
       />
       <Show when={COMPACT_VISIBILITY}>
-        <Drawer
+        <Modal
           visible={drawerOpen}
-          position="left"
           title="Administration"
           closeOnBackdrop
           onDismiss={() => setDrawerOpen(false)}
         >
           {nav}
-        </Drawer>
+        </Modal>
       </Show>
       <View style={styles.body}>
         <Show

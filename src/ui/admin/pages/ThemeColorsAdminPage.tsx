@@ -1,6 +1,6 @@
 import { parseHexColorOrThrow } from '@ankhorage/color-theory';
 import type { ThemeModeConfig } from '@ankhorage/contracts';
-import { Card, Input, Text } from '@ankhorage/zora';
+import { Card, Text, TextInput } from '@ankhorage/zora';
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
@@ -29,7 +29,7 @@ export function ThemeColorsAdminPage() {
       <ThemeModeEditorSelector />
       <Card title={`${selection.theme.name} · ${selection.mode === 'light' ? 'Light' : 'Dark'}`}>
         <Field label="Primary color">
-          <Input
+          <TextInput
             key={`${selection.theme.id}:${selection.mode}:${selection.modeConfig.primaryColor}`}
             defaultValue={selection.modeConfig.primaryColor}
             autoCapitalize="none"

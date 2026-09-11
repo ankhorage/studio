@@ -255,6 +255,34 @@ describe('@ankhorage/studio', () => {
     });
   });
 
+  test.each(['TextInput', 'Uploader', 'BottomSheet'])(
+    'inserts the current ZORA %s node through owner metadata',
+    (componentType) => {
+      const entry = buildInsertCatalogEntries({ componentMeta: ZORA_COMPONENT_META }).find(
+        (candidate) => candidate.id === `component:${componentType}`,
+      );
+      expect(entry).toMatchObject({ componentType, kind: 'component', status: 'enabled' });
+      if (!entry) throw new Error(`Missing ${componentType} catalog entry.`);
+
+      const root: UiNode = { id: 'screen', type: 'Screen', children: [] };
+      const placement = resolveDefaultInsertPlacement({
+        root,
+        selectedNodeId: 'screen',
+        childType: componentType,
+        componentMeta: ZORA_COMPONENT_META,
+      });
+      expect(placement.ok).toBe(true);
+      if (!placement.ok) throw new Error(`Cannot insert ${componentType}.`);
+      const insertion = insertNodeAtPlacement({
+        root,
+        placement: placement.placement,
+        componentMeta: ZORA_COMPONENT_META,
+        makeNode: () => createNodeFromCatalogEntry(entry, ZORA_COMPONENT_META, () => 'created'),
+      });
+      expect(insertion?.root.children?.[0]).toMatchObject({ id: 'created', type: componentType });
+    },
+  );
+
   test('moves a node to a resolved placement', () => {
     const root = createRoot();
     const movement = moveNodeToPlacement({
