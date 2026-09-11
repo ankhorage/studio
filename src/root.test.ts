@@ -31,6 +31,7 @@ test('keeps the package root independent from every nested app package', async (
   ).json()) as {
     readonly dependencies?: Readonly<Record<string, string>>;
     readonly devDependencies?: Readonly<Record<string, string>>;
+    readonly overrides?: Readonly<Record<string, string>>;
   };
 
   expect(packageJson.workspaces).toBeUndefined();
@@ -57,6 +58,11 @@ test('keeps the package root independent from every nested app package', async (
   expect(appPackageJson.dependencies?.expo).toBe(EXPO_PLATFORM.runtime.expo.version);
   expect(appPackageJson.dependencies?.['@ankhorage/expo-runtime']).toMatch(CARET_SEMVER_RANGE);
   expect(appPackageJson.dependencies?.['expo-font']).toBe(EXPO_PLATFORM.packages.font.version);
+  expect(
+    Object.keys(appPackageJson.overrides ?? {}).filter((packageName) =>
+      packageName.startsWith('@ankhorage/'),
+    ),
+  ).toEqual([]);
 });
 
 test('supplies the published peers required by consumed Expo Runtime entrypoints', async () => {
