@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.5.0
+
+### Minor Changes
+
+- 66ffee2: Redesign external API administration around URL-first discovery, readable endpoint catalogs, progressive manual fallback, editable canonical settings, and guarded removal.
+
 ## 2.4.11
 
 ### Patch Changes
