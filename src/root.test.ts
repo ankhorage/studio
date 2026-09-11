@@ -31,6 +31,7 @@ test('keeps the package root independent from every nested app package', async (
   ).json()) as {
     readonly dependencies?: Readonly<Record<string, string>>;
     readonly devDependencies?: Readonly<Record<string, string>>;
+    readonly overrides?: Readonly<Record<string, string>>;
   };
 
   expect(packageJson.workspaces).toBeUndefined();
@@ -54,9 +55,78 @@ test('keeps the package root independent from every nested app package', async (
   expect(expoRuntimeRange).toMatch(CARET_SEMVER_RANGE);
   expect(packageJson.dependencies?.['@ankhorage/runtime']).toMatch(CARET_SEMVER_RANGE);
   expect(packageJson.dependencies?.['@ankhorage/zora']).toMatch(CARET_SEMVER_RANGE);
-  expect(appPackageJson.dependencies?.expo).toBe(EXPO_PLATFORM.runtime.expo.version);
   expect(appPackageJson.dependencies?.['@ankhorage/expo-runtime']).toMatch(CARET_SEMVER_RANGE);
-  expect(appPackageJson.dependencies?.['expo-font']).toBe(EXPO_PLATFORM.packages.font.version);
+  expect(
+    Object.keys(appPackageJson.overrides ?? {}).filter((packageName) =>
+      packageName.startsWith('@ankhorage/'),
+    ),
+  ).toEqual([]);
+});
+
+test('keeps Studio package metadata and the first-party app on the Expo owner contract', async () => {
+  const packageJson = (await Bun.file(new URL('../package.json', import.meta.url)).json()) as {
+    readonly dependencies?: Readonly<Record<string, string>>;
+    readonly devDependencies?: Readonly<Record<string, string>>;
+    readonly peerDependencies?: Readonly<Record<string, string>>;
+  };
+  const appPackageJson = (await Bun.file(
+    new URL('../apps/studio/package.json', import.meta.url),
+  ).json()) as {
+    readonly dependencies?: Readonly<Record<string, string>>;
+    readonly devDependencies?: Readonly<Record<string, string>>;
+  };
+
+  expectDependencyVersions(packageJson.dependencies, {
+    'expo-document-picker': EXPO_PLATFORM.packages.documentPicker.version,
+    'expo-file-system': EXPO_PLATFORM.packages.fileSystem.version,
+    'expo-image-picker': EXPO_PLATFORM.packages.imagePicker.version,
+  });
+  expectDependencyVersions(packageJson.peerDependencies, {
+    expo: EXPO_PLATFORM.runtime.expo.version,
+    'expo-constants': EXPO_PLATFORM.packages.constants.version,
+    'expo-router': EXPO_PLATFORM.navigation.expoRouter.version,
+    'expo-status-bar': EXPO_PLATFORM.packages.statusBar.version,
+    react: EXPO_PLATFORM.runtime.react.version,
+    'react-dom': EXPO_PLATFORM.runtime.reactDom.version,
+    'react-native-gesture-handler': EXPO_PLATFORM.animation.gestureHandler.version,
+    'react-native-reanimated': EXPO_PLATFORM.animation.reanimated.version,
+    'react-native-safe-area-context': EXPO_PLATFORM.navigation.safeArea.version,
+    'react-native-screens': EXPO_PLATFORM.navigation.screens.version,
+    'react-native-web': EXPO_PLATFORM.runtime.reactNativeWeb.version,
+    'react-native-worklets': EXPO_PLATFORM.animation.worklets.version,
+  });
+  expectDependencyVersions(packageJson.devDependencies, {
+    '@types/node': EXPO_PLATFORM.tooling.nodeTypes.version,
+    '@types/react': EXPO_PLATFORM.tooling.reactTypes.version,
+    typescript: EXPO_PLATFORM.tooling.typescript.version,
+  });
+
+  expectDependencyVersions(appPackageJson.dependencies, {
+    '@expo/metro-runtime': EXPO_PLATFORM.packages.metroRuntime.version,
+    expo: EXPO_PLATFORM.runtime.expo.version,
+    'expo-constants': EXPO_PLATFORM.packages.constants.version,
+    'expo-dev-client': EXPO_PLATFORM.packages.devClient.version,
+    'expo-font': EXPO_PLATFORM.packages.font.version,
+    'expo-linking': EXPO_PLATFORM.packages.linking.version,
+    'expo-router': EXPO_PLATFORM.navigation.expoRouter.version,
+    'expo-splash-screen': EXPO_PLATFORM.packages.splashScreen.version,
+    'expo-status-bar': EXPO_PLATFORM.packages.statusBar.version,
+    react: EXPO_PLATFORM.runtime.react.version,
+    'react-dom': EXPO_PLATFORM.runtime.reactDom.version,
+    'react-native': EXPO_PLATFORM.runtime.reactNative.version,
+    'react-native-gesture-handler': EXPO_PLATFORM.animation.gestureHandler.version,
+    'react-native-reanimated': EXPO_PLATFORM.animation.reanimated.version,
+    'react-native-safe-area-context': EXPO_PLATFORM.navigation.safeArea.version,
+    'react-native-screens': EXPO_PLATFORM.navigation.screens.version,
+    'react-native-web': EXPO_PLATFORM.runtime.reactNativeWeb.version,
+    'react-native-worklets': EXPO_PLATFORM.animation.worklets.version,
+  });
+  expectDependencyVersions(appPackageJson.devDependencies, {
+    '@types/node': EXPO_PLATFORM.tooling.nodeTypes.version,
+    '@types/react': EXPO_PLATFORM.tooling.reactTypes.version,
+    'expo-doctor': EXPO_PLATFORM.tooling.expoDoctor.version,
+    typescript: EXPO_PLATFORM.tooling.typescript.version,
+  });
 });
 
 test('supplies the published peers required by consumed Expo Runtime entrypoints', async () => {
@@ -79,3 +149,13 @@ test('supplies the published peers required by consumed Expo Runtime entrypoints
   expect(expoRuntimePeers.get('expo-image-picker')).toBe(imagePickerVersion);
   expect(studioDependencies.get('expo-image-picker')).toBe(imagePickerVersion);
 });
+
+function expectDependencyVersions(
+  actual: Readonly<Record<string, string>> | undefined,
+  expected: Readonly<Record<string, string>>,
+): void {
+  const actualVersions = new Map(Object.entries(actual ?? {}));
+  for (const [packageName, expectedVersion] of Object.entries(expected)) {
+    expect(actualVersions.get(packageName)).toBe(expectedVersion);
+  }
+}
