@@ -8,6 +8,7 @@ import { resolveAppOwnedExpoCliAsync } from '../src/host/smoke/resolveAppOwnedEx
 import { runAcceptanceCommandAsync } from '../src/host/smoke/runAcceptanceCommandAsync';
 
 const COMMAND_TIMEOUT_MS = 900_000;
+const RELEASE_BUILD_TIMEOUT_MS = 1_800_000;
 const EXPECTED_SPLASH_SOURCE = 'assets/authoring/sharkprey-logo/sharkprey-logo.png';
 const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'sharkprey-native-release-'));
 
@@ -62,6 +63,7 @@ try {
     cwd: appRoot,
     env: {
       CI: '1',
+      NODE_ENV: 'production',
       __UNSAFE_EXPO_HOME_DIRECTORY: path.join(appRoot, '.ankh', 'expo-home'),
     },
     label: 'Generate Android native project',
@@ -97,9 +99,9 @@ try {
     args: ['assembleRelease', '--stacktrace'],
     command: path.join(androidRoot, 'gradlew'),
     cwd: androidRoot,
-    env: { CI: '1' },
+    env: { CI: '1', NODE_ENV: 'production' },
     label: 'Compile Android release variant',
-    timeoutMs: COMMAND_TIMEOUT_MS,
+    timeoutMs: RELEASE_BUILD_TIMEOUT_MS,
   });
 
   const releaseOutputRoot = path.join(androidRoot, 'app', 'build', 'outputs', 'apk', 'release');
