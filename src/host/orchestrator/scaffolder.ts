@@ -1,4 +1,4 @@
-import type { AppCategory, AppManifest, SplashScreenSpec } from '@ankhorage/contracts';
+import type { AppCategory, AppManifest } from '@ankhorage/contracts';
 import type { AppDeployManifest, AppDeployTargets } from '@ankhorage/contracts/deploy';
 import type { ExpoRuntimePlan } from '@ankhorage/expo-runtime/planning';
 import { pathExists } from '@ankhorage/utility/node/fs';
@@ -30,7 +30,7 @@ interface ScaffoldProjectOptions {
   includeStudio?: boolean;
   authProvider?: GeneratedAuthProvider;
   storageProvider?: GeneratedStorageProvider;
-  splashScreen?: SplashScreenSpec | null;
+  manifest?: Pick<AppManifest, 'media' | 'splashScreen'>;
   zoraExtensions?: readonly ZoraExtensionDefinition[];
   runtimePlan?: ExpoRuntimePlan;
   targets?: AppDeployTargets;
@@ -116,7 +116,7 @@ export class ProjectScaffolder {
       includeStudio = true,
       authProvider = null,
       storageProvider = null,
-      splashScreen = null,
+      manifest,
       zoraExtensions = [],
       runtimePlan,
       targets = createDefaultAppDeployManifest(slug).targets,
@@ -136,7 +136,7 @@ export class ProjectScaffolder {
       targets,
     );
     await this.syncAndroidRunScript(projectPath, targets, slug, includeStudio);
-    await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);
+    await this.writeAppConfig(projectPath, appName, slug, targets, manifest, runtimePlan);
     await this.writeEasConfig(projectPath);
     await this.writeMetroConfig(projectPath);
     await this.writeTsConfig(projectPath);
@@ -163,7 +163,7 @@ export class ProjectScaffolder {
       includeStudio = true,
       authProvider = null,
       storageProvider = null,
-      splashScreen = null,
+      manifest,
       runtimePlan,
       targets,
     } = options;
@@ -196,7 +196,7 @@ export class ProjectScaffolder {
 
     await fs.writeFile(packageJsonPath, `${JSON.stringify(nextPackageJson, null, 2)}\n`, 'utf8');
     await this.syncAndroidRunScript(projectPath, targets, slug, includeStudio);
-    await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);
+    await this.writeAppConfig(projectPath, appName, slug, targets, manifest, runtimePlan);
     await this.writeEasConfig(projectPath);
     await this.writeMetroConfig(projectPath);
     await this.writeTsConfig(projectPath);
@@ -249,12 +249,12 @@ export class ProjectScaffolder {
     name: string,
     slug: string,
     targets: AppDeployTargets,
-    splashScreen: SplashScreenSpec | null,
+    manifest: Pick<AppManifest, 'media' | 'splashScreen'> | undefined,
     runtimePlan?: ExpoRuntimePlan,
   ) {
     await fs.writeFile(
       path.join(dir, 'app.config.ts'),
-      getAppConfigTs({ name, slug, targets, splashScreen, runtimePlan }),
+      getAppConfigTs({ name, slug, targets, manifest, runtimePlan }),
       'utf8',
     );
   }

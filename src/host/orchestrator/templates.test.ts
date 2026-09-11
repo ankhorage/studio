@@ -36,6 +36,56 @@ describe('generated OAuth scaffold templates', () => {
     expect(appConfig).toContain("owner: 'ankhorage'");
   });
 
+  it('resolves splash media references to bundled Expo plugin paths', () => {
+    const appConfig = getAppConfigTs({
+      name: 'Generated app',
+      slug: 'generated-app',
+      targets: WEB_TARGETS,
+      manifest: {
+        media: {
+          assets: {
+            logo: {
+              id: 'logo',
+              name: 'Logo',
+              kind: 'image',
+              source: { kind: 'bundled', path: 'assets/authoring/logo/logo.png' },
+            },
+          },
+        },
+        splashScreen: {
+          backgroundColor: '#101010',
+          image: { mediaId: 'logo' },
+          imageWidth: 200,
+          resizeMode: 'contain',
+          dark: {
+            backgroundColor: '#000000',
+            image: { mediaId: 'logo' },
+            imageWidth: 200,
+            resizeMode: 'contain',
+          },
+        },
+      },
+    });
+
+    expect(appConfig).toContain("'expo-splash-screen'");
+    expect(appConfig.match(/image: '\.\/assets\/authoring\/logo\/logo\.png'/gu)).toHaveLength(2);
+    expect(appConfig).not.toContain('mediaId');
+  });
+
+  it('rejects splash media references missing from the app media registry', () => {
+    expect(() =>
+      getAppConfigTs({
+        name: 'Generated app',
+        slug: 'generated-app',
+        targets: WEB_TARGETS,
+        manifest: {
+          media: { assets: {} },
+          splashScreen: { image: { mediaId: 'missing-logo' } },
+        },
+      }),
+    ).toThrow("Splash image media 'missing-logo' is missing from the app media registry.");
+  });
+
   it('generates app-owned EAS profiles and an isolated Expo 57 Metro resolver', () => {
     const eas = JSON.parse(getEasJson()) as Record<string, unknown>;
     const metro = getMetroConfigJs();

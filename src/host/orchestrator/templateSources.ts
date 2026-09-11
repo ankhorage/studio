@@ -1,4 +1,4 @@
-import type { SplashScreenSpec } from '@ankhorage/contracts';
+import type { AppManifest, SplashScreenSpec } from '@ankhorage/contracts';
 import type {
   AppDeployAndroidTargetConfig,
   AppDeployIosTargetConfig,
@@ -15,7 +15,7 @@ import { EXPO_PLATFORM, type ExpoPlatformPackage } from '@ankhorage/expo-runtime
 
 export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
-const CONTRACTS_VERSION = '^12.0.1';
+const CONTRACTS_VERSION = '^13.0.0';
 const DATA_SOURCES_VERSION = '^2.0.0';
 const RUNTIME_VERSION = '^2.2.0';
 const NAVIGATOR_VERSION = '^3.0.0';
@@ -78,9 +78,68 @@ function serializeJsValue(value: unknown, indentLevel = 0): string {
   return String(value);
 }
 
+type SplashManifestProjection = Pick<AppManifest, 'media' | 'splashScreen'>;
+type SplashScreenModeSpec = NonNullable<SplashScreenSpec['dark']>;
+type ExpoSplashScreenModeSpec = Omit<SplashScreenModeSpec, 'image'> & {
+  readonly image?: string;
+};
+type ExpoSplashScreenSpec = Omit<SplashScreenSpec, 'dark' | 'image'> & {
+  readonly image?: string;
+  readonly dark?: ExpoSplashScreenModeSpec;
+};
+
+/*** Resolve portable splash media references to Expo-compatible bundled asset paths. */
+function resolveSplashScreenForExpo(
+  manifest: SplashManifestProjection | null | undefined,
+): ExpoSplashScreenSpec | null {
+  if (manifest?.splashScreen == null) {
+    return null;
+  }
+
+  const { dark, image, ...options } = manifest.splashScreen;
+  return {
+    ...options,
+    ...(image ? { image: resolveSplashImagePath(manifest, image.mediaId) } : {}),
+    ...(dark ? { dark: resolveSplashScreenModeForExpo(manifest, dark) } : {}),
+  };
+}
+
+/*** Resolve one splash mode to Expo config plugin options. */
+function resolveSplashScreenModeForExpo(
+  manifest: SplashManifestProjection,
+  mode: SplashScreenModeSpec,
+): ExpoSplashScreenModeSpec {
+  const { image, ...options } = mode;
+  return {
+    ...options,
+    ...(image ? { image: resolveSplashImagePath(manifest, image.mediaId) } : {}),
+  };
+}
+
+/*** Resolve one splash media reference to its app-relative bundled path. */
+function resolveSplashImagePath(manifest: SplashManifestProjection, mediaId: string): string {
+  const mediaAsset = Object.values(manifest.media?.assets ?? {}).find(
+    (asset) => asset.id === mediaId,
+  );
+  if (mediaAsset == null) {
+    throw new Error(`Splash image media '${mediaId}' is missing from the app media registry.`);
+  }
+  if (mediaAsset.kind !== 'image') {
+    throw new Error(`Splash image media '${mediaId}' must reference an image asset.`);
+  }
+  if (mediaAsset.source.kind !== 'bundled') {
+    throw new Error(`Splash image media '${mediaId}' must use a bundled source.`);
+  }
+
+  return mediaAsset.source.path.startsWith('./')
+    ? mediaAsset.source.path
+    : `./${mediaAsset.source.path}`;
+}
+
 function serializeSplashScreenPlugin(
-  splashScreen: SplashScreenSpec | null | undefined,
+  manifest: SplashManifestProjection | null | undefined,
 ): string | null {
+  const splashScreen = resolveSplashScreenForExpo(manifest);
   if (splashScreen == null) {
     return null;
   }
@@ -93,14 +152,14 @@ function serializeRuntimePlugin(plugin: ExpoRuntimeConfigPluginOutput): string {
 }
 
 function serializePluginsWithRuntimePlan(args: {
-  splashScreen: SplashScreenSpec | null | undefined;
+  manifest?: SplashManifestProjection | null;
   runtimePlan?: ExpoRuntimePlan;
 }): string {
   const entries = [
     serializeStringLiteral(EXPO_PLATFORM.navigation.expoRouter.name),
     ...resolveExpoRuntimeNativeOutput(args.runtimePlan).configPlugins.map(serializeRuntimePlugin),
   ];
-  const splashPlugin = serializeSplashScreenPlugin(args.splashScreen);
+  const splashPlugin = serializeSplashScreenPlugin(args.manifest);
   if (splashPlugin !== null) {
     entries.push(splashPlugin);
   }
@@ -174,17 +233,17 @@ export function getAppConfigTs({
   name,
   slug,
   targets,
-  splashScreen = null,
+  manifest,
   runtimePlan,
 }: {
   name: string;
   slug: string;
   targets: AppDeployTargets;
-  splashScreen?: SplashScreenSpec | null;
+  manifest?: SplashManifestProjection | null;
   runtimePlan?: ExpoRuntimePlan;
 }) {
   const targetSections = serializeTargetSections({ targets, runtimePlan });
-  const generatedPlugins = serializePluginsWithRuntimePlan({ splashScreen, runtimePlan });
+  const generatedPlugins = serializePluginsWithRuntimePlan({ manifest, runtimePlan });
   return `import type { ConfigContext, ExpoConfig } from 'expo/config';
 
 const GENERATED_PLUGINS: NonNullable<ExpoConfig['plugins']> = ${generatedPlugins};

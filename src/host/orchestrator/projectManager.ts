@@ -119,26 +119,25 @@ export class ProjectManager {
     }
 
     const templateData = source.manifest;
-    const { category } = templateData.metadata;
-    const deploy = templateData.deploy ?? createDefaultAppDeployManifest(slug);
-    const scaffoldManifest = applySystemTemplates({ ...templateData, deploy });
-    const zoraExtensions = resolveZoraExtensionsForManifest(scaffoldManifest);
-    await this.scaffolder.scaffoldProject(projectPath, name, slug, {
-      includeStudio,
-      authProvider: resolveGeneratedAuthProvider(scaffoldManifest),
-      runtimePlan: resolveExpoRuntimePlan(scaffoldManifest),
-      storageProvider: resolveGeneratedStorageProvider(scaffoldManifest),
-      splashScreen: scaffoldManifest.splashScreen ?? null,
-      targets: deploy.targets,
-      zoraExtensions,
-    });
-    await writeProjectStudioInclusion(projectPath, includeStudio);
-
     const materializedTemplate = await this.materializeCreationAssets(
       slug,
       templateData,
       source.assets,
     );
+    const { category } = materializedTemplate.metadata;
+    const deploy = materializedTemplate.deploy ?? createDefaultAppDeployManifest(slug);
+    const scaffoldManifest = applySystemTemplates({ ...materializedTemplate, deploy });
+    const zoraExtensions = resolveZoraExtensionsForManifest(scaffoldManifest);
+    await this.scaffolder.scaffoldProject(projectPath, name, slug, {
+      includeStudio,
+      authProvider: resolveGeneratedAuthProvider(scaffoldManifest),
+      manifest: scaffoldManifest,
+      runtimePlan: resolveExpoRuntimePlan(scaffoldManifest),
+      storageProvider: resolveGeneratedStorageProvider(scaffoldManifest),
+      targets: deploy.targets,
+      zoraExtensions,
+    });
+    await writeProjectStudioInclusion(projectPath, includeStudio);
     const manifest = await this.scaffolder.finalizeManifest(
       projectPath,
       materializedTemplate,
@@ -402,7 +401,7 @@ export class ProjectManager {
       authProvider: resolveGeneratedAuthProvider(manifest),
       runtimePlan,
       storageProvider: resolveGeneratedStorageProvider(manifest),
-      splashScreen: manifest.splashScreen ?? null,
+      manifest,
       targets: requireProjectDeployTargets(manifest),
     });
     await writeProjectStudioInclusion(projectPath, includeStudio);
