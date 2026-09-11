@@ -217,7 +217,7 @@
     "@ankhorage/supabase-auth": "^1.2.11",
     "@ankhorage/supabase-storage": "^0.2.5",
     "@ankhorage/supabase-vault": "^0.2.11",
-    "@ankhorage/templates": "^9.7.3",
+    "@ankhorage/templates": "^9.7.4",
     "@ankhorage/utility": "^0.6.0",
     "@ankhorage/zora": "^9.0.0",
     "@ankhorage/zora-chess": "^0.2.0",
