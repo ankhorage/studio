@@ -2,9 +2,11 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import type { AppManifest } from '@ankhorage/contracts';
 import { afterEach, expect, test } from 'bun:test';
 
 import { createSmokeProjectSource } from '../smoke/createSmokeProjectSource';
+import { getProjectTemplateSource } from '../templates';
 import { ProjectManager } from './projectManager';
 
 const roots: string[] = [];
@@ -16,17 +18,29 @@ afterEach(async () => {
 test('materializes project creation assets and persists their bundled media sources', async () => {
   const workspaceRoot = await createWorkspaceRoot();
   const base = createSmokeProjectSource();
-  const manifest = {
+  const manifest: AppManifest = {
     ...base.manifest,
     media: {
       assets: {
         hero: {
           id: 'hero',
           name: 'Hero.png',
-          kind: 'image' as const,
+          kind: 'image',
           contentType: 'image/webp',
-          source: { kind: 'bundled' as const, path: 'assets/images/hero.png' },
+          source: { kind: 'bundled', path: 'assets/images/hero.png' },
         },
+      },
+    },
+    splashScreen: {
+      backgroundColor: '#111111',
+      image: { mediaId: 'hero' },
+      imageWidth: 240,
+      resizeMode: 'contain',
+      dark: {
+        backgroundColor: '#000000',
+        image: { mediaId: 'hero' },
+        imageWidth: 240,
+        resizeMode: 'contain',
       },
     },
   };
@@ -63,6 +77,32 @@ test('materializes project creation assets and persists their bundled media sour
   expect(new Uint8Array(await readFile(path.join(created.path, hero.source.path)))).toEqual(
     new Uint8Array([1, 2, 3]),
   );
+
+  const appConfig = await readFile(path.join(created.path, 'app.config.ts'), 'utf8');
+  expect(appConfig).toContain("image: './assets/authoring/hero/hero.webp'");
+  expect(appConfig).not.toContain('mediaId');
+  expect(appConfig).not.toContain('assets/images/hero.png');
+});
+
+test('projects SharkPrey splash artwork to its materialized Expo asset path', async () => {
+  const workspaceRoot = await createWorkspaceRoot();
+  const source = await getProjectTemplateSource({
+    category: 'education_learning',
+    slug: 'sharkprey',
+  });
+  const manager = new ProjectManager(workspaceRoot, {
+    reconcileProjectPackageRootAsync: async () => {
+      await Promise.resolve();
+    },
+  });
+
+  const created = await manager.createProject('SharkPrey Splash', source);
+  const splashPath = 'assets/authoring/sharkprey-logo/sharkprey-logo.png';
+  const appConfig = await readFile(path.join(created.path, 'app.config.ts'), 'utf8');
+
+  expect(appConfig).toContain(`image: './${splashPath}'`);
+  expect(appConfig).not.toContain('mediaId');
+  expect((await readFile(path.join(created.path, splashPath))).byteLength).toBeGreaterThan(0);
 });
 
 async function createWorkspaceRoot(): Promise<string> {
