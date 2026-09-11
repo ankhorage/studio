@@ -1,0 +1,51 @@
+name: Refresh Studio app lock
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'fix/493-remove-studio-owner-overrides'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout implementation branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+
+      - name: Refresh app-owned lockfile
+        run: bun install --cwd apps/studio
+
+      - name: Commit only the regenerated lockfile
+        run: |
+          if git diff --quiet -- apps/studio/bun.lock; then
+            echo 'apps/studio/bun.lock is already current.'
+            exit 0
+          fi
+
+          if test -n "$(git diff --name-only | grep -v '^apps/studio/bun.lock$')"; then
+            echo 'Bun changed files outside apps/studio/bun.lock.' >&2
+            git status --short
+            exit 1
+          fi
+
+          git config user.name 'ankhorage-lock-refresh[bot]'
+          git config user.email 'ankhorage-lock-refresh[bot]@users.noreply.github.com'
+          git add apps/studio/bun.lock
+          git commit -m 'chore: refresh Studio app lockfile'
+          git push origin HEAD:${{ github.head_ref }}
