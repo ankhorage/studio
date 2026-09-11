@@ -1,4 +1,4 @@
-import { Button, Input, ListRow, ListSection, Modal, Stack } from '@ankhorage/zora';
+import { Button, TextInput, ListRow, ListSection, Modal, Stack } from '@ankhorage/zora';
 import type { UiNode } from '@ankhorage/contracts';
 import React from 'react';
 import { ScrollView } from 'react-native';
@@ -48,7 +48,7 @@ export function StudioInsertDialog(props: StudioInsertDialogProps): React.JSX.El
       width="wide"
     >
       <Stack gap="m">
-        <Input
+        <TextInput
           accessibilityLabel="Search insert catalog"
           onChangeText={setQuery}
           placeholder="Search components and recipes"

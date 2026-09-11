@@ -1,5 +1,5 @@
 import type { EventBinding, UiBindableEventMeta } from '@ankhorage/contracts';
-import { Button, Input, Select, Text } from '@ankhorage/zora';
+import { Button, Select, Text, TextInput } from '@ankhorage/zora';
 import { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
@@ -153,7 +153,7 @@ function EventInputDrafts(props: {
             </View>
             <View style={bindingAdminStyles.grow}>
               <Field label={draft.kind === 'event' ? 'Payload path' : 'Literal value'}>
-                <Input
+                <TextInput
                   value={draft.value}
                   placeholder={draft.kind === 'event' ? 'values.name' : undefined}
                   onChangeText={(value) =>

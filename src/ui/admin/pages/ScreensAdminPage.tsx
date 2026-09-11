@@ -4,7 +4,7 @@ import {
   ButtonGroup,
   Card,
   ConfirmDialog,
-  Input,
+  TextInput,
   ListRow,
   ListSection,
   Select,
@@ -109,7 +109,7 @@ export function ScreensAdminPage() {
         <Card title="Create screen" description="New screens are routed in the primary navigator.">
           <View style={styles.createRow}>
             <View style={styles.createInput}>
-              <Input
+              <TextInput
                 accessibilityLabel="New screen name"
                 placeholder="Screen name"
                 value={newScreenName}

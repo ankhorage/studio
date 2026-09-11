@@ -1,5 +1,5 @@
 import type { DataOperationIntent } from '@ankhorage/contracts/data';
-import { Button, Card, Input, Select, Text } from '@ankhorage/zora';
+import { Button, Card, TextInput, Select, Text } from '@ankhorage/zora';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 
@@ -72,21 +72,21 @@ export function ManualRestApiCard() {
         </Text>
         <View style={externalApiAdminStyles.columns}>
           <ExternalApiField label="API ID">
-            <Input value={apiId} autoCapitalize="none" onChangeText={setApiId} />
+            <TextInput value={apiId} autoCapitalize="none" onChangeText={setApiId} />
           </ExternalApiField>
           <ExternalApiField label="Base URL">
-            <Input value={baseUrl} autoCapitalize="none" onChangeText={setBaseUrl} />
+            <TextInput value={baseUrl} autoCapitalize="none" onChangeText={setBaseUrl} />
           </ExternalApiField>
         </View>
         <View style={externalApiAdminStyles.columns}>
           <ExternalApiField label="Endpoint ID">
-            <Input value={endpointId} autoCapitalize="none" onChangeText={setEndpointId} />
+            <TextInput value={endpointId} autoCapitalize="none" onChangeText={setEndpointId} />
           </ExternalApiField>
           <ExternalApiField label="Path">
-            <Input value={path} autoCapitalize="none" onChangeText={setPath} />
+            <TextInput value={path} autoCapitalize="none" onChangeText={setPath} />
           </ExternalApiField>
           <ExternalApiField label="Operation ID">
-            <Input value={operationId} autoCapitalize="none" onChangeText={setOperationId} />
+            <TextInput value={operationId} autoCapitalize="none" onChangeText={setOperationId} />
           </ExternalApiField>
         </View>
         <View style={externalApiAdminStyles.columns}>

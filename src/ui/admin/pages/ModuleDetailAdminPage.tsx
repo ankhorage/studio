@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Card, Input, Text } from '@ankhorage/zora';
+import { Button, ButtonGroup, Card, TextInput, Text } from '@ankhorage/zora';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
@@ -228,7 +228,7 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
         <Card title={module.admin.title} description={module.admin.description}>
           {module.admin.fields.map((field) => (
             <Field key={field.key} label={`${field.label}${field.required ? ' *' : ''}`}>
-              <Input
+              <TextInput
                 accessibilityLabel={field.label}
                 value={draft[field.key] ?? ''}
                 multiline={field.control !== 'text' && field.control !== 'string-list'}

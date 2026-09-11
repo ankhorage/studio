@@ -1,4 +1,4 @@
-import { Button, Card, Input, Select, Text } from '@ankhorage/zora';
+import { Button, Card, TextInput, Select, Text } from '@ankhorage/zora';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 
@@ -71,14 +71,14 @@ export function ExternalApiConnectCard() {
       <View style={externalApiAdminStyles.stack}>
         <View style={externalApiAdminStyles.columns}>
           <ExternalApiField label="API ID">
-            <Input value={apiId} autoCapitalize="none" onChangeText={setApiId} />
+            <TextInput value={apiId} autoCapitalize="none" onChangeText={setApiId} />
           </ExternalApiField>
           <ExternalApiField label="Protocol discovery">
             <Select value={protocol} options={PROTOCOL_OPTIONS} onValueChange={setProtocol} />
           </ExternalApiField>
         </View>
         <ExternalApiField label="Service or schema URL">
-          <Input
+          <TextInput
             value={url}
             autoCapitalize="none"
             placeholder="https://api.example.com"
@@ -86,7 +86,7 @@ export function ExternalApiConnectCard() {
           />
         </ExternalApiField>
         <ExternalApiField label="Display name (optional)">
-          <Input value={name} onChangeText={setName} />
+          <TextInput value={name} onChangeText={setName} />
         </ExternalApiField>
         <Text color="neutral" emphasis="muted" variant="bodySmall">
           OpenAPI probes direct and conventional schema locations. GraphQL introspection uses the
@@ -94,7 +94,7 @@ export function ExternalApiConnectCard() {
         </Text>
         <View style={externalApiAdminStyles.columns}>
           <ExternalApiField label="Credential secret ref (optional)">
-            <Input
+            <TextInput
               value={credentialId}
               autoCapitalize="none"
               placeholder="services/example"
@@ -102,10 +102,14 @@ export function ExternalApiConnectCard() {
             />
           </ExternalApiField>
           <ExternalApiField label="Credential kind">
-            <Input value={credentialKind} autoCapitalize="none" onChangeText={setCredentialKind} />
+            <TextInput
+              value={credentialKind}
+              autoCapitalize="none"
+              onChangeText={setCredentialKind}
+            />
           </ExternalApiField>
           <ExternalApiField label="Credential scope (optional)">
-            <Input
+            <TextInput
               value={credentialScope}
               autoCapitalize="none"
               placeholder="header:x-api-key"

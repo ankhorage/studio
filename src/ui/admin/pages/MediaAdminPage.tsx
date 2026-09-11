@@ -1,5 +1,5 @@
 import { MEDIA_ASSET_KINDS, type MediaAsset, type MediaAssetKind } from '@ankhorage/contracts';
-import { Button, Card, Input, Select, Text } from '@ankhorage/zora';
+import { Button, Card, Select, Text, TextInput } from '@ankhorage/zora';
 import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -70,13 +70,13 @@ export function MediaAdminPage() {
       >
         <View style={styles.formStack}>
           <Field label="Name">
-            <Input value={name} placeholder="Hero image" onChangeText={setName} />
+            <TextInput value={name} placeholder="Hero image" onChangeText={setName} />
           </Field>
           <Field label="Kind">
             <Select value={kind} options={MEDIA_KIND_OPTIONS} onValueChange={setKind} />
           </Field>
           <Field label="HTTP(S) URL">
-            <Input
+            <TextInput
               value={url}
               placeholder="https://…"
               onChangeText={setUrl}

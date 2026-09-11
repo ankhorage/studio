@@ -18,13 +18,13 @@
         "@ankhorage/permissions": "^0.2.4",
         "@ankhorage/react-native-reanimated-dnd-web": "^0.4.0",
         "@ankhorage/repository": "^0.4.5",
-        "@ankhorage/runtime": "^2.2.8",
+        "@ankhorage/runtime": "^2.2.10",
         "@ankhorage/supabase-auth": "^1.2.11",
         "@ankhorage/supabase-storage": "^0.2.5",
         "@ankhorage/supabase-vault": "^0.2.11",
         "@ankhorage/templates": "^9.7.3",
         "@ankhorage/utility": "^0.6.0",
-        "@ankhorage/zora": "^6.0.0",
+        "@ankhorage/zora": "^9.0.0",
         "@ankhorage/zora-chess": "^0.2.0",
         "@ankhorage/zora-tabletop": "^0.1.1",
         "@fastify/cors": "^11.2.0",
@@ -102,7 +102,7 @@
 
     "@ankhorage/repository": ["@ankhorage/repository@0.4.5", "", { "dependencies": { "@ankhorage/contracts": "^12.0.1", "ignore": "^7.0.8" } }, "sha512-MOmprGy96ODi5nV2HiaURwsFc5fc3nmnKqi7zKPv1+fvOsC/jd01GzNGAI/9gGbV5uayR4MfpLWeZssabm5dwA=="],
 
-    "@ankhorage/runtime": ["@ankhorage/runtime@2.2.9", "", { "dependencies": { "@ankhorage/contracts": "^11.1.0", "@ankhorage/data-sources": "^2.0.3" }, "peerDependencies": { "react": "19.2.3", "react-native": "0.86.x", "react-native-web": "~0.21.0" }, "optionalPeers": ["react-native-web"] }, "sha512-dyl3A7e4Std3R4j3e8WZclRUU1sJsc2knKr8rwQqQ9EJgP4k1EsA5lamVjvcYEuVo88EbIqZpON7AgKmhRGxTg=="],
+    "@ankhorage/runtime": ["@ankhorage/runtime@2.2.10", "", { "dependencies": { "@ankhorage/contracts": "^11.1.0", "@ankhorage/data-sources": "^2.0.3" }, "peerDependencies": { "react": "19.2.3", "react-native": "0.86.x", "react-native-web": "~0.21.0" }, "optionalPeers": ["react-native-web"] }, "sha512-3EREMzYjtyJ6gzEQuTn3YBlSWJclODfE2xYefQGHjcHfBzX2H+YijCBt3pcS67+PWb3z6/QNDnwvncCYMnxQig=="],
 
     "@ankhorage/supabase-auth": ["@ankhorage/supabase-auth@1.2.12", "", { "dependencies": { "@ankhorage/contracts": "^12.0.1", "@noble/hashes": "2.3.0" } }, "sha512-izn1le/gfDd1tdOYZgVA64ojf2SJLg1QfcMC5zmMadC/AYURa3Dc7Xb3htUNAafNHexGKb4Za9u0HsuojRDyHQ=="],
 
@@ -116,7 +116,7 @@
 
     "@ankhorage/utility": ["@ankhorage/utility@0.6.0", "", { "dependencies": { "@ankhorage/contracts": "^12.0.1" }, "peerDependencies": { "@techstark/opencv-js": "^5.0.0-release.1", "pixelmatch": "^7.2.0", "sharp": "^0.35.4", "tesseract.js": "^7.0.0" }, "optionalPeers": ["@techstark/opencv-js", "pixelmatch", "sharp", "tesseract.js"] }, "sha512-9GePmKvPWm8MYVJ1UnhKX6if4dcxtV2mKHmmJMvQ5V26YE87rMLoLgDiEd/vNFgoUWrh/bffVn4lSe8xuUVSzA=="],
 
-    "@ankhorage/zora": ["@ankhorage/zora@6.0.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.3.0", "@ankhorage/contracts": "^12.0.1", "@ankhorage/surface": "^4.1.0" }, "peerDependencies": { "@react-native-picker/picker": "2.11.4", "@react-native-vector-icons/fontawesome": "^13.1.3", "@react-native-vector-icons/fontawesome5": "^13.1.3", "@react-native-vector-icons/fontawesome6": "^13.1.3", "@react-native-vector-icons/ionicons": "^13.1.3", "react": "19.2.3", "react-native": "0.86.x", "react-native-gesture-handler": "~2.32.0", "react-native-reanimated": "4.5.1", "react-native-safe-area-context": "~5.7.0", "react-native-svg": "15.15.4", "react-native-web": "~0.21.0", "react-native-worklets": "0.10.1" } }, "sha512-e4AFWeXw/JyfD9FauyiH3HqfCo2obH+0Tz06OC5mWKyf07G2wkWDA2zkPuHWTsvMwCzjZCYlOKVcKDJU+86mTQ=="],
+    "@ankhorage/zora": ["@ankhorage/zora@9.0.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.3.0", "@ankhorage/contracts": "^12.0.1", "@ankhorage/surface": "^4.1.0", "expo-document-picker": "~57.0.1", "expo-image-picker": "~57.0.16" }, "peerDependencies": { "@react-native-picker/picker": "2.11.4", "@react-native-vector-icons/fontawesome": "^13.1.3", "@react-native-vector-icons/fontawesome5": "^13.1.3", "@react-native-vector-icons/fontawesome6": "^13.1.3", "@react-native-vector-icons/ionicons": "^13.1.3", "react": "19.2.3", "react-native": "0.86.x", "react-native-gesture-handler": "~2.32.0", "react-native-reanimated": "4.5.1", "react-native-safe-area-context": "~5.7.0", "react-native-svg": "15.15.4", "react-native-web": "~0.21.0", "react-native-worklets": "0.10.1" } }, "sha512-rEy82kK+IM6u8XjcuW3YTJy/uLFx7CgufHJqha5aFskxxgWTesJhpnMGKsrJW+fc1uqpHAd6Vfv32iglUwmFIg=="],
 
     "@ankhorage/zora-chess": ["@ankhorage/zora-chess@0.2.0", "", { "dependencies": { "chess.js": "^1.4.0" }, "peerDependencies": { "@ankhorage/zora": ">=4.2.2", "react": ">=18.2.0", "react-native": ">=0.72.0" } }, "sha512-vQE+f3IP2C+xtZSl+wcCOO+w04osh/+DGQ+9F9ZsQenucp9DI3DTknieELyv9agDKzylrM1IAEk4pfVb0xw+fA=="],
 
