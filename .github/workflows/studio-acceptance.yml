@@ -47,7 +47,7 @@ jobs:
         run: bun run test:acceptance:packed-studio-host
 
   studio-standalone:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' || github.head_ref == 'feat/490-progressive-api-administration'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -67,6 +67,9 @@ jobs:
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Inspect ZORA owner API
+        run: bun .agents/skills/zora-designer/scripts/owner-api.ts inspect
 
       - name: Validate standalone Studio registry consumer
         run: bun run test:acceptance:expo57-studio-standalone
