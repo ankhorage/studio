@@ -154,7 +154,8 @@ function expectDependencyVersions(
   actual: Readonly<Record<string, string>> | undefined,
   expected: Readonly<Record<string, string>>,
 ): void {
+  const actualVersions = new Map(Object.entries(actual ?? {}));
   for (const [packageName, expectedVersion] of Object.entries(expected)) {
-    expect(actual?.[packageName]).toBe(expectedVersion);
+    expect(actualVersions.get(packageName)).toBe(expectedVersion);
   }
 }
