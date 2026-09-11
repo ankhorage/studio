@@ -153,7 +153,9 @@ export class StudioExternalApiService {
     const api = manifest.infra.apis?.find((candidate) => candidate.id === apiId);
     if (!api) return missingApiMutationResult(apiId);
     if (api.origin !== 'external') {
-      return invalidMutationResult('Only connected external APIs can be removed from this catalog.');
+      return invalidMutationResult(
+        'Only connected external APIs can be removed from this catalog.',
+      );
     }
 
     const removal = removeExternalApi(manifest.infra.apis ?? [], apiId);

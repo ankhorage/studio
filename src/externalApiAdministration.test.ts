@@ -7,15 +7,19 @@ import { removeExternalApi } from './removeExternalApi';
 describe('external API administration model', () => {
   test('derives canonical ids from normalized URLs without scheme, query, or fragment', () => {
     expect(
-      deriveExternalApiIdFromUrl('https://api.ankhorage.com/v1/poker/training/tasks?preview=1#schema'),
+      deriveExternalApiIdFromUrl(
+        'https://api.ankhorage.com/v1/poker/training/tasks?preview=1#schema',
+      ),
     ).toEqual({
       ok: true,
       apiId: 'api-ankhorage-com-v1-poker-training-tasks',
     });
-    expect(deriveExternalApiIdFromUrl('HTTP://API.Example.com:8443/v1/Foo%20Bar/?x=1#top')).toEqual({
-      ok: true,
-      apiId: 'api-example-com-8443-v1-foo-bar',
-    });
+    expect(deriveExternalApiIdFromUrl('HTTP://API.Example.com:8443/v1/Foo%20Bar/?x=1#top')).toEqual(
+      {
+        ok: true,
+        apiId: 'api-example-com-8443-v1-foo-bar',
+      },
+    );
   });
 
   test('rejects values that are not HTTP or HTTPS API URLs', () => {

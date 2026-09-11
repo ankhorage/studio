@@ -7,9 +7,9 @@ import { useStudio } from '../../../core/StudioContext';
 import { connectExternalApi, updateManualRestApi } from '../../../externalApiApi';
 import type { ExternalApiProtocol } from '../../../externalApiAuthoringContracts';
 import {
+  externalApiAdminStyles,
   ExternalApiDiagnosticList,
   ExternalApiField,
-  externalApiAdminStyles,
 } from './ExternalApiAdminPrimitives';
 
 type ExternalApiDefinition = Extract<ApiDefinition, { readonly origin: 'external' }>;
@@ -124,11 +124,7 @@ export function ExternalApiEditCard({ api, onCancel, onSaved }: ExternalApiEditC
             {isManualRest ? (
               <Text variant="bodySmall">Manual REST</Text>
             ) : (
-              <Select
-                value={protocol}
-                options={PROTOCOL_OPTIONS}
-                onValueChange={setProtocol}
-              />
+              <Select value={protocol} options={PROTOCOL_OPTIONS} onValueChange={setProtocol} />
             )}
           </ExternalApiField>
         </View>
@@ -179,9 +175,9 @@ export function ExternalApiEditCard({ api, onCancel, onSaved }: ExternalApiEditC
           </ExternalApiField>
         </View>
         <Text color="neutral" emphasis="muted" variant="caption">
-          Saving a discovered OpenAPI or GraphQL API runs discovery again under the same generated ID,
-          so source URL, protocol, schemas, and operations stay consistent. Manual REST settings update
-          in place and preserve authored operations.
+          Saving a discovered OpenAPI or GraphQL API runs discovery again under the same generated
+          ID, so source URL, protocol, schemas, and operations stay consistent. Manual REST settings
+          update in place and preserve authored operations.
         </Text>
         <ButtonGroup orientation="responsive" align="end">
           <Button variant="ghost" disabled={busy} onPress={onCancel}>

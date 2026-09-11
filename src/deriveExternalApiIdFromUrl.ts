@@ -11,10 +11,7 @@ export function deriveExternalApiIdFromUrl(value: string): ExternalApiIdResult {
     };
   }
 
-  const path = decodePathname(parsed.pathname)
-    .split('/')
-    .filter(Boolean)
-    .join('-');
+  const path = decodePathname(parsed.pathname).split('/').filter(Boolean).join('-');
   return normalizeExternalApiId(path ? `${parsed.host}-${path}` : parsed.host);
 }
 

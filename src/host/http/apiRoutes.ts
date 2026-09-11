@@ -120,7 +120,8 @@ function readConnectRequest(value: unknown): ExternalApiConnectRequest | null {
 /*** Parse editable settings for one existing manually authored REST API. */
 function readManualRestSettingsRequest(value: unknown): ManualRestApiSettingsRequest | null {
   const record = readRecord(value);
-  if (!record || typeof record.apiId !== 'string' || typeof record.baseUrl !== 'string') return null;
+  if (!record || typeof record.apiId !== 'string' || typeof record.baseUrl !== 'string')
+    return null;
   return {
     apiId: record.apiId,
     baseUrl: record.baseUrl,

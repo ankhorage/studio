@@ -74,8 +74,8 @@ export function ManualRestApiCard({
     >
       <View style={externalApiAdminStyles.stack}>
         <Text color="neutral" emphasis="muted" variant="bodySmall">
-          Studio will persist this through the same canonical infra.apis entry. Retry discovery at any
-          time without losing the URL above.
+          Studio will persist this through the same canonical infra.apis entry. Retry discovery at
+          any time without losing the URL above.
         </Text>
         <ExternalApiField label="Generated API ID">
           <Text selectable variant="bodySmall">
