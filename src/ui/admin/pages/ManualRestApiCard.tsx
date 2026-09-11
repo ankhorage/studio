@@ -1,5 +1,5 @@
 import type { DataOperationIntent } from '@ankhorage/contracts/data';
-import { Button, Card, TextInput, Select, Text } from '@ankhorage/zora';
+import { Button, ButtonGroup, Card, Select, Text, TextInput } from '@ankhorage/zora';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 
@@ -12,23 +12,22 @@ import {
   externalApiAdminStyles,
 } from './ExternalApiAdminPrimitives';
 
-const METHOD_OPTIONS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map((value) => ({
-  value,
-  label: value,
-}));
-const INTENT_OPTIONS: readonly { value: DataOperationIntent; label: string }[] = [
-  { value: 'read', label: 'Read' },
-  { value: 'create', label: 'Create' },
-  { value: 'update', label: 'Update' },
-  { value: 'delete', label: 'Delete' },
-  { value: 'action', label: 'Action' },
-];
+interface ManualRestApiCardProps {
+  readonly apiId: string;
+  readonly attemptedUrl: string;
+  readonly onRetry: () => void;
+  readonly onSaved: (apiId: string) => void;
+}
 
-/*** Render manual REST API authoring for services without OpenAPI discovery and refresh canonical Studio state after success. */
-export function ManualRestApiCard() {
+/*** Render a focused manual REST fallback after automatic discovery fails, retaining the attempted URL and canonical API id. */
+export function ManualRestApiCard({
+  apiId,
+  attemptedUrl,
+  onRetry,
+  onSaved,
+}: ManualRestApiCardProps) {
   const studio = useStudio();
-  const [apiId, setApiId] = useState('');
-  const [baseUrl, setBaseUrl] = useState('');
+  const [baseUrl, setBaseUrl] = useState(attemptedUrl);
   const [endpointId, setEndpointId] = useState('root');
   const [path, setPath] = useState('/');
   const [operationId, setOperationId] = useState('get-root');
@@ -38,8 +37,9 @@ export function ManualRestApiCard() {
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  /*** Persist the current manual REST definition and refresh the Studio manifest when the API write succeeds. */
+  /*** Persist the focused manual REST fallback and refresh the canonical Studio manifest on success. */
   const save = useCallback(async () => {
+    if (busy) return;
     setBusy(true);
     setMessage(null);
     try {
@@ -55,38 +55,66 @@ export function ManualRestApiCard() {
       setResult(next);
       if (next.ok) {
         await studio.refetchManifest();
-        setMessage(`${next.created ? 'Created' : 'Updated'} manual REST API ${next.apiId}.`);
+        onSaved(next.apiId);
+        return;
       }
+      setMessage(next.diagnostics[0]?.message ?? 'Manual REST API creation failed.');
     } catch (error) {
+      setResult(null);
       setMessage(error instanceof Error ? error.message : 'Manual REST API creation failed.');
     } finally {
       setBusy(false);
     }
-  }, [apiId, baseUrl, endpointId, intent, method, operationId, path, studio]);
+  }, [apiId, baseUrl, busy, endpointId, intent, method, onSaved, operationId, path, studio]);
 
   return (
-    <Card title="Manual external REST API">
+    <Card
+      title="Manual REST fallback"
+      description="Automatic discovery did not find a supported definition. Describe the first REST operation without creating another API model."
+    >
       <View style={externalApiAdminStyles.stack}>
         <Text color="neutral" emphasis="muted" variant="bodySmall">
-          Use this when no OpenAPI document exists. The API is persisted directly in infra.apis.
+          Studio will persist this through the same canonical infra.apis entry. Retry discovery at any
+          time without losing the URL above.
         </Text>
-        <View style={externalApiAdminStyles.columns}>
-          <ExternalApiField label="API ID">
-            <TextInput value={apiId} autoCapitalize="none" onChangeText={setApiId} />
-          </ExternalApiField>
-          <ExternalApiField label="Base URL">
-            <TextInput value={baseUrl} autoCapitalize="none" onChangeText={setBaseUrl} />
-          </ExternalApiField>
-        </View>
+        <ExternalApiField label="Generated API ID">
+          <Text selectable variant="bodySmall">
+            {apiId}
+          </Text>
+        </ExternalApiField>
+        <ExternalApiField label="Base URL">
+          <TextInput
+            accessibilityLabel="Manual REST base URL"
+            value={baseUrl}
+            autoCapitalize="none"
+            autoCorrect={false}
+            onChangeText={setBaseUrl}
+          />
+        </ExternalApiField>
         <View style={externalApiAdminStyles.columns}>
           <ExternalApiField label="Endpoint ID">
-            <TextInput value={endpointId} autoCapitalize="none" onChangeText={setEndpointId} />
+            <TextInput
+              accessibilityLabel="Endpoint ID"
+              value={endpointId}
+              autoCapitalize="none"
+              onChangeText={setEndpointId}
+            />
           </ExternalApiField>
           <ExternalApiField label="Path">
-            <TextInput value={path} autoCapitalize="none" onChangeText={setPath} />
+            <TextInput
+              accessibilityLabel="Endpoint path"
+              value={path}
+              autoCapitalize="none"
+              onChangeText={setPath}
+            />
           </ExternalApiField>
           <ExternalApiField label="Operation ID">
-            <TextInput value={operationId} autoCapitalize="none" onChangeText={setOperationId} />
+            <TextInput
+              accessibilityLabel="Operation ID"
+              value={operationId}
+              autoCapitalize="none"
+              onChangeText={setOperationId}
+            />
           </ExternalApiField>
         </View>
         <View style={externalApiAdminStyles.columns}>
@@ -97,18 +125,38 @@ export function ManualRestApiCard() {
             <Select value={intent} options={INTENT_OPTIONS} onValueChange={setIntent} />
           </ExternalApiField>
         </View>
-        <View style={externalApiAdminStyles.actions}>
+        <ButtonGroup orientation="responsive" align="end">
+          <Button variant="outline" disabled={busy} onPress={onRetry}>
+            Retry discovery
+          </Button>
           <Button
             loading={busy}
-            disabled={!apiId.trim() || !baseUrl.trim() || !path.trim()}
+            disabled={busy || !baseUrl.trim() || !path.trim()}
             onPress={() => void save()}
           >
             Save REST API
           </Button>
+        </ButtonGroup>
+        <View accessibilityLiveRegion="polite">
+          {message ? <Text variant="bodySmall">{message}</Text> : null}
         </View>
-        {message ? <Text variant="bodySmall">{message}</Text> : null}
-        {result ? <ExternalApiDiagnosticList diagnostics={result.diagnostics} /> : null}
+        {result && !result.ok ? (
+          <ExternalApiDiagnosticList diagnostics={result.diagnostics} attempts={result.attempts} />
+        ) : null}
       </View>
     </Card>
   );
 }
+
+const METHOD_OPTIONS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map((value) => ({
+  value,
+  label: value,
+}));
+
+const INTENT_OPTIONS: readonly { value: DataOperationIntent; label: string }[] = [
+  { value: 'read', label: 'Read' },
+  { value: 'create', label: 'Create' },
+  { value: 'update', label: 'Update' },
+  { value: 'delete', label: 'Delete' },
+  { value: 'action', label: 'Action' },
+];

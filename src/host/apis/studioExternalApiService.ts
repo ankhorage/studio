@@ -16,11 +16,15 @@ import {
 import type {
   ExternalApiConnectRequest,
   ExternalApiConnectResult,
+  ExternalApiMutationResult,
   ExternalApiOperationTestRequest,
   ExternalApiOperationTestResult,
+  ExternalApiRemoveRequest,
   ManualRestApiRequest,
+  ManualRestApiSettingsRequest,
 } from '../../externalApiAuthoringContracts';
 import { normalizeExternalApiId } from '../../normalizeExternalApiId';
+import { removeExternalApi } from '../../removeExternalApi';
 import { upsertExternalApi } from '../../upsertExternalApi';
 import type { ProjectManager } from '../orchestrator/projectManager';
 import type { ProjectSecretService } from '../secrets/projectSecretService';
@@ -105,6 +109,59 @@ export class StudioExternalApiService {
     return result.ok
       ? this.persist(projectId, result.data, [], result.diagnostics ?? [])
       : { ok: false, attempts: [], diagnostics: result.diagnostics };
+  }
+
+  /*** Update editable metadata and base URL on one manually authored REST API while preserving its canonical operations. */
+  async updateManualRestSettings(
+    projectId: string,
+    request: ManualRestApiSettingsRequest,
+  ): Promise<ExternalApiMutationResult> {
+    const manifest = await this.projectManager.getProjectManifest(projectId);
+    const api = manifest.infra.apis?.find((candidate) => candidate.id === request.apiId);
+    if (!api) return missingApiMutationResult(request.apiId);
+    if (api.origin !== 'external' || api.protocol !== 'rest' || api.openApi) {
+      return invalidMutationResult(
+        'Only manually authored external REST APIs can update settings without rediscovery.',
+      );
+    }
+
+    const baseUrl = normalizeExternalApiUrl(request.baseUrl);
+    if (!baseUrl) return invalidMutationResult('Enter a valid HTTP or HTTPS API URL.');
+    const updated: ExternalRestApiDefinition = {
+      ...api,
+      baseUrl,
+      name: clean(request.name),
+      description: clean(request.description),
+      credential: request.credential,
+    };
+    const upsert = upsertExternalApi(manifest.infra.apis ?? [], updated);
+    await this.projectManager.persistProjectManifest({
+      projectId,
+      manifest: { ...manifest, infra: { ...manifest.infra, apis: upsert.apis } },
+    });
+    return { ok: true, apiId: updated.id, diagnostics: [] };
+  }
+
+  /*** Remove exactly one existing external API from canonical manifest state. */
+  async remove(
+    projectId: string,
+    request: ExternalApiRemoveRequest,
+  ): Promise<ExternalApiMutationResult> {
+    const apiId = request.apiId.trim();
+    if (!apiId) return invalidMutationResult('API ID is required.');
+    const manifest = await this.projectManager.getProjectManifest(projectId);
+    const api = manifest.infra.apis?.find((candidate) => candidate.id === apiId);
+    if (!api) return missingApiMutationResult(apiId);
+    if (api.origin !== 'external') {
+      return invalidMutationResult('Only connected external APIs can be removed from this catalog.');
+    }
+
+    const removal = removeExternalApi(manifest.infra.apis ?? [], apiId);
+    await this.projectManager.persistProjectManifest({
+      projectId,
+      manifest: { ...manifest, infra: { ...manifest.infra, apis: removal.apis } },
+    });
+    return { ok: true, apiId, diagnostics: [] };
   }
 
   /*** Execute one authored external API operation against the project's current manifest and credential resolver. */
@@ -201,6 +258,29 @@ function invalidResult(message: string): ExternalApiConnectResult {
   };
 }
 
+/*** Create an external-API mutation failure returned for invalid edit or removal configuration. */
+function invalidMutationResult(message: string): ExternalApiMutationResult {
+  return {
+    ok: false,
+    diagnostics: [{ code: 'invalid-config', message, severity: 'error' }],
+  };
+}
+
+/*** Create the external-API mutation failure returned when the requested canonical API does not exist. */
+function missingApiMutationResult(apiId: string): ExternalApiMutationResult {
+  return {
+    ok: false,
+    diagnostics: [
+      {
+        code: 'missing-api',
+        apiId,
+        message: `API '${apiId}' could not be found.`,
+        severity: 'error',
+      },
+    ],
+  };
+}
+
 /*** Create the operation-test failure returned when a configured API is not an external API. */
 function unsupportedTestApiResult(apiId: string): ExternalApiOperationTestResult {
   return {
@@ -229,6 +309,17 @@ function missingApiResult(apiId: string): ExternalApiOperationTestResult {
       },
     ],
   };
+}
+
+/*** Normalize and validate an editable manual REST base URL before canonical persistence. */
+function normalizeExternalApiUrl(value: string): string | null {
+  const normalized = value.trim();
+  try {
+    const parsed = new URL(normalized);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? normalized : null;
+  } catch {
+    return null;
+  }
 }
 
 /***

@@ -5,9 +5,12 @@ import type {
   ExternalApiConnectRequest,
   ExternalApiConnectResult,
   ExternalApiDiscoveryAttempt,
+  ExternalApiMutationResult,
   ExternalApiOperationTestRequest,
   ExternalApiOperationTestResult,
+  ExternalApiRemoveRequest,
   ManualRestApiRequest,
+  ManualRestApiSettingsRequest,
 } from './externalApiAuthoringContracts';
 
 /***
@@ -45,6 +48,22 @@ export function createManualRestApi(
   request: ManualRestApiRequest,
 ): Promise<ExternalApiConnectResult> {
   return requestResult(projectId, 'manual-rest', request, parseConnectResult);
+}
+
+/*** Update editable settings on one existing manually authored canonical REST API. */
+export function updateManualRestApi(
+  projectId: string,
+  request: ManualRestApiSettingsRequest,
+): Promise<ExternalApiMutationResult> {
+  return requestResult(projectId, 'manual-rest-settings', request, parseMutationResult);
+}
+
+/*** Remove one existing canonical external API definition from the Studio project. */
+export function removeExternalApiConnection(
+  projectId: string,
+  request: ExternalApiRemoveRequest,
+): Promise<ExternalApiMutationResult> {
+  return requestResult(projectId, 'remove', request, parseMutationResult);
 }
 
 /***
@@ -116,6 +135,15 @@ function parseConnectResult(value: unknown): ExternalApiConnectResult {
     diagnostics,
     attempts,
   };
+}
+
+/*** Validate and normalize a canonical external API settings update or removal result. */
+function parseMutationResult(value: unknown): ExternalApiMutationResult {
+  const record = requireResultRecord(value);
+  const diagnostics = parseDiagnostics(record.diagnostics);
+  if (!record.ok) return { ok: false, diagnostics };
+  if (typeof record.apiId !== 'string') throw invalidResponse();
+  return { ok: true, apiId: record.apiId, diagnostics };
 }
 
 /*** Validate and normalize the result of testing one external API operation. */
