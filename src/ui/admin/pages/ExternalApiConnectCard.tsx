@@ -1,132 +1,114 @@
-import { Button, Card, TextInput, Select, Text } from '@ankhorage/zora';
+import { Button, Card, Text, TextInput } from '@ankhorage/zora';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 
 import { useStudio } from '../../../core/StudioContext';
+import { deriveExternalApiIdFromUrl } from '../../../deriveExternalApiIdFromUrl';
 import { connectExternalApi } from '../../../externalApiApi';
-import type {
-  ExternalApiConnectResult,
-  ExternalApiProtocol,
-} from '../../../externalApiAuthoringContracts';
+import type { ExternalApiConnectResult } from '../../../externalApiAuthoringContracts';
 import {
   ExternalApiDiagnosticList,
   ExternalApiField,
   externalApiAdminStyles,
 } from './ExternalApiAdminPrimitives';
 
-const PROTOCOL_OPTIONS = [
-  { value: 'auto', label: 'Auto: OpenAPI, then GraphQL' },
-  { value: 'openapi', label: 'OpenAPI' },
-  { value: 'graphql', label: 'GraphQL introspection' },
-] as const;
+interface ExternalApiDiscoveryFailure {
+  readonly apiId: string;
+  readonly url: string;
+}
 
-/*** Render the external-API discovery/connect form and refresh the Studio manifest after a successful connection. */
-export function ExternalApiConnectCard() {
+interface ExternalApiConnectCardProps {
+  readonly onConnected: (apiId: string) => void;
+  readonly onDiscoveryFailed: (failure: ExternalApiDiscoveryFailure) => void;
+  readonly onResetFailure: () => void;
+}
+
+/*** Render URL-first external API discovery and persist the discovered canonical definition before exposing advanced authoring. */
+export function ExternalApiConnectCard({
+  onConnected,
+  onDiscoveryFailed,
+  onResetFailure,
+}: ExternalApiConnectCardProps) {
   const studio = useStudio();
-  const [apiId, setApiId] = useState('');
   const [url, setUrl] = useState('');
-  const [name, setName] = useState('');
-  const [protocol, setProtocol] = useState<ExternalApiProtocol>('auto');
-  const [credentialId, setCredentialId] = useState('');
-  const [credentialKind, setCredentialKind] = useState('bearer');
-  const [credentialScope, setCredentialScope] = useState('');
   const [result, setResult] = useState<ExternalApiConnectResult | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  /*** Submit one external API discovery/connect request and refresh canonical Studio state on success. */
-  const connect = useCallback(async () => {
+  /*** Reset stale discovery feedback whenever the URL draft changes while preserving the user's current input. */
+  const changeUrl = useCallback(
+    (value: string) => {
+      setUrl(value);
+      setResult(null);
+      setMessage(null);
+      onResetFailure();
+    },
+    [onResetFailure],
+  );
+
+  /*** Derive the canonical API id, run automatic discovery once, and refresh manifest state after successful persistence. */
+  const discover = useCallback(async () => {
+    if (busy) return;
+    const normalizedUrl = url.trim();
+    const derived = deriveExternalApiIdFromUrl(normalizedUrl);
+    if (!derived.ok) {
+      setResult(null);
+      setMessage(derived.message);
+      return;
+    }
+
     setBusy(true);
     setMessage(null);
     try {
       const next = await connectExternalApi(studio.projectId, {
-        apiId,
-        url,
-        protocol,
-        name: name.trim() || undefined,
-        credential: credentialId.trim()
-          ? {
-              id: credentialId.trim(),
-              kind: credentialKind.trim() || 'bearer',
-              scope: credentialScope.trim() || undefined,
-            }
-          : undefined,
+        apiId: derived.apiId,
+        url: normalizedUrl,
+        protocol: 'auto',
       });
       setResult(next);
       if (next.ok) {
         await studio.refetchManifest();
-        setMessage(
-          `${next.created ? 'Connected' : 'Updated'} API ${next.apiId} as ${next.protocol}.`,
-        );
+        setMessage(`Connected ${next.apiId} as ${next.protocol}.`);
+        onConnected(next.apiId);
+        return;
       }
+      setMessage('Automatic discovery did not find a supported API definition.');
+      onDiscoveryFailed({ apiId: derived.apiId, url: normalizedUrl });
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'External API connection failed.');
+      setResult(null);
+      setMessage(error instanceof Error ? error.message : 'External API discovery failed.');
+      onDiscoveryFailed({ apiId: derived.apiId, url: normalizedUrl });
     } finally {
       setBusy(false);
     }
-  }, [apiId, credentialId, credentialKind, credentialScope, name, protocol, studio, url]);
+  }, [busy, onConnected, onDiscoveryFailed, studio, url]);
 
   return (
-    <Card title="Connect external API">
+    <Card
+      title="Connect an API"
+      description="Start with the service or schema URL. Studio derives the API ID and discovers the protocol automatically."
+    >
       <View style={externalApiAdminStyles.stack}>
-        <View style={externalApiAdminStyles.columns}>
-          <ExternalApiField label="API ID">
-            <TextInput value={apiId} autoCapitalize="none" onChangeText={setApiId} />
-          </ExternalApiField>
-          <ExternalApiField label="Protocol discovery">
-            <Select value={protocol} options={PROTOCOL_OPTIONS} onValueChange={setProtocol} />
-          </ExternalApiField>
-        </View>
         <ExternalApiField label="Service or schema URL">
           <TextInput
+            accessibilityLabel="Service or schema URL"
             value={url}
             autoCapitalize="none"
-            placeholder="https://api.example.com"
-            onChangeText={setUrl}
+            autoCorrect={false}
+            placeholder="https://api.example.com/openapi.json"
+            onChangeText={changeUrl}
+            onSubmitEditing={() => void discover()}
           />
         </ExternalApiField>
-        <ExternalApiField label="Display name (optional)">
-          <TextInput value={name} onChangeText={setName} />
-        </ExternalApiField>
-        <Text color="neutral" emphasis="muted" variant="bodySmall">
-          OpenAPI probes direct and conventional schema locations. GraphQL introspection uses the
-          exact URL. Reusing an API ID updates the canonical infra.apis entry.
-        </Text>
-        <View style={externalApiAdminStyles.columns}>
-          <ExternalApiField label="Credential secret ref (optional)">
-            <TextInput
-              value={credentialId}
-              autoCapitalize="none"
-              placeholder="services/example"
-              onChangeText={setCredentialId}
-            />
-          </ExternalApiField>
-          <ExternalApiField label="Credential kind">
-            <TextInput
-              value={credentialKind}
-              autoCapitalize="none"
-              onChangeText={setCredentialKind}
-            />
-          </ExternalApiField>
-          <ExternalApiField label="Credential scope (optional)">
-            <TextInput
-              value={credentialScope}
-              autoCapitalize="none"
-              placeholder="header:x-api-key"
-              onChangeText={setCredentialScope}
-            />
-          </ExternalApiField>
-        </View>
         <View style={externalApiAdminStyles.actions}>
-          <Button
-            loading={busy}
-            disabled={!apiId.trim() || !url.trim()}
-            onPress={() => void connect()}
-          >
-            Connect API
+          <Button loading={busy} disabled={busy || !url.trim()} onPress={() => void discover()}>
+            Discover API
           </Button>
         </View>
-        {message ? <Text variant="bodySmall">{message}</Text> : null}
+        <View accessibilityLiveRegion="polite">
+          {busy ? <Text variant="bodySmall">Discovering API…</Text> : null}
+          {message ? <Text variant="bodySmall">{message}</Text> : null}
+        </View>
         {result ? (
           <ExternalApiDiagnosticList diagnostics={result.diagnostics} attempts={result.attempts} />
         ) : null}

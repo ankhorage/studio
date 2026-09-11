@@ -4,14 +4,16 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import type {
   ExternalApiConnectRequest,
   ExternalApiOperationTestRequest,
+  ExternalApiRemoveRequest,
   ManualRestApiRequest,
+  ManualRestApiSettingsRequest,
 } from '../../externalApiAuthoringContracts';
 import { StudioExternalApiService } from '../apis/studioExternalApiService';
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { ProjectSecretService } from '../secrets/projectSecretService';
 
 /***
- * Register Studio external-API connect/manual/test HTTP adapters around the external API service.
+ * Register Studio external-API connect/manual/settings/remove/test HTTP adapters around the external API service.
  * @todo Keep this Fastify adapter at the host edge while moving reusable parsing/response primitives to their shared owners.
  */
 export function registerProjectApiRoutes(
@@ -46,6 +48,20 @@ export function registerProjectApiRoutes(
     return sendResult(reply, await service.createManualRest(readProjectId(request), body));
   });
 
+  /*** Validate and update settings on one manually authored REST API without replacing its operations. */
+  fastify.post('/api/projects/:id/apis/manual-rest-settings', async (request, reply) => {
+    const body = readManualRestSettingsRequest(request.body);
+    if (!body) return invalidPayload(reply, 'Manual REST API settings payload is invalid.');
+    return sendResult(reply, await service.updateManualRestSettings(readProjectId(request), body));
+  });
+
+  /*** Validate and remove one canonical external API. */
+  fastify.post('/api/projects/:id/apis/remove', async (request, reply) => {
+    const body = readRemoveRequest(request.body);
+    if (!body) return invalidPayload(reply, 'External API removal payload is invalid.');
+    return sendResult(reply, await service.remove(readProjectId(request), body));
+  });
+
   /*** Validate and execute one authored external API operation test. */
   fastify.post('/api/projects/:id/apis/test', async (request, reply) => {
     const body = readOperationTestRequest(request.body);
@@ -74,6 +90,7 @@ function sendResult(reply: FastifyReply, result: { readonly ok: boolean }) {
 function invalidPayload(reply: FastifyReply, message: string) {
   return reply.status(400).send({
     ok: false,
+    attempts: [],
     diagnostics: [{ code: 'invalid-config', message, severity: 'error' }],
   });
 }
@@ -98,6 +115,26 @@ function readConnectRequest(value: unknown): ExternalApiConnectRequest | null {
     description: readString(record.description),
     credential: readCredential(record.credential),
   };
+}
+
+/*** Parse editable settings for one existing manually authored REST API. */
+function readManualRestSettingsRequest(value: unknown): ManualRestApiSettingsRequest | null {
+  const record = readRecord(value);
+  if (!record || typeof record.apiId !== 'string' || typeof record.baseUrl !== 'string')
+    return null;
+  return {
+    apiId: record.apiId,
+    baseUrl: record.baseUrl,
+    name: readString(record.name),
+    description: readString(record.description),
+    credential: readCredential(record.credential),
+  };
+}
+
+/*** Parse an unknown external API removal payload into the canonical Studio authoring contract. */
+function readRemoveRequest(value: unknown): ExternalApiRemoveRequest | null {
+  const record = readRecord(value);
+  return record && typeof record.apiId === 'string' ? { apiId: record.apiId } : null;
 }
 
 /*** Parse an unknown manual REST payload into the external-API authoring contract. */

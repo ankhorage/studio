@@ -16,6 +16,18 @@ export interface ExternalApiConnectRequest {
   readonly credential?: CredentialRef;
 }
 
+export interface ManualRestApiSettingsRequest {
+  readonly apiId: string;
+  readonly baseUrl: string;
+  readonly name?: string;
+  readonly description?: string;
+  readonly credential?: CredentialRef;
+}
+
+export interface ExternalApiRemoveRequest {
+  readonly apiId: string;
+}
+
 export interface ManualRestApiRequest {
   readonly apiId: string;
   readonly baseUrl: string;
@@ -47,6 +59,17 @@ export type ExternalApiConnectResult =
   | {
       readonly ok: false;
       readonly attempts: readonly ExternalApiDiscoveryAttempt[];
+      readonly diagnostics: readonly DataSourceDiagnostic[];
+    };
+
+export type ExternalApiMutationResult =
+  | {
+      readonly ok: true;
+      readonly apiId: string;
+      readonly diagnostics: readonly DataSourceDiagnostic[];
+    }
+  | {
+      readonly ok: false;
       readonly diagnostics: readonly DataSourceDiagnostic[];
     };
 
