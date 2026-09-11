@@ -101,11 +101,7 @@ export function ExternalApiConnectCard({
           />
         </ExternalApiField>
         <View style={externalApiAdminStyles.actions}>
-          <Button
-            loading={busy}
-            disabled={busy || !url.trim()}
-            onPress={() => void discover()}
-          >
+          <Button loading={busy} disabled={busy || !url.trim()} onPress={() => void discover()}>
             Discover API
           </Button>
         </View>

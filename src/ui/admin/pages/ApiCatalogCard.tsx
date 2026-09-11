@@ -87,12 +87,16 @@ function renderEndpointRows(api: ApiDefinition) {
     }
 
     return operations.map(([operationId, operation]) => {
-      const method = operation.method ?? (operation.protocol === 'graphql' ? 'GRAPHQL' : operation.protocol.toUpperCase());
+      const method =
+        operation.method ??
+        (operation.protocol === 'graphql' ? 'GRAPHQL' : operation.protocol.toUpperCase());
       return (
         <ListRow
           key={`${api.id}:${endpointId}:${operationId}`}
           title={formatPath(operation.path ?? endpoint.path) ?? operation.name ?? operationId}
-          description={operation.name ? `${operation.name} · ${operation.intent}` : operation.intent}
+          description={
+            operation.name ? `${operation.name} · ${operation.intent}` : operation.intent
+          }
           meta={`${endpointId} · ${operationId}`}
           leading={<Badge>{method}</Badge>}
           variant="card"
