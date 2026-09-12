@@ -12,6 +12,7 @@ import {
   resolveExpoRuntimeNativeSchemeMap,
 } from '@ankhorage/expo-runtime/planning';
 import { EXPO_PLATFORM, type ExpoPlatformPackage } from '@ankhorage/expo-runtime/platform';
+import type { Props as ExpoSplashScreenPluginProps } from 'expo-splash-screen/plugin';
 
 export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
@@ -80,26 +81,22 @@ function serializeJsValue(value: unknown, indentLevel = 0): string {
 
 type SplashManifestProjection = Pick<AppManifest, 'media' | 'splashScreen'>;
 type SplashScreenModeSpec = NonNullable<SplashScreenSpec['dark']>;
-type ExpoSplashScreenModeSpec = Omit<SplashScreenModeSpec, 'image'> & {
-  readonly image?: string;
-};
-type ExpoSplashScreenSpec = Omit<SplashScreenSpec, 'dark' | 'image'> & {
-  readonly image?: string;
-  readonly dark?: ExpoSplashScreenModeSpec;
-};
+type ExpoSplashScreenModeProps = NonNullable<ExpoSplashScreenPluginProps['dark']>;
 
 /*** Resolve portable splash media references to Expo-compatible bundled asset paths. */
 function resolveSplashScreenForExpo(
   manifest: SplashManifestProjection | null | undefined,
-): ExpoSplashScreenSpec | null {
+): ExpoSplashScreenPluginProps | null {
   if (manifest?.splashScreen == null) {
     return null;
   }
 
-  const { dark, image, ...options } = manifest.splashScreen;
+  const { backgroundColor, dark, image, imageWidth, resizeMode } = manifest.splashScreen;
   return {
-    ...options,
+    ...(backgroundColor === undefined ? {} : { backgroundColor }),
     ...(image ? { image: resolveSplashImagePath(manifest, image.mediaId) } : {}),
+    ...(imageWidth === undefined ? {} : { imageWidth }),
+    ...(resizeMode === undefined ? {} : { resizeMode }),
     ...(dark ? { dark: resolveSplashScreenModeForExpo(manifest, dark) } : {}),
   };
 }
@@ -108,10 +105,10 @@ function resolveSplashScreenForExpo(
 function resolveSplashScreenModeForExpo(
   manifest: SplashManifestProjection,
   mode: SplashScreenModeSpec,
-): ExpoSplashScreenModeSpec {
-  const { image, ...options } = mode;
+): ExpoSplashScreenModeProps {
+  const { backgroundColor, image } = mode;
   return {
-    ...options,
+    ...(backgroundColor === undefined ? {} : { backgroundColor }),
     ...(image ? { image: resolveSplashImagePath(manifest, image.mediaId) } : {}),
   };
 }

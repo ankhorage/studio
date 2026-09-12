@@ -3,6 +3,60 @@ import { expect, test } from 'bun:test';
 
 import { getRootLayoutImportRequirements, getRootLayoutTsx } from './rootLayout';
 
+test('keeps the native splash visible until generated content is ready', () => {
+  expect(getRootLayoutImportRequirements(false)).toContainEqual({
+    source: 'react',
+    namedImports: [
+      { imported: 'ReactNode', typeOnly: true },
+      { imported: 'useEffect' },
+      { imported: 'useCallback' },
+    ],
+  });
+  expect(getRootLayoutImportRequirements(false)).toContainEqual({
+    source: 'expo-splash-screen',
+    namespaceImport: 'SplashScreen',
+  });
+
+  const generated = getRootLayoutTsx({
+    manifest: { navigator: { initialRouteName: 'index' } } as unknown as AppManifest,
+    mutations: [],
+    allImports: '',
+    allHooks: '',
+    innerNavigation: { declarations: '', jsx: '<></>', usesTheme: false },
+    includeStudio: false,
+  });
+
+  expect(generated).toContain('void SplashScreen.preventAutoHideAsync();');
+  expect(generated).toContain(`useEffect(() => {
+    SplashScreen.hide();
+  }, []);`);
+});
+
+test('keeps the native splash visible while generated auth is pending', () => {
+  const generated = getRootLayoutTsx({
+    manifest: { navigator: { initialRouteName: 'index' } } as unknown as AppManifest,
+    mutations: [],
+    allImports: '',
+    allHooks: '',
+    innerNavigation: { declarations: '', jsx: '<></>', usesTheme: false },
+    includeStudio: false,
+    authRuntime: {
+      signInRoute: 'sign-in',
+      signInRouteName: 'sign-in',
+      signUpRoute: 'sign-up',
+      signUpRouteName: 'sign-up',
+      postSignInRoute: 'index',
+      publicRoutes: ['sign-in', 'sign-up'],
+    },
+  });
+
+  expect(generated).toContain(`useEffect(() => {
+    if (authState === 'pending') return;
+    onReady?.();
+    SplashScreen.hide();
+  }, [authState, onReady]);`);
+});
+
 test('declares generated runtime registries before composing them', () => {
   const generated = getRootLayoutTsx({
     manifest: {
