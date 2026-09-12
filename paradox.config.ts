@@ -4,8 +4,6 @@ export default defineParadoxConfig({
   mode: 'write',
 
   docs: {
-    title: '@ankhorage/studio',
-    description: 'Standalone Studio authoring package for Ankhorage apps.',
     usage: {
       description: [
         'For local Studio development, run:',
