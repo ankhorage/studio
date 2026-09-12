@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.5.3
+
+### Patch Changes
+
+- 39cf147: Use package metadata as the default Paradox documentation title and description.
+
 ## 2.5.2
 
 ### Patch Changes
