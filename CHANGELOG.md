@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.5.5
+
+### Patch Changes
+
+- 6b206a4: Keep generated sign-in and sign-up forms reachable above the native software keyboard.
+
 ## 2.5.4
 
 ### Patch Changes
