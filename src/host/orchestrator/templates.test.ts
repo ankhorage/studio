@@ -60,8 +60,6 @@ describe('generated OAuth scaffold templates', () => {
           dark: {
             backgroundColor: '#000000',
             image: { mediaId: 'logo' },
-            imageWidth: 200,
-            resizeMode: 'contain',
           },
         },
       },
@@ -69,6 +67,8 @@ describe('generated OAuth scaffold templates', () => {
 
     expect(appConfig).toContain("'expo-splash-screen'");
     expect(appConfig.match(/image: '\.\/assets\/authoring\/logo\/logo\.png'/gu)).toHaveLength(2);
+    expect(appConfig.match(/imageWidth: 200/gu)).toHaveLength(1);
+    expect(appConfig.match(/resizeMode: 'contain'/gu)).toHaveLength(1);
     expect(appConfig).not.toContain('mediaId');
   });
 

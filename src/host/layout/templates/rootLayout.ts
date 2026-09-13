@@ -45,6 +45,7 @@ export function getRootLayoutImportRequirements(
       source: 'react',
       namedImports: [
         { imported: 'ReactNode', typeOnly: true },
+        { imported: 'useEffect' },
         ...(!includeStudio ? [{ imported: 'useCallback' }] : []),
       ],
     },
@@ -63,6 +64,10 @@ export function getRootLayoutImportRequirements(
     {
       source: '@ankhorage/expo-runtime/icon-fonts',
       namedImports: [{ imported: 'ExpoZoraIconFontProvider' }],
+    },
+    {
+      source: 'expo-splash-screen',
+      namespaceImport: 'SplashScreen',
     },
     {
       source: '@/generated/bundledMediaRegistry',
@@ -225,9 +230,14 @@ const { authState, handleInnerContentReady } = useGeneratedAuthNavigation();
   const innerContentReadyHook = authRuntime
     ? `
   useEffect(() => {
+    if (authState === 'pending') return;
     onReady?.();
-  }, [onReady]);`
-    : '';
+    SplashScreen.hide();
+  }, [authState, onReady]);`
+    : `
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);`;
   const innerContentPendingBoundary = authRuntime
     ? `
   if (authState === 'pending') {
@@ -385,6 +395,8 @@ const shouldMountAppHeader =
     'const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;';
   return `
 ${allImports}
+
+void SplashScreen.preventAutoHideAsync();
 
 ${moduleLevelDeclarations}
 
