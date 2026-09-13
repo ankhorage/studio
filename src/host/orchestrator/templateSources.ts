@@ -1,4 +1,4 @@
-import type { AppManifest, SplashScreenSpec } from '@ankhorage/contracts';
+import type { AppManifest } from '@ankhorage/contracts';
 import type {
   AppDeployAndroidTargetConfig,
   AppDeployIosTargetConfig,
@@ -12,7 +12,6 @@ import {
   resolveExpoRuntimeNativeSchemeMap,
 } from '@ankhorage/expo-runtime/planning';
 import { EXPO_PLATFORM, type ExpoPlatformPackage } from '@ankhorage/expo-runtime/platform';
-import type { Props as ExpoSplashScreenPluginProps } from 'expo-splash-screen/plugin';
 
 export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
@@ -80,13 +79,20 @@ function serializeJsValue(value: unknown, indentLevel = 0): string {
 }
 
 type SplashManifestProjection = Pick<AppManifest, 'media' | 'splashScreen'>;
+type SplashScreenSpec = NonNullable<AppManifest['splashScreen']>;
 type SplashScreenModeSpec = NonNullable<SplashScreenSpec['dark']>;
-type ExpoSplashScreenModeProps = NonNullable<ExpoSplashScreenPluginProps['dark']>;
+type ExpoSplashScreenModeProps = Omit<SplashScreenModeSpec, 'image'> & {
+  readonly image?: string;
+};
+type ExpoSplashScreenProps = Omit<SplashScreenSpec, 'dark' | 'image'> & {
+  readonly image?: string;
+  readonly dark?: ExpoSplashScreenModeProps;
+};
 
 /*** Resolve portable splash media references to Expo-compatible bundled asset paths. */
 function resolveSplashScreenForExpo(
   manifest: SplashManifestProjection | null | undefined,
-): ExpoSplashScreenPluginProps | null {
+): ExpoSplashScreenProps | null {
   if (manifest?.splashScreen == null) {
     return null;
   }
