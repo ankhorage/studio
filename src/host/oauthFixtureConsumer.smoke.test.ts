@@ -169,6 +169,11 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(signInScreen).toContain('GeneratedAuthScreen');
     expect(authScreenRuntime).toContain('OAuthProviderList');
     expect(authScreenRuntime).toContain('generatedOAuthProviderItems');
+    expect(authScreenRuntime).toContain('KeyboardAvoidingView');
+    expect(authScreenRuntime).toContain(
+      "behavior={Platform.select({ android: 'height', ios: 'padding' })}",
+    );
+    expect(authScreenRuntime).toContain('keyboardShouldPersistTaps="handled"');
     expect(authScreenController).toContain('startOAuthAuthorization(providerId)');
     expect(authScreenRuntime).toContain('or continue with password');
 
