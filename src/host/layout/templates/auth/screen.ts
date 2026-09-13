@@ -43,10 +43,10 @@ export function getAuthScreenRuntimeTsx(
 
   return `import type { AppManifest } from '@ankhorage/contracts';
 import { ManifestProvider } from '@ankhorage/runtime';
-import { ${oauthZoraImport.trim()}${oauthZoraImport ? ', ' : ''}SignInForm, SignUpForm, Text, useZoraTheme } from '@ankhorage/zora';
+import { KeyboardAvoidingView, ${oauthZoraImport.trim()}${oauthZoraImport ? ', ' : ''}SignInForm, SignUpForm, Text, useZoraTheme } from '@ankhorage/zora';
 import ankhConfig from '@root/ankh.config.json';
 import { Stack } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 
 ${oauthImports}import {
   type AuthMode,
@@ -67,17 +67,26 @@ export function GeneratedAuthScreen({
   const { theme } = useZoraTheme();
   return (
     <ManifestProvider manifest={fallbackManifest}>
-      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-        <Stack.Screen options={{ title }} />
-        <View
-          style={[
-            styles.card,
-            { backgroundColor: theme.colors.surface, borderColor: theme.colors.border },
-          ]}
+      <Stack.Screen options={{ title }} />
+      <KeyboardAvoidingView
+        behavior={Platform.select({ android: 'height', ios: 'padding' })}
+        style={[styles.container, { backgroundColor: theme.colors.background }]}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          style={styles.scroll}
         >
-          <AuthScreenContent borderColor={theme.colors.border} controller={controller} />
-        </View>
-      </View>
+          <View
+            style={[
+              styles.card,
+              { backgroundColor: theme.colors.surface, borderColor: theme.colors.border },
+            ]}
+          >
+            <AuthScreenContent borderColor={theme.colors.border} controller={controller} />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </ManifestProvider>
   );
 }
@@ -137,8 +146,15 @@ function AuthForm({ controller }: { controller: AuthScreenController }) {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
     flex: 1,
+  },
+  scroll: {
+    flex: 1,
+    width: '100%',
+  },
+  scrollContent: {
+    alignItems: 'center',
+    flexGrow: 1,
     justifyContent: 'center',
     padding: 24,
   },

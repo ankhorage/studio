@@ -60,6 +60,12 @@ test('generated Expo Router auth files are thin screen delegates', () => {
   expect(route).toContain('<GeneratedAuthScreen initialMode="signIn" title="Auth" />');
   expect(route).not.toContain('useState');
   expect(runtime).toContain('SignInForm');
+  expect(runtime).toContain('KeyboardAvoidingView');
+  expect(runtime).toContain("behavior={Platform.select({ android: 'height', ios: 'padding' })}");
+  expect(runtime).toContain('contentContainerStyle={styles.scrollContent}');
+  expect(runtime).toContain('keyboardShouldPersistTaps="handled"');
+  expect(runtime).toContain('flexGrow: 1');
+  expect(runtime).not.toContain("from '@ankhorage/surface'");
   expect(runtime).toContain("from '@/auth/screen-controller';");
   expect(controller).toContain("from '@/auth/form';");
   expect(controller).toContain('export function useAuthScreenController');
