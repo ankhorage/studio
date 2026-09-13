@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.5.4
+
+### Patch Changes
+
+- a7f9cd4: Keep generated native splash screens visible until app or auth content is ready, and derive splash plugin options from the app manifest contract.
+
 ## 2.5.3
 
 ### Patch Changes
