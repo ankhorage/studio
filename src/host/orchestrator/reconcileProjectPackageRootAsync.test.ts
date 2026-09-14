@@ -5,7 +5,7 @@ import path from 'node:path';
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 import { afterEach, expect, test } from 'bun:test';
 
-import { getGeneratedPackagePolicy } from './generatedPackagePolicy';
+import { getGeneratedPackagePolicy } from '../../features/project-updates/adapters/outbound/getGeneratedPackagePolicy';
 import { reconcileProjectPackageRootAsync } from './reconcileProjectPackageRootAsync';
 import { getPackageJson } from './templates';
 
