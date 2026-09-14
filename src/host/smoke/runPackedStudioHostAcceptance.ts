@@ -84,7 +84,9 @@ async function assertPackedPackageAsync(
     descriptor.owner?.name !== '@ankhorage/studio' ||
     descriptor.owner.version !== packageJson.version
   ) {
-    throw new Error('Packed Studio APM descriptor owner identity does not match the package artifact.');
+    throw new Error(
+      'Packed Studio APM descriptor owner identity does not match the package artifact.',
+    );
   }
 }
 
