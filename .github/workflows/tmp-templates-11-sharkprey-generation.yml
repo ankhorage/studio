@@ -24,17 +24,15 @@ jobs:
         with:
           bun-version: 1.4.2
       - run: bun install --frozen-lockfile
-      - name: Confirm Templates 11 is visible in npm
+      - name: Confirm released owners are visible in npm
         run: |
-          version="$(npm view @ankhorage/templates@11.0.3 version)"
-          test "$version" = "11.0.3"
-      - name: Align published manifest owners
+          test "$(npm view @ankhorage/contracts@19.1.0 version)" = "19.1.0"
+          test "$(npm view @ankhorage/infra@5.1.0 version)" = "5.1.0"
+          test "$(npm view @ankhorage/templates@11.0.3 version)" = "11.0.3"
+      - name: Align current published owners
         run: |
           bun pm cache rm
-          bun add '@ankhorage/contracts@^15.0.0' '@ankhorage/navigator@^3.2.5' '@ankhorage/templates@^11.0.3'
-      - name: Identify AUTH_PROVIDERS runtime consumers
-        run: |
-          grep -R -n --include='*.js' --exclude-dir=contracts 'AUTH_PROVIDERS' node_modules/@ankhorage || true
+          bun add '@ankhorage/contracts@^19.1.0' '@ankhorage/infra@^5.1.0' '@ankhorage/navigator@^3.2.5' '@ankhorage/templates@^11.0.3'
       - name: Add Studio patch changeset
         run: |
           cat > .changeset/sharkprey-templates-11.md <<'EOF'
@@ -42,13 +40,14 @@ jobs:
           '@ankhorage/studio': patch
           ---
 
-          Align Studio with Contracts 15 and Templates 11 so project creation uses the current SharkPrey training manifest.
+          Align Studio with the current Contracts, Infra and Templates owners so project creation uses the current SharkPrey training manifest.
           EOF
       - name: Verify resolved owner versions
         run: |
           node - <<'NODE'
           const expected = {
-            '@ankhorage/contracts': '15.0.0',
+            '@ankhorage/contracts': '19.1.0',
+            '@ankhorage/infra': '5.1.0',
             '@ankhorage/navigator': '3.2.5',
             '@ankhorage/templates': '11.0.3',
           };
@@ -68,11 +67,11 @@ jobs:
       - run: bun run format
       - name: Expo 57 generated app acceptance
         run: bun run test:acceptance:expo57-generated-app
-      - name: Commit verified dependency update and remove temporary runner
+      - name: Commit verified owner update and remove temporary runner
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git rm -f .github/workflows/tmp-templates-11-sharkprey-generation.yml
           git add -A
-          git commit -m "fix: consume Templates 11 for SharkPrey generation"
+          git commit -m "fix: align Studio owners for SharkPrey generation"
           git push origin HEAD:fix/templates-11-sharkprey-generation
