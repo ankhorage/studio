@@ -36,10 +36,10 @@ jobs:
           done
           echo "@ankhorage/templates@11.0.3 is still unavailable from npm." >&2
           exit 1
-      - name: Upgrade published Templates owner
+      - name: Align published manifest owners
         run: |
           bun pm cache rm
-          bun add '@ankhorage/templates@^11.0.3'
+          bun add '@ankhorage/contracts@^15.0.0' '@ankhorage/navigator@^3.2.5' '@ankhorage/templates@^11.0.3'
       - name: Add Studio patch changeset
         run: |
           cat > .changeset/sharkprey-templates-11.md <<'EOF'
@@ -47,11 +47,21 @@ jobs:
           '@ankhorage/studio': patch
           ---
 
-          Consume Templates 11 so Studio project creation uses the current SharkPrey training manifest.
+          Align Studio with Contracts 15 and Templates 11 so project creation uses the current SharkPrey training manifest.
           EOF
-      - name: Verify resolved Templates version
+      - name: Verify resolved owner versions
         run: |
-          node -e "const p=require('./node_modules/@ankhorage/templates/package.json'); if(p.version!=='11.0.3') throw new Error('Expected @ankhorage/templates 11.0.3, got '+p.version)"
+          node - <<'NODE'
+          const expected = {
+            '@ankhorage/contracts': '15.0.0',
+            '@ankhorage/navigator': '3.2.5',
+            '@ankhorage/templates': '11.0.3',
+          };
+          for (const [name, version] of Object.entries(expected)) {
+            const actual = require(`./node_modules/${name}/package.json`).version;
+            if (actual !== version) throw new Error(`Expected ${name} ${version}, got ${actual}`);
+          }
+          NODE
       - name: Focused SharkPrey project generation tests
         run: bun test src/host/orchestrator/projectCreationAssets.test.ts
       - run: bun run build
