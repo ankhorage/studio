@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.5.6
+
+### Patch Changes
+
+- 7a3c221: Integrate the released APM project-update lifecycle into Studio and keep generated project projections synchronized through the canonical update service boundary.
+
 ## 2.5.5
 
 ### Patch Changes
