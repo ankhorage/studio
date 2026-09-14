@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.6.0
+
+### Minor Changes
+
+- 0641019: Publish Studio's package-owned APM descriptor and executable generated-package-policy projection through the `@ankhorage/studio/apm` public subpath.
+
 ## 2.5.7
 
 ### Patch Changes
