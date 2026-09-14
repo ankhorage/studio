@@ -16,19 +16,20 @@ const PERMISSIONS = {
 const createOwnerEvidencePort = (
   projection: 'current' | 'stale',
 ): ApmStatusExtensionEvidencePort => ({
-  inspectExtensionEvidenceAsync: async () => ({
-    state: 'available',
-    complete: true,
-    observations: [
-      {
-        owner: '@ankhorage/studio',
-        projection,
-        migration: 'not-applicable',
-        evidence: [`studio-projection:${projection}`],
-      },
-    ],
-    diagnostics: [],
-  }),
+  inspectExtensionEvidenceAsync: () =>
+    Promise.resolve({
+      state: 'available',
+      complete: true,
+      observations: [
+        {
+          owner: '@ankhorage/studio',
+          projection,
+          migration: 'not-applicable',
+          evidence: [`studio-projection:${projection}`],
+        },
+      ],
+      diagnostics: [],
+    }),
 });
 
 test('uses the released APM lifecycle without mutating an incomplete project', async () => {
@@ -59,7 +60,9 @@ test('preserves Studio owner evidence in status and planning fingerprints', asyn
   const rootPath = await mkdtemp(path.join(tmpdir(), 'studio-owner-aware-updates-'));
   const manifestPath = path.join(rootPath, 'package.json');
   const manifest = `${JSON.stringify({ name: 'fixture', packageManager: 'bun@1.4.2' }, null, 2)}\n`;
-  const currentService = new ProjectUpdateService({ extensions: createOwnerEvidencePort('current') });
+  const currentService = new ProjectUpdateService({
+    extensions: createOwnerEvidencePort('current'),
+  });
   const staleService = new ProjectUpdateService({ extensions: createOwnerEvidencePort('stale') });
 
   try {
