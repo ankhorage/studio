@@ -25,9 +25,6 @@ export const studioUpdateExtension: ApmUpdateExtension = {
   projections: [createGeneratedPackagePolicyProjection()],
 };
 
-const PROJECTION_ID = 'generated-package-policy';
-const DESCRIPTOR_URL = new URL('../../../../../apm/update.json', import.meta.url);
-
 interface ManagedPolicyEntry {
   readonly section: 'dependencies' | 'devDependencies';
   readonly key: string;
@@ -45,17 +42,25 @@ interface ProjectionState {
 /*** Build the executable projection handler owned by the exact Studio artifact that exports it. */
 function createGeneratedPackagePolicyProjection(): ApmProjectionHandler {
   return {
-    id: PROJECTION_ID,
+    id: projectionId(),
     inspectAsync: async (input) => {
       const state = await inspectProjectionStateAsync(input);
       return {
-        projectionId: PROJECTION_ID,
-        state: state.manifest === undefined ? 'unknown' : state.mutations.length === 0 ? 'current' : 'stale',
+        projectionId: projectionId(),
+        state:
+          state.manifest === undefined
+            ? 'unknown'
+            : state.mutations.length === 0
+              ? 'current'
+              : 'stale',
         inputFingerprint: state.inputFingerprint,
         generatorFingerprint: state.generatorFingerprint,
         evidence: projectionEvidence(state),
         ...(state.manifest === undefined
-          ? { reason: 'Generated package.json is missing or does not match the Studio package-policy shape.' }
+          ? {
+              reason:
+                'Generated package.json is missing or does not match the Studio package-policy shape.',
+            }
           : {}),
       };
     },
@@ -76,7 +81,10 @@ function createGeneratedPackagePolicyProjection(): ApmProjectionHandler {
         valid: current && generatorMatches,
         evidence: projectionEvidence(state),
         ...(!current || !generatorMatches
-          ? { reason: 'Studio package policy projection does not match the reviewed target artifact.' }
+          ? {
+              reason:
+                'Studio package policy projection does not match the reviewed target artifact.',
+            }
           : {}),
       };
     },
@@ -102,14 +110,15 @@ async function inspectProjectionStateAsync(input: ApmProjectionInput): Promise<P
     ...(manifest === undefined ? {} : { manifest }),
     inputFingerprint: snapshot.digest ?? sha256(snapshot.content ?? 'missing:package.json'),
     generatorFingerprint,
-    mutations: manifest === undefined ? [] : packagePolicyMutations(manifest, policy, snapshot.digest),
+    mutations:
+      manifest === undefined ? [] : packagePolicyMutations(manifest, policy, snapshot.digest),
   };
 }
 
 /*** Convert inspected state into the reviewable APM projection plan. */
 function toProjectionPlan(state: ProjectionState): ApmProjectionPlanResult {
   return {
-    projectionId: PROJECTION_ID,
+    projectionId: projectionId(),
     mutations: state.mutations,
     inputFingerprint: state.inputFingerprint,
     generatorFingerprint: state.generatorFingerprint,
@@ -134,7 +143,9 @@ function parseGeneratedPackageManifest(
   try {
     const value: unknown = JSON.parse(snapshot.content);
     if (!isRecord(value) || typeof value.packageManager !== 'string') return undefined;
-    if (!isStringRecord(value.dependencies) || !isStringRecord(value.devDependencies)) return undefined;
+    if (!isStringRecord(value.dependencies) || !isStringRecord(value.devDependencies)) {
+      return undefined;
+    }
     return {
       packageManager: value.packageManager,
       dependencies: value.dependencies,
@@ -237,7 +248,7 @@ function stringMutation(
   expectedBeforeDigest: string | undefined,
 ): ApmProjectMutation {
   return {
-    id: `${PROJECTION_ID}:${pointer}`,
+    id: `${projectionId()}:${pointer}`,
     claim: { kind: 'json-pointer', path: 'package.json', pointer },
     kind: 'set-json-pointer',
     path: 'package.json',
@@ -252,9 +263,15 @@ function jsonPointerSegment(value: string): string {
   return value.replaceAll('~', '~0').replaceAll('/', '~1');
 }
 
+/*** Return the stable Studio package-policy projection identity. */
+function projectionId(): string {
+  return 'generated-package-policy';
+}
+
 /*** Read the exact static descriptor bytes shipped with this Studio artifact and hash them. */
 function readDescriptorDigest(): string {
-  return sha256(readFileSync(DESCRIPTOR_URL, 'utf8'));
+  const descriptorUrl = new URL('../../../../../apm/update.json', import.meta.url);
+  return sha256(readFileSync(descriptorUrl, 'utf8'));
 }
 
 /*** Return one stable SHA-256 hex digest. */
