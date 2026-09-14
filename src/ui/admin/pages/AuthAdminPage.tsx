@@ -935,7 +935,17 @@ function createFallbackManifest(): AppManifest {
       themeId: 'default',
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
-    infra: { modules: [] },
+    infra: {
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+        },
+      },
+      modules: [],
+    },
     navigator: { type: 'stack', routes: [] },
     screens: {},
     themes: [],

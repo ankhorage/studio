@@ -41,7 +41,17 @@ function createManifest(enabledTargets: readonly AppDeployTargetId[]): AppManife
         },
       },
     },
-    infra: { modules: [] },
+    infra: {
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+        },
+      },
+      modules: [],
+    },
     navigator: { type: 'stack', routes: [] },
     screens: {},
     themes: [],

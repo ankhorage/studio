@@ -44,7 +44,7 @@ describe('createExpo57CapabilityFixtureManifest', () => {
   it('configures canonical OAuth schemes for both native targets', () => {
     const manifest = createExpo57CapabilityFixtureManifest();
 
-    expect(manifest.infra.auth?.oauth).toMatchObject({
+    expect(manifest.infra.environments.local.auth?.oauth).toMatchObject({
       callbackRoute: 'auth/callback',
       enabled: true,
       providers: [{ enabled: true, id: 'google' }],

@@ -510,39 +510,43 @@ function createManifest(projectId: string, oauth: boolean): AppManifest {
       },
     },
     infra: {
-      deployment: {
-        target: 'minikube',
-        monitoring: false,
-      },
-      auth: {
-        scope: 'global',
-        provider: 'supabase',
-        ...(oauth
-          ? {
-              oauth: {
-                enabled: true,
-                callbackRoute: '/auth/callback',
-                providers: [
-                  {
-                    id: 'google' as const,
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+          auth: {
+            scope: 'global',
+            provider: 'supabase',
+            ...(oauth
+              ? {
+                  oauth: {
                     enabled: true,
-                    credentialsRef: 'auth/oauth/google',
+                    callbackRoute: '/auth/callback',
+                    providers: [
+                      {
+                        id: 'google' as const,
+                        enabled: true,
+                        credentialsRef: 'auth/oauth/google',
+                      },
+                    ],
                   },
-                ],
-              },
-            }
-          : {}),
-      },
-      database: {
-        provider: 'supabase',
-        tier: 'dev',
-      },
-      storage: {
-        provider: 'auto',
-        buckets: ['avatars'],
-      },
-      secretStore: {
-        provider: 'supabase-vault',
+                }
+              : {}),
+          },
+          database: {
+            provider: 'supabase',
+            tier: 'dev',
+          },
+          objectStorage: {
+            provider: 'supabase',
+            buckets: ['avatars'],
+          },
+          secretStore: {
+            provider: 'supabase-vault',
+          },
+        },
       },
       modules: [],
     },

@@ -59,7 +59,7 @@ export class ProjectAuthHealthService {
       secretStoreAvailable: secretResult.ok,
       environment,
     });
-    const oauth = manifest.infra.auth?.oauth;
+    const oauth = manifest.infra.environments.local.auth?.oauth;
 
     if (!oauth?.enabled || !oauth.providers.some((provider) => provider.enabled === true)) {
       return {

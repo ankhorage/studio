@@ -27,8 +27,8 @@ export async function resolveProjectMediaStorage(args: {
     );
   }
   const usesSupabase =
-    manifest.infra.auth?.provider === 'supabase' ||
-    manifest.infra.database?.provider === 'supabase';
+    manifest.infra.environments.local.auth?.provider === 'supabase' ||
+    manifest.infra.environments.local.database?.provider === 'supabase';
   if (!usesSupabase)
     throw new Error('Storage provider auto cannot resolve a media storage adapter.');
   const status = await args.projectManager.getInfrastructureStatus(args.projectId);

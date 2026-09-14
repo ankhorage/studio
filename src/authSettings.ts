@@ -126,7 +126,7 @@ export function applyStudioAuthSettings(
   manifest: AppManifest,
   settings: StudioAuthSettings,
 ): AppManifest {
-  const currentAuthorization = manifest.infra.auth?.authorization;
+  const currentAuthorization = manifest.infra.environments.local.auth?.authorization;
 
   return {
     ...manifest,

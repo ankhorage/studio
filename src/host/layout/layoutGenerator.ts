@@ -205,13 +205,15 @@ export class GeneratedAppFileGenerator {
               signInRoute: authLayoutPlan.signInRoute,
               signUpRoute: authLayoutPlan.signUpRoute,
               postSignInRoute: authLayoutPlan.postSignInRoute,
-              signInIdentifiers: manifest.infra.auth?.signIn?.identifiers ?? ['email'],
-              signUpRequiredFields: manifest.infra.auth?.signUp?.requiredFields ?? [
+              signInIdentifiers: manifest.infra.environments.local.auth?.signIn?.identifiers ?? [
                 'email',
-                'password',
               ],
-              signUpOptionalFields: manifest.infra.auth?.signUp?.optionalFields ?? [],
-              signUpPolicy: manifest.infra.auth?.signUp?.signUpPolicy ?? 'autoSignIn',
+              signUpRequiredFields: manifest.infra.environments.local.auth?.signUp
+                ?.requiredFields ?? ['email', 'password'],
+              signUpOptionalFields:
+                manifest.infra.environments.local.auth?.signUp?.optionalFields ?? [],
+              signUpPolicy:
+                manifest.infra.environments.local.auth?.signUp?.signUpPolicy ?? 'autoSignIn',
               oauthProviders: authLayoutPlan.oauth?.providers,
             }),
           });
@@ -539,13 +541,17 @@ export class GeneratedAppFileGenerator {
           signInRoute: authLayoutPlan.signInRoute,
           signUpRoute: authLayoutPlan.signUpRoute,
           postSignInRoute: authLayoutPlan.postSignInRoute,
-          signInIdentifiers: manifest.infra.auth?.signIn?.identifiers ?? ['email'],
-          signUpRequiredFields: manifest.infra.auth?.signUp?.requiredFields ?? [
+          signInIdentifiers: manifest.infra.environments.local.auth?.signIn?.identifiers ?? [
+            'email',
+          ],
+          signUpRequiredFields: manifest.infra.environments.local.auth?.signUp?.requiredFields ?? [
             'email',
             'password',
           ],
-          signUpOptionalFields: manifest.infra.auth?.signUp?.optionalFields ?? [],
-          signUpPolicy: manifest.infra.auth?.signUp?.signUpPolicy ?? 'autoSignIn',
+          signUpOptionalFields:
+            manifest.infra.environments.local.auth?.signUp?.optionalFields ?? [],
+          signUpPolicy:
+            manifest.infra.environments.local.auth?.signUp?.signUpPolicy ?? 'autoSignIn',
           oauthProviders: authLayoutPlan.oauth?.providers,
         });
       case 'screen-controller':
@@ -553,13 +559,17 @@ export class GeneratedAppFileGenerator {
           signInRoute: authLayoutPlan.signInRoute,
           signUpRoute: authLayoutPlan.signUpRoute,
           postSignInRoute: authLayoutPlan.postSignInRoute,
-          signInIdentifiers: manifest.infra.auth?.signIn?.identifiers ?? ['email'],
-          signUpRequiredFields: manifest.infra.auth?.signUp?.requiredFields ?? [
+          signInIdentifiers: manifest.infra.environments.local.auth?.signIn?.identifiers ?? [
+            'email',
+          ],
+          signUpRequiredFields: manifest.infra.environments.local.auth?.signUp?.requiredFields ?? [
             'email',
             'password',
           ],
-          signUpOptionalFields: manifest.infra.auth?.signUp?.optionalFields ?? [],
-          signUpPolicy: manifest.infra.auth?.signUp?.signUpPolicy ?? 'autoSignIn',
+          signUpOptionalFields:
+            manifest.infra.environments.local.auth?.signUp?.optionalFields ?? [],
+          signUpPolicy:
+            manifest.infra.environments.local.auth?.signUp?.signUpPolicy ?? 'autoSignIn',
           oauthProviders: authLayoutPlan.oauth?.providers,
         });
       case 'oauth-callback':

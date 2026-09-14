@@ -27,7 +27,7 @@ export function findProjectSecretUsages(input: {
   readonly ref: string;
 }): ProjectSecretUsageSummary {
   const usages = new Map<string, ProjectSecretUsage>();
-  const providers = input.manifest.infra.auth?.oauth?.providers ?? [];
+  const providers = input.manifest.infra.environments.local.auth?.oauth?.providers ?? [];
 
   providers.forEach((provider) => {
     if (provider.credentialsRef !== input.ref) {

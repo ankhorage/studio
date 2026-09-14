@@ -124,7 +124,7 @@ function createDependencies(
 
 /*** Resolve the enabled Google OAuth credential reference from a manifest. */
 function resolveGoogleCredentialRef(manifest: AppManifest): string {
-  const provider = manifest.infra.auth?.oauth?.providers.find(
+  const provider = manifest.infra.environments.local.auth?.oauth?.providers.find(
     (candidate) => candidate.id === GOOGLE_PROVIDER_ID && candidate.enabled !== false,
   );
   const ref = provider?.credentialsRef?.trim();
@@ -140,7 +140,7 @@ function resolveGoogleCredentialRef(manifest: AppManifest): string {
  * @utility @ankhorage/utility/route
  */
 function resolveOAuthCallbackRoute(manifest: AppManifest): string {
-  const callbackRoute = manifest.infra.auth?.oauth?.callbackRoute.trim();
+  const callbackRoute = manifest.infra.environments.local.auth?.oauth?.callbackRoute.trim();
   if (!callbackRoute) {
     throw new Error('Auth 5 smoke manifest must expose a canonical OAuth callbackRoute.');
   }

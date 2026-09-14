@@ -30,6 +30,14 @@ function createManifest(overrides: Partial<StudioManifest> = {}): StudioManifest
       localization: { defaultLocale: 'en', locales: ['en'] },
     },
     infra: {
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+        },
+      },
       modulesConfig: {},
       modules: ['expo-camera', 'expo-localization'],
     },
@@ -88,8 +96,34 @@ describe('manifestSync', () => {
   });
 
   test('normalizes module order in runtime signatures', () => {
-    const first = createManifest({ infra: { modulesConfig: {}, modules: ['b', 'a'] } });
-    const second = createManifest({ infra: { modulesConfig: {}, modules: ['a', 'b'] } });
+    const first = createManifest({
+      infra: {
+        environments: {
+          local: {
+            deployment: {
+              compute: { provider: 'local' },
+              runtime: { provider: 'minikube' },
+            },
+          },
+        },
+        modulesConfig: {},
+        modules: ['b', 'a'],
+      },
+    });
+    const second = createManifest({
+      infra: {
+        environments: {
+          local: {
+            deployment: {
+              compute: { provider: 'local' },
+              runtime: { provider: 'minikube' },
+            },
+          },
+        },
+        modulesConfig: {},
+        modules: ['a', 'b'],
+      },
+    });
 
     expect(createStudioRuntimeSyncSignature(first)).toBe(createStudioRuntimeSyncSignature(second));
   });

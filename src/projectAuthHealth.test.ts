@@ -16,24 +16,32 @@ function createManifest(): AppManifest {
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     deploy: { targets: { web: { enabled: true } } },
     infra: {
-      modules: [],
-      auth: {
-        scope: 'global',
-        provider: 'supabase',
-        flow: { signInRoute: 'sign-in', postSignInRoute: '/' },
-        signIn: { identifiers: ['email'] },
-        oauth: {
-          enabled: true,
-          callbackRoute: '/auth/callback',
-          providers: [
-            {
-              id: 'google',
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+          auth: {
+            scope: 'global',
+            provider: 'supabase',
+            flow: { signInRoute: 'sign-in', postSignInRoute: '/' },
+            signIn: { identifiers: ['email'] },
+            oauth: {
               enabled: true,
-              credentialsRef: 'auth/oauth/google',
+              callbackRoute: '/auth/callback',
+              providers: [
+                {
+                  id: 'google',
+                  enabled: true,
+                  credentialsRef: 'auth/oauth/google',
+                },
+              ],
             },
-          ],
+          },
         },
       },
+      modules: [],
     },
     navigator: { type: 'stack', routes: [] },
     screens: {},
