@@ -151,8 +151,11 @@ function migrateAuth(property: ts.PropertyAssignment): {
   );
   if (!authorization || !ts.isObjectLiteralExpression(authorization.initializer)) return { auth };
   const engine = findProperty(authorization.initializer, 'engine');
-  if (engine && ts.isStringLiteral(engine.initializer) && engine.initializer.text !== 'cerbos') {
-    throw new Error(`Unsupported legacy authz engine: ${engine.initializer.text}`);
+  if (engine && ts.isStringLiteral(engine.initializer) && engine.initializer.text === 'native') {
+    return { auth };
+  }
+  if (!engine || !ts.isStringLiteral(engine.initializer) || engine.initializer.text !== 'cerbos') {
+    throw new Error(`Unsupported legacy authz engine: ${engine?.initializer.getText() ?? 'missing'}`);
   }
   const kind = findProperty(authorization.initializer, 'kind');
   return {
@@ -211,7 +214,9 @@ function migrateInfraObject(object: ts.ObjectLiteralExpression): ts.ObjectLitera
   }
 
   if (!hasDeployment) {
-    environmentProperties.unshift(factory.createPropertyAssignment('deployment', createDefaultDeployment()));
+    environmentProperties.unshift(
+      factory.createPropertyAssignment('deployment', createDefaultDeployment()),
+    );
   }
 
   return factory.createObjectLiteralExpression(
@@ -286,7 +291,9 @@ async function migrateFile(filePath: string): Promise<void> {
     true,
     filePath.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
   );
-  const migrated = migratePropertyAccess(applyReplacements(original, collectInfraReplacements(sourceFile)));
+  const migrated = migratePropertyAccess(
+    applyReplacements(original, collectInfraReplacements(sourceFile)),
+  );
   if (migrated !== original) await writeFile(filePath, migrated, 'utf8');
 }
 
