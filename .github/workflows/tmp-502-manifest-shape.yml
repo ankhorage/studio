@@ -1,0 +1,36 @@
+name: Apply Infra manifest shape migration
+
+on:
+  push:
+    branches:
+      - fix/502-infra5-project-lifecycle
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/502-infra5-project-lifecycle
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      - run: bun scripts/tmp-502-manifest-shape.ts
+      - run: bun run format
+      - name: Commit manifest migration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f .github/workflows/tmp-502-manifest-shape.yml scripts/tmp-502-manifest-shape.ts
+          git add -A
+          git commit -m "refactor: migrate Studio Infra manifests to environments"
+          git push origin HEAD:fix/502-infra5-project-lifecycle
