@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import { applyGeneratedPackagePolicy } from '../../features/project-updates/domain/applyGeneratedPackagePolicy';
+import { applyCurrentGeneratedPackagePolicy } from '../../features/project-updates/composition/applyCurrentGeneratedPackagePolicy';
 
 /*** Reconcile one generated app package manifest against current owner-managed version ranges. */
 export async function syncGeneratedPackagePolicyAsync(projectPath: string): Promise<void> {
@@ -9,7 +9,7 @@ export async function syncGeneratedPackagePolicyAsync(projectPath: string): Prom
   const source = await readFile(packageJsonPath, 'utf8');
   const packageJson: unknown = JSON.parse(source);
   assertGeneratedPackageManifest(packageJson);
-  const synchronized = applyGeneratedPackagePolicy(packageJson);
+  const synchronized = applyCurrentGeneratedPackagePolicy(packageJson);
   const nextSource = `${JSON.stringify(synchronized, null, 2)}\n`;
   if (source === nextSource) return;
   await writeFile(packageJsonPath, nextSource, 'utf8');
