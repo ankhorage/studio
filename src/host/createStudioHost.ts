@@ -1,3 +1,4 @@
+import { ProjectUpdateService } from '../features/project-updates/application/ProjectUpdateService';
 import { ProjectDeployService } from './deploy/ProjectDeployService';
 import { stopAllProjectInfraPortForwards } from './orchestrator/infraSession';
 import { ModuleManager } from './orchestrator/moduleManager';
@@ -8,12 +9,13 @@ export interface CreateStudioHostOptions {
 }
 
 /***
- * Compose the Studio host edge from project, module, deploy, and infrastructure-session owners.
+ * Compose the Studio host edge from project, module, update, deploy, and infrastructure-session owners.
  * @todo Keep this as thin host composition while moving domain services out of host-owned folders.
  */
 export function createStudioHost(options: CreateStudioHostOptions) {
   const projectManager = new ProjectManager(options.workspaceRoot);
   const moduleManager = new ModuleManager(options.workspaceRoot);
+  const projectUpdateService = new ProjectUpdateService();
   const projectDeployService = new ProjectDeployService({
     projectManager,
     workspaceRoot: options.workspaceRoot,
@@ -22,6 +24,7 @@ export function createStudioHost(options: CreateStudioHostOptions) {
     workspaceRoot: options.workspaceRoot,
     projectManager,
     moduleManager,
+    projectUpdateService,
     projectDeployService,
     /*** Close host-owned infrastructure sessions during Studio host shutdown. */
     async close() {
