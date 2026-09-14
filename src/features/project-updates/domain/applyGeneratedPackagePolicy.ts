@@ -2,15 +2,9 @@ import type {
   GeneratedPackageManifest,
   GeneratedPackagePolicy,
 } from '../../../types/project-updates';
-import { getGeneratedPackagePolicy } from '../adapters/outbound/getGeneratedPackagePolicy';
 
-/*** Apply Studio-owned package ranges while preserving all user-owned package manifest entries. */
-export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(packageJson: T): T {
-  return applyPolicy(packageJson, getGeneratedPackagePolicy());
-}
-
-/*** Apply one explicit Studio package policy artifact to a generated app manifest. */
-function applyPolicy<T extends GeneratedPackageManifest>(
+/*** Apply one explicit Studio package policy while preserving all user-owned package manifest entries. */
+export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
   packageJson: T,
   policy: GeneratedPackagePolicy,
 ): T {
