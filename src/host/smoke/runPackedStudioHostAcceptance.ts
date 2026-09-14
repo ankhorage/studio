@@ -53,8 +53,11 @@ async function assertPackedPackageAsync(
   const packageJson = JSON.parse(
     await readFile(path.join(packageRoot, 'package.json'), 'utf8'),
   ) as {
-    readonly ankh?: { readonly apm?: { readonly descriptor?: string; readonly protocolVersion?: number } };
+    readonly ankh?: {
+      readonly apm?: { readonly descriptor?: string; readonly protocolVersion?: number };
+    };
     readonly dependencies?: Readonly<Record<string, string>>;
+    readonly version?: string;
   };
   const packedDependencies = new Map(Object.entries(packageJson.dependencies ?? {}));
   for (const [packageName, expectedContract] of Object.entries(STUDIO_OWNED_PEERS)) {
@@ -79,7 +82,7 @@ async function assertPackedPackageAsync(
   ) as { readonly owner?: { readonly name?: string; readonly version?: string } };
   if (
     descriptor.owner?.name !== '@ankhorage/studio' ||
-    descriptor.owner.version !== packageVersion(packageRoot)
+    descriptor.owner.version !== packageJson.version
   ) {
     throw new Error('Packed Studio APM descriptor owner identity does not match the package artifact.');
   }
@@ -181,14 +184,6 @@ async function installConsumerAsync(consumerRoot: string, cacheRoot: string): Pr
     label: 'Cold-install packed Studio host consumer',
     timeoutMs: COMMAND_TIMEOUT_MS,
   });
-}
-
-/*** Read the installed Studio package version from the packed consumer. */
-function packageVersion(packageRoot: string): string {
-  const packageJson = Bun.file(path.join(packageRoot, 'package.json')).json() as unknown as {
-    readonly version?: string;
-  };
-  return packageJson.version ?? '';
 }
 
 /*** Return whether target is equal to or nested beneath parent.
