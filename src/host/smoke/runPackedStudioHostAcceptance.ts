@@ -14,7 +14,7 @@ const STUDIO_OWNED_PEERS = {
   [EXPO_PLATFORM.packages.imagePicker.name]: EXPO_PLATFORM.packages.imagePicker.version,
 } as const;
 
-/*** Pack the current Studio branch and validate its host subpath from a cold external consumer.
+/*** Pack the current Studio branch and validate its public host and APM subpaths from a cold external consumer.
  * @todo Move this package acceptance harness from src/host/smoke to test/acceptance.
  */
 export async function runPackedStudioHostAcceptance(
@@ -41,7 +41,7 @@ export async function runPackedStudioHostAcceptance(
   }
 }
 
-/*** Assert that the packed package resolves externally and carries required owner dependencies. */
+/*** Assert that the packed package resolves externally and carries required owner dependencies and APM metadata. */
 async function assertPackedPackageAsync(
   consumerRoot: string,
   repositoryRoot: string,
@@ -52,7 +52,13 @@ async function assertPackedPackageAsync(
   }
   const packageJson = JSON.parse(
     await readFile(path.join(packageRoot, 'package.json'), 'utf8'),
-  ) as { readonly dependencies?: Readonly<Record<string, string>> };
+  ) as {
+    readonly ankh?: {
+      readonly apm?: { readonly descriptor?: string; readonly protocolVersion?: number };
+    };
+    readonly dependencies?: Readonly<Record<string, string>>;
+    readonly version?: string;
+  };
   const packedDependencies = new Map(Object.entries(packageJson.dependencies ?? {}));
   for (const [packageName, expectedContract] of Object.entries(STUDIO_OWNED_PEERS)) {
     const declaredRange = packedDependencies.get(packageName);
@@ -64,6 +70,23 @@ async function assertPackedPackageAsync(
       throw new Error(`Packed Studio declares an invalid ${packageName} dependency.`);
     }
     await realpath(path.join(consumerRoot, 'node_modules', packageName));
+  }
+  if (
+    packageJson.ankh?.apm?.protocolVersion !== 1 ||
+    packageJson.ankh.apm.descriptor !== './apm/update.json'
+  ) {
+    throw new Error('Packed Studio does not expose canonical APM package metadata.');
+  }
+  const descriptor = JSON.parse(
+    await readFile(path.join(packageRoot, 'apm', 'update.json'), 'utf8'),
+  ) as { readonly owner?: { readonly name?: string; readonly version?: string } };
+  if (
+    descriptor.owner?.name !== '@ankhorage/studio' ||
+    descriptor.owner.version !== packageJson.version
+  ) {
+    throw new Error(
+      'Packed Studio APM descriptor owner identity does not match the package artifact.',
+    );
   }
 }
 
@@ -85,7 +108,7 @@ async function buildAndPackStudioAsync(repositoryRoot: string, tarballPath: stri
   });
 }
 
-/*** Write the minimal external consumer used to import and typecheck the packed Studio host. */
+/*** Write the minimal external consumer used to import and typecheck the packed Studio public boundaries. */
 async function createConsumerAsync(consumerRoot: string, tarballPath: string): Promise<void> {
   await mkdir(consumerRoot, { recursive: true });
   await Promise.all([
@@ -94,8 +117,12 @@ async function createConsumerAsync(consumerRoot: string, tarballPath: string): P
       "await import('@ankhorage/studio/host');\n",
     ),
     writeFile(
+      path.join(consumerRoot, 'apm-import.mjs'),
+      "const { default: extension } = await import('@ankhorage/studio/apm');\nif (extension.protocolVersion !== 1) throw new Error('Invalid Studio APM extension.');\n",
+    ),
+    writeFile(
       path.join(consumerRoot, 'index.ts'),
-      "import { ProjectManager } from '@ankhorage/studio/host';\n\nvoid ProjectManager;\n",
+      "import studioUpdateExtension from '@ankhorage/studio/apm';\nimport { ProjectManager } from '@ankhorage/studio/host';\n\nvoid ProjectManager;\nvoid studioUpdateExtension;\n",
     ),
     writeFile(
       path.join(consumerRoot, 'package.json'),
@@ -169,7 +196,7 @@ function isWithin(target: string, parent: string): boolean {
   return relativePath === '' || (!relativePath.startsWith('..') && !path.isAbsolute(relativePath));
 }
 
-/*** Import and typecheck the packed Studio host from the external consumer fixture. */
+/*** Import and typecheck the packed Studio host and APM boundaries from the external consumer fixture. */
 async function runConsumerChecksAsync(consumerRoot: string, cacheRoot: string): Promise<void> {
   const options = {
     command: 'bun',
@@ -184,7 +211,12 @@ async function runConsumerChecksAsync(consumerRoot: string, cacheRoot: string): 
   });
   await runAcceptanceCommandAsync({
     ...options,
+    args: ['apm-import.mjs'],
+    label: 'Import packed Studio APM extension',
+  });
+  await runAcceptanceCommandAsync({
+    ...options,
     args: ['run', 'typecheck'],
-    label: 'Typecheck packed Studio host consumer',
+    label: 'Typecheck packed Studio public boundaries',
   });
 }

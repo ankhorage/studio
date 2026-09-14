@@ -1,8 +1,13 @@
-import { getGeneratedPackagePolicy } from './generatedPackagePolicy';
+import type {
+  GeneratedPackageManifest,
+  GeneratedPackagePolicy,
+} from '../../../types/project-updates';
 
-/*** Apply owner-managed package ranges to one generated app package manifest. */
-export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(packageJson: T): T {
-  const policy = getGeneratedPackagePolicy();
+/*** Apply one explicit Studio package policy while preserving all user-owned package manifest entries. */
+export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
+  packageJson: T,
+  policy: GeneratedPackagePolicy,
+): T {
   const dependencies = {
     ...packageJson.dependencies,
     '@ankhorage/contracts': policy.dependencies.contracts,
@@ -43,10 +48,4 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
     dependencies,
     devDependencies,
   });
-}
-
-interface GeneratedPackageManifest {
-  readonly packageManager: string;
-  readonly dependencies: Readonly<Record<string, string>>;
-  readonly devDependencies: Readonly<Record<string, string>>;
 }

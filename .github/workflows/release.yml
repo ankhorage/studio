@@ -73,6 +73,7 @@ jobs:
 
           before_version="$(node -p "require('./package.json').version")"
           bun run version-packages
+          bun scripts/sync-apm-update-descriptor.ts
           after_version="$(node -p "require('./package.json').version")"
 
           if git diff --quiet; then

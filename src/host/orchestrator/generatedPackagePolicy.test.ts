@@ -1,6 +1,6 @@
 import { expect, test } from 'bun:test';
 
-import { getGeneratedPackagePolicy } from './generatedPackagePolicy';
+import { getGeneratedPackagePolicy } from '../../features/project-updates/adapters/outbound/getGeneratedPackagePolicy';
 import { getPackageJson } from './templates';
 
 const WEB_TARGETS = { web: { enabled: true } } as const;

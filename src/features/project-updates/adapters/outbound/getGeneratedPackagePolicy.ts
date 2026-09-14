@@ -3,47 +3,19 @@ import { createRequire } from 'node:module';
 
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 
-/*** Return generated-app dependency ranges from Renovate-managed owner package metadata. */
+import type { GeneratedPackagePolicy } from '../../../../types/project-updates';
+
+/*** Return Studio-owned generated-app dependency policy from this exact package artifact. */
 export function getGeneratedPackagePolicy(): GeneratedPackagePolicy {
   return GENERATED_PACKAGE_POLICY;
 }
 
 const REQUIRE = createRequire(import.meta.url);
-const STUDIO_PACKAGE_JSON_URL = new URL('../../../package.json', import.meta.url);
+const STUDIO_PACKAGE_JSON_URL = new URL('../../../../../package.json', import.meta.url);
 const COLOR_THEORY_PACKAGE_JSON_PATH = REQUIRE.resolve('@ankhorage/color-theory/package.json');
 const SEMVER_PATTERN = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u;
 const BUN_PACKAGE_MANAGER_PATTERN = /^bun@\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u;
 const GENERATED_PACKAGE_POLICY = readGeneratedPackagePolicy();
-
-interface GeneratedPackagePolicy {
-  readonly packageManager: string;
-  readonly dependencies: {
-    readonly contracts: string;
-    readonly dataSources: string;
-    readonly expoRuntime: string;
-    readonly navigator: string;
-    readonly runtime: string;
-    readonly studio: string;
-    readonly utility: string;
-    readonly supabaseAuth: string;
-    readonly supabaseStorage: string;
-    readonly zora: string;
-  };
-  readonly devDependencies: {
-    readonly ankh: string;
-    readonly devtools: string;
-    readonly typesBun: string;
-    readonly typesCulori: string;
-    readonly typesReact: string;
-  };
-  readonly peerDependencies: {
-    readonly nativePicker: string;
-    readonly fontawesome: string;
-    readonly fontawesome5: string;
-    readonly fontawesome6: string;
-    readonly ionicons: string;
-  };
-}
 
 /*** Read and validate owner package metadata used as generated-app dependency floors. */
 function readGeneratedPackagePolicy(): GeneratedPackagePolicy {
@@ -57,28 +29,30 @@ function readGeneratedPackagePolicy(): GeneratedPackagePolicy {
     'devDependencies',
     'Color Theory',
   );
+  const ownerVersion = readStudioVersion(studio);
   return createGeneratedPackagePolicy({
     dependencies,
     devDependencies,
     peerDependencies,
     typesCulori: readRequiredString(colorTheoryDevDependencies, '@types/culori', 'Color Theory'),
-    version: readStudioVersion(studio),
+    ownerVersion,
     packageManager: readStudioPackageManager(studio),
   });
 }
 
-/*** Build the generated-app package policy from validated owner sections. */
+/*** Build generated package policy from validated owner package sections. */
 function createGeneratedPackagePolicy(input: {
   readonly dependencies: Readonly<Record<string, unknown>>;
   readonly devDependencies: Readonly<Record<string, unknown>>;
   readonly peerDependencies: Readonly<Record<string, unknown>>;
   readonly typesCulori: string;
-  readonly version: string;
+  readonly ownerVersion: string;
   readonly packageManager: string;
 }): GeneratedPackagePolicy {
   return {
+    ownerVersion: input.ownerVersion,
     packageManager: input.packageManager,
-    dependencies: readGeneratedRuntimeDependencies(input.dependencies, input.version),
+    dependencies: readGeneratedRuntimeDependencies(input.dependencies, input.ownerVersion),
     devDependencies: {
       ankh: readRequiredString(input.devDependencies, '@ankhorage/ankh', 'Studio'),
       devtools: readRequiredString(input.devDependencies, '@ankhorage/devtools', 'Studio'),
