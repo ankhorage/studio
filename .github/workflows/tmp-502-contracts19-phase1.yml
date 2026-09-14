@@ -1,0 +1,51 @@
+name: Apply Contracts 19 phase 1
+
+on:
+  push:
+    branches:
+      - fix/502-infra5-project-lifecycle
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/502-infra5-project-lifecycle
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      - name: Align current published owners
+        run: |
+          bun pm cache rm
+          bun add '@ankhorage/contracts@^19.1.0' '@ankhorage/infra@^5.1.0' '@ankhorage/navigator@^3.2.5' '@ankhorage/templates@^11.0.3'
+      - name: Migrate shared environment identifiers
+        run: bun scripts/tmp-502-contracts19-phase1.ts
+      - name: Add Studio changeset
+        run: |
+          cat > .changeset/infra5-project-lifecycle.md <<'EOF'
+          ---
+          '@ankhorage/studio': minor
+          ---
+
+          Migrate Studio project infrastructure to the environment-aware Contracts 19 model and Infra 5 typed project lifecycle.
+          EOF
+      - run: bun run format
+      - name: Commit phase 1
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f .github/workflows/tmp-502-infra5-diagnostics.yml || true
+          git rm -f .github/workflows/tmp-502-contracts19-phase1.yml scripts/tmp-502-contracts19-phase1.ts
+          git add -A
+          git commit -m "refactor: align Studio with Contracts 19 environments"
+          git push origin HEAD:fix/502-infra5-project-lifecycle
