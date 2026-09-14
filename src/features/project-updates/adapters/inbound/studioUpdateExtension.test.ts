@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 
 import {
@@ -9,6 +10,7 @@ import {
 import type {
   ApmExtensionExecutionContext,
   ApmProjectFileSnapshot,
+  ApmProjectScope,
   ApmProjectionHandler,
   ApmUpdateDescriptor,
 } from '@ankhorage/apm/types';
@@ -21,6 +23,7 @@ import { getGeneratedPackagePolicy } from '../outbound/getGeneratedPackagePolicy
 
 const PACKAGE_JSON_URL = new URL('../../../../../package.json', import.meta.url);
 const DESCRIPTOR_URL = new URL('../../../../../apm/update.json', import.meta.url);
+const PACKAGE_POLICY_PROJECTION = readPackagePolicyProjection();
 
 test('publishes valid APM metadata bound to the exact Studio artifact', async () => {
   const packageJson = await readJsonRecordAsync(PACKAGE_JSON_URL);
@@ -76,12 +79,12 @@ test('plans only Studio-owned package fields and preserves user dependencies', a
   const context = executionContext();
   const project = projectReadPort(staleManifest);
   const inspection = await projection.inspectAsync({
-    descriptor: projectionDescriptor(),
+    descriptor: PACKAGE_POLICY_PROJECTION,
     context,
     project,
   });
   const plan = await projection.planAsync({
-    descriptor: projectionDescriptor(),
+    descriptor: PACKAGE_POLICY_PROJECTION,
     context,
     project,
   });
@@ -113,7 +116,7 @@ test('reports current policy and materializes only reviewed mutation ids', async
   });
   const currentProject = projectReadPort(currentManifest);
   const inspection = await projection.inspectAsync({
-    descriptor: projectionDescriptor(),
+    descriptor: PACKAGE_POLICY_PROJECTION,
     context,
     project: currentProject,
   });
@@ -124,13 +127,13 @@ test('reports current policy and materializes only reviewed mutation ids', async
     dependencies: { ...currentManifest.dependencies, '@ankhorage/contracts': '^0.0.1' },
   });
   const plan = await projection.planAsync({
-    descriptor: projectionDescriptor(),
+    descriptor: PACKAGE_POLICY_PROJECTION,
     context,
     project: staleProject,
   });
   const applied: string[] = [];
   await projection.materializeAsync({
-    descriptor: projectionDescriptor(),
+    descriptor: PACKAGE_POLICY_PROJECTION,
     context,
     plan,
     project: {
@@ -147,7 +150,7 @@ test('reports current policy and materializes only reviewed mutation ids', async
 /*** Resolve the single executable Studio package-policy projection. */
 function requirePackagePolicyProjection(): ApmProjectionHandler {
   const projection = studioUpdateExtension.projections.find(
-    ({ id }) => id === 'generated-package-policy',
+    ({ id }) => id === PACKAGE_POLICY_PROJECTION.id,
   );
   if (projection === undefined) throw new Error('Studio package-policy projection is missing.');
   return projection;
@@ -170,34 +173,24 @@ function executionContext(): ApmExtensionExecutionContext {
   };
 }
 
-/*** Read the static descriptor used by the executable package-policy handler. */
-function projectionDescriptor(): ApmUpdateDescriptor['projections'][number] {
-  return {
-    id: 'generated-package-policy',
-    claims: descriptorClaims(),
-    requiresExtension: true,
-    reason: 'Studio owns generated application package policy for its managed dependency fields.',
-  };
-}
-
-/*** Read declared projection claims from the shipped descriptor fixture. */
-function descriptorClaims(): ApmUpdateDescriptor['projections'][number]['claims'] {
-  const descriptor = JSON.parse(readFileSyncDescriptor()) as unknown;
-  if (!isRecord(descriptor) || !Array.isArray(descriptor.projections)) {
-    throw new Error('Studio APM descriptor must define projections.');
-  }
-  const projection = descriptor.projections.find(
-    (value) => isRecord(value) && value.id === 'generated-package-policy',
+/*** Read and validate the package-policy descriptor shipped in the Studio package artifact. */
+function readPackagePolicyProjection(): ApmUpdateDescriptor['projections'][number] {
+  const descriptorJson: unknown = JSON.parse(readFileSync(DESCRIPTOR_URL, 'utf8'));
+  const validation = validateUpdateDescriptor({ descriptor: descriptorJson });
+  const projection = validation.descriptor?.projections.find(
+    ({ id }) => id === 'generated-package-policy',
   );
-  if (!isRecord(projection) || !Array.isArray(projection.claims)) {
-    throw new Error('Studio APM descriptor must define package-policy claims.');
+  if (projection === undefined) {
+    throw new Error('Studio APM descriptor must define generated-package-policy.');
   }
-  return projection.claims as ApmUpdateDescriptor['projections'][number]['claims'];
+  return projection;
 }
 
 /*** Return whether the static descriptor contains an exact reviewed mutation claim. */
-function descriptorOwnsClaim(claim: ApmUpdateDescriptor['projections'][number]['claims'][number]): boolean {
-  return descriptorClaims().some((candidate) => JSON.stringify(candidate) === JSON.stringify(claim));
+function descriptorOwnsClaim(claim: ApmProjectScope): boolean {
+  return PACKAGE_POLICY_PROJECTION.claims.some(
+    (candidate) => JSON.stringify(candidate) === JSON.stringify(claim),
+  );
 }
 
 /*** Build a deterministic read-only project adapter around one package manifest. */
@@ -238,9 +231,4 @@ function readRequiredString(value: Readonly<Record<string, unknown>>, key: strin
   const property = readOwnProperty(value, key);
   if (typeof property !== 'string') throw new Error(`package.json must define string ${key}.`);
   return property;
-}
-
-/*** Read the descriptor synchronously for pure claim lookup helpers. */
-function readFileSyncDescriptor(): string {
-  return Bun.file(DESCRIPTOR_URL).text() as unknown as string;
 }
