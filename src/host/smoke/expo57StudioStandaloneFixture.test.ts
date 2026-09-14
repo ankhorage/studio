@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import { afterEach, expect, test } from 'bun:test';
 
-import { getGeneratedPackagePolicy } from '../orchestrator/generatedPackagePolicy';
+import { getGeneratedPackagePolicy } from '../../features/project-updates/adapters/outbound/getGeneratedPackagePolicy';
 import { assertExpo57StudioStandaloneContractAsync } from './assertExpo57StudioStandaloneContractAsync';
 import { createExpo57StudioStandaloneFixtureAsync } from './createExpo57StudioStandaloneFixtureAsync';
 
