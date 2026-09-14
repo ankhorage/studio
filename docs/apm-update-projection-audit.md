@@ -1,0 +1,81 @@
+# APM update and projection ownership audit
+
+Issue: https://github.com/ankhorage/studio/issues/500  
+Roadmap: https://github.com/ankhorage/apm/issues/1
+
+This matrix records the current Studio project mutation paths before APM host/UI integration. It is
+source-backed and distinguishes canonical state persistence from derived project projections. A
+successful manifest write is not treated as proof that generated files, dependency state, module
+lifecycle state, or infrastructure are current.
+
+## Current mutation / projection matrix
+
+| Action | Entry point | Canonical state writes | Required projections / side effects | Completion / failure semantics | Current evidence |
+| --- | --- | --- | --- | --- | --- |
+| Create project | `ProjectManager.createProject` | `ankh.config.json`, `.ankh/generation-state.json` | scaffold, generated routes/auth/bindings, route ledger, package reconciliation/install, infrastructure sync | Returns success only after generation, package reconciliation and infrastructure sync complete | `src/host/orchestrator/projectManager.ts` |
+| Manifest autosave / persistence | `StudioProvider` → `StudioManifestPersistenceCoordinator` → `PUT /manifest` → `ModuleManager.persistProjectManifest` → `ProjectManager.persistProjectManifest` | normalized `ankh.config.json` | **None in this path** | UI `saveStatus='saved'` means manifest persistence only; it does not prove runtime/package/infra projections are current | `src/core/StudioProvider.ts`, `src/core/studioManifestPersistenceModel.ts`, `src/host/orchestrator/moduleManager.ts`, `src/host/orchestrator/projectManager.ts`, `src/host/http/server.ts` |
+| Full manifest save | `ModuleManager.saveProjectManifest` → `ProjectManager.saveProjectManifest` | normalized manifest including module lifecycle projection | scaffold, generation-state, route files/ledger, package policy/install/devtools reconciliation, infrastructure sync | Throws on route ownership, generation, package or infrastructure failure; success follows all projections | `src/host/orchestrator/moduleManager.ts`, `src/host/orchestrator/projectManager.ts` |
+| Explicit runtime sync | project sync HTTP/Studio action → `ModuleManager.syncProject` / `syncProjectRuntime` | pending module state may be consumed; generation-state may be rewritten | pending module removals, scaffold, generated routes, package reconciliation, infrastructure sync | Explicit operation; failures propagate instead of reporting generic success | `src/hooks/useProjects.ts`, `src/host/orchestrator/moduleManager.ts`, `src/host/orchestrator/projectManager.ts` |
+| Root layout rebuild | `ModuleManager.rebuildRootLayout` → `ProjectManager.rebuildRootLayout` | no manifest write | only `src/app/_layout.tsx` | Success proves only root-layout generation; package/infra/other routes are not synchronized | `src/host/orchestrator/moduleManager.ts`, `src/host/orchestrator/projectManager.ts` |
+| Module install | `ModuleManager.installModule` | Orchestrator module state, removes matching pending uninstall, projects module ids/config into manifest | full project save after lifecycle projection | Success follows lifecycle projection and full project regeneration | `src/host/orchestrator/moduleManager.ts` |
+| Module config update | `ModuleManager.updateModuleConfig` | Orchestrator module config, removes matching pending uninstall, projects module ids/config into manifest | full project save after lifecycle projection | Success follows lifecycle projection and full project regeneration | `src/host/orchestrator/moduleManager.ts` |
+| Module removal request | `ModuleManager.uninstallModule` | `.ankh/pending.json` | root layout rebuilt immediately; actual uninstall deferred | Explicit `pending: true`, `needsReload: true`; full uninstall happens later | `src/host/orchestrator/moduleManager.ts` |
+| Apply pending module removals | `ModuleManager.applyPendingOperations` | removes Orchestrator modules, clears `.ankh/pending.json`, projects lifecycle state into manifest | performs project sync before uninstall, then full project save after uninstall | Pending work is explicit, but execution is currently a Studio-owned sync side effect rather than an APM plan step | `src/host/orchestrator/moduleManager.ts` |
+| Module admin manifest mutation | module admin runtime → `mutateModuleAdminManifestField` → `persistProjectManifest` | manifest field only | **None in this path** | Operation can report success while runtime projections remain stale until later explicit/full sync | `src/host/orchestrator/moduleManager.ts` |
+| Install project packages | `POST /packages/install` → `ProjectManager.installProjectPackages` | generated `package.json`, lock/install state, Devtools-owned config | Studio package policy, Bun install, Devtools app scopes, frozen-lock install | Direct imperative package reconciliation; not yet coordinated by APM operation locking | `src/hooks/useProjects.ts`, `src/host/http/server.ts`, `src/host/orchestrator/projectManager.ts`, `src/host/orchestrator/reconcileProjectPackageRootAsync.ts` |
+| Connect repository | `POST /repository/connect` → `ProjectManager.connectProjectRepository` | package root may change before repository connection | package reconciliation, latest Devtools update, repository-owned Git setup/push | Reconciliation precedes repository connection; recoverable/conflict repository results are surfaced | `src/hooks/useProjects.ts`, `src/host/http/server.ts`, `src/host/orchestrator/projectManager.ts` |
+| Generated package policy sync | `syncGeneratedPackagePolicyAsync` / `applyGeneratedPackagePolicy` | generated `package.json` ranges and package-manager pin | later native install + Devtools sync performed by reconciliation | Policy is derived from the **installed Studio package metadata**, so an older Studio remains a ceiling rather than an update-discovery owner | `src/host/orchestrator/generatedPackagePolicy.ts`, `src/host/orchestrator/applyGeneratedPackagePolicy.ts`, `src/host/orchestrator/syncGeneratedPackagePolicyAsync.ts` |
+| Route generation ownership | `GeneratedRouteFileOwnership` | `.ankh/route-ledger.json` | removes only stale files previously recorded as generated/owned | Missing/invalid ledger blocks synchronization; unrelated files are preserved | `src/host/orchestrator/GeneratedRouteFileOwnership.ts`, `docs/generated-project-lifecycle.md` |
+| Studio inclusion generation state | `readProjectStudioInclusion` / `writeProjectStudioInclusion` | `.ankh/generation-state.json` | controls whether generated project output includes Studio | Missing/invalid implicit state is an explicit error | `src/host/orchestrator/projectGenerationState.ts`, `docs/generated-project-lifecycle.md` |
+| Infrastructure projection | `syncProjectInfrastructure` from create/save/runtime sync; explicit infra actions remain Infra-owned | Infra owner state/files | infrastructure projection/lifecycle delegated to `@ankhorage/infra` | Plain manifest persistence does not synchronize infrastructure | `src/host/orchestrator/projectManager.ts` |
+| Media authoring | `StudioProvider` media mutations / host ingestion-removal coordinators | manifest media assets plus Studio-owned source/storage effects | manifest persistence; source cleanup on committed removal | Manifest save and source cleanup are separately coordinated; not evidence for unrelated runtime/package projections | `src/core/StudioProvider.ts` |
+
+## Proven gaps / required #500 changes
+
+1. **Autosave completion is narrower than project-currentness.** `StudioManifestPersistenceCoordinator`
+   marks the draft saved after the manifest boundary succeeds. Runtime-relevant authoring changes can
+   therefore leave generated/runtime/package/infrastructure projections stale until a later full
+   save or explicit sync. The owning authoring use case must either maintain the required projection
+   immediately or expose explicit pending/failed projection state.
+2. **Module admin manifest mutations use the persistence-only path.** They can change runtime-relevant
+   node props while bypassing the full generation path. This must be routed through the canonical
+   projection-aware operation or explicitly mark pending projection work.
+3. **Package reconciliation is a second update engine.** `reconcileProjectPackageRootAsync` rewrites
+   generated package policy, executes Bun installs and Devtools sync directly. After APM parity it
+   must no longer be the independent dependency-update path. Ordinary create/generation concerns may
+   remain at their semantic owner, but update discovery/plan/apply/recovery must use released APM.
+4. **Generated package policy is host-version-bound.** `getGeneratedPackagePolicy` derives ranges from
+   the currently installed Studio and owner package metadata. This is valid as target-owner policy,
+   but cannot be used as registry update discovery by an older host. The APM owner extension must bind
+   policy to the selected target owner artifact/version.
+5. **Studio/APM writers are not yet serialized together.** Autosave, module lifecycle and package
+   reconciliation can mutate the project without the APM operation lock. Host integration must use
+   the same released APM writer boundary before update apply is exposed.
+6. **Pending module removal is explicit but hidden from APM.** `.ankh/pending.json` correctly records
+   deferred work today; the Studio owner extension must project that pending work into APM status/plan
+   rather than letting `syncProject` consume it as an unrelated hidden side effect.
+7. **`ProjectManager.syncProject` is a compatibility alias.** It is explicitly marked for removal and
+   must not survive as a second canonical synchronization operation after #500 parity.
+
+## Ownership decisions for Phase 2
+
+- APM owns update status/plan/apply/recovery/verify and the shared writer lock/journal.
+- Studio owns its manifest authoring semantics, generated package policy, generation-state and route
+  ownership metadata.
+- Studio's APM extension must expose package-owned projection/migration planning and execution using
+  the released APM protocol. Generic APM must not import Studio.
+- Templates, Orchestrator, Expo Runtime, Infra, Repository and Devtools remain the owners of their
+  published capabilities; Studio composes those APIs instead of copying their generators.
+- Shipment/lifecycle effects remain explicit follow-up evidence; an app source update is not a store,
+  OTA, repository or production infrastructure operation.
+
+## Next implementation slice
+
+1. Add released `@ankhorage/apm` as the Studio host dependency.
+2. Introduce a Studio-owned APM feature/composition boundary rather than wiring APM into generic
+   `host/orchestrator` classes.
+3. Expose Studio target-owner package/projection policy through the released APM extension protocol.
+4. Project pending module lifecycle work into status/plan.
+5. Route host update operations through released APM lock/journal before replacing the direct package
+   update path.
+6. Only after behavior parity, remove obsolete sync/reconciliation aliases and update the Dashboard.
