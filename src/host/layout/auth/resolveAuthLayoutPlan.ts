@@ -103,7 +103,7 @@ export type AuthLayoutPlan = DisabledAuthLayoutPlan | EnabledAuthLayoutPlan;
  */
 export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLayoutPlan {
   const { manifest } = input;
-  const { auth } = manifest.infra;
+  const { auth } = manifest.infra.environments.local;
   if (auth?.scope !== 'global' || auth.provider !== 'supabase') {
     return createDisabledPlan();
   }
@@ -198,8 +198,8 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
 
 /*** Derive OAuth callback and provider generation metadata for enabled OAuth configuration. */
 function resolveOAuthLayoutPlan(
-  oauth: AppManifest['infra']['auth'] extends infer _Auth
-    ? NonNullable<AppManifest['infra']['auth']>['oauth']
+  oauth: AppManifest['infra']['environments']['local']['auth'] extends infer _Auth
+    ? NonNullable<AppManifest['infra']['environments']['local']['auth']>['oauth']
     : never,
 ): AuthOAuthLayoutPlan | undefined {
   if (oauth?.enabled !== true) {

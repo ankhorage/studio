@@ -1,12 +1,12 @@
 import type { AppManifest, AuthOAuthProviderConfig } from '@ankhorage/contracts';
 import type { AuthOAuthSetupFieldRequirement } from '@ankhorage/contracts/auth';
-import type { AppEnvironmentId, AppDeployTargetId } from '@ankhorage/contracts/deploy';
+import type { AppDeployTargetId } from '@ankhorage/contracts/deploy';
 import type { SecretMetadata } from '@ankhorage/contracts/secrets';
 import { getSupabaseOAuthProviderDefinition } from '@ankhorage/supabase-auth';
 
 import { validateStudioAuthSettings } from './authSettings';
 import { resolveProjectEnabledTargets, resolveProjectOAuthSetupPlan } from './projectOAuthSetup';
-import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
+import type { AppEnvironmentId } from '@ankhorage/contracts/environments';
 
 export type ProjectAuthHealthStatus = 'healthy' | 'warning' | 'error' | 'unconfigured';
 
@@ -62,7 +62,7 @@ export function analyzeProjectAuthHealth(input: {
   const diagnostics: ProjectAuthDiagnostic[] = [];
   const environment = input.environment ?? 'local';
   const targets = resolveProjectEnabledTargets(input.manifest);
-  const { auth } = input.manifest.infra;
+  const auth = input.manifest.infra.environments[environment]?.auth;
   const secretMetadataByRef = new Map(
     input.secretMetadata.map((metadata) => [metadata.ref, metadata]),
   );
@@ -80,7 +80,7 @@ export function analyzeProjectAuthHealth(input: {
       code: 'auth_unconfigured',
       severity: 'info',
       message: 'Authentication is not configured for this project.',
-      path: 'infra.auth',
+      path: `infra.environments.${environment}.auth`,
     });
     return {
       status: 'unconfigured',
@@ -105,7 +105,7 @@ export function analyzeProjectAuthHealth(input: {
       code: resolveAuthValidationCode(settingsValidation.error.message),
       severity: 'error',
       message: settingsValidation.error.message,
-      path: 'infra.auth',
+      path: `infra.environments.${environment}.auth`,
     });
   }
 
@@ -114,7 +114,7 @@ export function analyzeProjectAuthHealth(input: {
       code: 'profile_not_configured',
       severity: 'warning',
       message: 'Auth profile configuration is not configured.',
-      path: 'infra.auth.profile',
+      path: `infra.environments.${environment}.auth.profile`,
     });
   }
 
@@ -141,7 +141,7 @@ export function analyzeProjectAuthHealth(input: {
       code: 'oauth_enabled_without_providers',
       severity: 'warning',
       message: 'OAuth is enabled but no OAuth provider is enabled.',
-      path: 'infra.auth.oauth.providers',
+      path: `infra.environments.${environment}.auth.oauth.providers`,
     });
   }
 
@@ -176,7 +176,7 @@ function analyzeProviderHealth(input: {
   const definition = getSupabaseOAuthProviderDefinition(provider.id);
   const enabled = provider.enabled === true;
   const { credentialsRef } = provider;
-  const path = `infra.auth.oauth.providers[${input.index}]`;
+  const path = `infra.environments.${input.setupPlan.environment}.auth.oauth.providers[${input.index}]`;
   const requiredFields =
     setupPlan?.requirements
       .filter(

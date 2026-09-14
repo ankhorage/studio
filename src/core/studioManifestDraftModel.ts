@@ -69,8 +69,15 @@ export function replaceStudioManifestDraftAuthSettings(
   settings: StudioAuthSettings | null,
 ): StudioManifest {
   if (!settings) {
-    const { auth: _auth, ...infra } = manifest.infra;
-    return { ...manifest, infra };
+    const local = manifest.infra.environments.local;
+    const { auth: _auth, ...localWithoutAuth } = local;
+    return {
+      ...manifest,
+      infra: {
+        ...manifest.infra,
+        environments: { ...manifest.infra.environments, local: localWithoutAuth },
+      },
+    };
   }
 
   return applyStudioAuthSettings(manifest, settings);

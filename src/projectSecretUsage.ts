@@ -27,27 +27,27 @@ export function findProjectSecretUsages(input: {
   readonly ref: string;
 }): ProjectSecretUsageSummary {
   const usages = new Map<string, ProjectSecretUsage>();
-  const providers = input.manifest.infra.environments.local.auth?.oauth?.providers ?? [];
 
-  providers.forEach((provider) => {
-    if (provider.credentialsRef !== input.ref) {
-      return;
-    }
+  Object.entries(input.manifest.infra.environments).forEach(([environmentId, environment]) => {
+    const providers = environment.auth?.oauth?.providers ?? [];
+    providers.forEach((provider) => {
+      if (provider.credentialsRef !== input.ref) return;
 
-    const ownerId = provider.id;
-    const label = `${provider.label ?? titleCaseIdentifier(ownerId)} OAuth provider`;
-    const path = `infra.auth.oauth.providers[${ownerId}].credentialsRef`;
-    usages.set(
-      `${path}:${input.ref}`,
-      Object.freeze({
-        ref: input.ref,
-        path,
-        category: 'oauth-provider',
-        label,
-        ownerId,
-        breaksWhenMissing: provider.enabled === true,
-      }),
-    );
+      const ownerId = provider.id;
+      const label = `${provider.label ?? titleCaseIdentifier(ownerId)} OAuth provider`;
+      const path = `infra.environments.${environmentId}.auth.oauth.providers[${ownerId}].credentialsRef`;
+      usages.set(
+        `${path}:${input.ref}`,
+        Object.freeze({
+          ref: input.ref,
+          path,
+          category: 'oauth-provider',
+          label,
+          ownerId,
+          breaksWhenMissing: provider.enabled === true,
+        }),
+      );
+    });
   });
 
   return {

@@ -8,7 +8,6 @@ import type {
   AuthOAuthSetupCallbackRequirement,
   AuthOAuthSetupFieldRequirement,
 } from '@ankhorage/contracts/auth';
-import { APP_ENVIRONMENT_IDS } from '@ankhorage/contracts/deploy';
 import {
   getSupabaseOAuthProviderDefinition,
   SUPABASE_OAUTH_PROVIDER_IDS,
@@ -85,7 +84,9 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   } = studio;
   const router = useRouter();
   const [draft, setDraft] = useState<StudioAuthSettings>(
-    () => readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
+    () =>
+      readStudioAuthSettings(manifest ?? createFallbackManifest(), 'local') ??
+      createDefaultSettings(),
   );
   const [health, setHealth] = useState<ProjectAuthHealth | null>(null);
   const [environment, setEnvironment] = useState<AppEnvironmentId>('local');
@@ -101,8 +102,8 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   useEffect(() => {
     if (initializedDraftFromManifestRef.current || !manifest) return;
     initializedDraftFromManifestRef.current = true;
-    setDraft(readStudioAuthSettings(manifest) ?? createDefaultSettings());
-  }, [manifest]);
+    setDraft(readStudioAuthSettings(manifest, environment) ?? createDefaultSettings());
+  }, [environment, manifest]);
 
   /*** Refresh auth health for the selected environment without allowing stale requests to overwrite newer state. */
   const refreshHealth = useCallback(async () => {
@@ -120,7 +121,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       loadHealth: () => getProjectAuthHealth({ projectId, environment }),
       onHealth: (loadedHealth) => {
         const canonicalAuthSettings = canonicalManifestRef.current
-          ? readStudioAuthSettings(canonicalManifestRef.current)
+          ? readStudioAuthSettings(canonicalManifestRef.current, environment)
           : null;
         setDraft(canonicalAuthSettings ?? createDefaultSettings());
         setHealth(loadedHealth);
@@ -128,7 +129,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       },
       onError: (error) => {
         const canonicalAuthSettings = canonicalManifestRef.current
-          ? readStudioAuthSettings(canonicalManifestRef.current)
+          ? readStudioAuthSettings(canonicalManifestRef.current, environment)
           : null;
         if (canonicalAuthSettings) setDraft(canonicalAuthSettings);
         setMessage(toMessage(error));
@@ -150,7 +151,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   const persistAuthDraft = useCallback(
     async (nextDraft: StudioAuthSettings, nextMessage: string) => {
       const canonicalAuthSettings = canonicalManifestRef.current
-        ? readStudioAuthSettings(canonicalManifestRef.current)
+        ? readStudioAuthSettings(canonicalManifestRef.current, environment)
         : null;
       const rebasedDraft = rebaseAuthDraftOntoCanonicalCredentialRefs({
         draft: nextDraft,

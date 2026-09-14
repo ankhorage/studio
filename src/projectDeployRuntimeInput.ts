@@ -1,5 +1,4 @@
-import type { AppEnvironmentId } from '@ankhorage/contracts/deploy';
-import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
+import type { AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type {
   ProjectReleaseAndroidContext,
   ProjectReleaseIosContext,
