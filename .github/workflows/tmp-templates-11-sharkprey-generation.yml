@@ -24,8 +24,22 @@ jobs:
         with:
           bun-version: 1.4.2
       - run: bun install --frozen-lockfile
+      - name: Confirm Templates 11 is visible in npm
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            version="$(npm view @ankhorage/templates@11.0.3 version 2>/dev/null || true)"
+            if [ "$version" = "11.0.3" ]; then
+              echo "@ankhorage/templates@$version is available."
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "@ankhorage/templates@11.0.3 is still unavailable from npm." >&2
+          exit 1
       - name: Upgrade published Templates owner
-        run: bun add '@ankhorage/templates@^11.0.3'
+        run: |
+          bun pm cache rm
+          bun add '@ankhorage/templates@^11.0.3'
       - name: Add Studio patch changeset
         run: |
           cat > .changeset/sharkprey-templates-11.md <<'EOF'
