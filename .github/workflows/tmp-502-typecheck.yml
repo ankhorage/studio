@@ -22,5 +22,5 @@ jobs:
         with:
           bun-version: 1.4.2
       - run: bun install --frozen-lockfile
-      - name: Typecheck current Infra 5 migration
+      - name: Typecheck current Infra 5 production migration
         run: bun run typecheck
