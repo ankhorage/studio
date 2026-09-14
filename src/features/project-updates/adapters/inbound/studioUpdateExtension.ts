@@ -3,10 +3,10 @@ import { readFileSync } from 'node:fs';
 
 import type {
   ApmProjectFileSnapshot,
-  ApmProjectMutation,
   ApmProjectionHandler,
   ApmProjectionInput,
   ApmProjectionPlanResult,
+  ApmProjectMutation,
   ApmUpdateExtension,
 } from '@ankhorage/apm/types';
 import { isRecord } from '@ankhorage/utility/object';
