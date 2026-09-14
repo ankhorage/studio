@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.5.7
+
+### Patch Changes
+
+- 91650c7: Consume the released APM 0.6 owner-aware composition so Studio preserves package-owned status evidence through planning, apply revalidation, and verification.
+
 ## 2.5.6
 
 ### Patch Changes
