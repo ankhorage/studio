@@ -1,0 +1,32 @@
+name: APM lock refresh
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    if: github.head_ref == 'fix/500-owner-aware-apm-composition'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+
+      - name: Refresh APM dependency and lockfile
+        run: bun add '@ankhorage/apm@^0.6.0'
+
+      - name: Upload refreshed dependency files
+        uses: actions/upload-artifact@v4
+        with:
+          name: apm-0.6-lock
+          path: |
+            package.json
+            bun.lock
