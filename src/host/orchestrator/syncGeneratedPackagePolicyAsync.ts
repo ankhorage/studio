@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import { applyGeneratedPackagePolicy } from './applyGeneratedPackagePolicy';
+import { applyGeneratedPackagePolicy } from '../../features/project-updates/domain/applyGeneratedPackagePolicy';
 
 /*** Reconcile one generated app package manifest against current owner-managed version ranges. */
 export async function syncGeneratedPackagePolicyAsync(projectPath: string): Promise<void> {
