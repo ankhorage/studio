@@ -9,8 +9,7 @@ const DESCRIPTOR_PATH = new URL('../apm/update.json', import.meta.url);
 export async function syncApmUpdateDescriptorAsync(): Promise<void> {
   const packageJson = parseRecord(await readFile(PACKAGE_PATH, 'utf8'), 'package.json');
   const descriptor = parseRecord(await readFile(DESCRIPTOR_PATH, 'utf8'), 'apm/update.json');
-  const version = packageJson.version;
-  const name = packageJson.name;
+  const { name, version } = packageJson;
   if (typeof version !== 'string' || typeof name !== 'string') {
     throw new Error('package.json must define string name and version fields.');
   }
