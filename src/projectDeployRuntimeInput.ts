@@ -1,4 +1,5 @@
-import type { AppDeployEnvironmentId } from '@ankhorage/contracts/deploy';
+import type { AppEnvironmentId } from '@ankhorage/contracts/deploy';
+import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type {
   ProjectReleaseAndroidContext,
   ProjectReleaseIosContext,
@@ -6,7 +7,7 @@ import type {
 } from '@ankhorage/deploy/project';
 
 export interface ProjectDeployRuntimeInput {
-  readonly environment: AppDeployEnvironmentId;
+  readonly environment: AppEnvironmentId;
   readonly android?: ProjectReleaseAndroidContext;
   readonly ios?: ProjectReleaseIosContext;
   readonly web?: ProjectReleaseWebContext;

@@ -1,11 +1,12 @@
 import type { AppManifest, AuthOAuthProviderConfig } from '@ankhorage/contracts';
 import type { AuthOAuthSetupFieldRequirement } from '@ankhorage/contracts/auth';
-import type { AppDeployEnvironmentId, AppDeployTargetId } from '@ankhorage/contracts/deploy';
+import type { AppEnvironmentId, AppDeployTargetId } from '@ankhorage/contracts/deploy';
 import type { SecretMetadata } from '@ankhorage/contracts/secrets';
 import { getSupabaseOAuthProviderDefinition } from '@ankhorage/supabase-auth';
 
 import { validateStudioAuthSettings } from './authSettings';
 import { resolveProjectEnabledTargets, resolveProjectOAuthSetupPlan } from './projectOAuthSetup';
+import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 
 export type ProjectAuthHealthStatus = 'healthy' | 'warning' | 'error' | 'unconfigured';
 
@@ -39,7 +40,7 @@ export interface ProjectAuthHealth {
   readonly diagnostics: readonly ProjectAuthDiagnostic[];
   readonly providers: readonly ProjectOAuthProviderHealth[];
   readonly setup: {
-    readonly environment: AppDeployEnvironmentId;
+    readonly environment: AppEnvironmentId;
     readonly targets: readonly AppDeployTargetId[];
   };
   readonly callbackUrls: {
@@ -56,7 +57,7 @@ export function analyzeProjectAuthHealth(input: {
   readonly manifest: AppManifest;
   readonly secretMetadata: readonly SecretMetadata[];
   readonly secretStoreAvailable?: boolean;
-  readonly environment?: AppDeployEnvironmentId;
+  readonly environment?: AppEnvironmentId;
 }): ProjectAuthHealth {
   const diagnostics: ProjectAuthDiagnostic[] = [];
   const environment = input.environment ?? 'local';

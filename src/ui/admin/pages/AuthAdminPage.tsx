@@ -8,10 +8,7 @@ import type {
   AuthOAuthSetupCallbackRequirement,
   AuthOAuthSetupFieldRequirement,
 } from '@ankhorage/contracts/auth';
-import {
-  APP_DEPLOY_ENVIRONMENT_IDS,
-  type AppDeployEnvironmentId,
-} from '@ankhorage/contracts/deploy';
+import { APP_ENVIRONMENT_IDS } from '@ankhorage/contracts/deploy';
 import {
   getSupabaseOAuthProviderDefinition,
   SUPABASE_OAUTH_PROVIDER_IDS,
@@ -40,6 +37,7 @@ import { configureProjectOAuthProvider } from '../../../projectSecretApi';
 import { syncProjectRuntime } from '../../../studioRuntimeApi';
 import { useAuthAdminSession } from '../AuthAdminSession';
 import { AuthHealthRefreshCoordinator } from './adminAuthHealthFlow';
+import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 import {
   persistStoredOAuthCredentialLinkAndPatchLocalDraft,
   persistStoredOAuthCredentialLink,
@@ -90,7 +88,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
     () => readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
   );
   const [health, setHealth] = useState<ProjectAuthHealth | null>(null);
-  const [environment, setEnvironment] = useState<AppDeployEnvironmentId>('local');
+  const [environment, setEnvironment] = useState<AppEnvironmentId>('local');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -442,7 +440,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
         <Card title="OAuth providers">
           <Text weight="semiBold">Environment</Text>
           <View style={styles.choiceRow}>
-            {APP_DEPLOY_ENVIRONMENT_IDS.map((environmentId) => (
+            {APP_ENVIRONMENT_IDS.map((environmentId) => (
               <Choice
                 key={environmentId}
                 label={environmentId}
@@ -659,7 +657,7 @@ function OAuthProviderSetting(props: {
   readonly projectId: string;
   readonly providerId: SupabaseOAuthProviderId;
   readonly manifest: AppManifest;
-  readonly environment: AppDeployEnvironmentId;
+  readonly environment: AppEnvironmentId;
   readonly oauth: NonNullable<StudioAuthSettings['oauth']>;
   readonly providerHealth: ProjectAuthHealth['providers'][number] | undefined;
   readonly onChange: (

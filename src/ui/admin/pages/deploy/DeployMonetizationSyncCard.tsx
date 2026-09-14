@@ -1,7 +1,3 @@
-import {
-  APP_DEPLOY_ENVIRONMENT_IDS,
-  type AppDeployEnvironmentId,
-} from '@ankhorage/contracts/deploy';
 import type { ProjectMonetizationExecutionResult } from '@ankhorage/deploy/project';
 import { Button, Card, ConfirmDialog, Select, Text } from '@ankhorage/zora';
 import React, { useRef, useState } from 'react';
@@ -15,8 +11,9 @@ import type { ProjectDeployRuntimeInput } from '../../../../projectDeployRuntime
 import { Field } from '../../adminPagePrimitives';
 import { DeployMonetizationExecutionView } from './DeployMonetizationExecutionView';
 import { DeployMonetizationPlanView } from './DeployMonetizationPlanView';
+import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 
-type EnvironmentSelection = AppDeployEnvironmentId | 'unselected';
+type EnvironmentSelection = AppEnvironmentId | 'unselected';
 
 interface MonetizationPreview {
   readonly runtime: ProjectDeployRuntimeInput;
@@ -25,7 +22,7 @@ interface MonetizationPreview {
 
 const ENVIRONMENT_OPTIONS = [
   { value: 'unselected', label: 'Choose environment' },
-  ...APP_DEPLOY_ENVIRONMENT_IDS.map((value) => ({ value, label: value })),
+  ...APP_ENVIRONMENT_IDS.map((value) => ({ value, label: value })),
 ] satisfies readonly { readonly value: EnvironmentSelection; readonly label: string }[];
 
 export function DeployMonetizationSyncCard(props: {

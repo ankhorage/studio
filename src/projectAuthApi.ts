@@ -1,9 +1,4 @@
-import {
-  APP_DEPLOY_ENVIRONMENT_IDS,
-  APP_DEPLOY_TARGET_IDS,
-  type AppDeployEnvironmentId,
-  type AppDeployTargetId,
-} from '@ankhorage/contracts/deploy';
+import { APP_DEPLOY_TARGET_IDS, type AppDeployTargetId } from '@ankhorage/contracts/deploy';
 import { isStringArray } from '@ankhorage/utility/array';
 import { isRecord } from '@ankhorage/utility/object';
 
@@ -16,6 +11,7 @@ import type {
   ProjectOAuthProviderHealthStatus,
 } from './projectAuthHealth';
 import { findRawSecretResponseKey } from './secretResponseGuard';
+import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 
 export class ProjectAuthApiError extends Error {
   readonly code: string;
@@ -36,7 +32,7 @@ export class ProjectAuthApiError extends Error {
  */
 export async function getProjectAuthHealth(input: {
   readonly projectId: string;
-  readonly environment?: AppDeployEnvironmentId;
+  readonly environment?: AppEnvironmentId;
 }): Promise<ProjectAuthHealth> {
   const query = createQuery({ environment: input.environment });
   const value = await requestJson(
@@ -133,7 +129,7 @@ function parseProjectAuthHealth(value: unknown): ProjectAuthHealth {
     !Array.isArray(record.diagnostics) ||
     !Array.isArray(record.providers) ||
     setup === null ||
-    !isAppDeployEnvironmentId(setup.environment) ||
+    !isAppEnvironmentId(setup.environment) ||
     !isAppDeployTargetIdArray(setup.targets) ||
     callbackUrls === null ||
     typeof callbackUrls.appCallbackRoute !== 'string' ||
@@ -243,13 +239,10 @@ function rejectRawSecretResponse(value: unknown, message: string): void {
 
 /***
  * Return whether a value belongs to the canonical deploy-environment identifier set.
- * @todo Move this reusable guard to the deploy contracts owner beside APP_DEPLOY_ENVIRONMENT_IDS.
+ * @todo Move this reusable guard to the deploy contracts owner beside APP_ENVIRONMENT_IDS.
  */
-function isAppDeployEnvironmentId(value: unknown): value is AppDeployEnvironmentId {
-  return (
-    typeof value === 'string' &&
-    APP_DEPLOY_ENVIRONMENT_IDS.includes(value as AppDeployEnvironmentId)
-  );
+function isAppEnvironmentId(value: unknown): value is AppEnvironmentId {
+  return typeof value === 'string' && APP_ENVIRONMENT_IDS.includes(value as AppEnvironmentId);
 }
 
 /***
