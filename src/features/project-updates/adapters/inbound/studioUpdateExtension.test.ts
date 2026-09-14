@@ -10,8 +10,8 @@ import {
 import type {
   ApmExtensionExecutionContext,
   ApmProjectFileSnapshot,
-  ApmProjectScope,
   ApmProjectionHandler,
+  ApmProjectScope,
   ApmUpdateDescriptor,
 } from '@ankhorage/apm/types';
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
@@ -94,26 +94,30 @@ test('plans only Studio-owned package fields and preserves user dependencies', a
   expect(plan.mutations.every(({ claim }) => descriptorOwnsClaim(claim))).toBe(true);
   expect(plan.mutations.some(({ id }) => id.includes('user-owned-package'))).toBe(false);
   expect(plan.mutations.some(({ id }) => id.includes('user-owned-dev-package'))).toBe(false);
-  expect(plan.mutations).toContainEqual(
-    expect.objectContaining({
-      kind: 'set-json-pointer',
-      pointer: '/dependencies/@ankhorage~1studio',
-      value: policy.dependencies.studio,
-    }),
+  const studioMutation = plan.mutations.find(
+    (mutation) =>
+      mutation.kind === 'set-json-pointer' &&
+      mutation.pointer === '/dependencies/@ankhorage~1studio',
   );
+  expect(studioMutation).toBeDefined();
+  if (studioMutation?.kind !== 'set-json-pointer') return;
+  expect(studioMutation.value).toBe(policy.dependencies.studio);
 });
 
 test('reports current policy and materializes only reviewed mutation ids', async () => {
   const projection = requirePackagePolicyProjection();
   const context = executionContext();
-  const currentManifest = applyGeneratedPackagePolicy({
-    packageManager: 'bun@0.0.1',
-    dependencies: {
-      '@ankhorage/studio': '^0.0.1',
-      'user-owned-package': '^9.0.0',
+  const currentManifest = applyGeneratedPackagePolicy(
+    {
+      packageManager: 'bun@0.0.1',
+      dependencies: {
+        '@ankhorage/studio': '^0.0.1',
+        'user-owned-package': '^9.0.0',
+      },
+      devDependencies: {},
     },
-    devDependencies: {},
-  });
+    getGeneratedPackagePolicy(),
+  );
   const currentProject = projectReadPort(currentManifest);
   const inspection = await projection.inspectAsync({
     descriptor: PACKAGE_POLICY_PROJECTION,
