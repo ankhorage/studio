@@ -26,20 +26,15 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: Confirm Templates 11 is visible in npm
         run: |
-          for attempt in 1 2 3 4 5 6; do
-            version="$(npm view @ankhorage/templates@11.0.3 version 2>/dev/null || true)"
-            if [ "$version" = "11.0.3" ]; then
-              echo "@ankhorage/templates@$version is available."
-              exit 0
-            fi
-            sleep 10
-          done
-          echo "@ankhorage/templates@11.0.3 is still unavailable from npm." >&2
-          exit 1
+          version="$(npm view @ankhorage/templates@11.0.3 version)"
+          test "$version" = "11.0.3"
       - name: Align published manifest owners
         run: |
           bun pm cache rm
           bun add '@ankhorage/contracts@^15.0.0' '@ankhorage/navigator@^3.2.5' '@ankhorage/templates@^11.0.3'
+      - name: Identify AUTH_PROVIDERS runtime consumers
+        run: |
+          grep -R -n --include='*.js' --exclude-dir=contracts 'AUTH_PROVIDERS' node_modules/@ankhorage || true
       - name: Add Studio patch changeset
         run: |
           cat > .changeset/sharkprey-templates-11.md <<'EOF'
