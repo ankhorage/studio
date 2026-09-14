@@ -1,0 +1,54 @@
+{
+  "protocolVersion": 1,
+  "schemaVersion": 1,
+  "owner": {
+    "name": "@ankhorage/studio",
+    "version": "2.5.7"
+  },
+  "history": {
+    "supported": [
+      {
+        "sourceRange": ">=0.0.0",
+        "mode": "no-migration"
+      }
+    ],
+    "unsupported": [],
+    "downgrade": "unsupported"
+  },
+  "compatibility": [],
+  "migrations": [],
+  "projections": [
+    {
+      "id": "generated-package-policy",
+      "claims": [
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/packageManager" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@ankhorage~1contracts" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@ankhorage~1data-sources" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@ankhorage~1expo-runtime" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@ankhorage~1navigator" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@ankhorage~1runtime" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@ankhorage~1studio" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@ankhorage~1utility" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@ankhorage~1supabase-auth" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@ankhorage~1supabase-storage" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@ankhorage~1zora" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@react-native-picker~1picker" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@react-native-vector-icons~1fontawesome" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@react-native-vector-icons~1fontawesome5" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@react-native-vector-icons~1fontawesome6" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/dependencies/@react-native-vector-icons~1ionicons" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/devDependencies/@ankhorage~1ankh" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/devDependencies/@ankhorage~1devtools" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/devDependencies/@types~1bun" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/devDependencies/@types~1culori" },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/devDependencies/@types~1react" }
+      ],
+      "requiresExtension": true,
+      "reason": "Studio owns generated application package policy for its managed dependency fields."
+    }
+  ],
+  "effects": [],
+  "extension": {
+    "export": "./apm"
+  }
+}
