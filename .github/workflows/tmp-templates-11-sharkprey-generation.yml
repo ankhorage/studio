@@ -1,0 +1,59 @@
+name: Update Templates 11 SharkPrey generation
+
+on:
+  push:
+    branches:
+      - fix/templates-11-sharkprey-generation
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  update:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/templates-11-sharkprey-generation
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      - name: Upgrade published Templates owner
+        run: bun add '@ankhorage/templates@^11.0.3'
+      - name: Add Studio patch changeset
+        run: |
+          cat > .changeset/sharkprey-templates-11.md <<'EOF'
+          ---
+          '@ankhorage/studio': patch
+          ---
+
+          Consume Templates 11 so Studio project creation uses the current SharkPrey training manifest.
+          EOF
+      - name: Verify resolved Templates version
+        run: |
+          node -e "const p=require('./node_modules/@ankhorage/templates/package.json'); if(p.version!=='11.0.3') throw new Error('Expected @ankhorage/templates 11.0.3, got '+p.version)"
+      - name: Focused SharkPrey project generation tests
+        run: bun test src/host/orchestrator/projectCreationAssets.test.ts
+      - run: bun run build
+      - run: bun run typecheck
+      - run: bun run lint
+      - run: bun run knip:check
+      - run: bun run test
+      - run: bun run changeset:status
+      - run: bun run format
+      - name: Expo 57 generated app acceptance
+        run: bun run test:acceptance:expo57-generated-app
+      - name: Commit verified dependency update and remove temporary runner
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f .github/workflows/tmp-templates-11-sharkprey-generation.yml
+          git add -A
+          git commit -m "fix: consume Templates 11 for SharkPrey generation"
+          git push origin HEAD:fix/templates-11-sharkprey-generation
