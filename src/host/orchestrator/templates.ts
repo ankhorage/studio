@@ -1,4 +1,4 @@
-import { applyGeneratedPackagePolicy } from './applyGeneratedPackagePolicy';
+import { applyGeneratedPackagePolicy } from '../../features/project-updates/domain/applyGeneratedPackagePolicy';
 import { getPackageJson as getBasePackageJson } from './templateSources';
 
 export type { GeneratedAuthProvider, GeneratedStorageProvider } from './templateSources';
