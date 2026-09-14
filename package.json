@@ -19,6 +19,7 @@
   "types": "./dist/root.d.ts",
   "sideEffects": false,
   "files": [
+    "apm",
     "dist",
     "README.md",
     "LICENSE"
@@ -27,6 +28,10 @@
     ".": {
       "types": "./dist/root.d.ts",
       "import": "./dist/root.js"
+    },
+    "./apm": {
+      "types": "./dist/apm.d.ts",
+      "import": "./dist/apm.js"
     },
     "./app": {
       "types": "./dist/app/index.d.ts",
@@ -154,7 +159,11 @@
       "studio.projects.create",
       "studio.projects.delete",
       "studio.projects.sync"
-    ]
+    ],
+    "apm": {
+      "protocolVersion": 1,
+      "descriptor": "./apm/update.json"
+    }
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
