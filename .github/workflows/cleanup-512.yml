@@ -25,10 +25,10 @@ jobs:
         with:
           bun-version: '1.4.2'
       - run: bun install --frozen-lockfile
+      - run: bun run build
       - run: bun run lint:fix
       - run: bun run format
       - run: rm -f repair-512-report-2.txt static-512-report.txt
-      - run: bun run build
       - run: bun run check-types
       - run: bun run lint
       - run: bun run knip:check
