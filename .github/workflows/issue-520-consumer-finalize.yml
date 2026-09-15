@@ -49,6 +49,8 @@ jobs:
           bun install --cwd apps/studio --lockfile-only
       - name: Apply canonical formatting
         run: ./node_modules/.bin/ankhorage-prettier --write src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts
+      - name: Build Studio before lint
+        run: bun run build
       - name: Validate lint after consumer refresh
         run: bun run lint
       - name: Finalize branch artifacts
