@@ -70,6 +70,15 @@ jobs:
       - name: Knip
         run: bun run knip:check
 
+      - name: Prepare implementation commit for diff-based validation
+        shell: bash
+        run: |
+          git config user.name 'artiphishle'
+          git config user.email '137318798+artiphishle@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'feat: track runtime projection currency'
+
       - name: Check changeset
         run: bun run changeset:status
 
@@ -87,9 +96,7 @@ jobs:
           rm .github/issue-516-fix.py
           rm .github/issue-516-typecheck-fix.py
           rm .github/issue-516-lint-fix.py
-          git config user.name 'artiphishle'
-          git config user.email '137318798+artiphishle@users.noreply.github.com'
           git add -A
           git diff --cached --check
-          git commit -m 'feat: track runtime projection currency'
+          git commit --amend --no-edit
           git push origin HEAD:feat/516-runtime-projection-currency
