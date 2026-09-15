@@ -3,6 +3,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 import type {
+  ApmDependencyInventory,
   ApmPlanProtocolPort,
   ApmPlanProtocolRequest,
   ApmStatusExtensionEvidencePort,
@@ -33,10 +34,11 @@ test('reports valid pending module removals without mutating their source file',
   try {
     await mkdir(path.dirname(pendingPath), { recursive: true });
     await writeFile(pendingPath, content, 'utf8');
-    const evidence = await createStudioProjectUpdateExtensionEvidencePort().inspectExtensionEvidenceAsync({
-      rootPath,
-      inventory: emptyInventory(),
-    });
+    const evidence =
+      await createStudioProjectUpdateExtensionEvidencePort().inspectExtensionEvidenceAsync({
+        rootPath,
+        inventory: emptyInventory(),
+      });
 
     expect(evidence.complete).toBe(true);
     expect(evidence.observations).toHaveLength(1);
@@ -153,13 +155,7 @@ function createProjectRootAsync(): Promise<string> {
 }
 
 /*** Return the minimal complete dependency inventory required by the extension evidence port. */
-function emptyInventory(): ApmPlanProtocolRequest['status']['installRoots'][number] extends never
-  ? never
-  : {
-      roots: [];
-      complete: true;
-      diagnostics: [];
-    } {
+function emptyInventory(): ApmDependencyInventory {
   return { roots: [], complete: true, diagnostics: [] };
 }
 
