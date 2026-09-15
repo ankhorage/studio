@@ -28,10 +28,7 @@ export function readReviewedPendingModuleStep(
 }
 
 /*** Read one required non-empty digest from reviewed step evidence. */
-function readEvidenceDigest(
-  evidence: readonly string[],
-  prefix: string,
-): string | undefined {
+function readEvidenceDigest(evidence: readonly string[], prefix: string): string | undefined {
   const value = evidence.find((item) => item.startsWith(prefix))?.slice(prefix.length);
   return value === undefined || value === '' ? undefined : value;
 }

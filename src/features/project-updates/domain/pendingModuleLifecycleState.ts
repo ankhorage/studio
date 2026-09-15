@@ -11,8 +11,7 @@ export interface PendingModuleLifecycleState {
 }
 
 export type PendingModuleLifecycleParseResult =
-  | { readonly valid: true; readonly value: PendingModuleLifecycleState }
-  | { readonly valid: false };
+  { readonly valid: true; readonly value: PendingModuleLifecycleState } | { readonly valid: false };
 
 /*** Parse Studio's persisted pending module lifecycle state without accepting ambiguous operations. */
 export function parsePendingModuleLifecycleState(
@@ -26,7 +25,9 @@ export function parsePendingModuleLifecycleState(
     (operation): operation is PendingModuleLifecycleOperation => operation !== undefined,
   );
   const uniqueIds = new Set(parsed.map(({ moduleId }) => moduleId));
-  return uniqueIds.size === parsed.length ? { valid: true, value: { ops: parsed } } : { valid: false };
+  return uniqueIds.size === parsed.length
+    ? { valid: true, value: { ops: parsed } }
+    : { valid: false };
 }
 
 /*** Serialize canonical Studio pending lifecycle state for one reviewed APM file change. */

@@ -1,7 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import type { AppManifest } from '@ankhorage/contracts';
 import type {
   ApmExtensionArtifactIdentity,
   ApmExtensionArtifactIdentityResolution,
@@ -10,6 +9,7 @@ import type {
   ApmPlanFileChange,
   ApmPlanStep,
 } from '@ankhorage/apm/types';
+import type { AppManifest } from '@ankhorage/contracts';
 
 import { isAppManifest } from '../../../contractGuards';
 import {
@@ -123,7 +123,8 @@ function removalStep(input: {
         id: projectionId,
         claims: [{ kind: 'dynamic', scope: `orchestrator-module:${input.moduleId}` }],
         requiresExtension: false,
-        reason: 'Studio delegates module uninstall side effects to the published Orchestrator owner.',
+        reason:
+          'Studio delegates module uninstall side effects to the published Orchestrator owner.',
       },
       artifact: input.artifact,
       plan: {
@@ -147,7 +148,8 @@ function finalizationStep(
     id: FINALIZE_STEP_ID,
     kind: 'dependency-files',
     prerequisites,
-    reason: 'Commit the reviewed Studio manifest and pending-lifecycle state after module removals.',
+    reason:
+      'Commit the reviewed Studio manifest and pending-lifecycle state after module removals.',
     evidence: filePaths,
     execution: { kind: 'dependency-files', filePaths },
   };
@@ -239,9 +241,14 @@ function blockedDigest(
 ): PendingModuleLifecyclePlanSlice {
   return blocked({
     code: 'protocol.studio-pending-module-lifecycle-changed',
-    scope: { kind: 'projection', id: STUDIO_PENDING_MODULE_LIFECYCLE_PROJECTION_ID, path: rootPath },
+    scope: {
+      kind: 'projection',
+      id: STUDIO_PENDING_MODULE_LIFECYCLE_PROJECTION_ID,
+      path: rootPath,
+    },
     evidence: [expected, actual],
-    reason: 'Studio pending module lifecycle state changed while the reviewed plan was being built.',
+    reason:
+      'Studio pending module lifecycle state changed while the reviewed plan was being built.',
     nextAction: 'Refresh status and create a new plan from current pending module state.',
   });
 }
@@ -253,7 +260,11 @@ function blockedPendingState(
 ): PendingModuleLifecyclePlanSlice {
   return blocked({
     code: 'protocol.studio-pending-module-lifecycle-unavailable',
-    scope: { kind: 'projection', id: STUDIO_PENDING_MODULE_LIFECYCLE_PROJECTION_ID, path: rootPath },
+    scope: {
+      kind: 'projection',
+      id: STUDIO_PENDING_MODULE_LIFECYCLE_PROJECTION_ID,
+      path: rootPath,
+    },
     evidence: [state],
     reason: 'Reviewed pending module lifecycle evidence is no longer available for planning.',
     nextAction: 'Refresh status and repair pending lifecycle state before planning again.',

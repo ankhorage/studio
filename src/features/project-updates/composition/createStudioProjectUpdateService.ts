@@ -1,6 +1,6 @@
 import type { ProjectUpdateServiceOptions } from '../../../types/project-updates';
-import type { StudioPendingModuleLifecyclePort } from '../application/StudioPendingModuleLifecyclePort';
 import { ProjectUpdateService } from '../application/ProjectUpdateService';
+import type { StudioPendingModuleLifecyclePort } from '../application/StudioPendingModuleLifecyclePort';
 import { createStudioProjectUpdateApplyOwnerStepPort } from './createStudioProjectUpdateApplyOwnerStepPort';
 import { createStudioProjectUpdateExtensionEvidencePort } from './createStudioProjectUpdateExtensionEvidencePort';
 import { createStudioProjectUpdateProtocolPort } from './createStudioProjectUpdateProtocolPort';

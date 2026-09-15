@@ -6,12 +6,12 @@ import type {
   ApmPlanProtocolResult,
 } from '@ankhorage/apm/types';
 
+import { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
 import { planPendingModuleLifecycleAsync } from '../application/planPendingModuleLifecycleAsync';
 import {
   STUDIO_PENDING_MODULE_LIFECYCLE_EVIDENCE,
   STUDIO_PENDING_MODULE_LIFECYCLE_PROJECTION_ID,
 } from '../constants';
-import { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
 
 interface StudioProjectUpdateProtocolOptions {
   readonly pendingLifecycleExecution?: boolean;
@@ -32,7 +32,11 @@ export function createStudioProjectUpdateProtocolPort(
       const pending = input.status.extensions.observations.find(
         isPendingModuleLifecycleObservation,
       );
-      const pendingSlice = await planPendingObservationAsync(pending, input.status.rootPath, options);
+      const pendingSlice = await planPendingObservationAsync(
+        pending,
+        input.status.rootPath,
+        options,
+      );
       const unhandled =
         base === undefined
           ? input.status.extensions.observations.filter(
@@ -130,7 +134,8 @@ function pendingLifecycleBlocker(observation: ApmExtensionObservation): ApmPlanB
     evidence: observation.evidence,
     reason:
       'Studio module removals are queued, but this host did not compose the trusted module-lifecycle owner executor.',
-    nextAction: 'Use the normal Studio host or compose its trusted pending-module lifecycle adapter.',
+    nextAction:
+      'Use the normal Studio host or compose its trusted pending-module lifecycle adapter.',
   };
 }
 

@@ -4,9 +4,9 @@ import type {
   ApmApplyStepPort,
 } from '@ankhorage/apm/types';
 
-import { readCurrentStudioApmArtifactBindingAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
 import { readPendingModuleLifecycleStateAsync } from '../adapters/outbound/readPendingModuleLifecycleStateAsync';
 import { readStudioManifestDigestAsync } from '../adapters/outbound/readStudioManifestDigestAsync';
+import { readCurrentStudioApmArtifactBindingAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
 import type { StudioPendingModuleLifecyclePort } from '../application/StudioPendingModuleLifecyclePort';
 import { readReviewedPendingModuleStep } from '../domain/pendingModulePlanStep';
 
@@ -115,7 +115,8 @@ async function bindingObservationAsync(
           reviewed.artifact.descriptorDigest,
           binding.descriptorDigest,
         ],
-        reason: 'Loaded Studio owner code no longer matches the reviewed immutable artifact binding.',
+        reason:
+          'Loaded Studio owner code no longer matches the reviewed immutable artifact binding.',
       };
 }
 
@@ -189,7 +190,9 @@ async function delegateExecutionAsync(
         'No trusted Studio owner adapter handles this reviewed step.',
         input.step.id,
       )
-    : base[action](input);
+    : action === 'executeAsync'
+      ? base.executeAsync(input)
+      : base.rollbackAsync(input);
 }
 
 /*** Convert a non-executable observation into a deterministic owner-step failure. */

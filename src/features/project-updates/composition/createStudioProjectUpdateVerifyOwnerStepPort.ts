@@ -14,7 +14,14 @@ export function createStudioProjectUpdateVerifyOwnerStepPort(
       const reviewed = readReviewedPendingModuleStep(input.step);
       return reviewed === undefined
         ? delegateVerifyAsync(base, input)
-        : [await verifyPendingModuleAsync(input.journal.rootPath, input.step.id, reviewed, lifecycle)];
+        : [
+            await verifyPendingModuleAsync(
+              input.journal.rootPath,
+              input.step.id,
+              reviewed,
+              lifecycle,
+            ),
+          ];
     },
   };
 }
