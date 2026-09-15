@@ -13,10 +13,7 @@ import type {
 import { composeCategoryAppManifest } from '@ankhorage/templates';
 import { expect, mock, test } from 'bun:test';
 
-import {
-  digestProjectUpdateText,
-  readPendingModuleLifecycleStateAsync,
-} from '../adapters/outbound/readPendingModuleLifecycleStateAsync';
+import { readPendingModuleLifecycleStateAsync } from '../adapters/outbound/readPendingModuleLifecycleStateAsync';
 import { readCurrentStudioApmArtifactBindingAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
 import type { StudioPendingModuleLifecyclePort } from '../application/StudioPendingModuleLifecyclePort';
 import { planPendingModuleLifecycleAsync } from '../application/planPendingModuleLifecycleAsync';
