@@ -394,7 +394,7 @@ function createScope(projectId: string, environment = 'local') {
 }
 
 /*** Build the stable public error returned when the trusted project secret store cannot be reached. */
-function createUnavailableSecretStoreError(): { readonly code: string; readonly message: string } {
+function createUnavailableSecretStoreError(): { readonly code: 'unavailable'; readonly message: string } {
   return {
     code: 'unavailable',
     message:

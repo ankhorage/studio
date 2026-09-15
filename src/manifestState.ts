@@ -900,10 +900,11 @@ export function updateStudioManifestOAuthProviders(
   manifest: StudioManifest,
   providers: AuthOAuthProviderConfig[],
 ): StudioManifest {
-  const previousAuth = manifest.infra.environments.local.auth ?? {
+  const previousAuth: NonNullable<
+    StudioManifest['infra']['environments']['local']['auth']
+  > = manifest.infra.environments.local.auth ?? {
     provider: 'supabase',
-    scope: 'global' as const,
-    authorization: { kind: 'ABAC' as const, engine: 'cerbos' as const },
+    scope: 'global',
   };
   const previousOauth = previousAuth.oauth ?? {
     enabled: true,
@@ -915,12 +916,18 @@ export function updateStudioManifestOAuthProviders(
     ...manifest,
     infra: {
       ...manifest.infra,
-      auth: {
-        ...previousAuth,
-        oauth: {
-          ...previousOauth,
-          enabled: providers.length > 0,
-          providers,
+      environments: {
+        ...manifest.infra.environments,
+        local: {
+          ...manifest.infra.environments.local,
+          auth: {
+            ...previousAuth,
+            oauth: {
+              ...previousOauth,
+              enabled: providers.length > 0,
+              providers,
+            },
+          },
         },
       },
     },
