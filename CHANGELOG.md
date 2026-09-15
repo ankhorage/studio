@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.6.1
+
+### Patch Changes
+
+- 6424b1c: Make the public APM owner extension loadable under native Node, share generated package policy between authoring and projection planning, reject unknown planning state, and serialize reviewed writes. Adopt packed APM release validation and verify the headless owner from an external installed artifact.
+
 ## 2.6.0
 
 ### Minor Changes

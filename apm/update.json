@@ -1,17 +1,9 @@
 {
   "protocolVersion": 1,
   "schemaVersion": 1,
-  "owner": {
-    "name": "@ankhorage/studio",
-    "version": "2.6.0"
-  },
+  "owner": { "name": "@ankhorage/studio", "version": "2.6.1" },
   "history": {
-    "supported": [
-      {
-        "sourceRange": ">=2.5.7 <3.0.0",
-        "mode": "no-migration"
-      }
-    ],
+    "supported": [{ "sourceRange": ">=2.5.7 <3.0.0", "mode": "no-migration" }],
     "unsupported": [],
     "downgrade": "unsupported"
   },
@@ -21,11 +13,7 @@
     {
       "id": "generated-package-policy",
       "claims": [
-        {
-          "kind": "json-pointer",
-          "path": "package.json",
-          "pointer": "/packageManager"
-        },
+        { "kind": "json-pointer", "path": "package.json", "pointer": "/packageManager" },
         {
           "kind": "json-pointer",
           "path": "package.json",
@@ -132,7 +120,5 @@
     }
   ],
   "effects": [],
-  "extension": {
-    "export": "./apm"
-  }
+  "extension": { "export": "./apm" }
 }
