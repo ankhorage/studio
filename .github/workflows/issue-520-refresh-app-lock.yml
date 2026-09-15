@@ -1,4 +1,4 @@
-name: Issue 520 Metro resolution
+name: Issue 520 Metro Haste resolution
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
         run: |
           rm apps/studio/bun.lock
           bun install --cwd apps/studio
-      - name: Instrument default Metro resolution
+      - name: Test Metro resolution without Haste
         run: |
           cat >> apps/studio/metro.config.js <<'JS'
 
@@ -39,32 +39,19 @@ jobs:
               return resolveDefault(context, moduleName, platform);
             }
             console.error(
-              'ANKH_METRO_INPUT ' +
+              'ANKH_METRO_HASTE ' +
                 JSON.stringify({
                   originModulePath: context.originModulePath,
-                  moduleName,
-                  platform,
-                  disableHierarchicalLookup: context.disableHierarchicalLookup,
-                  nodeModulesPaths: context.nodeModulesPaths,
+                  allowHaste: context.allowHaste,
+                  hastePackage: context.resolveHastePackage(moduleName),
+                  enableGlobalPackages: config.resolver.enableGlobalPackages ?? null,
                 }),
             );
-            try {
-              const result = resolveDefault(context, moduleName, platform);
-              console.error('ANKH_METRO_RESULT ' + JSON.stringify(result));
-              return result;
-            } catch (error) {
-              console.error(
-                'ANKH_METRO_ERROR ' +
-                  JSON.stringify({
-                    name: error instanceof Error ? error.name : 'unknown',
-                    message: error instanceof Error ? error.message : String(error),
-                  }),
-              );
-              throw error;
-            }
+            const result = resolveDefault({ ...context, allowHaste: false }, moduleName, platform);
+            console.error('ANKH_METRO_NO_HASTE_RESULT ' + JSON.stringify(result));
+            return result;
           };
           JS
-          # Move the final export below the diagnostic resolver assignment.
           python - <<'PY'
           from pathlib import Path
           path = Path('apps/studio/metro.config.js')
@@ -72,7 +59,7 @@ jobs:
           text = text.replace('\nmodule.exports = config;\n', '\n', 1)
           path.write_text(text + '\nmodule.exports = config;\n')
           PY
-      - name: Run Web export through instrumented Metro
+      - name: Run Web export through Haste-disabled target resolution
         run: |
           set +e
           bun run --cwd apps/studio export:web 2>&1 | tee /tmp/metro-export.log
