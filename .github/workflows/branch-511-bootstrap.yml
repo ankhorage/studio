@@ -52,10 +52,27 @@ jobs:
               raise SystemExit(f'expected one ModuleManager Orchestrator composition, found {count}')
           path.write_text(source)
           PY
+      - name: Remove dynamic delegation sink
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts')
+          source = path.read_text()
+          old = """    : base[action](input);"""
+          new = """    : action === 'executeAsync'
+      ? base.executeAsync(input)
+      : base.rollbackAsync(input);"""
+          if old not in source:
+              raise SystemExit('expected dynamic owner-step delegation not found')
+          path.write_text(source.replace(old, new))
+          PY
       - name: Remove one-shot workflow
         run: rm .github/workflows/branch-511-bootstrap.yml
       - name: Format repository
         run: bun run format
+      - name: Autofix lint-safe imports
+        run: bun run lint:fix
       - name: Build
         run: bun run build
       - name: Typecheck
