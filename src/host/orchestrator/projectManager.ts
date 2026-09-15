@@ -7,6 +7,8 @@ import path from 'path';
 import { initializeProjectLocalInfraNetworking } from '../../features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking';
 import { createStudioProjectInfraLifecycle } from '../../features/infrastructure/composition/createStudioProjectInfraLifecycle';
 import { createStudioProjectWriterProxy } from '../../features/project-updates/composition/createStudioProjectWriterProxy';
+import { createProjectGenerationStateStore } from '../../features/projects/composition/createProjectGenerationStateStore';
+import { createStudioRuntimeSyncSignature } from '../../manifestSync';
 import {
   ProjectCreationValidationError,
   validateProjectCreationInput,
@@ -18,7 +20,6 @@ import type { LayoutMutation } from '../modules/layout';
 import { resolveZoraExtensionsForManifest } from '../zoraExtensions';
 import { GeneratedRouteFileOwnership } from './GeneratedRouteFileOwnership';
 import type { ProjectCreationSource } from './projectCreationSource';
-import { readProjectStudioInclusion, writeProjectStudioInclusion } from './projectGenerationState';
 import { getAppsRoot, getProjectPath } from './projectPaths';
 import { ProjectStore, type ProjectSummary } from './projectStore';
 import { createDefaultAppDeployManifest } from './projectTargets';
@@ -43,6 +44,7 @@ export class ProjectManager {
   private readonly generatedRouteFiles: GeneratedRouteFileOwnership;
   private readonly bundledMedia: ProjectBundledMediaService;
   private readonly dependencies: ProjectManagerDependencies;
+  private readonly generationState = createProjectGenerationStateStore();
   private readonly appsRoot: string;
 
   /*** Construct project lifecycle collaborators for one Studio workspace root, allowing infrastructure lifecycle injection for tests/adapters. */
@@ -148,7 +150,7 @@ export class ProjectManager {
       targets: deploy.targets,
       zoraExtensions,
     });
-    await writeProjectStudioInclusion(projectPath, includeStudio);
+    await this.generationState.writeStudioInclusionAsync(projectPath, includeStudio);
     const manifest = await this.scaffolder.finalizeManifest(
       projectPath,
       initializedTemplate,
@@ -164,6 +166,10 @@ export class ProjectManager {
       runtimePlan,
     });
     await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
+    await this.generationState.recordRuntimeProjectionSuccessAsync(
+      projectPath,
+      createStudioRuntimeSyncSignature(manifest),
+    );
     if (onProjectCreated) await onProjectCreated(slug);
     return { success: true, id: slug, path: projectPath };
   }
@@ -197,6 +203,15 @@ export class ProjectManager {
     return this.store.readManifest(projectId);
   }
 
+  /*** Resolve runtime projection currency for one persisted project without exposing its internal signature evidence. */
+  async getProjectRuntimeProjectionState(projectId: string) {
+    const manifest = await this.getProjectManifest(projectId);
+    return this.generationState.readRuntimeProjectionStateAsync(
+      getProjectPath(this.rootPath, projectId),
+      createStudioRuntimeSyncSignature(manifest),
+    );
+  }
+
   /*** Apply system-owned manifest templates and persist the normalized project manifest without regenerating route files. */
   async persistProjectManifest(args: {
     projectId: string;
@@ -228,14 +243,14 @@ export class ProjectManager {
     const runtimePlan = resolveExpoRuntimePlan(updated);
 
     if (regenerateRouterFiles) {
-      const includeStudio = await this.shouldIncludeStudio(projectPath);
-      await this.syncProjectScaffold(projectPath, projectId, updated, includeStudio, runtimePlan);
-      await this.writeGeneratedFiles(projectPath, updated, mutations, {
-        includeStudio,
-        operation: 'sync',
+      await this.synchronizeRuntimeProjectionAsync({
+        projectPath,
+        projectId,
+        manifest: updated,
+        mutations,
+        includeStudio: await this.shouldIncludeStudio(projectPath),
         runtimePlan,
       });
-      await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
     }
 
     return { success: true };
@@ -254,19 +269,14 @@ export class ProjectManager {
     const resolvedIncludeStudio = await this.shouldIncludeStudio(projectPath, includeStudio);
     const runtimePlan = resolveExpoRuntimePlan(manifest);
 
-    await this.syncProjectScaffold(
+    await this.synchronizeRuntimeProjectionAsync({
       projectPath,
       projectId,
       manifest,
-      resolvedIncludeStudio,
-      runtimePlan,
-    );
-    await this.writeGeneratedFiles(projectPath, manifest, mutations, {
+      mutations,
       includeStudio: resolvedIncludeStudio,
-      operation: 'sync',
       runtimePlan,
     });
-    await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
     return { success: true };
   }
 
@@ -367,6 +377,43 @@ export class ProjectManager {
     };
   }
 
+  /*** Execute a complete runtime projection and persist success or failure evidence for the attempted runtime signature. */
+  private async synchronizeRuntimeProjectionAsync(args: {
+    projectPath: string;
+    projectId: string;
+    manifest: AppManifest;
+    mutations: LayoutMutation[];
+    includeStudio: boolean;
+    runtimePlan: ExpoRuntimePlan;
+  }): Promise<void> {
+    const runtimeSignature = createStudioRuntimeSyncSignature(args.manifest);
+    try {
+      await this.syncProjectScaffold(
+        args.projectPath,
+        args.projectId,
+        args.manifest,
+        args.includeStudio,
+        args.runtimePlan,
+      );
+      await this.writeGeneratedFiles(args.projectPath, args.manifest, args.mutations, {
+        includeStudio: args.includeStudio,
+        operation: 'sync',
+        runtimePlan: args.runtimePlan,
+      });
+      await this.dependencies.reconcileProjectPackageRootAsync(args.projectPath);
+      await this.generationState.recordRuntimeProjectionSuccessAsync(
+        args.projectPath,
+        runtimeSignature,
+      );
+    } catch (error) {
+      await this.generationState.recordRuntimeProjectionFailureAsync(
+        args.projectPath,
+        runtimeSignature,
+      );
+      throw error;
+    }
+  }
+
   /*** Generate current app files, write them to disk and initialize or reconcile generated-route ownership. */
   private async writeGeneratedFiles(
     projectPath: string,
@@ -404,7 +451,7 @@ export class ProjectManager {
 
   /*** Resolve whether generated project files should include Studio, preferring an explicit request over persisted generation state. */
   private async shouldIncludeStudio(projectPath: string, requested?: boolean) {
-    return requested ?? (await readProjectStudioInclusion(projectPath));
+    return requested ?? (await this.generationState.readStudioInclusionAsync(projectPath));
   }
 
   /*** Synchronize the generated project scaffold against the current manifest/runtime plan and persist Studio inclusion ownership. */
@@ -423,7 +470,7 @@ export class ProjectManager {
       manifest,
       targets: requireProjectDeployTargets(manifest),
     });
-    await writeProjectStudioInclusion(projectPath, includeStudio);
+    await this.generationState.writeStudioInclusionAsync(projectPath, includeStudio);
   }
 }
 

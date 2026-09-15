@@ -81,6 +81,11 @@ export type {
   TemplateCatalogTemplate,
   TemplateEntry,
 } from './templateCatalogContracts';
+export type {
+  StudioRuntimeProjectionReason,
+  StudioRuntimeProjectionState,
+  StudioRuntimeProjectionStatus,
+} from './types/project-generation';
 
 /***
  * @todo Make `src/index.ts` a public exports-only entrypoint. Package metadata, authoring contracts, tree editing, placement policy, templates and insert-catalog implementations need canonical owner modules and should only be re-exported here.
@@ -155,6 +160,7 @@ export const STUDIO_PUBLIC_CONTRACTS = [
   'StudioModuleAdminContribution',
   'StudioModuleOperationResult',
   'StudioModuleState',
+  'StudioRuntimeProjectionState',
   'ACTION_REGISTRY',
   'TPL_SCREEN_EMPTY',
   'resolveDefaultInsertPlacement',
@@ -169,6 +175,7 @@ export type StudioNodeId = string;
 export type StudioScreenId = string;
 export type StudioModuleId = string;
 
+/*** Report canonical manifest persistence only; runtime projection currency is exposed separately by the host project state. */
 export type StudioSaveStatus = 'idle' | 'saving' | 'saved' | 'error';
 export type StudioPanelId = 'layers';
 export type StudioAdminRouteId =
