@@ -34,14 +34,25 @@ jobs:
       - run: bun run lint
       - run: bun run knip:check
       - run: bun test src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.test.ts src/host/orchestrator/studioInfraUp.test.ts src/host/secrets/projectSecretService.test.ts src/ui/admin/pages/AuthAdminPage.test.ts
-      - run: bun run test
+      - name: Run full tests with compact failure output
+        shell: bash
+        run: |
+          set +e
+          bun run test > /tmp/studio-full-test.log 2>&1
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            grep -E '^\(fail\)|tests failed:|^error:|^Expected|^Received|^[[:space:]]+at <anonymous>' /tmp/studio-full-test.log || true
+          else
+            tail -n 20 /tmp/studio-full-test.log
+          fi
+          exit "$status"
       - name: Commit final runtime migration
         shell: bash
         run: |
           rm .github/workflows/finalize-512-runtime.yml
           rm .github/scripts/finalize_512_runtime.py
           git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git config user.email 41898282+artiphishle@users.noreply.github.com
           git add -A
           git commit -m 'fix: complete Studio Infra 5 runtime migration'
           git push origin HEAD:fix/145-current-infra-consumer
