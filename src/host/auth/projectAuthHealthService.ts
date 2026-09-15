@@ -1,3 +1,4 @@
+import type { InfraEnvironmentSpec } from '@ankhorage/contracts/infra';
 import { readOwnProperty } from '@ankhorage/utility/object';
 
 import type { ProjectAuthHealth } from '../../projectAuthHealth';
@@ -59,7 +60,10 @@ export class ProjectAuthHealthService {
       secretStoreAvailable: secretResult.ok,
       environment,
     });
-    const environmentSpec = readOwnProperty(manifest.infra.environments, environment);
+    const environmentSpec = readOwnProperty<InfraEnvironmentSpec>(
+      manifest.infra.environments,
+      environment,
+    );
     const oauth = environmentSpec?.auth?.oauth;
 
     if (!oauth?.enabled || !oauth.providers.some((provider) => provider.enabled === true)) {

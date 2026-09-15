@@ -74,7 +74,7 @@ function generateAuthFiles(postSignInRoute: 'index' | 'products') {
 
 function generateScopeFiles(scope: 'integrated' | 'none') {
   const base = createAuthManifest('index');
-  const auth = base.infra.environments.local.auth;
+  const { auth } = base.infra.environments.local;
   if (!auth) throw new Error('Expected auth fixture configuration.');
   const manifest: AppManifest = {
     ...base,

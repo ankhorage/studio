@@ -114,10 +114,7 @@ function createDependencies(
       if (result.trustedOAuth.deferred) {
         throw new Error(result.trustedOAuth.reason);
       }
-      if (!result.target) {
-        throw new Error('Auth 5 smoke infrastructure did not resolve a target.');
-      }
-      return { target: result.target };
+      return { target: result.runtime };
     },
   };
 }

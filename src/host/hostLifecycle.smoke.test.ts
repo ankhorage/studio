@@ -6,7 +6,6 @@ import type { InfraLedger } from '@ankhorage/contracts/infra';
 import { expect, test } from 'bun:test';
 
 import type { StudioProjectInfraLifecycle } from '../features/infrastructure/composition/createStudioProjectInfraLifecycle';
-
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
 import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';

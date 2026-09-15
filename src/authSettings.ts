@@ -81,7 +81,10 @@ export function readStudioAuthSettings(
   manifest: AppManifest,
   environment: AppEnvironmentId = 'local',
 ): StudioAuthSettings | null {
-  const auth = readOwnProperty(manifest.infra.environments, environment)?.auth;
+  const auth = readOwnProperty<InfraEnvironmentSpec>(
+    manifest.infra.environments,
+    environment,
+  )?.auth;
   if (!auth) return null;
 
   return {
@@ -132,7 +135,7 @@ export function applyStudioAuthSettings(
   settings: StudioAuthSettings,
   environment: AppEnvironmentId = 'local',
 ): AppManifest {
-  const current = readOwnProperty(manifest.infra.environments, environment);
+  const current = readOwnProperty<InfraEnvironmentSpec>(manifest.infra.environments, environment);
   if (!current) {
     throw new Error(
       `Project '${manifest.metadata.slug}' does not configure infrastructure environment '${environment}'.`,

@@ -34,11 +34,9 @@ test('materializes project creation assets and persists their bundled media sour
     splashScreen: {
       backgroundColor: '#111111',
       image: { mediaId: 'hero' },
-      resizeMode: 'contain',
       dark: {
         backgroundColor: '#000000',
         image: { mediaId: 'hero' },
-        resizeMode: 'contain',
       },
     },
   };

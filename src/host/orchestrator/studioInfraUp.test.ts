@@ -1,4 +1,4 @@
-import type { AppManifest, AuthOAuthProviderConfig } from '@ankhorage/contracts';
+import type { AppManifest } from '@ankhorage/contracts';
 import type { InfraGenerateResult, InfraUpResult } from '@ankhorage/infra';
 import { describe, expect, test } from 'bun:test';
 

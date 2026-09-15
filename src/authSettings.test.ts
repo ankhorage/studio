@@ -110,7 +110,7 @@ describe('authSettings', () => {
 
   test('reads defaults for optional canonical flow and sign-in fields', () => {
     const manifest = createManifest();
-    const auth = manifest.infra.environments.local.auth;
+    const { auth } = manifest.infra.environments.local;
     if (!auth) throw new Error('Expected auth fixture.');
     const { flow: _flow, signIn: _signIn, ...authWithoutDefaults } = auth;
     const withoutDefaults: AppManifest = {

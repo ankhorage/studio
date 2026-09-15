@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import type { AppManifest, AuthOAuthProviderConfig } from '@ankhorage/contracts';
+import type { AppManifest } from '@ankhorage/contracts';
 import type { InfraLedger } from '@ankhorage/contracts/infra';
 import { expect, test } from 'bun:test';
 

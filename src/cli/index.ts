@@ -134,7 +134,7 @@ async function listProjects(request: Parameters<AnkhCommandHandler>[0]) {
     request.context.writeStdout(`${JSON.stringify(projects, null, 2)}\n`);
     return { exitCode: 0 };
   } finally {
-    await studioHost.close();
+    studioHost.close();
   }
 }
 
@@ -148,7 +148,7 @@ async function createProject(request: Parameters<AnkhCommandHandler>[0]) {
     request.context.writeStdout(`${JSON.stringify(project, null, 2)}\n`);
     return { exitCode: 0 };
   } finally {
-    await studioHost.close();
+    studioHost.close();
   }
 }
 
@@ -161,7 +161,7 @@ async function deleteProject(request: Parameters<AnkhCommandHandler>[0]) {
     request.context.writeStdout(`${JSON.stringify(result, null, 2)}\n`);
     return { exitCode: 0 };
   } finally {
-    await studioHost.close();
+    studioHost.close();
   }
 }
 
@@ -174,7 +174,7 @@ async function syncProject(request: Parameters<AnkhCommandHandler>[0]) {
     request.context.writeStdout(`${JSON.stringify(result, null, 2)}\n`);
     return { exitCode: 0 };
   } finally {
-    await studioHost.close();
+    studioHost.close();
   }
 }
 

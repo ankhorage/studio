@@ -6,18 +6,22 @@ import type {
   InfraResult,
   InfraStatus,
 } from '@ankhorage/contracts/infra';
-import type {
-  InfraDestroyResult,
-  InfraDownResult,
-  InfraGenerateResult,
-  InfraOutputsResult,
-  InfraUpResult,
+import {
+  createEnvironmentInfraCredentialPort,
+  createEnvironmentInfraSecretPort,
+  type InfraDestroyResult,
+  type InfraDownResult,
+  type InfraGenerateResult,
+  type InfraOutputsResult,
+  type InfraUpResult,
 } from '@ankhorage/infra';
 import {
   createProjectInfraLifecycle,
   type ProjectInfraLifecycle,
   readStoredInfraStateAsync,
 } from '@ankhorage/infra/project';
+
+import { createStudioInfraAdapterPackageResolver } from '../adapters/outbound/createStudioInfraAdapterPackageResolver';
 
 interface StudioProjectInfraRequest {
   readonly environment?: AppEnvironmentId;
@@ -42,7 +46,7 @@ export interface StudioProjectInfraLifecycle {
 
 /*** Compose Studio's project infrastructure boundary on top of the provider-neutral Infra lifecycle. */
 export function createStudioProjectInfraLifecycle(
-  lifecycle: ProjectInfraLifecycle = createProjectInfraLifecycle(),
+  lifecycle: ProjectInfraLifecycle = createDefaultStudioProjectInfraLifecycle(),
 ): StudioProjectInfraLifecycle {
   return {
     generateAsync: async (request) =>
@@ -72,6 +76,19 @@ export function createStudioProjectInfraLifecycle(
       );
     },
   };
+}
+
+/*** Compose Infra's project lifecycle with Studio's bundled adapter packages and canonical environment credential ports. */
+function createDefaultStudioProjectInfraLifecycle(): ProjectInfraLifecycle {
+  return createProjectInfraLifecycle({
+    services: {
+      createDependencies: (context) => ({
+        adapterResolver: createStudioInfraAdapterPackageResolver(),
+        credentials: createEnvironmentInfraCredentialPort(context.env),
+        secrets: createEnvironmentInfraSecretPort(context.env),
+      }),
+    },
+  });
 }
 
 /*** Convert a Studio project request into Infra's explicit environment lifecycle request. */

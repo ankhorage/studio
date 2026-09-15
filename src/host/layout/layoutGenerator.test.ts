@@ -450,19 +450,40 @@ describe('GeneratedAppFileGenerator', () => {
 
   test('does not let namespace or networking domain affect generated Auth endpoint source', () => {
     const firstManifest = createOAuthManifest();
-    const secondManifest = createOAuthManifest();
-    secondManifest.infra.environments.local.networking = {
-      domain: 'local.example.test',
-      cdn: false,
+    const secondBase = createOAuthManifest();
+    const secondManifest: AppManifest = {
+      ...secondBase,
+      infra: {
+        ...secondBase.infra,
+        environments: {
+          ...secondBase.infra.environments,
+          local: {
+            ...secondBase.infra.environments.local,
+            networking: { domain: 'local.example.test' },
+          },
+        },
+      },
     };
 
     expect(getGeneratedAuthAdapter(firstManifest)).toBe(getGeneratedAuthAdapter(secondManifest));
   });
 
   test('keeps generated Auth endpoint source independent of project display identity', () => {
-    const manifest = createOAuthManifest();
-    manifest.metadata.slug = 'scanner';
-    manifest.infra.environments.local.networking = { domain: 'local.example.test', cdn: false };
+    const base = createOAuthManifest();
+    const manifest: AppManifest = {
+      ...base,
+      metadata: { ...base.metadata, slug: 'scanner' },
+      infra: {
+        ...base.infra,
+        environments: {
+          ...base.infra.environments,
+          local: {
+            ...base.infra.environments.local,
+            networking: { domain: 'local.example.test' },
+          },
+        },
+      },
+    };
 
     const adapter = getGeneratedAuthAdapter(manifest);
 
