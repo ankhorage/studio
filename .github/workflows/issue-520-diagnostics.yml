@@ -22,24 +22,22 @@ jobs:
           node-version: '24'
       - name: Install dependencies
         run: bun install --frozen-lockfile
-      - name: Inspect installed ZORA plugin metadata
+      - name: Inspect published Tabletop source and dist
         run: |
           node - <<'NODE'
           const fs = require('node:fs');
-          for (const packageName of ['@ankhorage/zora', '@ankhorage/zora-tabletop']) {
-            const packagePath = `node_modules/${packageName}/package.json`;
-            const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
-            console.log(packageName, pkg.version);
+          const root = 'node_modules/@ankhorage/zora-tabletop';
+          const pkg = JSON.parse(fs.readFileSync(`${root}/package.json`, 'utf8'));
+          console.log('@ankhorage/zora-tabletop', pkg.version, JSON.stringify(pkg.exports, null, 2));
+          for (const file of ['src/registry.ts', 'src/plugin.ts', 'dist/registry.js', 'dist/plugin.js']) {
+            console.log(`--- ${file} ---`);
+            console.log(fs.existsSync(`${root}/${file}`) ? fs.readFileSync(`${root}/${file}`, 'utf8') : '<missing>');
           }
-          console.log('--- tabletop registry ---');
-          console.log(fs.readFileSync('node_modules/@ankhorage/zora-tabletop/src/registry.ts', 'utf8'));
           NODE
-          echo '--- tabletop View references ---'
-          grep -R "View" node_modules/@ankhorage/zora-tabletop/src -n || true
-          echo '--- ZORA extension hosts ---'
-          grep -R "extensionHost.*true\|extensionHost: true" node_modules/@ankhorage/zora/src -n || true
-          echo '--- ZORA placement validation ---'
-          grep -R "declared extension host\|invalid-placement\|placements" node_modules/@ankhorage/zora/src -n | head -80 || true
+          echo '--- placement View references in published package ---'
+          grep -R "parents:.*View\|\"View\"\|'View'" node_modules/@ankhorage/zora-tabletop/dist node_modules/@ankhorage/zora-tabletop/src -n || true
+          echo '--- ZORA extension-host metadata ---'
+          grep -R "extensionHost" node_modules/@ankhorage/zora/src node_modules/@ankhorage/zora/dist -n | head -100 || true
       - name: Inspect generated Auth formatting
         run: |
           mkdir -p .tmp-520
