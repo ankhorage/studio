@@ -40,7 +40,10 @@ export function resolveProjectAuthRedirectRuntime(input: {
     throw new Error('Infra does not expose EXPO_PUBLIC_SUPABASE_URL for Auth diagnostics.');
   }
 
-  const providerRedirectUrl = new URL('/auth/v1/callback', ensureTrailingSlash(supabaseUrl)).toString();
+  const providerRedirectUrl = new URL(
+    '/auth/v1/callback',
+    ensureTrailingSlash(supabaseUrl),
+  ).toString();
   const publicBaseUrl = input.publicBaseUrl?.trim();
   if (!publicBaseUrl) {
     return { providerRedirectUrl, appCallbackTargets: [], redirectAllowList: [] };

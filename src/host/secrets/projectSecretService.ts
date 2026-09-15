@@ -231,7 +231,8 @@ export class ProjectSecretService {
           ok: false,
           error: {
             code: 'invalid_config',
-            message: 'This project does not configure infra.environments.local.secretStore.provider.',
+            message:
+              'This project does not configure infra.environments.local.secretStore.provider.',
           },
         };
       }
@@ -362,7 +363,8 @@ export class ProjectSecretService {
           ok: false,
           error: {
             code: 'invalid_config',
-            message: 'This project does not configure infra.environments.local.secretStore.provider.',
+            message:
+              'This project does not configure infra.environments.local.secretStore.provider.',
           },
         };
       }
@@ -394,7 +396,10 @@ function createScope(projectId: string, environment = 'local') {
 }
 
 /*** Build the stable public error returned when the trusted project secret store cannot be reached. */
-function createUnavailableSecretStoreError(): { readonly code: 'unavailable'; readonly message: string } {
+function createUnavailableSecretStoreError(): {
+  readonly code: 'unavailable';
+  readonly message: string;
+} {
   return {
     code: 'unavailable',
     message:

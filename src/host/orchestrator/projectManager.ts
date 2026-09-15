@@ -163,7 +163,11 @@ export class ProjectManager {
       runtimePlan,
     });
     await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
-    await this.dependencies.infraLifecycle.generateAsync({ projectId: slug, projectPath, manifest });
+    await this.dependencies.infraLifecycle.generateAsync({
+      projectId: slug,
+      projectPath,
+      manifest,
+    });
     if (onProjectCreated) await onProjectCreated(slug);
     return { success: true, id: slug, path: projectPath };
   }
@@ -235,7 +239,11 @@ export class ProjectManager {
       await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
     }
 
-    await this.dependencies.infraLifecycle.generateAsync({ projectId, projectPath, manifest: updated });
+    await this.dependencies.infraLifecycle.generateAsync({
+      projectId,
+      projectPath,
+      manifest: updated,
+    });
     return { success: true };
   }
 

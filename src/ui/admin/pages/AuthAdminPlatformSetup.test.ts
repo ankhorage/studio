@@ -2,7 +2,6 @@ import { expect, test } from 'bun:test';
 import { readFileSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 
 const source = readFileSync(
   path.join(path.dirname(fileURLToPath(import.meta.url)), 'AuthAdminPage.tsx'),

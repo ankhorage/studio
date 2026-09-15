@@ -15,8 +15,8 @@ import type {
 } from '@ankhorage/infra';
 import {
   createProjectInfraLifecycle,
-  readStoredInfraStateAsync,
   type ProjectInfraLifecycle,
+  readStoredInfraStateAsync,
 } from '@ankhorage/infra/project';
 
 interface StudioProjectInfraRequest {

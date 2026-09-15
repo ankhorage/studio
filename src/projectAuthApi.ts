@@ -1,4 +1,5 @@
 import { APP_DEPLOY_TARGET_IDS, type AppDeployTargetId } from '@ankhorage/contracts/deploy';
+import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 import { isStringArray } from '@ankhorage/utility/array';
 import { isRecord } from '@ankhorage/utility/object';
 
@@ -11,7 +12,6 @@ import type {
   ProjectOAuthProviderHealthStatus,
 } from './projectAuthHealth';
 import { findRawSecretResponseKey } from './secretResponseGuard';
-import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 
 export class ProjectAuthApiError extends Error {
   readonly code: string;

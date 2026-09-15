@@ -1,3 +1,4 @@
+import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type {
   AndroidDeploymentTrack,
   ReleaseControlExecutionResult,
@@ -23,7 +24,6 @@ import { DeployExecutionResultView } from './DeployExecutionResultView';
 import { DeployLifecycleControls } from './DeployLifecycleControls';
 import { DeployPlanPreview } from './DeployPlanPreview';
 import { DeployResumeActions } from './DeployResumeActions';
-import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 
 type EnvironmentSelection = AppEnvironmentId | 'unselected';
 type TrackSelection = AndroidDeploymentTrack | 'unselected';

@@ -1,3 +1,4 @@
+import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type { ProjectMonetizationExecutionResult } from '@ankhorage/deploy/project';
 import { Button, Card, ConfirmDialog, Select, Text } from '@ankhorage/zora';
 import React, { useRef, useState } from 'react';
@@ -11,7 +12,6 @@ import type { ProjectDeployRuntimeInput } from '../../../../projectDeployRuntime
 import { Field } from '../../adminPagePrimitives';
 import { DeployMonetizationExecutionView } from './DeployMonetizationExecutionView';
 import { DeployMonetizationPlanView } from './DeployMonetizationPlanView';
-import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 
 type EnvironmentSelection = AppEnvironmentId | 'unselected';
 

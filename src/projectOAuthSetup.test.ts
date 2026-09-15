@@ -1,9 +1,9 @@
 import type { AppManifest } from '@ankhorage/contracts';
 import { type AppDeployTargetId } from '@ankhorage/contracts/deploy';
+import { APP_ENVIRONMENT_IDS } from '@ankhorage/contracts/environments';
 import { describe, expect, test } from 'bun:test';
 
 import { resolveProjectEnabledTargets, resolveProjectOAuthSetupPlan } from './projectOAuthSetup';
-import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 
 const TARGET_COMBINATIONS: readonly (readonly AppDeployTargetId[])[] = [
   ['web'],

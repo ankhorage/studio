@@ -1,9 +1,9 @@
 import type { AppManifest } from '@ankhorage/contracts';
 import type { AuthOAuthProviderId, AuthOAuthSetupPlan } from '@ankhorage/contracts/auth';
 import { APP_DEPLOY_TARGET_IDS, type AppDeployTargetId } from '@ankhorage/contracts/deploy';
+import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 import { resolveSupabaseOAuthSetupPlan } from '@ankhorage/supabase-auth';
 import { readOwnProperty } from '@ankhorage/utility/object';
-import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 
 /***
  * Resolve a requested deploy environment to a canonical environment id with local fallback.

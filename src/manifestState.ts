@@ -900,12 +900,11 @@ export function updateStudioManifestOAuthProviders(
   manifest: StudioManifest,
   providers: AuthOAuthProviderConfig[],
 ): StudioManifest {
-  const previousAuth: NonNullable<
-    StudioManifest['infra']['environments']['local']['auth']
-  > = manifest.infra.environments.local.auth ?? {
-    provider: 'supabase',
-    scope: 'global',
-  };
+  const previousAuth: NonNullable<StudioManifest['infra']['environments']['local']['auth']> =
+    manifest.infra.environments.local.auth ?? {
+      provider: 'supabase',
+      scope: 'global',
+    };
   const previousOauth = previousAuth.oauth ?? {
     enabled: true,
     callbackRoute: '/auth/callback',

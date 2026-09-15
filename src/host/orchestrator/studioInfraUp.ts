@@ -14,8 +14,7 @@ export interface StudioInfraUpResult {
   readonly regenerated: Awaited<ReturnType<ProjectManager['regenerateInfrastructure']>>;
   readonly reconciled: Awaited<ReturnType<ProjectManager['upInfrastructure']>>;
   readonly trustedOAuth:
-    | { readonly deferred: false }
-    | { readonly deferred: true; readonly reason: string };
+    { readonly deferred: false } | { readonly deferred: true; readonly reason: string };
 }
 
 /***

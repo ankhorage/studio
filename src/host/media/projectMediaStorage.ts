@@ -16,10 +16,12 @@ export async function resolveProjectMediaStorage(args: {
   readonly workspaceRoot: string;
 }): Promise<ProjectMediaStorageContext> {
   const manifest = await args.projectManager.getProjectManifest(args.projectId);
-  const objectStorage = manifest.infra.environments.local.objectStorage;
+  const { objectStorage } = manifest.infra.environments.local;
   const bucket = objectStorage?.buckets?.find((value) => value.trim().length > 0)?.trim();
   if (!objectStorage || !bucket) {
-    throw new Error('Configure an infra.environments.local.objectStorage bucket before importing media.');
+    throw new Error(
+      'Configure an infra.environments.local.objectStorage bucket before importing media.',
+    );
   }
   if (objectStorage.provider !== 'supabase') {
     throw new Error(
