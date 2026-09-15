@@ -200,7 +200,9 @@ function projectReviewedRemovals(
       ...manifest.infra,
       modules: manifest.infra.modules.filter((moduleId) => !reviewedIds.has(moduleId)),
       modulesConfig: Object.fromEntries(
-        Object.entries(manifest.infra.modulesConfig).filter(([moduleId]) => !reviewedIds.has(moduleId)),
+        Object.entries(manifest.infra.modulesConfig ?? {}).filter(
+          ([moduleId]) => !reviewedIds.has(moduleId),
+        ),
       ),
     },
   };
