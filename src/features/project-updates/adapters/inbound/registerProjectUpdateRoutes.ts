@@ -286,10 +286,8 @@ function isResumeRequest(
 
 /*** Validate the verify request's operation identity. */
 function isOperationRequest(value: unknown): value is { readonly operationId: string } {
-  return (
-    isRecord(value) && hasOnlyKeys(value, ['operationId']) &&
-    isNonEmptyString(value.operationId)
-  );
+  if (!isRecord(value)) return false;
+  return hasOnlyKeys(value, ['operationId']) && isNonEmptyString(value.operationId);
 }
 
 /*** Validate explicit APM execution permissions. */
