@@ -2,7 +2,10 @@ import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 
 import { resolveNpmExtensionArtifactIdentityAsync } from '@ankhorage/apm/node';
-import type { ApmExtensionArtifactIdentityResolution } from '@ankhorage/apm/types';
+import type {
+  ApmExtensionArtifactIdentity,
+  ApmExtensionArtifactIdentityResolution,
+} from '@ankhorage/apm/types';
 
 import { getGeneratedPackagePolicy } from './getGeneratedPackagePolicy';
 
@@ -35,4 +38,16 @@ export async function readCurrentStudioApmArtifactBindingAsync(): Promise<Curren
     version: getGeneratedPackagePolicy().ownerVersion,
     descriptorDigest: createHash('sha256').update(descriptorSource, 'utf8').digest('hex'),
   };
+}
+
+/*** Test whether one reviewed owner artifact is executed by this exact loaded Studio package. */
+export async function currentStudioApmArtifactMatchesAsync(
+  artifact: ApmExtensionArtifactIdentity,
+): Promise<boolean> {
+  const binding = await readCurrentStudioApmArtifactBindingAsync();
+  return (
+    artifact.packageName === binding.packageName &&
+    artifact.version === binding.version &&
+    artifact.descriptorDigest === binding.descriptorDigest
+  );
 }
