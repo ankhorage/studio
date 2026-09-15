@@ -41,14 +41,12 @@ describe('ProjectUpdateDashboardService', () => {
     ]);
   });
 
-  test('rejects missing project and operation identities before reaching the host adapter', async () => {
+  test('rejects missing project and operation identities before reaching the host adapter', () => {
     const calls: unknown[] = [];
     const service = new ProjectUpdateDashboardService(createHostPort(calls));
 
-    await expect(service.inspectAsync('  ', 'refresh')).rejects.toThrow(
-      'A selected project is required.',
-    );
-    await expect(
+    expect(service.inspectAsync('  ', 'refresh')).rejects.toThrow('A selected project is required.');
+    expect(
       service.resumeAsync('project-one', ' ', {
         ownerCode: false,
         lifecycleScripts: false,
