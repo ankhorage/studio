@@ -1,0 +1,82 @@
+name: Issue 520 Metro resolution
+
+on:
+  push:
+    branches:
+      - fix/520-acceptance-baseline
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install fresh standalone Studio graph
+        run: |
+          rm apps/studio/bun.lock
+          bun install --cwd apps/studio
+      - name: Instrument default Metro resolution
+        run: |
+          cat >> apps/studio/metro.config.js <<'JS'
+
+          const originalResolveRequest = config.resolver.resolveRequest;
+          config.resolver.resolveRequest = (context, moduleName, platform) => {
+            const resolveDefault = originalResolveRequest
+              ? (nextContext, nextModuleName, nextPlatform) =>
+                  originalResolveRequest(nextContext, nextModuleName, nextPlatform)
+              : (nextContext, nextModuleName, nextPlatform) =>
+                  nextContext.resolveRequest(nextContext, nextModuleName, nextPlatform);
+            if (moduleName !== '@ankhorage/contracts/environments') {
+              return resolveDefault(context, moduleName, platform);
+            }
+            console.error(
+              'ANKH_METRO_INPUT ' +
+                JSON.stringify({
+                  originModulePath: context.originModulePath,
+                  moduleName,
+                  platform,
+                  disableHierarchicalLookup: context.disableHierarchicalLookup,
+                  nodeModulesPaths: context.nodeModulesPaths,
+                }),
+            );
+            try {
+              const result = resolveDefault(context, moduleName, platform);
+              console.error('ANKH_METRO_RESULT ' + JSON.stringify(result));
+              return result;
+            } catch (error) {
+              console.error(
+                'ANKH_METRO_ERROR ' +
+                  JSON.stringify({
+                    name: error instanceof Error ? error.name : 'unknown',
+                    message: error instanceof Error ? error.message : String(error),
+                  }),
+              );
+              throw error;
+            }
+          };
+          JS
+          # Move the final export below the diagnostic resolver assignment.
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('apps/studio/metro.config.js')
+          text = path.read_text()
+          text = text.replace('\nmodule.exports = config;\n', '\n', 1)
+          path.write_text(text + '\nmodule.exports = config;\n')
+          PY
+      - name: Run Web export through instrumented Metro
+        run: |
+          set +e
+          bun run --cwd apps/studio export:web 2>&1 | tee /tmp/metro-export.log
+          status=${PIPESTATUS[0]}
+          set -e
+          grep 'ANKH_METRO_' /tmp/metro-export.log || true
+          exit "$status"
