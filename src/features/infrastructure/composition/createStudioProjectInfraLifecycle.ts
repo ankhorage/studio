@@ -1,6 +1,18 @@
 import type { AppManifest } from '@ankhorage/contracts';
 import type { AppEnvironmentId } from '@ankhorage/contracts/environments';
-import type { InfraDiagnostic, InfraResourceIdentity, InfraResult } from '@ankhorage/contracts/infra';
+import type {
+  InfraDiagnostic,
+  InfraResourceIdentity,
+  InfraResult,
+  InfraStatus,
+} from '@ankhorage/contracts/infra';
+import type {
+  InfraDestroyResult,
+  InfraDownResult,
+  InfraGenerateResult,
+  InfraOutputsResult,
+  InfraUpResult,
+} from '@ankhorage/infra';
 import {
   createProjectInfraLifecycle,
   readStoredInfraStateAsync,
@@ -19,22 +31,31 @@ interface StudioProjectInfraDestroyRequest extends StudioProjectInfraRequest {
   readonly deletePersistentResources: boolean;
 }
 
+export interface StudioProjectInfraLifecycle {
+  readonly generateAsync: (request: StudioProjectInfraRequest) => Promise<InfraGenerateResult>;
+  readonly upAsync: (request: StudioProjectInfraRequest) => Promise<InfraUpResult>;
+  readonly statusAsync: (request: StudioProjectInfraRequest) => Promise<InfraStatus>;
+  readonly outputsAsync: (request: StudioProjectInfraRequest) => Promise<InfraOutputsResult>;
+  readonly downAsync: (request: StudioProjectInfraRequest) => Promise<InfraDownResult>;
+  readonly destroyAsync: (request: StudioProjectInfraDestroyRequest) => Promise<InfraDestroyResult>;
+}
+
 /*** Compose Studio's project infrastructure boundary on top of the provider-neutral Infra lifecycle. */
 export function createStudioProjectInfraLifecycle(
   lifecycle: ProjectInfraLifecycle = createProjectInfraLifecycle(),
-) {
+): StudioProjectInfraLifecycle {
   return {
-    generateAsync: async (request: StudioProjectInfraRequest) =>
+    generateAsync: async (request) =>
       requireInfraSuccess(await lifecycle.generateAsync(toInfraRequest(request))),
-    upAsync: async (request: StudioProjectInfraRequest) =>
+    upAsync: async (request) =>
       requireInfraSuccess(await lifecycle.upAsync(toInfraRequest(request))),
-    statusAsync: async (request: StudioProjectInfraRequest) =>
+    statusAsync: async (request) =>
       requireInfraSuccess(await lifecycle.statusAsync(toInfraRequest(request))),
-    outputsAsync: async (request: StudioProjectInfraRequest) =>
+    outputsAsync: async (request) =>
       requireInfraSuccess(await lifecycle.outputsAsync(toInfraRequest(request))),
-    downAsync: async (request: StudioProjectInfraRequest) =>
+    downAsync: async (request) =>
       requireInfraSuccess(await lifecycle.downAsync(toInfraRequest(request))),
-    destroyAsync: async (request: StudioProjectInfraDestroyRequest) => {
+    destroyAsync: async (request) => {
       const environment = request.environment ?? 'local';
       const state = await readStoredInfraStateAsync(request.projectPath, environment);
       const confirmedResources = request.deletePersistentResources
