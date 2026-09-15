@@ -1,21 +1,18 @@
-import { resolveProjectInfrastructureDatabaseUrl } from '@ankhorage/infra/project';
 import { readOwnProperty } from '@ankhorage/utility/object';
 
 const TRUSTED_HOST_DATABASE_URL_KEY = 'ANKH_SECRET_STORE_DATABASE_URL';
 
 export interface ResolveProjectSecretDatabaseUrlInput {
-  readonly projectPath: string;
-  readonly target: string;
   readonly processEnvironment?: Readonly<Record<string, string | undefined>>;
 }
 
 /***
- * @todo Keep trusted secret-store database resolution with the Secrets host edge; it composes host environment and generated Infra state rather than providing a generic URL helper.
- * Resolve the trusted database URL used by the project secret store, preferring an explicit host override over generated Infra state.
+ * Resolve the trusted database URL used by the project secret store from the Studio host boundary.
+ * Supabase Vault bootstrap SQL access is intentionally not derived from public Infra outputs.
  */
-export async function resolveProjectSecretDatabaseUrl(
-  input: ResolveProjectSecretDatabaseUrlInput,
-): Promise<string> {
+export function resolveProjectSecretDatabaseUrl(
+  input: ResolveProjectSecretDatabaseUrlInput = {},
+): string {
   const rawTrustedHostValue: unknown =
     (input.processEnvironment
       ? readOwnProperty<string | undefined>(input.processEnvironment, TRUSTED_HOST_DATABASE_URL_KEY)
@@ -24,13 +21,7 @@ export async function resolveProjectSecretDatabaseUrl(
     typeof rawTrustedHostValue === 'string' ? rawTrustedHostValue.trim() : undefined;
   if (trustedHostValue) return trustedHostValue;
 
-  const projectValue = await resolveProjectInfrastructureDatabaseUrl({
-    projectPath: input.projectPath,
-    target: input.target,
-  });
-  if (projectValue) return projectValue;
-
   throw new Error(
-    'Supabase Vault database access is not configured. Run Infra Up or set ANKH_SECRET_STORE_DATABASE_URL in the trusted Studio host environment.',
+    'Supabase Vault database access is not configured. Set ANKH_SECRET_STORE_DATABASE_URL in the trusted Studio host environment.',
   );
 }
