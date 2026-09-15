@@ -52,9 +52,12 @@ lifecycle state, or infrastructure are current.
    `@ankhorage/apm@0.7.0` Node writer boundary for autosave/persistence, module lifecycle and direct
    project mutations. Nested Studio operations are re-entrant only within the owning async operation;
    independent Studio requests and APM apply operations contend on the same project-root lock.
-6. **Pending module removal is explicit but hidden from APM.** `.ankh/pending.json` correctly records
-   deferred work today; the Studio owner extension must project that pending work into APM status/plan
-   rather than letting `syncProject` consume it as an unrelated hidden side effect.
+6. **Pending module removal is visible and fail-closed in APM.** Studio #509 inspects
+   `.ankh/pending.json` read-only through the canonical project-update composition. Valid queued removals
+   surface as stale projection evidence with deterministic module ids; malformed state is incomplete and
+   unknown. Planning adds an explicit `protocol.studio-pending-module-lifecycle` blocker instead of
+   consuming the queue through `syncProject`. Status/plan do not run Orchestrator lifecycle effects; a
+   reviewed owner execution boundary is still required before APM can apply queued removals.
 7. **`ProjectManager.syncProject` is a compatibility alias.** It is explicitly marked for removal and
    must not survive as a second canonical synchronization operation after #500 parity.
 
@@ -72,8 +75,8 @@ lifecycle state, or infrastructure are current.
 
 ## Next implementation slice
 
-1. Project pending module lifecycle work into APM status/plan instead of consuming it as a hidden
-   Studio sync side effect.
+1. Add a reviewed owner execution boundary for pending module lifecycle effects so APM apply can
+   materialize queued removals without duplicating Orchestrator uninstall, package-manager or ledger logic.
 2. Make runtime-relevant authoring actions maintain their required projections immediately or expose
    explicit pending/failed projection state.
 3. Expose the composed APM lifecycle through authorized Studio host routes without introducing a second
