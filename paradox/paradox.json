@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.6.2",
+      "value": "v2.6.3",
       "color": "cb3837"
     },
     {
@@ -763,8 +763,57 @@
     {
       "path": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/features/project-updates/constants.ts"],
+      "dependencies": [
+        "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "src/features/project-updates/constants.ts",
+        "src/features/project-updates/domain/pendingModuleLifecycleState.ts"
+      ],
       "exports": ["inspectPendingModuleLifecycleEvidenceAsync"]
+    },
+    {
+      "path": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/constants.ts",
+        "src/features/project-updates/domain/pendingModuleLifecycleState.ts"
+      ],
+      "exports": [
+        "digestProjectUpdateText",
+        "PendingModuleLifecycleReadResult",
+        "readPendingModuleLifecycleStateAsync"
+      ]
+    },
+    {
+      "path": "src/features/project-updates/adapters/outbound/readStudioManifestDigestAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts"
+      ],
+      "exports": ["readStudioManifestDigestAsync"]
+    },
+    {
+      "path": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts"
+      ],
+      "exports": [
+        "CurrentStudioApmArtifactBinding",
+        "currentStudioApmArtifactMatchesAsync",
+        "readCurrentStudioApmArtifactBindingAsync",
+        "resolveCurrentStudioApmArtifactAsync"
+      ]
+    },
+    {
+      "path": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/contractGuards.ts",
+        "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "src/features/project-updates/constants.ts",
+        "src/features/project-updates/domain/pendingModuleLifecycleState.ts"
+      ],
+      "exports": ["PendingModuleLifecyclePlanSlice", "planPendingModuleLifecycleAsync"]
     },
     {
       "path": "src/features/project-updates/application/ProjectUpdateService.test.ts",
@@ -779,6 +828,12 @@
       "exports": ["ProjectUpdateService"]
     },
     {
+      "path": "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["StudioPendingModuleLifecyclePort"]
+    },
+    {
       "path": "src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -787,6 +842,18 @@
         "src/types/project-updates.ts"
       ],
       "exports": ["applyCurrentGeneratedPackagePolicy"]
+    },
+    {
+      "path": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "src/features/project-updates/adapters/outbound/readStudioManifestDigestAsync.ts",
+        "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
+        "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
+        "src/features/project-updates/domain/pendingModulePlanStep.ts"
+      ],
+      "exports": ["createStudioProjectUpdateApplyOwnerStepPort"]
     },
     {
       "path": "src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts",
@@ -800,6 +867,7 @@
       "path": "src/features/project-updates/composition/createStudioProjectUpdatePorts.test.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
         "src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts",
         "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
         "src/features/project-updates/constants.ts"
@@ -809,7 +877,11 @@
     {
       "path": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/features/project-updates/constants.ts"],
+      "dependencies": [
+        "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
+        "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "src/features/project-updates/constants.ts"
+      ],
       "exports": ["createStudioProjectUpdateProtocolPort"]
     },
     {
@@ -817,11 +889,24 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/features/project-updates/application/ProjectUpdateService.ts",
+        "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
+        "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
         "src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts",
         "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
+        "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts",
         "src/types/project-updates.ts"
       ],
       "exports": ["createStudioProjectUpdateService"]
+    },
+    {
+      "path": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
+        "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
+        "src/features/project-updates/domain/pendingModulePlanStep.ts"
+      ],
+      "exports": ["createStudioProjectUpdateVerifyOwnerStepPort"]
     },
     {
       "path": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
@@ -830,6 +915,20 @@
         "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts"
       ],
       "exports": ["createStudioProjectWriterProxy"]
+    },
+    {
+      "path": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
+        "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
+        "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts",
+        "src/features/project-updates/constants.ts"
+      ],
+      "exports": []
     },
     {
       "path": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
@@ -860,6 +959,25 @@
       "isEntrypoint": false,
       "dependencies": ["src/types/project-updates.ts"],
       "exports": ["applyGeneratedPackagePolicy"]
+    },
+    {
+      "path": "src/features/project-updates/domain/pendingModuleLifecycleState.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "parsePendingModuleLifecycleState",
+        "pendingModuleLifecycleIds",
+        "PendingModuleLifecycleParseResult",
+        "PendingModuleLifecycleState",
+        "removeReviewedPendingModules",
+        "serializePendingModuleLifecycleState"
+      ]
+    },
+    {
+      "path": "src/features/project-updates/domain/pendingModulePlanStep.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["readReviewedPendingModuleStep", "ReviewedPendingModuleStep"]
     },
     {
       "path": "src/features/selection/adapters/nativeElementMeasurement.test.ts",
@@ -1031,6 +1149,7 @@
       "dependencies": [
         "src/features/project-updates/composition/createStudioProjectUpdateService.ts",
         "src/host/deploy/ProjectDeployService.ts",
+        "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts",
         "src/host/orchestrator/infraSession.ts",
         "src/host/orchestrator/moduleManager.ts",
         "src/host/orchestrator/projectManager.ts"
@@ -1917,6 +2036,21 @@
       "exports": []
     },
     {
+      "path": "src/host/orchestrator/createHostModuleOrchestrator.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/modules/catalog.ts"],
+      "exports": ["createHostModuleOrchestrator"]
+    },
+    {
+      "path": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
+        "src/host/orchestrator/createHostModuleOrchestrator.ts"
+      ],
+      "exports": ["createStudioPendingModuleLifecyclePort"]
+    },
+    {
       "path": "src/host/orchestrator/generatedAppFiles.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/orchestrator/generatedAppFiles.ts"],
@@ -1987,6 +2121,7 @@
         "src/host/modules/adminRuntime.ts",
         "src/host/modules/catalog.ts",
         "src/host/modules/runtime/LocalFsTargetAdapter.ts",
+        "src/host/orchestrator/createHostModuleOrchestrator.ts",
         "src/host/orchestrator/projectManager.ts",
         "src/host/orchestrator/resolveMutations.ts",
         "src/manifestState.ts",
@@ -12601,43 +12736,7 @@
       "description": "Inspect Studio's deferred module removals without mutating or executing the project.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
-        "line": 14,
-        "column": 1
-      }
-    },
-    {
-      "name": "parsePendingModuleIds",
-      "description": "Parse only the current Studio pending-operation shape and reject ambiguous state.",
-      "sourceLocation": {
-        "filePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
-        "line": 30,
-        "column": 1
-      }
-    },
-    {
-      "name": "parseJson",
-      "description": "Parse JSON into unknown data without allowing JSON.parse's any type beyond this boundary.",
-      "sourceLocation": {
-        "filePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
-        "line": 40,
-        "column": 1
-      }
-    },
-    {
-      "name": "readPendingModuleId",
-      "description": "Validate one queued uninstall operation and return its normalized module id.",
-      "sourceLocation": {
-        "filePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
-        "line": 50,
-        "column": 1
-      }
-    },
-    {
-      "name": "toExtensionEvidence",
-      "description": "Convert parsed pending state into conservative APM extension evidence.",
-      "sourceLocation": {
-        "filePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
-        "line": 58,
+        "line": 12,
         "column": 1
       }
     },
@@ -12646,7 +12745,7 @@
       "description": "Return complete Studio extension evidence for absent, empty, or valid pending state.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
-        "line": 64,
+        "line": 29,
         "column": 1
       }
     },
@@ -12655,7 +12754,7 @@
       "description": "Return incomplete evidence when the pending file exists but has an unsupported shape.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
-        "line": 87,
+        "line": 55,
         "column": 1
       }
     },
@@ -12664,7 +12763,7 @@
       "description": "Return incomplete evidence when the pending state cannot be read for an unexpected reason.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
-        "line": 116,
+        "line": 84,
         "column": 1
       }
     },
@@ -12673,7 +12772,7 @@
       "description": "Build stable evidence for the pending lifecycle projection.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
-        "line": 145,
+        "line": 112,
         "column": 1
       }
     },
@@ -12682,16 +12781,7 @@
       "description": "Build the stable evidence prefix used to recognize Studio's pending lifecycle projection.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
-        "line": 150,
-        "column": 1
-      }
-    },
-    {
-      "name": "isMissingFileError",
-      "description": "Detect a missing pending file without depending on a Node-specific error assertion.",
-      "sourceLocation": {
-        "filePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
-        "line": 155,
+        "line": 124,
         "column": 1
       }
     },
@@ -12700,7 +12790,196 @@
       "description": "Compare serialized identifiers without locale-dependent ordering.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
-        "line": 160,
+        "line": 129,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPendingModuleLifecycleStateAsync",
+      "description": "Read Studio pending lifecycle state with an immutable digest for plan/recovery preconditions.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "line": 25,
+        "column": 1
+      }
+    },
+    {
+      "name": "digestProjectUpdateText",
+      "description": "Compute the canonical SHA-256 digest used by APM reviewed text changes.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "line": 46,
+        "column": 1
+      }
+    },
+    {
+      "name": "digestText",
+      "description": "Hash one reviewed text value without environment-dependent encoding.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "line": 51,
+        "column": 1
+      }
+    },
+    {
+      "name": "readStudioManifestDigestAsync",
+      "description": "Read the canonical Studio manifest bytes and digest used as an irreversible-effect precondition.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/outbound/readStudioManifestDigestAsync.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveCurrentStudioApmArtifactAsync",
+      "description": "Resolve this installed Studio version to its immutable published npm artifact identity.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
+        "line": 22,
+        "column": 1
+      }
+    },
+    {
+      "name": "readCurrentStudioApmArtifactBindingAsync",
+      "description": "Read the exact package version and update-descriptor digest loaded by this Studio runtime.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "currentStudioApmArtifactMatchesAsync",
+      "description": "Test whether one reviewed owner artifact is executed by this exact loaded Studio package.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
+        "line": 44,
+        "column": 1
+      }
+    },
+    {
+      "name": "planPendingModuleLifecycleAsync",
+      "description": "Plan reviewed Orchestrator removals plus APM-native Studio lifecycle file finalization.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "line": 42,
+        "column": 1
+      }
+    },
+    {
+      "name": "removalStep",
+      "description": "Build one non-restartable dynamic owner step for exactly one Orchestrator module removal.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "line": 100,
+        "column": 1
+      }
+    },
+    {
+      "name": "finalizationStep",
+      "description": "Build the native APM file step that commits canonical Studio lifecycle state after removals.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "line": 142,
+        "column": 1
+      }
+    },
+    {
+      "name": "reviewedFileChanges",
+      "description": "Build exact reviewed manifest/pending-state changes for APM's native file adapter.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "line": 159,
+        "column": 1
+      }
+    },
+    {
+      "name": "projectReviewedRemovals",
+      "description": "Project reviewed removals into canonical manifest module ids/config without touching other fields.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "line": 193,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseManifest",
+      "description": "Parse one canonical Studio project manifest before planning reviewed lifecycle changes.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "line": 214,
+        "column": 1
+      }
+    },
+    {
+      "name": "serializeManifest",
+      "description": "Serialize the exact reviewed manifest bytes APM will materialize.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "line": 221,
+        "column": 1
+      }
+    },
+    {
+      "name": "toPlanArtifact",
+      "description": "Convert executable extension identity into plan-level immutable artifact evidence.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "line": 226,
+        "column": 1
+      }
+    },
+    {
+      "name": "blockedDigest",
+      "description": "Explain pending-state drift between status evidence and planning I/O.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "line": 237,
+        "column": 1
+      }
+    },
+    {
+      "name": "blockedPendingState",
+      "description": "Explain unavailable or invalid pending state discovered during planning.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "line": 257,
+        "column": 1
+      }
+    },
+    {
+      "name": "blockedArtifact",
+      "description": "Explain missing immutable npm artifact identity for executable Studio owner code.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "line": 275,
+        "column": 1
+      }
+    },
+    {
+      "name": "blocked",
+      "description": "Return one blocked plan slice without executable intermediate changes.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "line": 290,
+        "column": 1
+      }
+    },
+    {
+      "name": "emptySlice",
+      "description": "Return no owner work for an empty pending lifecycle state.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "line": 295,
+        "column": 1
+      }
+    },
+    {
+      "name": "removalStepId",
+      "description": "Build the stable reviewed owner-step id for one module.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "line": 300,
         "column": 1
       }
     },
@@ -12719,6 +12998,114 @@
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts",
         "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioProjectUpdateApplyOwnerStepPort",
+      "description": "Compose Studio pending-module execution around any pre-existing trusted owner step adapter.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "observePendingModuleAsync",
+      "description": "Observe exact pending/manifest/artifact preconditions before one irreversible module effect.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "line": 44,
+        "column": 1
+      }
+    },
+    {
+      "name": "executePendingModuleAsync",
+      "description": "Execute exactly one reviewed Orchestrator removal after all frozen preconditions still match.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "line": 69,
+        "column": 1
+      }
+    },
+    {
+      "name": "bindingObservationAsync",
+      "description": "Reject a reviewed step when the running Studio package does not match its frozen owner artifact.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "line": 100,
+        "column": 1
+      }
+    },
+    {
+      "name": "pendingObservationAsync",
+      "description": "Require the exact pending-state digest to remain unchanged until native APM file finalization.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "line": 124,
+        "column": 1
+      }
+    },
+    {
+      "name": "manifestObservationAsync",
+      "description": "Require the canonical manifest to remain byte-identical before irreversible Orchestrator effects.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "line": 145,
+        "column": 1
+      }
+    },
+    {
+      "name": "delegateObservationAsync",
+      "description": "Delegate an unrelated owner observation or remain explicitly unavailable.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "line": 168,
+        "column": 1
+      }
+    },
+    {
+      "name": "delegateExecutionAsync",
+      "description": "Delegate unrelated owner execution/rollback without swallowing its result.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "line": 182,
+        "column": 1
+      }
+    },
+    {
+      "name": "observationFailure",
+      "description": "Convert a non-executable observation into a deterministic owner-step failure.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "line": 199,
+        "column": 1
+      }
+    },
+    {
+      "name": "completed",
+      "description": "Report one completed trusted owner effect.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "line": 208,
+        "column": 1
+      }
+    },
+    {
+      "name": "failed",
+      "description": "Report one deterministic owner execution failure.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "line": 213,
+        "column": 1
+      }
+    },
+    {
+      "name": "unsupportedRollback",
+      "description": "Keep dynamic Orchestrator effects explicitly non-reversible.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "line": 227,
         "column": 1
       }
     },
@@ -12754,7 +13141,7 @@
       "description": "Create one isolated project root for owner-evidence tests.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdatePorts.test.ts",
-        "line": 156,
+        "line": 158,
         "column": 1
       }
     },
@@ -12763,7 +13150,7 @@
       "description": "Return the minimal complete dependency inventory required by the extension evidence port.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdatePorts.test.ts",
-        "line": 161,
+        "line": 163,
         "column": 1
       }
     },
@@ -12772,16 +13159,16 @@
       "description": "Build one complete synthetic plan-protocol request around supplied extension evidence.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdatePorts.test.ts",
-        "line": 166,
+        "line": 168,
         "column": 1
       }
     },
     {
       "name": "createStudioProjectUpdateProtocolPort",
-      "description": "Extend package-owner planning with explicit pending Studio module-lifecycle blockers.",
+      "description": "Extend package-owner planning with reviewed Studio pending-module lifecycle execution.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 14,
+        "line": 25,
         "column": 1
       }
     },
@@ -12790,7 +13177,16 @@
       "description": "Delegate existing package-owner planning when present instead of replacing it.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 57,
+        "line": 78,
+        "column": 1
+      }
+    },
+    {
+      "name": "planPendingObservationAsync",
+      "description": "Plan the pending lifecycle observation only when the host supplied its trusted execution adapter.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
+        "line": 86,
         "column": 1
       }
     },
@@ -12799,25 +13195,43 @@
       "description": "Identify the Studio-owned pending module lifecycle observation by stable evidence.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 65,
+        "line": 108,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPendingDigest",
+      "description": "Read the exact pending-file precondition frozen into status evidence.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
+        "line": 113,
         "column": 1
       }
     },
     {
       "name": "requiresProtocolPlanning",
-      "description": "Mirror APM's owner-planning requirement for evidence not handled by Studio's local blocker.",
+      "description": "Mirror APM's owner-planning requirement for evidence not handled by Studio's local planner.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 70,
+        "line": 120,
         "column": 1
       }
     },
     {
       "name": "pendingLifecycleBlocker",
-      "description": "Block apply until queued removals have a reviewed owner execution boundary.",
+      "description": "Block apply when this service instance has no trusted module-lifecycle executor.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 80,
+        "line": 130,
+        "column": 1
+      }
+    },
+    {
+      "name": "missingPendingDigestBlocker",
+      "description": "Block planning when pending evidence lacks the immutable file digest required for reviewed execution.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
+        "line": 143,
         "column": 1
       }
     },
@@ -12826,16 +13240,43 @@
       "description": "Preserve APM's fail-closed behavior when another owner observation lacks a planner.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 93,
+        "line": 154,
         "column": 1
       }
     },
     {
       "name": "createStudioProjectUpdateService",
-      "description": "Compose Studio-owned status and planning evidence around the released APM lifecycle service.",
+      "description": "Compose Studio-owned APM evidence, planning, execution, and verification around one host lifecycle port.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts",
-        "line": 7,
+        "line": 10,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioProjectUpdateVerifyOwnerStepPort",
+      "description": "Compose Studio pending-module verification around any pre-existing trusted owner verifier.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "verifyPendingModuleAsync",
+      "description": "Verify the immutable owner binding and exact Orchestrator module postcondition.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts",
+        "line": 33,
+        "column": 1
+      }
+    },
+    {
+      "name": "delegateVerifyAsync",
+      "description": "Delegate unrelated owner verification or keep the missing verifier explicit.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts",
+        "line": 76,
         "column": 1
       }
     },
@@ -12863,6 +13304,78 @@
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
         "line": 45,
+        "column": 1
+      }
+    },
+    {
+      "name": "createPlanFixtureAsync",
+      "description": "Materialize one valid project with a single reviewed pending module removal.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "line": 197,
+        "column": 1
+      }
+    },
+    {
+      "name": "createFixtureManifest",
+      "description": "Build a canonical manifest whose Infra lifecycle currently contains the fixture module.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "line": 227,
+        "column": 1
+      }
+    },
+    {
+      "name": "pendingContent",
+      "description": "Serialize one current Studio pending uninstall operation.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "line": 256,
+        "column": 1
+      }
+    },
+    {
+      "name": "createJournal",
+      "description": "Build the minimum durable APM journal required by the Studio owner-step adapter.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "line": 261,
+        "column": 1
+      }
+    },
+    {
+      "name": "createPlan",
+      "description": "Build one complete reviewed plan around a single owner step for adapter tests.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "line": 285,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStatus",
+      "description": "Build complete fresh status evidence for owner verification.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "line": 318,
+        "column": 1
+      }
+    },
+    {
+      "name": "readInfraModules",
+      "description": "Read Infra module ids from an unknown manifest only for a test assertion.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "line": 343,
+        "column": 1
+      }
+    },
+    {
+      "name": "removeFixtureAsync",
+      "description": "Remove one temporary project root after each owner-step test.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "line": 352,
         "column": 1
       }
     },
@@ -12899,6 +13412,78 @@
       "sourceLocation": {
         "filePath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts",
         "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "parsePendingModuleLifecycleState",
+      "description": "Parse Studio's persisted pending module lifecycle state without accepting ambiguous operations.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/domain/pendingModuleLifecycleState.ts",
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "serializePendingModuleLifecycleState",
+      "description": "Serialize canonical Studio pending lifecycle state for one reviewed APM file change.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/domain/pendingModuleLifecycleState.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "pendingModuleLifecycleIds",
+      "description": "Return pending module ids in the persisted execution order.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/domain/pendingModuleLifecycleState.ts",
+        "line": 39,
+        "column": 1
+      }
+    },
+    {
+      "name": "removeReviewedPendingModules",
+      "description": "Remove only reviewed module ids while preserving unrelated pending operations.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/domain/pendingModuleLifecycleState.ts",
+        "line": 44,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseJson",
+      "description": "Parse JSON into unknown data without leaking JSON.parse's any type.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/domain/pendingModuleLifecycleState.ts",
+        "line": 52,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseOperation",
+      "description": "Validate one persisted pending uninstall operation.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/domain/pendingModuleLifecycleState.ts",
+        "line": 62,
+        "column": 1
+      }
+    },
+    {
+      "name": "readReviewedPendingModuleStep",
+      "description": "Parse one exact Studio pending-module owner step from a reviewed APM plan.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/domain/pendingModulePlanStep.ts",
+        "line": 16,
+        "column": 1
+      }
+    },
+    {
+      "name": "readEvidenceDigest",
+      "description": "Read one required non-empty digest from reviewed step evidence.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/domain/pendingModulePlanStep.ts",
+        "line": 31,
         "column": 1
       }
     },
@@ -13528,7 +14113,7 @@
       "description": "Compose the Studio host edge from project, module, update, deploy, and infrastructure-session owners.\n@todo Keep this as thin host composition while moving domain services out of host-owned folders.",
       "sourceLocation": {
         "filePath": "src/host/createStudioHost.ts",
-        "line": 15,
+        "line": 16,
         "column": 1
       }
     },
@@ -16584,6 +17169,33 @@
       }
     },
     {
+      "name": "createHostModuleOrchestrator",
+      "description": "Create the canonical Orchestrator instance for Studio's published host module registry.",
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/createHostModuleOrchestrator.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioPendingModuleLifecyclePort",
+      "description": "Adapt Studio's canonical host Orchestrator registry to the project-update lifecycle port.",
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveOrchestrator",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts",
+        "line": 9,
+        "column": 9
+      }
+    },
+    {
       "name": "createProjectRoot",
       "description": null,
       "sourceLocation": {
@@ -16849,7 +17461,7 @@
       "description": "Narrow an unknown non-array object to a string-keyed record.\n@utility @ankhorage/utility/object",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/moduleManager.ts",
-        "line": 546,
+        "line": 543,
         "column": 1
       }
     },
@@ -28086,6 +28698,11 @@
       },
       {
         "fromPath": "src/host/createStudioHost.ts",
+        "toPath": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts",
+        "sourcePath": "src/host/createStudioHost.ts"
+      },
+      {
+        "fromPath": "src/host/createStudioHost.ts",
         "toPath": "src/host/orchestrator/infraSession.ts",
         "sourcePath": "src/host/createStudioHost.ts"
       },
@@ -29440,6 +30057,21 @@
         "sourcePath": "src/host/orchestrator/appTargetGeneration.test.ts"
       },
       {
+        "fromPath": "src/host/orchestrator/createHostModuleOrchestrator.ts",
+        "toPath": "src/host/modules/catalog.ts",
+        "sourcePath": "src/host/orchestrator/createHostModuleOrchestrator.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts",
+        "toPath": "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
+        "sourcePath": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts",
+        "toPath": "src/host/orchestrator/createHostModuleOrchestrator.ts",
+        "sourcePath": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts"
+      },
+      {
         "fromPath": "src/host/orchestrator/generatedAppFiles.test.ts",
         "toPath": "src/host/orchestrator/generatedAppFiles.ts",
         "sourcePath": "src/host/orchestrator/generatedAppFiles.test.ts"
@@ -29512,6 +30144,11 @@
       {
         "fromPath": "src/host/orchestrator/moduleManager.ts",
         "toPath": "src/host/modules/runtime/LocalFsTargetAdapter.ts",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/moduleManager.ts",
+        "toPath": "src/host/orchestrator/createHostModuleOrchestrator.ts",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
@@ -30560,6 +31197,26 @@
         "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
       },
       {
+        "fromPath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "toPath": "src/contractGuards.ts",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "toPath": "src/features/project-updates/constants.ts",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "toPath": "src/features/project-updates/domain/pendingModuleLifecycleState.ts",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
         "fromPath": "src/features/project-updates/application/ProjectUpdateService.test.ts",
         "toPath": "src/features/project-updates/application/ProjectUpdateService.ts",
         "sourcePath": "src/features/project-updates/application/ProjectUpdateService.test.ts"
@@ -30585,9 +31242,39 @@
         "sourcePath": "src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts"
       },
       {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/readStudioManifestDigestAsync.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "toPath": "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "toPath": "src/features/project-updates/domain/pendingModulePlanStep.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
         "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts",
         "toPath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdatePorts.test.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdatePorts.test.ts"
       },
       {
         "fromPath": "src/features/project-updates/composition/createStudioProjectUpdatePorts.test.ts",
@@ -30606,6 +31293,16 @@
       },
       {
         "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
+        "toPath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
         "toPath": "src/features/project-updates/constants.ts",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
       },
@@ -30621,6 +31318,16 @@
       },
       {
         "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts",
+        "toPath": "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts",
+        "toPath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts",
         "toPath": "src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts"
       },
@@ -30630,9 +31337,64 @@
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts"
       },
       {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts",
+        "toPath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts",
+        "toPath": "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts",
+        "toPath": "src/features/project-updates/domain/pendingModulePlanStep.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts"
+      },
+      {
         "fromPath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
         "toPath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toPath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toPath": "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toPath": "src/features/project-updates/constants.ts",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toPath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toPath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
       },
       {
         "fromPath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
@@ -31723,6 +32485,36 @@
         "fromPath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
         "toPath": "src/features/project-updates/constants.ts",
         "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
+        "toPath": "src/features/project-updates/domain/pendingModuleLifecycleState.ts",
+        "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "toPath": "src/features/project-updates/constants.ts",
+        "sourcePath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "toPath": "src/features/project-updates/domain/pendingModuleLifecycleState.ts",
+        "sourcePath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/outbound/readStudioManifestDigestAsync.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
+        "sourcePath": "src/features/project-updates/adapters/outbound/readStudioManifestDigestAsync.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
+        "sourcePath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts"
       },
       {
         "fromPath": "src/host/layout/templates/auth/adapter.test.ts",
@@ -40268,6 +41060,12 @@
         "fromSymbol": "createStudioHost",
         "toSymbol": "createStudioProjectUpdateService",
         "callExpression": "createStudioProjectUpdateService",
+        "sourcePath": "src/host/createStudioHost.ts"
+      },
+      {
+        "fromSymbol": "createStudioHost",
+        "toSymbol": "createStudioPendingModuleLifecyclePort",
+        "callExpression": "createStudioPendingModuleLifecyclePort",
         "sourcePath": "src/host/createStudioHost.ts"
       },
       {
@@ -48935,6 +49733,36 @@
         "sourcePath": "src/host/orchestrator/appTargetGeneration.test.ts"
       },
       {
+        "fromSymbol": "createHostModuleOrchestrator",
+        "toSymbol": "createOrchestrator",
+        "callExpression": "createOrchestrator",
+        "sourcePath": "src/host/orchestrator/createHostModuleOrchestrator.ts"
+      },
+      {
+        "fromSymbol": "createHostModuleOrchestrator",
+        "toSymbol": "listHostModules",
+        "callExpression": "listHostModules",
+        "sourcePath": "src/host/orchestrator/createHostModuleOrchestrator.ts"
+      },
+      {
+        "fromSymbol": "resolveOrchestrator",
+        "toSymbol": "createHostModuleOrchestrator",
+        "callExpression": "createHostModuleOrchestrator",
+        "sourcePath": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts"
+      },
+      {
+        "fromSymbol": "isModuleInstalledAsync",
+        "toSymbol": "resolveOrchestrator",
+        "callExpression": "resolveOrchestrator",
+        "sourcePath": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts"
+      },
+      {
+        "fromSymbol": "removeModuleAsync",
+        "toSymbol": "resolveOrchestrator",
+        "callExpression": "resolveOrchestrator",
+        "sourcePath": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts"
+      },
+      {
         "fromSymbol": "src/host/orchestrator/generatedAppFiles.test.ts",
         "toSymbol": "afterEach",
         "callExpression": "afterEach",
@@ -49998,14 +50826,8 @@
       },
       {
         "fromSymbol": "getModuleOrchestrator",
-        "toSymbol": "createOrchestrator",
-        "callExpression": "createOrchestrator",
-        "sourcePath": "src/host/orchestrator/moduleManager.ts"
-      },
-      {
-        "fromSymbol": "getModuleOrchestrator",
-        "toSymbol": "listHostModules",
-        "callExpression": "listHostModules",
+        "toSymbol": "createHostModuleOrchestrator",
+        "callExpression": "createHostModuleOrchestrator",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
@@ -57101,6 +57923,162 @@
         "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
       },
       {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "readPendingModuleLifecycleStateAsync",
+        "callExpression": "readPendingModuleLifecycleStateAsync",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "blockedPendingState",
+        "callExpression": "blockedPendingState",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "blockedDigest",
+        "callExpression": "blockedDigest",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "pendingModuleLifecycleIds",
+        "callExpression": "pendingModuleLifecycleIds",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "emptySlice",
+        "callExpression": "emptySlice",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "resolveArtifactAsync",
+        "callExpression": "input.resolveArtifactAsync",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "blockedArtifact",
+        "callExpression": "blockedArtifact",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "digestProjectUpdateText",
+        "callExpression": "digestProjectUpdateText",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "parseManifest",
+        "callExpression": "parseManifest",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "projectReviewedRemovals",
+        "callExpression": "projectReviewedRemovals",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "nowIso",
+        "callExpression": "input.nowIso",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "serializeManifest",
+        "callExpression": "serializeManifest",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "removeReviewedPendingModules",
+        "callExpression": "removeReviewedPendingModules",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "reviewedFileChanges",
+        "callExpression": "reviewedFileChanges",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "serializePendingModuleLifecycleState",
+        "callExpression": "serializePendingModuleLifecycleState",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "toSymbol": "removalStep",
+        "callExpression": "removalStep",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
+        "toSymbol": "removalStepId",
+        "callExpression": "removalStepId",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "toPlanArtifact",
+        "callExpression": "toPlanArtifact",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "planPendingModuleLifecycleAsync",
+        "toSymbol": "finalizationStep",
+        "callExpression": "finalizationStep",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "removalStep",
+        "toSymbol": "removalStepId",
+        "callExpression": "removalStepId",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "reviewedFileChanges",
+        "toSymbol": "digestProjectUpdateText",
+        "callExpression": "digestProjectUpdateText",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "parseManifest",
+        "toSymbol": "isAppManifest",
+        "callExpression": "isAppManifest",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "blockedDigest",
+        "toSymbol": "blocked",
+        "callExpression": "blocked",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "blockedPendingState",
+        "toSymbol": "blocked",
+        "callExpression": "blocked",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
+        "fromSymbol": "blockedArtifact",
+        "toSymbol": "blocked",
+        "callExpression": "blocked",
+        "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
+      },
+      {
         "fromSymbol": "src/features/project-updates/application/ProjectUpdateService.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -57227,6 +58205,156 @@
         "sourcePath": "src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts"
       },
       {
+        "fromSymbol": "observeAsync",
+        "toSymbol": "readReviewedPendingModuleStep",
+        "callExpression": "readReviewedPendingModuleStep",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "observeAsync",
+        "toSymbol": "delegateObservationAsync",
+        "callExpression": "delegateObservationAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "observeAsync",
+        "toSymbol": "observePendingModuleAsync",
+        "callExpression": "observePendingModuleAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "executeAsync",
+        "toSymbol": "readReviewedPendingModuleStep",
+        "callExpression": "readReviewedPendingModuleStep",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "executeAsync",
+        "toSymbol": "delegateExecutionAsync",
+        "callExpression": "delegateExecutionAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "executeAsync",
+        "toSymbol": "executePendingModuleAsync",
+        "callExpression": "executePendingModuleAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "rollbackAsync",
+        "toSymbol": "readReviewedPendingModuleStep",
+        "callExpression": "readReviewedPendingModuleStep",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "rollbackAsync",
+        "toSymbol": "delegateExecutionAsync",
+        "callExpression": "delegateExecutionAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "rollbackAsync",
+        "toSymbol": "unsupportedRollback",
+        "callExpression": "unsupportedRollback",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "observePendingModuleAsync",
+        "toSymbol": "bindingObservationAsync",
+        "callExpression": "bindingObservationAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "observePendingModuleAsync",
+        "toSymbol": "pendingObservationAsync",
+        "callExpression": "pendingObservationAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "observePendingModuleAsync",
+        "toSymbol": "manifestObservationAsync",
+        "callExpression": "manifestObservationAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "observePendingModuleAsync",
+        "toSymbol": "isModuleInstalledAsync",
+        "callExpression": "lifecycle.isModuleInstalledAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "executePendingModuleAsync",
+        "toSymbol": "observePendingModuleAsync",
+        "callExpression": "observePendingModuleAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "executePendingModuleAsync",
+        "toSymbol": "completed",
+        "callExpression": "completed",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "executePendingModuleAsync",
+        "toSymbol": "observationFailure",
+        "callExpression": "observationFailure",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "executePendingModuleAsync",
+        "toSymbol": "removeModuleAsync",
+        "callExpression": "lifecycle.removeModuleAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "executePendingModuleAsync",
+        "toSymbol": "isModuleInstalledAsync",
+        "callExpression": "lifecycle.isModuleInstalledAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "executePendingModuleAsync",
+        "toSymbol": "failed",
+        "callExpression": "failed",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "bindingObservationAsync",
+        "toSymbol": "readCurrentStudioApmArtifactBindingAsync",
+        "callExpression": "readCurrentStudioApmArtifactBindingAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "pendingObservationAsync",
+        "toSymbol": "readPendingModuleLifecycleStateAsync",
+        "callExpression": "readPendingModuleLifecycleStateAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "manifestObservationAsync",
+        "toSymbol": "readStudioManifestDigestAsync",
+        "callExpression": "readStudioManifestDigestAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "delegateExecutionAsync",
+        "toSymbol": "failed",
+        "callExpression": "failed",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "observationFailure",
+        "toSymbol": "failed",
+        "callExpression": "failed",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "unsupportedRollback",
+        "toSymbol": "failed",
+        "callExpression": "failed",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
         "fromSymbol": "inspectExtensionEvidenceAsync",
         "toSymbol": "readBaseEvidenceAsync",
         "callExpression": "readBaseEvidenceAsync",
@@ -57288,6 +58416,12 @@
       },
       {
         "fromSymbol": "src/features/project-updates/composition/createStudioProjectUpdatePorts.test.ts",
+        "toSymbol": "digestProjectUpdateText",
+        "callExpression": "digestProjectUpdateText",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdatePorts.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/createStudioProjectUpdatePorts.test.ts",
         "toSymbol": "readFile",
         "callExpression": "readFile",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdatePorts.test.ts"
@@ -57329,6 +58463,12 @@
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
       },
       {
+        "fromSymbol": "planProtocolAsync",
+        "toSymbol": "planPendingObservationAsync",
+        "callExpression": "planPendingObservationAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
+      },
+      {
         "fromSymbol": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
         "toSymbol": "isPendingModuleLifecycleObservation",
         "callExpression": "isPendingModuleLifecycleObservation",
@@ -57342,14 +58482,32 @@
       },
       {
         "fromSymbol": "planProtocolAsync",
+        "toSymbol": "protocolUnavailableBlocker",
+        "callExpression": "protocolUnavailableBlocker",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
+      },
+      {
+        "fromSymbol": "planPendingObservationAsync",
         "toSymbol": "pendingLifecycleBlocker",
         "callExpression": "pendingLifecycleBlocker",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
       },
       {
-        "fromSymbol": "planProtocolAsync",
-        "toSymbol": "protocolUnavailableBlocker",
-        "callExpression": "protocolUnavailableBlocker",
+        "fromSymbol": "planPendingObservationAsync",
+        "toSymbol": "readPendingDigest",
+        "callExpression": "readPendingDigest",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
+      },
+      {
+        "fromSymbol": "planPendingObservationAsync",
+        "toSymbol": "missingPendingDigestBlocker",
+        "callExpression": "missingPendingDigestBlocker",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
+      },
+      {
+        "fromSymbol": "planPendingObservationAsync",
+        "toSymbol": "planPendingModuleLifecycleAsync",
+        "callExpression": "planPendingModuleLifecycleAsync",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
       },
       {
@@ -57363,6 +58521,48 @@
         "toSymbol": "createStudioProjectUpdateProtocolPort",
         "callExpression": "createStudioProjectUpdateProtocolPort",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts"
+      },
+      {
+        "fromSymbol": "createStudioProjectUpdateService",
+        "toSymbol": "createStudioProjectUpdateApplyOwnerStepPort",
+        "callExpression": "createStudioProjectUpdateApplyOwnerStepPort",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts"
+      },
+      {
+        "fromSymbol": "createStudioProjectUpdateService",
+        "toSymbol": "createStudioProjectUpdateVerifyOwnerStepPort",
+        "callExpression": "createStudioProjectUpdateVerifyOwnerStepPort",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts"
+      },
+      {
+        "fromSymbol": "verifyAsync",
+        "toSymbol": "readReviewedPendingModuleStep",
+        "callExpression": "readReviewedPendingModuleStep",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "verifyAsync",
+        "toSymbol": "delegateVerifyAsync",
+        "callExpression": "delegateVerifyAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "verifyAsync",
+        "toSymbol": "verifyPendingModuleAsync",
+        "callExpression": "verifyPendingModuleAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "verifyPendingModuleAsync",
+        "toSymbol": "currentStudioApmArtifactMatchesAsync",
+        "callExpression": "currentStudioApmArtifactMatchesAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "verifyPendingModuleAsync",
+        "toSymbol": "isModuleInstalledAsync",
+        "callExpression": "lifecycle.isModuleInstalledAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts"
       },
       {
         "fromSymbol": "get",
@@ -57393,6 +58593,168 @@
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toSymbol": "createPlanFixtureAsync",
+        "callExpression": "createPlanFixtureAsync",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toSymbol": "readInfraModules",
+        "callExpression": "readInfraModules",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toSymbol": "removeFixtureAsync",
+        "callExpression": "removeFixtureAsync",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toSymbol": "mock",
+        "callExpression": "mock",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toSymbol": "createJournal",
+        "callExpression": "createJournal",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toSymbol": "createStudioProjectUpdateApplyOwnerStepPort",
+        "callExpression": "createStudioProjectUpdateApplyOwnerStepPort",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toSymbol": "pendingContent",
+        "callExpression": "pendingContent",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toSymbol": "createStatus",
+        "callExpression": "createStatus",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
+        "toSymbol": "createStudioProjectUpdateVerifyOwnerStepPort",
+        "callExpression": "createStudioProjectUpdateVerifyOwnerStepPort",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "createPlanFixtureAsync",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "createPlanFixtureAsync",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "createPlanFixtureAsync",
+        "toSymbol": "createFixtureManifest",
+        "callExpression": "createFixtureManifest",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "createPlanFixtureAsync",
+        "toSymbol": "pendingContent",
+        "callExpression": "pendingContent",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "createPlanFixtureAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "createPlanFixtureAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "createPlanFixtureAsync",
+        "toSymbol": "readPendingModuleLifecycleStateAsync",
+        "callExpression": "readPendingModuleLifecycleStateAsync",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "createPlanFixtureAsync",
+        "toSymbol": "readCurrentStudioApmArtifactBindingAsync",
+        "callExpression": "readCurrentStudioApmArtifactBindingAsync",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "createPlanFixtureAsync",
+        "toSymbol": "planPendingModuleLifecycleAsync",
+        "callExpression": "planPendingModuleLifecycleAsync",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "createFixtureManifest",
+        "toSymbol": "composeCategoryAppManifest",
+        "callExpression": "composeCategoryAppManifest",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "createJournal",
+        "toSymbol": "createPlan",
+        "callExpression": "createPlan",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "readInfraModules",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "readInfraModules",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
+      },
+      {
+        "fromSymbol": "removeFixtureAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts"
       },
       {
         "fromSymbol": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
@@ -57471,6 +58833,30 @@
         "toSymbol": "randomUUID",
         "callExpression": "randomUUID",
         "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts"
+      },
+      {
+        "fromSymbol": "parsePendingModuleLifecycleState",
+        "toSymbol": "parseJson",
+        "callExpression": "parseJson",
+        "sourcePath": "src/features/project-updates/domain/pendingModuleLifecycleState.ts"
+      },
+      {
+        "fromSymbol": "parsePendingModuleLifecycleState",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/domain/pendingModuleLifecycleState.ts"
+      },
+      {
+        "fromSymbol": "parseOperation",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/domain/pendingModuleLifecycleState.ts"
+      },
+      {
+        "fromSymbol": "readReviewedPendingModuleStep",
+        "toSymbol": "readEvidenceDigest",
+        "callExpression": "readEvidenceDigest",
+        "sourcePath": "src/features/project-updates/domain/pendingModulePlanStep.ts"
       },
       {
         "fromSymbol": "src/features/selection/adapters/nativeElementMeasurement.test.ts",
@@ -63048,68 +64434,32 @@
       },
       {
         "fromSymbol": "inspectPendingModuleLifecycleEvidenceAsync",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
-        "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
-      },
-      {
-        "fromSymbol": "inspectPendingModuleLifecycleEvidenceAsync",
-        "toSymbol": "toExtensionEvidence",
-        "callExpression": "toExtensionEvidence",
-        "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
-      },
-      {
-        "fromSymbol": "inspectPendingModuleLifecycleEvidenceAsync",
-        "toSymbol": "parsePendingModuleIds",
-        "callExpression": "parsePendingModuleIds",
-        "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
-      },
-      {
-        "fromSymbol": "inspectPendingModuleLifecycleEvidenceAsync",
-        "toSymbol": "isMissingFileError",
-        "callExpression": "isMissingFileError",
+        "toSymbol": "readPendingModuleLifecycleStateAsync",
+        "callExpression": "readPendingModuleLifecycleStateAsync",
         "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
       },
       {
         "fromSymbol": "inspectPendingModuleLifecycleEvidenceAsync",
         "toSymbol": "availableEvidence",
         "callExpression": "availableEvidence",
+        "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
+      },
+      {
+        "fromSymbol": "inspectPendingModuleLifecycleEvidenceAsync",
+        "toSymbol": "pendingModuleLifecycleIds",
+        "callExpression": "pendingModuleLifecycleIds",
+        "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
+      },
+      {
+        "fromSymbol": "inspectPendingModuleLifecycleEvidenceAsync",
+        "toSymbol": "malformedEvidence",
+        "callExpression": "malformedEvidence",
         "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
       },
       {
         "fromSymbol": "inspectPendingModuleLifecycleEvidenceAsync",
         "toSymbol": "unreadableEvidence",
         "callExpression": "unreadableEvidence",
-        "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
-      },
-      {
-        "fromSymbol": "parsePendingModuleIds",
-        "toSymbol": "parseJson",
-        "callExpression": "parseJson",
-        "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
-      },
-      {
-        "fromSymbol": "parsePendingModuleIds",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
-      },
-      {
-        "fromSymbol": "readPendingModuleId",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
-      },
-      {
-        "fromSymbol": "toExtensionEvidence",
-        "toSymbol": "malformedEvidence",
-        "callExpression": "malformedEvidence",
-        "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
-      },
-      {
-        "fromSymbol": "toExtensionEvidence",
-        "toSymbol": "availableEvidence",
-        "callExpression": "availableEvidence",
         "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
       },
       {
@@ -63137,10 +64487,88 @@
         "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
       },
       {
-        "fromSymbol": "isMissingFileError",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
+        "fromSymbol": "readPendingModuleLifecycleStateAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts"
+      },
+      {
+        "fromSymbol": "readPendingModuleLifecycleStateAsync",
+        "toSymbol": "digestText",
+        "callExpression": "digestText",
+        "sourcePath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts"
+      },
+      {
+        "fromSymbol": "readPendingModuleLifecycleStateAsync",
+        "toSymbol": "parsePendingModuleLifecycleState",
+        "callExpression": "parsePendingModuleLifecycleState",
+        "sourcePath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts"
+      },
+      {
+        "fromSymbol": "readPendingModuleLifecycleStateAsync",
+        "toSymbol": "isMissingPathError",
+        "callExpression": "isMissingPathError",
+        "sourcePath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts"
+      },
+      {
+        "fromSymbol": "digestProjectUpdateText",
+        "toSymbol": "digestText",
+        "callExpression": "digestText",
+        "sourcePath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts"
+      },
+      {
+        "fromSymbol": "digestText",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
+        "sourcePath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts"
+      },
+      {
+        "fromSymbol": "readStudioManifestDigestAsync",
+        "toSymbol": "digestProjectUpdateText",
+        "callExpression": "digestProjectUpdateText",
+        "sourcePath": "src/features/project-updates/adapters/outbound/readStudioManifestDigestAsync.ts"
+      },
+      {
+        "fromSymbol": "readStudioManifestDigestAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/project-updates/adapters/outbound/readStudioManifestDigestAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveCurrentStudioApmArtifactAsync",
+        "toSymbol": "readCurrentStudioApmArtifactBindingAsync",
+        "callExpression": "readCurrentStudioApmArtifactBindingAsync",
+        "sourcePath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveCurrentStudioApmArtifactAsync",
+        "toSymbol": "resolveNpmExtensionArtifactIdentityAsync",
+        "callExpression": "resolveNpmExtensionArtifactIdentityAsync",
+        "sourcePath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts"
+      },
+      {
+        "fromSymbol": "readCurrentStudioApmArtifactBindingAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts"
+      },
+      {
+        "fromSymbol": "readCurrentStudioApmArtifactBindingAsync",
+        "toSymbol": "getGeneratedPackagePolicy",
+        "callExpression": "getGeneratedPackagePolicy",
+        "sourcePath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts"
+      },
+      {
+        "fromSymbol": "readCurrentStudioApmArtifactBindingAsync",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
+        "sourcePath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts"
+      },
+      {
+        "fromSymbol": "currentStudioApmArtifactMatchesAsync",
+        "toSymbol": "readCurrentStudioApmArtifactBindingAsync",
+        "callExpression": "readCurrentStudioApmArtifactBindingAsync",
+        "sourcePath": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts"
       },
       {
         "fromSymbol": "src/host/layout/templates/auth/adapter.test.ts",

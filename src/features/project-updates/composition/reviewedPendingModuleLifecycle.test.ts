@@ -2,7 +2,6 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import type { AppManifest } from '@ankhorage/contracts';
 import type {
   ApmApplyJournal,
   ApmExtensionArtifactIdentity,
@@ -10,13 +9,15 @@ import type {
   ApmPlanStep,
   ApmStatusResult,
 } from '@ankhorage/apm/types';
+import type { AppManifest } from '@ankhorage/contracts';
 import { composeCategoryAppManifest } from '@ankhorage/templates';
+import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 import { expect, mock, test } from 'bun:test';
 
 import { readPendingModuleLifecycleStateAsync } from '../adapters/outbound/readPendingModuleLifecycleStateAsync';
 import { readCurrentStudioApmArtifactBindingAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
-import type { StudioPendingModuleLifecyclePort } from '../application/StudioPendingModuleLifecyclePort';
 import { planPendingModuleLifecycleAsync } from '../application/planPendingModuleLifecycleAsync';
+import type { StudioPendingModuleLifecyclePort } from '../application/StudioPendingModuleLifecyclePort';
 import { STUDIO_PENDING_MODULE_LIFECYCLE_FILE } from '../constants';
 import { createStudioProjectUpdateApplyOwnerStepPort } from './createStudioProjectUpdateApplyOwnerStepPort';
 import { createStudioProjectUpdateVerifyOwnerStepPort } from './createStudioProjectUpdateVerifyOwnerStepPort';
@@ -40,8 +41,8 @@ test('plans one reviewed owner removal followed by native APM file finalization 
       await readFile(path.join(fixture.rootPath, STUDIO_PENDING_MODULE_LIFECYCLE_FILE), 'utf8'),
     ).toBe(fixture.pendingContent);
 
-    const manifestChange = fixture.slice.files.find(({ path: filePath }) =>
-      filePath === 'ankh.config.json',
+    const manifestChange = fixture.slice.files.find(
+      ({ path: filePath }) => filePath === 'ankh.config.json',
     );
     if (manifestChange?.afterContent === undefined) throw new Error('Missing reviewed manifest.');
     const reviewedManifest: unknown = JSON.parse(manifestChange.afterContent);
@@ -53,7 +54,7 @@ test('plans one reviewed owner removal followed by native APM file finalization 
 
 test('executes one installed reviewed module removal and verifies its postcondition', async () => {
   const fixture = await createPlanFixtureAsync();
-  const states: Array<boolean | undefined> = [true, false];
+  const states: (boolean | undefined)[] = [true, false];
   const removeModuleAsync = mock(() => Promise.resolve());
   const lifecycle: StudioPendingModuleLifecyclePort = {
     isModuleInstalledAsync: () => Promise.resolve(states.shift()),
@@ -340,10 +341,10 @@ function createStatus(rootPath: string): ApmStatusResult {
 
 /*** Read Infra module ids from an unknown manifest only for a test assertion. */
 function readInfraModules(value: unknown): readonly unknown[] | undefined {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) return undefined;
-  const infra = Object.entries(value).find(([key]) => key === 'infra')?.[1];
-  if (typeof infra !== 'object' || infra === null || Array.isArray(infra)) return undefined;
-  const modules = Object.entries(infra).find(([key]) => key === 'modules')?.[1];
+  if (!isRecord(value)) return undefined;
+  const infra = readOwnProperty(value, 'infra');
+  if (!isRecord(infra)) return undefined;
+  const modules = readOwnProperty(infra, 'modules');
   return Array.isArray(modules) ? modules : undefined;
 }
 
