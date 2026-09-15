@@ -1,5 +1,5 @@
 import type { AppManifest } from '@ankhorage/contracts';
-import { createOrchestrator, type ModuleState, type Orchestrator } from '@ankhorage/orchestrator';
+import type { ModuleState, Orchestrator } from '@ankhorage/orchestrator';
 import path from 'path';
 
 import { createStudioProjectWriterProxy } from '../../features/project-updates/composition/createStudioProjectWriterProxy';
@@ -15,10 +15,10 @@ import {
 import {
   getHostModule,
   type HostModuleContribution,
-  listHostModules,
   resolveHostModuleAdminContribution,
 } from '../modules/catalog';
 import { LocalFsTargetAdapter } from '../modules/runtime/LocalFsTargetAdapter';
+import { createHostModuleOrchestrator } from './createHostModuleOrchestrator';
 import { ProjectManager } from './projectManager';
 import { resolveModuleLayoutMutations } from './resolveMutations';
 
@@ -425,10 +425,7 @@ export class ModuleManager {
     const cached = this.orchestratorsByAppRoot.get(appPath);
     if (cached) return cached;
 
-    const orchestrator = createOrchestrator({
-      modules: listHostModules().map((module) => module.definition),
-      projectRoot: appPath,
-    });
+    const orchestrator = createHostModuleOrchestrator(appPath);
     this.orchestratorsByAppRoot.set(appPath, orchestrator);
     return orchestrator;
   }

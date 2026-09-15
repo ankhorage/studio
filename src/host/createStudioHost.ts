@@ -1,5 +1,6 @@
 import { createStudioProjectUpdateService } from '../features/project-updates/composition/createStudioProjectUpdateService';
 import { ProjectDeployService } from './deploy/ProjectDeployService';
+import { createStudioPendingModuleLifecyclePort } from './orchestrator/createStudioPendingModuleLifecyclePort';
 import { stopAllProjectInfraPortForwards } from './orchestrator/infraSession';
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
@@ -15,7 +16,10 @@ export interface CreateStudioHostOptions {
 export function createStudioHost(options: CreateStudioHostOptions) {
   const projectManager = new ProjectManager(options.workspaceRoot);
   const moduleManager = new ModuleManager(options.workspaceRoot);
-  const projectUpdateService = createStudioProjectUpdateService();
+  const projectUpdateService = createStudioProjectUpdateService(
+    {},
+    createStudioPendingModuleLifecyclePort(),
+  );
   const projectDeployService = new ProjectDeployService({
     projectManager,
     workspaceRoot: options.workspaceRoot,

@@ -5,7 +5,7 @@
     "": {
       "name": "@ankhorage/studio",
       "dependencies": {
-        "@ankhorage/apm": "^0.7.0",
+        "@ankhorage/apm": "^0.8.1",
         "@ankhorage/color-theory": "^0.3.0",
         "@ankhorage/contracts": "^13.0.0",
         "@ankhorage/data-sources": "^2.0.3",
@@ -71,7 +71,7 @@
   "packages": {
     "@ankhorage/ankh": ["@ankhorage/ankh@0.8.12", "", { "dependencies": { "@ankhorage/contracts": "^12.0.1", "@ankhorage/devtools": "^1.13.0", "@ankhorage/doctor": "^0.10.8", "yaml": "^2.8.1" }, "bin": { "ankh": "dist/bin.js" } }, "sha512-SccGaXVdLoY495GOa0cpi9iZhXv/wEHk0ezuv9ksZ5Im4Xq25TnVHWxESJBwpLubtgqRjLR2nEkpARBNGPduHg=="],
 
-    "@ankhorage/apm": ["@ankhorage/apm@0.7.0", "", { "dependencies": { "@ankhorage/project-detector": "^0.1.0", "@ankhorage/utility": "^1.1.0", "jsonc-parser": "^3.3.1", "semver": "^7.8.5", "yaml": "^2.9.1" }, "peerDependencies": { "@ankhorage/ankh": "^0.8.13" }, "optionalPeers": ["@ankhorage/ankh"], "bin": { "apm": "dist/cli/runAsync.js" } }, "sha512-fDIijPaLGm+nDzp+VKg5h/9OkRf2lFDGlA/MtiCvcb/Q0TgaMlQyZQ6RG/LKqHXzTdYCMeHJVab/f/xDriix9w=="],
+    "@ankhorage/apm": ["@ankhorage/apm@0.8.1", "", { "dependencies": { "@ankhorage/project-detector": "^0.1.0", "@ankhorage/utility": "^1.1.0", "jsonc-parser": "^3.3.1", "semver": "^7.8.5", "yaml": "^2.9.1" }, "peerDependencies": { "@ankhorage/ankh": "^0.8.13" }, "optionalPeers": ["@ankhorage/ankh"], "bin": { "apm": "dist/cli/runAsync.js" } }, "sha512-qvymrakL71uqcVKRrMcMKLrlyWjNMbWUXJbWaoG1cG+yoa6Mp9ZwXqa2MDTTWARmgQqnO4qqh9asyw3vGqmRbw=="],
 
     "@ankhorage/color-theory": ["@ankhorage/color-theory@0.3.0", "", { "dependencies": { "culori": "^4.0.2" } }, "sha512-M6McHR2obnslpPESe84xr1E/1PuGKlb1S6ypDzNhkVdwJXS9gL53GDALfqszi5QyQNxQHFNyCOVnnzaQlGn52g=="],
 

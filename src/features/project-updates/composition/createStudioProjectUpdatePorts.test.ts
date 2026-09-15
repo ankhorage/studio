@@ -10,6 +10,7 @@ import type {
 } from '@ankhorage/apm/types';
 import { expect, test } from 'bun:test';
 
+import { digestProjectUpdateText } from '../adapters/outbound/readPendingModuleLifecycleStateAsync';
 import {
   STUDIO_PENDING_MODULE_LIFECYCLE_EVIDENCE,
   STUDIO_PENDING_MODULE_LIFECYCLE_FILE,
@@ -46,6 +47,7 @@ test('reports valid pending module removals without mutating their source file',
     expect(evidence.observations[0]?.evidence).toEqual([
       STUDIO_PENDING_MODULE_LIFECYCLE_EVIDENCE,
       STUDIO_PENDING_MODULE_LIFECYCLE_FILE,
+      `pending-digest:${digestProjectUpdateText(content)}`,
       'module-uninstall:a-module',
       'module-uninstall:z-module',
     ]);
