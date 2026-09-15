@@ -1,0 +1,63 @@
+name: Issue 520 standalone Dashboard smoke fix
+
+on:
+  push:
+    branches:
+      - fix/520-acceptance-baseline
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - run: bun install --frozen-lockfile
+      - name: Align standalone browser smoke with current APM Dashboard
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          target = Path('src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts')
+          text = target.read_text()
+          old = """    await browser.waitForBodyTextAsync('Project Detail');
+    await pointerClickAsync(browser, 'button', 'Install packages');
+    await browser.waitForBodyTextAsync('Project packages installed.');
+"""
+          new = """    await browser.waitForBodyTextAsync('Project Detail');
+    await pointerClickAsync(browser, 'button', 'Offline evidence');
+    await pointerClickAsync(browser, 'button', 'Inspect updates');
+    await browser.waitForBodyTextAsync('Evidence');
+    await pointerClickAsync(browser, 'button', 'Review update plan');
+    await browser.waitForBodyTextAsync('Reviewed plan');
+"""
+          if old not in text:
+              raise SystemExit('stale standalone install-packages smoke target not found')
+          target.write_text(text.replace(old, new, 1))
+          PY
+      - name: Validate source fix
+        run: |
+          bun run format
+          bun run build
+          bun run check-types
+          bun run lint
+          bun run knip:check
+          bun run format:check
+      - name: Commit source fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts
+          git commit -m 'test: align standalone smoke with APM Dashboard'
+      - name: Remove temporary workflow and push
+        run: |
+          git rm .github/workflows/issue-520-standalone-dashboard-smoke.yml
+          git commit -m 'chore: finalize standalone Dashboard smoke fix'
+          git push origin HEAD:fix/520-acceptance-baseline
