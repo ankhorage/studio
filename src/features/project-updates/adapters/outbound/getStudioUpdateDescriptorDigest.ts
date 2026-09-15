@@ -5,3 +5,4 @@ import { readFileSync } from 'node:fs';
 export function getStudioUpdateDescriptorDigest(): string {
   const descriptorUrl = new URL('../../../../../apm/update.json', import.meta.url);
   return createHash('sha256').update(readFileSync(descriptorUrl)).digest('hex');
+}

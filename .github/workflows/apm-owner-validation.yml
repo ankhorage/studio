@@ -2,7 +2,7 @@ name: APM owner integration validation
 on:
   push:
     branches: [feat/500-apm-release-gate]
-    paths: [.apm-owner-tests.patch, .github/workflows/apm-owner-validation.yml]
+    paths: [.apm-owner-tests.patch, .github/workflows/apm-owner-validation.yml, 'src/features/project-updates/**']
 permissions:
   contents: write
 jobs:
