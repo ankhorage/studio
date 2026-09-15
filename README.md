@@ -3,9 +3,9 @@
 
 # @ankhorage/studio
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v2.4.10](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v2.6.0](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
 
-Standalone Studio authoring package for Ankhorage apps.
+Studio authoring package for Ankhorage apps
 
 ## Usage
 
@@ -57,3 +57,23 @@ Manage Studio development and projects through the Ankh CLI.
 - [validateInsertRecipe sequence](././paradox/diagrams/sequences/validate-insert-recipe.mmd)
 - [validateNodePlacement sequence](././paradox/diagrams/sequences/validate-node-placement.mmd)
 - [validateProjectCreationInput sequence](././paradox/diagrams/sequences/validate-project-creation-input.mmd)
+
+## Public API
+
+### Utilities
+
+<details>
+<summary>studioUpdateExtension</summary>
+
+Expose the headless Studio owner through its native Node/Bun ESM package boundary.
+Studio package policy is bound to the selected target artifact, never the older running host.
+Inspection and planning only read project files; malformed inputs cannot produce an empty success plan.
+Writes use reviewed mutation IDs sequentially and stop immediately on failure. APM owns locking,
+snapshot validation and recovery; this extension neither installs packages nor ships an application.
+Releases use the published Devtools APM gate after versioning and owner transition tests; the exact
+validated archive is published without running lifecycle scripts or packing a second time.
+
+Module: `src/features/project-updates/composition/studioUpdateExtension.ts`
+Source: `src/features/project-updates/composition/studioUpdateExtension.ts:18:14`
+
+</details>

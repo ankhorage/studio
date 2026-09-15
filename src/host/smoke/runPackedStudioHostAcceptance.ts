@@ -211,6 +211,7 @@ async function runConsumerChecksAsync(consumerRoot: string, cacheRoot: string): 
   });
   await runAcceptanceCommandAsync({
     ...options,
+    command: 'node',
     args: ['apm-import.mjs'],
     label: 'Import packed Studio APM extension',
   });

@@ -5045,6 +5045,24 @@
     "structuredRows": []
   },
   {
+    "name": "studioUpdateExtension",
+    "description": "Expose the headless Studio owner through its native Node/Bun ESM package boundary.\nStudio package policy is bound to the selected target artifact, never the older running host.\nInspection and planning only read project files; malformed inputs cannot produce an empty success plan.\nWrites use reviewed mutation IDs sequentially and stop immediately on failure. APM owns locking,\nsnapshot validation and recovery; this extension neither installs packages nor ships an application.\nReleases use the published Devtools APM gate after versioning and owner transition tests; the exact\nvalidated archive is published without running lifecycle scripts or packing a second time.",
+    "isReadme": true,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/features/project-updates/composition/studioUpdateExtension.ts",
+    "sourceLocation": {
+      "filePath": "src/features/project-updates/composition/studioUpdateExtension.ts",
+      "line": 18,
+      "column": 14
+    },
+    "exportPaths": ["src/apm.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "StudioUrlMediaAssetResult",
     "description": null,
     "isReadme": false,

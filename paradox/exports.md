@@ -1672,6 +1672,20 @@ Source: `src/index.ts:244:1`
 | saveStatus           | property | `StudioSaveStatus`    | yes      |             |
 | sessionId            | property | `string \| undefined` | no       |             |
 
+## studioUpdateExtension
+
+Kind: `value`
+Module: `src/features/project-updates/composition/studioUpdateExtension.ts`
+Source: `src/features/project-updates/composition/studioUpdateExtension.ts:18:14`
+
+Expose the headless Studio owner through its native Node/Bun ESM package boundary.
+Studio package policy is bound to the selected target artifact, never the older running host.
+Inspection and planning only read project files; malformed inputs cannot produce an empty success plan.
+Writes use reviewed mutation IDs sequentially and stop immediately on failure. APM owns locking,
+snapshot validation and recovery; this extension neither installs packages nor ships an application.
+Releases use the published Devtools APM gate after versioning and owner transition tests; the exact
+validated archive is published without running lifecycle scripts or packing a second time.
+
 ## StudioUrlMediaAssetResult
 
 Kind: `unknown`
