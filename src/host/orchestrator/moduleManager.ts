@@ -2,6 +2,7 @@ import type { AppManifest } from '@ankhorage/contracts';
 import { createOrchestrator, type ModuleState, type Orchestrator } from '@ankhorage/orchestrator';
 import path from 'path';
 
+import { createStudioProjectWriterProxy } from '../../features/project-updates/composition/createStudioProjectWriterProxy';
 import { findNodeInManifest, updateStudioManifestNode } from '../../manifestState';
 import type { StudioModuleState } from '../../moduleAdminContracts';
 import {
@@ -50,6 +51,22 @@ export class ModuleManager {
     this.appsRoot = path.join(rootPath, 'apps');
     this.projectManager = new ProjectManager(rootPath);
     this.adapter = new LocalFsTargetAdapter();
+    return createStudioProjectWriterProxy(this, {
+      owner: 'module-manager',
+      methods: [
+        'installModule',
+        'uninstallModule',
+        'updateModuleConfig',
+        'executeModuleAdminOperation',
+        'applyPendingOperations',
+        'persistProjectManifest',
+        'syncProjectRuntime',
+        'saveProjectManifest',
+        'rebuildRootLayout',
+        'syncProject',
+      ],
+      resolveProjectRoot: (projectId) => this.getAppPath(projectId),
+    });
   }
 
   /*** List module states projected with host contribution metadata and pending-removal state. */

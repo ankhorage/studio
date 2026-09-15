@@ -9,6 +9,7 @@ import { connectGitHubRepositoryAsync } from '@ankhorage/repository/github';
 import { promises as fs } from 'fs';
 import path from 'path';
 
+import { createStudioProjectWriterProxy } from '../../features/project-updates/composition/createStudioProjectWriterProxy';
 import {
   ProjectCreationValidationError,
   validateProjectCreationInput,
@@ -64,6 +65,21 @@ export class ProjectManager {
       runProjectInfrastructureLifecycle,
       ...dependencies,
     };
+    return createStudioProjectWriterProxy(this, {
+      owner: 'project-manager',
+      methods: [
+        'deleteProject',
+        'installProjectPackages',
+        'connectProjectRepository',
+        'regenerateInfrastructure',
+        'persistProjectManifest',
+        'saveProjectManifest',
+        'syncProjectRuntime',
+        'rebuildRootLayout',
+        'syncProject',
+      ],
+      resolveProjectRoot: (projectId) => getProjectPath(rootPath, projectId),
+    });
   }
 
   /*** List persisted Studio project summaries for the workspace. */
