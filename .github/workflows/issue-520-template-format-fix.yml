@@ -1,0 +1,61 @@
+name: Issue 520 generated Metro formatting
+
+on:
+  push:
+    branches:
+      - fix/520-acceptance-baseline
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - run: bun install --frozen-lockfile
+      - name: Make generated Metro config Prettier-stable
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          template = Path('src/host/orchestrator/templateSources.ts')
+          text = template.read_text()
+          old = "config.resolver.emptyModulePath = path.resolve(__dirname, 'metro.empty-module.js');\nmodule.exports = config;"
+          new = "config.resolver.emptyModulePath = path.resolve(__dirname, 'metro.empty-module.js');\n\nmodule.exports = config;"
+          if old not in text:
+              raise SystemExit('generated Metro formatting target not found')
+          template.write_text(text.replace(old, new, 1))
+
+          test = Path('src/host/orchestrator/templates.test.ts')
+          text = test.read_text()
+          anchor = "    expect(metro).toContain(\"path.resolve(__dirname, 'metro.empty-module.js')\");\n"
+          assertion = "    expect(metro).toContain(\"'metro.empty-module.js');\\n\\nmodule.exports = config;\");\n"
+          if anchor not in text:
+              raise SystemExit('Metro test anchor not found')
+          test.write_text(text.replace(anchor, anchor + assertion, 1))
+          PY
+      - name: Validate focused source fix
+        run: |
+          bun run format
+          bun test src/host/orchestrator/templates.test.ts
+          bun run check-types
+          bun run lint
+          bun run format:check
+      - name: Commit source fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/host/orchestrator/templateSources.ts src/host/orchestrator/templates.test.ts
+          git commit -m 'fix: stabilize generated Metro config formatting'
+      - name: Remove temporary workflow and push
+        run: |
+          git rm .github/workflows/issue-520-template-format-fix.yml
+          git commit -m 'chore: finalize generated Metro formatting fix'
+          git push origin HEAD:fix/520-acceptance-baseline
