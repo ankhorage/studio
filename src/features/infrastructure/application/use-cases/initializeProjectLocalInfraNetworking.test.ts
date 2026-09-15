@@ -3,7 +3,9 @@ import { describe, expect, test } from 'bun:test';
 
 import { initializeProjectLocalInfraNetworking } from './initializeProjectLocalInfraNetworking';
 
-function createManifest(options: { readonly supabase?: boolean; readonly publicBaseUrl?: string } = {}): AppManifest {
+function createManifest(
+  options: { readonly supabase?: boolean; readonly publicBaseUrl?: string } = {},
+): AppManifest {
   const { supabase = true, publicBaseUrl } = options;
   return {
     metadata: {
