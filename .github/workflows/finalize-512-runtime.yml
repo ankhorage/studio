@@ -1,0 +1,45 @@
+name: Finalize Studio Infra 5 runtime migration
+
+on:
+  push:
+    branches:
+      - fix/145-current-infra-consumer
+    paths:
+      - '.github/workflows/finalize-512-runtime.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/145-current-infra-consumer
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - run: bun install --frozen-lockfile
+      - run: python .github/scripts/finalize_512_runtime.py
+      - run: bun run format
+      - run: bun run build
+      - run: bun run check-types
+      - run: bun run lint
+      - run: bun run knip:check
+      - run: bun test src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.test.ts src/host/orchestrator/studioInfraUp.test.ts src/host/secrets/projectSecretService.test.ts src/ui/admin/pages/AuthAdminPage.test.ts
+      - run: bun run test
+      - name: Commit final runtime migration
+        shell: bash
+        run: |
+          rm .github/workflows/finalize-512-runtime.yml
+          rm .github/scripts/finalize_512_runtime.py
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m 'fix: complete Studio Infra 5 runtime migration'
+          git push origin HEAD:fix/145-current-infra-consumer
