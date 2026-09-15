@@ -31,6 +31,56 @@ replace(
     "    const normalizedManifest = initializeProjectLocalInfraNetworking(\n      applySystemTemplates(args.manifest),\n      args.projectId,\n    );\n    return this.store.writeManifest(args.projectId, normalizedManifest);",
 )
 
+# App authoring/project synchronization must not implicitly execute Infra generation.
+# Infrastructure lifecycle is explicit through regenerateInfrastructure / upInfrastructure.
+replace(
+    'src/host/orchestrator/projectManager.ts',
+    "    await this.dependencies.reconcileProjectPackageRootAsync(projectPath);\n    await this.dependencies.infraLifecycle.generateAsync({\n      projectId: slug,\n      projectPath,\n      manifest,\n    });\n    if (onProjectCreated) await onProjectCreated(slug);",
+    "    await this.dependencies.reconcileProjectPackageRootAsync(projectPath);\n    if (onProjectCreated) await onProjectCreated(slug);",
+)
+replace(
+    'src/host/orchestrator/projectManager.ts',
+    "/*** Persist a project manifest, optionally regenerate current scaffold/router ownership, and synchronize infrastructure. */",
+    "/*** Persist a project manifest and optionally regenerate current scaffold/router ownership. */",
+)
+replace(
+    'src/host/orchestrator/projectManager.ts',
+    "\n    await this.dependencies.infraLifecycle.generateAsync({\n      projectId,\n      projectPath,\n      manifest: updated,\n    });\n    return { success: true };",
+    "\n    return { success: true };",
+)
+replace(
+    'src/host/orchestrator/projectManager.ts',
+    "/*** Regenerate current project scaffold/runtime files from the persisted manifest and synchronize infrastructure without changing manifest state. */",
+    "/*** Regenerate current project scaffold/runtime files from the persisted manifest without changing manifest or infrastructure state. */",
+)
+replace(
+    'src/host/orchestrator/projectManager.ts',
+    "    await this.dependencies.reconcileProjectPackageRootAsync(projectPath);\n    await this.dependencies.infraLifecycle.generateAsync({ projectId, projectPath, manifest });\n    return { success: true };",
+    "    await this.dependencies.reconcileProjectPackageRootAsync(projectPath);\n    return { success: true };",
+)
+
+# Remove the ProjectManager compatibility alias; ModuleManager keeps its own canonical sync use case.
+replace(
+    'src/host/orchestrator/projectManager.ts',
+    "        'rebuildRootLayout',\n        'syncProject',\n      ],",
+    "        'rebuildRootLayout',\n      ],",
+)
+replace(
+    'src/host/orchestrator/projectManager.ts',
+    "\n  /***\n   * Delegate project synchronization to syncProjectRuntime.\n   * @todo Remove this compatibility alias and keep one canonical project synchronization operation.\n   */\n  async syncProject(args: {\n    projectId: string;\n    mutations: LayoutMutation[];\n    includeStudio?: boolean;\n  }) {\n    return this.syncProjectRuntime(args);\n  }\n",
+    "",
+)
+replace(
+    'src/host/orchestrator/moduleManager.ts',
+    "    await this.projectManager.syncProject({\n      projectId,\n      mutations: await this.resolveLayoutMutations(projectId),\n    });",
+    "    await this.projectManager.syncProjectRuntime({\n      projectId,\n      mutations: await this.resolveLayoutMutations(projectId),\n    });",
+)
+replace(
+    'src/host/orchestrator/moduleManager.ts',
+    "    return this.projectManager.syncProject({\n      projectId,\n      mutations: await this.resolveLayoutMutations(projectId),\n      includeStudio,\n    });",
+    "    return this.projectManager.syncProjectRuntime({\n      projectId,\n      mutations: await this.resolveLayoutMutations(projectId),\n      includeStudio,\n    });",
+)
+
 # Current environment-aware secret-usage path.
 replace(
     'src/host/secrets/projectSecretService.test.ts',
