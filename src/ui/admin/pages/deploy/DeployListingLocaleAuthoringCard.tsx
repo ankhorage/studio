@@ -1,5 +1,5 @@
 import type { StoreListingLocale } from '@ankhorage/deploy/project';
-import { Button, Card, ConfirmDialog, Select, Text } from '@ankhorage/zora';
+import { Button, ButtonGroup, Card, Dialog, Select, Text } from '@ankhorage/zora';
 import React, { useEffect, useState } from 'react';
 
 import {
@@ -185,15 +185,21 @@ export function DeployListingLocaleAuthoringCard(props: {
           Remove locale
         </Button>
       ) : null}
-      <ConfirmDialog
+      <Dialog
         visible={confirmDelete}
         title="Remove store listing locale?"
         description={`Remove ${selected} through the Deploy owner API? Unrelated locales and assets remain owner-managed.`}
-        confirmLabel="Remove locale"
-        confirmColor="danger"
-        cancelLabel="Cancel"
-        onCancel={() => setConfirmDelete(false)}
-        onConfirm={() => void remove()}
+        onDismiss={() => setConfirmDelete(false)}
+        footer={
+          <ButtonGroup align="end" orientation="responsive">
+            <Button color="neutral" variant="ghost" onPress={() => setConfirmDelete(false)}>
+              Cancel
+            </Button>
+            <Button color="danger" onPress={() => void remove()}>
+              Remove locale
+            </Button>
+          </ButtonGroup>
+        }
       />
     </Card>
   );
