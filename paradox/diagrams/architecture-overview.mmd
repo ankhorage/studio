@@ -279,6 +279,11 @@ graph TD
   module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts["src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts"]
   package__ankhorage_studio -.-> module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts --> module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_ts
+  module_src_features_project_updates_adapters_inbound_registerProjectUpdateRoutes_test_ts["src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts"]
+  package__ankhorage_studio -.-> module_src_features_project_updates_adapters_inbound_registerProjectUpdateRoutes_test_ts
+  module_src_features_project_updates_adapters_inbound_registerProjectUpdateRoutes_test_ts --> module_src_features_project_updates_adapters_inbound_registerProjectUpdateRoutes_ts
+  module_src_features_project_updates_adapters_inbound_registerProjectUpdateRoutes_ts["src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"]
+  package__ankhorage_studio -.-> module_src_features_project_updates_adapters_inbound_registerProjectUpdateRoutes_ts
   module_src_features_project_updates_adapters_inbound_studioUpdateExtension_test_ts["src/features/project-updates/adapters/inbound/studioUpdateExtension.test.ts"]
   package__ankhorage_studio -.-> module_src_features_project_updates_adapters_inbound_studioUpdateExtension_test_ts
   module_src_features_project_updates_adapters_inbound_studioUpdateExtension_test_ts --> module_src_apm_ts
@@ -612,12 +617,16 @@ graph TD
   module_src_host_http_server_ts["src/host/http/server.ts"]
   package__ankhorage_studio -.-> module_src_host_http_server_ts
   module_src_host_http_server_ts --> module_src_contractGuards_ts
+  module_src_host_http_server_ts --> module_src_features_project_updates_adapters_inbound_registerProjectUpdateRoutes_ts
+  module_src_host_http_server_ts --> module_src_features_project_updates_composition_createStudioProjectUpdateService_ts
   module_src_host_http_server_ts --> module_src_host_http_mediaRoutes_ts
   module_src_host_http_server_ts --> module_src_host_http_moduleRoutes_ts
   module_src_host_http_server_ts --> module_src_host_http_projectRuntimeRoutes_ts
   module_src_host_http_server_ts --> module_src_host_http_security_ts
+  module_src_host_http_server_ts --> module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_http_server_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_http_server_ts --> module_src_host_templates_index_ts
   module_src_host_http_server_ts --> module_src_host_utils_workspaceRoot_ts

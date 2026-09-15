@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.7.0",
+      "value": "v2.7.1",
       "color": "cb3837"
     },
     {
@@ -762,6 +762,20 @@
       "exports": ["createStudioProjectInfraLifecycle", "StudioProjectInfraLifecycle"]
     },
     {
+      "path": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["registerProjectUpdateRoutes"]
+    },
+    {
       "path": "src/features/project-updates/adapters/inbound/studioUpdateExtension.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1469,12 +1483,16 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/contractGuards.ts",
+        "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "src/features/project-updates/composition/createStudioProjectUpdateService.ts",
         "src/host/http/mediaRoutes.ts",
         "src/host/http/moduleRoutes.ts",
         "src/host/http/projectRuntimeRoutes.ts",
         "src/host/http/security.ts",
+        "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts",
         "src/host/orchestrator/moduleManager.ts",
         "src/host/orchestrator/projectManager.ts",
+        "src/host/orchestrator/projectPaths.ts",
         "src/host/orchestrator/studioInfraUp.ts",
         "src/host/templates/index.ts",
         "src/host/utils/workspaceRoot.ts",
@@ -12650,6 +12668,186 @@
       }
     },
     {
+      "name": "createServer",
+      "description": "Create one isolated Fastify fixture around a fake APM lifecycle port.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts",
+        "line": 170,
+        "column": 1
+      }
+    },
+    {
+      "name": "registerProjectUpdateRoutes",
+      "description": "Register the authorized HTTP adapter for Studio's composed APM project-update lifecycle.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 29,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveRequestContext",
+      "description": "Resolve a request's validated project id to its server-owned project root.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 107,
+        "column": 1
+      }
+    },
+    {
+      "name": "invokeReadOnly",
+      "description": "Execute one read-only APM request without leaking host exception details.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 130,
+        "column": 1
+      }
+    },
+    {
+      "name": "invokeLifecycle",
+      "description": "Execute one APM lifecycle request and map incomplete or blocked structured results to conflict.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 142,
+        "column": 1
+      }
+    },
+    {
+      "name": "isLifecycleConflict",
+      "description": "Detect structured APM plan/apply/verify results that require further user action.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 156,
+        "column": 1
+      }
+    },
+    {
+      "name": "sendInvalidRequest",
+      "description": "Return a stable bad-request response without echoing untrusted request data.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 165,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAvailability",
+      "description": "Validate the optional APM availability mode.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 170,
+        "column": 1
+      }
+    },
+    {
+      "name": "isPlanRequest",
+      "description": "Validate the bounded request body accepted by the plan route.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 175,
+        "column": 1
+      }
+    },
+    {
+      "name": "isPlanPolicy",
+      "description": "Validate the APM plan policy fields exposed by the host adapter.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 188,
+        "column": 1
+      }
+    },
+    {
+      "name": "isPlanPackageSelection",
+      "description": "Validate one package selection in a host-authored APM plan request.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 214,
+        "column": 1
+      }
+    },
+    {
+      "name": "isPlanTargetSelection",
+      "description": "Validate one compatible/latest/exact APM target selection.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 234,
+        "column": 1
+      }
+    },
+    {
+      "name": "isApplyRequest",
+      "description": "Validate the reviewed start request without accepting a caller-controlled project root.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 264,
+        "column": 1
+      }
+    },
+    {
+      "name": "isResumeRequest",
+      "description": "Validate the durable resume request without accepting a caller-controlled project root.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 276,
+        "column": 1
+      }
+    },
+    {
+      "name": "isOperationRequest",
+      "description": "Validate the verify request's operation identity.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 288,
+        "column": 1
+      }
+    },
+    {
+      "name": "isApplyPermissions",
+      "description": "Validate explicit APM execution permissions.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 294,
+        "column": 1
+      }
+    },
+    {
+      "name": "isPlanResult",
+      "description": "Validate a reviewed APM plan envelope before passing it back to the executor for revalidation.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 305,
+        "column": 1
+      }
+    },
+    {
+      "name": "isOptionalString",
+      "description": "Validate an optional string field.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 329,
+        "column": 1
+      }
+    },
+    {
+      "name": "isOptionalBoolean",
+      "description": "Validate an optional boolean field.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 334,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNonEmptyString",
+      "description": "Validate a required non-empty string.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "line": 339,
+        "column": 1
+      }
+    },
+    {
       "name": "requirePackagePolicyProjection",
       "description": "Resolve the single executable Studio package-policy projection.",
       "sourceLocation": {
@@ -15912,16 +16110,16 @@
       "description": "Parse one template selection from the trusted Studio project-create request body.",
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 22,
+        "line": 26,
         "column": 1
       }
     },
     {
       "name": "createStudioHostServer",
-      "description": "Compose the Fastify Studio host by applying security middleware and registering project, template, infrastructure, runtime, media and module HTTP endpoints.\n@todo Split the remaining inline project/template/infrastructure endpoints into domain-owned HTTP route adapters so this server remains composition/bootstrap only and can satisfy canonical function-size lint rules without local overrides.",
+      "description": "Compose the Fastify Studio host by applying security middleware and registering project, template, infrastructure, runtime, project-update, media and module HTTP endpoints.\n@todo Split the remaining inline project/template/infrastructure endpoints into domain-owned HTTP route adapters so this server remains composition/bootstrap only and can satisfy canonical function-size lint rules without local overrides.",
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 44,
+        "line": 48,
         "column": 1
       }
     },
@@ -15930,7 +16128,7 @@
       "description": "Resolve host options, construct Studio managers/server composition and listen on the requested local interface.",
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 278,
+        "line": 294,
         "column": 1
       }
     },
@@ -27739,11 +27937,6 @@
       },
       {
         "fromPath": "src/index.ts",
-        "toPath": "src/types/project-generation.ts",
-        "sourcePath": "src/index.ts"
-      },
-      {
-        "fromPath": "src/index.ts",
         "toPath": "src/projectAuthHealth.ts",
         "sourcePath": "src/index.ts"
       },
@@ -27770,6 +27963,11 @@
       {
         "fromPath": "src/index.ts",
         "toPath": "src/templateCatalogContracts.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
+        "toPath": "src/types/project-generation.ts",
         "sourcePath": "src/index.ts"
       },
       {
@@ -29574,7 +29772,22 @@
       },
       {
         "fromPath": "src/host/http/server.ts",
+        "toPath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromPath": "src/host/http/server.ts",
+        "toPath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromPath": "src/host/http/server.ts",
         "toPath": "src/projectIdentity.ts",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromPath": "src/host/http/server.ts",
+        "toPath": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -29585,6 +29798,11 @@
       {
         "fromPath": "src/host/http/server.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromPath": "src/host/http/server.ts",
+        "toPath": "src/host/orchestrator/projectPaths.ts",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -30009,12 +30227,12 @@
       },
       {
         "fromPath": "src/host/orchestrator/projectManager.ts",
-        "toPath": "src/projectIdentity.ts",
+        "toPath": "src/manifestSync.ts",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
         "fromPath": "src/host/orchestrator/projectManager.ts",
-        "toPath": "src/manifestSync.ts",
+        "toPath": "src/projectIdentity.ts",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -32266,6 +32484,11 @@
         "fromPath": "src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.test.ts",
         "toPath": "src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.ts",
         "sourcePath": "src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.test.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts",
+        "toPath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts"
       },
       {
         "fromPath": "src/features/project-updates/adapters/inbound/studioUpdateExtension.test.ts",
@@ -47528,6 +47751,18 @@
         "sourcePath": "src/host/http/server.ts"
       },
       {
+        "fromSymbol": "createStudioHostServer",
+        "toSymbol": "createStudioProjectUpdateService",
+        "callExpression": "createStudioProjectUpdateService",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromSymbol": "createStudioHostServer",
+        "toSymbol": "createStudioPendingModuleLifecyclePort",
+        "callExpression": "createStudioPendingModuleLifecyclePort",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
         "fromSymbol": "origin",
         "toSymbol": "isOriginAllowed",
         "callExpression": "isOriginAllowed",
@@ -47549,6 +47784,24 @@
         "fromSymbol": "createStudioHostServer",
         "toSymbol": "registerProjectRuntimeRoutes",
         "callExpression": "registerProjectRuntimeRoutes",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromSymbol": "createStudioHostServer",
+        "toSymbol": "registerProjectUpdateRoutes",
+        "callExpression": "registerProjectUpdateRoutes",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectRootAsync",
+        "toSymbol": "listProjects",
+        "callExpression": "projectManager.listProjects",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectRootAsync",
+        "toSymbol": "getProjectPath",
+        "callExpression": "getProjectPath",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -63332,6 +63585,354 @@
         "sourcePath": "src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.ts"
       },
       {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts",
+        "toSymbol": "createServer",
+        "callExpression": "createServer",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts"
+      },
+      {
+        "fromSymbol": "createServer",
+        "toSymbol": "Fastify",
+        "callExpression": "Fastify",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts"
+      },
+      {
+        "fromSymbol": "createServer",
+        "toSymbol": "registerProjectUpdateRoutes",
+        "callExpression": "registerProjectUpdateRoutes",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "resolveRequestContext",
+        "callExpression": "resolveRequestContext",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "isAvailability",
+        "callExpression": "isAvailability",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "sendInvalidRequest",
+        "callExpression": "sendInvalidRequest",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "invokeReadOnly",
+        "callExpression": "invokeReadOnly",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "statusAsync",
+        "callExpression": "options.service.statusAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "isPlanRequest",
+        "callExpression": "isPlanRequest",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "invokeLifecycle",
+        "callExpression": "invokeLifecycle",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "planAsync",
+        "callExpression": "options.service.planAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "isApplyRequest",
+        "callExpression": "isApplyRequest",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "applyAsync",
+        "callExpression": "options.service.applyAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "isResumeRequest",
+        "callExpression": "isResumeRequest",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "isOperationRequest",
+        "callExpression": "isOperationRequest",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
+        "toSymbol": "verifyAsync",
+        "callExpression": "options.service.verifyAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "resolveRequestContext",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "resolveRequestContext",
+        "toSymbol": "sendInvalidRequest",
+        "callExpression": "sendInvalidRequest",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "resolveRequestContext",
+        "toSymbol": "resolveProjectRootAsync",
+        "callExpression": "options.resolveProjectRootAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "invokeReadOnly",
+        "toSymbol": "operation",
+        "callExpression": "operation",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "invokeLifecycle",
+        "toSymbol": "operation",
+        "callExpression": "operation",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "invokeLifecycle",
+        "toSymbol": "isLifecycleConflict",
+        "callExpression": "isLifecycleConflict",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isLifecycleConflict",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanRequest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanRequest",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanRequest",
+        "toSymbol": "isAvailability",
+        "callExpression": "isAvailability",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanRequest",
+        "toSymbol": "isPlanPolicy",
+        "callExpression": "isPlanPolicy",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanPolicy",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanPolicy",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanPackageSelection",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanPackageSelection",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanPackageSelection",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanPackageSelection",
+        "toSymbol": "isPlanTargetSelection",
+        "callExpression": "isPlanTargetSelection",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanTargetSelection",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanTargetSelection",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanTargetSelection",
+        "toSymbol": "isOptionalBoolean",
+        "callExpression": "isOptionalBoolean",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanTargetSelection",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isApplyRequest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isApplyRequest",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isApplyRequest",
+        "toSymbol": "isPlanResult",
+        "callExpression": "isPlanResult",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isApplyRequest",
+        "toSymbol": "isApplyPermissions",
+        "callExpression": "isApplyPermissions",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isResumeRequest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isResumeRequest",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isResumeRequest",
+        "toSymbol": "isNonEmptyString",
+        "callExpression": "isNonEmptyString",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isResumeRequest",
+        "toSymbol": "isApplyPermissions",
+        "callExpression": "isApplyPermissions",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isOperationRequest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isOperationRequest",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isOperationRequest",
+        "toSymbol": "isNonEmptyString",
+        "callExpression": "isNonEmptyString",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isApplyPermissions",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isApplyPermissions",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanResult",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
+        "fromSymbol": "isPlanResult",
+        "toSymbol": "isNonEmptyString",
+        "callExpression": "isNonEmptyString",
+        "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts"
+      },
+      {
         "fromSymbol": "src/features/project-updates/adapters/inbound/studioUpdateExtension.test.ts",
         "toSymbol": "readPackagePolicyProjection",
         "callExpression": "readPackagePolicyProjection",
@@ -65934,16 +66535,6 @@
         "sourcePath": "src/moduleAdminContracts.ts"
       },
       {
-        "fromSymbol": "StudioRuntimeProjectionState",
-        "toType": "StudioRuntimeProjectionReason",
-        "sourcePath": "src/types/project-generation.ts"
-      },
-      {
-        "fromSymbol": "StudioRuntimeProjectionState",
-        "toType": "StudioRuntimeProjectionStatus",
-        "sourcePath": "src/types/project-generation.ts"
-      },
-      {
         "fromSymbol": "ProjectAuthDiagnostic",
         "toType": "ProjectAuthDiagnosticSeverity",
         "sourcePath": "src/projectAuthHealth.ts"
@@ -66017,6 +66608,16 @@
         "fromSymbol": "TemplateCatalogCategory",
         "toType": "TemplateCatalogTemplate",
         "sourcePath": "src/templateCatalogContracts.ts"
+      },
+      {
+        "fromSymbol": "StudioRuntimeProjectionState",
+        "toType": "StudioRuntimeProjectionReason",
+        "sourcePath": "src/types/project-generation.ts"
+      },
+      {
+        "fromSymbol": "StudioRuntimeProjectionState",
+        "toType": "StudioRuntimeProjectionStatus",
+        "sourcePath": "src/types/project-generation.ts"
       },
       {
         "fromSymbol": "StudioSelectionState",
