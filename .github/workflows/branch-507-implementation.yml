@@ -102,8 +102,8 @@ jobs:
       - name: Remove one-shot workflow
         run: git rm .github/workflows/branch-507-implementation.yml
 
-      - name: Format touched sources
-        run: bunx @ankhorage/devtools prettier --write src/host/orchestrator/projectManager.ts src/host/orchestrator/moduleManager.ts src/features/project-updates/composition package.json bun.lock
+      - name: Format repository
+        run: bun run format
 
       - name: Commit implementation
         run: |
