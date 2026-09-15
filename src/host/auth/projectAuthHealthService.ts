@@ -73,13 +73,12 @@ export class ProjectAuthHealthService {
         this.projectManager.getInfrastructureStatus(input.projectId),
         this.projectManager.getInfrastructureOutputs(input.projectId),
       ]);
+      const publicBaseUrl = environmentSpec?.networking?.publicBaseUrl;
       const runtimeDiagnostics = await observeProjectAuthRuntimeDiagnostics({
         status: infraStatus,
         outputs: infraOutputs.outputs,
         callbackRoute: oauth.callbackRoute,
-        ...(environmentSpec.networking?.publicBaseUrl
-          ? { publicBaseUrl: environmentSpec.networking.publicBaseUrl }
-          : {}),
+        ...(publicBaseUrl ? { publicBaseUrl } : {}),
       });
 
       return {
