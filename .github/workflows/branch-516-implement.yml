@@ -1,0 +1,417 @@
+name: Branch 516 implementation
+
+on:
+  push:
+    branches:
+      - feat/516-authoring-projection-currency
+
+permissions:
+  contents: write
+
+jobs:
+  implement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: bun install --frozen-lockfile
+      - name: Materialize projection currency
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace(path: str, old: str, new: str) -> None:
+              file = Path(path)
+              source = file.read_text()
+              if old not in source:
+                  raise SystemExit(f"expected source not found in {path}: {old[:120]!r}")
+              file.write_text(source.replace(old, new, 1))
+
+          path = 'src/host/orchestrator/projectManager.ts'
+          replace(
+              path,
+              "import { createStudioProjectWriterProxy } from '../../features/project-updates/composition/createStudioProjectWriterProxy';\n",
+              "import { createStudioProjectWriterProxy } from '../../features/project-updates/composition/createStudioProjectWriterProxy';\nimport type { StudioRuntimeProjectionState } from '../../types/project-generation';\n",
+          )
+          replace(
+              path,
+              "import { readProjectStudioInclusion, writeProjectStudioInclusion } from './projectGenerationState';\n",
+              "import { ProjectGenerationStateStore } from './ProjectGenerationStateStore';\n",
+          )
+          replace(
+              path,
+              "  private readonly dependencies: ProjectManagerDependencies;\n  private readonly appsRoot: string;\n",
+              "  private readonly dependencies: ProjectManagerDependencies;\n  private readonly generationState: ProjectGenerationStateStore;\n  private readonly appsRoot: string;\n",
+          )
+          replace(
+              path,
+              "    this.bundledMedia = new ProjectBundledMediaService(rootPath);\n    this.dependencies = {\n",
+              "    this.bundledMedia = new ProjectBundledMediaService(rootPath);\n    this.generationState = new ProjectGenerationStateStore();\n    this.dependencies = {\n",
+          )
+          replace(path, "    await writeProjectStudioInclusion(projectPath, includeStudio);\n", "    await this.generationState.writeStudioInclusionAsync(projectPath, includeStudio);\n")
+          replace(
+              path,
+              "    await syncProjectInfrastructure({ projectId: slug, projectPath, manifest });\n    if (onProjectCreated) await onProjectCreated(slug);\n",
+              "    await syncProjectInfrastructure({ projectId: slug, projectPath, manifest });\n    await this.generationState.recordRuntimeProjectionCurrentAsync(projectPath, manifest);\n    if (onProjectCreated) await onProjectCreated(slug);\n",
+          )
+          replace(
+              path,
+              "  /*** Apply system-owned manifest templates and persist the normalized project manifest without regenerating route files. */\n  async persistProjectManifest(args: {\n    projectId: string;\n    manifest: AppManifest;\n  }): Promise<AppManifest> {\n    const normalizedManifest = applySystemTemplates(args.manifest);\n    return this.store.writeManifest(args.projectId, normalizedManifest);\n  }\n",
+              "  /*** Apply system-owned manifest templates, persist the normalized manifest and record runtime projection currency without regenerating files. */\n  async persistProjectManifest(args: {\n    projectId: string;\n    manifest: AppManifest;\n  }): Promise<AppManifest> {\n    const normalizedManifest = applySystemTemplates(args.manifest);\n    const persisted = await this.store.writeManifest(args.projectId, normalizedManifest);\n    await this.generationState.recordManifestPersistenceAsync(\n      getProjectPath(this.rootPath, args.projectId),\n      persisted,\n    );\n    return persisted;\n  }\n",
+          )
+          replace(
+              path,
+              "  /*** Read one project's canonical persisted manifest. */\n  async getProjectManifest(projectId: string): Promise<AppManifest> {\n    return this.store.readManifest(projectId);\n  }\n",
+              "  /*** Read one project's canonical persisted manifest. */\n  async getProjectManifest(projectId: string): Promise<AppManifest> {\n    return this.store.readManifest(projectId);\n  }\n\n  /*** Inspect durable runtime projection currency for one persisted project without changing project state. */\n  async getRuntimeProjectionStateAsync(projectId: string): Promise<StudioRuntimeProjectionState> {\n    const projectPath = getProjectPath(this.rootPath, projectId);\n    const manifest = await this.getProjectManifest(projectId);\n    return this.generationState.inspectRuntimeProjectionAsync(projectPath, manifest);\n  }\n",
+          )
+          replace(
+              path,
+              "  /*** Persist a project manifest, optionally regenerate current scaffold/router ownership, and synchronize infrastructure. */\n  async saveProjectManifest(args: {\n    projectId: string;\n    manifest: AppManifest;\n    mutations: LayoutMutation[];\n    regenerateRouterFiles?: boolean;\n  }) {\n    const { projectId, manifest, mutations, regenerateRouterFiles = true } = args;\n    const projectPath = getProjectPath(this.rootPath, projectId);\n\n    if (regenerateRouterFiles) {\n      await this.generatedRouteFiles.assertSyncable(projectPath);\n      requireProjectDeployTargets(manifest);\n    }\n\n    const updated = await this.persistProjectManifest({ projectId, manifest });\n    const runtimePlan = resolveExpoRuntimePlan(updated);\n\n    if (regenerateRouterFiles) {\n      const includeStudio = await this.shouldIncludeStudio(projectPath);\n      await this.syncProjectScaffold(projectPath, projectId, updated, includeStudio, runtimePlan);\n      await this.writeGeneratedFiles(projectPath, updated, mutations, {\n        includeStudio,\n        operation: 'sync',\n        runtimePlan,\n      });\n      await this.dependencies.reconcileProjectPackageRootAsync(projectPath);\n    }\n\n    await syncProjectInfrastructure({ projectId, projectPath, manifest: updated });\n    return { success: true };\n  }\n",
+              "  /*** Persist a project manifest and record runtime projection success or failure separately from manifest persistence. */\n  async saveProjectManifest(args: {\n    projectId: string;\n    manifest: AppManifest;\n    mutations: LayoutMutation[];\n    regenerateRouterFiles?: boolean;\n  }) {\n    const { projectId, manifest, mutations, regenerateRouterFiles = true } = args;\n    const projectPath = getProjectPath(this.rootPath, projectId);\n\n    if (regenerateRouterFiles) {\n      await this.generatedRouteFiles.assertSyncable(projectPath);\n      requireProjectDeployTargets(manifest);\n    }\n\n    const updated = await this.persistProjectManifest({ projectId, manifest });\n    if (!regenerateRouterFiles) {\n      await syncProjectInfrastructure({ projectId, projectPath, manifest: updated });\n      return { success: true };\n    }\n\n    try {\n      const runtimePlan = resolveExpoRuntimePlan(updated);\n      const includeStudio = await this.shouldIncludeStudio(projectPath);\n      await this.syncProjectScaffold(projectPath, projectId, updated, includeStudio, runtimePlan);\n      await this.writeGeneratedFiles(projectPath, updated, mutations, {\n        includeStudio,\n        operation: 'sync',\n        runtimePlan,\n      });\n      await this.dependencies.reconcileProjectPackageRootAsync(projectPath);\n      await syncProjectInfrastructure({ projectId, projectPath, manifest: updated });\n      await this.generationState.recordRuntimeProjectionCurrentAsync(projectPath, updated);\n      return { success: true };\n    } catch (error) {\n      await this.generationState.recordRuntimeProjectionFailureAsync(projectPath, updated);\n      throw error;\n    }\n  }\n",
+          )
+          replace(
+              path,
+              "  /*** Regenerate current project scaffold/runtime files from the persisted manifest and synchronize infrastructure without changing manifest state. */\n  async syncProjectRuntime(args: {\n    projectId: string;\n    mutations: LayoutMutation[];\n    includeStudio?: boolean;\n  }) {\n    const { projectId, mutations, includeStudio } = args;\n    const projectPath = getProjectPath(this.rootPath, projectId);\n    const manifest = await this.getProjectManifest(projectId);\n    await this.generatedRouteFiles.assertSyncable(projectPath);\n    const resolvedIncludeStudio = await this.shouldIncludeStudio(projectPath, includeStudio);\n    const runtimePlan = resolveExpoRuntimePlan(manifest);\n\n    await this.syncProjectScaffold(\n      projectPath,\n      projectId,\n      manifest,\n      resolvedIncludeStudio,\n      runtimePlan,\n    );\n    await this.writeGeneratedFiles(projectPath, manifest, mutations, {\n      includeStudio: resolvedIncludeStudio,\n      operation: 'sync',\n      runtimePlan,\n    });\n    await this.dependencies.reconcileProjectPackageRootAsync(projectPath);\n    await syncProjectInfrastructure({ projectId, projectPath, manifest });\n    return { success: true };\n  }\n",
+              "  /*** Regenerate current project runtime projections and durably record whether the exact persisted runtime fingerprint is current. */\n  async syncProjectRuntime(args: {\n    projectId: string;\n    mutations: LayoutMutation[];\n    includeStudio?: boolean;\n  }) {\n    const { projectId, mutations, includeStudio } = args;\n    const projectPath = getProjectPath(this.rootPath, projectId);\n    const manifest = await this.getProjectManifest(projectId);\n\n    try {\n      await this.generatedRouteFiles.assertSyncable(projectPath);\n      const resolvedIncludeStudio = await this.shouldIncludeStudio(projectPath, includeStudio);\n      const runtimePlan = resolveExpoRuntimePlan(manifest);\n      await this.syncProjectScaffold(\n        projectPath,\n        projectId,\n        manifest,\n        resolvedIncludeStudio,\n        runtimePlan,\n      );\n      await this.writeGeneratedFiles(projectPath, manifest, mutations, {\n        includeStudio: resolvedIncludeStudio,\n        operation: 'sync',\n        runtimePlan,\n      });\n      await this.dependencies.reconcileProjectPackageRootAsync(projectPath);\n      await syncProjectInfrastructure({ projectId, projectPath, manifest });\n      await this.generationState.recordRuntimeProjectionCurrentAsync(projectPath, manifest);\n      return { success: true };\n    } catch (error) {\n      await this.generationState.recordRuntimeProjectionFailureAsync(projectPath, manifest);\n      throw error;\n    }\n  }\n",
+          )
+          replace(
+              path,
+              "    return requested ?? (await readProjectStudioInclusion(projectPath));\n",
+              "    return requested ?? (await this.generationState.readStudioInclusionAsync(projectPath));\n",
+          )
+          replace(path, "    await writeProjectStudioInclusion(projectPath, includeStudio);\n", "    await this.generationState.writeStudioInclusionAsync(projectPath, includeStudio);\n")
+
+          path = 'src/host/orchestrator/ProjectGenerationStateStore.ts'
+          replace(
+              path,
+              "    const state = await this.readRequiredStateAsync(projectPath);\n    const desiredSignature = createRuntimeProjectionSignature(manifest);\n    const current = state.runtimeProjection;\n",
+              "    const state = await this.readOptionalStateAsync(projectPath);\n    const desiredSignature = createRuntimeProjectionSignature(manifest);\n    if (!state) {\n      return { status: 'unknown', desiredSignature, appliedSignature: null };\n    }\n    const current = state.runtimeProjection;\n",
+          )
+
+          path = 'src/host/http/projectRuntimeRoutes.ts'
+          replace(
+              path,
+              "type ProjectRuntimeManager = Pick<ProjectManager, 'getInfrastructureStatus'>;\n",
+              "type ProjectRuntimeManager = Pick<\n  ProjectManager,\n  'getInfrastructureStatus' | 'getRuntimeProjectionStateAsync'\n>;\n",
+          )
+          replace(
+              path,
+              "  /*** Ensure/open the project's web launch session and return its URL/start state. */\n",
+              "  /*** Return durable runtime projection currency without changing project state. */\n  fastify.get('/api/projects/:id/projection/runtime', async (request, reply) => {\n    const { id } = request.params as { readonly id: string };\n    try {\n      return await options.projectManager.getRuntimeProjectionStateAsync(id);\n    } catch (error) {\n      const message = error instanceof Error ? error.message : String(error);\n      return reply.status(500).send({ error: message });\n    }\n  });\n\n  /*** Ensure/open the project's web launch session and return its URL/start state. */\n",
+          )
+
+          path = 'src/host/http/projectRuntimeRoutes.test.ts'
+          replace(
+              path,
+              "const generatedStatus = {\n",
+              "const currentProjection = {\n  status: 'current',\n  desiredSignature: 'runtime-signature',\n  appliedSignature: 'runtime-signature',\n} as const;\n\nconst generatedStatus = {\n",
+          )
+          replace(
+              path,
+              "describe('project runtime HTTP adapter', () => {\n",
+              "describe('project runtime HTTP adapter', () => {\n  test('reports runtime projection currency without invoking runtime side effects', async () => {\n    const server = createServer(throwingDependencies());\n\n    const response = await server.inject({\n      method: 'GET',\n      url: '/api/projects/project-one/projection/runtime',\n    });\n\n    expect(response.statusCode).toBe(200);\n    expect(JSON.parse(response.body) as unknown).toEqual(currentProjection);\n  });\n\n",
+          )
+          replace(
+              path,
+              "    projectManager: {\n      getInfrastructureStatus: () => Promise.resolve(status),\n    },\n",
+              "    projectManager: {\n      getInfrastructureStatus: () => Promise.resolve(status),\n      getRuntimeProjectionStateAsync: () => Promise.resolve(currentProjection),\n    },\n",
+          )
+
+          path = 'src/index.ts'
+          replace(
+              path,
+              "import type { StudioMediaDeleteResult } from './mediaAuthoringModel';\n",
+              "import type { StudioMediaDeleteResult } from './mediaAuthoringModel';\nimport type { StudioRuntimeProjectionState } from './types/project-generation';\n",
+          )
+          replace(
+              path,
+              "export * from './propertiesAuthoringModel';\n",
+              "export * from './propertiesAuthoringModel';\nexport type {\n  StudioRuntimeProjectionFailureEvidence,\n  StudioRuntimeProjectionState,\n  StudioRuntimeProjectionStatus,\n} from './types/project-generation';\n",
+          )
+          replace(
+              path,
+              "  'StudioContextValue',\n",
+              "  'StudioContextValue',\n  'StudioRuntimeProjectionState',\n",
+          )
+          replace(
+              path,
+              "export type StudioSaveStatus = 'idle' | 'saving' | 'saved' | 'error';\n",
+              "/*** Report canonical manifest persistence only; runtime projection currency is tracked separately. */\nexport type StudioSaveStatus = 'idle' | 'saving' | 'saved' | 'error';\n",
+          )
+          replace(
+              path,
+              "  saveStatus: StudioSaveStatus;\n  isLoading: boolean;\n",
+              "  saveStatus: StudioSaveStatus;\n  runtimeProjection: StudioRuntimeProjectionState;\n  isLoading: boolean;\n",
+          )
+
+          path = 'src/core/StudioProvider.ts'
+          replace(
+              path,
+              "import { DEFAULT_AUTH_FLOW } from '@ankhorage/contracts';\n",
+              "import { DEFAULT_AUTH_FLOW } from '@ankhorage/contracts';\nimport { isRecord, readOwnProperty } from '@ankhorage/utility/object';\n",
+          )
+          replace(
+              path,
+              "import { resolveScreenIdForPathname } from '../routeUtils';\n",
+              "import { resolveScreenIdForPathname } from '../routeUtils';\nimport type { StudioRuntimeProjectionState } from '../types/project-generation';\n",
+          )
+          replace(
+              path,
+              "const STUDIO_MANIFEST_SAVE_DELAY_MS = 350;\n",
+              "const STUDIO_MANIFEST_SAVE_DELAY_MS = 350;\nconst UNKNOWN_RUNTIME_PROJECTION_STATE: StudioRuntimeProjectionState = {\n  status: 'unknown',\n  desiredSignature: null,\n  appliedSignature: null,\n};\n",
+          )
+          replace(
+              path,
+              "  const [saveStatus, setSaveStatus] = useState<StudioContextValue['saveStatus']>('idle');\n",
+              "  const [saveStatus, setSaveStatus] = useState<StudioContextValue['saveStatus']>('idle');\n  const [runtimeProjection, setRuntimeProjection] = useState<StudioRuntimeProjectionState>(\n    UNKNOWN_RUNTIME_PROJECTION_STATE,\n  );\n",
+          )
+          replace(
+              path,
+              "    setSaveStatus,\n    setIsLoading,\n",
+              "    setSaveStatus,\n    setRuntimeProjection,\n    setIsLoading,\n",
+          )
+          replace(
+              path,
+              "      saveStatus,\n      isLoading,\n",
+              "      saveStatus,\n      runtimeProjection,\n      isLoading,\n",
+          )
+          replace(
+              path,
+              "      saveStatus,\n      selectedNodeId,\n",
+              "      saveStatus,\n      runtimeProjection,\n      selectedNodeId,\n",
+          )
+          replace(
+              path,
+              "  readonly setSaveStatus: React.Dispatch<React.SetStateAction<StudioContextValue['saveStatus']>>;\n  readonly setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;\n",
+              "  readonly setSaveStatus: React.Dispatch<React.SetStateAction<StudioContextValue['saveStatus']>>;\n  readonly setRuntimeProjection: React.Dispatch<\n    React.SetStateAction<StudioRuntimeProjectionState>\n  >;\n  readonly setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;\n",
+          )
+          replace(
+              path,
+              "    setError,\n    setIsLoading,\n    replaceManifest,\n    setSaveStatus,\n",
+              "    setError,\n    setIsLoading,\n    replaceManifest,\n    setRuntimeProjection,\n    setSaveStatus,\n",
+          )
+          replace(
+              path,
+              "      saveManifest: persistProjectManifest,\n",
+              "      saveManifest: async (currentProjectId, currentManifest) => {\n        await persistProjectManifest(currentProjectId, currentManifest);\n        setRuntimeProjection(\n          await requestRuntimeProjectionStateOrUnknownAsync(currentProjectId),\n        );\n      },\n",
+          )
+          replace(
+              path,
+              "      lastPersistedSignatureRef.current = loadedSignature;\n      setSaveStatus('saved');\n",
+              "      lastPersistedSignatureRef.current = loadedSignature;\n      setRuntimeProjection(await requestRuntimeProjectionStateOrUnknownAsync(projectId));\n      setSaveStatus('saved');\n",
+          )
+          replace(
+              path,
+              "    setSaveStatus,\n  ]);\n",
+              "    setRuntimeProjection,\n    setSaveStatus,\n  ]);\n",
+          )
+          replace(
+              path,
+              "/***\n * Parse a persistence response body as JSON and convert invalid bodies into an explicit request error.\n",
+              "/*** Fetch durable runtime projection currency and degrade read failures to explicit unknown evidence. */\nasync function requestRuntimeProjectionStateOrUnknownAsync(\n  projectId: string,\n): Promise<StudioRuntimeProjectionState> {\n  try {\n    const response = await fetch(\n      `${API_BASE}/projects/${encodeURIComponent(projectId)}/projection/runtime`,\n    );\n    const value = await readPersistenceJson(response);\n    if (!response.ok || !isStudioRuntimeProjectionState(value)) {\n      return UNKNOWN_RUNTIME_PROJECTION_STATE;\n    }\n    return value;\n  } catch {\n    return UNKNOWN_RUNTIME_PROJECTION_STATE;\n  }\n}\n\n/*** Validate the bounded public runtime projection state returned by the Studio host. */\nfunction isStudioRuntimeProjectionState(value: unknown): value is StudioRuntimeProjectionState {\n  if (!isRecord(value)) return false;\n  const status = readOwnProperty(value, 'status');\n  const desiredSignature = readOwnProperty(value, 'desiredSignature');\n  const appliedSignature = readOwnProperty(value, 'appliedSignature');\n  const failure = readOwnProperty(value, 'failure');\n  return (\n    (status === 'current' ||\n      status === 'pending' ||\n      status === 'failed' ||\n      status === 'unknown') &&\n    (desiredSignature === null || typeof desiredSignature === 'string') &&\n    (appliedSignature === null || typeof appliedSignature === 'string') &&\n    (failure === undefined || isStudioRuntimeProjectionFailureEvidence(failure))\n  );\n}\n\n/*** Validate non-sensitive runtime projection failure evidence returned by the Studio host. */\nfunction isStudioRuntimeProjectionFailureEvidence(value: unknown): boolean {\n  return (\n    isRecord(value) &&\n    readOwnProperty(value, 'code') === 'runtime-projection-failed' &&\n    typeof readOwnProperty(value, 'at') === 'string'\n  );\n}\n\n/***\n * Parse a persistence response body as JSON and convert invalid bodies into an explicit request error.\n",
+          )
+          replace(
+              path,
+              "function createPersistenceError(value: unknown, status: number): Error {\n  const record =\n    typeof value === 'object' && value !== null ? (value as Record<string, unknown>) : {};\n  const error = typeof record.error === 'string' ? record.error : `HTTP ${status}`;\n  return new Error(error);\n}\n",
+              "function createPersistenceError(value: unknown, status: number): Error {\n  const error = isRecord(value) ? readOwnProperty(value, 'error') : undefined;\n  return new Error(typeof error === 'string' ? error : `HTTP ${status}`);\n}\n",
+          )
+
+          path = 'src/core/StudioProvider.test.ts'
+          replace(
+              path,
+              "  expect(source).toContain('flushManifest: persistence.flushManifest');\n",
+              "  expect(source).toContain('flushManifest: persistence.flushManifest');\n  expect(source).toContain('/projection/runtime');\n  expect(source).toContain('runtimeProjection,');\n  expect(source).toContain('requestRuntimeProjectionStateOrUnknownAsync');\n",
+          )
+
+          Path('src/host/orchestrator/projectGenerationState.test.ts').write_text(r'''import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+
+import type { AppManifest } from '@ankhorage/contracts';
+import { composeCategoryAppManifest } from '@ankhorage/templates';
+import { expect, test } from 'bun:test';
+
+import { ProjectGenerationStateStore } from './ProjectGenerationStateStore';
+
+const store = new ProjectGenerationStateStore();
+
+async function captureError(operation: () => Promise<unknown>): Promise<Error | null> {
+  try {
+    await operation();
+    return null;
+  } catch (error) {
+    return error instanceof Error ? error : new Error(String(error));
+  }
+}
+
+/*** Build one canonical manifest for generation-state tests. */
+function createManifest(modules: readonly string[] = []): AppManifest {
+  const { manifest } = composeCategoryAppManifest({
+    category: 'developer_tools',
+    name: 'Projection Currency Fixture',
+    slug: 'projection-currency-fixture',
+  });
+  return {
+    ...manifest,
+    infra: {
+      ...manifest.infra,
+      modules: [...modules],
+    },
+  };
+}
+
+test('persists explicit Studio inclusion without inventing runtime projection evidence', async () => {
+  const projectPath = await mkdtemp(path.join(tmpdir(), 'ankhorage-studio-generation-state-'));
+
+  await store.writeStudioInclusionAsync(projectPath, true);
+
+  expect(await store.readStudioInclusionAsync(projectPath)).toBe(true);
+  expect(
+    JSON.parse(await readFile(path.join(projectPath, '.ankh/generation-state.json'), 'utf8')),
+  ).toEqual({ includeStudio: true });
+  expect(await store.inspectRuntimeProjectionAsync(projectPath, createManifest())).toMatchObject({
+    status: 'unknown',
+    appliedSignature: null,
+  });
+});
+
+test('records manifest-only runtime drift as pending and successful projection as current', async () => {
+  const projectPath = await mkdtemp(path.join(tmpdir(), 'ankhorage-studio-generation-state-'));
+  const first = createManifest(['module-a']);
+  const second = createManifest(['module-a', 'module-b']);
+  await store.writeStudioInclusionAsync(projectPath, false);
+  await store.recordRuntimeProjectionCurrentAsync(projectPath, first);
+
+  expect(await store.recordManifestPersistenceAsync(projectPath, second)).toMatchObject({
+    status: 'pending',
+  });
+  expect(await store.recordRuntimeProjectionCurrentAsync(projectPath, second)).toMatchObject({
+    status: 'current',
+  });
+});
+
+test('keeps runtime projection current when only normalized runtime-irrelevant ordering changes', async () => {
+  const projectPath = await mkdtemp(path.join(tmpdir(), 'ankhorage-studio-generation-state-'));
+  const first = createManifest(['module-b', 'module-a']);
+  const second = createManifest(['module-a', 'module-b']);
+  await store.writeStudioInclusionAsync(projectPath, true);
+  await store.recordRuntimeProjectionCurrentAsync(projectPath, first);
+
+  expect(await store.recordManifestPersistenceAsync(projectPath, second)).toMatchObject({
+    status: 'current',
+  });
+});
+
+test('persists bounded failure evidence until a different runtime fingerprint is persisted', async () => {
+  const projectPath = await mkdtemp(path.join(tmpdir(), 'ankhorage-studio-generation-state-'));
+  const first = createManifest(['module-a']);
+  const second = createManifest(['module-b']);
+  await store.writeStudioInclusionAsync(projectPath, true);
+
+  const failed = await store.recordRuntimeProjectionFailureAsync(projectPath, first);
+  expect(failed.status).toBe('failed');
+  expect(failed.failure?.code).toBe('runtime-projection-failed');
+  expect(await store.recordManifestPersistenceAsync(projectPath, first)).toMatchObject({
+    status: 'failed',
+  });
+
+  const pending = await store.recordManifestPersistenceAsync(projectPath, second);
+  expect(pending.status).toBe('pending');
+  expect(pending.failure).toBeUndefined();
+});
+
+test('manifest persistence remains conservative when generation state is entirely absent', async () => {
+  const projectPath = await mkdtemp(path.join(tmpdir(), 'ankhorage-studio-generation-state-'));
+
+  expect(await store.recordManifestPersistenceAsync(projectPath, createManifest())).toMatchObject({
+    status: 'unknown',
+    appliedSignature: null,
+  });
+  expect(await captureError(() => store.readStudioInclusionAsync(projectPath))).not.toBeNull();
+});
+
+test('rejects invalid generation state instead of inferring projection currency', async () => {
+  const projectPath = await mkdtemp(path.join(tmpdir(), 'ankhorage-studio-generation-state-'));
+  const statePath = path.join(projectPath, '.ankh/generation-state.json');
+  await mkdir(path.dirname(statePath), { recursive: true });
+  await writeFile(statePath, JSON.stringify({ includeStudio: 'yes' }), 'utf8');
+
+  const error = await captureError(() => store.readStudioInclusionAsync(projectPath));
+
+  expect(error).not.toBeNull();
+  expect(error?.message).toContain('Project generation state is invalid');
+});
+''')
+
+          Path('src/host/orchestrator/projectGenerationState.ts').unlink()
+
+          Path('.changeset/authoring-projection-currency.md').write_text(r'''---
+'@ankhorage/studio': patch
+---
+
+Track runtime projection currency separately from manifest persistence in Studio project generation state.
+''')
+
+          audit = Path('docs/apm-update-projection-audit.md')
+          source = audit.read_text()
+          source = source.replace(
+              "| Manifest autosave / persistence   | `StudioProvider` → `StudioManifestPersistenceCoordinator` → `PUT /manifest` → `ModuleManager.persistProjectManifest` → `ProjectManager.persistProjectManifest` | normalized `ankh.config.json`                                                                            | **None in this path**                                                                                               | UI `saveStatus='saved'` means manifest persistence only; it does not prove runtime/package/infra projections are current                     | `src/core/StudioProvider.ts`, `src/core/studioManifestPersistenceModel.ts`, `src/host/orchestrator/moduleManager.ts`, `src/host/orchestrator/projectManager.ts`, `src/host/http/server.ts`                                                                           |",
+              "| Manifest autosave / persistence   | `StudioProvider` → `StudioManifestPersistenceCoordinator` → `PUT /manifest` → `ModuleManager.persistProjectManifest` → `ProjectManager.persistProjectManifest` | normalized `ankh.config.json`; runtime desired fingerprint in `.ankh/generation-state.json` when generation state exists | No generated runtime/package/infra effects in this path; runtime projection currency becomes `pending`, `failed`, `current`, or `unknown` independently | UI `saveStatus='saved'` proves manifest persistence only; `runtimeProjection` and the read-only host projection endpoint report durable runtime currency | `src/core/StudioProvider.ts`, `src/core/studioManifestPersistenceModel.ts`, `src/host/orchestrator/ProjectGenerationStateStore.ts`, `src/host/http/projectRuntimeRoutes.ts` |",
+          )
+          source = source.replace(
+              "| Module admin manifest mutation    | module admin runtime → `mutateModuleAdminManifestField` → `persistProjectManifest`                                                                             | manifest field only                                                                                      | **None in this path**                                                                                               | Operation can report success while runtime projections remain stale until later explicit/full sync                                           | `src/host/orchestrator/moduleManager.ts`                                                                                                                                                                                                                             |",
+              "| Module admin manifest mutation    | module admin runtime → `mutateModuleAdminManifestField` → `persistProjectManifest`                                                                             | manifest field plus the same runtime desired fingerprint used by ordinary persistence                    | No implicit heavy sync; runtime-relevant drift is durably pending instead of silently current                                               | Uses the canonical persistence path, so module-admin writes receive the same explicit runtime projection currency semantics                  | `src/host/orchestrator/moduleManager.ts`, `src/host/orchestrator/ProjectGenerationStateStore.ts` |",
+          )
+          source = source.replace(
+              "| Studio inclusion generation state | `readProjectStudioInclusion` / `writeProjectStudioInclusion`                                                                                                   | `.ankh/generation-state.json`                                                                            | controls whether generated project output includes Studio                                                           | Missing/invalid implicit state is an explicit error                                                                                          | `src/host/orchestrator/projectGenerationState.ts`, `docs/generated-project-lifecycle.md`                                                                                                                                                                             |",
+              "| Studio generation state           | `ProjectGenerationStateStore`                                                                                                                                 | `.ankh/generation-state.json` with Studio inclusion plus bounded runtime desired/applied fingerprints     | controls Studio inclusion and durable runtime projection currency                                                    | Existing files without runtime evidence are `unknown`; manifest drift is pending; successful full runtime generation records current; failures remain explicit | `src/host/orchestrator/ProjectGenerationStateStore.ts`, `src/host/orchestrator/projectManager.ts` |",
+          )
+          source = source.replace(
+              "1. **Autosave completion is narrower than project-currentness.** `StudioManifestPersistenceCoordinator`\n   marks the draft saved after the manifest boundary succeeds. Runtime-relevant authoring changes can\n   therefore leave generated/runtime/package/infrastructure projections stale until a later full\n   save or explicit sync. The owning authoring use case must either maintain the required projection\n   immediately or expose explicit pending/failed projection state.\n2. **Module admin manifest mutations use the persistence-only path.** They can change runtime-relevant\n   node props while bypassing the full generation path. This must be routed through the canonical\n   projection-aware operation or explicitly mark pending projection work.\n3. **Package reconciliation is a second update engine.**",
+              "1. **Runtime authoring projection currency is explicit.** Studio #516 separates canonical manifest\n   persistence from generated runtime currency in the existing `.ankh/generation-state.json` owner.\n   `saveStatus='saved'` remains persistence-only; the exact runtime-relevant manifest fingerprint is\n   independently `current`, `pending`, `failed`, or `unknown`. Existing generation-state files without\n   runtime evidence stay unknown, successful full runtime generation records the applied fingerprint\n   only after completion, and module-admin persistence uses the same semantics without forcing package\n   or infrastructure reconciliation on every autosave. Package and infrastructure projection currency\n   remain separate owner gaps below.\n2. **Package reconciliation is a second update engine.**",
+          )
+          source = source.replace("3. **Generated package policy is host-version-bound.**", "3. **Generated package policy is host-version-bound.**")
+          source = source.replace("5. **Studio/APM writers share", "4. **Studio/APM writers share")
+          source = source.replace("6. **Pending module removal has", "5. **Pending module removal has")
+          source = source.replace("7. **`ProjectManager.syncProject`", "6. **`ProjectManager.syncProject`")
+          source = source.replace(
+              "1. Make runtime-relevant authoring actions maintain their required projections immediately or expose\n   explicit pending/failed projection state, including the module-admin persistence-only path.\n2. Expose the composed APM lifecycle through authorized Studio host routes without introducing a second\n",
+              "1. Add explicit package/infrastructure projection currency where ordinary Studio actions can leave those owner projections stale.\n2. Expose the composed APM lifecycle through authorized Studio host routes without introducing a second\n",
+          )
+          audit.write_text(source)
+          PY
+      - run: bun run build
+      - run: bun run lint:fix
+      - run: bun run format
+      - run: bun run check-types
+      - run: bun run lint
+      - run: bun run knip:check
+      - name: Focused tests
+        run: |
+          bun test src/host/orchestrator/projectGenerationState.test.ts \
+            src/host/http/projectRuntimeRoutes.test.ts \
+            src/core/StudioProvider.test.ts \
+            src/core/studioManifestPersistenceModel.test.ts
+      - run: bun run docs
+      - run: bun run format
+      - run: bun run build
+      - run: bun run check-types
+      - run: bun run lint
+      - run: bun run knip:check
+      - run: bun run format:check
+      - run: bun run changeset:status
+      - name: Remove branch workflow and commit
+        run: |
+          rm .github/workflows/branch-516-implement.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "feat: track authoring projection currency"
+          git push
