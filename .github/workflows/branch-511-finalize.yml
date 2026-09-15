@@ -29,6 +29,36 @@ jobs:
         run: bun install --frozen-lockfile
       - name: Build before lint tooling
         run: bun run build
+      - name: Repair strict test narrowing
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts')
+          source = path.read_text()
+          source = source.replace(
+              "import { composeCategoryAppManifest } from '@ankhorage/templates';\n",
+              "import { composeCategoryAppManifest } from '@ankhorage/templates';\nimport { isRecord, readOwnProperty } from '@ankhorage/utility/object';\n",
+          )
+          old = """/*** Read Infra module ids from an unknown manifest only for a test assertion. */
+          function readInfraModules(value: unknown): readonly unknown[] | undefined {
+            if (typeof value !== 'object' || value === null || Array.isArray(value)) return undefined;
+            const infra = Object.entries(value).find(([key]) => key === 'infra')?.[1];
+            if (typeof infra !== 'object' || infra === null || Array.isArray(infra)) return undefined;
+            const modules = Object.entries(infra).find(([key]) => key === 'modules')?.[1];
+            return Array.isArray(modules) ? modules : undefined;
+          }"""
+          new = """/*** Read Infra module ids from an unknown manifest only for a test assertion. */
+          function readInfraModules(value: unknown): readonly unknown[] | undefined {
+            if (!isRecord(value)) return undefined;
+            const infra = readOwnProperty(value, 'infra');
+            if (!isRecord(infra)) return undefined;
+            const modules = readOwnProperty(infra, 'modules');
+            return Array.isArray(modules) ? modules : undefined;
+          }"""
+          if old not in source:
+              raise SystemExit('expected unsafe test assertion helper not found')
+          path.write_text(source.replace(old, new))
+          PY
       - name: Remove one-shot workflow
         run: rm .github/workflows/branch-511-finalize.yml
       - name: Format source
