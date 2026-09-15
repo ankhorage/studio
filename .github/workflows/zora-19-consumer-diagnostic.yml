@@ -1,0 +1,42 @@
+name: ZORA 19 consumer diagnostic
+
+on:
+  push:
+    branches:
+      - chore/zora-19-consumer-rollout
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chore/zora-19-consumer-rollout
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - name: Apply released consumer versions
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('package.json')
+          data = json.loads(path.read_text())
+          deps = data['dependencies']
+          deps['@ankhorage/templates'] = '^11.0.5'
+          deps['@ankhorage/zora'] = '^19.0.1'
+          deps['@ankhorage/zora-chess'] = '^0.2.1'
+          deps['@ankhorage/zora-tabletop'] = '^0.1.2'
+          path.write_text(json.dumps(data, indent=2) + '\n')
+          PY
+      - name: Install
+        run: bun install
+      - name: Build
+        run: bun run build
+      - name: Typecheck
+        run: bun run check-types
