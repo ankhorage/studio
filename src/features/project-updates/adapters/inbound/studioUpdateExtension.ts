@@ -9,13 +9,14 @@ import type {
   ApmProjectMutation,
   ApmUpdateExtension,
 } from '@ankhorage/apm/types';
-import { isRecord } from '@ankhorage/utility/object';
+import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 
 import type {
   GeneratedPackageManifest,
   GeneratedPackagePolicy,
-} from '../../../../types/project-updates';
-import { getGeneratedPackagePolicy } from '../outbound/getGeneratedPackagePolicy';
+} from '../../../../types/project-updates.js';
+import { applyGeneratedPackagePolicy } from '../../domain/applyGeneratedPackagePolicy.js';
+import { getGeneratedPackagePolicy } from '../outbound/getGeneratedPackagePolicy.js';
 
 /*** Expose Studio's trusted package-policy projection through the public APM extension contract. */
 export const studioUpdateExtension: ApmUpdateExtension = {
@@ -24,12 +25,6 @@ export const studioUpdateExtension: ApmUpdateExtension = {
   migrations: [],
   projections: [createGeneratedPackagePolicyProjection()],
 };
-
-interface ManagedPolicyEntry {
-  readonly section: 'dependencies' | 'devDependencies';
-  readonly key: string;
-  readonly target: string;
-}
 
 interface ProjectionState {
   readonly snapshot: ApmProjectFileSnapshot;
@@ -66,12 +61,18 @@ function createGeneratedPackagePolicyProjection(): ApmProjectionHandler {
     },
     planAsync: async (input) => {
       const state = await inspectProjectionStateAsync(input);
+      if (state.manifest === undefined) {
+        throw new Error(
+          'Cannot plan Studio package policy from missing or malformed package.json.',
+        );
+      }
       return toProjectionPlan(state);
     },
     materializeAsync: async (input) => {
-      await Promise.all(
-        input.plan.mutations.map(({ id }) => input.project.applyReviewedMutationAsync(id)),
-      );
+      // Every mutation targets the same document; preserve reviewed ordering at the I/O boundary.
+      for (const { id } of input.plan.mutations) {
+        await input.project.applyReviewedMutationAsync(id);
+      }
     },
     verifyAsync: async (input) => {
       const state = await inspectProjectionStateAsync(input);
@@ -161,84 +162,33 @@ function isStringRecord(value: unknown): value is Readonly<Record<string, string
   return isRecord(value) && Object.values(value).every((entry) => typeof entry === 'string');
 }
 
-/*** Build reviewed JSON-pointer mutations only for fields Studio explicitly owns. */
+/*** Derive reviewed mutations from the same pure package policy used by initial generation. */
 function packagePolicyMutations(
   manifest: GeneratedPackageManifest,
   policy: GeneratedPackagePolicy,
   beforeDigest: string | undefined,
 ): readonly ApmProjectMutation[] {
+  const target = applyGeneratedPackagePolicy(manifest, policy);
   const packageManagerMutation =
-    manifest.packageManager === policy.packageManager
+    manifest.packageManager === target.packageManager
       ? []
-      : [stringMutation('/packageManager', policy.packageManager, beforeDigest)];
-  const managed = managedPolicyEntries(manifest, policy).flatMap((entry) => {
-    const current = manifest[entry.section][entry.key];
-    return current === entry.target
-      ? []
-      : [
-          stringMutation(
-            `/${entry.section}/${jsonPointerSegment(entry.key)}`,
-            entry.target,
-            beforeDigest,
-          ),
-        ];
-  });
-  return [...packageManagerMutation, ...managed];
-}
-
-/*** Enumerate package fields controlled by this Studio artifact while preserving optional capabilities. */
-function managedPolicyEntries(
-  manifest: GeneratedPackageManifest,
-  policy: GeneratedPackagePolicy,
-): readonly ManagedPolicyEntry[] {
-  const dependencies: readonly ManagedPolicyEntry[] = [
-    dependency('@ankhorage/contracts', policy.dependencies.contracts),
-    dependency('@ankhorage/data-sources', policy.dependencies.dataSources),
-    dependency('@ankhorage/expo-runtime', policy.dependencies.expoRuntime),
-    dependency('@ankhorage/navigator', policy.dependencies.navigator),
-    dependency('@ankhorage/runtime', policy.dependencies.runtime),
-    ...optionalDependency(manifest, '@ankhorage/studio', policy.dependencies.studio),
-    ...optionalDependency(manifest, '@ankhorage/utility', policy.dependencies.utility),
-    ...optionalDependency(manifest, '@ankhorage/supabase-auth', policy.dependencies.supabaseAuth),
-    ...optionalDependency(
-      manifest,
-      '@ankhorage/supabase-storage',
-      policy.dependencies.supabaseStorage,
+      : [stringMutation('/packageManager', target.packageManager, beforeDigest)];
+  const sections = [
+    { section: 'dependencies', current: manifest.dependencies, desired: target.dependencies },
+    {
+      section: 'devDependencies',
+      current: manifest.devDependencies,
+      desired: target.devDependencies,
+    },
+  ];
+  const dependencyMutations = sections.flatMap(({ section, current, desired }) =>
+    Object.entries(desired).flatMap(([key, value]) =>
+      readOwnProperty(current, key) === value
+        ? []
+        : [stringMutation(`/${section}/${jsonPointerSegment(key)}`, value, beforeDigest)],
     ),
-    dependency('@ankhorage/zora', policy.dependencies.zora),
-    dependency('@react-native-picker/picker', policy.peerDependencies.nativePicker),
-    dependency('@react-native-vector-icons/fontawesome', policy.peerDependencies.fontawesome),
-    dependency('@react-native-vector-icons/fontawesome5', policy.peerDependencies.fontawesome5),
-    dependency('@react-native-vector-icons/fontawesome6', policy.peerDependencies.fontawesome6),
-    dependency('@react-native-vector-icons/ionicons', policy.peerDependencies.ionicons),
-  ];
-  const devDependencies: readonly ManagedPolicyEntry[] = [
-    devDependency('@ankhorage/ankh', policy.devDependencies.ankh),
-    devDependency('@ankhorage/devtools', policy.devDependencies.devtools),
-    devDependency('@types/bun', policy.devDependencies.typesBun),
-    devDependency('@types/culori', policy.devDependencies.typesCulori),
-    devDependency('@types/react', policy.devDependencies.typesReact),
-  ];
-  return [...dependencies, ...devDependencies];
-}
-
-/*** Build one required generated runtime dependency policy entry. */
-function dependency(key: string, target: string): ManagedPolicyEntry {
-  return { section: 'dependencies', key, target };
-}
-
-/*** Build one generated development dependency policy entry. */
-function devDependency(key: string, target: string): ManagedPolicyEntry {
-  return { section: 'devDependencies', key, target };
-}
-
-/*** Preserve capability-driven optional dependencies unless the app already owns that capability. */
-function optionalDependency(
-  manifest: GeneratedPackageManifest,
-  key: string,
-  target: string,
-): readonly ManagedPolicyEntry[] {
-  return key in manifest.dependencies ? [dependency(key, target)] : [];
+  );
+  return [...packageManagerMutation, ...dependencyMutations];
 }
 
 /*** Build one reviewed string mutation with the matching narrow JSON-pointer ownership claim. */

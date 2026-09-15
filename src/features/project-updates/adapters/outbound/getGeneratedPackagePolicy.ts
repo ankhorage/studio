@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 
-import type { GeneratedPackagePolicy } from '../../../../types/project-updates';
+import type { GeneratedPackagePolicy } from '../../../../types/project-updates.js';
 
 /*** Return Studio-owned generated-app dependency policy from this exact package artifact. */
 export function getGeneratedPackagePolicy(): GeneratedPackagePolicy {

@@ -5045,6 +5045,24 @@
     "structuredRows": []
   },
   {
+    "name": "studioUpdateExtension",
+    "description": "Expose Studio's trusted package-policy projection through the public APM extension contract.",
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/features/project-updates/adapters/inbound/studioUpdateExtension.ts",
+    "sourceLocation": {
+      "filePath": "src/features/project-updates/adapters/inbound/studioUpdateExtension.ts",
+      "line": 22,
+      "column": 14
+    },
+    "exportPaths": ["src/apm.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "StudioUrlMediaAssetResult",
     "description": null,
     "isReadme": false,

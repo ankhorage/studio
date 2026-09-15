@@ -1,7 +1,7 @@
 import type {
   GeneratedPackageManifest,
   GeneratedPackagePolicy,
-} from '../../../types/project-updates';
+} from '../../../types/project-updates.js';
 
 /*** Apply one explicit Studio package policy while preserving all user-owned package manifest entries. */
 export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(

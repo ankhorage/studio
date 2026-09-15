@@ -19,7 +19,7 @@ export default defineParadoxConfig({
 
   package: {
     root: '.',
-    entrypoints: ['src/index.ts'],
+    entrypoints: ['src/index.ts', 'src/apm.ts'],
   },
 
   output: {

@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 
 import {
+  resolveMigrationPath,
   validatePackageUpdateMetadata,
   validateUpdateDescriptor,
   validateUpdateExtensionBinding,
@@ -18,6 +19,7 @@ import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 import { expect, test } from 'bun:test';
 
 import studioUpdateExtension from '../../../../apm';
+import type { GeneratedPackageManifest } from '../../../../types/project-updates';
 import { applyGeneratedPackagePolicy } from '../../domain/applyGeneratedPackagePolicy';
 import { getGeneratedPackagePolicy } from '../outbound/getGeneratedPackagePolicy';
 
@@ -149,6 +151,96 @@ test('reports current policy and materializes only reviewed mutation ids', async
     },
   });
   expect(applied).toEqual(plan.mutations.map(({ id }) => id));
+});
+
+test('supports the reviewed current-architecture history and rejects unreviewed old states', () => {
+  const descriptorJson: unknown = JSON.parse(readFileSync(DESCRIPTOR_URL, 'utf8'));
+  const validation = validateUpdateDescriptor({ descriptor: descriptorJson });
+  if (!validation.valid || validation.descriptor === undefined) {
+    throw new Error('Studio descriptor must pass canonical validation.');
+  }
+  const { descriptor } = validation;
+  const earliest = resolveMigrationPath({
+    descriptor,
+    sourceVersion: '2.5.7',
+    targetVersion: descriptor.owner.version,
+  });
+  expect(earliest.supported).toBe(true);
+  expect(earliest.noMigrationRequired).toBe(true);
+  expect(earliest.migrations).toEqual([]);
+  const unsupported = resolveMigrationPath({
+    descriptor,
+    sourceVersion: '1.0.0',
+    targetVersion: descriptor.owner.version,
+  });
+  expect(unsupported.supported).toBe(false);
+  expect(unsupported.blockers.length).toBeGreaterThan(0);
+});
+
+test('does not accept malformed source state as an empty successful plan', async () => {
+  const projection = requirePackagePolicyProjection();
+  const input = {
+    descriptor: PACKAGE_POLICY_PROJECTION,
+    context: executionContext(),
+    project: projectReadPort({ packageManager: 'bun@0.0.1', dependencies: [] }),
+  };
+  expect((await projection.inspectAsync(input)).state).toBe('unknown');
+  return expect(projection.planAsync(input)).rejects.toThrow('missing or malformed package.json');
+});
+
+test('serializes reviewed mutations to the same package document', async () => {
+  const projection = requirePackagePolicyProjection();
+  const input = {
+    descriptor: PACKAGE_POLICY_PROJECTION,
+    context: executionContext(),
+    project: projectReadPort({
+      packageManager: 'bun@0.0.1',
+      dependencies: {},
+      devDependencies: {},
+    }),
+  };
+  const plan = await projection.planAsync(input);
+  const active = new Set<string>();
+  const applied: string[] = [];
+  await projection.materializeAsync({
+    ...input,
+    plan,
+    project: {
+      ...input.project,
+      applyReviewedMutationAsync: async (id) => {
+        expect(active.size).toBe(0);
+        active.add(id);
+        await Promise.resolve();
+        active.delete(id);
+        applied.push(id);
+      },
+    },
+  });
+  expect(applied).toEqual(plan.mutations.map(({ id }) => id));
+});
+
+test('preserves disabled capabilities and verifies the exact reviewed generator', async () => {
+  const projection = requirePackagePolicyProjection();
+  const current: GeneratedPackageManifest = applyGeneratedPackagePolicy(
+    { packageManager: 'bun@0.0.1', dependencies: {}, devDependencies: {} },
+    getGeneratedPackagePolicy(),
+  );
+  const input = {
+    descriptor: PACKAGE_POLICY_PROJECTION,
+    context: executionContext(),
+    project: {
+      ...projectReadPort(current),
+      applyReviewedMutationAsync: () => Promise.reject(new Error('Verification must not write.')),
+    },
+  };
+  const plan = await projection.planAsync(input);
+  expect(plan.mutations).toEqual([]);
+  expect(current.dependencies['@ankhorage/studio']).toBeUndefined();
+  expect(current.dependencies['@ankhorage/supabase-auth']).toBeUndefined();
+  expect(current.dependencies['@ankhorage/supabase-storage']).toBeUndefined();
+  expect((await projection.verifyAsync({ ...input, plan })).valid).toBe(true);
+  const changed = { ...plan, generatorFingerprint: 'not-the-reviewed-generator' };
+  expect((await projection.verifyAsync({ ...input, plan: changed })).valid).toBe(false);
 });
 
 /*** Resolve the single executable Studio package-policy projection. */
