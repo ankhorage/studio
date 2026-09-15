@@ -1,7 +1,5 @@
 import type { ApmApplyPermissions, ApmStatusAvailabilityMode } from '@ankhorage/apm/types';
 
-export type ProjectUpdateDashboardBusyAction = 'status' | 'plan' | 'apply' | 'resume' | 'verify';
-
 export type ProjectUpdatePermissionId = 'owner-code' | 'lifecycle-scripts' | 'external-effects';
 
 export interface ProjectUpdateDashboardState {
@@ -13,14 +11,17 @@ export interface ProjectUpdateDashboardState {
   readonly verification: unknown;
   readonly operationId: string;
   readonly permissions: ApmApplyPermissions;
-  readonly busy: ProjectUpdateDashboardBusyAction | null;
+  readonly busy: 'status' | 'plan' | 'apply' | 'resume' | 'verify' | null;
   readonly error: string | null;
 }
 
 export type ProjectUpdateDashboardEvent =
   | { readonly type: 'project-changed'; readonly projectId: string }
   | { readonly type: 'availability-changed'; readonly availability: ApmStatusAvailabilityMode }
-  | { readonly type: 'request-started'; readonly action: ProjectUpdateDashboardBusyAction }
+  | {
+      readonly type: 'request-started';
+      readonly action: 'status' | 'plan' | 'apply' | 'resume' | 'verify';
+    }
   | { readonly type: 'request-failed'; readonly message: string }
   | { readonly type: 'status-received'; readonly status: unknown }
   | { readonly type: 'plan-received'; readonly plan: unknown }
