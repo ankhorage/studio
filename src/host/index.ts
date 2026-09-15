@@ -4,6 +4,11 @@
 export { ProjectUpdateService } from '../features/project-updates/application/ProjectUpdateService';
 export type { ProjectDeployReleaseInspectionResult } from '../projectDeployReleaseInspectionResult';
 export type { ProjectDeployRuntimeInput } from '../projectDeployRuntimeInput';
+export type {
+  StudioRuntimeProjectionReason,
+  StudioRuntimeProjectionState,
+  StudioRuntimeProjectionStatus,
+} from '../types/project-generation';
 export { createTrustedEndpointTestFetch } from './apis/createTrustedEndpointTestFetch';
 export { createTrustedExternalApiFetch } from './apis/createTrustedExternalApiFetch';
 export { StudioExternalApiService } from './apis/studioExternalApiService';

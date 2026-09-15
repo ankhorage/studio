@@ -37,9 +37,12 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
   const moduleManager = new ModuleManager(workspaceRoot);
   const created = await projectManager.createProject('Host Smoke App', createSmokeProjectSource());
   expect(created.success).toBe(true);
-  expect(
-    JSON.parse(await readFile(path.join(created.path, '.ankh/generation-state.json'), 'utf8')),
-  ).toEqual({ includeStudio: true });
+  const generationStateSource = await readFile(
+    path.join(created.path, '.ankh/generation-state.json'),
+    'utf8',
+  );
+  expect(generationStateSource).toContain('"includeStudio": true');
+  expect(generationStateSource).toContain('"appliedSignature": "');
 
   const projects = await projectManager.listProjects();
   expect(projects.some((project) => project.id === created.id && project.isAnkhApp)).toBe(true);

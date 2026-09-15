@@ -19,12 +19,42 @@ afterEach(async () => {
 });
 
 describe('project runtime HTTP adapter', () => {
+  test('returns bounded runtime projection currency from ProjectManager', async () => {
+    const calls: string[] = [];
+    const server = Fastify({ logger: false });
+    registerProjectRuntimeRoutes(server, {
+      workspaceRoot: '/workspace',
+      projectManager: {
+        getProjectRuntimeProjectionState: (projectId) => {
+          calls.push(projectId);
+          return Promise.resolve({ status: 'pending', reason: 'manifest-changed' });
+        },
+        upInfrastructure: () => Promise.reject(new Error('not used')),
+      },
+    });
+    servers.push(server);
+
+    const response = await server.inject({
+      method: 'GET',
+      url: '/api/projects/project-one/runtime/projection',
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(calls).toEqual(['project-one']);
+    expect(JSON.parse(response.body) as unknown).toEqual({
+      status: 'pending',
+      reason: 'manifest-changed',
+    });
+  });
+
   test('reconciles through the provider-neutral ProjectManager lifecycle', async () => {
     const calls: string[] = [];
     const server = Fastify({ logger: false });
     registerProjectRuntimeRoutes(server, {
       workspaceRoot: '/workspace',
       projectManager: {
+        getProjectRuntimeProjectionState: () =>
+          Promise.resolve({ status: 'current', reason: 'applied' }),
         upInfrastructure: (projectId) => {
           calls.push(projectId);
           return Promise.resolve({
@@ -63,6 +93,8 @@ describe('project runtime HTTP adapter', () => {
     registerProjectRuntimeRoutes(server, {
       workspaceRoot: '/workspace',
       projectManager: {
+        getProjectRuntimeProjectionState: () =>
+          Promise.resolve({ status: 'current', reason: 'applied' }),
         upInfrastructure: () => Promise.reject(new Error('runtime unavailable')),
       },
     });
