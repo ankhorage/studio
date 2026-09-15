@@ -1,7 +1,8 @@
-import { createNodeApplyLockPort } from '@ankhorage/apm/node';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { randomUUID } from 'node:crypto';
 import path from 'node:path';
+
+import { createNodeApplyLockPort } from '@ankhorage/apm/node';
 
 const activeProjectRoots = new AsyncLocalStorage<ReadonlySet<string>>();
 const projectWriterLock = createNodeApplyLockPort();
