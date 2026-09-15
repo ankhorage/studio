@@ -24,14 +24,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Update lockfile
-        run: bun install
+      - name: Update APM lock entry
+        run: |
+          bun add '@ankhorage/apm@^0.8.1' --lockfile-only
+          bun install --frozen-lockfile
       - name: Reuse canonical host Orchestrator composition
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
-
           path = Path('src/host/orchestrator/moduleManager.ts')
           source = path.read_text()
           source = source.replace(
@@ -56,13 +57,10 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-
           path = Path('src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts')
           source = path.read_text()
-          old = """    : base[action](input);"""
-          new = """    : action === 'executeAsync'
-      ? base.executeAsync(input)
-      : base.rollbackAsync(input);"""
+          old = "    : base[action](input);"
+          new = "    : action === 'executeAsync'\n      ? base.executeAsync(input)\n      : base.rollbackAsync(input);"
           if old not in source:
               raise SystemExit('expected dynamic owner-step delegation not found')
           path.write_text(source.replace(old, new))
@@ -71,7 +69,7 @@ jobs:
         run: rm .github/workflows/branch-511-bootstrap.yml
       - name: Format repository
         run: bun run format
-      - name: Autofix lint-safe imports
+      - name: Autofix imports
         run: bun run lint:fix
       - name: Build
         run: bun run build
@@ -79,6 +77,10 @@ jobs:
         run: bun run typecheck
       - name: Lint
         run: bun run lint
+      - name: Knip
+        run: bun run knip:check
+      - name: Project update tests
+        run: bun test src/features/project-updates
       - name: Commit validated bootstrap
         run: |
           git config user.name "github-actions[bot]"
