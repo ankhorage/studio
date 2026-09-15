@@ -1,0 +1,63 @@
+$ tsc --noEmit -p tsconfig.json
+src/authSettings.test.ts(108,48): error TS2339: Property 'authorization' does not exist on type '{ readonly provider: "supabase"; } & { readonly scope?: "none" | "global" | "integrated" | undefined; readonly flow?: AuthFlowConfig | undefined; readonly signIn?: AuthSignInSpec | undefined; readonly signUp?: AuthSignUpSpec | undefined; readonly oauth?: AuthOAuthConfig | undefined; readonly profile?: AuthProfileSpe...'.
+src/authSettings.test.ts(118,12): error TS2704: The operand of a 'delete' operator cannot be a read-only property.
+src/authSettings.test.ts(119,12): error TS2704: The operand of a 'delete' operator cannot be a read-only property.
+src/host/auth/projectAuthRuntimeDiagnostics.test.ts(4,3): error TS2305: Module '"./projectAuthRuntimeDiagnostics"' has no exported member 'parseProjectAuthRuntimeStatus'.
+src/host/auth/projectAuthRuntimeDiagnostics.test.ts(11,7): error TS2353: Object literal may only specify known properties, and 'environment' does not exist in type '{ readonly callbackRoute: string; readonly outputs: readonly InfraOutput[]; readonly publicBaseUrl?: string | undefined; }'.
+src/host/auth/projectAuthRuntimeDiagnostics.test.ts(29,7): error TS2353: Object literal may only specify known properties, and 'environment' does not exist in type '{ readonly callbackRoute: string; readonly outputs: readonly InfraOutput[]; readonly publicBaseUrl?: string | undefined; }'.
+src/host/auth/projectAuthRuntimeDiagnostics.test.ts(37,7): error TS2353: Object literal may only specify known properties, and 'environment' does not exist in type '{ readonly callbackRoute: string; readonly outputs: readonly InfraOutput[]; readonly publicBaseUrl?: string | undefined; }'.
+src/host/auth/projectAuthRuntimeDiagnostics.test.ts(51,7): error TS2353: Object literal may only specify known properties, and 'environment' does not exist in type '{ readonly callbackRoute: string; readonly outputs: readonly InfraOutput[]; readonly publicBaseUrl?: string | undefined; }'.
+src/host/auth/projectAuthRuntimeDiagnostics.test.ts(67,7): error TS2353: Object literal may only specify known properties, and 'environment' does not exist in type '{ readonly callbackRoute: string; readonly outputs: readonly InfraOutput[]; readonly publicBaseUrl?: string | undefined; }'.
+src/host/auth/projectAuthRuntimeDiagnostics.test.ts(75,7): error TS2353: Object literal may only specify known properties, and 'environment' does not exist in type '{ readonly callbackRoute: string; readonly outputs: readonly InfraOutput[]; readonly publicBaseUrl?: string | undefined; }'.
+src/host/expo57GeneratedProductionInfra.e2e.test.ts(7,10): error TS2305: Module '"@ankhorage/infra/project"' has no exported member 'runProjectInfrastructureLifecycle'.
+src/host/expo57GeneratedProductionInfra.e2e.test.ts(13,8): error TS2307: Cannot find module './orchestrator/infraSession' or its corresponding type declarations.
+src/host/expo57GeneratedProductionInfra.e2e.test.ts(48,9): error TS2339: Property 'auth' does not exist on type 'InfraManifest'.
+src/host/expo57GeneratedProductionInfra.e2e.test.ts(49,9): error TS2339: Property 'database' does not exist on type 'InfraManifest'.
+src/host/expo57GeneratedProductionInfra.e2e.test.ts(50,9): error TS2339: Property 'secretStore' does not exist on type 'InfraManifest'.
+src/host/expo57GeneratedProductionInfra.e2e.test.ts(51,9): error TS2339: Property 'storage' does not exist on type 'InfraManifest'.
+src/host/generatedAdminExpoWeb.smoke.test.ts(128,7): error TS2353: Object literal may only specify known properties, and 'auth' does not exist in type 'InfraManifest'.
+src/host/hostLifecycle.smoke.test.ts(33,5): error TS2353: Object literal may only specify known properties, and 'runProjectInfrastructureLifecycle' does not exist in type 'Partial<ProjectManagerDependencies>'.
+src/host/http/projectRuntimeRoutes.test.ts(1,10): error TS2305: Module '"@ankhorage/infra/project"' has no exported member 'InfraScriptExecutionError'.
+src/host/http/projectRuntimeRoutes.test.ts(31,44): error TS7006: Parameter 'args' implicitly has an 'any' type.
+src/host/http/projectRuntimeRoutes.test.ts(166,80): error TS2339: Property 'dependencies' does not exist on type '{ readonly projectManager: ProjectRuntimeManager; readonly workspaceRoot: string; }'.
+src/host/http/projectRuntimeRoutes.test.ts(171,30): error TS2339: Property 'getInfrastructureStatus' does not exist on type 'ProjectRuntimeManager'.
+src/host/http/projectRuntimeRoutes.test.ts(179,7): error TS2353: Object literal may only specify known properties, and 'getInfrastructureStatus' does not exist in type 'ProjectRuntimeManager'.
+src/host/http/projectRuntimeRoutes.test.ts(188,54): error TS2339: Property 'dependencies' does not exist on type '{ readonly projectManager: ProjectRuntimeManager; readonly workspaceRoot: string; }'.
+src/host/layout/authRootBootstrap.test.ts(79,37): error TS2540: Cannot assign to 'auth' because it is a read-only property.
+src/host/layout/layoutGenerator.test.ts(454,45): error TS2540: Cannot assign to 'networking' because it is a read-only property.
+src/host/layout/layoutGenerator.test.ts(465,39): error TS2540: Cannot assign to 'networking' because it is a read-only property.
+src/host/orchestrator/infraSession.test.ts(1,10): error TS2305: Module '"@ankhorage/infra/project"' has no exported member 'InfraScriptExecutionError'.
+src/host/orchestrator/infraSession.test.ts(8,8): error TS2307: Cannot find module './infraSession' or its corresponding type declarations.
+src/host/orchestrator/infraSession.test.ts(96,12): error TS18046: 'rejected' is of type 'unknown'.
+src/host/orchestrator/infraSession.test.ts(97,12): error TS18046: 'rejected' is of type 'unknown'.
+src/host/orchestrator/infraSession.test.ts(98,12): error TS18046: 'rejected' is of type 'unknown'.
+src/host/orchestrator/infraSession.test.ts(99,12): error TS18046: 'rejected' is of type 'unknown'.
+src/host/orchestrator/infraSession.test.ts(102,12): error TS18046: 'rejected' is of type 'unknown'.
+src/host/orchestrator/infraSession.test.ts(103,12): error TS18046: 'rejected' is of type 'unknown'.
+src/host/orchestrator/projectCreationAssets.test.ts(42,9): error TS2353: Object literal may only specify known properties, and 'imageWidth' does not exist in type 'SplashScreenModeSpec'.
+src/host/orchestrator/projectManagerDeletion.test.ts(15,5): error TS2353: Object literal may only specify known properties, and 'runProjectInfrastructureLifecycle' does not exist in type 'Partial<ProjectManagerDependencies>'.
+src/host/orchestrator/projectManagerDeletion.test.ts(15,41): error TS7006: Parameter 'args' implicitly has an 'any' type.
+src/host/orchestrator/projectManagerDeletion.test.ts(36,5): error TS2353: Object literal may only specify known properties, and 'runProjectInfrastructureLifecycle' does not exist in type 'Partial<ProjectManagerDependencies>'.
+src/host/orchestrator/projectManagerDeletion.test.ts(54,5): error TS2353: Object literal may only specify known properties, and 'runProjectInfrastructureLifecycle' does not exist in type 'Partial<ProjectManagerDependencies>'.
+src/host/orchestrator/projectManagerDeletion.test.ts(54,41): error TS7006: Parameter 'args' implicitly has an 'any' type.
+src/host/orchestrator/studioInfraUp.test.ts(21,37): error TS7006: Parameter 'projectId' implicitly has an 'any' type.
+src/host/orchestrator/studioInfraUp.test.ts(38,7): error TS2554: Expected 1 arguments, but got 2.
+src/host/orchestrator/studioInfraUp.test.ts(39,45): error TS7006: Parameter 'args' implicitly has an 'any' type.
+src/host/orchestrator/studioInfraUp.test.ts(43,53): error TS7006: Parameter 'args' implicitly has an 'any' type.
+src/host/orchestrator/studioInfraUp.test.ts(52,7): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(expected: StudioInfraUpResult): void', gave the following error.
+    Type '{ readonly generated: 5; readonly removed: 0; readonly warnings: readonly []; }' is missing the following properties from type 'InfraGenerateResult': environment, artifacts, ledger
+  Overload 2 of 2, '(expected: NoInfer<StudioInfraUpResult>): void', gave the following error.
+    Type '{ readonly generated: 5; readonly removed: 0; readonly warnings: readonly []; }' is missing the following properties from type 'InfraGenerateResult': environment, artifacts, ledger
+src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts(26,7): error TS2353: Object literal may only specify known properties, and 'projectPath' does not exist in type 'ResolveProjectSecretDatabaseUrlInput'.
+src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts(48,7): error TS2353: Object literal may only specify known properties, and 'projectPath' does not exist in type 'ResolveProjectSecretDatabaseUrlInput'.
+src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts(69,9): error TS2353: Object literal may only specify known properties, and 'projectPath' does not exist in type 'ResolveProjectSecretDatabaseUrlInput'.
+src/host/smoke/createExpo57NavigationFixtureManifest.ts(25,11): error TS2339: Property 'auth' does not exist on type 'InfraManifest'.
+src/host/smoke/createOAuthFixtureManifest.ts(29,7): error TS2353: Object literal may only specify known properties, and 'auth' does not exist in type 'InfraManifest'.
+src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts(117,19): error TS2339: Property 'target' does not exist on type 'StudioInfraUpResult'.
+src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts(120,31): error TS2339: Property 'target' does not exist on type 'StudioInfraUpResult'.
+src/host/smoke/runExpo57GeneratedAppAcceptance.ts(113,11): error TS2339: Property 'auth' does not exist on type 'InfraManifest'.
+src/host/studioInfra.e2e.test.ts(10,3): error TS2305: Module '"@ankhorage/infra/project"' has no exported member 'readProjectInfrastructureEnvironment'.
+src/host/studioInfra.e2e.test.ts(11,3): error TS2305: Module '"@ankhorage/infra/project"' has no exported member 'runProjectInfrastructureLifecycle'.
+src/host/studioInfra.e2e.test.ts(18,8): error TS2307: Cannot find module './orchestrator/infraSession' or its corresponding type declarations.
+src/manifestSync.test.ts(80,7): error TS2353: Object literal may only specify known properties, and 'auth' does not exist in type 'InfraManifest'.
