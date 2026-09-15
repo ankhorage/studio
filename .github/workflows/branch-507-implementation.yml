@@ -31,63 +31,47 @@ jobs:
           project_path = Path('src/host/orchestrator/projectManager.ts')
           project = project_path.read_text()
           project_import = "import {\n  ProjectCreationValidationError,\n  validateProjectCreationInput,\n} from '../../projectIdentity';"
-          project_import_replacement = "import { createStudioProjectWriterProxy } from '../../features/project-updates/composition/createStudioProjectWriterProxy';\n" + project_import
-          if project_import not in project:
-              raise SystemExit('projectManager import anchor not found')
-          project = project.replace(project_import, project_import_replacement, 1)
+          project = project.replace(
+              project_import,
+              "import { createStudioProjectWriterProxy } from '../../features/project-updates/composition/createStudioProjectWriterProxy';\n" + project_import,
+              1,
+          )
+          project_end = "    };\n  }\n\n  /*** List persisted Studio project summaries for the workspace. */"
+          project_guard = """    };
+              return createStudioProjectWriterProxy(this, {
+                owner: 'project-manager',
+                firstArgumentProjectIdMethods: [
+                  'deleteProject',
+                  'installProjectPackages',
+                  'connectProjectRepository',
+                  'regenerateInfrastructure',
+                ],
+                objectArgumentProjectIdMethods: [
+                  'persistProjectManifest',
+                  'saveProjectManifest',
+                  'syncProjectRuntime',
+                  'rebuildRootLayout',
+                  'syncProject',
+                ],
+                resolveProjectRoot: (projectId) => getProjectPath(rootPath, projectId),
+              });
+            }
 
-          project_constructor = """    this.dependencies = {
-              connectGitHubRepositoryAsync,
-              reconcileProjectPackageRootAsync,
-              runProjectInfrastructureLifecycle,
-              ...dependencies,
-            };
-          }"""
-          project_constructor_replacement = """    this.dependencies = {
-              connectGitHubRepositoryAsync,
-              reconcileProjectPackageRootAsync,
-              runProjectInfrastructureLifecycle,
-              ...dependencies,
-            };
-            return createStudioProjectWriterProxy(this, {
-              owner: 'project-manager',
-              firstArgumentProjectIdMethods: [
-                'deleteProject',
-                'installProjectPackages',
-                'connectProjectRepository',
-                'regenerateInfrastructure',
-              ],
-              objectArgumentProjectIdMethods: [
-                'persistProjectManifest',
-                'saveProjectManifest',
-                'syncProjectRuntime',
-                'rebuildRootLayout',
-                'syncProject',
-              ],
-              resolveProjectRoot: (projectId) => getProjectPath(rootPath, projectId),
-            });
-          }"""
-          if project_constructor not in project:
-              raise SystemExit('projectManager constructor anchor not found')
-          project_path.write_text(project.replace(project_constructor, project_constructor_replacement, 1))
+            /*** List persisted Studio project summaries for the workspace. */"""
+          if project_import not in project or project_end not in project:
+              raise SystemExit('projectManager patch anchor not found')
+          project_path.write_text(project.replace(project_end, project_guard, 1))
 
           module_path = Path('src/host/orchestrator/moduleManager.ts')
           module = module_path.read_text()
           module_import = "import { findNodeInManifest, updateStudioManifestNode } from '../../manifestState';"
-          module_import_replacement = "import { createStudioProjectWriterProxy } from '../../features/project-updates/composition/createStudioProjectWriterProxy';\n" + module_import
-          if module_import not in module:
-              raise SystemExit('moduleManager import anchor not found')
-          module = module.replace(module_import, module_import_replacement, 1)
-
-          module_constructor = """  constructor(rootPath: string) {
-              this.appsRoot = path.join(rootPath, 'apps');
-              this.projectManager = new ProjectManager(rootPath);
-              this.adapter = new LocalFsTargetAdapter();
-            }"""
-          module_constructor_replacement = """  constructor(rootPath: string) {
-              this.appsRoot = path.join(rootPath, 'apps');
-              this.projectManager = new ProjectManager(rootPath);
-              this.adapter = new LocalFsTargetAdapter();
+          module = module.replace(
+              module_import,
+              "import { createStudioProjectWriterProxy } from '../../features/project-updates/composition/createStudioProjectWriterProxy';\n" + module_import,
+              1,
+          )
+          module_end = "    this.adapter = new LocalFsTargetAdapter();\n  }\n\n  /*** List module states projected with host contribution metadata and pending-removal state. */"
+          module_guard = """    this.adapter = new LocalFsTargetAdapter();
               return createStudioProjectWriterProxy(this, {
                 owner: 'module-manager',
                 firstArgumentProjectIdMethods: [
@@ -104,10 +88,12 @@ jobs:
                 objectArgumentProjectIdMethods: ['syncProject'],
                 resolveProjectRoot: (projectId) => this.getAppPath(projectId),
               });
-            }"""
-          if module_constructor not in module:
-              raise SystemExit('moduleManager constructor anchor not found')
-          module_path.write_text(module.replace(module_constructor, module_constructor_replacement, 1))
+            }
+
+            /*** List module states projected with host contribution metadata and pending-removal state. */"""
+          if module_import not in module or module_end not in module:
+              raise SystemExit('moduleManager patch anchor not found')
+          module_path.write_text(module.replace(module_end, module_guard, 1))
           PY
 
       - name: Upgrade released APM dependency
@@ -115,6 +101,9 @@ jobs:
 
       - name: Remove one-shot workflow
         run: git rm .github/workflows/branch-507-implementation.yml
+
+      - name: Format touched sources
+        run: bunx @ankhorage/devtools prettier --write src/host/orchestrator/projectManager.ts src/host/orchestrator/moduleManager.ts src/features/project-updates/composition package.json bun.lock
 
       - name: Commit implementation
         run: |
