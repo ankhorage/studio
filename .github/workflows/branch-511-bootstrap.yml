@@ -30,6 +30,7 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
 
           path = Path('src/host/orchestrator/moduleManager.ts')
           source = path.read_text()
@@ -42,13 +43,13 @@ jobs:
               "import { ProjectManager } from './projectManager';",
               "import { createHostModuleOrchestrator } from './createHostModuleOrchestrator';\nimport { ProjectManager } from './projectManager';",
           )
-          old = """    const orchestrator = createOrchestrator({
-              modules: listHostModules().map((module) => module.definition),
-              projectRoot: appPath,
-            });"""
-          if old not in source:
-              raise SystemExit('expected ModuleManager Orchestrator composition not found')
-          source = source.replace(old, "    const orchestrator = createHostModuleOrchestrator(appPath);")
+          source, count = re.subn(
+              r"    const orchestrator = createOrchestrator\(\{\n      modules: listHostModules\(\)\.map\(\(module\) => module\.definition\),\n      projectRoot: appPath,\n    \}\);",
+              "    const orchestrator = createHostModuleOrchestrator(appPath);",
+              source,
+          )
+          if count != 1:
+              raise SystemExit(f'expected one ModuleManager Orchestrator composition, found {count}')
           path.write_text(source)
           PY
       - name: Remove one-shot workflow
