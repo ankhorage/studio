@@ -3,11 +3,12 @@
 Issue: https://github.com/ankhorage/studio/issues/500  
 Roadmap: https://github.com/ankhorage/apm/issues/1
 
-This matrix records the current Studio project mutation paths before APM host/UI integration. It is
-source-backed and distinguishes canonical state persistence from derived project projections. A
-successful manifest write is not treated as proof that generated files, dependency state, module
-lifecycle state, or infrastructure are current. Runtime currency is resolved separately from the
-current runtime signature and durable evidence in `.ankh/generation-state.json`.
+This matrix records the current Studio project mutation paths through APM host integration and before
+Dashboard UI integration. It is source-backed and distinguishes canonical state persistence from
+derived project projections. A successful manifest write is not treated as proof that generated
+files, dependency state, module lifecycle state, or infrastructure are current. Runtime currency is
+resolved separately from the current runtime signature and durable evidence in
+`.ankh/generation-state.json`.
 
 ## Current mutation / projection matrix
 
@@ -31,6 +32,28 @@ current runtime signature and durable evidence in `.ankh/generation-state.json`.
 | Studio generation state         | `ProjectGenerationStateStore`                                                                                                                                  | `.ankh/generation-state.json`                                                                            | owns Studio inclusion plus last-applied/failed runtime signature evidence                                           | Missing runtime evidence is `unknown`; stale evidence cannot report `current`; inclusion writes preserve runtime evidence                        | `src/features/projects/adapters/outbound/ProjectGenerationStateStore.ts`, `docs/generated-project-lifecycle.md`                                                                                                                                                      |
 | Infrastructure projection       | `syncProjectInfrastructure` from create/save/runtime sync; explicit infra actions remain Infra-owned                                                           | Infra owner state/files                                                                                  | infrastructure projection/lifecycle delegated to `@ankhorage/infra`                                                 | Plain manifest persistence does not synchronize infrastructure                                                                                   | `src/host/orchestrator/projectManager.ts`                                                                                                                                                                                                                            |
 | Media authoring                 | `StudioProvider` media mutations / host ingestion-removal coordinators                                                                                         | manifest media assets plus Studio-owned source/storage effects                                           | manifest persistence; source cleanup on committed removal                                                           | Manifest save and source cleanup are separately coordinated; not evidence for unrelated runtime/package projections                              | `src/core/StudioProvider.ts`                                                                                                                                                                                                                                         |
+
+## Authorized APM host boundary
+
+Studio #522 exposes the already composed `ProjectUpdateService` through a bounded inbound HTTP
+adapter rather than introducing a second updater. Every route accepts a Studio project id and resolves
+the actual project root on the host after confirming that the project exists in the current workspace.
+Browser input cannot provide or override that filesystem root.
+
+- `GET /api/projects/:id/updates/status` provides read-only status with optional availability mode.
+- `POST /api/projects/:id/updates/plan` provides a read-only concrete plan from bounded policy input.
+- `POST /api/projects/:id/updates/apply` accepts only a reviewed APM plan whose root matches the
+  server-resolved project plus explicit owner-code/lifecycle-script/external-effect permissions.
+- `POST /api/projects/:id/updates/resume` resumes one durable APM operation id against the
+  server-resolved project with the same explicit permission envelope.
+- `POST /api/projects/:id/updates/verify` verifies one operation against fresh composed owner evidence.
+
+Invalid request shapes are rejected before APM invocation, unknown projects return a bounded not-found
+response, and incomplete/blocked/recovery-required structured lifecycle results remain explicit
+conflicts. The adapter does not parse CLI output or reproduce APM locking, journaling, owner execution,
+or recovery semantics. Source evidence is
+`src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts` and
+`src/host/http/server.ts`.
 
 ## Proven gaps / required #500 changes
 
@@ -65,7 +88,11 @@ current runtime signature and durable evidence in `.ankh/generation-state.json`.
    Observe-before-repeat treats a module already removed before interruption as satisfied instead of
    blindly replaying package/file/ledger effects. Malformed/unreadable pending state remains incomplete
    and unknown; a service instance without the trusted lifecycle adapter still fails closed.
-7. **`ProjectManager.syncProject` and imperative pending-apply paths remain compatibility paths.** They
+7. **The structured APM host boundary is now present.** Studio #522 routes status, plan, reviewed apply,
+   resume and verify through the same composed `ProjectUpdateService`; project roots remain host-owned,
+   and HTTP does not become a second owner of update semantics. Dashboard UX and older-host restart
+   presentation remain separate consumer work.
+8. **`ProjectManager.syncProject` and imperative pending-apply paths remain compatibility paths.** They
    must not survive as second canonical update/synchronization operations after #500 host/UI/CLI and
    published-package parity.
 
@@ -84,11 +111,9 @@ current runtime signature and durable evidence in `.ankh/generation-state.json`.
 
 ## Next implementation slice
 
-1. Expose the composed APM lifecycle through authorized Studio host routes without introducing a second
-   update engine.
-2. Add the Dashboard inspect/status → plan → apply/recovery → verify flow on top of those host routes,
-   including explicit host upgrade/restart prerequisites.
-3. Prove the complete existing-app lifecycle from npm-installed Studio and standalone/Ankh CLI without
+1. Add the Dashboard inspect/status → plan → apply/recovery → verify flow on top of the authorized host
+   routes, including explicit host upgrade/restart prerequisites.
+2. Prove the complete existing-app lifecycle from npm-installed Studio and standalone/Ankh CLI without
    sibling source checkouts, including an older-host restart prerequisite.
-4. After behavior parity and published-package acceptance, remove `syncProject`, imperative pending-
+3. After behavior parity and published-package acceptance, remove `syncProject`, imperative pending-
    apply compatibility and any superseded direct dependency-update path.
