@@ -42,7 +42,7 @@ function isCallable(value: unknown): value is Callable {
 
 /*** Resolve the project id from the two supported Studio manager mutation signatures. */
 function resolveProjectId(method: string, args: readonly unknown[]): string {
-  const first = args[0];
+  const [first] = args;
   if (typeof first === 'string') return first;
   if (isRecord(first) && typeof first.projectId === 'string') return first.projectId;
   throw new Error(`Studio project writer '${method}' requires a project id.`);
