@@ -8,7 +8,7 @@ interface ProjectWriterProxyOptions {
   readonly resolveProjectRoot: (projectId: string) => string;
 }
 
-type Callable = (...args: readonly unknown[]) => unknown;
+type Callable = (...args: unknown[]) => unknown;
 
 /*** Wrap selected async Studio manager operations with the canonical APM project writer lock. */
 export function createStudioProjectWriterProxy<T extends object>(
@@ -22,7 +22,7 @@ export function createStudioProjectWriterProxy<T extends object>(
       const value: unknown = Reflect.get(instance, property, receiver);
       if (typeof property !== 'string' || !isCallable(value) || !methods.has(property)) return value;
 
-      return (...args: readonly unknown[]) => {
+      return (...args: unknown[]) => {
         const projectId = resolveProjectId(property, args);
         const rootPath = options.resolveProjectRoot(projectId);
         return runWithStudioProjectWriterLockAsync(
