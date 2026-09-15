@@ -1,4 +1,4 @@
-name: Issue 520 Contracts resolution
+name: Issue 520 Renovate dry run
 
 on:
   push:
@@ -7,71 +7,46 @@ on:
 
 permissions:
   contents: read
+  issues: read
+  pull-requests: read
 
 jobs:
   inspect:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: '1.4.2'
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-      - name: Install root dependencies
-        run: bun install --frozen-lockfile
-      - name: Install standalone Studio app from a fresh lock
+      - name: Prove canonical Renovate manager and dependency extraction
+        env:
+          LOG_FILE: renovate.log
+          LOG_FILE_LEVEL: debug
+          LOG_FORMAT: json
+          LOG_LEVEL: debug
+          RENOVATE_DRY_RUN: full
+          RENOVATE_ONBOARDING: 'false'
+          RENOVATE_PLATFORM: github
+          RENOVATE_REQUIRE_CONFIG: required
+          RENOVATE_TOKEN: ${{ github.token }}
         run: |
-          rm apps/studio/bun.lock
-          bun install --cwd apps/studio
-      - name: Inspect Contracts resolution from app and Studio
-        run: |
+          bunx renovate@44.43.1 ankhorage/studio
           node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          import { createRequire } from 'node:module';
-          import path from 'node:path';
+          import { readFileSync } from 'node:fs';
 
-          const findPackageJson = (entryPath) => {
-            let current = path.dirname(entryPath);
-            while (true) {
-              const candidate = path.join(current, 'package.json');
-              if (fs.existsSync(candidate)) return candidate;
-              const parent = path.dirname(current);
-              if (parent === current) throw new Error(`No package.json above ${entryPath}`);
-              current = parent;
+          const log = readFileSync('renovate.log', 'utf8');
+          const requiredEvidence = [
+            '"enabledManagers":["bun","custom.regex"]',
+            '"manager":"bun"',
+            '@ankhorage/contracts',
+            '@ankhorage/zora',
+            '@ankhorage/expo-runtime',
+          ];
+          for (const evidence of requiredEvidence) {
+            if (!log.includes(evidence)) {
+              throw new Error(`Renovate dry-run evidence missing: ${evidence}`);
             }
-          };
-
-          const appPackagePath = path.resolve('apps/studio/package.json');
-          const appRequire = createRequire(appPackagePath);
-          const studioEntryPath = appRequire.resolve('@ankhorage/studio');
-          const studioPackagePath = findPackageJson(studioEntryPath);
-          const studioPackage = JSON.parse(fs.readFileSync(studioPackagePath, 'utf8'));
-          const studioRequire = createRequire(studioEntryPath);
-          const appContractsEntry = appRequire.resolve('@ankhorage/contracts');
-          const studioContractsEntry = studioRequire.resolve('@ankhorage/contracts');
-          const appContractsPath = findPackageJson(appContractsEntry);
-          const studioContractsPath = findPackageJson(studioContractsEntry);
-          const appContracts = JSON.parse(fs.readFileSync(appContractsPath, 'utf8'));
-          const studioContracts = JSON.parse(fs.readFileSync(studioContractsPath, 'utf8'));
-
-          console.log(JSON.stringify({
-            studio: {
-              path: studioPackagePath,
-              version: studioPackage.version,
-              contractsRange: studioPackage.dependencies?.['@ankhorage/contracts'],
-            },
-            appContracts: {
-              path: appContractsPath,
-              version: appContracts.version,
-              environmentExport: appContracts.exports?.['./environments'] ?? null,
-            },
-            studioContracts: {
-              path: studioContractsPath,
-              version: studioContracts.version,
-              environmentExport: studioContracts.exports?.['./environments'] ?? null,
-            },
-          }, null, 2));
+          }
+          console.log('Renovate dry-run detected Bun-managed Ankhorage dependencies.');
           NODE
