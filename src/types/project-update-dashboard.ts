@@ -1,21 +1,16 @@
 import type { ApmApplyPermissions, ApmStatusAvailabilityMode } from '@ankhorage/apm/types';
 
-export type ProjectUpdateDashboardBusyAction =
-  | 'status'
-  | 'plan'
-  | 'apply'
-  | 'resume'
-  | 'verify';
+export type ProjectUpdateDashboardBusyAction = 'status' | 'plan' | 'apply' | 'resume' | 'verify';
 
 export type ProjectUpdatePermissionId = 'owner-code' | 'lifecycle-scripts' | 'external-effects';
 
 export interface ProjectUpdateDashboardState {
   readonly projectId: string;
   readonly availability: ApmStatusAvailabilityMode;
-  readonly status: unknown | null;
-  readonly plan: unknown | null;
-  readonly execution: unknown | null;
-  readonly verification: unknown | null;
+  readonly status: unknown;
+  readonly plan: unknown;
+  readonly execution: unknown;
+  readonly verification: unknown;
   readonly operationId: string;
   readonly permissions: ApmApplyPermissions;
   readonly busy: ProjectUpdateDashboardBusyAction | null;

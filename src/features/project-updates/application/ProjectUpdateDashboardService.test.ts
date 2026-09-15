@@ -45,12 +45,16 @@ describe('ProjectUpdateDashboardService', () => {
     const calls: unknown[] = [];
     const service = new ProjectUpdateDashboardService(createHostPort(calls));
 
-    expect(service.inspectAsync('  ', 'refresh')).rejects.toThrow('A selected project is required.');
-    expect(service.resumeAsync('project-one', ' ', {
-      ownerCode: false,
-      lifecycleScripts: false,
-      externalEffects: false,
-    })).rejects.toThrow('An APM operation ID is required.');
+    await expect(service.inspectAsync('  ', 'refresh')).rejects.toThrow(
+      'A selected project is required.',
+    );
+    await expect(
+      service.resumeAsync('project-one', ' ', {
+        ownerCode: false,
+        lifecycleScripts: false,
+        externalEffects: false,
+      }),
+    ).rejects.toThrow('An APM operation ID is required.');
     expect(calls).toEqual([]);
   });
 });
