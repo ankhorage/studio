@@ -163,7 +163,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       setMessage(nextMessage);
       await refreshHealth();
     },
-    [flushManifest, projectId, refreshHealth, updateAuthSettings],
+    [environment, flushManifest, projectId, refreshHealth, updateAuthSettings],
   );
 
   /*** Persist one stored OAuth credential reference into the manifest and maintain pending-recovery state when manifest persistence fails. */

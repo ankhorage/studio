@@ -46,7 +46,7 @@ function readPublicEnvironmentOutput(
     (candidate) =>
       candidate.visibility === 'public' && candidate.environmentVariable === environmentVariable,
   );
-  if (!output || output.visibility !== 'public') return undefined;
+  if (output?.visibility !== 'public') return undefined;
   const value = String(output.value).trim();
   return value.length > 0 ? value : undefined;
 }

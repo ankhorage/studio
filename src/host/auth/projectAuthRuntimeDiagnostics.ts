@@ -9,12 +9,12 @@ export interface ProjectAuthRedirectRuntime {
 }
 
 /*** Observe Auth redirect configuration and rollout readiness from provider-neutral Infra outputs and status. */
-export async function observeProjectAuthRuntimeDiagnostics(input: {
+export function observeProjectAuthRuntimeDiagnostics(input: {
   readonly callbackRoute: string;
   readonly outputs: readonly InfraOutput[];
   readonly publicBaseUrl?: string;
   readonly status: InfraStatus;
-}): Promise<ProjectAuthRuntimeDiagnostics> {
+}): ProjectAuthRuntimeDiagnostics {
   const expected = resolveProjectAuthRedirectRuntime({
     callbackRoute: input.callbackRoute,
     outputs: input.outputs,
@@ -84,7 +84,7 @@ function readPublicEnvironmentOutput(
     (candidate) =>
       candidate.visibility === 'public' && candidate.environmentVariable === environmentVariable,
   );
-  if (!output || output.visibility !== 'public') return undefined;
+  if (output?.visibility !== 'public') return undefined;
   const value = String(output.value).trim();
   return value.length > 0 ? value : undefined;
 }

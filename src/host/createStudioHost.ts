@@ -30,7 +30,7 @@ export function createStudioHost(options: CreateStudioHostOptions) {
     projectUpdateService,
     projectDeployService,
     /*** Close Studio host-owned resources. Provider-neutral Infra lifecycle operations own their own runtime handles. */
-    async close(): Promise<void> {},
+    close: (): void => undefined,
   };
 }
 

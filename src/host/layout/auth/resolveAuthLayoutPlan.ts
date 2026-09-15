@@ -104,7 +104,7 @@ export type AuthLayoutPlan = DisabledAuthLayoutPlan | EnabledAuthLayoutPlan;
 export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLayoutPlan {
   const { manifest } = input;
   const { auth } = manifest.infra.environments.local;
-  if (auth?.scope !== 'global' || auth.provider !== 'supabase') {
+  if (auth?.scope !== 'global') {
     return createDisabledPlan();
   }
 

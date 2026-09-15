@@ -476,7 +476,7 @@ async function exists(filePath: string): Promise<boolean> {
 /*** Resolve the generated auth-provider mode from the manifest's global auth infrastructure ownership. */
 function resolveGeneratedAuthProvider(manifest: AppManifest): GeneratedAuthProvider {
   const { auth } = manifest.infra.environments.local;
-  if (auth?.scope === 'global' && auth.provider === 'supabase') {
+  if (auth?.scope === 'global') {
     return 'supabase';
   }
   return null;
@@ -486,6 +486,6 @@ function resolveGeneratedAuthProvider(manifest: AppManifest): GeneratedAuthProvi
 function resolveGeneratedStorageProvider(manifest: AppManifest): GeneratedStorageProvider {
   const { auth, database, objectStorage } = manifest.infra.environments.local;
   if (objectStorage?.provider !== 'supabase') return null;
-  const usesSupabase = auth?.provider === 'supabase' || database?.provider === 'supabase';
+  const usesSupabase = auth !== undefined || database !== undefined;
   return usesSupabase ? 'supabase' : null;
 }
