@@ -107,7 +107,6 @@ jobs:
           bun run lint
           bun run knip:check
           bun run format:check
-          bun run changeset:status
       - name: Commit clean issue 520 diff
         run: |
           git config user.name 'github-actions[bot]'
@@ -115,6 +114,8 @@ jobs:
           git add -A
           git reset .github/workflows/issue-520-reapply.yml
           git commit -m 'fix: restore full Studio acceptance baseline'
+      - name: Validate committed changeset
+        run: bun run changeset:status
       - name: Remove temporary workflow and push
         run: |
           git rm .github/workflows/issue-520-reapply.yml
