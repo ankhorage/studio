@@ -60,15 +60,16 @@ export function registerProjectUpdateRoutes(
   fastify.post('/api/projects/:id/updates/apply', async (request, reply) => {
     const context = await resolveRequestContext(request.params, options, reply);
     if (context === undefined) return;
-    if (!isApplyRequest(request.body)) return sendInvalidRequest(reply);
-    if (request.body.plan.rootPath !== context.rootPath) {
+    const body = request.body;
+    if (!isApplyRequest(body)) return sendInvalidRequest(reply);
+    if (body.plan.rootPath !== context.rootPath) {
       return reply.status(409).send({ error: 'The reviewed plan belongs to another project.' });
     }
     return invokeLifecycle(reply, () =>
       options.service.applyAsync({
         mode: 'start',
-        plan: request.body.plan,
-        permissions: request.body.permissions,
+        plan: body.plan,
+        permissions: body.permissions,
       }),
     );
   });
@@ -76,13 +77,14 @@ export function registerProjectUpdateRoutes(
   fastify.post('/api/projects/:id/updates/resume', async (request, reply) => {
     const context = await resolveRequestContext(request.params, options, reply);
     if (context === undefined) return;
-    if (!isResumeRequest(request.body)) return sendInvalidRequest(reply);
+    const body = request.body;
+    if (!isResumeRequest(body)) return sendInvalidRequest(reply);
     return invokeLifecycle(reply, () =>
       options.service.applyAsync({
         mode: 'resume',
         rootPath: context.rootPath,
-        operationId: request.body.operationId,
-        permissions: request.body.permissions,
+        operationId: body.operationId,
+        permissions: body.permissions,
       }),
     );
   });
@@ -90,11 +92,12 @@ export function registerProjectUpdateRoutes(
   fastify.post('/api/projects/:id/updates/verify', async (request, reply) => {
     const context = await resolveRequestContext(request.params, options, reply);
     if (context === undefined) return;
-    if (!isOperationRequest(request.body)) return sendInvalidRequest(reply);
+    const body = request.body;
+    if (!isOperationRequest(body)) return sendInvalidRequest(reply);
     return invokeLifecycle(reply, () =>
       options.service.verifyAsync({
         rootPath: context.rootPath,
-        operationId: request.body.operationId,
+        operationId: body.operationId,
       }),
     );
   });
@@ -124,7 +127,10 @@ async function resolveRequestContext(
 }
 
 /*** Execute one read-only APM request without leaking host exception details. */
-async function invokeReadOnly(reply: FastifyReply, operation: () => Promise<unknown>): Promise<unknown> {
+async function invokeReadOnly(
+  reply: FastifyReply,
+  operation: () => Promise<unknown>,
+): Promise<unknown> {
   try {
     return await operation();
   } catch {
@@ -168,7 +174,10 @@ function isAvailability(value: unknown): value is ApmStatusAvailabilityMode | un
 /*** Validate the bounded request body accepted by the plan route. */
 function isPlanRequest(
   value: unknown,
-): value is { readonly availability?: ApmStatusAvailabilityMode; readonly policy?: ApmPlanPolicyInput } {
+): value is {
+  readonly availability?: ApmStatusAvailabilityMode;
+  readonly policy?: ApmPlanPolicyInput;
+} {
   return (
     isRecord(value) &&
     hasOnlyKeys(value, ['availability', 'policy']) &&
@@ -197,14 +206,19 @@ function isPlanPolicy(value: unknown): value is ApmPlanPolicyInput {
     (value.repairInstallations === undefined || typeof value.repairInstallations === 'boolean') &&
     (value.repairProjections === undefined || typeof value.repairProjections === 'boolean') &&
     (value.maxGeneratorIterations === undefined ||
-      (Number.isInteger(value.maxGeneratorIterations) && value.maxGeneratorIterations > 0))
+      (typeof value.maxGeneratorIterations === 'number' &&
+        Number.isInteger(value.maxGeneratorIterations) &&
+        value.maxGeneratorIterations > 0))
   );
 }
 
 /*** Validate one package selection in a host-authored APM plan request. */
 function isPlanPackageSelection(value: unknown): value is ApmPlanPackageSelection {
   if (!isRecord(value) || !hasOnlyKeys(value, ['selector', 'target'])) return false;
-  if (!isRecord(value.selector) || !hasOnlyKeys(value.selector, ['name', 'packageId', 'installRootId', 'ownerPath'])) {
+  if (
+    !isRecord(value.selector) ||
+    !hasOnlyKeys(value.selector, ['name', 'packageId', 'installRootId', 'ownerPath'])
+  ) {
     return false;
   }
   const selector = value.selector;
