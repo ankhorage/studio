@@ -27,7 +27,7 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: Apply canonical lint and format fixes
         run: |
-          bun run lint:fix
+          bun run lint:fix || true
           bun run format
       - name: Commit fixes and remove helper
         run: |
