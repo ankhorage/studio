@@ -25,6 +25,18 @@ jobs:
         with:
           bun-version: '1.4.2'
       - run: bun install --frozen-lockfile
+      - name: Align repair script with current project auth import
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('.github/scripts/repair_512_remaining.py')
+          source = path.read_text()
+          path.write_text(source.replace(
+              "import type { AppManifest } from '@ankhorage/contracts';",
+              "import type { AppManifest, AuthOAuthProviderConfig } from '@ankhorage/contracts';",
+          ))
+          PY
       - run: python .github/scripts/repair_512_remaining.py
       - name: Refresh dependency lockfile
         run: bun install
