@@ -13,8 +13,8 @@ new = """  const generationStateSource = await readFile(
     path.join(created.path, '.ankh/generation-state.json'),
     'utf8',
   );
-  expect(generationStateSource).toContain('\\\"includeStudio\\\": true');
-  expect(generationStateSource).toContain('\\\"appliedSignature\\\": \\\"');
+  expect(generationStateSource).toContain('"includeStudio": true');
+  expect(generationStateSource).toContain('"appliedSignature": "');
 """
 if old not in source:
     raise RuntimeError('Expected generated-state smoke assertion was not found')
