@@ -26,7 +26,12 @@ export function createStudioProjectWriterProxy<T extends object>(
       if (!firstArgumentMethods.has(property) && !objectArgumentMethods.has(property)) return value;
 
       return (...args: readonly unknown[]) => {
-        const projectId = resolveProjectId(property, args, firstArgumentMethods, objectArgumentMethods);
+        const projectId = resolveProjectId(
+          property,
+          args,
+          firstArgumentMethods,
+          objectArgumentMethods,
+        );
         const rootPath = options.resolveProjectRoot(projectId);
         return runWithStudioProjectWriterLockAsync(
           rootPath,
