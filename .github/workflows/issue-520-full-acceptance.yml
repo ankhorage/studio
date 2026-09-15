@@ -1,3 +1,4 @@
+# Final issue #520 acceptance trigger after Metro formatting fix.
 name: Issue 520 full acceptance
 
 on:
