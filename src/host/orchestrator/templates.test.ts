@@ -103,6 +103,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(metro).toContain("path.resolve(__dirname, 'metro.empty-module.js')");
     expect(metro).toContain("'metro.empty-module.js');\n\nmodule.exports = config;");
     expect(getMetroEmptyModuleJs()).toBe('module.exports = {};\n');
+    expect(metro.endsWith('module.exports = config;\n')).toBe(true);
     expect(metro).not.toContain('ancestorNodeModules');
     expect(metro).not.toContain('config.resolver.blockList = [');
     expect(metro).not.toContain('watchFolders');
