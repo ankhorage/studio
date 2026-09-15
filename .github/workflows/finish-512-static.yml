@@ -25,6 +25,25 @@ jobs:
         with:
           bun-version: '1.4.2'
       - run: bun install --frozen-lockfile
+      - name: Align Auth 5 repair anchor
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('.github/scripts/finish_512_static.py')
+          source = path.read_text()
+          start = source.index('# StudioInfraUp exposes the canonical runtime provider')
+          end = source.index('# Prefer immutable destructuring', start)
+          replacement = '''# StudioInfraUp exposes the canonical runtime provider, not the removed target field.
+          replace(
+              'src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts',
+              "      if (!result.target) {\\n        throw new Error('Auth 5 smoke infrastructure did not resolve a target.');\\n      }\\n      return { target: result.target };",
+              "      return { target: result.runtime };",
+          )
+
+          '''
+          path.write_text(source[:start] + replacement + source[end:])
+          PY
       - run: python .github/scripts/finish_512_static.py
       - run: bun run format
       - name: Validate static migration
