@@ -4,7 +4,7 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   generate:
@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -31,10 +33,11 @@ jobs:
       - name: Generate documentation
         run: bun run docs
 
-      - name: Upload generated documentation
-        uses: actions/upload-artifact@v4
-        with:
-          name: paradox-preview
-          path: |
-            README.md
-            paradox
+      - name: Commit generated documentation and remove temporary workflow
+        run: |
+          git add README.md paradox
+          git rm .github/workflows/paradox-preview.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "docs: regenerate Paradox documentation"
+          git push origin HEAD:${{ github.head_ref }}
