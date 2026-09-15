@@ -14,7 +14,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 # Temporary one-shot migration workflow; it deletes itself after successful validation.
-# This run also verifies the current-only project synchronization boundary.
+# This run verifies the current-only project sync plus the final current template expectations.
 jobs:
   finalize:
     runs-on: ubuntu-latest
