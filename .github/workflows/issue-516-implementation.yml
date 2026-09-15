@@ -34,7 +34,9 @@ jobs:
           node-version: '24'
 
       - name: Apply projection currency implementation
-        run: python3 .github/issue-516-implementation.py
+        run: |
+          python3 .github/issue-516-implementation.py
+          python3 .github/issue-516-fix.py
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -49,7 +51,7 @@ jobs:
         run: bun run format
 
       - name: Run focused projection currency tests
-        run: bun test src/features/projects src/host/orchestrator/projectManagerCurrentState.test.ts
+        run: bun test src/features/projects src/host/orchestrator/projectManagerCurrentState.test.ts src/host/http/projectRuntimeRoutes.test.ts
 
       - name: Build
         run: bun run build
@@ -77,6 +79,7 @@ jobs:
         run: |
           rm .github/workflows/issue-516-implementation.yml
           rm .github/issue-516-implementation.py
+          rm .github/issue-516-fix.py
           git config user.name 'artiphishle'
           git config user.email '137318798+artiphishle@users.noreply.github.com'
           git add -A
