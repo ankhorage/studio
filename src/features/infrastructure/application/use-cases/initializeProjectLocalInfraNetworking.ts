@@ -8,7 +8,7 @@ export function initializeProjectLocalInfraNetworking(
   manifest: AppManifest,
   projectId: string,
 ): AppManifest {
-  const local = manifest.infra.environments.local;
+  const { local } = manifest.infra.environments;
   if (!usesLocalSupabase(local) || local.networking?.publicBaseUrl) return manifest;
 
   return {
