@@ -37,6 +37,7 @@ jobs:
         run: |
           python3 .github/issue-516-implementation.py
           python3 .github/issue-516-fix.py
+          python3 .github/issue-516-typecheck-fix.py
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -80,6 +81,7 @@ jobs:
           rm .github/workflows/issue-516-implementation.yml
           rm .github/issue-516-implementation.py
           rm .github/issue-516-fix.py
+          rm .github/issue-516-typecheck-fix.py
           git config user.name 'artiphishle'
           git config user.email '137318798+artiphishle@users.noreply.github.com'
           git add -A
