@@ -45,7 +45,9 @@ describe('ProjectUpdateDashboardService', () => {
     const calls: unknown[] = [];
     const service = new ProjectUpdateDashboardService(createHostPort(calls));
 
-    expect(service.inspectAsync('  ', 'refresh')).rejects.toThrow('A selected project is required.');
+    expect(service.inspectAsync('  ', 'refresh')).rejects.toThrow(
+      'A selected project is required.',
+    );
     expect(
       service.resumeAsync('project-one', ' ', {
         ownerCode: false,
