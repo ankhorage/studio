@@ -1,0 +1,42 @@
+name: Refresh released Doctor dependency
+
+on:
+  push:
+    branches:
+      - fix/145-current-infra-consumer
+    paths:
+      - '.github/workflows/refresh-doctor-01013-lock.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/145-current-infra-consumer
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - name: Refresh transitive Doctor release
+        run: |
+          bun update --lockfile-only @ankhorage/doctor
+          bun install --frozen-lockfile
+          bun --eval '
+          const lock = await Bun.file("bun.lock").text();
+          if (!lock.includes("@ankhorage/doctor@0.10.13")) throw new Error("Doctor 0.10.13 was not resolved");
+          '
+      - name: Commit refreshed lockfile
+        run: |
+          rm .github/workflows/refresh-doctor-01013-lock.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add bun.lock .github/workflows/refresh-doctor-01013-lock.yml
+          git commit -m 'chore: consume released Doctor fix'
+          git push origin HEAD:fix/145-current-infra-consumer
