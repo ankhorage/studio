@@ -4,8 +4,7 @@ import { runWithStudioProjectWriterLockAsync } from './runWithStudioProjectWrite
 
 interface ProjectWriterProxyOptions {
   readonly owner: string;
-  readonly firstArgumentProjectIdMethods: readonly string[];
-  readonly objectArgumentProjectIdMethods: readonly string[];
+  readonly methods: readonly string[];
   readonly resolveProjectRoot: (projectId: string) => string;
 }
 
@@ -16,22 +15,15 @@ export function createStudioProjectWriterProxy<T extends object>(
   target: T,
   options: ProjectWriterProxyOptions,
 ): T {
-  const firstArgumentMethods = new Set(options.firstArgumentProjectIdMethods);
-  const objectArgumentMethods = new Set(options.objectArgumentProjectIdMethods);
+  const methods = new Set(options.methods);
 
   return new Proxy(target, {
     get(instance, property, receiver) {
       const value: unknown = Reflect.get(instance, property, receiver);
-      if (typeof property !== 'string' || !isCallable(value)) return value;
-      if (!firstArgumentMethods.has(property) && !objectArgumentMethods.has(property)) return value;
+      if (typeof property !== 'string' || !isCallable(value) || !methods.has(property)) return value;
 
       return (...args: readonly unknown[]) => {
-        const projectId = resolveProjectId(
-          property,
-          args,
-          firstArgumentMethods,
-          objectArgumentMethods,
-        );
+        const projectId = resolveProjectId(property, args);
         const rootPath = options.resolveProjectRoot(projectId);
         return runWithStudioProjectWriterLockAsync(
           rootPath,
@@ -48,17 +40,10 @@ function isCallable(value: unknown): value is Callable {
   return typeof value === 'function';
 }
 
-/*** Resolve the project id from one configured Studio manager mutation signature. */
-function resolveProjectId(
-  method: string,
-  args: readonly unknown[],
-  firstArgumentMethods: ReadonlySet<string>,
-  objectArgumentMethods: ReadonlySet<string>,
-): string {
+/*** Resolve the project id from the two supported Studio manager mutation signatures. */
+function resolveProjectId(method: string, args: readonly unknown[]): string {
   const first = args[0];
-  if (firstArgumentMethods.has(method) && typeof first === 'string') return first;
-  if (objectArgumentMethods.has(method) && isRecord(first) && typeof first.projectId === 'string') {
-    return first.projectId;
-  }
+  if (typeof first === 'string') return first;
+  if (isRecord(first) && typeof first.projectId === 'string') return first.projectId;
   throw new Error(`Studio project writer '${method}' requires a project id.`);
 }
