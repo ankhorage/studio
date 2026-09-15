@@ -1,0 +1,60 @@
+name: Branch 516 runner
+
+on:
+  push:
+    branches:
+      - feat/516-authoring-projection-currency
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: bun install --frozen-lockfile
+      - name: Apply implementation patch
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source = Path('.github/workflows/branch-516-implement.yml').read_text()
+          marker = "          python - <<'PY'\n"
+          start = source.index(marker) + len(marker)
+          end = source.index("\n          PY\n", start)
+          script = '\n'.join(line[10:] if line.startswith('          ') else line for line in source[start:end].splitlines())
+          exec(compile(script, 'branch-516-implement.py', 'exec'))
+          PY
+      - run: bun run build
+      - run: bun run lint:fix
+      - run: bun run format
+      - run: bun run check-types
+      - run: bun run lint
+      - run: bun run knip:check
+      - name: Focused tests
+        run: |
+          bun test src/host/orchestrator/projectGenerationState.test.ts src/host/http/projectRuntimeRoutes.test.ts src/core/StudioProvider.test.ts src/core/studioManifestPersistenceModel.test.ts
+      - run: bun run docs
+      - run: bun run format
+      - run: bun run build
+      - run: bun run check-types
+      - run: bun run lint
+      - run: bun run knip:check
+      - run: bun run format:check
+      - run: bun run changeset:status
+      - name: Commit finalized slice
+        run: |
+          rm .github/workflows/branch-516-implement.yml .github/workflows/branch-516-run.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "feat: track authoring projection currency"
+          git push
