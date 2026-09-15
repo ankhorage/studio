@@ -72,8 +72,8 @@ export async function assertExpo57StudioStandaloneContractAsync(options: {
     throw new Error('Standalone Studio fixture does not own EAS build profiles.');
   }
   if (
-    !metroConfig.includes('const ancestorNodeModules = new RegExp(') ||
-    !metroConfig.includes('config.resolver.blockList = [') ||
+    metroConfig.includes('ancestorNodeModules') ||
+    metroConfig.includes('config.resolver.blockList = [') ||
     metroConfig.includes('watchFolders') ||
     metroConfig.includes('disableHierarchicalLookup') ||
     metroConfig.includes('nodeModulesPaths') ||
