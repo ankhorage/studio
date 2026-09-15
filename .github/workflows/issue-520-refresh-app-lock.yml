@@ -1,4 +1,4 @@
-name: Issue 520 Contracts graph
+name: Issue 520 Contracts resolution
 
 on:
   push:
@@ -21,46 +21,33 @@ jobs:
         run: |
           rm apps/studio/bun.lock
           bun install --cwd apps/studio
-      - name: Inspect physical Contracts ownership
+      - name: Prove Studio-owned Contracts subpath and Node resolution
         run: |
           node --input-type=module <<'NODE'
-          import { existsSync, readFileSync, realpathSync } from 'node:fs';
+          import { createRequire } from 'node:module';
+          import { existsSync, readFileSync } from 'node:fs';
           import path from 'node:path';
 
-          const appRoot = path.resolve('apps/studio');
-          const studioLink = path.join(appRoot, 'node_modules/@ankhorage/studio');
-          const runtimeLink = path.join(appRoot, 'node_modules/@ankhorage/expo-runtime');
-          const readPackage = (packagePath) => {
-            if (!existsSync(packagePath)) return null;
-            const value = JSON.parse(readFileSync(packagePath, 'utf8'));
-            return {
-              path: packagePath,
-              realPath: realpathSync(packagePath),
-              version: value.version,
-              environments: value.exports?.['./environments'] ?? null,
-            };
-          };
-          const packageRoot = (link) => realpathSync(link);
-          const candidates = [
-            path.join(appRoot, 'node_modules/@ankhorage/contracts/package.json'),
-            path.join(studioLink, 'node_modules/@ankhorage/contracts/package.json'),
-            path.join(runtimeLink, 'node_modules/@ankhorage/contracts/package.json'),
-            path.join(packageRoot(studioLink), 'node_modules/@ankhorage/contracts/package.json'),
-            path.join(packageRoot(runtimeLink), 'node_modules/@ankhorage/contracts/package.json'),
-          ];
+          const studioRoot = path.resolve('apps/studio/node_modules/@ankhorage/studio');
+          const origin = path.join(studioRoot, 'dist/projectOAuthSetup.js');
+          const contractsRoot = path.join(studioRoot, 'node_modules/@ankhorage/contracts');
+          const manifestPath = path.join(contractsRoot, 'package.json');
+          const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+          const target = path.join(contractsRoot, 'dist/environments.js');
+          const requireFromStudio = createRequire(origin);
+          const resolved = requireFromStudio.resolve('@ankhorage/contracts/environments');
+
           console.log(JSON.stringify({
-            studio: {
-              realPath: packageRoot(studioLink),
-              manifest: readPackage(path.join(studioLink, 'package.json')),
-            },
-            expoRuntime: {
-              realPath: packageRoot(runtimeLink),
-              manifest: readPackage(path.join(runtimeLink, 'package.json')),
-            },
-            contracts: [...new Set(candidates)].map(readPackage).filter(Boolean),
+            studioOrigin: origin,
+            contractsVersion: manifest.version,
+            contractsExport: manifest.exports?.['./environments'] ?? null,
+            target,
+            targetExists: existsSync(target),
+            nodeResolved: resolved,
           }, null, 2));
+
+          if (!existsSync(target)) throw new Error('Published Contracts environments target is missing.');
+          if (!resolved.includes('/@ankhorage/studio/node_modules/@ankhorage/contracts/')) {
+            throw new Error(`Node resolved Studio Contracts through the wrong owner path: ${resolved}`);
+          }
           NODE
-          echo '--- all Contracts manifests under standalone node_modules ---'
-          find apps/studio/node_modules -path '*/@ankhorage/contracts/package.json' -print | sort
-          echo '--- Bun-store Contracts manifests ---'
-          find apps/studio/node_modules/.bun -path '*ankhorage+contracts*/node_modules/@ankhorage/contracts/package.json' -print | sort || true
