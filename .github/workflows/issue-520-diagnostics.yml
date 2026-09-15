@@ -31,11 +31,15 @@ jobs:
             const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
             console.log(packageName, pkg.version);
           }
+          console.log('--- tabletop registry ---');
           console.log(fs.readFileSync('node_modules/@ankhorage/zora-tabletop/src/registry.ts', 'utf8'));
           NODE
-          bun -e "import { ZORA_TABLETOP_PLUGIN } from '@ankhorage/zora-tabletop'; console.log('TABLETOP', JSON.stringify(ZORA_TABLETOP_PLUGIN.placements));"
-          bun -e "import { ZORA_CORE_PLUGIN } from '@ankhorage/zora'; console.log('CORE HOSTS', JSON.stringify(Object.entries(ZORA_CORE_PLUGIN.componentMeta).filter(([, meta]) => meta.extensionHost === true).map(([name]) => name)));"
-          bun -e "import { composeZoraPlugins, ZORA_CORE_PLUGIN } from '@ankhorage/zora'; import { ZORA_TABLETOP_PLUGIN } from '@ankhorage/zora-tabletop'; console.log(composeZoraPlugins([ZORA_CORE_PLUGIN, ZORA_TABLETOP_PLUGIN]).packageNames);"
+          echo '--- tabletop View references ---'
+          grep -R "View" node_modules/@ankhorage/zora-tabletop/src -n || true
+          echo '--- ZORA extension hosts ---'
+          grep -R "extensionHost.*true\|extensionHost: true" node_modules/@ankhorage/zora/src -n || true
+          echo '--- ZORA placement validation ---'
+          grep -R "declared extension host\|invalid-placement\|placements" node_modules/@ankhorage/zora/src -n | head -80 || true
       - name: Inspect generated Auth formatting
         run: |
           mkdir -p .tmp-520
