@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.6.3
+
+### Patch Changes
+
+- ddc10a6: Expose deferred module lifecycle work in APM status and planning instead of allowing it to remain hidden behind Studio sync behavior.
+
 ## 2.6.2
 
 ### Patch Changes
