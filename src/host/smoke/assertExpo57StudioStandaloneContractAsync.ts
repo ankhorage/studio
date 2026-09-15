@@ -1,4 +1,5 @@
 import { lstat, readdir, readFile, realpath, stat } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
@@ -38,10 +39,9 @@ export async function assertExpo57StudioStandaloneContractAsync(options: {
   if (packageJson.workspaces !== undefined) {
     throw new Error('Standalone Studio fixture must not declare workspaces.');
   }
-  const ownerRanges = await resolveOwnerRangesAsync(repositoryRoot);
   const requiredReleaseRanges = await resolveRequiredReleaseRangesAsync(
     repositoryRoot,
-    ownerRanges['@ankhorage/studio'],
+    requireDependencyRange(packageJson, 'dependencies', '@ankhorage/studio'),
   );
   for (const requirement of requiredReleaseRanges) {
     const declaredRange = packageJson[requirement.dependencyGroup]?.[requirement.packageName];
@@ -94,12 +94,7 @@ export async function assertExpo57StudioStandaloneContractAsync(options: {
   }
   await assertCopiedFilesAreIndependentAsync(fixtureRoot, repositoryRoot);
   if (options.installed) {
-    await assertInstalledContractAsync(
-      fixtureRoot,
-      packageJson,
-      requiredReleaseRanges,
-      ownerRanges,
-    );
+    await assertInstalledContractAsync(fixtureRoot, packageJson, requiredReleaseRanges);
   }
 }
 
@@ -128,9 +123,6 @@ async function assertInstalledContractAsync(
   fixtureRoot: string,
   packageJson: StandalonePackageJson,
   requiredReleaseRanges: readonly ReleaseRequirement[],
-  ownerRanges: Readonly<
-    Record<'@ankhorage/runtime' | '@ankhorage/studio' | '@ankhorage/surface', string>
-  >,
 ): Promise<void> {
   const lockfile = await readFile(path.join(fixtureRoot, 'bun.lock'), 'utf8');
   for (const requirement of requiredReleaseRanges) {
@@ -150,7 +142,11 @@ async function assertInstalledContractAsync(
     installationRoot: fixtureRoot,
     reactNativeVersion: requireDependencyRange(packageJson, 'dependencies', 'react-native'),
     requiredOwnerRanges: {
-      ...ownerRanges,
+      '@ankhorage/studio': requireDependencyRange(
+        packageJson,
+        'dependencies',
+        '@ankhorage/studio',
+      ),
       ...(await resolveInstalledStudioOwnerRangesAsync(fixtureRoot)),
       '@ankhorage/expo-runtime': requireDependencyRange(
         packageJson,
@@ -175,21 +171,42 @@ async function assertInstalledContractAsync(
   }
 }
 
-/*** Reads the ZORA range owned by the installed registry Studio package. */
+/*** Resolve Runtime, ZORA and Surface ranges from the installed registry Studio dependency graph. */
 async function resolveInstalledStudioOwnerRangesAsync(
   fixtureRoot: string,
-): Promise<Readonly<Record<'@ankhorage/zora', string>>> {
-  const packageJson = JSON.parse(
-    await readFile(
-      path.join(fixtureRoot, 'node_modules', '@ankhorage', 'studio', 'package.json'),
-      'utf8',
+): Promise<
+  Readonly<Record<'@ankhorage/runtime' | '@ankhorage/surface' | '@ankhorage/zora', string>>
+> {
+  const studioPackagePath = path.join(
+    fixtureRoot,
+    'node_modules',
+    '@ankhorage',
+    'studio',
+    'package.json',
+  );
+  const studioPackageJson = await readPackageJsonAsync(studioPackagePath);
+  const studioRequire = createRequire(studioPackagePath);
+  const zoraPackageJson = await readPackageJsonAsync(
+    studioRequire.resolve('@ankhorage/zora/package.json'),
+  );
+
+  return {
+    '@ankhorage/runtime': requireDependencyRange(
+      studioPackageJson,
+      'dependencies',
+      '@ankhorage/runtime',
     ),
-  ) as StandalonePackageJson;
-  const zoraRange = packageJson.dependencies?.['@ankhorage/zora'];
-  if (zoraRange === undefined) {
-    throw new Error('Installed @ankhorage/studio does not declare @ankhorage/zora.');
-  }
-  return { '@ankhorage/zora': zoraRange };
+    '@ankhorage/surface': requireDependencyRange(
+      zoraPackageJson,
+      'dependencies',
+      '@ankhorage/surface',
+    ),
+    '@ankhorage/zora': requireDependencyRange(
+      studioPackageJson,
+      'dependencies',
+      '@ankhorage/zora',
+    ),
+  };
 }
 
 /*** Assert that fixture dependency ranges resolve from the registry and scripts do not reach outside the standalone package root. */
@@ -269,38 +286,6 @@ async function resolveRequiredReleaseRangesAsync(
       range: devtoolsRange,
     },
   ];
-}
-
-/*** Resolve the Runtime, Studio and Surface ranges owned by the repository's current package graph for standalone acceptance. */
-async function resolveOwnerRangesAsync(
-  repositoryRoot: string,
-): Promise<
-  Readonly<Record<'@ankhorage/runtime' | '@ankhorage/studio' | '@ankhorage/surface', string>>
-> {
-  const [repositoryPackageJson, studioPackageJson, zoraPackageJson] = await Promise.all([
-    readPackageJsonAsync(path.join(repositoryRoot, 'package.json')),
-    readPackageJsonAsync(path.join(repositoryRoot, 'apps', 'studio', 'package.json')),
-    readPackageJsonAsync(
-      path.join(repositoryRoot, 'node_modules', '@ankhorage', 'zora', 'package.json'),
-    ),
-  ]);
-  return {
-    '@ankhorage/runtime': requireDependencyRange(
-      repositoryPackageJson,
-      'dependencies',
-      '@ankhorage/runtime',
-    ),
-    '@ankhorage/studio': requireDependencyRange(
-      studioPackageJson,
-      'dependencies',
-      '@ankhorage/studio',
-    ),
-    '@ankhorage/surface': requireDependencyRange(
-      zoraPackageJson,
-      'dependencies',
-      '@ankhorage/surface',
-    ),
-  };
 }
 
 /***
