@@ -7,19 +7,27 @@ const projectDetailSource = readFileSync(
   path.join(import.meta.dir, 'ProjectDetailScreen.tsx'),
   'utf8',
 );
-const appBarSource = readFileSync(
-  path.join(import.meta.dir, '..', 'ui', 'createStudioAppBarActions.ts'),
+const updatePanelSource = readFileSync(
+  path.join(
+    import.meta.dir,
+    '..',
+    'features',
+    'project-updates',
+    'adapters',
+    'inbound',
+    'ProjectUpdateDashboardPanel.tsx',
+  ),
   'utf8',
 );
 
-test('keeps package and repository lifecycle controls beside Sync on the project dashboard', () => {
-  const syncIndex = projectDetailSource.indexOf('label="Sync"');
-  const installIndex = projectDetailSource.indexOf('label="Install packages"');
-  const connectIndex = projectDetailSource.indexOf('label="Connect GitHub"');
-
-  expect(syncIndex).toBeGreaterThan(-1);
-  expect(installIndex).toBeGreaterThan(syncIndex);
-  expect(connectIndex).toBeGreaterThan(installIndex);
-  expect(appBarSource).not.toContain('Install packages');
-  expect(appBarSource).not.toContain('installProjectPackages');
+test('uses the APM Dashboard lifecycle instead of direct sync/install update controls', () => {
+  expect(projectDetailSource).toContain('<ProjectUpdateDashboardPanel projectId={project.id} />');
+  expect(projectDetailSource).not.toContain('label="Sync"');
+  expect(projectDetailSource).not.toContain('label="Install packages"');
+  expect(updatePanelSource).toContain('label="Inspect updates"');
+  expect(updatePanelSource).toContain('label="Review update plan"');
+  expect(updatePanelSource).toContain('label="Apply reviewed plan"');
+  expect(updatePanelSource).toContain('label="Resume operation"');
+  expect(updatePanelSource).toContain('label="Verify operation"');
+  expect(updatePanelSource).not.toContain('rootPath');
 });
