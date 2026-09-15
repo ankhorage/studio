@@ -1,0 +1,70 @@
+name: Published APM plan proof
+
+on:
+  push:
+    branches: [test/500-published-apm-owner]
+    paths: [.github/workflows/published-apm-plan-proof.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  published-plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      OWNER_VERSION: '2.6.1'
+      STUDIO_ARTIFACT_INTEGRITY: sha512-fiTXRJgavMSN9pDHJODRLFySOjjm+kVpn2xSsyjd5jj3ZmJWUI2LWL43cZLZYlzPDN4Qj/uSSPBky88kjRS2gA==
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 315e000519bd5200693996217a4d4dbcaac36f58
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify exact registry identity and prepare an isolated consumer
+        run: |
+          mkdir -p "$RUNNER_TEMP/core-proof/consumer" "$RUNNER_TEMP/core-proof/evidence" "$RUNNER_TEMP/core-proof/archive"
+          npm view "@ankhorage/studio@${OWNER_VERSION}" dist --json > "$RUNNER_TEMP/core-proof/evidence/dist.json"
+          npm pack "@ankhorage/studio@${OWNER_VERSION}" --ignore-scripts --json --pack-destination "$RUNNER_TEMP/core-proof/archive" > "$RUNNER_TEMP/core-proof/evidence/pack.json"
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import {createHash} from 'node:crypto';
+          import {readFile,writeFile} from 'node:fs/promises';
+          const root=process.env.RUNNER_TEMP+'/core-proof';
+          const dist=JSON.parse(await readFile(root+'/evidence/dist.json','utf8'));
+          const [packed]=JSON.parse(await readFile(root+'/evidence/pack.json','utf8'));
+          assert.equal(packed.filename,'ankhorage-studio-2.6.1.tgz');
+          const actual='sha512-'+createHash('sha512').update(await readFile(root+'/archive/'+packed.filename)).digest('base64');
+          assert.equal(actual,dist.integrity);
+          assert.equal(actual,process.env.STUDIO_ARTIFACT_INTEGRITY);
+          await writeFile(root+'/consumer/package.json',JSON.stringify({name:'published-owner-core-plan-fixture',private:true,type:'module',dependencies:{'@ankhorage/studio':'2.6.1'}}));
+          JS
+          cp scripts/apm-published-core-proof.ts "$RUNNER_TEMP/core-proof/consumer/verify-core.ts"
+      - name: Prepare current owner policy with the actual native package manager
+        run: |
+          cd "$RUNNER_TEMP/core-proof/consumer"
+          export BUN_INSTALL_CACHE_DIR="$RUNNER_TEMP/core-proof/cache"
+          bun install --ignore-scripts
+          node verify-core.ts prime
+          bun install --ignore-scripts
+          bun install --frozen-lockfile --ignore-scripts
+      - name: Plan deliberate owner policy drift through released APM
+        run: |
+          cd "$RUNNER_TEMP/core-proof/consumer"
+          node verify-core.ts plan > "$RUNNER_TEMP/core-proof/evidence/apm-plan.json"
+          cat "$RUNNER_TEMP/core-proof/evidence/apm-plan.json"
+          cp package.json bun.lock "$RUNNER_TEMP/core-proof/evidence/"
+          echo 'Actual npm owner artifact was inspected and projected into a complete read-only plan by the released APM Node use case.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Scope: package-manager policy drift. Full historical app upgrade, Dashboard and shared writer locking remain in the parent lifecycle acceptance.' >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: published-owner-core-plan-proof
+          path: ${{ runner.temp }}/core-proof/evidence/
+          retention-days: 30
+          if-no-files-found: error
