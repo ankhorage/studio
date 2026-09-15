@@ -32,6 +32,13 @@ jobs:
           end = source.index("\n          PY\n", start)
           script = '\n'.join(line[10:] if line.startswith('          ') else line for line in source[start:end].splitlines())
           exec(compile(script, 'branch-516-implement.py', 'exec'))
+          provider = Path('src/core/StudioProvider.ts')
+          provider_source = provider.read_text()
+          old = "  }, [manifestRef, projectId, setError, setSaveStatus]);"
+          new = "  }, [manifestRef, projectId, setError, setRuntimeProjection, setSaveStatus]);"
+          if old not in provider_source:
+              raise SystemExit('expected StudioProvider coordinator dependency list not found')
+          provider.write_text(provider_source.replace(old, new, 1))
           PY
       - run: bun run build
       - run: bun run lint:fix
