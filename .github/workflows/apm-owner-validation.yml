@@ -1,0 +1,77 @@
+name: APM owner integration validation
+on:
+  push:
+    branches: [feat/500-apm-release-gate]
+    paths: [.apm-owner-tests.patch, .github/workflows/apm-owner-validation.yml]
+permissions:
+  contents: write
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Apply tested owner adoption
+        run: |
+          git apply --check .apm-owner-tests.patch
+          git apply .apm-owner-tests.patch
+          rm .apm-owner-tests.patch
+          npm view @ankhorage/devtools@1.15.0 version dist.integrity --json
+          bun install --frozen-lockfile --ignore-scripts
+          bun add --dev --ignore-scripts @ankhorage/devtools@^1.15.0
+          node --input-type=module <<'JS'
+          import { readFileSync, writeFileSync } from 'node:fs';
+          const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
+          writeFileSync('package.json', JSON.stringify({ ...packageJson, scripts: { ...packageJson.scripts, 'test:apm': 'bun test src/features/project-updates', 'validate:apm': 'ankhorage-apm-release validate . --allow-owner-code' } }, null, 2) + '\n');
+          const replacements = [
+            ['paradox.config.ts', "entrypoints: ['src/index.ts']", "entrypoints: ['src/index.ts', 'src/apm.ts']"],
+            ['src/host/smoke/runPackedStudioHostAcceptance.ts', "    args: ['apm-import.mjs'],\n", "    command: 'node',\n    args: ['apm-import.mjs'],\n"],
+          ];
+          for (const [path, before, after] of replacements) {
+            const source = readFileSync(path, 'utf8');
+            if (!source.includes(before)) throw new Error(`Expected source missing: ${path}`);
+            writeFileSync(path, source.replace(before, after));
+          }
+          JS
+          ./node_modules/.bin/ankh devtools workflows sync .
+          bun run docs
+          bun run format
+          git add -A -- . ':!.github'
+      - name: Build and check types
+        run: |
+          bun run build
+          bun run typecheck
+      - name: Canonical static checks
+        run: |
+          bun run lint
+          bun run knip:check
+          bun run changeset:status
+          bun run format:check
+      - name: Owner, repository and packed consumer acceptance
+        run: |
+          bun run test:apm
+          bun run test
+          bun run validate:apm
+          bun run test:acceptance:packed-studio-host
+          git diff --check
+      - name: Commit validated generated output
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A -- . ':!.github'
+          git commit -m 'feat: adopt validated APM owner release gate'
+          git push origin HEAD:feat/500-apm-release-gate
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: apm-owner-generated-workflows
+          path: .github/workflows/*.yml
+          retention-days: 1
