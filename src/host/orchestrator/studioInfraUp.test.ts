@@ -70,6 +70,11 @@ describe('Studio Infrastructure Up', () => {
       reconciled,
       trustedOAuth: { deferred: false },
     });
-    expect(calls).toEqual(['regenerate:project-one', 'manifest:project-one', 'up:project-one']);
+    expect(calls).toEqual([
+      'regenerate:project-one',
+      'manifest:project-one',
+      'manifest:project-one',
+      'up:project-one',
+    ]);
   });
 });

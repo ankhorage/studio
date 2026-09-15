@@ -200,7 +200,7 @@ describe('ProjectSecretService guarded removal', () => {
       usages: [
         {
           ref: 'auth/oauth/google',
-          path: 'infra.auth.oauth.providers[google].credentialsRef',
+          path: 'infra.environments.local.auth.oauth.providers[google].credentialsRef',
           category: 'oauth-provider',
           label: 'Google OAuth provider',
           ownerId: 'google',

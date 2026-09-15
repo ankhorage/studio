@@ -4,6 +4,7 @@ import { connectGitHubRepositoryAsync } from '@ankhorage/repository/github';
 import { promises as fs } from 'fs';
 import path from 'path';
 
+import { initializeProjectLocalInfraNetworking } from '../../features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking';
 import { createStudioProjectInfraLifecycle } from '../../features/infrastructure/composition/createStudioProjectInfraLifecycle';
 import { createStudioProjectWriterProxy } from '../../features/project-updates/composition/createStudioProjectWriterProxy';
 import {
@@ -72,7 +73,6 @@ export class ProjectManager {
         'saveProjectManifest',
         'syncProjectRuntime',
         'rebuildRootLayout',
-        'syncProject',
       ],
       resolveProjectRoot: (projectId) => getProjectPath(rootPath, projectId),
     });
@@ -134,9 +134,10 @@ export class ProjectManager {
       templateData,
       source.assets,
     );
-    const { category } = materializedTemplate.metadata;
-    const deploy = materializedTemplate.deploy ?? createDefaultAppDeployManifest(slug);
-    const scaffoldManifest = applySystemTemplates({ ...materializedTemplate, deploy });
+    const initializedTemplate = initializeProjectLocalInfraNetworking(materializedTemplate, slug);
+    const { category } = initializedTemplate.metadata;
+    const deploy = initializedTemplate.deploy ?? createDefaultAppDeployManifest(slug);
+    const scaffoldManifest = applySystemTemplates({ ...initializedTemplate, deploy });
     const zoraExtensions = resolveZoraExtensionsForManifest(scaffoldManifest);
     await this.scaffolder.scaffoldProject(projectPath, name, slug, {
       includeStudio,
@@ -150,7 +151,7 @@ export class ProjectManager {
     await writeProjectStudioInclusion(projectPath, includeStudio);
     const manifest = await this.scaffolder.finalizeManifest(
       projectPath,
-      materializedTemplate,
+      initializedTemplate,
       name,
       slug,
       category,
@@ -163,11 +164,6 @@ export class ProjectManager {
       runtimePlan,
     });
     await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
-    await this.dependencies.infraLifecycle.generateAsync({
-      projectId: slug,
-      projectPath,
-      manifest,
-    });
     if (onProjectCreated) await onProjectCreated(slug);
     return { success: true, id: slug, path: projectPath };
   }
@@ -206,11 +202,14 @@ export class ProjectManager {
     projectId: string;
     manifest: AppManifest;
   }): Promise<AppManifest> {
-    const normalizedManifest = applySystemTemplates(args.manifest);
+    const normalizedManifest = initializeProjectLocalInfraNetworking(
+      applySystemTemplates(args.manifest),
+      args.projectId,
+    );
     return this.store.writeManifest(args.projectId, normalizedManifest);
   }
 
-  /*** Persist a project manifest, optionally regenerate current scaffold/router ownership, and synchronize infrastructure. */
+  /*** Persist a project manifest and optionally regenerate current scaffold/router ownership. */
   async saveProjectManifest(args: {
     projectId: string;
     manifest: AppManifest;
@@ -239,15 +238,10 @@ export class ProjectManager {
       await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
     }
 
-    await this.dependencies.infraLifecycle.generateAsync({
-      projectId,
-      projectPath,
-      manifest: updated,
-    });
     return { success: true };
   }
 
-  /*** Regenerate current project scaffold/runtime files from the persisted manifest and synchronize infrastructure without changing manifest state. */
+  /*** Regenerate current project scaffold/runtime files from the persisted manifest without changing manifest or infrastructure state. */
   async syncProjectRuntime(args: {
     projectId: string;
     mutations: LayoutMutation[];
@@ -273,7 +267,6 @@ export class ProjectManager {
       runtimePlan,
     });
     await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
-    await this.dependencies.infraLifecycle.generateAsync({ projectId, projectPath, manifest });
     return { success: true };
   }
 
@@ -295,18 +288,6 @@ export class ProjectManager {
       await this.writeText(path.join(projectPath, file.path), file.content);
     }
     return { success: true };
-  }
-
-  /***
-   * Delegate project synchronization to syncProjectRuntime.
-   * @todo Remove this compatibility alias and keep one canonical project synchronization operation.
-   */
-  async syncProject(args: {
-    projectId: string;
-    mutations: LayoutMutation[];
-    includeStudio?: boolean;
-  }) {
-    return this.syncProjectRuntime(args);
   }
 
   /*** Regenerate provider-neutral infrastructure artifacts for one persisted project manifest. */
