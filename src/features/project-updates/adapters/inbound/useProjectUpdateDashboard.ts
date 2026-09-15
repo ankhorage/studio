@@ -110,7 +110,9 @@ export function useProjectUpdateDashboard(projectId: string) {
   };
 }
 
-function selectionToPermissions(selection: readonly ProjectUpdatePermissionId[]): ApmApplyPermissions {
+function selectionToPermissions(
+  selection: readonly ProjectUpdatePermissionId[],
+): ApmApplyPermissions {
   return {
     ownerCode: selection.includes('owner-code'),
     lifecycleScripts: selection.includes('lifecycle-scripts'),

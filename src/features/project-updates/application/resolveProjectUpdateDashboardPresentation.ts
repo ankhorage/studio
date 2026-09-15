@@ -20,7 +20,10 @@ function resolveStatus(value: unknown) {
     return {
       name: readString(dependency.name, 'Unknown package'),
       direct: dependency.direct === true,
-      currentVersion: readOptionalString(dependency.lockedVersion) ?? readOptionalString(installed.version) ?? 'unknown',
+      currentVersion:
+        readOptionalString(dependency.lockedVersion) ??
+        readOptionalString(installed.version) ??
+        'unknown',
       availableVersion:
         readOptionalString(availability.compatibleVersion) ??
         readOptionalString(availability.latestVersion) ??
@@ -34,7 +37,10 @@ function resolveStatus(value: unknown) {
     currency: readString(value.currency, 'unknown'),
     dependencies,
     observations: readRecords(extensions.observations).map((observation) => ({
-      owner: readOptionalString(observation.owner) ?? readOptionalString(observation.packageId) ?? 'Unknown owner',
+      owner:
+        readOptionalString(observation.owner) ??
+        readOptionalString(observation.packageId) ??
+        'Unknown owner',
       projection: readString(observation.projection, 'unknown'),
       migration: readString(observation.migration, 'unknown'),
       reason: readOptionalString(observation.reason),
@@ -150,7 +156,9 @@ function readRecords(value: unknown): readonly Record<string, unknown>[] {
 }
 
 function readStrings(value: unknown): readonly string[] {
-  return Array.isArray(value) ? value.filter((entry): entry is string => typeof entry === 'string') : [];
+  return Array.isArray(value)
+    ? value.filter((entry): entry is string => typeof entry === 'string')
+    : [];
 }
 
 function readString(value: unknown, fallback: string): string {

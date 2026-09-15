@@ -203,8 +203,8 @@ function PlanSection(props: {
           <View style={styles.permissions}>
             <Text weight="semiBold">Execution permissions</Text>
             <Text color="neutral" emphasis="muted" variant="caption">
-              Every permission is explicit. Leave an effect disabled unless the reviewed plan requires
-              and you approve it.
+              Every permission is explicit. Leave an effect disabled unless the reviewed plan
+              requires and you approve it.
             </Text>
             <CheckboxGroup
               value={permissionSelection(props.state.permissions)}
@@ -245,7 +245,8 @@ function ExecutionSection(props: {
         title="Journal steps"
         empty="No journal steps are available yet."
         items={props.execution.steps.map(
-          (step) => `${step.id} · ${step.state} · ${step.attempts} attempt${step.attempts === 1 ? '' : 's'}`,
+          (step) =>
+            `${step.id} · ${step.state} · ${step.attempts} attempt${step.attempts === 1 ? '' : 's'}`,
         )}
       />
       <ReasonItems title="Execution blockers" items={props.execution.blockers} />

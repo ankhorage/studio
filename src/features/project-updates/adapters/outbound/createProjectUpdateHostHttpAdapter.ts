@@ -47,7 +47,9 @@ async function requestJsonAsync(
   const response = await fetch(`${apiBase}${path}`, init);
   const body = await readResponseJsonAsync(response);
   if (!response.ok) {
-    throw new Error(readFailureMessage(body) ?? `Project update request failed with ${response.status}.`);
+    throw new Error(
+      readFailureMessage(body) ?? `Project update request failed with ${response.status}.`,
+    );
   }
   return body;
 }

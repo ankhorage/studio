@@ -1,4 +1,8 @@
-import type { ApmApplyPermissions, ApmPlanPolicyInput, ApmStatusAvailabilityMode } from '@ankhorage/apm/types';
+import type {
+  ApmApplyPermissions,
+  ApmPlanPolicyInput,
+  ApmStatusAvailabilityMode,
+} from '@ankhorage/apm/types';
 
 import type { ProjectUpdateHostPort } from './ports/outbound/ProjectUpdateHostPort';
 
@@ -44,7 +48,10 @@ export class ProjectUpdateDashboardService {
 
   /*** Verify one durable APM operation against fresh owner-aware evidence. */
   async verifyAsync(projectId: string, operationId: string): Promise<unknown> {
-    return await this.host.verifyAsync(requireProjectId(projectId), requireOperationId(operationId));
+    return await this.host.verifyAsync(
+      requireProjectId(projectId),
+      requireOperationId(operationId),
+    );
   }
 }
 
