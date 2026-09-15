@@ -3,16 +3,16 @@ import {
   Button,
   ButtonGroup,
   Card,
-  ConfirmDialog,
-  TextInput,
-  ListRow,
+  Dialog,
+  ListItem,
   ListSection,
   Select,
-  SwitchField,
+  Switch,
   Text,
+  TextInput,
 } from '@ankhorage/zora';
-import React, { useMemo, useState } from 'react';
 import { useRouter } from 'expo-router';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { useStudio } from '../../../core/StudioContext';
@@ -129,7 +129,7 @@ export function ScreensAdminPage() {
             description="Resolve these manifest states before relying on ambiguous route mutations."
           >
             {model.diagnostics.map((diagnostic, index) => (
-              <ListRow
+              <ListItem
                 key={`${diagnostic.code}:${diagnostic.routeName ?? diagnostic.screenId ?? index}`}
                 title={diagnostic.code}
                 description={diagnostic.message}
@@ -158,7 +158,7 @@ export function ScreensAdminPage() {
         </ListSection>
       </AdminScroll>
 
-      <ConfirmDialog
+      <Dialog
         visible={pendingDelete !== null}
         title="Delete screen?"
         description={
@@ -166,10 +166,17 @@ export function ScreensAdminPage() {
             ? `Delete ${pendingDelete.label}, all of its route references, and bindings owned by its node tree?`
             : undefined
         }
-        confirmLabel="Delete screen"
-        confirmColor="danger"
-        onCancel={() => setPendingDelete(null)}
-        onConfirm={confirmDelete}
+        onDismiss={() => setPendingDelete(null)}
+        footer={
+          <ButtonGroup align="end" orientation="responsive">
+            <Button color="neutral" variant="ghost" onPress={() => setPendingDelete(null)}>
+              Cancel
+            </Button>
+            <Button color="danger" onPress={confirmDelete}>
+              Delete screen
+            </Button>
+          </ButtonGroup>
+        }
       />
     </>
   );
@@ -189,7 +196,7 @@ function ScreenOverviewRow(props: {
   const canDelete = props.screenCount > 1;
 
   return (
-    <ListRow
+    <ListItem
       title={label}
       meta={entry.screenId}
       variant="card"
@@ -265,19 +272,28 @@ function ScreenRouteReferenceControls(props: {
 
       {reference.isPrimaryNavigatorMember ? (
         <>
-          <SwitchField
-            label="Visible in primary navigation"
-            description="Hidden routes remain valid and programmatically navigable."
-            value={reference.showInPrimaryNavigation}
-            onValueChange={(showInPrimaryNavigation) =>
-              props.dispatch({
-                type: 'set-primary-navigation-visibility',
-                parentPath: reference.parentPath,
-                routeName: reference.route.name,
-                showInPrimaryNavigation,
-              })
-            }
-          />
+          <View style={styles.switchSetting}>
+            <View style={styles.switchCopy}>
+              <Text variant="bodySmall" weight="semiBold">
+                Visible in primary navigation
+              </Text>
+              <Text color="neutral" emphasis="muted" variant="caption">
+                Hidden routes remain valid and programmatically navigable.
+              </Text>
+            </View>
+            <Switch
+              accessibilityLabel="Visible in primary navigation"
+              value={reference.showInPrimaryNavigation}
+              onValueChange={(showInPrimaryNavigation) =>
+                props.dispatch({
+                  type: 'set-primary-navigation-visibility',
+                  parentPath: reference.parentPath,
+                  routeName: reference.route.name,
+                  showInPrimaryNavigation,
+                })
+              }
+            />
+          </View>
           <ButtonGroup orientation="responsive" align="start">
             <Button
               variant="outline"
@@ -360,5 +376,15 @@ const styles = StyleSheet.create({
   screenDetails: {
     gap: 10,
     paddingTop: 4,
+  },
+  switchSetting: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 12,
+    justifyContent: 'space-between',
+  },
+  switchCopy: {
+    flex: 1,
+    gap: 4,
   },
 });
