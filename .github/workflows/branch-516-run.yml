@@ -32,6 +32,7 @@ jobs:
           end = source.index("\n          PY\n", start)
           script = '\n'.join(line[10:] if line.startswith('          ') else line for line in source[start:end].splitlines())
           exec(compile(script, 'branch-516-implement.py', 'exec'))
+
           provider = Path('src/core/StudioProvider.ts')
           provider_source = provider.read_text()
           old = "  }, [manifestRef, projectId, setError, setSaveStatus]);"
@@ -39,6 +40,33 @@ jobs:
           if old not in provider_source:
               raise SystemExit('expected StudioProvider coordinator dependency list not found')
           provider.write_text(provider_source.replace(old, new, 1))
+
+          test_file = Path('src/host/orchestrator/projectGenerationState.test.ts')
+          test_source = test_file.read_text()
+          old_fixture = """    category: 'developer_tools',
+    name: 'Projection Currency Fixture',
+    slug: 'projection-currency-fixture',
+  });"""
+          new_fixture = """    category: 'developer_tools',
+    name: 'Projection Currency Fixture',
+    slug: 'projection-currency-fixture',
+    navigator: {
+      type: 'stack',
+      initialRouteName: 'index',
+      routes: [{ name: 'index', path: '', screenId: 'home' }],
+    },
+    screens: {
+      home: {
+        id: 'home',
+        name: 'Home',
+        root: { id: 'home-screen', type: 'Screen', props: {} },
+      },
+    },
+  });"""
+          if old_fixture not in test_source:
+              raise SystemExit('expected projection currency fixture not found')
+          test_file.write_text(test_source.replace(old_fixture, new_fixture, 1))
+
           Path('.github/workflows/branch-516-implement.yml').unlink()
           PY
       - run: bun run build
