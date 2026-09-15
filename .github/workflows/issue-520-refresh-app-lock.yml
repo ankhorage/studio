@@ -1,4 +1,4 @@
-name: Issue 520 Metro file-map visibility
+name: Issue 520 Metro blocklist isolation
 
 on:
   push:
@@ -24,9 +24,14 @@ jobs:
         run: |
           rm apps/studio/bun.lock
           bun install --cwd apps/studio
-      - name: Inspect Metro visibility of nested owner package
+      - name: Remove only the custom ancestor node_modules blocklist
         run: |
-          cat >> apps/studio/metro.config.js <<'JS'
+          cat > apps/studio/metro.config.js <<'JS'
+          const path = require('node:path');
+          const { getDefaultConfig } = require('expo/metro-config');
+
+          const config = getDefaultConfig(__dirname);
+          config.resolver.emptyModulePath = path.resolve(__dirname, 'metro.empty-module.js');
 
           const originalResolveRequest = config.resolver.resolveRequest;
           config.resolver.resolveRequest = (context, moduleName, platform) => {
@@ -38,40 +43,27 @@ jobs:
             if (moduleName !== '@ankhorage/contracts/environments') {
               return resolveDefault(context, moduleName, platform);
             }
-            const studioRoot = path.resolve(__dirname, 'node_modules/@ankhorage/studio');
-            const nestedContractsRoot = path.join(studioRoot, 'node_modules/@ankhorage/contracts');
-            const rootContractsRoot = path.resolve(__dirname, 'node_modules/@ankhorage/contracts');
-            const paths = [
-              path.join(nestedContractsRoot, 'package.json'),
-              path.join(nestedContractsRoot, 'dist/environments.js'),
-              path.join(rootContractsRoot, 'package.json'),
-              path.join(rootContractsRoot, 'dist/environments.js'),
-            ];
+            const nestedRoot = path.resolve(
+              __dirname,
+              'node_modules/@ankhorage/studio/node_modules/@ankhorage/contracts',
+            );
             console.error(
-              'ANKH_METRO_FILE_MAP ' +
+              'ANKH_METRO_NO_BLOCKLIST ' +
                 JSON.stringify({
-                  originModulePath: context.originModulePath,
-                  lookups: paths.map((candidate) => ({
-                    candidate,
-                    lookup: context.fileSystemLookup(candidate),
-                  })),
+                  package: context.fileSystemLookup(path.join(nestedRoot, 'package.json')),
+                  target: context.fileSystemLookup(path.join(nestedRoot, 'dist/environments.js')),
                 }),
             );
             return resolveDefault(context, moduleName, platform);
           };
+
+          module.exports = config;
           JS
-          python - <<'PY'
-          from pathlib import Path
-          path = Path('apps/studio/metro.config.js')
-          text = path.read_text()
-          text = text.replace('\nmodule.exports = config;\n', '\n', 1)
-          path.write_text(text + '\nmodule.exports = config;\n')
-          PY
-      - name: Run Web export through instrumented Metro
+      - name: Run Web export without custom blocklist
         run: |
           set +e
           bun run --cwd apps/studio export:web 2>&1 | tee /tmp/metro-export.log
           status=${PIPESTATUS[0]}
           set -e
-          grep 'ANKH_METRO_FILE_MAP' /tmp/metro-export.log | head -n 4 || true
+          grep 'ANKH_METRO_NO_BLOCKLIST' /tmp/metro-export.log | head -n 4 || true
           exit "$status"
