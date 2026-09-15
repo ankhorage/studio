@@ -52,9 +52,6 @@ jobs:
       - name: Format generated documentation
         run: bun run format
 
-      - name: Apply lint autofixes
-        run: bun run lint -- --fix
-
       - name: Run focused projection currency tests
         run: bun test src/features/projects src/host/orchestrator/projectManagerCurrentState.test.ts src/host/http/projectRuntimeRoutes.test.ts
 
@@ -63,6 +60,9 @@ jobs:
 
       - name: Typecheck
         run: bun run check-types
+
+      - name: Apply lint autofixes
+        run: bun run lint -- --fix
 
       - name: Lint
         run: bun run lint
