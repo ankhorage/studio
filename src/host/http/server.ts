@@ -1,31 +1,22 @@
-import {
-  InfraScriptExecutionError,
-  runProjectInfrastructureLifecycle,
-} from '@ankhorage/infra/project';
 import cors from '@fastify/cors';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import Fastify from 'fastify';
 
 import { isAppCategory, isAppManifest } from '../../contractGuards';
 import { ProjectCreationValidationError } from '../../projectIdentity';
-import { stopAllProjectInfraPortForwards } from '../orchestrator/infraSession';
 import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
-import { getProjectPath } from '../orchestrator/projectPaths';
 import { upProjectInfrastructure } from '../orchestrator/studioInfraUp';
 import {
   getProjectTemplateSource,
   getTemplateCatalog,
   type ProjectTemplateSelection,
 } from '../templates';
-import { trimOutputForApi } from '../utils/trimOutput';
 import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
 import { registerProjectMediaRoutes } from './mediaRoutes';
 import { registerProjectModuleRoutes } from './moduleRoutes';
 import { registerProjectRuntimeRoutes } from './projectRuntimeRoutes';
 import { isOriginAllowed } from './security';
-
-const MAX_INFRA_RUNTIME_OUTPUT_CHARS = 12_000;
 
 /*** Parse one template selection from the trusted Studio project-create request body. */
 function resolveProjectTemplateSelection(body: {
@@ -197,27 +188,11 @@ export async function createStudioHostServer(args: {
   fastify.post('/api/projects/:id/infra/down', async (req: FastifyRequest, reply) => {
     const { id } = req.params as { id: string };
     try {
-      const status = await projectManager.getInfrastructureStatus(id);
-      if (status.skipped) {
-        return { success: true, skipped: status.skipped };
-      }
-      if (!status.target) {
-        throw new Error(
-          `Project '${id}' has no infrastructure target. Run infra generation first.`,
-        );
-      }
-
-      await runProjectInfrastructureLifecycle({
-        projectId: id,
-        projectPath: getProjectPath(projectRoot, id),
-        target: status.target,
-        script: 'down',
-      });
-
-      return { success: true, target: status.target };
+      const status = await projectManager.downInfrastructure(id);
+      return { success: true, status };
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      reply.status(500).send({ error: message });
+      return reply.status(500).send({ error: message });
     }
   });
 
@@ -225,76 +200,10 @@ export async function createStudioHostServer(args: {
     const { id } = req.params as { id: string };
     try {
       const status = await projectManager.getInfrastructureStatus(id);
-      if (status.skipped) {
-        return { success: true, skipped: status.skipped };
-      }
-      if (!status.target) {
-        throw new Error(
-          `Project '${id}' has no infrastructure target. Run infra generation first.`,
-        );
-      }
-
-      const runtimeOutput = await runProjectInfrastructureLifecycle({
-        projectId: id,
-        projectPath: getProjectPath(projectRoot, id),
-        target: status.target,
-        script: 'status',
-      });
-      const responseOutput = formatRuntimeOutputForResponse(runtimeOutput);
-
-      fastify.log.info(
-        {
-          projectId: id,
-          target: status.target,
-          script: 'status',
-          exitCode: 0,
-          stdout: runtimeOutput.stdout,
-          stderr: runtimeOutput.stderr,
-        },
-        'Infra runtime-status executed',
-      );
-
-      return {
-        success: true,
-        target: status.target,
-        stdout: responseOutput.stdout,
-        stderr: responseOutput.stderr,
-        stdoutTruncated: responseOutput.stdoutTruncated,
-        stderrTruncated: responseOutput.stderrTruncated,
-        stdoutLength: responseOutput.stdoutLength,
-        stderrLength: responseOutput.stderrLength,
-      };
+      return { success: true, status };
     } catch (err: unknown) {
-      if (err instanceof InfraScriptExecutionError) {
-        const responseOutput = formatRuntimeOutputForResponse({
-          stdout: err.stdout,
-          stderr: err.stderr,
-        });
-
-        fastify.log.error(
-          {
-            projectId: id,
-            script: 'status',
-            exitCode: err.exitCode,
-            stdout: err.stdout,
-            stderr: err.stderr,
-          },
-          'Infra runtime-status failed',
-        );
-
-        return reply.status(500).send({
-          error: err.message,
-          exitCode: err.exitCode,
-          stdout: responseOutput.stdout,
-          stderr: responseOutput.stderr,
-          stdoutTruncated: responseOutput.stdoutTruncated,
-          stderrTruncated: responseOutput.stderrTruncated,
-          stdoutLength: responseOutput.stdoutLength,
-          stderrLength: responseOutput.stderrLength,
-        });
-      }
       const message = err instanceof Error ? err.message : String(err);
-      reply.status(500).send({ error: message });
+      return reply.status(500).send({ error: message });
     }
   });
 
@@ -356,10 +265,6 @@ export async function createStudioHostServer(args: {
   // Health check
   fastify.get('/health', () => ({ status: 'ok', workspace: projectRoot }));
 
-  fastify.addHook('onClose', async () => {
-    await stopAllProjectInfraPortForwards();
-  });
-
   return fastify;
 }
 
@@ -382,19 +287,4 @@ export async function startStudioHostServer(options: number | StartStudioHostSer
   await fastify.listen({ port, host });
   console.log(`Ankhorage Studio Host running at http://${host}:${port}`);
   return fastify;
-}
-
-/*** Trim infrastructure command output for one bounded HTTP response. */
-function formatRuntimeOutputForResponse(output: { stdout: string; stderr: string }) {
-  const stdout = trimOutputForApi(output.stdout, MAX_INFRA_RUNTIME_OUTPUT_CHARS);
-  const stderr = trimOutputForApi(output.stderr, MAX_INFRA_RUNTIME_OUTPUT_CHARS);
-
-  return {
-    stdout: stdout.text,
-    stderr: stderr.text,
-    stdoutTruncated: stdout.truncated,
-    stderrTruncated: stderr.truncated,
-    stdoutLength: stdout.originalLength,
-    stderrLength: stderr.originalLength,
-  };
 }
