@@ -1,4 +1,4 @@
-name: Issue 520 Metro Haste resolution
+name: Issue 520 Metro file-map visibility
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
         run: |
           rm apps/studio/bun.lock
           bun install --cwd apps/studio
-      - name: Test Metro resolution without Haste
+      - name: Inspect Metro visibility of nested owner package
         run: |
           cat >> apps/studio/metro.config.js <<'JS'
 
@@ -38,18 +38,26 @@ jobs:
             if (moduleName !== '@ankhorage/contracts/environments') {
               return resolveDefault(context, moduleName, platform);
             }
+            const studioRoot = path.resolve(__dirname, 'node_modules/@ankhorage/studio');
+            const nestedContractsRoot = path.join(studioRoot, 'node_modules/@ankhorage/contracts');
+            const rootContractsRoot = path.resolve(__dirname, 'node_modules/@ankhorage/contracts');
+            const paths = [
+              path.join(nestedContractsRoot, 'package.json'),
+              path.join(nestedContractsRoot, 'dist/environments.js'),
+              path.join(rootContractsRoot, 'package.json'),
+              path.join(rootContractsRoot, 'dist/environments.js'),
+            ];
             console.error(
-              'ANKH_METRO_HASTE ' +
+              'ANKH_METRO_FILE_MAP ' +
                 JSON.stringify({
                   originModulePath: context.originModulePath,
-                  allowHaste: context.allowHaste,
-                  hastePackage: context.resolveHastePackage(moduleName),
-                  enableGlobalPackages: config.resolver.enableGlobalPackages ?? null,
+                  lookups: paths.map((candidate) => ({
+                    candidate,
+                    lookup: context.fileSystemLookup(candidate),
+                  })),
                 }),
             );
-            const result = resolveDefault({ ...context, allowHaste: false }, moduleName, platform);
-            console.error('ANKH_METRO_NO_HASTE_RESULT ' + JSON.stringify(result));
-            return result;
+            return resolveDefault(context, moduleName, platform);
           };
           JS
           python - <<'PY'
@@ -59,11 +67,11 @@ jobs:
           text = text.replace('\nmodule.exports = config;\n', '\n', 1)
           path.write_text(text + '\nmodule.exports = config;\n')
           PY
-      - name: Run Web export through Haste-disabled target resolution
+      - name: Run Web export through instrumented Metro
         run: |
           set +e
           bun run --cwd apps/studio export:web 2>&1 | tee /tmp/metro-export.log
           status=${PIPESTATUS[0]}
           set -e
-          grep 'ANKH_METRO_' /tmp/metro-export.log || true
+          grep 'ANKH_METRO_FILE_MAP' /tmp/metro-export.log | head -n 4 || true
           exit "$status"
