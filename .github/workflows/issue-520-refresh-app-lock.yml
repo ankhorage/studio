@@ -45,7 +45,7 @@ jobs:
           if module_exports < 0:
               raise SystemExit('generated Metro module.exports not found')
           text = text[:start] + text[module_exports:]
-          function_start = text.find('\nfunction escapeRegExp(value) {', module_exports)
+          function_start = text.find('\nfunction escapeRegExp(value) {', start)
           if function_start < 0:
               raise SystemExit('generated Metro escapeRegExp function not found')
           function_end = text.find('\n}', function_start)
