@@ -33,13 +33,27 @@ jobs:
           import { createRequire } from 'node:module';
           import path from 'node:path';
 
+          const findPackageJson = (entryPath) => {
+            let current = path.dirname(entryPath);
+            while (true) {
+              const candidate = path.join(current, 'package.json');
+              if (fs.existsSync(candidate)) return candidate;
+              const parent = path.dirname(current);
+              if (parent === current) throw new Error(`No package.json above ${entryPath}`);
+              current = parent;
+            }
+          };
+
           const appPackagePath = path.resolve('apps/studio/package.json');
           const appRequire = createRequire(appPackagePath);
-          const studioPackagePath = appRequire.resolve('@ankhorage/studio/package.json');
+          const studioEntryPath = appRequire.resolve('@ankhorage/studio');
+          const studioPackagePath = findPackageJson(studioEntryPath);
           const studioPackage = JSON.parse(fs.readFileSync(studioPackagePath, 'utf8'));
-          const studioRequire = createRequire(studioPackagePath);
-          const appContractsPath = appRequire.resolve('@ankhorage/contracts/package.json');
-          const studioContractsPath = studioRequire.resolve('@ankhorage/contracts/package.json');
+          const studioRequire = createRequire(studioEntryPath);
+          const appContractsEntry = appRequire.resolve('@ankhorage/contracts');
+          const studioContractsEntry = studioRequire.resolve('@ankhorage/contracts');
+          const appContractsPath = findPackageJson(appContractsEntry);
+          const studioContractsPath = findPackageJson(studioContractsEntry);
           const appContracts = JSON.parse(fs.readFileSync(appContractsPath, 'utf8'));
           const studioContracts = JSON.parse(fs.readFileSync(studioContractsPath, 'utf8'));
 
