@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.6.4
+
+### Patch Changes
+
+- 8ba37b2: Execute reviewed pending module removals through APM recovery semantics while delegating uninstall side effects to Orchestrator.
+
 ## 2.6.3
 
 ### Patch Changes
