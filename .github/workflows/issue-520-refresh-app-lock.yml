@@ -1,0 +1,40 @@
+name: Issue 520 refresh app lock
+
+on:
+  push:
+    branches:
+      - fix/520-acceptance-baseline
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-and-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install root dependencies
+        run: bun install --frozen-lockfile
+      - name: Regenerate standalone app lock from released owner graph
+        run: |
+          rm apps/studio/bun.lock
+          bun install --cwd apps/studio --lockfile-only
+      - name: Validate standalone Studio against regenerated lock
+        run: bun run test:acceptance:expo57-studio-standalone
+      - name: Finalize regenerated app lock
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/issue-520-refresh-app-lock.yml
+          git add apps/studio/bun.lock
+          git commit -m 'fix: refresh standalone Studio owner lock'
+          git push origin HEAD:fix/520-acceptance-baseline
