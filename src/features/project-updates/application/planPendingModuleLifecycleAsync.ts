@@ -297,6 +297,6 @@ function emptySlice(): PendingModuleLifecyclePlanSlice {
 }
 
 /*** Build the stable reviewed owner-step id for one module. */
-export function removalStepId(moduleId: string): string {
+function removalStepId(moduleId: string): string {
   return `${REMOVAL_STEP_PREFIX}${moduleId}`;
 }
