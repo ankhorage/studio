@@ -1,3 +1,5 @@
+import { readOwnProperty } from '@ankhorage/utility/object';
+
 import type { ProjectAuthHealth } from '../../projectAuthHealth';
 import { analyzeProjectAuthHealth } from '../../projectAuthHealth';
 import { applyProjectAuthRuntimeDiagnostics } from '../../projectAuthRuntimeDiagnostics';
@@ -57,7 +59,7 @@ export class ProjectAuthHealthService {
       secretStoreAvailable: secretResult.ok,
       environment,
     });
-    const environmentSpec = manifest.infra.environments[environment];
+    const environmentSpec = readOwnProperty(manifest.infra.environments, environment);
     const oauth = environmentSpec?.auth?.oauth;
 
     if (!oauth?.enabled || !oauth.providers.some((provider) => provider.enabled === true)) {
@@ -74,7 +76,7 @@ export class ProjectAuthHealthService {
         this.projectManager.getInfrastructureOutputs(input.projectId),
       ]);
       const publicBaseUrl = environmentSpec?.networking?.publicBaseUrl;
-      const runtimeDiagnostics = await observeProjectAuthRuntimeDiagnostics({
+      const runtimeDiagnostics = observeProjectAuthRuntimeDiagnostics({
         status: infraStatus,
         outputs: infraOutputs.outputs,
         callbackRoute: oauth.callbackRoute,

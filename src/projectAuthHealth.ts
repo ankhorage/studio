@@ -1,4 +1,5 @@
 import type { AppManifest, AuthOAuthProviderConfig } from '@ankhorage/contracts';
+import { readOwnProperty } from '@ankhorage/utility/object';
 import type { AuthOAuthSetupFieldRequirement } from '@ankhorage/contracts/auth';
 import type { AppDeployTargetId } from '@ankhorage/contracts/deploy';
 import type { AppEnvironmentId } from '@ankhorage/contracts/environments';
@@ -62,7 +63,7 @@ export function analyzeProjectAuthHealth(input: {
   const diagnostics: ProjectAuthDiagnostic[] = [];
   const environment = input.environment ?? 'local';
   const targets = resolveProjectEnabledTargets(input.manifest);
-  const auth = input.manifest.infra.environments[environment]?.auth;
+  const auth = readOwnProperty(input.manifest.infra.environments, environment)?.auth;
   const secretMetadataByRef = new Map(
     input.secretMetadata.map((metadata) => [metadata.ref, metadata]),
   );

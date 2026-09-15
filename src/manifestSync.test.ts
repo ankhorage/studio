@@ -77,12 +77,17 @@ describe('manifestSync', () => {
 
   test('tracks canonical infra auth flow changes in runtime signatures', () => {
     const createAuthInfra = (signInRoute: string): StudioManifest['infra'] => ({
-      auth: {
-        scope: 'global',
-        provider: 'supabase',
-        flow: {
-          signInRoute,
-          postSignInRoute: '/',
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+          auth: {
+            scope: 'global',
+            provider: 'supabase',
+            flow: { signInRoute, postSignInRoute: '/' },
+          },
         },
       },
       modules: [],

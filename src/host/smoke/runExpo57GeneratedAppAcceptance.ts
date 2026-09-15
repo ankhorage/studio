@@ -110,7 +110,11 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
   );
   const manifest = await projectManager.getProjectManifest(created.id);
   const screen = resolveAcceptanceScreen(manifest);
-  const { auth: _auth, ...infra } = manifest.infra;
+  const { auth: _auth, ...localEnvironment } = manifest.infra.environments.local;
+  const infra: AppManifest['infra'] = {
+    ...manifest.infra,
+    environments: { ...manifest.infra.environments, local: localEnvironment },
+  };
   const acceptanceScreen: ScreenSpec = {
     ...screen,
     root: {

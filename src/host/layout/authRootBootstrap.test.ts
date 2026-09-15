@@ -73,10 +73,19 @@ function generateAuthFiles(postSignInRoute: 'index' | 'products') {
 }
 
 function generateScopeFiles(scope: 'integrated' | 'none') {
-  const manifest = createAuthManifest('index');
-  if (!manifest.infra.environments.local.auth)
-    throw new Error('Expected auth fixture configuration.');
-  manifest.infra.environments.local.auth = { ...manifest.infra.environments.local.auth, scope };
+  const base = createAuthManifest('index');
+  const auth = base.infra.environments.local.auth;
+  if (!auth) throw new Error('Expected auth fixture configuration.');
+  const manifest: AppManifest = {
+    ...base,
+    infra: {
+      ...base.infra,
+      environments: {
+        ...base.infra.environments,
+        local: { ...base.infra.environments.local, auth: { ...auth, scope } },
+      },
+    },
+  };
   return new GeneratedAppFileGenerator().generateFiles(
     '/tmp/auth-bootstrap-fixture',
     manifest,

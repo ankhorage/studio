@@ -105,20 +105,26 @@ describe('authSettings', () => {
       'auth/oauth/google',
     );
     expect(next.infra.environments.local.auth?.profile?.table).toBe('profiles');
-    expect(next.infra.environments.local.auth?.authorization).toEqual({
-      kind: 'RBAC',
-      engine: 'native',
-    });
     expect('authFlow' in next.settings).toBe(false);
   });
 
   test('reads defaults for optional canonical flow and sign-in fields', () => {
     const manifest = createManifest();
-    if (!manifest.infra.environments.local.auth) throw new Error('Expected auth fixture.');
-    delete manifest.infra.environments.local.auth.flow;
-    delete manifest.infra.environments.local.auth.signIn;
+    const auth = manifest.infra.environments.local.auth;
+    if (!auth) throw new Error('Expected auth fixture.');
+    const { flow: _flow, signIn: _signIn, ...authWithoutDefaults } = auth;
+    const withoutDefaults: AppManifest = {
+      ...manifest,
+      infra: {
+        ...manifest.infra,
+        environments: {
+          ...manifest.infra.environments,
+          local: { ...manifest.infra.environments.local, auth: authWithoutDefaults },
+        },
+      },
+    };
 
-    const settings = readStudioAuthSettings(manifest);
+    const settings = readStudioAuthSettings(withoutDefaults);
     expect(settings?.flow.signInRoute).toBe('sign-in');
     expect(settings?.signIn.identifiers).toEqual(['email']);
   });

@@ -2,7 +2,10 @@ import { mkdir, mkdtemp, readdir, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import type { InfraLedger } from '@ankhorage/contracts/infra';
 import { expect, test } from 'bun:test';
+
+import type { StudioProjectInfraLifecycle } from '../features/infrastructure/composition/createStudioProjectInfraLifecycle';
 
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
@@ -30,7 +33,7 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
   );
 
   const projectManager = new ProjectManager(workspaceRoot, {
-    runProjectInfrastructureLifecycle: () => Promise.resolve({ stderr: '', stdout: '' }),
+    infraLifecycle: createInfraLifecycle(),
   });
   const moduleManager = new ModuleManager(workspaceRoot);
   const created = await projectManager.createProject('Host Smoke App', createSmokeProjectSource());
@@ -72,3 +75,30 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
     false,
   );
 }, 60_000);
+
+function createInfraLifecycle(): StudioProjectInfraLifecycle {
+  const ledger: InfraLedger = {
+    schemaVersion: 1,
+    projectId: 'host-smoke',
+    environment: 'local',
+    targets: [],
+    resources: [],
+    outputs: [],
+    artifacts: [],
+  };
+  return {
+    generateAsync: () => Promise.resolve({ environment: 'local', artifacts: [], ledger }),
+    upAsync: () =>
+      Promise.resolve({ environment: 'local', targets: [], resources: [], outputs: [], ledger }),
+    statusAsync: (request) =>
+      Promise.resolve({
+        projectId: request.projectId,
+        environment: 'local',
+        state: 'ready',
+        resources: [],
+      }),
+    outputsAsync: () => Promise.resolve({ environment: 'local', outputs: [] }),
+    downAsync: () => Promise.resolve({ environment: 'local', ledger }),
+    destroyAsync: () => Promise.resolve({ environment: 'local', ledger: null }),
+  };
+}

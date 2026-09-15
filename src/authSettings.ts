@@ -3,7 +3,7 @@ import type { AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type { InfraEnvironmentSpec } from '@ankhorage/contracts/infra';
 import { normalizeSecretRef } from '@ankhorage/contracts/secrets';
 import { getSupabaseOAuthProviderDefinition } from '@ankhorage/supabase-auth';
-import { hasOnlyKeys, isRecord } from '@ankhorage/utility/object';
+import { hasOnlyKeys, isRecord, readOwnProperty } from '@ankhorage/utility/object';
 
 type ManifestAuth = NonNullable<InfraEnvironmentSpec['auth']>;
 type ManifestFlow = NonNullable<ManifestAuth['flow']>;
@@ -81,7 +81,7 @@ export function readStudioAuthSettings(
   manifest: AppManifest,
   environment: AppEnvironmentId = 'local',
 ): StudioAuthSettings | null {
-  const auth = manifest.infra.environments[environment]?.auth;
+  const auth = readOwnProperty(manifest.infra.environments, environment)?.auth;
   if (!auth) return null;
 
   return {
@@ -132,7 +132,7 @@ export function applyStudioAuthSettings(
   settings: StudioAuthSettings,
   environment: AppEnvironmentId = 'local',
 ): AppManifest {
-  const current = manifest.infra.environments[environment];
+  const current = readOwnProperty(manifest.infra.environments, environment);
   if (!current) {
     throw new Error(
       `Project '${manifest.metadata.slug}' does not configure infrastructure environment '${environment}'.`,
@@ -185,12 +185,23 @@ export function applyStudioAuthSettings(
     ...manifest,
     infra: {
       ...manifest.infra,
-      environments: {
-        ...manifest.infra.environments,
-        [environment]: { ...current, auth },
-      },
+      environments: replaceAuthEnvironment(manifest.infra.environments, environment, {
+        ...current,
+        auth,
+      }),
     },
   };
+}
+
+/*** Replace one explicit Infra environment without dynamic property assignment. */
+function replaceAuthEnvironment(
+  environments: AppManifest['infra']['environments'],
+  environment: AppEnvironmentId,
+  value: InfraEnvironmentSpec,
+): AppManifest['infra']['environments'] {
+  if (environment === 'local') return { ...environments, local: value };
+  if (environment === 'preview') return { ...environments, preview: value };
+  return { ...environments, production: value };
 }
 
 /***

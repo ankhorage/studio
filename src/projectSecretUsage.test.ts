@@ -64,7 +64,7 @@ describe('projectSecretUsage', () => {
     expect(findProjectSecretUsages({ manifest, ref: 'auth/oauth/google' }).usages).toEqual([
       {
         ref: 'auth/oauth/google',
-        path: 'infra.auth.oauth.providers[google].credentialsRef',
+        path: 'infra.environments.local.auth.oauth.providers[google].credentialsRef',
         category: 'oauth-provider',
         label: 'Google OAuth provider',
         ownerId: 'google',
@@ -86,7 +86,7 @@ describe('projectSecretUsage', () => {
       usages: [
         {
           ref: 'auth/oauth/apple',
-          path: 'infra.auth.oauth.providers[apple].credentialsRef',
+          path: 'infra.environments.local.auth.oauth.providers[apple].credentialsRef',
           category: 'oauth-provider',
           label: 'Apple OAuth provider',
           ownerId: 'apple',

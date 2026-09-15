@@ -88,7 +88,18 @@ function createManifest(): StudioManifest {
     activeThemeId: 'theme-1',
     activeThemeMode: 'light',
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
-    infra: { modulesConfig: {} },
+    infra: {
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+        },
+      },
+      modules: [],
+      modulesConfig: {},
+    },
   } as unknown as StudioManifest;
 }
 

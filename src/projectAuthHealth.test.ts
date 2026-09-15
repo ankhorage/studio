@@ -89,11 +89,11 @@ describe('projectAuthHealth', () => {
       manifest: createManifest(),
       secretMetadata: [googleMetadata],
       secretStoreAvailable: true,
-      environment: 'production',
+      environment: 'local',
     });
     expect(complete.providers[0]?.status).toBe('configured');
     expect(complete.providers[0]?.requiredFields).toEqual(['clientId', 'clientSecret']);
-    expect(complete.setup).toEqual({ environment: 'production', targets: ['web'] });
+    expect(complete.setup).toEqual({ environment: 'local', targets: ['web'] });
     expect(JSON.stringify(complete)).not.toContain('sentinel-phase2-secret-do-not-leak');
   });
 

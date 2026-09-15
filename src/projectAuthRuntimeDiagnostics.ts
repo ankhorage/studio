@@ -5,8 +5,7 @@ import type {
   ProjectAuthHealthStatus,
 } from './projectAuthHealth';
 
-export type ProjectAuthRuntimeRolloutStatus =
-  'ready' | 'not-ready' | 'unavailable' | 'not-generated';
+type ProjectAuthRuntimeRolloutStatus = 'ready' | 'not-ready' | 'unavailable' | 'not-generated';
 
 export interface ProjectAuthRuntimeDiagnostics {
   readonly providerRedirectUrl?: string;

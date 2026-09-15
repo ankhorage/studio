@@ -22,31 +22,37 @@ export function createExpo57NavigationFixtureManifest(
     rootNavigator = 'stack',
     slug,
   } = options;
-  const { auth: _baseAuth, ...baseInfra } = baseManifest.infra;
+  const { auth: _baseAuth, ...baseLocalEnvironment } = baseManifest.infra.environments.local;
 
   return {
     ...baseManifest,
     metadata: { ...baseManifest.metadata, name, slug },
     infra: {
-      ...baseInfra,
-      ...(auth
-        ? {
-            auth: {
-              scope: authScope,
-              provider: 'supabase' as const,
-              flow: {
-                signInRoute: 'sign-in',
-                signUpRoute: 'sign-up',
-                signOutRoute: 'sign-out',
-                postSignInRoute,
-                unauthorizedRoute: 'sign-in',
-              },
-              signIn: { identifiers: ['email' as const] },
-              signUp: { requiredFields: ['email' as const, 'password' as const] },
-              oauth: { enabled: false, callbackRoute: 'auth/callback', providers: [] },
-            },
-          }
-        : {}),
+      ...baseManifest.infra,
+      environments: {
+        ...baseManifest.infra.environments,
+        local: {
+          ...baseLocalEnvironment,
+          ...(auth
+            ? {
+                auth: {
+                  scope: authScope,
+                  provider: 'supabase' as const,
+                  flow: {
+                    signInRoute: 'sign-in',
+                    signUpRoute: 'sign-up',
+                    signOutRoute: 'sign-out',
+                    postSignInRoute,
+                    unauthorizedRoute: 'sign-in',
+                  },
+                  signIn: { identifiers: ['email' as const] },
+                  signUp: { requiredFields: ['email' as const, 'password' as const] },
+                  oauth: { enabled: false, callbackRoute: 'auth/callback', providers: [] },
+                },
+              }
+            : {}),
+        },
+      },
     },
     navigator:
       rootNavigator === 'stack'
