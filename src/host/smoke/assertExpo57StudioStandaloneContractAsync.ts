@@ -142,11 +142,7 @@ async function assertInstalledContractAsync(
     installationRoot: fixtureRoot,
     reactNativeVersion: requireDependencyRange(packageJson, 'dependencies', 'react-native'),
     requiredOwnerRanges: {
-      '@ankhorage/studio': requireDependencyRange(
-        packageJson,
-        'dependencies',
-        '@ankhorage/studio',
-      ),
+      '@ankhorage/studio': requireDependencyRange(packageJson, 'dependencies', '@ankhorage/studio'),
       ...(await resolveInstalledStudioOwnerRangesAsync(fixtureRoot)),
       '@ankhorage/expo-runtime': requireDependencyRange(
         packageJson,
@@ -201,11 +197,7 @@ async function resolveInstalledStudioOwnerRangesAsync(
       'dependencies',
       '@ankhorage/surface',
     ),
-    '@ankhorage/zora': requireDependencyRange(
-      studioPackageJson,
-      'dependencies',
-      '@ankhorage/zora',
-    ),
+    '@ankhorage/zora': requireDependencyRange(studioPackageJson, 'dependencies', '@ankhorage/zora'),
   };
 }
 
