@@ -256,7 +256,7 @@ export class ProjectSecretService {
 
       return { ok: true, data: usages };
     } catch {
-      return unavailableSecretStoreResult();
+      return { ok: false, error: createUnavailableSecretStoreError() };
     } finally {
       await client?.close();
     }
@@ -369,7 +369,7 @@ export class ProjectSecretService {
 
       return await operation(adapter, manifest);
     } catch {
-      return unavailableSecretStoreResult();
+      return { ok: false, error: createUnavailableSecretStoreError() };
     } finally {
       await client?.close();
     }
@@ -394,14 +394,11 @@ function createScope(projectId: string, environment = 'local') {
 }
 
 /*** Build the stable public error returned when the trusted project secret store cannot be reached. */
-function unavailableSecretStoreResult(): SecretStoreResult<never> {
+function createUnavailableSecretStoreError(): { readonly code: string; readonly message: string } {
   return {
-    ok: false,
-    error: {
-      code: 'unavailable',
-      message:
-        'The project secret store is unavailable. Verify local Supabase is running and ANKH_SECRET_STORE_DATABASE_URL is configured.',
-    },
+    code: 'unavailable',
+    message:
+      'The project secret store is unavailable. Verify local Supabase is running and ANKH_SECRET_STORE_DATABASE_URL is configured.',
   };
 }
 
