@@ -16,9 +16,9 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
         with:
-          bun-version: '1.4.2'
+          node-version: '24'
       - name: Prove canonical Renovate manager and dependency extraction
         env:
           LOG_FILE: renovate.log
@@ -31,7 +31,7 @@ jobs:
           RENOVATE_REQUIRE_CONFIG: required
           RENOVATE_TOKEN: ${{ github.token }}
         run: |
-          bunx renovate@44.43.1 ankhorage/studio
+          npx --yes renovate@44.43.1 ankhorage/studio
           node --input-type=module <<'NODE'
           import { readFileSync } from 'node:fs';
 
