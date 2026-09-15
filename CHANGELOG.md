@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.7.1
+
+### Patch Changes
+
+- 60b38cb: Track runtime projection currency separately from manifest persistence using the existing generated-project state owner, including durable current, pending, failed, and unknown semantics for runtime-relevant authoring changes.
+
 ## 2.7.0
 
 ### Minor Changes
