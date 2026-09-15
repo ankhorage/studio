@@ -1,4 +1,4 @@
-name: Issue 520 refresh app lock
+name: Issue 520 Contracts resolution
 
 on:
   push:
@@ -6,16 +6,14 @@ on:
       - fix/520-acceptance-baseline
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  refresh-and-validate:
+  inspect:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: '1.4.2'
@@ -24,17 +22,42 @@ jobs:
           node-version: '24'
       - name: Install root dependencies
         run: bun install --frozen-lockfile
-      - name: Regenerate standalone app lock from released owner graph
+      - name: Install standalone Studio app from a fresh lock
         run: |
           rm apps/studio/bun.lock
-          bun install --cwd apps/studio --lockfile-only
-      - name: Validate standalone Studio against regenerated lock
-        run: bun run test:acceptance:expo57-studio-standalone
-      - name: Finalize regenerated app lock
+          bun install --cwd apps/studio
+      - name: Inspect Contracts resolution from app and Studio
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git rm .github/workflows/issue-520-refresh-app-lock.yml
-          git add apps/studio/bun.lock
-          git commit -m 'fix: refresh standalone Studio owner lock'
-          git push origin HEAD:fix/520-acceptance-baseline
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import { createRequire } from 'node:module';
+          import path from 'node:path';
+
+          const appPackagePath = path.resolve('apps/studio/package.json');
+          const appRequire = createRequire(appPackagePath);
+          const studioPackagePath = appRequire.resolve('@ankhorage/studio/package.json');
+          const studioPackage = JSON.parse(fs.readFileSync(studioPackagePath, 'utf8'));
+          const studioRequire = createRequire(studioPackagePath);
+          const appContractsPath = appRequire.resolve('@ankhorage/contracts/package.json');
+          const studioContractsPath = studioRequire.resolve('@ankhorage/contracts/package.json');
+          const appContracts = JSON.parse(fs.readFileSync(appContractsPath, 'utf8'));
+          const studioContracts = JSON.parse(fs.readFileSync(studioContractsPath, 'utf8'));
+
+          console.log(JSON.stringify({
+            studio: {
+              path: studioPackagePath,
+              version: studioPackage.version,
+              contractsRange: studioPackage.dependencies?.['@ankhorage/contracts'],
+            },
+            appContracts: {
+              path: appContractsPath,
+              version: appContracts.version,
+              environmentExport: appContracts.exports?.['./environments'] ?? null,
+            },
+            studioContracts: {
+              path: studioContractsPath,
+              version: studioContracts.version,
+              environmentExport: studioContracts.exports?.['./environments'] ?? null,
+            },
+          }, null, 2));
+          NODE
