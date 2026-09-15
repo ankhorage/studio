@@ -46,7 +46,7 @@ jobs:
       - name: Refresh consumer lockfiles
         run: |
           bun install
-          bun install --cwd apps/studio
+          bun install --cwd apps/studio --lockfile-only
       - name: Apply canonical formatting
         run: ./node_modules/.bin/ankhorage-prettier --write src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts
       - name: Validate lint after consumer refresh
