@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
 
+import { ProjectUpdateDashboardPanel } from '../features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel';
 import { type LaunchProjectResponse, useProjects } from '../hooks/useProjects';
 import { confirmDelete, openProjectUrl } from '../workspacePlatform';
 import {
@@ -26,8 +27,6 @@ export function ProjectDetailScreen() {
     error,
     refresh,
     deleteProject,
-    syncProject,
-    installProjectPackages,
     connectProjectRepository,
     upProjectInfrastructure,
     launchProject,
@@ -127,36 +126,12 @@ export function ProjectDetailScreen() {
             />
           </View>
 
+          <ProjectUpdateDashboardPanel projectId={project.id} />
+
           <View style={styles.lifecyclePanel}>
-            <Heading level={3} text="Lifecycle" />
+            <Heading level={3} text="Project operations" />
             {message ? <InlineMessage tone={message.tone} text={message.text} /> : null}
             <View style={styles.actionStack}>
-              <LifecycleAction
-                iconName="refresh-outline"
-                label="Sync"
-                detail="Synchronize the current Studio manifest and generated files."
-                loading={activeAction === 'Sync'}
-                disabled={activeAction !== null}
-                onPress={() =>
-                  void runAction('Sync', async () => {
-                    await syncProject(project.id);
-                    return 'Project synchronized.';
-                  })
-                }
-              />
-              <LifecycleAction
-                iconName="download-outline"
-                label="Install packages"
-                detail="Install dependencies using this generated app as the package root."
-                loading={activeAction === 'Install packages'}
-                disabled={activeAction !== null}
-                onPress={() =>
-                  void runAction('Install packages', async () => {
-                    await installProjectPackages(project.id);
-                    return 'Project packages installed.';
-                  })
-                }
-              />
               <LifecycleAction
                 iconName="logo-github"
                 label="Connect GitHub"
