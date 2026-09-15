@@ -1,0 +1,40 @@
+name: Branch 509 validate
+
+on:
+  push:
+    branches:
+      - fix/509-pending-module-apm-evidence
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Build
+        run: bun run build
+      - name: Typecheck
+        run: bun run typecheck
+      - name: Lint
+        run: bun run lint
+      - name: Format check
+        run: bun run format:check
+      - name: Knip
+        run: bun run knip:check
+      - name: Focused tests
+        run: bun test src/features/project-updates/composition/createStudioProjectUpdatePorts.test.ts src/features/project-updates/application/ProjectUpdateService.test.ts
+      - name: Changeset
+        run: bun run changeset:status
