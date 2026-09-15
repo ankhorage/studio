@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.7.2
+
+### Patch Changes
+
+- d8dd7ff: Expose the composed APM status, plan, apply/resume, and verify lifecycle through project-id-scoped Studio host routes.
+
 ## 2.7.1
 
 ### Patch Changes
