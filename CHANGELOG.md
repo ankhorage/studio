@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.6.2
+
+### Patch Changes
+
+- 6cf426d: Serialize Studio project mutations with APM's canonical project writer lock.
+
 ## 2.6.1
 
 ### Patch Changes
