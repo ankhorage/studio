@@ -1,0 +1,118 @@
+name: Finalize Studio Infra 5 build
+
+on:
+  push:
+    branches:
+      - fix/145-current-infra-consumer
+    paths:
+      - '.github/workflows/finalize-512-build.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/145-current-infra-consumer
+          fetch-depth: 0
+      - name: Patch final current-contract narrowings
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          manifest_path = Path('src/manifestState.ts')
+          text = manifest_path.read_text()
+          old = """export function updateStudioManifestOAuthProviders(
+            manifest: StudioManifest,
+            providers: AuthOAuthProviderConfig[],
+          ): StudioManifest {
+            const previousAuth = manifest.infra.environments.local.auth ?? {
+              provider: 'supabase',
+              scope: 'global' as const,
+              authorization: { kind: 'ABAC' as const, engine: 'cerbos' as const },
+            };
+            const previousOauth = previousAuth.oauth ?? {
+              enabled: true,
+              callbackRoute: '/auth/callback',
+              providers: [],
+            };
+
+            return {
+              ...manifest,
+              infra: {
+                ...manifest.infra,
+                auth: {
+                  ...previousAuth,
+                  oauth: {
+                    ...previousOauth,
+                    enabled: providers.length > 0,
+                    providers,
+                  },
+                },
+              },
+            };
+          }
+          """
+          new = """export function updateStudioManifestOAuthProviders(
+            manifest: StudioManifest,
+            providers: AuthOAuthProviderConfig[],
+          ): StudioManifest {
+            const previousAuth: NonNullable<
+              StudioManifest['infra']['environments']['local']['auth']
+            > = manifest.infra.environments.local.auth ?? {
+              provider: 'supabase',
+              scope: 'global',
+            };
+            const previousOauth = previousAuth.oauth ?? {
+              enabled: true,
+              callbackRoute: '/auth/callback',
+              providers: [],
+            };
+
+            return {
+              ...manifest,
+              infra: {
+                ...manifest.infra,
+                environments: {
+                  ...manifest.infra.environments,
+                  local: {
+                    ...manifest.infra.environments.local,
+                    auth: {
+                      ...previousAuth,
+                      oauth: {
+                        ...previousOauth,
+                        enabled: providers.length > 0,
+                        providers,
+                      },
+                    },
+                  },
+                },
+              },
+            };
+          }
+          """
+          if old not in text:
+            raise SystemExit('legacy OAuth manifest mutation block not found')
+          manifest_path.write_text(text.replace(old, new, 1))
+
+          secret_path = Path('src/host/secrets/projectSecretService.ts')
+          secret_text = secret_path.read_text()
+          old_return = "function createUnavailableSecretStoreError(): { readonly code: string; readonly message: string }"
+          new_return = "function createUnavailableSecretStoreError(): { readonly code: 'unavailable'; readonly message: string }"
+          if old_return not in secret_text:
+            raise SystemExit('secret unavailable error return type not found')
+          secret_path.write_text(secret_text.replace(old_return, new_return, 1))
+          PY
+
+          rm .github/workflows/finalize-512-build.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add --all
+          git commit -m 'fix: finalize current infrastructure contract migration'
+          git push origin HEAD:fix/145-current-infra-consumer
