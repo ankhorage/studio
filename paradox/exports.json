@@ -11,9 +11,7 @@
       "line": 455,
       "column": 14
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -31,12 +29,8 @@
       "line": 368,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioActionPayloadSchema"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioActionPayloadSchema"],
     "signatures": [],
     "members": [
       {
@@ -89,9 +83,7 @@
       "line": 46,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -141,12 +133,8 @@
       "line": 55,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioBindingCompatibility"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindingCompatibility"],
     "signatures": [
       {
         "label": "(expected: UiBindableValueMeta, actual: UiBindableValueMeta) => StudioBindingCompatibility",
@@ -183,14 +171,8 @@
       "line": 1436,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "InsertCatalogEntry",
-      "InsertRecipe",
-      "StudioComponentMetaRegistry"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["InsertCatalogEntry", "InsertRecipe", "StudioComponentMetaRegistry"],
     "signatures": [
       {
         "label": "(args: { componentMeta: StudioComponentMetaRegistry; recipes?: readonly InsertRecipe[]; }) => InsertCatalogEntry[]",
@@ -221,12 +203,8 @@
       "line": 754,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioComponentMetaRegistry"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioComponentMetaRegistry"],
     "signatures": [
       {
         "label": "(args: { parentType: string; childType: string; componentMeta: StudioComponentMetaRegistry; }) => boolean",
@@ -257,12 +235,8 @@
       "line": 606,
       "column": 14
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioIdGenerator"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioIdGenerator"],
     "signatures": [
       {
         "label": "(node: UiNode, createId?: StudioIdGenerator) => UiNode",
@@ -299,12 +273,8 @@
       "line": 21,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioBindingOperationOption"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindingOperationOption"],
     "signatures": [
       {
         "label": "(apis: ApiDefinitionList) => readonly StudioBindingOperationOption[]",
@@ -335,12 +305,8 @@
       "line": 138,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioMediaUsage"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioMediaUsage"],
     "signatures": [
       {
         "label": "(manifest: AppManifest, mediaId: string) => readonly StudioMediaUsage[]",
@@ -377,12 +343,8 @@
       "line": 41,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioBindingResponsePathOption"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindingResponsePathOption"],
     "signatures": [
       {
         "label": "(schema: DataSchema | undefined, schemas: Readonly<Record<string, DataSchema>> | undefined) => readonly StudioBindingResponsePathOption[]",
@@ -419,14 +381,8 @@
       "line": 1349,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "InsertCatalogEntry",
-      "StudioComponentMetaRegistry",
-      "StudioIdGenerator"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["InsertCatalogEntry", "StudioComponentMetaRegistry", "StudioIdGenerator"],
     "signatures": [
       {
         "label": "(entry: InsertCatalogEntry, componentMeta: StudioComponentMetaRegistry, createId?: StudioIdGenerator) => UiNode",
@@ -469,12 +425,8 @@
       "line": 122,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioBindingInputFieldOption"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindingInputFieldOption"],
     "signatures": [
       {
         "label": "(payloadSchema: Readonly<Record<string, { readonly label: string; readonly type: string; readonly required?: boolean; }>> | undefined) => readonly StudioBindingInputFieldOption[]",
@@ -505,12 +457,8 @@
       "line": 105,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioInstancePropertyValue"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioInstancePropertyValue"],
     "signatures": [
       {
         "label": "(node: UiNode, propertyName: string, value: StudioInstancePropertyValue | undefined) => Readonly<Record<string, unknown>>",
@@ -553,9 +501,7 @@
       "line": 88,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -593,9 +539,7 @@
       "line": 68,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -627,12 +571,8 @@
       "line": 105,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioUrlMediaAssetResult"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioUrlMediaAssetResult"],
     "signatures": [
       {
         "label": "(args: { readonly id: string; readonly name: string; readonly kind: MediaAssetKind; readonly url: string; }) => StudioUrlMediaAssetResult",
@@ -663,9 +603,7 @@
       "line": 15,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -697,13 +635,8 @@
       "line": 25,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioBindingDiagnostic",
-      "StudioBindingOperationOption"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindingDiagnostic", "StudioBindingOperationOption"],
     "signatures": [
       {
         "label": "(args: { readonly node: UiNode; readonly registry: ComponentDataBindingRegistry; readonly componentMeta: UiComponentMetaRegistry; readonly operations: readonly StudioBindingOperationOption[]; readonly actionTypes: readonly string[]; }) => readonly StudioBindingDiagnostic[]",
@@ -734,9 +667,7 @@
       "line": 628,
       "column": 14
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -774,12 +705,8 @@
       "line": 32,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioBindingOperationOption"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindingOperationOption"],
     "signatures": [
       {
         "label": "(options: readonly StudioBindingOperationOption[], ref: BindingOperationRef) => StudioBindingOperationOption | undefined",
@@ -816,9 +743,7 @@
       "line": 597,
       "column": 14
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -850,9 +775,7 @@
       "line": 1259,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -884,14 +807,8 @@
       "line": 346,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "InsertCatalogDisabledReason",
-      "InsertCatalogEntryStatus",
-      "NodePlacement"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["InsertCatalogDisabledReason", "InsertCatalogEntryStatus", "NodePlacement"],
     "signatures": [],
     "members": [
       {
@@ -979,13 +896,8 @@
       "line": 328,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "InsertCatalogDisabledReasonCode",
-      "InsertRecipeIssue"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["InsertCatalogDisabledReasonCode", "InsertRecipeIssue"],
     "signatures": [],
     "members": [
       {
@@ -1024,9 +936,7 @@
       "line": 305,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -1044,9 +954,7 @@
       "line": 356,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -1064,9 +972,7 @@
       "line": 334,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [
       "InsertCatalogDisabledReason",
       "InsertCatalogEntryKind",
@@ -1153,9 +1059,7 @@
       "line": 302,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -1173,9 +1077,7 @@
       "line": 303,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -1193,9 +1095,7 @@
       "line": 351,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [
       "InsertCatalogDisabledReason",
       "InsertCatalogEntryStatus",
@@ -1289,13 +1189,8 @@
       "line": 1036,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "InsertNodeAtPlacementArgs",
-      "InsertNodeAtPlacementResult"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["InsertNodeAtPlacementArgs", "InsertNodeAtPlacementResult"],
     "signatures": [
       {
         "label": "(args: InsertNodeAtPlacementArgs) => InsertNodeAtPlacementResult | null",
@@ -1326,13 +1221,8 @@
       "line": 971,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "NodePlacement",
-      "StudioComponentMetaRegistry"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["NodePlacement", "StudioComponentMetaRegistry"],
     "signatures": [],
     "members": [
       {
@@ -1378,9 +1268,7 @@
       "line": 978,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -1413,12 +1301,8 @@
       "line": 313,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "InsertRecipeNode"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["InsertRecipeNode"],
     "signatures": [],
     "members": [
       {
@@ -1471,9 +1355,7 @@
       "line": 321,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -1520,9 +1402,7 @@
       "line": 308,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -1555,9 +1435,7 @@
       "line": 53,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -1595,13 +1473,8 @@
       "line": 1184,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "MoveNodeToPlacementArgs",
-      "MoveNodeToPlacementResult"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["MoveNodeToPlacementArgs", "MoveNodeToPlacementResult"],
     "signatures": [
       {
         "label": "(args: MoveNodeToPlacementArgs) => MoveNodeToPlacementResult | null",
@@ -1632,13 +1505,8 @@
       "line": 1063,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "NodePlacement",
-      "StudioComponentMetaRegistry"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["NodePlacement", "StudioComponentMetaRegistry"],
     "signatures": [],
     "members": [
       {
@@ -1684,9 +1552,7 @@
       "line": 1070,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -1719,12 +1585,8 @@
       "line": 263,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "PlacementKind"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["PlacementKind"],
     "signatures": [],
     "members": [
       {
@@ -1770,9 +1632,7 @@
       "line": 270,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -1790,12 +1650,8 @@
       "line": 283,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "PlacementFailureCode"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["PlacementFailureCode"],
     "signatures": [],
     "members": [
       {
@@ -1827,9 +1683,7 @@
       "line": 261,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -1847,9 +1701,7 @@
       "line": 295,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -1867,9 +1719,7 @@
       "line": 288,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -1887,12 +1737,8 @@
       "line": 17,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "ProjectAuthDiagnosticSeverity"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["ProjectAuthDiagnosticSeverity"],
     "signatures": [],
     "members": [
       {
@@ -1952,9 +1798,7 @@
       "line": 15,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -1972,9 +1816,7 @@
       "line": 40,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [
       "ProjectAuthDiagnostic",
       "ProjectAuthHealthStatus",
@@ -2032,9 +1874,7 @@
       "line": 13,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -2052,9 +1892,7 @@
       "line": 18,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -2072,9 +1910,7 @@
       "line": 41,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -2092,12 +1928,8 @@
       "line": 25,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "ProjectCreationValidationCode"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["ProjectCreationValidationCode"],
     "signatures": [],
     "members": [
       {
@@ -2129,9 +1961,7 @@
       "line": 30,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -2149,12 +1979,8 @@
       "line": 29,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "ProjectOAuthProviderHealthStatus"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["ProjectOAuthProviderHealthStatus"],
     "signatures": [],
     "members": [
       {
@@ -2228,9 +2054,7 @@
       "line": 26,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -2248,12 +2072,8 @@
       "line": 7,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "ProjectSecretUsageCategory"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["ProjectSecretUsageCategory"],
     "signatures": [],
     "members": [
       {
@@ -2313,9 +2133,7 @@
       "line": 5,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -2333,12 +2151,8 @@
       "line": 16,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "ProjectSecretUsage"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["ProjectSecretUsage"],
     "signatures": [],
     "members": [
       {
@@ -2370,9 +2184,7 @@
       "line": 16,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -2390,9 +2202,7 @@
       "line": 76,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -2424,9 +2234,7 @@
       "line": 665,
       "column": 14
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -2464,9 +2272,7 @@
       "line": 65,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -2516,12 +2322,8 @@
       "line": 153,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioMediaAssetRemovalResult"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioMediaAssetRemovalResult"],
     "signatures": [
       {
         "label": "(manifest: AppManifest, mediaId: string) => StudioMediaAssetRemovalResult",
@@ -2558,9 +2360,7 @@
       "line": 30,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -2604,13 +2404,8 @@
       "line": 926,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "PlacementResolutionResult",
-      "StudioComponentMetaRegistry"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["PlacementResolutionResult", "StudioComponentMetaRegistry"],
     "signatures": [
       {
         "label": "(args: { root: UiNode; selectedNodeId: string | null; childType: string; componentMeta: StudioComponentMetaRegistry; }) => PlacementResolutionResult",
@@ -2641,13 +2436,8 @@
       "line": 1484,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "InsertCatalogEntry",
-      "StudioComponentMetaRegistry"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["InsertCatalogEntry", "StudioComponentMetaRegistry"],
     "signatures": [
       {
         "label": "(args: { entries: readonly InsertCatalogEntry[]; root: UiNode | null; selectedNodeId: string | null; componentMeta: StudioComponentMetaRegistry; }) => InsertCatalogEntry[]",
@@ -2678,14 +2468,8 @@
       "line": 861,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "PlacementKind",
-      "PlacementResolutionResult",
-      "StudioComponentMetaRegistry"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["PlacementKind", "PlacementResolutionResult", "StudioComponentMetaRegistry"],
     "signatures": [
       {
         "label": "(args: { root: UiNode; targetNodeId: string; childType: string; componentMeta: StudioComponentMetaRegistry; kind: PlacementKind; }) => PlacementResolutionResult",
@@ -2716,13 +2500,8 @@
       "line": 1112,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "MoveNodeToPlacementArgs",
-      "PlacementResolutionResult"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["MoveNodeToPlacementArgs", "PlacementResolutionResult"],
     "signatures": [
       {
         "label": "(args: MoveNodeToPlacementArgs) => PlacementResolutionResult",
@@ -2753,12 +2532,8 @@
       "line": 29,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioBindableEventOption"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindableEventOption"],
     "signatures": [
       {
         "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>) => readonly StudioBindableEventOption[]",
@@ -2795,12 +2570,8 @@
       "line": 12,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioBindablePropOption"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindablePropOption"],
     "signatures": [
       {
         "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>) => readonly StudioBindablePropOption[]",
@@ -2837,13 +2608,8 @@
       "line": 52,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioAuthoringComponentMeta",
-      "StudioInstancePropertyField"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioAuthoringComponentMeta", "StudioInstancePropertyField"],
     "signatures": [
       {
         "label": "(node: UiNode, registry: Readonly<Record<string, StudioAuthoringComponentMeta | undefined>>) => readonly StudioInstancePropertyField[]",
@@ -2880,13 +2646,8 @@
       "line": 86,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioAuthoringComponentMeta",
-      "StudioInstancePropertyGroup"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioAuthoringComponentMeta", "StudioInstancePropertyGroup"],
     "signatures": [
       {
         "label": "(node: UiNode, registry: Readonly<Record<string, StudioAuthoringComponentMeta | undefined>>) => readonly StudioInstancePropertyGroup[]",
@@ -2923,9 +2684,7 @@
       "line": 18,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -2969,9 +2728,7 @@
       "line": 1222,
       "column": 14
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -3014,9 +2771,7 @@
       "line": 101,
       "column": 14
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -3034,9 +2789,7 @@
       "line": 93,
       "column": 14
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -3054,9 +2807,7 @@
       "line": 135,
       "column": 14
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -3074,12 +2825,8 @@
       "line": 360,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioActionPayloadPrimitive"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioActionPayloadPrimitive"],
     "signatures": [],
     "members": [
       {
@@ -3118,9 +2865,7 @@
       "line": 358,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -3138,9 +2883,7 @@
       "line": 366,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -3158,9 +2901,7 @@
       "line": 181,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -3178,9 +2919,7 @@
       "line": 227,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -3198,9 +2937,7 @@
       "line": 207,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -3218,12 +2955,8 @@
       "line": 16,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioAuthoringPropSchema"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioAuthoringPropSchema"],
     "signatures": [],
     "members": [
       {
@@ -3255,9 +2988,7 @@
       "line": 21,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -3275,9 +3006,7 @@
       "line": 4,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -3345,9 +3074,7 @@
       "line": 16,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -3387,9 +3114,7 @@
       "line": 10,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -3429,9 +3154,7 @@
       "line": 8,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -3449,9 +3172,7 @@
       "line": 43,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -3498,9 +3219,7 @@
       "line": 22,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -3547,13 +3266,8 @@
       "line": 35,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioBindingInputFieldOption",
-      "StudioBindingResponsePathOption"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindingInputFieldOption", "StudioBindingResponsePathOption"],
     "signatures": [],
     "members": [
       {
@@ -3606,9 +3320,7 @@
       "line": 29,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -3648,9 +3360,7 @@
       "line": 392,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -3668,9 +3378,7 @@
       "line": 376,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -3703,12 +3411,8 @@
       "line": 381,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioComponentBlueprint"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioComponentBlueprint"],
     "signatures": [],
     "members": [
       {
@@ -3754,9 +3458,7 @@
       "line": 388,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -3774,9 +3476,7 @@
       "line": 407,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [
       "InsertCatalogEntry",
       "NodePlacement",
@@ -4159,9 +3859,7 @@
       "line": 400,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -4179,9 +3877,7 @@
       "line": 390,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -4199,9 +3895,7 @@
       "line": 25,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -4219,12 +3913,8 @@
       "line": 28,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioInstancePropertyEditorKind"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioInstancePropertyEditorKind"],
     "signatures": [],
     "members": [
       {
@@ -4312,12 +4002,8 @@
       "line": 41,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioInstancePropertyField"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioInstancePropertyField"],
     "signatures": [],
     "members": [
       {
@@ -4349,9 +4035,7 @@
       "line": 46,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -4369,9 +4053,7 @@
       "line": 236,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -4389,9 +4071,7 @@
       "line": 17,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -4409,9 +4089,7 @@
       "line": 25,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -4429,9 +4107,7 @@
       "line": 33,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -4449,9 +4125,7 @@
       "line": 4,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -4469,13 +4143,8 @@
       "line": 29,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioMediaPickerInput",
-      "StudioMediaPickerResult"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioMediaPickerInput", "StudioMediaPickerResult"],
     "signatures": [],
     "members": [
       {
@@ -4500,9 +4169,7 @@
       "line": 22,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -4520,12 +4187,8 @@
       "line": 6,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioMediaPickerSource"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioMediaPickerSource"],
     "signatures": [],
     "members": [
       {
@@ -4557,9 +4220,7 @@
       "line": 25,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -4577,9 +4238,7 @@
       "line": 11,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -4654,9 +4313,7 @@
       "line": 3,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -4674,9 +4331,7 @@
       "line": 11,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -4716,12 +4371,8 @@
       "line": 11,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioModuleAdminField"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioModuleAdminField"],
     "signatures": [],
     "members": [
       {
@@ -4767,9 +4418,7 @@
       "line": 2,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -4787,9 +4436,7 @@
       "line": 4,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -4836,9 +4483,7 @@
       "line": 176,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -4856,12 +4501,8 @@
       "line": 35,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioModuleState"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioModuleState"],
     "signatures": [],
     "members": [
       {
@@ -4921,12 +4562,8 @@
       "line": 18,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioModuleAdminContribution"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioModuleAdminContribution"],
     "signatures": [],
     "members": [
       {
@@ -5042,9 +4679,7 @@
       "line": 174,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -5062,9 +4697,7 @@
       "line": 95,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -5104,9 +4737,7 @@
       "line": 180,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -5124,9 +4755,7 @@
       "line": 172,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -5144,9 +4773,7 @@
       "line": 3,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -5235,9 +4862,7 @@
       "line": 170,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -5255,9 +4880,7 @@
       "line": 3,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -5275,13 +4898,8 @@
       "line": 6,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioRuntimeProjectionReason",
-      "StudioRuntimeProjectionStatus"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioRuntimeProjectionReason", "StudioRuntimeProjectionStatus"],
     "signatures": [],
     "members": [
       {
@@ -5313,9 +4931,7 @@
       "line": 1,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -5333,9 +4949,7 @@
       "line": 179,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -5353,9 +4967,7 @@
       "line": 175,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -5373,12 +4985,8 @@
       "line": 243,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioAdminRouteId"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioAdminRouteId"],
     "signatures": [],
     "members": [
       {
@@ -5431,9 +5039,7 @@
       "line": 173,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -5451,12 +5057,8 @@
       "line": 251,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioSaveStatus"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioSaveStatus"],
     "signatures": [],
     "members": [
       {
@@ -5523,9 +5125,7 @@
       "line": 22,
       "column": 14
     },
-    "exportPaths": [
-      "src/apm.ts"
-    ],
+    "exportPaths": ["src/apm.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -5543,9 +5143,7 @@
       "line": 45,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -5563,12 +5161,8 @@
       "line": 20,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "TemplateCatalogCategory"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["TemplateCatalogCategory"],
     "signatures": [],
     "members": [
       {
@@ -5593,12 +5187,8 @@
       "line": 9,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "TemplateCatalogTemplate"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["TemplateCatalogTemplate"],
     "signatures": [],
     "members": [
       {
@@ -5672,9 +5262,7 @@
       "line": 3,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -5714,9 +5302,7 @@
       "line": 24,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -5734,9 +5320,7 @@
       "line": 238,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -5754,9 +5338,7 @@
       "line": 547,
       "column": 14
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -5774,9 +5356,7 @@
       "line": 637,
       "column": 14
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -5820,9 +5400,7 @@
       "line": 128,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -5860,9 +5438,7 @@
       "line": 14,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
+    "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -5912,14 +5488,8 @@
       "line": 1282,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "InsertRecipe",
-      "InsertRecipeIssue",
-      "StudioComponentMetaRegistry"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["InsertRecipe", "InsertRecipeIssue", "StudioComponentMetaRegistry"],
     "signatures": [
       {
         "label": "(recipe: InsertRecipe, componentMeta: StudioComponentMetaRegistry) => InsertRecipeIssue | null",
@@ -5956,14 +5526,8 @@
       "line": 770,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "NodePlacement",
-      "PlacementValidationResult",
-      "StudioComponentMetaRegistry"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["NodePlacement", "PlacementValidationResult", "StudioComponentMetaRegistry"],
     "signatures": [
       {
         "label": "(args: { root: UiNode; placement: NodePlacement; childType: string; componentMeta: StudioComponentMetaRegistry; }) => PlacementValidationResult",
@@ -5994,13 +5558,8 @@
       "line": 53,
       "column": 1
     },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "ProjectCreationValidationResult",
-      "StudioProjectSummary"
-    ],
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["ProjectCreationValidationResult", "StudioProjectSummary"],
     "signatures": [
       {
         "label": "(args: { name: string; existingProjects: readonly StudioProjectSummary[]; }) => ProjectCreationValidationResult",

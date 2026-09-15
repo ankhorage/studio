@@ -69,26 +69,19 @@
   },
   "readmeConfig": null,
   "config": null,
-  "entrypoints": [
-    "src/apm.ts",
-    "src/index.ts"
-  ],
+  "entrypoints": ["src/apm.ts", "src/index.ts"],
   "modules": [
     {
       "path": "knip.config.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "default"
-      ]
+      "exports": ["default"]
     },
     {
       "path": "paradox.config.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "default"
-      ]
+      "exports": ["default"]
     },
     {
       "path": "scripts/apm-owner-consumer.ts",
@@ -99,41 +92,31 @@
     {
       "path": "scripts/auth5-native-oauth-smoke-infra.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/runAuth5NativeOAuthSmokeInfra.ts"
-      ],
+      "dependencies": ["src/host/smoke/runAuth5NativeOAuthSmokeInfra.ts"],
       "exports": []
     },
     {
       "path": "scripts/auth5-native-oauth-smoke.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/runAuth5NativeOAuthSmoke.ts"
-      ],
+      "dependencies": ["src/host/smoke/runAuth5NativeOAuthSmoke.ts"],
       "exports": []
     },
     {
       "path": "scripts/expo57-generated-app-acceptance.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
-      ],
+      "dependencies": ["src/host/smoke/runExpo57GeneratedAppAcceptance.ts"],
       "exports": []
     },
     {
       "path": "scripts/expo57-generated-capability-acceptance.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
-      ],
+      "dependencies": ["src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"],
       "exports": []
     },
     {
       "path": "scripts/expo57-generated-navigation-acceptance.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
-      ],
+      "dependencies": ["src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"],
       "exports": []
     },
     {
@@ -149,34 +132,26 @@
     {
       "path": "scripts/expo57-studio-standalone-acceptance.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
-      ],
+      "dependencies": ["src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"],
       "exports": []
     },
     {
       "path": "scripts/packed-studio-host-acceptance.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/runPackedStudioHostAcceptance.ts"
-      ],
+      "dependencies": ["src/host/smoke/runPackedStudioHostAcceptance.ts"],
       "exports": []
     },
     {
       "path": "src/ankhAdmin.public.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/root.ts"
-      ],
+      "dependencies": ["src/root.ts"],
       "exports": []
     },
     {
       "path": "src/apm.ts",
       "isEntrypoint": true,
       "dependencies": [],
-      "exports": [
-        "default"
-      ]
+      "exports": ["default"]
     },
     {
       "path": "src/app/CreateCategoriesScreen.tsx",
@@ -187,9 +162,7 @@
         "src/hooks/useTemplateCatalog.ts",
         "src/workspaceSearch.ts"
       ],
-      "exports": [
-        "CreateCategoriesScreen"
-      ]
+      "exports": ["CreateCategoriesScreen"]
     },
     {
       "path": "src/app/CreateCategoryTemplatesScreen.tsx",
@@ -200,9 +173,7 @@
         "src/app/workspace/workspaceRouter.ts",
         "src/hooks/useTemplateCatalog.ts"
       ],
-      "exports": [
-        "CreateCategoryTemplatesScreen"
-      ]
+      "exports": ["CreateCategoryTemplatesScreen"]
     },
     {
       "path": "src/app/CreateProjectFromTemplateScreen.tsx",
@@ -215,9 +186,7 @@
         "src/hooks/useProjects.ts",
         "src/hooks/useTemplateCatalog.ts"
       ],
-      "exports": [
-        "CreateProjectFromTemplateScreen"
-      ]
+      "exports": ["CreateProjectFromTemplateScreen"]
     },
     {
       "path": "src/app/index.ts",
@@ -247,9 +216,7 @@
         "src/hooks/useProjects.ts",
         "src/workspacePlatform.ts"
       ],
-      "exports": [
-        "ProjectDetailScreen"
-      ]
+      "exports": ["ProjectDetailScreen"]
     },
     {
       "path": "src/app/ProjectsOverviewScreen.tsx",
@@ -261,20 +228,13 @@
         "src/projectWorkspaceContracts.ts",
         "src/workspaceSearch.ts"
       ],
-      "exports": [
-        "ProjectsOverviewScreen"
-      ]
+      "exports": ["ProjectsOverviewScreen"]
     },
     {
       "path": "src/app/StudioApp.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/app/workspace/navigation.ts",
-        "src/app/workspace/workspaceRouter.ts"
-      ],
-      "exports": [
-        "StudioApp"
-      ]
+      "dependencies": ["src/app/workspace/navigation.ts", "src/app/workspace/workspaceRouter.ts"],
+      "exports": ["StudioApp"]
     },
     {
       "path": "src/app/studioWorkspaceRoutes.test.ts",
@@ -294,58 +254,37 @@
     {
       "path": "src/app/workspace/createProjectFormState.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectIdentity.ts",
-        "src/projectWorkspaceContracts.ts"
-      ],
-      "exports": [
-        "CreateProjectFormState",
-        "resolveCreateProjectFormState"
-      ]
+      "dependencies": ["src/projectIdentity.ts", "src/projectWorkspaceContracts.ts"],
+      "exports": ["CreateProjectFormState", "resolveCreateProjectFormState"]
     },
     {
       "path": "src/app/workspace/navigation.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/app/workspace/navigation.ts"
-      ],
+      "dependencies": ["src/app/workspace/navigation.ts"],
       "exports": []
     },
     {
       "path": "src/app/workspace/navigation.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "releaseWorkspaceFocus",
-        "resolveWorkspaceParentPath"
-      ]
+      "exports": ["releaseWorkspaceFocus", "resolveWorkspaceParentPath"]
     },
     {
       "path": "src/app/workspace/routeParams.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/app/workspace/routeParams.ts"
-      ],
+      "dependencies": ["src/app/workspace/routeParams.ts"],
       "exports": []
     },
     {
       "path": "src/app/workspace/routeParams.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/contractGuards.ts"
-      ],
-      "exports": [
-        "resolveWorkspaceCategoryParam",
-        "WorkspaceCategoryParam"
-      ]
+      "dependencies": ["src/contractGuards.ts"],
+      "exports": ["resolveWorkspaceCategoryParam", "WorkspaceCategoryParam"]
     },
     {
       "path": "src/app/workspace/WorkspacePrimitives.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectWorkspaceContracts.ts",
-        "src/templateCatalogContracts.ts"
-      ],
+      "dependencies": ["src/projectWorkspaceContracts.ts", "src/templateCatalogContracts.ts"],
       "exports": [
         "CategoryCard",
         "EmptyState",
@@ -369,21 +308,13 @@
     {
       "path": "src/app/workspace/workspaceRouter.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/app/workspace/navigation.ts"
-      ],
-      "exports": [
-        "goBackFromWorkspaceRoute",
-        "pushWorkspaceRoute",
-        "replaceWorkspaceRoute"
-      ]
+      "dependencies": ["src/app/workspace/navigation.ts"],
+      "exports": ["goBackFromWorkspaceRoute", "pushWorkspaceRoute", "replaceWorkspaceRoute"]
     },
     {
       "path": "src/authSettings.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/authSettings.ts"
-      ],
+      "dependencies": ["src/authSettings.ts"],
       "exports": []
     },
     {
@@ -416,9 +347,7 @@
     {
       "path": "src/bindingAuthoringModel.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/bindingAuthoringModel.ts"
-      ],
+      "dependencies": ["src/bindingAuthoringModel.ts"],
       "exports": []
     },
     {
@@ -456,9 +385,7 @@
         "src/bindingOperationModel.ts",
         "src/bindingSchemaModel.ts"
       ],
-      "exports": [
-        "diagnoseStudioComponentBindings"
-      ]
+      "exports": ["diagnoseStudioComponentBindings"]
     },
     {
       "path": "src/bindingManifestPersistence.test.ts",
@@ -473,20 +400,13 @@
     {
       "path": "src/bindingMetadataModel.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/bindingAuthoringContracts.ts"
-      ],
-      "exports": [
-        "resolveStudioBindableEvents",
-        "resolveStudioBindableProps"
-      ]
+      "dependencies": ["src/bindingAuthoringContracts.ts"],
+      "exports": ["resolveStudioBindableEvents", "resolveStudioBindableProps"]
     },
     {
       "path": "src/bindingMutationAcceptance.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/bindingAuthoringModel.ts"
-      ],
+      "dependencies": ["src/bindingAuthoringModel.ts"],
       "exports": []
     },
     {
@@ -503,10 +423,7 @@
     {
       "path": "src/bindingOperationModel.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/bindingAuthoringContracts.ts",
-        "src/bindingSchemaModel.ts"
-      ],
+      "dependencies": ["src/bindingAuthoringContracts.ts", "src/bindingSchemaModel.ts"],
       "exports": [
         "collectStudioBindingOperationOptions",
         "createStudioActionInputFields",
@@ -516,9 +433,7 @@
     {
       "path": "src/bindingSchemaModel.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/bindingAuthoringContracts.ts"
-      ],
+      "dependencies": ["src/bindingAuthoringContracts.ts"],
       "exports": [
         "assessStudioBindingCompatibility",
         "collectStudioResponsePaths",
@@ -537,38 +452,25 @@
     {
       "path": "src/canExecuteProjectDeployRelease.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectDeployReleaseInspectionResult.ts"
-      ],
-      "exports": [
-        "canExecuteProjectDeployRelease"
-      ]
+      "dependencies": ["src/projectDeployReleaseInspectionResult.ts"],
+      "exports": ["canExecuteProjectDeployRelease"]
     },
     {
       "path": "src/canvasDragModel.public.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/canvasDragModel.ts",
-        "src/canvasDropZones.ts"
-      ],
+      "dependencies": ["src/canvasDragModel.ts", "src/canvasDropZones.ts"],
       "exports": []
     },
     {
       "path": "src/canvasDragModel.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/canvasDragModel.ts",
-        "src/canvasDropZones.ts"
-      ],
+      "dependencies": ["src/canvasDragModel.ts", "src/canvasDropZones.ts"],
       "exports": []
     },
     {
       "path": "src/canvasDragModel.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/canvasDropZones.ts",
-        "src/index.ts"
-      ],
+      "dependencies": ["src/canvasDropZones.ts", "src/index.ts"],
       "exports": [
         "CanvasDragSessionResolution",
         "CanvasDropZoneSlots",
@@ -586,18 +488,13 @@
     {
       "path": "src/canvasDropZones.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/canvasDropZones.ts",
-        "src/index.ts"
-      ],
+      "dependencies": ["src/canvasDropZones.ts", "src/index.ts"],
       "exports": []
     },
     {
       "path": "src/canvasDropZones.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts"
-      ],
+      "dependencies": ["src/index.ts"],
       "exports": [
         "CanvasDropZoneResolution",
         "getValidCanvasDropZones",
@@ -608,9 +505,7 @@
     {
       "path": "src/cli/index.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/cli/index.ts"
-      ],
+      "dependencies": ["src/cli/index.ts"],
       "exports": []
     },
     {
@@ -622,53 +517,37 @@
         "src/host/templates/index.ts",
         "src/host/utils/workspaceRoot.ts"
       ],
-      "exports": [
-        "default"
-      ]
+      "exports": ["default"]
     },
     {
       "path": "src/contractGuards.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/contractGuards.ts"
-      ],
+      "dependencies": ["src/contractGuards.ts"],
       "exports": []
     },
     {
       "path": "src/contractGuards.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "isAppCategory",
-        "isAppManifest",
-        "isColorHarmony"
-      ]
+      "exports": ["isAppCategory", "isAppManifest", "isColorHarmony"]
     },
     {
       "path": "src/core/apiBase.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/core/apiBase.ts"
-      ],
+      "dependencies": ["src/core/apiBase.ts"],
       "exports": []
     },
     {
       "path": "src/core/apiBase.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "resolveStudioApiBase"
-      ]
+      "exports": ["resolveStudioApiBase"]
     },
     {
       "path": "src/core/constants.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/core/apiBase.ts"
-      ],
-      "exports": [
-        "API_BASE"
-      ]
+      "dependencies": ["src/core/apiBase.ts"],
+      "exports": ["API_BASE"]
     },
     {
       "path": "src/core/mediaAuthoringHostClient.ts",
@@ -678,36 +557,24 @@
         "src/core/mediaRemovalCoordinator.ts",
         "src/mediaPickerAuthoring.ts"
       ],
-      "exports": [
-        "cleanupStudioMediaSource",
-        "ingestStudioMediaSelection"
-      ]
+      "exports": ["cleanupStudioMediaSource", "ingestStudioMediaSelection"]
     },
     {
       "path": "src/core/mediaRemovalCoordinator.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/core/mediaRemovalCoordinator.ts"
-      ],
+      "dependencies": ["src/core/mediaRemovalCoordinator.ts"],
       "exports": []
     },
     {
       "path": "src/core/mediaRemovalCoordinator.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/mediaAuthoringModel.ts"
-      ],
-      "exports": [
-        "commitStudioMediaRemoval",
-        "StudioMediaSourceCleanupResult"
-      ]
+      "dependencies": ["src/mediaAuthoringModel.ts"],
+      "exports": ["commitStudioMediaRemoval", "StudioMediaSourceCleanupResult"]
     },
     {
       "path": "src/core/StudioContext.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts"
-      ],
+      "dependencies": ["src/index.ts"],
       "exports": [
         "StudioAdminRoutePath",
         "StudioContext",
@@ -730,11 +597,7 @@
     {
       "path": "src/core/studioManifestDraftModel.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/authSettings.ts",
-        "src/index.ts",
-        "src/manifestState.ts"
-      ],
+      "dependencies": ["src/authSettings.ts", "src/index.ts", "src/manifestState.ts"],
       "exports": [
         "applyStudioManifestDraftMutation",
         "replaceStudioManifestDraftAuthSettings",
@@ -759,10 +622,7 @@
     {
       "path": "src/core/studioManifestPersistenceModel.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts",
-        "src/manifestSync.ts"
-      ],
+      "dependencies": ["src/index.ts", "src/manifestSync.ts"],
       "exports": [
         "StudioManifestPersistenceCoordinator",
         "StudioManifestPersistenceCoordinatorOptions"
@@ -772,9 +632,7 @@
       "path": "src/core/studioPackageBoundary.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "STANDALONE_STUDIO_PACKAGE_NAME"
-      ]
+      "exports": ["STANDALONE_STUDIO_PACKAGE_NAME"]
     },
     {
       "path": "src/core/StudioProvider.test.ts",
@@ -802,47 +660,30 @@
         "src/studioSelectionModel.ts",
         "src/ui/admin/AuthAdminSession.tsx"
       ],
-      "exports": [
-        "StudioProvider",
-        "StudioProviderProps"
-      ]
+      "exports": ["StudioProvider", "StudioProviderProps"]
     },
     {
       "path": "src/createProjectDeployRequest.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectDeployRequest.ts"
-      ],
-      "exports": [
-        "createProjectDeployRequest"
-      ]
+      "dependencies": ["src/projectDeployRequest.ts"],
+      "exports": ["createProjectDeployRequest"]
     },
     {
       "path": "src/deriveExternalApiIdFromUrl.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/normalizeExternalApiId.ts"
-      ],
-      "exports": [
-        "deriveExternalApiIdFromUrl"
-      ]
+      "dependencies": ["src/normalizeExternalApiId.ts"],
+      "exports": ["deriveExternalApiIdFromUrl"]
     },
     {
       "path": "src/externalApiAdministration.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/deriveExternalApiIdFromUrl.ts",
-        "src/removeExternalApi.ts"
-      ],
+      "dependencies": ["src/deriveExternalApiIdFromUrl.ts", "src/removeExternalApi.ts"],
       "exports": []
     },
     {
       "path": "src/externalApiApi.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/core/constants.ts",
-        "src/externalApiAuthoringContracts.ts"
-      ],
+      "dependencies": ["src/core/constants.ts", "src/externalApiAuthoringContracts.ts"],
       "exports": [
         "connectExternalApi",
         "createManualRestApi",
@@ -854,9 +695,7 @@
     {
       "path": "src/externalApiAuthoring.public.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/externalApiAuthoring/index.ts"
-      ],
+      "dependencies": ["src/externalApiAuthoring/index.ts"],
       "exports": []
     },
     {
@@ -898,9 +737,7 @@
       "path": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "createStudioInfraAdapterPackageResolver"
-      ]
+      "exports": ["createStudioInfraAdapterPackageResolver"]
     },
     {
       "path": "src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.test.ts",
@@ -914,9 +751,7 @@
       "path": "src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "initializeProjectLocalInfraNetworking"
-      ]
+      "exports": ["initializeProjectLocalInfraNetworking"]
     },
     {
       "path": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
@@ -924,10 +759,7 @@
       "dependencies": [
         "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts"
       ],
-      "exports": [
-        "createStudioProjectInfraLifecycle",
-        "StudioProjectInfraLifecycle"
-      ]
+      "exports": ["createStudioProjectInfraLifecycle", "StudioProjectInfraLifecycle"]
     },
     {
       "path": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts",
@@ -941,9 +773,7 @@
       "path": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "registerProjectUpdateRoutes"
-      ]
+      "exports": ["registerProjectUpdateRoutes"]
     },
     {
       "path": "src/features/project-updates/adapters/inbound/studioUpdateExtension.test.ts",
@@ -964,19 +794,13 @@
         "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts",
         "src/types/project-updates.ts"
       ],
-      "exports": [
-        "studioUpdateExtension"
-      ]
+      "exports": ["studioUpdateExtension"]
     },
     {
       "path": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/types/project-updates.ts"
-      ],
-      "exports": [
-        "getGeneratedPackagePolicy"
-      ]
+      "dependencies": ["src/types/project-updates.ts"],
+      "exports": ["getGeneratedPackagePolicy"]
     },
     {
       "path": "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts",
@@ -986,9 +810,7 @@
         "src/features/project-updates/constants.ts",
         "src/features/project-updates/domain/pendingModuleLifecycleState.ts"
       ],
-      "exports": [
-        "inspectPendingModuleLifecycleEvidenceAsync"
-      ]
+      "exports": ["inspectPendingModuleLifecycleEvidenceAsync"]
     },
     {
       "path": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
@@ -1009,9 +831,7 @@
       "dependencies": [
         "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts"
       ],
-      "exports": [
-        "readStudioManifestDigestAsync"
-      ]
+      "exports": ["readStudioManifestDigestAsync"]
     },
     {
       "path": "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
@@ -1035,36 +855,25 @@
         "src/features/project-updates/constants.ts",
         "src/features/project-updates/domain/pendingModuleLifecycleState.ts"
       ],
-      "exports": [
-        "PendingModuleLifecyclePlanSlice",
-        "planPendingModuleLifecycleAsync"
-      ]
+      "exports": ["PendingModuleLifecyclePlanSlice", "planPendingModuleLifecycleAsync"]
     },
     {
       "path": "src/features/project-updates/application/ProjectUpdateService.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/features/project-updates/application/ProjectUpdateService.ts"
-      ],
+      "dependencies": ["src/features/project-updates/application/ProjectUpdateService.ts"],
       "exports": []
     },
     {
       "path": "src/features/project-updates/application/ProjectUpdateService.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/types/project-updates.ts"
-      ],
-      "exports": [
-        "ProjectUpdateService"
-      ]
+      "dependencies": ["src/types/project-updates.ts"],
+      "exports": ["ProjectUpdateService"]
     },
     {
       "path": "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "StudioPendingModuleLifecyclePort"
-      ]
+      "exports": ["StudioPendingModuleLifecyclePort"]
     },
     {
       "path": "src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts",
@@ -1074,9 +883,7 @@
         "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts",
         "src/types/project-updates.ts"
       ],
-      "exports": [
-        "applyCurrentGeneratedPackagePolicy"
-      ]
+      "exports": ["applyCurrentGeneratedPackagePolicy"]
     },
     {
       "path": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
@@ -1088,9 +895,7 @@
         "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
         "src/features/project-updates/domain/pendingModulePlanStep.ts"
       ],
-      "exports": [
-        "createStudioProjectUpdateApplyOwnerStepPort"
-      ]
+      "exports": ["createStudioProjectUpdateApplyOwnerStepPort"]
     },
     {
       "path": "src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts",
@@ -1098,9 +903,7 @@
       "dependencies": [
         "src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts"
       ],
-      "exports": [
-        "createStudioProjectUpdateExtensionEvidencePort"
-      ]
+      "exports": ["createStudioProjectUpdateExtensionEvidencePort"]
     },
     {
       "path": "src/features/project-updates/composition/createStudioProjectUpdatePorts.test.ts",
@@ -1121,9 +924,7 @@
         "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
         "src/features/project-updates/constants.ts"
       ],
-      "exports": [
-        "createStudioProjectUpdateProtocolPort"
-      ]
+      "exports": ["createStudioProjectUpdateProtocolPort"]
     },
     {
       "path": "src/features/project-updates/composition/createStudioProjectUpdateService.ts",
@@ -1137,9 +938,7 @@
         "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts",
         "src/types/project-updates.ts"
       ],
-      "exports": [
-        "createStudioProjectUpdateService"
-      ]
+      "exports": ["createStudioProjectUpdateService"]
     },
     {
       "path": "src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts",
@@ -1149,9 +948,7 @@
         "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
         "src/features/project-updates/domain/pendingModulePlanStep.ts"
       ],
-      "exports": [
-        "createStudioProjectUpdateVerifyOwnerStepPort"
-      ]
+      "exports": ["createStudioProjectUpdateVerifyOwnerStepPort"]
     },
     {
       "path": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
@@ -1159,9 +956,7 @@
       "dependencies": [
         "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts"
       ],
-      "exports": [
-        "createStudioProjectWriterProxy"
-      ]
+      "exports": ["createStudioProjectWriterProxy"]
     },
     {
       "path": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
@@ -1189,9 +984,7 @@
       "path": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "runWithStudioProjectWriterLockAsync"
-      ]
+      "exports": ["runWithStudioProjectWriterLockAsync"]
     },
     {
       "path": "src/features/project-updates/constants.ts",
@@ -1206,12 +999,8 @@
     {
       "path": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/types/project-updates.ts"
-      ],
-      "exports": [
-        "applyGeneratedPackagePolicy"
-      ]
+      "dependencies": ["src/types/project-updates.ts"],
+      "exports": ["applyGeneratedPackagePolicy"]
     },
     {
       "path": "src/features/project-updates/domain/pendingModuleLifecycleState.ts",
@@ -1230,17 +1019,12 @@
       "path": "src/features/project-updates/domain/pendingModulePlanStep.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "readReviewedPendingModuleStep",
-        "ReviewedPendingModuleStep"
-      ]
+      "exports": ["readReviewedPendingModuleStep", "ReviewedPendingModuleStep"]
     },
     {
       "path": "src/features/projects/adapters/outbound/ProjectGenerationStateStore.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/features/projects/adapters/outbound/ProjectGenerationStateStore.ts"
-      ],
+      "dependencies": ["src/features/projects/adapters/outbound/ProjectGenerationStateStore.ts"],
       "exports": []
     },
     {
@@ -1250,36 +1034,24 @@
         "src/features/projects/domain/resolveStudioRuntimeProjectionState.ts",
         "src/types/project-generation.ts"
       ],
-      "exports": [
-        "ProjectGenerationStateStore"
-      ]
+      "exports": ["ProjectGenerationStateStore"]
     },
     {
       "path": "src/features/projects/composition/createProjectGenerationStateStore.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/features/projects/adapters/outbound/ProjectGenerationStateStore.ts"
-      ],
-      "exports": [
-        "createProjectGenerationStateStore"
-      ]
+      "dependencies": ["src/features/projects/adapters/outbound/ProjectGenerationStateStore.ts"],
+      "exports": ["createProjectGenerationStateStore"]
     },
     {
       "path": "src/features/projects/domain/resolveStudioRuntimeProjectionState.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/types/project-generation.ts"
-      ],
-      "exports": [
-        "resolveStudioRuntimeProjectionState"
-      ]
+      "dependencies": ["src/types/project-generation.ts"],
+      "exports": ["resolveStudioRuntimeProjectionState"]
     },
     {
       "path": "src/features/selection/adapters/nativeElementMeasurement.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/features/selection/adapters/nativeElementMeasurement.ts"
-      ],
+      "dependencies": ["src/features/selection/adapters/nativeElementMeasurement.ts"],
       "exports": []
     },
     {
@@ -1297,9 +1069,7 @@
     {
       "path": "src/features/selection/application/nativeSelectionSamplingCoordinator.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/features/selection/application/nativeSelectionSamplingCoordinator.ts"
-      ],
+      "dependencies": ["src/features/selection/application/nativeSelectionSamplingCoordinator.ts"],
       "exports": []
     },
     {
@@ -1340,82 +1110,54 @@
         "src/core/constants.ts",
         "src/templateCatalogContracts.ts"
       ],
-      "exports": [
-        "useTemplateCatalog"
-      ]
+      "exports": ["useTemplateCatalog"]
     },
     {
       "path": "src/host/apis/createProjectEndpointCredentialResolver.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/secrets/projectSecretService.ts"
-      ],
-      "exports": [
-        "createProjectEndpointCredentialResolver"
-      ]
+      "dependencies": ["src/host/secrets/projectSecretService.ts"],
+      "exports": ["createProjectEndpointCredentialResolver"]
     },
     {
       "path": "src/host/apis/createTrustedEndpointTestFetch.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/apis/requestTrustedExternalApi.ts"
-      ],
-      "exports": [
-        "createTrustedEndpointTestFetch"
-      ]
+      "dependencies": ["src/host/apis/requestTrustedExternalApi.ts"],
+      "exports": ["createTrustedEndpointTestFetch"]
     },
     {
       "path": "src/host/apis/createTrustedExternalApiFetch.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/apis/requestTrustedExternalApi.ts"
-      ],
-      "exports": [
-        "createTrustedExternalApiFetch"
-      ]
+      "dependencies": ["src/host/apis/requestTrustedExternalApi.ts"],
+      "exports": ["createTrustedExternalApiFetch"]
     },
     {
       "path": "src/host/apis/requestTrustedExternalApi.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/apis/requestTrustedExternalApi.ts"
-      ],
+      "dependencies": ["src/host/apis/requestTrustedExternalApi.ts"],
       "exports": []
     },
     {
       "path": "src/host/apis/requestTrustedExternalApi.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "requestTrustedExternalApi"
-      ]
+      "exports": ["requestTrustedExternalApi"]
     },
     {
       "path": "src/host/apis/sanitizeExternalApiOperationTestResult.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/externalApiAuthoringContracts.ts"
-      ],
-      "exports": [
-        "sanitizeExternalApiOperationTestResult"
-      ]
+      "dependencies": ["src/externalApiAuthoringContracts.ts"],
+      "exports": ["sanitizeExternalApiOperationTestResult"]
     },
     {
       "path": "src/host/apis/studioExternalApiMutation.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/apis/studioExternalApiService.ts",
-        "src/index.ts"
-      ],
+      "dependencies": ["src/host/apis/studioExternalApiService.ts", "src/index.ts"],
       "exports": []
     },
     {
       "path": "src/host/apis/studioExternalApiService.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/apis/studioExternalApiService.ts",
-        "src/index.ts"
-      ],
+      "dependencies": ["src/host/apis/studioExternalApiService.ts", "src/index.ts"],
       "exports": []
     },
     {
@@ -1433,9 +1175,7 @@
         "src/removeExternalApi.ts",
         "src/upsertExternalApi.ts"
       ],
-      "exports": [
-        "StudioExternalApiService"
-      ]
+      "exports": ["StudioExternalApiService"]
     },
     {
       "path": "src/host/auth/projectAuthHealthService.ts",
@@ -1448,25 +1188,18 @@
         "src/projectAuthRuntimeDiagnostics.ts",
         "src/projectOAuthSetup.ts"
       ],
-      "exports": [
-        "ProjectAuthHealthResult",
-        "ProjectAuthHealthService"
-      ]
+      "exports": ["ProjectAuthHealthResult", "ProjectAuthHealthService"]
     },
     {
       "path": "src/host/auth/projectAuthRuntimeDiagnostics.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/auth/projectAuthRuntimeDiagnostics.ts"
-      ],
+      "dependencies": ["src/host/auth/projectAuthRuntimeDiagnostics.ts"],
       "exports": []
     },
     {
       "path": "src/host/auth/projectAuthRuntimeDiagnostics.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectAuthRuntimeDiagnostics.ts"
-      ],
+      "dependencies": ["src/projectAuthRuntimeDiagnostics.ts"],
       "exports": [
         "observeProjectAuthRuntimeDiagnostics",
         "ProjectAuthRedirectRuntime",
@@ -1483,11 +1216,7 @@
         "src/host/orchestrator/moduleManager.ts",
         "src/host/orchestrator/projectManager.ts"
       ],
-      "exports": [
-        "createStudioHost",
-        "CreateStudioHostOptions",
-        "StudioHost"
-      ]
+      "exports": ["createStudioHost", "CreateStudioHostOptions", "StudioHost"]
     },
     {
       "path": "src/host/deploy/createProjectDeployAccess.test.ts",
@@ -1506,41 +1235,31 @@
         "src/host/deploy/serializeProjectDeploySecret.ts",
         "src/projectDeployRuntimeInput.ts"
       ],
-      "exports": [
-        "createProjectDeployAccess"
-      ]
+      "exports": ["createProjectDeployAccess"]
     },
     {
       "path": "src/host/deploy/projectDeployExports.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/index.ts"
-      ],
+      "dependencies": ["src/host/index.ts"],
       "exports": []
     },
     {
       "path": "src/host/deploy/ProjectDeployMutationGuard.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/deploy/ProjectDeployMutationGuard.ts"
-      ],
+      "dependencies": ["src/host/deploy/ProjectDeployMutationGuard.ts"],
       "exports": []
     },
     {
       "path": "src/host/deploy/ProjectDeployMutationGuard.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ProjectDeployMutationGuard"
-      ]
+      "exports": ["ProjectDeployMutationGuard"]
     },
     {
       "path": "src/host/deploy/ProjectDeploySecretStore.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ProjectDeploySecretStore"
-      ]
+      "exports": ["ProjectDeploySecretStore"]
     },
     {
       "path": "src/host/deploy/ProjectDeployService.test.ts",
@@ -1567,18 +1286,13 @@
         "src/projectDeployReleaseInspectionResult.ts",
         "src/projectDeployRuntimeInput.ts"
       ],
-      "exports": [
-        "ProjectDeployService",
-        "ProjectDeployServiceOptions"
-      ]
+      "exports": ["ProjectDeployService", "ProjectDeployServiceOptions"]
     },
     {
       "path": "src/host/deploy/serializeProjectDeploySecret.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "serializeProjectDeploySecret"
-      ]
+      "exports": ["serializeProjectDeploySecret"]
     },
     {
       "path": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
@@ -1671,17 +1385,12 @@
         "src/host/orchestrator/projectManager.ts",
         "src/host/secrets/projectSecretService.ts"
       ],
-      "exports": [
-        "registerProjectApiRoutes"
-      ]
+      "exports": ["registerProjectApiRoutes"]
     },
     {
       "path": "src/host/http/authRoutes.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/http/authRoutes.ts",
-        "src/host/orchestrator/projectManager.ts"
-      ],
+      "dependencies": ["src/host/http/authRoutes.ts", "src/host/orchestrator/projectManager.ts"],
       "exports": []
     },
     {
@@ -1692,9 +1401,7 @@
         "src/host/orchestrator/projectManager.ts",
         "src/host/secrets/projectSecretService.ts"
       ],
-      "exports": [
-        "registerProjectAuthRoutes"
-      ]
+      "exports": ["registerProjectAuthRoutes"]
     },
     {
       "path": "src/host/http/deployRoutes.ts",
@@ -1704,9 +1411,7 @@
         "src/host/orchestrator/projectManager.ts",
         "src/projectDeployRuntimeInput.ts"
       ],
-      "exports": [
-        "registerProjectDeployRoutes"
-      ]
+      "exports": ["registerProjectDeployRoutes"]
     },
     {
       "path": "src/host/http/mediaRoutes.ts",
@@ -1716,9 +1421,7 @@
         "src/host/media/projectMediaService.ts",
         "src/host/orchestrator/projectManager.ts"
       ],
-      "exports": [
-        "registerProjectMediaRoutes"
-      ]
+      "exports": ["registerProjectMediaRoutes"]
     },
     {
       "path": "src/host/http/moduleRoutes.test.ts",
@@ -1733,46 +1436,32 @@
     {
       "path": "src/host/http/moduleRoutes.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/moduleManager.ts"
-      ],
-      "exports": [
-        "registerProjectModuleRoutes"
-      ]
+      "dependencies": ["src/host/orchestrator/moduleManager.ts"],
+      "exports": ["registerProjectModuleRoutes"]
     },
     {
       "path": "src/host/http/projectRuntimeRoutes.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/http/projectRuntimeRoutes.ts"
-      ],
+      "dependencies": ["src/host/http/projectRuntimeRoutes.ts"],
       "exports": []
     },
     {
       "path": "src/host/http/projectRuntimeRoutes.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/projectManager.ts"
-      ],
-      "exports": [
-        "registerProjectRuntimeRoutes"
-      ]
+      "dependencies": ["src/host/orchestrator/projectManager.ts"],
+      "exports": ["registerProjectRuntimeRoutes"]
     },
     {
       "path": "src/host/http/resolveStandaloneStudioHostOptions.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/http/resolveStandaloneStudioHostOptions.ts"
-      ],
+      "dependencies": ["src/host/http/resolveStandaloneStudioHostOptions.ts"],
       "exports": []
     },
     {
       "path": "src/host/http/resolveStandaloneStudioHostOptions.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "resolveStandaloneStudioHostOptions"
-      ]
+      "exports": ["resolveStandaloneStudioHostOptions"]
     },
     {
       "path": "src/host/http/secretRoutes.ts",
@@ -1781,17 +1470,13 @@
         "src/host/orchestrator/projectManager.ts",
         "src/host/secrets/projectSecretService.ts"
       ],
-      "exports": [
-        "registerProjectSecretRoutes"
-      ]
+      "exports": ["registerProjectSecretRoutes"]
     },
     {
       "path": "src/host/http/security.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "isOriginAllowed"
-      ]
+      "exports": ["isOriginAllowed"]
     },
     {
       "path": "src/host/http/server.ts",
@@ -1813,11 +1498,7 @@
         "src/host/utils/workspaceRoot.ts",
         "src/projectIdentity.ts"
       ],
-      "exports": [
-        "createStudioHostServer",
-        "startStudioHostServer",
-        "StartStudioHostServerOptions"
-      ]
+      "exports": ["createStudioHostServer", "startStudioHostServer", "StartStudioHostServerOptions"]
     },
     {
       "path": "src/host/http/serverWithSecrets.ts",
@@ -1832,9 +1513,7 @@
         "src/host/orchestrator/projectManager.ts",
         "src/host/utils/workspaceRoot.ts"
       ],
-      "exports": [
-        "startStudioHostServerWithSecrets"
-      ]
+      "exports": ["startStudioHostServerWithSecrets"]
     },
     {
       "path": "src/host/http/standalone.ts",
@@ -1911,9 +1590,7 @@
     {
       "path": "src/host/installedPackageProvenance.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/installedPackageProvenance.ts"
-      ],
+      "dependencies": ["src/host/installedPackageProvenance.ts"],
       "exports": []
     },
     {
@@ -1930,9 +1607,7 @@
     {
       "path": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/layout/auth/resolveAuthLayoutPlan.ts"
-      ],
+      "dependencies": ["src/host/layout/auth/resolveAuthLayoutPlan.ts"],
       "exports": []
     },
     {
@@ -1952,35 +1627,25 @@
     {
       "path": "src/host/layout/authRootBootstrap.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/layout/layoutGenerator.ts"
-      ],
+      "dependencies": ["src/host/layout/layoutGenerator.ts"],
       "exports": []
     },
     {
       "path": "src/host/layout/generatedImportComposer.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/layout/generatedImportComposer.ts"
-      ],
+      "dependencies": ["src/host/layout/generatedImportComposer.ts"],
       "exports": []
     },
     {
       "path": "src/host/layout/generatedImportComposer.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "composeGeneratedImports",
-        "GeneratedImportInput",
-        "GeneratedImportRequirement"
-      ]
+      "exports": ["composeGeneratedImports", "GeneratedImportInput", "GeneratedImportRequirement"]
     },
     {
       "path": "src/host/layout/layoutGenerator.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/layout/layoutGenerator.ts"
-      ],
+      "dependencies": ["src/host/layout/layoutGenerator.ts"],
       "exports": []
     },
     {
@@ -1997,18 +1662,12 @@
         "src/index.ts",
         "src/studioAdminRouteModel.ts"
       ],
-      "exports": [
-        "GeneratedAppFileGenerationOptions",
-        "GeneratedAppFileGenerator",
-        "GeneratedFile"
-      ]
+      "exports": ["GeneratedAppFileGenerationOptions", "GeneratedAppFileGenerator", "GeneratedFile"]
     },
     {
       "path": "src/host/layout/navigator/createNavigatorGenerationBindings.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/layout/navigator/createNavigatorGenerationBindings.ts"
-      ],
+      "dependencies": ["src/host/layout/navigator/createNavigatorGenerationBindings.ts"],
       "exports": []
     },
     {
@@ -2018,49 +1677,36 @@
         "src/host/layout/layoutGenerator.ts",
         "src/host/layout/utils/escapeStringLiteral.ts"
       ],
-      "exports": [
-        "createNavigatorGenerationBindings"
-      ]
+      "exports": ["createNavigatorGenerationBindings"]
     },
     {
       "path": "src/host/layout/navigator/generateNavigatorLayoutFiles.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
-      ],
+      "dependencies": ["src/host/layout/navigator/generateNavigatorLayoutFiles.ts"],
       "exports": []
     },
     {
       "path": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "generateNavigatorLayoutFiles",
-        "NavigatorOwnedLayoutFile"
-      ]
+      "exports": ["generateNavigatorLayoutFiles", "NavigatorOwnedLayoutFile"]
     },
     {
       "path": "src/host/layout/templates/auth/adapter.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/layout/templates/auth/adapter.ts"
-      ],
+      "dependencies": ["src/host/layout/templates/auth/adapter.ts"],
       "exports": []
     },
     {
       "path": "src/host/layout/templates/auth/adapter.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "getAuthAdapterTs"
-      ]
+      "exports": ["getAuthAdapterTs"]
     },
     {
       "path": "src/host/layout/templates/auth/callback.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/layout/templates/auth/callback.ts"
-      ],
+      "dependencies": ["src/host/layout/templates/auth/callback.ts"],
       "exports": []
     },
     {
@@ -2070,17 +1716,13 @@
         "src/host/layout/templates/utils/routes.ts",
         "src/host/layout/utils/escapeStringLiteral.ts"
       ],
-      "exports": [
-        "getAuthOAuthCallbackTsx"
-      ]
+      "exports": ["getAuthOAuthCallbackTsx"]
     },
     {
       "path": "src/host/layout/templates/auth/form.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "getAuthFormTs"
-      ]
+      "exports": ["getAuthFormTs"]
     },
     {
       "path": "src/host/layout/templates/auth/generatedAuthLintRegression.test.ts",
@@ -2098,9 +1740,7 @@
         "src/host/layout/templates/utils/routes.ts",
         "src/host/layout/utils/escapeStringLiteral.ts"
       ],
-      "exports": [
-        "getAuthNavigationTs"
-      ]
+      "exports": ["getAuthNavigationTs"]
     },
     {
       "path": "src/host/layout/templates/auth/oauth.test.ts",
@@ -2119,27 +1759,19 @@
         "src/host/layout/auth/resolveAuthLayoutPlan.ts",
         "src/host/layout/utils/escapeStringLiteral.ts"
       ],
-      "exports": [
-        "getAuthOAuthRuntimeTs"
-      ]
+      "exports": ["getAuthOAuthRuntimeTs"]
     },
     {
       "path": "src/host/layout/templates/auth/oauthCompletion.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/layout/utils/escapeStringLiteral.ts"
-      ],
-      "exports": [
-        "getAuthOAuthCompletionTs"
-      ]
+      "dependencies": ["src/host/layout/utils/escapeStringLiteral.ts"],
+      "exports": ["getAuthOAuthCompletionTs"]
     },
     {
       "path": "src/host/layout/templates/auth/oauthState.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "getAuthOAuthStateTs"
-      ]
+      "exports": ["getAuthOAuthStateTs"]
     },
     {
       "path": "src/host/layout/templates/auth/screen.test.ts",
@@ -2159,10 +1791,7 @@
         "src/host/layout/templates/utils/strings.ts",
         "src/host/layout/utils/escapeStringLiteral.ts"
       ],
-      "exports": [
-        "getAuthScreenRuntimeTsx",
-        "getAuthScreenTsx"
-      ]
+      "exports": ["getAuthScreenRuntimeTsx", "getAuthScreenTsx"]
     },
     {
       "path": "src/host/layout/templates/auth/screenController.ts",
@@ -2172,25 +1801,19 @@
         "src/host/layout/templates/utils/routes.ts",
         "src/host/layout/utils/escapeStringLiteral.ts"
       ],
-      "exports": [
-        "getAuthScreenControllerTs"
-      ]
+      "exports": ["getAuthScreenControllerTs"]
     },
     {
       "path": "src/host/layout/templates/auth/session.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "getAuthSessionTs"
-      ]
+      "exports": ["getAuthSessionTs"]
     },
     {
       "path": "src/host/layout/templates/auth/signOut.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "getSignOutScreenTsx"
-      ]
+      "exports": ["getSignOutScreenTsx"]
     },
     {
       "path": "src/host/layout/templates/index.ts",
@@ -2219,40 +1842,25 @@
     {
       "path": "src/host/layout/templates/redirect.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/layout/utils/escapeStringLiteral.ts"
-      ],
-      "exports": [
-        "getIndexRedirectRouteTsx"
-      ]
+      "dependencies": ["src/host/layout/utils/escapeStringLiteral.ts"],
+      "exports": ["getIndexRedirectRouteTsx"]
     },
     {
       "path": "src/host/layout/templates/rootLayout.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/layout/templates/rootLayout.ts"
-      ],
+      "dependencies": ["src/host/layout/templates/rootLayout.ts"],
       "exports": []
     },
     {
       "path": "src/host/layout/templates/rootLayout.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/layout/generatedImportComposer.ts",
-        "src/host/modules/layout.ts"
-      ],
-      "exports": [
-        "getRootLayoutImportRequirements",
-        "getRootLayoutTsx",
-        "RootNavigationContent"
-      ]
+      "dependencies": ["src/host/layout/generatedImportComposer.ts", "src/host/modules/layout.ts"],
+      "exports": ["getRootLayoutImportRequirements", "getRootLayoutTsx", "RootNavigationContent"]
     },
     {
       "path": "src/host/layout/templates/screen.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/layout/templates/screen.ts"
-      ],
+      "dependencies": ["src/host/layout/templates/screen.ts"],
       "exports": []
     },
     {
@@ -2262,51 +1870,37 @@
         "src/host/layout/templates/utils/strings.ts",
         "src/host/layout/utils/escapeStringLiteral.ts"
       ],
-      "exports": [
-        "getScreenTsx"
-      ]
+      "exports": ["getScreenTsx"]
     },
     {
       "path": "src/host/layout/templates/utils/routes.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "routeNameToGroupedHref",
-        "routeNameToHref"
-      ]
+      "exports": ["routeNameToGroupedHref", "routeNameToHref"]
     },
     {
       "path": "src/host/layout/templates/utils/strings.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "toSafeComponentName"
-      ]
+      "exports": ["toSafeComponentName"]
     },
     {
       "path": "src/host/layout/utils/escapeStringLiteral.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "escapeStringLiteral"
-      ]
+      "exports": ["escapeStringLiteral"]
     },
     {
       "path": "src/host/manifestSystem/auth/index.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "SYSTEM_TEMPLATE_AUTH_GLOBAL_DEFAULT"
-      ]
+      "exports": ["SYSTEM_TEMPLATE_AUTH_GLOBAL_DEFAULT"]
     },
     {
       "path": "src/host/manifestSystem/auth/shared/global.auth.system.tpl.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "applyGlobalAuthSystemTemplate",
-        "supportsGlobalAuthSystemTemplate"
-      ]
+      "exports": ["applyGlobalAuthSystemTemplate", "supportsGlobalAuthSystemTemplate"]
     },
     {
       "path": "src/host/manifestSystem/auth/shared/index.ts",
@@ -2315,9 +1909,7 @@
         "src/host/manifestSystem/auth/shared/global.auth.system.tpl.ts",
         "src/host/manifestSystem/types.ts"
       ],
-      "exports": [
-        "SYSTEM_TEMPLATE_AUTH_GLOBAL_DEFAULT"
-      ]
+      "exports": ["SYSTEM_TEMPLATE_AUTH_GLOBAL_DEFAULT"]
     },
     {
       "path": "src/host/manifestSystem/index.ts",
@@ -2337,40 +1929,30 @@
       "path": "src/host/manifestSystem/types.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ManifestSystemTemplate"
-      ]
+      "exports": ["ManifestSystemTemplate"]
     },
     {
       "path": "src/host/media/projectAuthoringAssetWriter.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "writeProjectAuthoringAsset"
-      ]
+      "exports": ["writeProjectAuthoringAsset"]
     },
     {
       "path": "src/host/media/projectBundledMediaRegistry.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/media/projectBundledMediaRegistry.ts"
-      ],
+      "dependencies": ["src/host/media/projectBundledMediaRegistry.ts"],
       "exports": []
     },
     {
       "path": "src/host/media/projectBundledMediaRegistry.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "syncProjectBundledMediaRegistry"
-      ]
+      "exports": ["syncProjectBundledMediaRegistry"]
     },
     {
       "path": "src/host/media/projectBundledMediaService.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/media/projectBundledMediaService.ts"
-      ],
+      "dependencies": ["src/host/media/projectBundledMediaService.ts"],
       "exports": []
     },
     {
@@ -2413,37 +1995,24 @@
         "src/host/media/projectMediaStorage.ts",
         "src/host/orchestrator/projectManager.ts"
       ],
-      "exports": [
-        "createAuthoringMediaPath",
-        "ProjectMediaIngestInput",
-        "ProjectMediaService"
-      ]
+      "exports": ["createAuthoringMediaPath", "ProjectMediaIngestInput", "ProjectMediaService"]
     },
     {
       "path": "src/host/media/projectMediaStorage.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/projectManager.ts"
-      ],
-      "exports": [
-        "ProjectMediaStorageContext",
-        "resolveProjectMediaStorage"
-      ]
+      "dependencies": ["src/host/orchestrator/projectManager.ts"],
+      "exports": ["ProjectMediaStorageContext", "resolveProjectMediaStorage"]
     },
     {
       "path": "src/host/media/removeProjectAuthoringAsset.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "removeProjectAuthoringAsset"
-      ]
+      "exports": ["removeProjectAuthoringAsset"]
     },
     {
       "path": "src/host/modules/adminRuntime.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/modules/adminRuntime.ts"
-      ],
+      "dependencies": ["src/host/modules/adminRuntime.ts"],
       "exports": []
     },
     {
@@ -2465,19 +2034,13 @@
     {
       "path": "src/host/modules/catalog.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/modules/adminRuntime.ts",
-        "src/host/modules/catalog.ts"
-      ],
+      "dependencies": ["src/host/modules/adminRuntime.ts", "src/host/modules/catalog.ts"],
       "exports": []
     },
     {
       "path": "src/host/modules/catalog.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/modules/layout.ts",
-        "src/moduleAdminContracts.ts"
-      ],
+      "dependencies": ["src/host/modules/layout.ts", "src/moduleAdminContracts.ts"],
       "exports": [
         "getHostModule",
         "HostModuleAdminContribution",
@@ -2490,17 +2053,13 @@
       "path": "src/host/modules/layout.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "LayoutMutation"
-      ]
+      "exports": ["LayoutMutation"]
     },
     {
       "path": "src/host/modules/runtime/LocalFsTargetAdapter.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "LocalFsTargetAdapter"
-      ]
+      "exports": ["LocalFsTargetAdapter"]
     },
     {
       "path": "src/host/oauthFixtureConsumer.smoke.test.ts",
@@ -2515,10 +2074,7 @@
     {
       "path": "src/host/orchestrator/androidRunTemplate.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/scaffolder.ts",
-        "src/host/orchestrator/templates.ts"
-      ],
+      "dependencies": ["src/host/orchestrator/scaffolder.ts", "src/host/orchestrator/templates.ts"],
       "exports": []
     },
     {
@@ -2533,12 +2089,8 @@
     {
       "path": "src/host/orchestrator/createHostModuleOrchestrator.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/modules/catalog.ts"
-      ],
-      "exports": [
-        "createHostModuleOrchestrator"
-      ]
+      "dependencies": ["src/host/modules/catalog.ts"],
+      "exports": ["createHostModuleOrchestrator"]
     },
     {
       "path": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts",
@@ -2547,16 +2099,12 @@
         "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
         "src/host/orchestrator/createHostModuleOrchestrator.ts"
       ],
-      "exports": [
-        "createStudioPendingModuleLifecyclePort"
-      ]
+      "exports": ["createStudioPendingModuleLifecyclePort"]
     },
     {
       "path": "src/host/orchestrator/generatedAppFiles.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/generatedAppFiles.ts"
-      ],
+      "dependencies": ["src/host/orchestrator/generatedAppFiles.ts"],
       "exports": []
     },
     {
@@ -2575,10 +2123,7 @@
     {
       "path": "src/host/orchestrator/generatedDependencyContract.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/scaffolder.ts",
-        "src/host/orchestrator/templates.ts"
-      ],
+      "dependencies": ["src/host/orchestrator/scaffolder.ts", "src/host/orchestrator/templates.ts"],
       "exports": []
     },
     {
@@ -2593,18 +2138,14 @@
     {
       "path": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
-      ],
+      "dependencies": ["src/host/orchestrator/GeneratedRouteFileOwnership.ts"],
       "exports": []
     },
     {
       "path": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "GeneratedRouteFileOwnership"
-      ]
+      "exports": ["GeneratedRouteFileOwnership"]
     },
     {
       "path": "src/host/orchestrator/moduleManager.ts",
@@ -2620,10 +2161,7 @@
         "src/manifestState.ts",
         "src/moduleAdminContracts.ts"
       ],
-      "exports": [
-        "HostModuleState",
-        "ModuleManager"
-      ]
+      "exports": ["HostModuleState", "ModuleManager"]
     },
     {
       "path": "src/host/orchestrator/projectCreationAssets.test.ts",
@@ -2649,10 +2187,7 @@
       "path": "src/host/orchestrator/projectCreationSource.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ProjectCreationAsset",
-        "ProjectCreationSource"
-      ]
+      "exports": ["ProjectCreationAsset", "ProjectCreationSource"]
     },
     {
       "path": "src/host/orchestrator/projectManager.ts",
@@ -2678,9 +2213,7 @@
         "src/manifestSync.ts",
         "src/projectIdentity.ts"
       ],
-      "exports": [
-        "ProjectManager"
-      ]
+      "exports": ["ProjectManager"]
     },
     {
       "path": "src/host/orchestrator/projectManagerCurrentState.test.ts",
@@ -2706,18 +2239,12 @@
       "path": "src/host/orchestrator/projectPaths.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "assertProjectId",
-        "getAppsRoot",
-        "getProjectPath"
-      ]
+      "exports": ["assertProjectId", "getAppsRoot", "getProjectPath"]
     },
     {
       "path": "src/host/orchestrator/projectRepositoryConnection.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/projectManager.ts"
-      ],
+      "dependencies": ["src/host/orchestrator/projectManager.ts"],
       "exports": []
     },
     {
@@ -2728,27 +2255,19 @@
         "src/host/orchestrator/projectPaths.ts",
         "src/projectWorkspaceContracts.ts"
       ],
-      "exports": [
-        "ProjectManifestNotFoundError",
-        "ProjectStore",
-        "ProjectSummary"
-      ]
+      "exports": ["ProjectManifestNotFoundError", "ProjectStore", "ProjectSummary"]
     },
     {
       "path": "src/host/orchestrator/projectStoreSummary.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/projectStore.ts"
-      ],
+      "dependencies": ["src/host/orchestrator/projectStore.ts"],
       "exports": []
     },
     {
       "path": "src/host/orchestrator/projectTargets.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "createDefaultAppDeployManifest"
-      ]
+      "exports": ["createDefaultAppDeployManifest"]
     },
     {
       "path": "src/host/orchestrator/reconcileProjectPackageRootAsync.test.ts",
@@ -2763,23 +2282,14 @@
     {
       "path": "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/syncGeneratedPackagePolicyAsync.ts"
-      ],
-      "exports": [
-        "reconcileProjectPackageRootAsync"
-      ]
+      "dependencies": ["src/host/orchestrator/syncGeneratedPackagePolicyAsync.ts"],
+      "exports": ["reconcileProjectPackageRootAsync"]
     },
     {
       "path": "src/host/orchestrator/resolveMutations.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/modules/catalog.ts",
-        "src/host/modules/layout.ts"
-      ],
-      "exports": [
-        "resolveModuleLayoutMutations"
-      ]
+      "dependencies": ["src/host/modules/catalog.ts", "src/host/modules/layout.ts"],
+      "exports": ["resolveModuleLayoutMutations"]
     },
     {
       "path": "src/host/orchestrator/scaffolder.ts",
@@ -2791,32 +2301,24 @@
         "src/host/orchestrator/templates.ts",
         "src/host/zoraExtensions/index.ts"
       ],
-      "exports": [
-        "ProjectScaffolder"
-      ]
+      "exports": ["ProjectScaffolder"]
     },
     {
       "path": "src/host/orchestrator/semverRange.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/semverRange.ts"
-      ],
+      "dependencies": ["src/host/orchestrator/semverRange.ts"],
       "exports": []
     },
     {
       "path": "src/host/orchestrator/semverRange.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "satisfiesCaretSemverRange"
-      ]
+      "exports": ["satisfiesCaretSemverRange"]
     },
     {
       "path": "src/host/orchestrator/studioInfraUp.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/studioInfraUp.ts"
-      ],
+      "dependencies": ["src/host/orchestrator/studioInfraUp.ts"],
       "exports": []
     },
     {
@@ -2826,10 +2328,7 @@
         "src/host/orchestrator/projectManager.ts",
         "src/host/secrets/trustedOAuthInfraEnvironment.ts"
       ],
-      "exports": [
-        "StudioInfraUpResult",
-        "upProjectInfrastructure"
-      ]
+      "exports": ["StudioInfraUpResult", "upProjectInfrastructure"]
     },
     {
       "path": "src/host/orchestrator/syncGeneratedPackagePolicyAsync.ts",
@@ -2837,16 +2336,12 @@
       "dependencies": [
         "src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts"
       ],
-      "exports": [
-        "syncGeneratedPackagePolicyAsync"
-      ]
+      "exports": ["syncGeneratedPackagePolicyAsync"]
     },
     {
       "path": "src/host/orchestrator/templates.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/templates.ts"
-      ],
+      "dependencies": ["src/host/orchestrator/templates.ts"],
       "exports": []
     },
     {
@@ -2888,18 +2383,12 @@
       "path": "src/host/secrets/bunSupabaseVaultClient.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "BunSupabaseVaultClient",
-        "createBunSupabaseVaultClient"
-      ]
+      "exports": ["BunSupabaseVaultClient", "createBunSupabaseVaultClient"]
     },
     {
       "path": "src/host/secrets/projectSecretService.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/authSettings.ts",
-        "src/host/secrets/projectSecretService.ts"
-      ],
+      "dependencies": ["src/authSettings.ts", "src/host/secrets/projectSecretService.ts"],
       "exports": []
     },
     {
@@ -2923,26 +2412,19 @@
     {
       "path": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/secrets/resolveProjectSecretDatabaseUrl.ts"
-      ],
+      "dependencies": ["src/host/secrets/resolveProjectSecretDatabaseUrl.ts"],
       "exports": []
     },
     {
       "path": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "resolveProjectSecretDatabaseUrl",
-        "ResolveProjectSecretDatabaseUrlInput"
-      ]
+      "exports": ["resolveProjectSecretDatabaseUrl", "ResolveProjectSecretDatabaseUrlInput"]
     },
     {
       "path": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/secrets/trustedOAuthInfraEnvironment.ts"
-      ],
+      "dependencies": ["src/host/secrets/trustedOAuthInfraEnvironment.ts"],
       "exports": []
     },
     {
@@ -2963,24 +2445,18 @@
       "path": "src/host/smoke/assertExpo57GeneratedCapabilityContractAsync.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "assertExpo57GeneratedCapabilityContractAsync"
-      ]
+      "exports": ["assertExpo57GeneratedCapabilityContractAsync"]
     },
     {
       "path": "src/host/smoke/assertExpo57GeneratedCapabilityNativePrebuildAsync.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "assertExpo57GeneratedCapabilityNativePrebuildAsync"
-      ]
+      "exports": ["assertExpo57GeneratedCapabilityNativePrebuildAsync"]
     },
     {
       "path": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"
-      ],
+      "dependencies": ["src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"],
       "exports": []
     },
     {
@@ -2990,17 +2466,13 @@
         "src/host/smoke/assertInstalledRegistryPackageAsync.ts",
         "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
       ],
-      "exports": [
-        "assertExpo57GeneratedCapabilityOwnerGraphAsync"
-      ]
+      "exports": ["assertExpo57GeneratedCapabilityOwnerGraphAsync"]
     },
     {
       "path": "src/host/smoke/assertExpo57StudioNativePrebuildAsync.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "assertExpo57StudioNativePrebuildAsync"
-      ]
+      "exports": ["assertExpo57StudioNativePrebuildAsync"]
     },
     {
       "path": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
@@ -3009,16 +2481,12 @@
         "src/host/smoke/assertInstalledRegistryPackageAsync.ts",
         "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
       ],
-      "exports": [
-        "assertExpo57StudioStandaloneContractAsync"
-      ]
+      "exports": ["assertExpo57StudioStandaloneContractAsync"]
     },
     {
       "path": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/assertInstalledRegistryPackageAsync.ts"
-      ],
+      "dependencies": ["src/host/smoke/assertInstalledRegistryPackageAsync.ts"],
       "exports": []
     },
     {
@@ -3028,77 +2496,55 @@
         "src/host/installedPackageProvenance.ts",
         "src/host/orchestrator/semverRange.ts"
       ],
-      "exports": [
-        "assertInstalledRegistryPackageAsync"
-      ]
+      "exports": ["assertInstalledRegistryPackageAsync"]
     },
     {
       "path": "src/host/smoke/assertNoBrowserErrors.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/assertNoBrowserErrors.ts"
-      ],
+      "dependencies": ["src/host/smoke/assertNoBrowserErrors.ts"],
       "exports": []
     },
     {
       "path": "src/host/smoke/assertNoBrowserErrors.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "assertNoBrowserErrors"
-      ]
+      "exports": ["assertNoBrowserErrors"]
     },
     {
       "path": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
-      ],
+      "dependencies": ["src/host/smoke/assertReactNativeOwnerGraphAsync.ts"],
       "exports": []
     },
     {
       "path": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "assertReactNativeOwnerGraphAsync"
-      ]
+      "exports": ["assertReactNativeOwnerGraphAsync"]
     },
     {
       "path": "src/host/smoke/assertStudioWebIconFontsAsync.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/ChromeNavigationSession.ts"
-      ],
-      "exports": [
-        "assertStudioWebIconFontsAsync"
-      ]
+      "dependencies": ["src/host/smoke/ChromeNavigationSession.ts"],
+      "exports": ["assertStudioWebIconFontsAsync"]
     },
     {
       "path": "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "AUTH5_NATIVE_OAUTH_SMOKE"
-      ]
+      "exports": ["AUTH5_NATIVE_OAUTH_SMOKE"]
     },
     {
       "path": "src/host/smoke/ChromeNavigationSession.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/getChromeNavigationIssue.ts"
-      ],
-      "exports": [
-        "ChromeNavigationSession"
-      ]
+      "dependencies": ["src/host/smoke/getChromeNavigationIssue.ts"],
+      "exports": ["ChromeNavigationSession"]
     },
     {
       "path": "src/host/smoke/createAdminSmokeBaseManifest.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "createAdminSmokeBaseManifest"
-      ]
+      "exports": ["createAdminSmokeBaseManifest"]
     },
     {
       "path": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
@@ -3120,10 +2566,7 @@
         "src/host/smoke/createSmokeProjectSource.ts",
         "src/host/smoke/prepareAuth5NativeOAuthSmokeWorkspace.ts"
       ],
-      "exports": [
-        "Auth5NativeOAuthSmokeFixture",
-        "createAuth5NativeOAuthSmokeFixture"
-      ]
+      "exports": ["Auth5NativeOAuthSmokeFixture", "createAuth5NativeOAuthSmokeFixture"]
     },
     {
       "path": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts",
@@ -3132,27 +2575,19 @@
         "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
         "src/host/smoke/createOAuthFixtureManifest.ts"
       ],
-      "exports": [
-        "createAuth5NativeOAuthSmokeManifest"
-      ]
+      "exports": ["createAuth5NativeOAuthSmokeManifest"]
     },
     {
       "path": "src/host/smoke/createExpo57CapabilityFixtureManifest.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/createExpo57CapabilityFixtureManifest.ts"
-      ],
+      "dependencies": ["src/host/smoke/createExpo57CapabilityFixtureManifest.ts"],
       "exports": []
     },
     {
       "path": "src/host/smoke/createExpo57CapabilityFixtureManifest.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/createOAuthFixtureManifest.ts"
-      ],
-      "exports": [
-        "createExpo57CapabilityFixtureManifest"
-      ]
+      "dependencies": ["src/host/smoke/createOAuthFixtureManifest.ts"],
+      "exports": ["createExpo57CapabilityFixtureManifest"]
     },
     {
       "path": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts",
@@ -3167,27 +2602,19 @@
       "path": "src/host/smoke/createExpo57NavigationFixtureManifest.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "createExpo57NavigationFixtureManifest"
-      ]
+      "exports": ["createExpo57NavigationFixtureManifest"]
     },
     {
       "path": "src/host/smoke/createExpo57ReaderFixtureManifest.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/createExpo57ReaderFixtureManifest.ts"
-      ],
+      "dependencies": ["src/host/smoke/createExpo57ReaderFixtureManifest.ts"],
       "exports": []
     },
     {
       "path": "src/host/smoke/createExpo57ReaderFixtureManifest.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/createOAuthFixtureManifest.ts"
-      ],
-      "exports": [
-        "createExpo57ReaderFixtureManifest"
-      ]
+      "dependencies": ["src/host/smoke/createOAuthFixtureManifest.ts"],
+      "exports": ["createExpo57ReaderFixtureManifest"]
     },
     {
       "path": "src/host/smoke/createExpo57StudioHostFixtureAsync.test.ts",
@@ -3201,56 +2628,38 @@
     {
       "path": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/templates.ts"
-      ],
-      "exports": [
-        "createExpo57StudioHostFixtureAsync"
-      ]
+      "dependencies": ["src/host/orchestrator/templates.ts"],
+      "exports": ["createExpo57StudioHostFixtureAsync"]
     },
     {
       "path": "src/host/smoke/createExpo57StudioStandaloneFixtureAsync.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "createExpo57StudioStandaloneFixtureAsync"
-      ]
+      "exports": ["createExpo57StudioStandaloneFixtureAsync"]
     },
     {
       "path": "src/host/smoke/createOAuthFixtureManifest.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/createSmokeProjectSource.ts"
-      ],
-      "exports": [
-        "createOAuthFixtureManifest"
-      ]
+      "dependencies": ["src/host/smoke/createSmokeProjectSource.ts"],
+      "exports": ["createOAuthFixtureManifest"]
     },
     {
       "path": "src/host/smoke/createSmokeProjectSource.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/projectCreationSource.ts"
-      ],
-      "exports": [
-        "createSmokeProjectSource"
-      ]
+      "dependencies": ["src/host/orchestrator/projectCreationSource.ts"],
+      "exports": ["createSmokeProjectSource"]
     },
     {
       "path": "src/host/smoke/createStaticExportServer.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/createStaticExportServer.ts"
-      ],
+      "dependencies": ["src/host/smoke/createStaticExportServer.ts"],
       "exports": []
     },
     {
       "path": "src/host/smoke/createStaticExportServer.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "createStaticExportServer"
-      ]
+      "exports": ["createStaticExportServer"]
     },
     {
       "path": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
@@ -3265,28 +2674,20 @@
     {
       "path": "src/host/smoke/generateExpoRouterTypesAsync.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/resolveAppOwnedExpoCliAsync.ts"
-      ],
-      "exports": [
-        "generateExpoRouterTypesAsync"
-      ]
+      "dependencies": ["src/host/smoke/resolveAppOwnedExpoCliAsync.ts"],
+      "exports": ["generateExpoRouterTypesAsync"]
     },
     {
       "path": "src/host/smoke/getChromeNavigationIssue.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/getChromeNavigationIssue.ts"
-      ],
+      "dependencies": ["src/host/smoke/getChromeNavigationIssue.ts"],
       "exports": []
     },
     {
       "path": "src/host/smoke/getChromeNavigationIssue.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "getChromeNavigationIssue"
-      ]
+      "exports": ["getChromeNavigationIssue"]
     },
     {
       "path": "src/host/smoke/nativeCapabilityEvidence/constants.ts",
@@ -3306,62 +2707,44 @@
     {
       "path": "src/host/smoke/nativeCapabilityEvidence/createGenerationDriverSource.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/nativeCapabilityEvidence/constants.ts"
-      ],
-      "exports": [
-        "createGenerationDriverSource"
-      ]
+      "dependencies": ["src/host/smoke/nativeCapabilityEvidence/constants.ts"],
+      "exports": ["createGenerationDriverSource"]
     },
     {
       "path": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceClientSource.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "createNativeEvidenceClientSource"
-      ]
+      "exports": ["createNativeEvidenceClientSource"]
     },
     {
       "path": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceControllerSource.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "createNativeEvidenceControllerSource"
-      ]
+      "exports": ["createNativeEvidenceControllerSource"]
     },
     {
       "path": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceRouteSource.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "createNativeEvidenceRouteSource"
-      ]
+      "exports": ["createNativeEvidenceRouteSource"]
     },
     {
       "path": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceScenariosSource.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "createNativeEvidenceScenariosSource"
-      ]
+      "exports": ["createNativeEvidenceScenariosSource"]
     },
     {
       "path": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceScreenSource.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "createNativeEvidenceScreenSource"
-      ]
+      "exports": ["createNativeEvidenceScreenSource"]
     },
     {
       "path": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/nativeCapabilityEvidence/constants.ts"
-      ],
-      "exports": [
-        "createNativeEvidenceServer"
-      ]
+      "dependencies": ["src/host/smoke/nativeCapabilityEvidence/constants.ts"],
+      "exports": ["createNativeEvidenceServer"]
     },
     {
       "path": "src/host/smoke/nativeCapabilityEvidence/nativeCapabilityEvidence.test.ts",
@@ -3394,9 +2777,7 @@
         "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
         "src/host/smoke/runAcceptanceCommandAsync.ts"
       ],
-      "exports": [
-        "prepareNativeCapabilityEvidenceAsync"
-      ]
+      "exports": ["prepareNativeCapabilityEvidenceAsync"]
     },
     {
       "path": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts",
@@ -3431,56 +2812,42 @@
       "path": "src/host/smoke/prepareAuth5NativeOAuthSmokeWorkspace.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "prepareAuth5NativeOAuthSmokeWorkspace"
-      ]
+      "exports": ["prepareAuth5NativeOAuthSmokeWorkspace"]
     },
     {
       "path": "src/host/smoke/reserveTcpPortAsync.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "reserveTcpPortAsync"
-      ]
+      "exports": ["reserveTcpPortAsync"]
     },
     {
       "path": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/resolveAppOwnedExpoCliAsync.ts"
-      ],
+      "dependencies": ["src/host/smoke/resolveAppOwnedExpoCliAsync.ts"],
       "exports": []
     },
     {
       "path": "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "resolveAppOwnedExpoCliAsync"
-      ]
+      "exports": ["resolveAppOwnedExpoCliAsync"]
     },
     {
       "path": "src/host/smoke/runAcceptanceCommandAsync.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "runAcceptanceCommandAsync"
-      ]
+      "exports": ["runAcceptanceCommandAsync"]
     },
     {
       "path": "src/host/smoke/runAuth5NativeOAuthSmoke.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"
-      ],
+      "dependencies": ["src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"],
       "exports": []
     },
     {
       "path": "src/host/smoke/runAuth5NativeOAuthSmokeInfra.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
-      ],
+      "dependencies": ["src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"],
       "exports": []
     },
     {
@@ -3494,9 +2861,7 @@
         "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
         "src/host/smoke/runAcceptanceCommandAsync.ts"
       ],
-      "exports": [
-        "runExpo57GeneratedAppAcceptanceAsync"
-      ]
+      "exports": ["runExpo57GeneratedAppAcceptanceAsync"]
     },
     {
       "path": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
@@ -3516,9 +2881,7 @@
         "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
         "src/host/smoke/runAcceptanceCommandAsync.ts"
       ],
-      "exports": [
-        "runExpo57GeneratedCapabilityAcceptanceAsync"
-      ]
+      "exports": ["runExpo57GeneratedCapabilityAcceptanceAsync"]
     },
     {
       "path": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
@@ -3555,9 +2918,7 @@
         "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts",
         "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
       ],
-      "exports": [
-        "runExpo57StudioStandaloneAcceptance"
-      ]
+      "exports": ["runExpo57StudioStandaloneAcceptance"]
     },
     {
       "path": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts",
@@ -3568,9 +2929,7 @@
         "src/host/smoke/ChromeNavigationSession.ts",
         "src/host/smoke/reserveTcpPortAsync.ts"
       ],
-      "exports": [
-        "runExpo57StudioStandaloneDevelopmentWebSmokeAsync"
-      ]
+      "exports": ["runExpo57StudioStandaloneDevelopmentWebSmokeAsync"]
     },
     {
       "path": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts",
@@ -3582,26 +2941,18 @@
         "src/host/smoke/createStaticExportServer.ts",
         "src/host/smoke/reserveTcpPortAsync.ts"
       ],
-      "exports": [
-        "runExpo57StudioStandaloneStaticWebSmokeAsync"
-      ]
+      "exports": ["runExpo57StudioStandaloneStaticWebSmokeAsync"]
     },
     {
       "path": "src/host/smoke/runPackedStudioHostAcceptance.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/smoke/runAcceptanceCommandAsync.ts"
-      ],
-      "exports": [
-        "runPackedStudioHostAcceptance"
-      ]
+      "dependencies": ["src/host/smoke/runAcceptanceCommandAsync.ts"],
+      "exports": ["runPackedStudioHostAcceptance"]
     },
     {
       "path": "src/host/studioInfra.e2e.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/projectManager.ts"
-      ],
+      "dependencies": ["src/host/orchestrator/projectManager.ts"],
       "exports": []
     },
     {
@@ -3613,9 +2964,7 @@
     {
       "path": "src/host/templates/catalog.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/templates/index.ts"
-      ],
+      "dependencies": ["src/host/templates/index.ts"],
       "exports": []
     },
     {
@@ -3636,18 +2985,13 @@
       "path": "src/host/utils/requirementsInference.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "inferScreenRequirementsFromUi",
-        "mergeScreenRequirements"
-      ]
+      "exports": ["inferScreenRequirementsFromUi", "mergeScreenRequirements"]
     },
     {
       "path": "src/host/utils/workspaceRoot.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "resolveWorkspaceRoot"
-      ]
+      "exports": ["resolveWorkspaceRoot"]
     },
     {
       "path": "src/host/zoraExtensions/index.ts",
@@ -3664,9 +3008,7 @@
     {
       "path": "src/index.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts"
-      ],
+      "dependencies": ["src/index.ts"],
       "exports": []
     },
     {
@@ -3833,27 +3175,19 @@
     {
       "path": "src/insertModalModel.public.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts",
-        "src/insertModalModel.ts"
-      ],
+      "dependencies": ["src/index.ts", "src/insertModalModel.ts"],
       "exports": []
     },
     {
       "path": "src/insertModalModel.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts",
-        "src/insertModalModel.ts"
-      ],
+      "dependencies": ["src/index.ts", "src/insertModalModel.ts"],
       "exports": []
     },
     {
       "path": "src/insertModalModel.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts"
-      ],
+      "dependencies": ["src/index.ts"],
       "exports": [
         "filterInsertCatalogEntries",
         "getPlacementHint",
@@ -3865,36 +3199,25 @@
     {
       "path": "src/manifestState.public.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts",
-        "src/manifestState.ts"
-      ],
+      "dependencies": ["src/index.ts", "src/manifestState.ts"],
       "exports": []
     },
     {
       "path": "src/manifestState.routes.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts",
-        "src/manifestState.ts"
-      ],
+      "dependencies": ["src/index.ts", "src/manifestState.ts"],
       "exports": []
     },
     {
       "path": "src/manifestState.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts",
-        "src/manifestState.ts"
-      ],
+      "dependencies": ["src/index.ts", "src/manifestState.ts"],
       "exports": []
     },
     {
       "path": "src/manifestState.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts"
-      ],
+      "dependencies": ["src/index.ts"],
       "exports": [
         "addStudioManifestScreen",
         "addStudioManifestTheme",
@@ -3957,29 +3280,19 @@
     {
       "path": "src/manifestSync.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts",
-        "src/manifestSync.ts"
-      ],
+      "dependencies": ["src/index.ts", "src/manifestSync.ts"],
       "exports": []
     },
     {
       "path": "src/manifestSync.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts"
-      ],
-      "exports": [
-        "createStudioManifestSignature",
-        "createStudioRuntimeSyncSignature"
-      ]
+      "dependencies": ["src/index.ts"],
+      "exports": ["createStudioManifestSignature", "createStudioRuntimeSyncSignature"]
     },
     {
       "path": "src/mediaAuthoringModel.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/mediaAuthoringModel.ts"
-      ],
+      "dependencies": ["src/mediaAuthoringModel.ts"],
       "exports": []
     },
     {
@@ -4019,26 +3332,19 @@
     {
       "path": "src/moduleAdmin.public.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts",
-        "src/root.ts"
-      ],
+      "dependencies": ["src/index.ts", "src/root.ts"],
       "exports": []
     },
     {
       "path": "src/moduleAdminApi.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/moduleAdminApi.ts"
-      ],
+      "dependencies": ["src/moduleAdminApi.ts"],
       "exports": []
     },
     {
       "path": "src/moduleAdminApi.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/moduleAdminContracts.ts"
-      ],
+      "dependencies": ["src/moduleAdminContracts.ts"],
       "exports": [
         "createProjectModuleAdminOperationApiPath",
         "createProjectModuleApiPath",
@@ -4068,18 +3374,13 @@
     {
       "path": "src/moduleAdminModel.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/moduleAdminContracts.ts",
-        "src/moduleAdminModel.ts"
-      ],
+      "dependencies": ["src/moduleAdminContracts.ts", "src/moduleAdminModel.ts"],
       "exports": []
     },
     {
       "path": "src/moduleAdminModel.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/moduleAdminContracts.ts"
-      ],
+      "dependencies": ["src/moduleAdminContracts.ts"],
       "exports": [
         "createStudioModuleAdminDraft",
         "parseStudioModuleAdminDraft",
@@ -4097,26 +3398,18 @@
       "path": "src/normalizeExternalApiId.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ExternalApiIdResult",
-        "normalizeExternalApiId"
-      ]
+      "exports": ["ExternalApiIdResult", "normalizeExternalApiId"]
     },
     {
       "path": "src/projectAuthApi.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectAuthApi.ts"
-      ],
+      "dependencies": ["src/projectAuthApi.ts"],
       "exports": []
     },
     {
       "path": "src/projectAuthApi.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectAuthHealth.ts",
-        "src/secretResponseGuard.ts"
-      ],
+      "dependencies": ["src/projectAuthHealth.ts", "src/secretResponseGuard.ts"],
       "exports": [
         "getProjectAuthHealth",
         "parseProjectAuthHealthResponse",
@@ -4127,18 +3420,13 @@
     {
       "path": "src/projectAuthHealth.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectAuthHealth.ts"
-      ],
+      "dependencies": ["src/projectAuthHealth.ts"],
       "exports": []
     },
     {
       "path": "src/projectAuthHealth.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/authSettings.ts",
-        "src/projectOAuthSetup.ts"
-      ],
+      "dependencies": ["src/authSettings.ts", "src/projectOAuthSetup.ts"],
       "exports": [
         "analyzeProjectAuthHealth",
         "ProjectAuthDiagnostic",
@@ -4152,22 +3440,14 @@
     {
       "path": "src/projectAuthRuntimeDiagnostics.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectAuthHealth.ts",
-        "src/projectAuthRuntimeDiagnostics.ts"
-      ],
+      "dependencies": ["src/projectAuthHealth.ts", "src/projectAuthRuntimeDiagnostics.ts"],
       "exports": []
     },
     {
       "path": "src/projectAuthRuntimeDiagnostics.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectAuthHealth.ts"
-      ],
-      "exports": [
-        "applyProjectAuthRuntimeDiagnostics",
-        "ProjectAuthRuntimeDiagnostics"
-      ]
+      "dependencies": ["src/projectAuthHealth.ts"],
+      "exports": ["applyProjectAuthRuntimeDiagnostics", "ProjectAuthRuntimeDiagnostics"]
     },
     {
       "path": "src/projectDeployApi.test.ts",
@@ -4215,25 +3495,19 @@
       "path": "src/projectDeployApiError.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ProjectDeployApiError"
-      ]
+      "exports": ["ProjectDeployApiError"]
     },
     {
       "path": "src/projectDeployAssetPicker.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectDeployAssetPicker.ts"
-      ],
+      "dependencies": ["src/projectDeployAssetPicker.ts"],
       "exports": []
     },
     {
       "path": "src/projectDeployAssetPicker.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "pickProjectDeployImage"
-      ]
+      "exports": ["pickProjectDeployImage"]
     },
     {
       "path": "src/projectDeployClient.ts",
@@ -4247,73 +3521,54 @@
         "src/projectDeployRuntimeInput.ts",
         "src/secretResponseGuard.ts"
       ],
-      "exports": [
-        "ProjectDeployClient"
-      ]
+      "exports": ["ProjectDeployClient"]
     },
     {
       "path": "src/projectDeployMonetizationInspectionResult.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ProjectDeployMonetizationInspectionResult"
-      ]
+      "exports": ["ProjectDeployMonetizationInspectionResult"]
     },
     {
       "path": "src/projectDeployReleaseExecutionResponse.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ProjectDeployReleaseExecutionResponse"
-      ]
+      "exports": ["ProjectDeployReleaseExecutionResponse"]
     },
     {
       "path": "src/projectDeployReleaseHistoryRecord.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ProjectDeployReleaseHistoryRecord"
-      ]
+      "exports": ["ProjectDeployReleaseHistoryRecord"]
     },
     {
       "path": "src/projectDeployReleaseInspectionResult.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ProjectDeployReleaseInspectionResult"
-      ]
+      "exports": ["ProjectDeployReleaseInspectionResult"]
     },
     {
       "path": "src/projectDeployRequest.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ProjectDeployRequest"
-      ]
+      "exports": ["ProjectDeployRequest"]
     },
     {
       "path": "src/projectDeployRuntimeInput.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ProjectDeployRuntimeInput"
-      ]
+      "exports": ["ProjectDeployRuntimeInput"]
     },
     {
       "path": "src/projectIdentity.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectIdentity.ts",
-        "src/projectWorkspaceContracts.ts"
-      ],
+      "dependencies": ["src/projectIdentity.ts", "src/projectWorkspaceContracts.ts"],
       "exports": []
     },
     {
       "path": "src/projectIdentity.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectWorkspaceContracts.ts"
-      ],
+      "dependencies": ["src/projectWorkspaceContracts.ts"],
       "exports": [
         "deriveProjectId",
         "ProjectCreationValidationError",
@@ -4323,9 +3578,7 @@
     {
       "path": "src/projectOAuthSetup.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectOAuthSetup.ts"
-      ],
+      "dependencies": ["src/projectOAuthSetup.ts"],
       "exports": []
     },
     {
@@ -4341,18 +3594,13 @@
     {
       "path": "src/projectSecretApi.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectSecretApi.ts"
-      ],
+      "dependencies": ["src/projectSecretApi.ts"],
       "exports": []
     },
     {
       "path": "src/projectSecretApi.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectSecretUsage.ts",
-        "src/secretResponseGuard.ts"
-      ],
+      "dependencies": ["src/projectSecretUsage.ts", "src/secretResponseGuard.ts"],
       "exports": [
         "configureProjectOAuthProvider",
         "ConfigureProjectOAuthProviderInput",
@@ -4376,9 +3624,7 @@
     {
       "path": "src/projectSecretUsage.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectSecretUsage.ts"
-      ],
+      "dependencies": ["src/projectSecretUsage.ts"],
       "exports": []
     },
     {
@@ -4413,9 +3659,7 @@
     {
       "path": "src/propertiesAuthoringModel.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts"
-      ],
+      "dependencies": ["src/index.ts"],
       "exports": []
     },
     {
@@ -4439,10 +3683,7 @@
       "path": "src/removeExternalApi.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ExternalApiRemovalResult",
-        "removeExternalApi"
-      ]
+      "exports": ["ExternalApiRemovalResult", "removeExternalApi"]
     },
     {
       "path": "src/root.test.ts",
@@ -4628,25 +3869,19 @@
     {
       "path": "src/routeUtils.public.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/routeUtils.ts"
-      ],
+      "dependencies": ["src/routeUtils.ts"],
       "exports": []
     },
     {
       "path": "src/routeUtils.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/routeUtils.ts"
-      ],
+      "dependencies": ["src/routeUtils.ts"],
       "exports": []
     },
     {
       "path": "src/routeUtils.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/manifestState.ts"
-      ],
+      "dependencies": ["src/manifestState.ts"],
       "exports": [
         "collectScreenRouteEntries",
         "findNavigatorAtPath",
@@ -4672,18 +3907,13 @@
       "path": "src/runtime/actionSuppression.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "createStudioActionSuppressionConfig",
-        "shouldSuppressStudioRuntimeActions"
-      ]
+      "exports": ["createStudioActionSuppressionConfig", "shouldSuppressStudioRuntimeActions"]
     },
     {
       "path": "src/runtime/appExtensionRegistry.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "STUDIO_ZORA_PLUGIN_CATALOG"
-      ]
+      "exports": ["STUDIO_ZORA_PLUGIN_CATALOG"]
     },
     {
       "path": "src/runtime/index.ts",
@@ -4720,9 +3950,7 @@
     {
       "path": "src/runtime/indicatorRefreshCoordinator.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/runtime/indicatorRefreshCoordinator.ts"
-      ],
+      "dependencies": ["src/runtime/indicatorRefreshCoordinator.ts"],
       "exports": []
     },
     {
@@ -4738,9 +3966,7 @@
     {
       "path": "src/runtime/indicatorSettleCoordinator.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/runtime/indicatorSettleCoordinator.ts"
-      ],
+      "dependencies": ["src/runtime/indicatorSettleCoordinator.ts"],
       "exports": []
     },
     {
@@ -4756,22 +3982,14 @@
     {
       "path": "src/runtime/interactionPolicy.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/runtime/actionSuppression.ts",
-        "src/runtime/interactionPolicyCore.ts"
-      ],
+      "dependencies": ["src/runtime/actionSuppression.ts", "src/runtime/interactionPolicyCore.ts"],
       "exports": []
     },
     {
       "path": "src/runtime/interactionPolicy.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/runtime/interactionPolicyCore.ts"
-      ],
-      "exports": [
-        "createStudioInteractionPolicyResolver",
-        "StudioInteractionPolicyResolverArgs"
-      ]
+      "dependencies": ["src/runtime/interactionPolicyCore.ts"],
+      "exports": ["createStudioInteractionPolicyResolver", "StudioInteractionPolicyResolverArgs"]
     },
     {
       "path": "src/runtime/interactionPolicyCore.ts",
@@ -4792,18 +4010,13 @@
       "path": "src/runtime/registry.tsx",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ComponentRegistry",
-        "STUDIO_ZORA_PLUGIN_CATALOG"
-      ]
+      "exports": ["ComponentRegistry", "STUDIO_ZORA_PLUGIN_CATALOG"]
     },
     {
       "path": "src/runtime/runtimeActions.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "executeRuntimeAction"
-      ]
+      "exports": ["executeRuntimeAction"]
     },
     {
       "path": "src/runtime/runtimeNodeMeasurement.test.ts",
@@ -4817,9 +4030,7 @@
     {
       "path": "src/runtime/runtimeNodeMeasurement.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/features/selection/adapters/nativeElementMeasurement.ts"
-      ],
+      "dependencies": ["src/features/selection/adapters/nativeElementMeasurement.ts"],
       "exports": [
         "ActiveResizeTargetCoordinator",
         "createActiveResizeTargetCoordinator",
@@ -4849,9 +4060,7 @@
     {
       "path": "src/runtime/stationarySelection.public.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/runtime/index.ts"
-      ],
+      "dependencies": ["src/runtime/index.ts"],
       "exports": []
     },
     {
@@ -4885,9 +4094,7 @@
     {
       "path": "src/runtime/stationarySelectionCoordinator.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/runtime/stationarySelectionCoordinator.ts"
-      ],
+      "dependencies": ["src/runtime/stationarySelectionCoordinator.ts"],
       "exports": []
     },
     {
@@ -4904,9 +4111,7 @@
     {
       "path": "src/runtime/stationarySelectionInputState.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/runtime/stationarySelectionInputState.ts"
-      ],
+      "dependencies": ["src/runtime/stationarySelectionInputState.ts"],
       "exports": []
     },
     {
@@ -4924,36 +4129,25 @@
     {
       "path": "src/runtime/studioMediaResolver.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/runtime/studioMediaResolver.ts"
-      ],
+      "dependencies": ["src/runtime/studioMediaResolver.ts"],
       "exports": []
     },
     {
       "path": "src/runtime/studioMediaResolver.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "createStudioMediaAssetResolver"
-      ]
+      "exports": ["createStudioMediaAssetResolver"]
     },
     {
       "path": "src/runtime/useRuntimeAction.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/runtime/runtimeActions.ts"
-      ],
-      "exports": [
-        "useRuntimeAction",
-        "UseRuntimeActionOptions"
-      ]
+      "dependencies": ["src/runtime/runtimeActions.ts"],
+      "exports": ["useRuntimeAction", "UseRuntimeActionOptions"]
     },
     {
       "path": "src/runtimeDiagnosticsModel.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/runtimeDiagnosticsModel.ts"
-      ],
+      "dependencies": ["src/runtimeDiagnosticsModel.ts"],
       "exports": []
     },
     {
@@ -4971,9 +4165,7 @@
     {
       "path": "src/secretResponseGuard.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/secretResponseGuard.ts"
-      ],
+      "dependencies": ["src/secretResponseGuard.ts"],
       "exports": []
     },
     {
@@ -4990,17 +4182,13 @@
     {
       "path": "src/studioAdminRouteModel.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/studioAdminRouteModel.ts"
-      ],
+      "dependencies": ["src/studioAdminRouteModel.ts"],
       "exports": []
     },
     {
       "path": "src/studioAdminRouteModel.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts"
-      ],
+      "dependencies": ["src/index.ts"],
       "exports": [
         "createStudioAdminRoutePath",
         "createStudioAdminRouteRenderState",
@@ -5033,33 +4221,25 @@
     {
       "path": "src/studioRuntimeApi.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/studioRuntimeApi.ts"
-      ],
+      "dependencies": ["src/studioRuntimeApi.ts"],
       "exports": []
     },
     {
       "path": "src/studioRuntimeApi.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "syncProjectRuntime"
-      ]
+      "exports": ["syncProjectRuntime"]
     },
     {
       "path": "src/studioSelectionModel.knip.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/studioSelectionModel.ts"
-      ],
+      "dependencies": ["src/studioSelectionModel.ts"],
       "exports": []
     },
     {
       "path": "src/studioSelectionModel.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/studioSelectionModel.ts"
-      ],
+      "dependencies": ["src/studioSelectionModel.ts"],
       "exports": []
     },
     {
@@ -5153,10 +4333,7 @@
         "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
         "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
       ],
-      "exports": [
-        "AnkhAdminPage",
-        "AnkhAdminPageProps"
-      ]
+      "exports": ["AnkhAdminPage", "AnkhAdminPageProps"]
     },
     {
       "path": "src/ui/admin/AnkhAdminShell.test.ts",
@@ -5167,15 +4344,8 @@
     {
       "path": "src/ui/admin/AnkhAdminShell.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/core/StudioContext.ts",
-        "src/index.ts",
-        "src/studioAdminRouteModel.ts"
-      ],
-      "exports": [
-        "AnkhAdminShell",
-        "AnkhAdminShellProps"
-      ]
+      "dependencies": ["src/core/StudioContext.ts", "src/index.ts", "src/studioAdminRouteModel.ts"],
+      "exports": ["AnkhAdminShell", "AnkhAdminShellProps"]
     },
     {
       "path": "src/ui/admin/AuthAdminSession.tsx",
@@ -5184,19 +4354,13 @@
         "src/ui/admin/pages/adminAuthCredentialFlow.ts",
         "src/ui/admin/pages/adminAuthSessionModel.ts"
       ],
-      "exports": [
-        "AuthAdminSessionProvider",
-        "AuthAdminSessionValue",
-        "useAuthAdminSession"
-      ]
+      "exports": ["AuthAdminSessionProvider", "AuthAdminSessionValue", "useAuthAdminSession"]
     },
     {
       "path": "src/ui/admin/ModuleAdminViewBoundary.tsx",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ModuleAdminViewBoundary"
-      ]
+      "exports": ["ModuleAdminViewBoundary"]
     },
     {
       "path": "src/ui/admin/ModuleAdminViewHost.tsx",
@@ -5207,9 +4371,7 @@
         "src/ui/admin/ModuleAdminViewBoundary.tsx",
         "src/ui/admin/moduleAdminViewRegistry.ts"
       ],
-      "exports": [
-        "ModuleAdminViewHost"
-      ]
+      "exports": ["ModuleAdminViewHost"]
     },
     {
       "path": "src/ui/admin/moduleAdminViewRegistry.test.ts",
@@ -5221,35 +4383,24 @@
       "path": "src/ui/admin/moduleAdminViewRegistry.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "getStudioModuleAdminView",
-        "StudioModuleAdminViewContribution"
-      ]
+      "exports": ["getStudioModuleAdminView", "StudioModuleAdminViewContribution"]
     },
     {
       "path": "src/ui/admin/pages/adminApiOperations.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ApiOperationRow",
-        "collectApiOperationRows"
-      ]
+      "exports": ["ApiOperationRow", "collectApiOperationRows"]
     },
     {
       "path": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/authSettings.ts",
-        "src/ui/admin/pages/adminAuthCredentialFlow.ts"
-      ],
+      "dependencies": ["src/authSettings.ts", "src/ui/admin/pages/adminAuthCredentialFlow.ts"],
       "exports": []
     },
     {
       "path": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/authSettings.ts"
-      ],
+      "dependencies": ["src/authSettings.ts"],
       "exports": [
         "applyStoredOAuthCredentialLink",
         "patchLocalAuthDraftWithStoredOAuthCredentialLink",
@@ -5262,22 +4413,14 @@
     {
       "path": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectAuthHealth.ts",
-        "src/ui/admin/pages/adminAuthHealthFlow.ts"
-      ],
+      "dependencies": ["src/projectAuthHealth.ts", "src/ui/admin/pages/adminAuthHealthFlow.ts"],
       "exports": []
     },
     {
       "path": "src/ui/admin/pages/adminAuthHealthFlow.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectAuthHealth.ts"
-      ],
-      "exports": [
-        "AuthHealthRefreshCoordinator",
-        "AuthHealthRefreshResult"
-      ]
+      "dependencies": ["src/projectAuthHealth.ts"],
+      "exports": ["AuthHealthRefreshCoordinator", "AuthHealthRefreshResult"]
     },
     {
       "path": "src/ui/admin/pages/adminAuthSessionModel.test.ts",
@@ -5292,10 +4435,7 @@
     {
       "path": "src/ui/admin/pages/adminAuthSessionModel.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/authSettings.ts",
-        "src/ui/admin/pages/adminAuthCredentialFlow.ts"
-      ],
+      "dependencies": ["src/authSettings.ts", "src/ui/admin/pages/adminAuthCredentialFlow.ts"],
       "exports": [
         "AuthAdminPendingCredentialRecoveryStore",
         "AuthAdminProjectSession",
@@ -5310,17 +4450,12 @@
       "path": "src/ui/admin/pages/adminThemeHarmony.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "formatHarmonyLabel",
-        "SUPPORTED_COLOR_HARMONIES"
-      ]
+      "exports": ["formatHarmonyLabel", "SUPPORTED_COLOR_HARMONIES"]
     },
     {
       "path": "src/ui/admin/pages/adminThemeModel.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/pages/adminThemeModel.ts"
-      ],
+      "dependencies": ["src/ui/admin/pages/adminThemeModel.ts"],
       "exports": []
     },
     {
@@ -5338,12 +4473,8 @@
     {
       "path": "src/ui/admin/pages/ApiCatalogCard.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"
-      ],
-      "exports": [
-        "ApiCatalogCard"
-      ]
+      "dependencies": ["src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"],
+      "exports": ["ApiCatalogCard"]
     },
     {
       "path": "src/ui/admin/pages/ApiOperationsCard.tsx",
@@ -5355,16 +4486,12 @@
         "src/ui/admin/pages/adminApiOperations.ts",
         "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"
       ],
-      "exports": [
-        "ApiOperationsCard"
-      ]
+      "exports": ["ApiOperationsCard"]
     },
     {
       "path": "src/ui/admin/pages/ApisAdminPage.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/pages/adminApiOperations.ts"
-      ],
+      "dependencies": ["src/ui/admin/pages/adminApiOperations.ts"],
       "exports": []
     },
     {
@@ -5381,10 +4508,7 @@
         "src/ui/admin/pages/ExternalApiEditCard.tsx",
         "src/ui/admin/pages/ManualRestApiCard.tsx"
       ],
-      "exports": [
-        "ApisAdminPage",
-        "ApisAdminRouteId"
-      ]
+      "exports": ["ApisAdminPage", "ApisAdminRouteId"]
     },
     {
       "path": "src/ui/admin/pages/AuthAdminPage.test.ts",
@@ -5409,10 +4533,7 @@
         "src/ui/admin/pages/adminAuthHealthFlow.ts",
         "src/ui/admin/pages/adminAuthSessionModel.ts"
       ],
-      "exports": [
-        "AuthAdminPage",
-        "AuthAdminPageProps"
-      ]
+      "exports": ["AuthAdminPage", "AuthAdminPageProps"]
     },
     {
       "path": "src/ui/admin/pages/AuthAdminPlatformSetup.test.ts",
@@ -5424,9 +4545,7 @@
       "path": "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "bindingAdminStyles"
-      ]
+      "exports": ["bindingAdminStyles"]
     },
     {
       "path": "src/ui/admin/pages/bindings/BindingDiagnosticsCard.tsx",
@@ -5435,16 +4554,12 @@
         "src/bindingAuthoringModel.ts",
         "src/ui/admin/pages/bindings/bindingAdminStyles.ts"
       ],
-      "exports": [
-        "BindingDiagnosticsCard"
-      ]
+      "exports": ["BindingDiagnosticsCard"]
     },
     {
       "path": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/bindingAuthoringModel.ts"
-      ],
+      "dependencies": ["src/bindingAuthoringModel.ts"],
       "exports": [
         "createStudioEventBinding",
         "createStudioEventInputDrafts",
@@ -5469,9 +4584,7 @@
         "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
         "src/ui/admin/pages/bindings/bindingEditorModel.ts"
       ],
-      "exports": [
-        "EventBindingComposer"
-      ]
+      "exports": ["EventBindingComposer"]
     },
     {
       "path": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
@@ -5481,9 +4594,7 @@
         "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
         "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
       ],
-      "exports": [
-        "EventBindingsCard"
-      ]
+      "exports": ["EventBindingsCard"]
     },
     {
       "path": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
@@ -5494,9 +4605,7 @@
         "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
         "src/ui/admin/pages/bindings/bindingEditorModel.ts"
       ],
-      "exports": [
-        "PropertyBindingEditor"
-      ]
+      "exports": ["PropertyBindingEditor"]
     },
     {
       "path": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx",
@@ -5506,9 +4615,7 @@
         "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
         "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
       ],
-      "exports": [
-        "PropertyBindingsCard"
-      ]
+      "exports": ["PropertyBindingsCard"]
     },
     {
       "path": "src/ui/admin/pages/BindingsAdminPage.test.ts",
@@ -5529,9 +4636,7 @@
         "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
         "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx"
       ],
-      "exports": [
-        "BindingsAdminPage"
-      ]
+      "exports": ["BindingsAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx",
@@ -5540,30 +4645,19 @@
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
       ],
-      "exports": [
-        "DeployAuthoredStateCard"
-      ]
+      "exports": ["DeployAuthoredStateCard"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployControlResultView.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/adminPagePrimitives.tsx"
-      ],
-      "exports": [
-        "DeployControlResultView"
-      ]
+      "dependencies": ["src/ui/admin/adminPagePrimitives.tsx"],
+      "exports": ["DeployControlResultView"]
     },
     {
       "path": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectDeployReleaseHistoryRecord.ts"
-      ],
-      "exports": [
-        "DeployLoadable",
-        "ProjectDeployDashboardState"
-      ]
+      "dependencies": ["src/projectDeployReleaseHistoryRecord.ts"],
+      "exports": ["DeployLoadable", "ProjectDeployDashboardState"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployExecutionResultView.tsx",
@@ -5572,9 +4666,7 @@
         "src/projectDeployReleaseExecutionResponse.ts",
         "src/ui/admin/adminPagePrimitives.tsx"
       ],
-      "exports": [
-        "DeployExecutionResultView"
-      ]
+      "exports": ["DeployExecutionResultView"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployHistoryCard.tsx",
@@ -5583,17 +4675,13 @@
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
       ],
-      "exports": [
-        "DeployHistoryCard"
-      ]
+      "exports": ["DeployHistoryCard"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployLifecycleControls.tsx",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "DeployLifecycleControls"
-      ]
+      "exports": ["DeployLifecycleControls"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
@@ -5603,9 +4691,7 @@
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
       ],
-      "exports": [
-        "DeployListingLocaleAuthoringCard"
-      ]
+      "exports": ["DeployListingLocaleAuthoringCard"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx",
@@ -5615,19 +4701,13 @@
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
       ],
-      "exports": [
-        "DeployMonetizationAuthoringCard"
-      ]
+      "exports": ["DeployMonetizationAuthoringCard"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployMonetizationExecutionView.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/adminPagePrimitives.tsx"
-      ],
-      "exports": [
-        "DeployMonetizationExecutionView"
-      ]
+      "dependencies": ["src/ui/admin/adminPagePrimitives.tsx"],
+      "exports": ["DeployMonetizationExecutionView"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployMonetizationPlanView.tsx",
@@ -5636,9 +4716,7 @@
         "src/projectDeployMonetizationInspectionResult.ts",
         "src/ui/admin/adminPagePrimitives.tsx"
       ],
-      "exports": [
-        "DeployMonetizationPlanView"
-      ]
+      "exports": ["DeployMonetizationPlanView"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
@@ -5651,9 +4729,7 @@
         "src/ui/admin/pages/deploy/DeployMonetizationExecutionView.tsx",
         "src/ui/admin/pages/deploy/DeployMonetizationPlanView.tsx"
       ],
-      "exports": [
-        "DeployMonetizationSyncCard"
-      ]
+      "exports": ["DeployMonetizationSyncCard"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployPlanPreview.tsx",
@@ -5662,9 +4738,7 @@
         "src/projectDeployReleaseInspectionResult.ts",
         "src/ui/admin/adminPagePrimitives.tsx"
       ],
-      "exports": [
-        "DeployPlanPreview"
-      ]
+      "exports": ["DeployPlanPreview"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
@@ -5674,9 +4748,7 @@
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
       ],
-      "exports": [
-        "DeployPreparedReleaseAuthoringCard"
-      ]
+      "exports": ["DeployPreparedReleaseAuthoringCard"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
@@ -5695,19 +4767,13 @@
         "src/ui/admin/pages/deploy/DeployPlanPreview.tsx",
         "src/ui/admin/pages/deploy/DeployResumeActions.tsx"
       ],
-      "exports": [
-        "DeployReleaseOperationsCard"
-      ]
+      "exports": ["DeployReleaseOperationsCard"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployResumeActions.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
-      ],
-      "exports": [
-        "DeployResumeActions"
-      ]
+      "dependencies": ["src/ui/admin/pages/deploy/deployDashboardTypes.ts"],
+      "exports": ["DeployResumeActions"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
@@ -5718,9 +4784,7 @@
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
       ],
-      "exports": [
-        "DeployStoreAssetAuthoringCard"
-      ]
+      "exports": ["DeployStoreAssetAuthoringCard"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx",
@@ -5729,9 +4793,7 @@
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
       ],
-      "exports": [
-        "DeploySummaryGrid"
-      ]
+      "exports": ["DeploySummaryGrid"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployTargetsCard.tsx",
@@ -5740,9 +4802,7 @@
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
       ],
-      "exports": [
-        "DeployTargetsCard"
-      ]
+      "exports": ["DeployTargetsCard"]
     },
     {
       "path": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts",
@@ -5751,9 +4811,7 @@
         "src/projectDeployApi.ts",
         "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
       ],
-      "exports": [
-        "useProjectDeployDashboard"
-      ]
+      "exports": ["useProjectDeployDashboard"]
     },
     {
       "path": "src/ui/admin/pages/DeployAdminPage.tsx",
@@ -5772,21 +4830,13 @@
         "src/ui/admin/pages/deploy/DeployTargetsCard.tsx",
         "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
       ],
-      "exports": [
-        "DeployAdminPage"
-      ]
+      "exports": ["DeployAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/externalApiAuthoringContracts.ts"
-      ],
-      "exports": [
-        "externalApiAdminStyles",
-        "ExternalApiDiagnosticList",
-        "ExternalApiField"
-      ]
+      "dependencies": ["src/externalApiAuthoringContracts.ts"],
+      "exports": ["externalApiAdminStyles", "ExternalApiDiagnosticList", "ExternalApiField"]
     },
     {
       "path": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
@@ -5798,9 +4848,7 @@
         "src/externalApiAuthoringContracts.ts",
         "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"
       ],
-      "exports": [
-        "ExternalApiConnectCard"
-      ]
+      "exports": ["ExternalApiConnectCard"]
     },
     {
       "path": "src/ui/admin/pages/ExternalApiEditCard.tsx",
@@ -5811,9 +4859,7 @@
         "src/externalApiAuthoringContracts.ts",
         "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"
       ],
-      "exports": [
-        "ExternalApiEditCard"
-      ]
+      "exports": ["ExternalApiEditCard"]
     },
     {
       "path": "src/ui/admin/pages/ManualRestApiCard.tsx",
@@ -5824,9 +4870,7 @@
         "src/externalApiAuthoringContracts.ts",
         "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"
       ],
-      "exports": [
-        "ManualRestApiCard"
-      ]
+      "exports": ["ManualRestApiCard"]
     },
     {
       "path": "src/ui/admin/pages/MediaAdminPage.tsx",
@@ -5837,31 +4881,19 @@
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/MediaDeviceImportCard.tsx"
       ],
-      "exports": [
-        "MediaAdminPage"
-      ]
+      "exports": ["MediaAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/MediaDeviceImportCard.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/core/StudioContext.ts",
-        "src/mediaPickerAuthoring.ts"
-      ],
-      "exports": [
-        "MediaDeviceImportCard"
-      ]
+      "dependencies": ["src/core/StudioContext.ts", "src/mediaPickerAuthoring.ts"],
+      "exports": ["MediaDeviceImportCard"]
     },
     {
       "path": "src/ui/admin/pages/MediaPropertyInput.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/mediaAuthoringModel.ts",
-        "src/propertiesAuthoringModel.ts"
-      ],
-      "exports": [
-        "MediaPropertyInput"
-      ]
+      "dependencies": ["src/mediaAuthoringModel.ts", "src/propertiesAuthoringModel.ts"],
+      "exports": ["MediaPropertyInput"]
     },
     {
       "path": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
@@ -5875,9 +4907,7 @@
         "src/ui/admin/ModuleAdminViewHost.tsx",
         "src/ui/admin/moduleAdminViewRegistry.ts"
       ],
-      "exports": [
-        "ModuleDetailAdminPage"
-      ]
+      "exports": ["ModuleDetailAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/ModulesAdminPage.tsx",
@@ -5889,20 +4919,13 @@
         "src/studioAdminRouteModel.ts",
         "src/ui/admin/adminPagePrimitives.tsx"
       ],
-      "exports": [
-        "ModulesAdminPage"
-      ]
+      "exports": ["ModulesAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/OverviewAdminPage.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/core/StudioContext.ts",
-        "src/ui/admin/adminPagePrimitives.tsx"
-      ],
-      "exports": [
-        "OverviewAdminPage"
-      ]
+      "dependencies": ["src/core/StudioContext.ts", "src/ui/admin/adminPagePrimitives.tsx"],
+      "exports": ["OverviewAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/PropertiesAdminPage.test.ts",
@@ -5920,9 +4943,7 @@
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/MediaPropertyInput.tsx"
       ],
-      "exports": [
-        "PropertiesAdminPage"
-      ]
+      "exports": ["PropertiesAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/ScreenDetailAdminPage.test.ts",
@@ -5939,30 +4960,19 @@
         "src/studioAdminRouteModel.ts",
         "src/ui/admin/adminPagePrimitives.tsx"
       ],
-      "exports": [
-        "ScreenDetailAdminPage",
-        "ScreenDetailAdminPageProps"
-      ]
+      "exports": ["ScreenDetailAdminPage", "ScreenDetailAdminPageProps"]
     },
     {
       "path": "src/ui/admin/pages/screens/screensAdminActions.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/pages/screens/screensAdminActions.ts"
-      ],
+      "dependencies": ["src/ui/admin/pages/screens/screensAdminActions.ts"],
       "exports": []
     },
     {
       "path": "src/ui/admin/pages/screens/screensAdminActions.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts"
-      ],
-      "exports": [
-        "applyScreensAdminAction",
-        "ScreensAdminAction",
-        "ScreensAdminMutationTarget"
-      ]
+      "dependencies": ["src/index.ts"],
+      "exports": ["applyScreensAdminAction", "ScreensAdminAction", "ScreensAdminMutationTarget"]
     },
     {
       "path": "src/ui/admin/pages/ScreensAdminPage.test.ts",
@@ -5980,9 +4990,7 @@
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/screens/screensAdminActions.ts"
       ],
-      "exports": [
-        "ScreensAdminPage"
-      ]
+      "exports": ["ScreensAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/SecretsAdminPage.test.ts",
@@ -5999,16 +5007,12 @@
         "src/ui/admin/AuthAdminSession.tsx",
         "src/ui/admin/pages/adminAuthSessionModel.ts"
       ],
-      "exports": [
-        "SecretsAdminPage"
-      ]
+      "exports": ["SecretsAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/ThemeAdminPage.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/pages/adminThemeHarmony.ts"
-      ],
+      "dependencies": ["src/ui/admin/pages/adminThemeHarmony.ts"],
       "exports": []
     },
     {
@@ -6020,9 +5024,7 @@
         "src/ui/admin/pages/ThemeRecipeCatalog.tsx",
         "src/ui/admin/pages/useActiveThemeAdmin.ts"
       ],
-      "exports": [
-        "ThemeAdminPage"
-      ]
+      "exports": ["ThemeAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
@@ -6034,17 +5036,13 @@
         "src/ui/admin/pages/ThemeModeEditorSelector.tsx",
         "src/ui/admin/pages/useActiveThemeAdmin.ts"
       ],
-      "exports": [
-        "ThemeColorsAdminPage"
-      ]
+      "exports": ["ThemeColorsAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/ThemeModeEditorSelector.tsx",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ThemeModeEditorSelector"
-      ]
+      "exports": ["ThemeModeEditorSelector"]
     },
     {
       "path": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
@@ -6054,9 +5052,7 @@
         "src/ui/admin/pages/themeTokenAuthoringModel.ts",
         "src/ui/admin/pages/useActiveThemeAdmin.ts"
       ],
-      "exports": [
-        "ThemeNumericTokensAdminPage"
-      ]
+      "exports": ["ThemeNumericTokensAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/ThemeRecipeAdminPage.test.ts",
@@ -6074,77 +5070,54 @@
         "src/ui/admin/pages/themeRecipeTokenOptions.ts",
         "src/ui/admin/pages/useActiveThemeAdmin.ts"
       ],
-      "exports": [
-        "ThemeRecipeAdminPage"
-      ]
+      "exports": ["ThemeRecipeAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/themeRecipeAuthoringModel.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/pages/themeRecipeAuthoringModel.ts"
-      ],
+      "dependencies": ["src/ui/admin/pages/themeRecipeAuthoringModel.ts"],
       "exports": []
     },
     {
       "path": "src/ui/admin/pages/themeRecipeAuthoringModel.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ThemeRecipeAuthoringKind",
-        "updateThemeRecipeField"
-      ]
+      "exports": ["ThemeRecipeAuthoringKind", "updateThemeRecipeField"]
     },
     {
       "path": "src/ui/admin/pages/ThemeRecipeCatalog.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/studioAdminRouteModel.ts"
-      ],
-      "exports": [
-        "ThemeRecipeCatalog"
-      ]
+      "dependencies": ["src/studioAdminRouteModel.ts"],
+      "exports": ["ThemeRecipeCatalog"]
     },
     {
       "path": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/adminPagePrimitives.tsx"
-      ],
-      "exports": [
-        "ThemeRecipeFieldEditor"
-      ]
+      "dependencies": ["src/ui/admin/adminPagePrimitives.tsx"],
+      "exports": ["ThemeRecipeFieldEditor"]
     },
     {
       "path": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/pages/themeRecipeTokenOptions.ts"
-      ],
+      "dependencies": ["src/ui/admin/pages/themeRecipeTokenOptions.ts"],
       "exports": []
     },
     {
       "path": "src/ui/admin/pages/themeRecipeTokenOptions.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "resolveThemeRecipeTokenOptions"
-      ]
+      "exports": ["resolveThemeRecipeTokenOptions"]
     },
     {
       "path": "src/ui/admin/pages/ThemeTokenAction.tsx",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ThemeTokenAction"
-      ]
+      "exports": ["ThemeTokenAction"]
     },
     {
       "path": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      ],
+      "dependencies": ["src/ui/admin/pages/themeTokenAuthoringModel.ts"],
       "exports": []
     },
     {
@@ -6169,9 +5142,7 @@
         "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
         "src/ui/admin/pages/useActiveThemeAdmin.ts"
       ],
-      "exports": [
-        "ThemeTypographyAdminPage"
-      ]
+      "exports": ["ThemeTypographyAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
@@ -6182,9 +5153,7 @@
         "src/ui/admin/pages/themeTokenAuthoringModel.ts",
         "src/ui/admin/pages/useActiveThemeAdmin.ts"
       ],
-      "exports": [
-        "ThemeTypographyHeadingEditor"
-      ]
+      "exports": ["ThemeTypographyHeadingEditor"]
     },
     {
       "path": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
@@ -6195,9 +5164,7 @@
         "src/ui/admin/pages/themeTokenAuthoringModel.ts",
         "src/ui/admin/pages/useActiveThemeAdmin.ts"
       ],
-      "exports": [
-        "ThemeTypographySizeEditor"
-      ]
+      "exports": ["ThemeTypographySizeEditor"]
     },
     {
       "path": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
@@ -6208,9 +5175,7 @@
         "src/ui/admin/pages/themeTokenAuthoringModel.ts",
         "src/ui/admin/pages/useActiveThemeAdmin.ts"
       ],
-      "exports": [
-        "ThemeTypographyWeightEditor"
-      ]
+      "exports": ["ThemeTypographyWeightEditor"]
     },
     {
       "path": "src/ui/admin/pages/useActiveThemeAdmin.ts",
@@ -6220,9 +5185,7 @@
         "src/index.ts",
         "src/ui/admin/pages/adminThemeModel.ts"
       ],
-      "exports": [
-        "useActiveThemeAdmin"
-      ]
+      "exports": ["useActiveThemeAdmin"]
     },
     {
       "path": "src/ui/AnkhStudio.ts",
@@ -6232,28 +5195,18 @@
         "src/core/StudioContext.ts",
         "src/runtime/studioMediaResolver.ts"
       ],
-      "exports": [
-        "AnkhStudio",
-        "AnkhStudioProps"
-      ]
+      "exports": ["AnkhStudio", "AnkhStudioProps"]
     },
     {
       "path": "src/ui/canvas/canvasDndInteraction.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/canvasDropZones.ts",
-        "src/ui/canvas/canvasDndInteraction.ts"
-      ],
+      "dependencies": ["src/canvasDropZones.ts", "src/ui/canvas/canvasDndInteraction.ts"],
       "exports": []
     },
     {
       "path": "src/ui/canvas/canvasDndInteraction.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/canvasDragModel.ts",
-        "src/canvasDropZones.ts",
-        "src/index.ts"
-      ],
+      "dependencies": ["src/canvasDragModel.ts", "src/canvasDropZones.ts", "src/index.ts"],
       "exports": [
         "activateCanvasDrag",
         "CanvasDragSessionCallbacks",
@@ -6281,20 +5234,13 @@
         "src/runtime/runtimeNodeMeasurement.ts",
         "src/ui/canvas/canvasDndInteraction.ts"
       ],
-      "exports": [
-        "StudioCanvasDndOverlay",
-        "StudioCanvasDndOverlayProps"
-      ]
+      "exports": ["StudioCanvasDndOverlay", "StudioCanvasDndOverlayProps"]
     },
     {
       "path": "src/ui/createStudioAppBarActions.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/studioAppBarModel.ts"
-      ],
-      "exports": [
-        "createStudioAppBarActions"
-      ]
+      "dependencies": ["src/ui/studioAppBarModel.ts"],
+      "exports": ["createStudioAppBarActions"]
     },
     {
       "path": "src/ui/studioAppBarModel.ts",
@@ -6312,29 +5258,18 @@
       "path": "src/ui/StudioDeleteDialog.tsx",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "StudioDeleteDialog",
-        "StudioDeleteDialogProps"
-      ]
+      "exports": ["StudioDeleteDialog", "StudioDeleteDialogProps"]
     },
     {
       "path": "src/ui/StudioInsertDialog.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts",
-        "src/insertModalModel.ts"
-      ],
-      "exports": [
-        "StudioInsertDialog",
-        "StudioInsertDialogProps"
-      ]
+      "dependencies": ["src/index.ts", "src/insertModalModel.ts"],
+      "exports": ["StudioInsertDialog", "StudioInsertDialogProps"]
     },
     {
       "path": "src/ui/useStudioAppBarAugmentation.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/studioAppBarModel.ts"
-      ],
+      "dependencies": ["src/ui/studioAppBarModel.ts"],
       "exports": []
     },
     {
@@ -6351,39 +5286,24 @@
         "src/ui/StudioDeleteDialog.tsx",
         "src/ui/StudioInsertDialog.tsx"
       ],
-      "exports": [
-        "StudioAppBarAugmentation",
-        "useStudioAppBarAugmentation"
-      ]
+      "exports": ["StudioAppBarAugmentation", "useStudioAppBarAugmentation"]
     },
     {
       "path": "src/upsertExternalApi.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ExternalApiUpsertResult",
-        "upsertExternalApi"
-      ]
+      "exports": ["ExternalApiUpsertResult", "upsertExternalApi"]
     },
     {
       "path": "src/utils/treeUtils.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts"
-      ],
-      "exports": [
-        "cloneWithNewIds",
-        "findNodeById",
-        "removeNodeFromTree",
-        "updateNodeInTree"
-      ]
+      "dependencies": ["src/index.ts"],
+      "exports": ["cloneWithNewIds", "findNodeById", "removeNodeFromTree", "updateNodeInTree"]
     },
     {
       "path": "src/workspacePlatform.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/workspacePlatform.ts"
-      ],
+      "dependencies": ["src/workspacePlatform.ts"],
       "exports": []
     },
     {
@@ -6402,14 +5322,8 @@
     {
       "path": "src/workspaceSearch.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/projectWorkspaceContracts.ts",
-        "src/templateCatalogContracts.ts"
-      ],
-      "exports": [
-        "filterAndSortProjects",
-        "filterAndSortTemplates"
-      ]
+      "dependencies": ["src/projectWorkspaceContracts.ts", "src/templateCatalogContracts.ts"],
+      "exports": ["filterAndSortProjects", "filterAndSortTemplates"]
     }
   ],
   "exports": [
@@ -6425,9 +5339,7 @@
         "line": 455,
         "column": 14
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -6445,12 +5357,8 @@
         "line": 368,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioActionPayloadSchema"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioActionPayloadSchema"],
       "signatures": [],
       "members": [
         {
@@ -6503,9 +5411,7 @@
         "line": 46,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -6555,12 +5461,8 @@
         "line": 55,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioBindingCompatibility"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindingCompatibility"],
       "signatures": [
         {
           "label": "(expected: UiBindableValueMeta, actual: UiBindableValueMeta) => StudioBindingCompatibility",
@@ -6597,14 +5499,8 @@
         "line": 1436,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "InsertCatalogEntry",
-        "InsertRecipe",
-        "StudioComponentMetaRegistry"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["InsertCatalogEntry", "InsertRecipe", "StudioComponentMetaRegistry"],
       "signatures": [
         {
           "label": "(args: { componentMeta: StudioComponentMetaRegistry; recipes?: readonly InsertRecipe[]; }) => InsertCatalogEntry[]",
@@ -6635,12 +5531,8 @@
         "line": 754,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioComponentMetaRegistry"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioComponentMetaRegistry"],
       "signatures": [
         {
           "label": "(args: { parentType: string; childType: string; componentMeta: StudioComponentMetaRegistry; }) => boolean",
@@ -6671,12 +5563,8 @@
         "line": 606,
         "column": 14
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioIdGenerator"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioIdGenerator"],
       "signatures": [
         {
           "label": "(node: UiNode, createId?: StudioIdGenerator) => UiNode",
@@ -6713,12 +5601,8 @@
         "line": 21,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioBindingOperationOption"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindingOperationOption"],
       "signatures": [
         {
           "label": "(apis: ApiDefinitionList) => readonly StudioBindingOperationOption[]",
@@ -6749,12 +5633,8 @@
         "line": 138,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioMediaUsage"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioMediaUsage"],
       "signatures": [
         {
           "label": "(manifest: AppManifest, mediaId: string) => readonly StudioMediaUsage[]",
@@ -6791,12 +5671,8 @@
         "line": 41,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioBindingResponsePathOption"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindingResponsePathOption"],
       "signatures": [
         {
           "label": "(schema: DataSchema | undefined, schemas: Readonly<Record<string, DataSchema>> | undefined) => readonly StudioBindingResponsePathOption[]",
@@ -6833,14 +5709,8 @@
         "line": 1349,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "InsertCatalogEntry",
-        "StudioComponentMetaRegistry",
-        "StudioIdGenerator"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["InsertCatalogEntry", "StudioComponentMetaRegistry", "StudioIdGenerator"],
       "signatures": [
         {
           "label": "(entry: InsertCatalogEntry, componentMeta: StudioComponentMetaRegistry, createId?: StudioIdGenerator) => UiNode",
@@ -6883,12 +5753,8 @@
         "line": 122,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioBindingInputFieldOption"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindingInputFieldOption"],
       "signatures": [
         {
           "label": "(payloadSchema: Readonly<Record<string, { readonly label: string; readonly type: string; readonly required?: boolean; }>> | undefined) => readonly StudioBindingInputFieldOption[]",
@@ -6919,12 +5785,8 @@
         "line": 105,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioInstancePropertyValue"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioInstancePropertyValue"],
       "signatures": [
         {
           "label": "(node: UiNode, propertyName: string, value: StudioInstancePropertyValue | undefined) => Readonly<Record<string, unknown>>",
@@ -6967,9 +5829,7 @@
         "line": 88,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -7007,9 +5867,7 @@
         "line": 68,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -7041,12 +5899,8 @@
         "line": 105,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioUrlMediaAssetResult"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioUrlMediaAssetResult"],
       "signatures": [
         {
           "label": "(args: { readonly id: string; readonly name: string; readonly kind: MediaAssetKind; readonly url: string; }) => StudioUrlMediaAssetResult",
@@ -7077,9 +5931,7 @@
         "line": 15,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -7111,13 +5963,8 @@
         "line": 25,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioBindingDiagnostic",
-        "StudioBindingOperationOption"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindingDiagnostic", "StudioBindingOperationOption"],
       "signatures": [
         {
           "label": "(args: { readonly node: UiNode; readonly registry: ComponentDataBindingRegistry; readonly componentMeta: UiComponentMetaRegistry; readonly operations: readonly StudioBindingOperationOption[]; readonly actionTypes: readonly string[]; }) => readonly StudioBindingDiagnostic[]",
@@ -7148,9 +5995,7 @@
         "line": 628,
         "column": 14
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -7188,12 +6033,8 @@
         "line": 32,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioBindingOperationOption"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindingOperationOption"],
       "signatures": [
         {
           "label": "(options: readonly StudioBindingOperationOption[], ref: BindingOperationRef) => StudioBindingOperationOption | undefined",
@@ -7230,9 +6071,7 @@
         "line": 597,
         "column": 14
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -7264,9 +6103,7 @@
         "line": 1259,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -7298,9 +6135,7 @@
         "line": 346,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [
         "InsertCatalogDisabledReason",
         "InsertCatalogEntryStatus",
@@ -7393,13 +6228,8 @@
         "line": 328,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "InsertCatalogDisabledReasonCode",
-        "InsertRecipeIssue"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["InsertCatalogDisabledReasonCode", "InsertRecipeIssue"],
       "signatures": [],
       "members": [
         {
@@ -7438,9 +6268,7 @@
         "line": 305,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -7458,9 +6286,7 @@
         "line": 356,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -7478,9 +6304,7 @@
         "line": 334,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [
         "InsertCatalogDisabledReason",
         "InsertCatalogEntryKind",
@@ -7567,9 +6391,7 @@
         "line": 302,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -7587,9 +6409,7 @@
         "line": 303,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -7607,9 +6427,7 @@
         "line": 351,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [
         "InsertCatalogDisabledReason",
         "InsertCatalogEntryStatus",
@@ -7703,13 +6521,8 @@
         "line": 1036,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "InsertNodeAtPlacementArgs",
-        "InsertNodeAtPlacementResult"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["InsertNodeAtPlacementArgs", "InsertNodeAtPlacementResult"],
       "signatures": [
         {
           "label": "(args: InsertNodeAtPlacementArgs) => InsertNodeAtPlacementResult | null",
@@ -7740,13 +6553,8 @@
         "line": 971,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "NodePlacement",
-        "StudioComponentMetaRegistry"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["NodePlacement", "StudioComponentMetaRegistry"],
       "signatures": [],
       "members": [
         {
@@ -7792,9 +6600,7 @@
         "line": 978,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -7827,12 +6633,8 @@
         "line": 313,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "InsertRecipeNode"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["InsertRecipeNode"],
       "signatures": [],
       "members": [
         {
@@ -7885,9 +6687,7 @@
         "line": 321,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -7934,9 +6734,7 @@
         "line": 308,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -7969,9 +6767,7 @@
         "line": 53,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -8009,13 +6805,8 @@
         "line": 1184,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "MoveNodeToPlacementArgs",
-        "MoveNodeToPlacementResult"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["MoveNodeToPlacementArgs", "MoveNodeToPlacementResult"],
       "signatures": [
         {
           "label": "(args: MoveNodeToPlacementArgs) => MoveNodeToPlacementResult | null",
@@ -8046,13 +6837,8 @@
         "line": 1063,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "NodePlacement",
-        "StudioComponentMetaRegistry"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["NodePlacement", "StudioComponentMetaRegistry"],
       "signatures": [],
       "members": [
         {
@@ -8098,9 +6884,7 @@
         "line": 1070,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -8133,12 +6917,8 @@
         "line": 263,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "PlacementKind"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["PlacementKind"],
       "signatures": [],
       "members": [
         {
@@ -8184,9 +6964,7 @@
         "line": 270,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -8204,12 +6982,8 @@
         "line": 283,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "PlacementFailureCode"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["PlacementFailureCode"],
       "signatures": [],
       "members": [
         {
@@ -8241,9 +7015,7 @@
         "line": 261,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -8261,9 +7033,7 @@
         "line": 295,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -8281,9 +7051,7 @@
         "line": 288,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -8301,12 +7069,8 @@
         "line": 17,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "ProjectAuthDiagnosticSeverity"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["ProjectAuthDiagnosticSeverity"],
       "signatures": [],
       "members": [
         {
@@ -8366,9 +7130,7 @@
         "line": 15,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -8386,9 +7148,7 @@
         "line": 40,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [
         "ProjectAuthDiagnostic",
         "ProjectAuthHealthStatus",
@@ -8446,9 +7206,7 @@
         "line": 13,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -8466,9 +7224,7 @@
         "line": 18,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -8486,9 +7242,7 @@
         "line": 41,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -8506,12 +7260,8 @@
         "line": 25,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "ProjectCreationValidationCode"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["ProjectCreationValidationCode"],
       "signatures": [],
       "members": [
         {
@@ -8543,9 +7293,7 @@
         "line": 30,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -8563,12 +7311,8 @@
         "line": 29,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "ProjectOAuthProviderHealthStatus"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["ProjectOAuthProviderHealthStatus"],
       "signatures": [],
       "members": [
         {
@@ -8642,9 +7386,7 @@
         "line": 26,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -8662,12 +7404,8 @@
         "line": 7,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "ProjectSecretUsageCategory"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["ProjectSecretUsageCategory"],
       "signatures": [],
       "members": [
         {
@@ -8727,9 +7465,7 @@
         "line": 5,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -8747,12 +7483,8 @@
         "line": 16,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "ProjectSecretUsage"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["ProjectSecretUsage"],
       "signatures": [],
       "members": [
         {
@@ -8784,9 +7516,7 @@
         "line": 16,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -8804,9 +7534,7 @@
         "line": 76,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -8838,9 +7566,7 @@
         "line": 665,
         "column": 14
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -8878,9 +7604,7 @@
         "line": 65,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -8930,12 +7654,8 @@
         "line": 153,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioMediaAssetRemovalResult"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioMediaAssetRemovalResult"],
       "signatures": [
         {
           "label": "(manifest: AppManifest, mediaId: string) => StudioMediaAssetRemovalResult",
@@ -8972,9 +7692,7 @@
         "line": 30,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -9018,13 +7736,8 @@
         "line": 926,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "PlacementResolutionResult",
-        "StudioComponentMetaRegistry"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["PlacementResolutionResult", "StudioComponentMetaRegistry"],
       "signatures": [
         {
           "label": "(args: { root: UiNode; selectedNodeId: string | null; childType: string; componentMeta: StudioComponentMetaRegistry; }) => PlacementResolutionResult",
@@ -9055,13 +7768,8 @@
         "line": 1484,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "InsertCatalogEntry",
-        "StudioComponentMetaRegistry"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["InsertCatalogEntry", "StudioComponentMetaRegistry"],
       "signatures": [
         {
           "label": "(args: { entries: readonly InsertCatalogEntry[]; root: UiNode | null; selectedNodeId: string | null; componentMeta: StudioComponentMetaRegistry; }) => InsertCatalogEntry[]",
@@ -9092,9 +7800,7 @@
         "line": 861,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [
         "PlacementKind",
         "PlacementResolutionResult",
@@ -9130,13 +7836,8 @@
         "line": 1112,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "MoveNodeToPlacementArgs",
-        "PlacementResolutionResult"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["MoveNodeToPlacementArgs", "PlacementResolutionResult"],
       "signatures": [
         {
           "label": "(args: MoveNodeToPlacementArgs) => PlacementResolutionResult",
@@ -9167,12 +7868,8 @@
         "line": 29,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioBindableEventOption"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindableEventOption"],
       "signatures": [
         {
           "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>) => readonly StudioBindableEventOption[]",
@@ -9209,12 +7906,8 @@
         "line": 12,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioBindablePropOption"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindablePropOption"],
       "signatures": [
         {
           "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>) => readonly StudioBindablePropOption[]",
@@ -9251,13 +7944,8 @@
         "line": 52,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioAuthoringComponentMeta",
-        "StudioInstancePropertyField"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioAuthoringComponentMeta", "StudioInstancePropertyField"],
       "signatures": [
         {
           "label": "(node: UiNode, registry: Readonly<Record<string, StudioAuthoringComponentMeta | undefined>>) => readonly StudioInstancePropertyField[]",
@@ -9294,13 +7982,8 @@
         "line": 86,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioAuthoringComponentMeta",
-        "StudioInstancePropertyGroup"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioAuthoringComponentMeta", "StudioInstancePropertyGroup"],
       "signatures": [
         {
           "label": "(node: UiNode, registry: Readonly<Record<string, StudioAuthoringComponentMeta | undefined>>) => readonly StudioInstancePropertyGroup[]",
@@ -9337,9 +8020,7 @@
         "line": 18,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -9383,9 +8064,7 @@
         "line": 1222,
         "column": 14
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -9428,9 +8107,7 @@
         "line": 101,
         "column": 14
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -9448,9 +8125,7 @@
         "line": 93,
         "column": 14
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -9468,9 +8143,7 @@
         "line": 135,
         "column": 14
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -9488,12 +8161,8 @@
         "line": 360,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioActionPayloadPrimitive"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioActionPayloadPrimitive"],
       "signatures": [],
       "members": [
         {
@@ -9532,9 +8201,7 @@
         "line": 358,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -9552,9 +8219,7 @@
         "line": 366,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -9572,9 +8237,7 @@
         "line": 181,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -9592,9 +8255,7 @@
         "line": 227,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -9612,9 +8273,7 @@
         "line": 207,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -9632,12 +8291,8 @@
         "line": 16,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioAuthoringPropSchema"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioAuthoringPropSchema"],
       "signatures": [],
       "members": [
         {
@@ -9669,9 +8324,7 @@
         "line": 21,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -9689,9 +8342,7 @@
         "line": 4,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -9759,9 +8410,7 @@
         "line": 16,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -9801,9 +8450,7 @@
         "line": 10,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -9843,9 +8490,7 @@
         "line": 8,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -9863,9 +8508,7 @@
         "line": 43,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -9912,9 +8555,7 @@
         "line": 22,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -9961,13 +8602,8 @@
         "line": 35,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioBindingInputFieldOption",
-        "StudioBindingResponsePathOption"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindingInputFieldOption", "StudioBindingResponsePathOption"],
       "signatures": [],
       "members": [
         {
@@ -10020,9 +8656,7 @@
         "line": 29,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -10062,9 +8696,7 @@
         "line": 392,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -10082,9 +8714,7 @@
         "line": 376,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -10117,12 +8747,8 @@
         "line": 381,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioComponentBlueprint"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioComponentBlueprint"],
       "signatures": [],
       "members": [
         {
@@ -10168,9 +8794,7 @@
         "line": 388,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -10188,9 +8812,7 @@
         "line": 407,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [
         "InsertCatalogEntry",
         "NodePlacement",
@@ -10573,9 +9195,7 @@
         "line": 400,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -10593,9 +9213,7 @@
         "line": 390,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -10613,9 +9231,7 @@
         "line": 25,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -10633,12 +9249,8 @@
         "line": 28,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioInstancePropertyEditorKind"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioInstancePropertyEditorKind"],
       "signatures": [],
       "members": [
         {
@@ -10726,12 +9338,8 @@
         "line": 41,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioInstancePropertyField"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioInstancePropertyField"],
       "signatures": [],
       "members": [
         {
@@ -10763,9 +9371,7 @@
         "line": 46,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -10783,9 +9389,7 @@
         "line": 236,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -10803,9 +9407,7 @@
         "line": 17,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -10823,9 +9425,7 @@
         "line": 25,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -10843,9 +9443,7 @@
         "line": 33,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -10863,9 +9461,7 @@
         "line": 4,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -10883,13 +9479,8 @@
         "line": 29,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioMediaPickerInput",
-        "StudioMediaPickerResult"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioMediaPickerInput", "StudioMediaPickerResult"],
       "signatures": [],
       "members": [
         {
@@ -10914,9 +9505,7 @@
         "line": 22,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -10934,12 +9523,8 @@
         "line": 6,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioMediaPickerSource"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioMediaPickerSource"],
       "signatures": [],
       "members": [
         {
@@ -10971,9 +9556,7 @@
         "line": 25,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -10991,9 +9574,7 @@
         "line": 11,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -11068,9 +9649,7 @@
         "line": 3,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -11088,9 +9667,7 @@
         "line": 11,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -11130,12 +9707,8 @@
         "line": 11,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioModuleAdminField"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioModuleAdminField"],
       "signatures": [],
       "members": [
         {
@@ -11181,9 +9754,7 @@
         "line": 2,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -11201,9 +9772,7 @@
         "line": 4,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -11250,9 +9819,7 @@
         "line": 176,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -11270,12 +9837,8 @@
         "line": 35,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioModuleState"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioModuleState"],
       "signatures": [],
       "members": [
         {
@@ -11335,12 +9898,8 @@
         "line": 18,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioModuleAdminContribution"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioModuleAdminContribution"],
       "signatures": [],
       "members": [
         {
@@ -11456,9 +10015,7 @@
         "line": 174,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -11476,9 +10033,7 @@
         "line": 95,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -11518,9 +10073,7 @@
         "line": 180,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -11538,9 +10091,7 @@
         "line": 172,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -11558,9 +10109,7 @@
         "line": 3,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -11649,9 +10198,7 @@
         "line": 170,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -11669,9 +10216,7 @@
         "line": 3,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -11689,13 +10234,8 @@
         "line": 6,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioRuntimeProjectionReason",
-        "StudioRuntimeProjectionStatus"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioRuntimeProjectionReason", "StudioRuntimeProjectionStatus"],
       "signatures": [],
       "members": [
         {
@@ -11727,9 +10267,7 @@
         "line": 1,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -11747,9 +10285,7 @@
         "line": 179,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -11767,9 +10303,7 @@
         "line": 175,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -11787,12 +10321,8 @@
         "line": 243,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioAdminRouteId"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioAdminRouteId"],
       "signatures": [],
       "members": [
         {
@@ -11845,9 +10375,7 @@
         "line": 173,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -11865,12 +10393,8 @@
         "line": 251,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioSaveStatus"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioSaveStatus"],
       "signatures": [],
       "members": [
         {
@@ -11937,9 +10461,7 @@
         "line": 22,
         "column": 14
       },
-      "exportPaths": [
-        "src/apm.ts"
-      ],
+      "exportPaths": ["src/apm.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -11957,9 +10479,7 @@
         "line": 45,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -11977,12 +10497,8 @@
         "line": 20,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "TemplateCatalogCategory"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["TemplateCatalogCategory"],
       "signatures": [],
       "members": [
         {
@@ -12007,12 +10523,8 @@
         "line": 9,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "TemplateCatalogTemplate"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["TemplateCatalogTemplate"],
       "signatures": [],
       "members": [
         {
@@ -12086,9 +10598,7 @@
         "line": 3,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -12128,9 +10638,7 @@
         "line": 24,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -12148,9 +10656,7 @@
         "line": 238,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -12168,9 +10674,7 @@
         "line": 547,
         "column": 14
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -12188,9 +10692,7 @@
         "line": 637,
         "column": 14
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -12234,9 +10736,7 @@
         "line": 128,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -12274,9 +10774,7 @@
         "line": 14,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -12326,14 +10824,8 @@
         "line": 1282,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "InsertRecipe",
-        "InsertRecipeIssue",
-        "StudioComponentMetaRegistry"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["InsertRecipe", "InsertRecipeIssue", "StudioComponentMetaRegistry"],
       "signatures": [
         {
           "label": "(recipe: InsertRecipe, componentMeta: StudioComponentMetaRegistry) => InsertRecipeIssue | null",
@@ -12370,9 +10862,7 @@
         "line": 770,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
+      "exportPaths": ["src/index.ts"],
       "relatedSymbols": [
         "NodePlacement",
         "PlacementValidationResult",
@@ -12408,13 +10898,8 @@
         "line": 53,
         "column": 1
       },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "ProjectCreationValidationResult",
-        "StudioProjectSummary"
-      ],
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["ProjectCreationValidationResult", "StudioProjectSummary"],
       "signatures": [
         {
           "label": "(args: { name: string; existingProjects: readonly StudioProjectSummary[]; }) => ProjectCreationValidationResult",
