@@ -59,7 +59,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
         },
       },
     });
-    const oauth = manifest.infra.auth?.oauth;
+    const oauth = manifest.infra.environments.local.auth?.oauth;
     if (!oauth) {
       throw new Error('Combined OAuth fixture did not configure OAuth.');
     }
@@ -77,9 +77,11 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     await moduleManager.syncProject({ projectId: created.id, includeStudio: false });
 
     const persistedManifest = await projectManager.getProjectManifest(created.id);
-    expect(persistedManifest.infra.auth?.oauth?.callbackRoute).toBe(OAUTH_CALLBACK_ROUTE);
+    expect(persistedManifest.infra.environments.local.auth?.oauth?.callbackRoute).toBe(
+      OAUTH_CALLBACK_ROUTE,
+    );
     expect(
-      persistedManifest.infra.auth?.oauth?.providers.map((provider) => ({
+      persistedManifest.infra.environments.local.auth?.oauth?.providers.map((provider) => ({
         id: provider.id,
         credentialsRef: provider.credentialsRef,
       })),

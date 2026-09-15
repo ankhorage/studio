@@ -67,8 +67,10 @@ export async function resolveTrustedOAuthInfraEnvironment(args: {
   readonly secretResolver?: TrustedOAuthSecretResolver;
 }): Promise<Record<string, string | undefined>> {
   const manifest = await readCurrentManifest(args.projectId, args.projectManager);
-  const providers = manifest.infra.auth?.oauth?.enabled
-    ? manifest.infra.auth.oauth.providers.filter((provider) => provider.enabled !== false)
+  const providers = manifest.infra.environments.local.auth?.oauth?.enabled
+    ? manifest.infra.environments.local.auth.oauth.providers.filter(
+        (provider) => provider.enabled !== false,
+      )
     : [];
   if (providers.length === 0) return {};
 

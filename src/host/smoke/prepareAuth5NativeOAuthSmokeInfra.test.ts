@@ -13,7 +13,7 @@ const SMOKE_CREDENTIAL_REF = 'auth/oauth/google';
 
 test('uses smoke-owned public runtime env after activating with a trusted source credential', async () => {
   const sourceManifest = createAuth5NativeOAuthSmokeManifest();
-  const googleProvider = sourceManifest.infra.auth?.oauth?.providers.find(
+  const googleProvider = sourceManifest.infra.environments.local.auth?.oauth?.providers.find(
     (provider) => provider.id === 'google',
   );
   if (!googleProvider) throw new Error('Google fixture provider is unavailable.');

@@ -8,7 +8,17 @@ function createManifest(navigator: NavigatorNode): AppManifest {
   return {
     activeThemeId: 'default',
     deploy: { targets: { web: { enabled: true } } },
-    infra: { modules: [] },
+    infra: {
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+        },
+      },
+      modules: [],
+    },
     media: {
       assets: {
         'train-icon': {

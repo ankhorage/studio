@@ -1,8 +1,9 @@
 import type { AppManifest } from '@ankhorage/contracts';
-import { APP_DEPLOY_ENVIRONMENT_IDS, type AppDeployTargetId } from '@ankhorage/contracts/deploy';
+import { type AppDeployTargetId } from '@ankhorage/contracts/deploy';
 import { describe, expect, test } from 'bun:test';
 
 import { resolveProjectEnabledTargets, resolveProjectOAuthSetupPlan } from './projectOAuthSetup';
+import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 
 const TARGET_COMBINATIONS: readonly (readonly AppDeployTargetId[])[] = [
   ['web'],
@@ -40,7 +41,17 @@ function createManifest(enabledTargets: readonly AppDeployTargetId[]): AppManife
         },
       },
     },
-    infra: { modules: [] },
+    infra: {
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+        },
+      },
+      modules: [],
+    },
     navigator: { type: 'stack', routes: [] },
     screens: {},
     themes: [],
@@ -49,7 +60,7 @@ function createManifest(enabledTargets: readonly AppDeployTargetId[]): AppManife
 }
 
 describe('project OAuth setup planning', () => {
-  for (const environment of APP_DEPLOY_ENVIRONMENT_IDS) {
+  for (const environment of APP_ENVIRONMENT_IDS) {
     for (const targets of TARGET_COMBINATIONS) {
       test(`${environment} ${targets.join('+')}`, () => {
         const manifest = createManifest(targets);

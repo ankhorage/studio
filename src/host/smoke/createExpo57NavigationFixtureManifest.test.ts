@@ -14,7 +14,17 @@ const BASE_MANIFEST: AppManifest = {
   },
   settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
   deploy: { targets: { web: { enabled: true } } },
-  infra: { modules: [] },
+  infra: {
+    environments: {
+      local: {
+        deployment: {
+          compute: { provider: 'local' },
+          runtime: { provider: 'minikube' },
+        },
+      },
+    },
+    modules: [],
+  },
   navigator: {
     type: 'stack',
     initialRouteName: 'index',

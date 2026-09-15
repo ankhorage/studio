@@ -1,20 +1,16 @@
 import type { AppManifest } from '@ankhorage/contracts';
 import type { AuthOAuthProviderId, AuthOAuthSetupPlan } from '@ankhorage/contracts/auth';
-import {
-  APP_DEPLOY_ENVIRONMENT_IDS,
-  APP_DEPLOY_TARGET_IDS,
-  type AppDeployEnvironmentId,
-  type AppDeployTargetId,
-} from '@ankhorage/contracts/deploy';
+import { APP_DEPLOY_TARGET_IDS, type AppDeployTargetId } from '@ankhorage/contracts/deploy';
 import { resolveSupabaseOAuthSetupPlan } from '@ankhorage/supabase-auth';
 import { readOwnProperty } from '@ankhorage/utility/object';
+import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 
 /***
  * Resolve a requested deploy environment to a canonical environment id with local fallback.
  * @todo Move this reusable deploy-contract resolver to @ankhorage/contracts/deploy or the deploy owner.
  */
-export function resolveProjectAuthEnvironment(value: string | undefined): AppDeployEnvironmentId {
-  return APP_DEPLOY_ENVIRONMENT_IDS.find((environment) => environment === value) ?? 'local';
+export function resolveProjectAuthEnvironment(value: string | undefined): AppEnvironmentId {
+  return APP_ENVIRONMENT_IDS.find((environment) => environment === value) ?? 'local';
 }
 
 /***
@@ -41,7 +37,7 @@ export function resolveProjectEnabledTargets(manifest: AppManifest): readonly Ap
 export function resolveProjectOAuthSetupPlan(input: {
   readonly manifest: AppManifest;
   readonly provider: AuthOAuthProviderId;
-  readonly environment: AppDeployEnvironmentId;
+  readonly environment: AppEnvironmentId;
 }): AuthOAuthSetupPlan | null {
   return resolveSupabaseOAuthSetupPlan({
     provider: input.provider,

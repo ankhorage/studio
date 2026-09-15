@@ -20,11 +20,19 @@ function createManifest(
     themes: [],
     activeThemeId: 'default',
     infra: {
-      auth: {
-        scope: 'global',
-        provider: 'supabase',
-        ...(args.flow ? { flow: args.flow } : {}),
-        ...(args.oauth ? { oauth: args.oauth } : {}),
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+          auth: {
+            scope: 'global',
+            provider: 'supabase',
+            ...(args.flow ? { flow: args.flow } : {}),
+            ...(args.oauth ? { oauth: args.oauth } : {}),
+          },
+        },
       },
       modules: [],
     },

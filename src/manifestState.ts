@@ -900,7 +900,7 @@ export function updateStudioManifestOAuthProviders(
   manifest: StudioManifest,
   providers: AuthOAuthProviderConfig[],
 ): StudioManifest {
-  const previousAuth = manifest.infra.auth ?? {
+  const previousAuth = manifest.infra.environments.local.auth ?? {
     provider: 'supabase',
     scope: 'global' as const,
     authorization: { kind: 'ABAC' as const, engine: 'cerbos' as const },

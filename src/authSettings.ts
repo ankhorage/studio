@@ -1,9 +1,11 @@
 import { type AppManifest, DEFAULT_AUTH_FLOW } from '@ankhorage/contracts';
+import type { AppEnvironmentId } from '@ankhorage/contracts/environments';
+import type { InfraEnvironmentSpec } from '@ankhorage/contracts/infra';
 import { normalizeSecretRef } from '@ankhorage/contracts/secrets';
 import { getSupabaseOAuthProviderDefinition } from '@ankhorage/supabase-auth';
 import { hasOnlyKeys, isRecord } from '@ankhorage/utility/object';
 
-type ManifestAuth = NonNullable<AppManifest['infra']['auth']>;
+type ManifestAuth = NonNullable<InfraEnvironmentSpec['auth']>;
 type ManifestFlow = NonNullable<ManifestAuth['flow']>;
 type ManifestSignIn = NonNullable<ManifestAuth['signIn']>;
 type ManifestSignUp = NonNullable<ManifestAuth['signUp']>;
@@ -75,8 +77,11 @@ const FORBIDDEN_INLINE_SECRET_KEYS = new Set([
  * Read authored authentication settings from a manifest and clone nested mutable collections.
  * @todo Move the auth settings model from the source root into the auth domain.
  */
-export function readStudioAuthSettings(manifest: AppManifest): StudioAuthSettings | null {
-  const { auth } = manifest.infra;
+export function readStudioAuthSettings(
+  manifest: AppManifest,
+  environment: AppEnvironmentId = 'local',
+): StudioAuthSettings | null {
+  const auth = manifest.infra.environments[environment]?.auth;
   if (!auth) return null;
 
   return {
@@ -125,56 +130,64 @@ export function readStudioAuthSettings(manifest: AppManifest): StudioAuthSetting
 export function applyStudioAuthSettings(
   manifest: AppManifest,
   settings: StudioAuthSettings,
+  environment: AppEnvironmentId = 'local',
 ): AppManifest {
-  const currentAuthorization = manifest.infra.auth?.authorization;
+  const current = manifest.infra.environments[environment];
+  if (!current) {
+    throw new Error(
+      `Project '${manifest.metadata.slug}' does not configure infrastructure environment '${environment}'.`,
+    );
+  }
+
+  const auth: ManifestAuth = {
+    scope: settings.scope,
+    provider: settings.provider,
+    flow: { ...settings.flow },
+    signIn: { identifiers: [...settings.signIn.identifiers] },
+    ...(settings.signUp
+      ? {
+          signUp: {
+            requiredFields: [...settings.signUp.requiredFields],
+            ...(settings.signUp.optionalFields
+              ? { optionalFields: [...settings.signUp.optionalFields] }
+              : {}),
+            ...(settings.signUp.signUpPolicy ? { signUpPolicy: settings.signUp.signUpPolicy } : {}),
+          },
+        }
+      : {}),
+    ...(settings.oauth
+      ? {
+          oauth: {
+            enabled: settings.oauth.enabled,
+            callbackRoute: settings.oauth.callbackRoute,
+            providers: settings.oauth.providers.map(cloneOAuthProvider),
+          },
+        }
+      : {}),
+    ...(settings.profile
+      ? {
+          profile: {
+            fields: [...settings.profile.fields],
+            ...(settings.profile.table ? { table: settings.profile.table } : {}),
+            ...(settings.profile.primaryKey ? { primaryKey: settings.profile.primaryKey } : {}),
+            ...(settings.profile.createStrategy
+              ? { createStrategy: settings.profile.createStrategy }
+              : {}),
+            ...(settings.profile.updateStrategy
+              ? { updateStrategy: settings.profile.updateStrategy }
+              : {}),
+          },
+        }
+      : {}),
+  };
 
   return {
     ...manifest,
     infra: {
       ...manifest.infra,
-      auth: {
-        scope: settings.scope,
-        provider: settings.provider,
-        flow: { ...settings.flow },
-        signIn: { identifiers: [...settings.signIn.identifiers] },
-        ...(settings.signUp
-          ? {
-              signUp: {
-                requiredFields: [...settings.signUp.requiredFields],
-                ...(settings.signUp.optionalFields
-                  ? { optionalFields: [...settings.signUp.optionalFields] }
-                  : {}),
-                ...(settings.signUp.signUpPolicy
-                  ? { signUpPolicy: settings.signUp.signUpPolicy }
-                  : {}),
-              },
-            }
-          : {}),
-        ...(settings.oauth
-          ? {
-              oauth: {
-                enabled: settings.oauth.enabled,
-                callbackRoute: settings.oauth.callbackRoute,
-                providers: settings.oauth.providers.map(cloneOAuthProvider),
-              },
-            }
-          : {}),
-        ...(settings.profile
-          ? {
-              profile: {
-                fields: [...settings.profile.fields],
-                ...(settings.profile.table ? { table: settings.profile.table } : {}),
-                ...(settings.profile.primaryKey ? { primaryKey: settings.profile.primaryKey } : {}),
-                ...(settings.profile.createStrategy
-                  ? { createStrategy: settings.profile.createStrategy }
-                  : {}),
-                ...(settings.profile.updateStrategy
-                  ? { updateStrategy: settings.profile.updateStrategy }
-                  : {}),
-              },
-            }
-          : {}),
-        ...(currentAuthorization ? { authorization: currentAuthorization } : {}),
+      environments: {
+        ...manifest.infra.environments,
+        [environment]: { ...current, auth },
       },
     },
   };

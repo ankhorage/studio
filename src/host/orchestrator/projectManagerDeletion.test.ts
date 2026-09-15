@@ -107,24 +107,28 @@ function createManifest(projectId: string): AppManifest {
       },
     },
     infra: {
-      deployment: {
-        target: 'minikube',
-        monitoring: false,
-      },
-      auth: {
-        scope: 'global',
-        provider: 'supabase',
-      },
-      database: {
-        provider: 'supabase',
-        tier: 'dev',
-      },
-      storage: {
-        provider: 'auto',
-        buckets: ['avatars'],
-      },
-      secretStore: {
-        provider: 'supabase-vault',
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+          auth: {
+            scope: 'global',
+            provider: 'supabase',
+          },
+          database: {
+            provider: 'supabase',
+            tier: 'dev',
+          },
+          objectStorage: {
+            provider: 'supabase',
+            buckets: ['avatars'],
+          },
+          secretStore: {
+            provider: 'supabase-vault',
+          },
+        },
       },
       modules: [],
     },

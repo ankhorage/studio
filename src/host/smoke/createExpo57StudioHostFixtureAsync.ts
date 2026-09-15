@@ -76,10 +76,20 @@ function createManifest(category: AppCategory): AppManifest {
     activeThemeId: 'standalone-theme',
     activeThemeMode: 'dark',
     infra: {
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+          objectStorage: {
+            provider: 'supabase',
+            buckets: ['public'],
+          },
+          networking: {},
+        },
+      },
       modules: [],
-      deployment: { target: 'minikube', monitoring: false },
-      storage: { provider: 'auto', buckets: ['public'] },
-      networking: { cdn: false },
     },
     navigator: {
       type: 'stack',
