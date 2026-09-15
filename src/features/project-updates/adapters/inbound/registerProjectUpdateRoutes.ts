@@ -60,7 +60,7 @@ export function registerProjectUpdateRoutes(
   fastify.post('/api/projects/:id/updates/apply', async (request, reply) => {
     const context = await resolveRequestContext(request.params, options, reply);
     if (context === undefined) return;
-    const body = request.body;
+    const { body } = request;
     if (!isApplyRequest(body)) return sendInvalidRequest(reply);
     if (body.plan.rootPath !== context.rootPath) {
       return reply.status(409).send({ error: 'The reviewed plan belongs to another project.' });
@@ -77,7 +77,7 @@ export function registerProjectUpdateRoutes(
   fastify.post('/api/projects/:id/updates/resume', async (request, reply) => {
     const context = await resolveRequestContext(request.params, options, reply);
     if (context === undefined) return;
-    const body = request.body;
+    const { body } = request;
     if (!isResumeRequest(body)) return sendInvalidRequest(reply);
     return invokeLifecycle(reply, () =>
       options.service.applyAsync({
@@ -92,7 +92,7 @@ export function registerProjectUpdateRoutes(
   fastify.post('/api/projects/:id/updates/verify', async (request, reply) => {
     const context = await resolveRequestContext(request.params, options, reply);
     if (context === undefined) return;
-    const body = request.body;
+    const { body } = request;
     if (!isOperationRequest(body)) return sendInvalidRequest(reply);
     return invokeLifecycle(reply, () =>
       options.service.verifyAsync({
@@ -172,9 +172,7 @@ function isAvailability(value: unknown): value is ApmStatusAvailabilityMode | un
 }
 
 /*** Validate the bounded request body accepted by the plan route. */
-function isPlanRequest(
-  value: unknown,
-): value is {
+function isPlanRequest(value: unknown): value is {
   readonly availability?: ApmStatusAvailabilityMode;
   readonly policy?: ApmPlanPolicyInput;
 } {
@@ -215,13 +213,13 @@ function isPlanPolicy(value: unknown): value is ApmPlanPolicyInput {
 /*** Validate one package selection in a host-authored APM plan request. */
 function isPlanPackageSelection(value: unknown): value is ApmPlanPackageSelection {
   if (!isRecord(value) || !hasOnlyKeys(value, ['selector', 'target'])) return false;
+  const { selector } = value;
   if (
-    !isRecord(value.selector) ||
-    !hasOnlyKeys(value.selector, ['name', 'packageId', 'installRootId', 'ownerPath'])
+    !isRecord(selector) ||
+    !hasOnlyKeys(selector, ['name', 'packageId', 'installRootId', 'ownerPath'])
   ) {
     return false;
   }
-  const selector = value.selector;
   return (
     typeof selector.name === 'string' &&
     selector.name.length > 0 &&
@@ -288,11 +286,7 @@ function isResumeRequest(
 
 /*** Validate the verify request's operation identity. */
 function isOperationRequest(value: unknown): value is { readonly operationId: string } {
-  return (
-    isRecord(value) &&
-    hasOnlyKeys(value, ['operationId']) &&
-    isNonEmptyString(value.operationId)
-  );
+  return isRecord(value) && hasOnlyKeys(value, ['operationId']) && isNonEmptyString(value.operationId);
 }
 
 /*** Validate explicit APM execution permissions. */
