@@ -55,6 +55,10 @@ or recovery semantics. Source evidence is
 `src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts` and
 `src/host/http/server.ts`.
 
+Validation covers the focused HTTP adapter behavior plus the canonical repository build, owner-release
+validation, Doctor, lint, format, Knip, tests, typecheck, changeset gate and packed Studio host
+acceptance on the PR head.
+
 ## Proven gaps / required #500 changes
 
 1. **Runtime projection currency is now explicit and durable.** Studio #516 keeps `saveStatus`
