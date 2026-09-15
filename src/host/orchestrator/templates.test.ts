@@ -102,8 +102,8 @@ describe('generated OAuth scaffold templates', () => {
     expect(metro).toContain('getDefaultConfig(__dirname)');
     expect(metro).toContain("path.resolve(__dirname, 'metro.empty-module.js')");
     expect(getMetroEmptyModuleJs()).toBe('module.exports = {};\n');
-    expect(metro).toContain('const ancestorNodeModules = new RegExp(');
-    expect(metro).toContain('config.resolver.blockList = [');
+    expect(metro).not.toContain('ancestorNodeModules');
+    expect(metro).not.toContain('config.resolver.blockList = [');
     expect(metro).not.toContain('watchFolders');
     expect(metro).not.toContain('disableHierarchicalLookup');
     expect(metro).not.toContain('nodeModulesPaths');

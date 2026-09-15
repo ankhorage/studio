@@ -35,7 +35,7 @@ export function getAuthScreenRuntimeTsx(
   const oauthImports = oauthEnabled
     ? `import { generatedOAuthProviderItems } from '@/auth/oauth';\n`
     : '';
-  const oauthZoraImport = oauthEnabled ? 'OAuthProviderList' : '';
+  const oauthZoraImport = oauthEnabled ? '  OAuthProviderList,\n' : '';
   const oauthView = oauthEnabled ? getOAuthViewSource() : '';
   const formLoading = oauthEnabled
     ? 'controller.loading || controller.oauthLoadingProvider !== null'
@@ -43,7 +43,13 @@ export function getAuthScreenRuntimeTsx(
 
   return `import type { AppManifest } from '@ankhorage/contracts';
 import { ManifestProvider } from '@ankhorage/runtime';
-import { KeyboardAvoidingView, ${oauthZoraImport.trim()}${oauthZoraImport ? ', ' : ''}SignInForm, SignUpForm, Text, useZoraTheme } from '@ankhorage/zora';
+import {
+  KeyboardAvoidingView,
+${oauthZoraImport}  SignInForm,
+  SignUpForm,
+  Text,
+  useZoraTheme,
+} from '@ankhorage/zora';
 import ankhConfig from '@root/ankh.config.json';
 import { Stack } from 'expo-router';
 import { Platform, ScrollView, StyleSheet, View } from 'react-native';
