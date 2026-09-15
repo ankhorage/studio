@@ -22,6 +22,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Verify released owner is registry-visible
+        run: test "$(npm view @ankhorage/expo-runtime@3.2.15 version --registry=https://registry.npmjs.org)" = '3.2.15'
       - name: Consume released Expo Runtime owner
         run: |
           node - <<'NODE'
