@@ -1,6 +1,6 @@
 import { isRecord } from '@ankhorage/utility/object';
 
-export interface PendingModuleLifecycleOperation {
+interface PendingModuleLifecycleOperation {
   readonly type: 'uninstall';
   readonly moduleId: string;
   readonly at: string;
