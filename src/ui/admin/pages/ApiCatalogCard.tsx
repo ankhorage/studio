@@ -1,5 +1,5 @@
 import type { ApiDefinition, ApiDefinitionList } from '@ankhorage/contracts/data';
-import { Badge, Button, ButtonGroup, Card, ListRow, ListSection, Text } from '@ankhorage/zora';
+import { Badge, Button, ButtonGroup, Card, ListItem, ListSection, Text } from '@ankhorage/zora';
 import { View } from 'react-native';
 
 import { externalApiAdminStyles } from './ExternalApiAdminPrimitives';
@@ -64,7 +64,7 @@ function renderEndpointRows(api: ApiDefinition) {
   const endpointEntries = Object.entries(api.endpoints);
   if (endpointEntries.length === 0) {
     return (
-      <ListRow
+      <ListItem
         title="No endpoints discovered"
         description="The API is connected, but its canonical definition does not currently expose operations."
         variant="card"
@@ -76,7 +76,7 @@ function renderEndpointRows(api: ApiDefinition) {
     const operations = Object.entries(endpoint.operations);
     if (operations.length === 0) {
       return [
-        <ListRow
+        <ListItem
           key={`${api.id}:${endpointId}:empty`}
           title={formatPath(endpoint.path) ?? endpointId}
           description="No operations discovered for this endpoint."
@@ -91,7 +91,7 @@ function renderEndpointRows(api: ApiDefinition) {
         operation.method ??
         (operation.protocol === 'graphql' ? 'GRAPHQL' : operation.protocol.toUpperCase());
       return (
-        <ListRow
+        <ListItem
           key={`${api.id}:${endpointId}:${operationId}`}
           title={formatPath(operation.path ?? endpoint.path) ?? operation.name ?? operationId}
           description={
