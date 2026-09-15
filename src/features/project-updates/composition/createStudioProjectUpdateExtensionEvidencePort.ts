@@ -1,7 +1,4 @@
-import type {
-  ApmExtensionEvidence,
-  ApmStatusExtensionEvidencePort,
-} from '@ankhorage/apm/types';
+import type { ApmExtensionEvidence, ApmStatusExtensionEvidencePort } from '@ankhorage/apm/types';
 
 import { inspectPendingModuleLifecycleEvidenceAsync } from '../adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync';
 
@@ -36,7 +33,8 @@ function mergeExtensionEvidence(
   pending: ApmExtensionEvidence,
 ): ApmExtensionEvidence {
   return {
-    state: base.state === 'available' || pending.state === 'available' ? 'available' : 'unavailable',
+    state:
+      base.state === 'available' || pending.state === 'available' ? 'available' : 'unavailable',
     complete: base.complete && pending.complete,
     observations: [...base.observations, ...pending.observations],
     diagnostics: [...base.diagnostics, ...pending.diagnostics],

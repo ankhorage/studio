@@ -61,7 +61,10 @@ test('keeps absent pending state clean and malformed state explicitly incomplete
   const port = createStudioProjectUpdateExtensionEvidencePort();
 
   try {
-    const absent = await port.inspectExtensionEvidenceAsync({ rootPath, inventory: emptyInventory() });
+    const absent = await port.inspectExtensionEvidenceAsync({
+      rootPath,
+      inventory: emptyInventory(),
+    });
     expect(absent.complete).toBe(true);
     expect(absent.observations).toEqual([]);
 

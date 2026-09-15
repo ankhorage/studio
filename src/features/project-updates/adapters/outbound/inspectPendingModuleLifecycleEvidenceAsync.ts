@@ -24,8 +24,7 @@ export async function inspectPendingModuleLifecycleEvidenceAsync(
 }
 
 type PendingModuleParseResult =
-  | { readonly valid: true; readonly moduleIds: readonly string[] }
-  | { readonly valid: false };
+  { readonly valid: true; readonly moduleIds: readonly string[] } | { readonly valid: false };
 
 /*** Parse only the current Studio pending-operation shape and reject ambiguous state. */
 function parsePendingModuleIds(content: string): PendingModuleParseResult {
@@ -76,7 +75,8 @@ function availableEvidence(moduleIds: readonly string[]): ApmExtensionEvidence {
         migration: 'not-applicable',
         evidence: pendingEvidence(moduleIds),
         reason: 'Studio has deferred module removals that are not yet materialized.',
-        nextAction: 'Review the pending Studio module lifecycle work before applying project updates.',
+        nextAction:
+          'Review the pending Studio module lifecycle work before applying project updates.',
       },
     ],
     diagnostics: [],

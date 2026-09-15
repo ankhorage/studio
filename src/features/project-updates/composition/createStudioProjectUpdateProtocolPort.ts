@@ -17,7 +17,9 @@ export function createStudioProjectUpdateProtocolPort(
   return {
     planProtocolAsync: async (input) => {
       const baseResult = await readBaseProtocolResultAsync(base, input);
-      const pending = input.status.extensions.observations.find(isPendingModuleLifecycleObservation);
+      const pending = input.status.extensions.observations.find(
+        isPendingModuleLifecycleObservation,
+      );
       const unhandled =
         base === undefined
           ? input.status.extensions.observations.filter(
@@ -69,7 +71,9 @@ function requiresProtocolPlanning(
   observation: ApmExtensionObservation,
   repairProjections: boolean,
 ): boolean {
-  return observation.migration === 'pending' || (repairProjections && observation.projection === 'stale');
+  return (
+    observation.migration === 'pending' || (repairProjections && observation.projection === 'stale')
+  );
 }
 
 /*** Block apply until queued removals have a reviewed owner execution boundary. */
