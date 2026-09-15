@@ -44,6 +44,7 @@ jobs:
       - name: Validate focused source fix
         run: |
           bun run format
+          bun run build
           bun test src/host/orchestrator/templates.test.ts
           bun run check-types
           bun run lint
