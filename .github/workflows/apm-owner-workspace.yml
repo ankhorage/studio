@@ -25,8 +25,15 @@ jobs:
       - name: Prepare frozen owner workspace
         run: |
           bun install --frozen-lockfile --ignore-scripts
-          mkdir -p "$RUNNER_TEMP/apm-owner"
+          mkdir -p "$RUNNER_TEMP/apm-owner/tools"
+          cp "$(command -v bun)" "$RUNNER_TEMP/apm-owner/tools/bun"
+          cp "$(command -v node)" "$RUNNER_TEMP/apm-owner/tools/node"
           git bundle create "$RUNNER_TEMP/apm-owner/repository.bundle" HEAD refs/remotes/origin/main
+      - name: Resolve the published release-validator producer
+        run: |
+          npm pack @ankhorage/devtools@1.15.0 --ignore-scripts --pack-destination "$RUNNER_TEMP/apm-owner"
+          bun add --dev '@ankhorage/devtools@^1.15.0' --ignore-scripts
+          cp package.json bun.lock "$RUNNER_TEMP/apm-owner/"
           tar -czf "$RUNNER_TEMP/apm-owner/dependencies.tgz" node_modules
       - name: Inspect the published Studio Node entrypoint
         run: |
