@@ -1,4 +1,4 @@
-import { ProjectUpdateService } from '../features/project-updates/application/ProjectUpdateService';
+import { createStudioProjectUpdateService } from '../features/project-updates/composition/createStudioProjectUpdateService';
 import { ProjectDeployService } from './deploy/ProjectDeployService';
 import { stopAllProjectInfraPortForwards } from './orchestrator/infraSession';
 import { ModuleManager } from './orchestrator/moduleManager';
@@ -15,7 +15,7 @@ export interface CreateStudioHostOptions {
 export function createStudioHost(options: CreateStudioHostOptions) {
   const projectManager = new ProjectManager(options.workspaceRoot);
   const moduleManager = new ModuleManager(options.workspaceRoot);
-  const projectUpdateService = new ProjectUpdateService();
+  const projectUpdateService = createStudioProjectUpdateService();
   const projectDeployService = new ProjectDeployService({
     projectManager,
     workspaceRoot: options.workspaceRoot,
