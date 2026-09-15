@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -33,7 +34,10 @@ export async function runPackedStudioHostAcceptance(
     await createConsumerAsync(consumerRoot, tarballPath);
     await installConsumerAsync(consumerRoot, cacheRoot);
     await assertPackedPackageAsync(consumerRoot, repositoryRoot);
-    await runConsumerChecksAsync(consumerRoot, cacheRoot);
+    const integrity = `sha512-${createHash('sha512')
+      .update(await readFile(tarballPath))
+      .digest('base64')}`;
+    await runConsumerChecksAsync(consumerRoot, cacheRoot, integrity);
     console.log(`Packed Studio host acceptance passed at ${fixtureRoot}.`);
   } finally {
     if (options.keepFixture) console.log(`Retained packed Studio host fixture: ${fixtureRoot}`);
@@ -117,8 +121,8 @@ async function createConsumerAsync(consumerRoot: string, tarballPath: string): P
       "await import('@ankhorage/studio/host');\n",
     ),
     writeFile(
-      path.join(consumerRoot, 'apm-import.mjs'),
-      "const { default: extension } = await import('@ankhorage/studio/apm');\nif (extension.protocolVersion !== 1) throw new Error('Invalid Studio APM extension.');\n",
+      path.join(consumerRoot, 'apm-import.ts'),
+      await readFile(new URL('../../../scripts/apm-owner-consumer.ts', import.meta.url), 'utf8'),
     ),
     writeFile(
       path.join(consumerRoot, 'index.ts'),
@@ -197,7 +201,11 @@ function isWithin(target: string, parent: string): boolean {
 }
 
 /*** Import and typecheck the packed Studio host and APM boundaries from the external consumer fixture. */
-async function runConsumerChecksAsync(consumerRoot: string, cacheRoot: string): Promise<void> {
+async function runConsumerChecksAsync(
+  consumerRoot: string,
+  cacheRoot: string,
+  integrity: string,
+): Promise<void> {
   const options = {
     command: 'bun',
     cwd: consumerRoot,
@@ -211,8 +219,10 @@ async function runConsumerChecksAsync(consumerRoot: string, cacheRoot: string): 
   });
   await runAcceptanceCommandAsync({
     ...options,
-    args: ['apm-import.mjs'],
-    label: 'Import packed Studio APM extension',
+    command: 'node',
+    args: ['apm-import.ts'],
+    env: { BUN_INSTALL_CACHE_DIR: cacheRoot, STUDIO_ARTIFACT_INTEGRITY: integrity },
+    label: 'Verify headless packed Studio APM owner under Node',
   });
   await runAcceptanceCommandAsync({
     ...options,

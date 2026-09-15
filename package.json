@@ -167,7 +167,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "typecheck": "bun run check-types",
     "dev": "bun run --no-orphans dev:host & bun run --no-orphans dev:studio",
     "dev:studio": "bun install --cwd apps/studio --frozen-lockfile && bun run --cwd apps/studio web",
     "typecheck:studio": "bun install --cwd apps/studio --frozen-lockfile && bun run --cwd apps/studio typecheck",
@@ -196,7 +196,10 @@
     "version-packages": "ankhorage-changeset version",
     "dev:host": "bun src/host/http/standalone.ts",
     "test:host-smoke": "bun test src/host/hostLifecycle.smoke.test.ts",
-    "knip:check": "ankhorage-knip"
+    "knip:check": "ankhorage-knip",
+    "test:apm": "bun test src/features/project-updates/adapters/inbound/studioUpdateExtension.test.ts",
+    "check-types": "tsc --noEmit -p tsconfig.json",
+    "test:apm:consumer": "node scripts/apm-owner-consumer.ts"
   },
   "keywords": [
     "ankhorage",
@@ -260,7 +263,7 @@
   },
   "devDependencies": {
     "@ankhorage/ankh": "^0.8.11",
-    "@ankhorage/devtools": "^1.14.0",
+    "@ankhorage/devtools": "^1.15.0",
     "@ankhorage/paradox": "^0.1.24",
     "@types/bun": "^1.4.1",
     "@types/node": "^24.13.3",

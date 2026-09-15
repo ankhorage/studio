@@ -1672,6 +1672,14 @@ Source: `src/index.ts:244:1`
 | saveStatus           | property | `StudioSaveStatus`    | yes      |             |
 | sessionId            | property | `string \| undefined` | no       |             |
 
+## studioUpdateExtension
+
+Kind: `value`
+Module: `src/features/project-updates/adapters/inbound/studioUpdateExtension.ts`
+Source: `src/features/project-updates/adapters/inbound/studioUpdateExtension.ts:22:14`
+
+Expose Studio's trusted package-policy projection through the public APM extension contract.
+
 ## StudioUrlMediaAssetResult
 
 Kind: `unknown`
