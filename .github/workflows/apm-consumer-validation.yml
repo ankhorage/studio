@@ -1,0 +1,82 @@
+name: APM consumer validation
+
+on:
+  push:
+    branches: [fix/500-apm-complete-graph-consumer]
+    paths: [.github/workflows/apm-consumer-validation.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: studio-complete-graph-consumer
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/500-apm-complete-graph-consumer
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Adopt the verified published APM producer
+        run: |
+          npm view @ankhorage/apm@0.8.0 version --json > "$RUNNER_TEMP/apm-version.json"
+          node -e "if(require(process.argv[1])!=='0.8.0')throw Error('Producer is not published');" "$RUNNER_TEMP/apm-version.json"
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import {readFile,writeFile} from 'node:fs/promises';
+          const p=JSON.parse(await readFile('package.json','utf8'));
+          assert.equal(p.dependencies['@ankhorage/apm'],'^0.6.0');
+          const updated={...p,dependencies:{...p.dependencies,'@ankhorage/apm':'^0.8.0'}};
+          await writeFile('package.json',JSON.stringify(updated,null,2)+'\n');
+          await writeFile('.changeset/apm-complete-graph-consumer.md',"---\n'@ankhorage/studio': patch\n---\n\nAdopt the released APM core with complete nested Bun graph inspection and bounded, deduplicated registry availability so Studio update planning no longer inherits the 64-package limit.\n");
+          JS
+          bun install --ignore-scripts
+          bun install --frozen-lockfile --ignore-scripts
+          rm .github/workflows/apm-consumer-validation.yml
+          git add package.json bun.lock .changeset/apm-complete-graph-consumer.md
+      - name: Run canonical Studio checks
+        run: |
+          bun run build
+          bun run check-types
+          bun run lint
+          bun run knip:check
+          bun run changeset:status
+          bun run docs
+          bun run format
+          bun run test:apm
+          bun run test
+          bun run format:check
+          ./node_modules/.bin/ankhorage-apm-release validate . --allow-owner-code
+      - name: Validate the cold packed Studio public boundaries
+        run: |
+          bun run test:acceptance:packed-studio-host
+      - name: Preserve validation evidence and commit only the consumer change
+        run: |
+          mkdir -p "$RUNNER_TEMP/consumer-proof"
+          cp package.json bun.lock "$RUNNER_TEMP/consumer-proof/"
+          git diff --check
+          git add --all
+          git restore --source=HEAD --staged --worktree -- .github/workflows
+          test -z "$(git diff --cached --name-only -- .github/workflows)"
+          git diff --cached --binary > "$RUNNER_TEMP/consumer-proof/validated.patch"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix: consume the released complete-graph APM core' -m 'Refs #500' -m 'Producer: ankhorage/apm#18 and ankhorage/apm#19; roadmap: ankhorage/apm#1'
+          git push origin HEAD:refs/heads/fix/500-apm-complete-graph-consumer
+          echo "Validated consumer: $(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: studio-complete-graph-apm-consumer
+          path: ${{ runner.temp }}/consumer-proof/
+          retention-days: 14
+          if-no-files-found: error
