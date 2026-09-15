@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.7.1",
+      "value": "v2.7.2",
       "color": "cb3837"
     },
     {
@@ -213,6 +213,7 @@
       "dependencies": [
         "src/app/workspace/WorkspacePrimitives.tsx",
         "src/app/workspace/workspaceRouter.ts",
+        "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
         "src/hooks/useProjects.ts",
         "src/workspacePlatform.ts"
       ],
@@ -762,6 +763,17 @@
       "exports": ["createStudioProjectInfraLifecycle", "StudioProjectInfraLifecycle"]
     },
     {
+      "path": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/app/workspace/WorkspacePrimitives.tsx",
+        "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "src/types/project-update-dashboard.ts"
+      ],
+      "exports": ["ProjectUpdateDashboardPanel"]
+    },
+    {
       "path": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -795,6 +807,26 @@
         "src/types/project-updates.ts"
       ],
       "exports": ["studioUpdateExtension"]
+    },
+    {
+      "path": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/application/createProjectUpdateDashboardState.ts",
+        "src/features/project-updates/application/reduceProjectUpdateDashboardState.ts",
+        "src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts",
+        "src/features/project-updates/utils/readProjectUpdateOperationId.ts",
+        "src/types/project-update-dashboard.ts"
+      ],
+      "exports": ["useProjectUpdateDashboard"]
+    },
+    {
+      "path": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/application/ports/outbound/ProjectUpdateHostPort.ts"
+      ],
+      "exports": ["createProjectUpdateHostHttpAdapter"]
     },
     {
       "path": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
@@ -847,6 +879,12 @@
       ]
     },
     {
+      "path": "src/features/project-updates/application/createProjectUpdateDashboardState.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/types/project-update-dashboard.ts"],
+      "exports": ["createProjectUpdateDashboardState"]
+    },
+    {
       "path": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -856,6 +894,29 @@
         "src/features/project-updates/domain/pendingModuleLifecycleState.ts"
       ],
       "exports": ["PendingModuleLifecyclePlanSlice", "planPendingModuleLifecycleAsync"]
+    },
+    {
+      "path": "src/features/project-updates/application/ports/outbound/ProjectUpdateHostPort.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ProjectUpdateHostPort"]
+    },
+    {
+      "path": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/application/ports/outbound/ProjectUpdateHostPort.ts",
+        "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/features/project-updates/application/ProjectUpdateDashboardService.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/application/ports/outbound/ProjectUpdateHostPort.ts"
+      ],
+      "exports": ["ProjectUpdateDashboardService"]
     },
     {
       "path": "src/features/project-updates/application/ProjectUpdateService.test.ts",
@@ -868,6 +929,39 @@
       "isEntrypoint": false,
       "dependencies": ["src/types/project-updates.ts"],
       "exports": ["ProjectUpdateService"]
+    },
+    {
+      "path": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/application/createProjectUpdateDashboardState.ts",
+        "src/features/project-updates/application/reduceProjectUpdateDashboardState.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/features/project-updates/application/reduceProjectUpdateDashboardState.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/application/createProjectUpdateDashboardState.ts",
+        "src/types/project-update-dashboard.ts"
+      ],
+      "exports": ["reduceProjectUpdateDashboardState"]
+    },
+    {
+      "path": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/application/createProjectUpdateDashboardState.ts",
+        "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/types/project-update-dashboard.ts"],
+      "exports": ["resolveProjectUpdateDashboardPresentation"]
     },
     {
       "path": "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
@@ -896,6 +990,16 @@
         "src/features/project-updates/domain/pendingModulePlanStep.ts"
       ],
       "exports": ["createStudioProjectUpdateApplyOwnerStepPort"]
+    },
+    {
+      "path": "src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/core/constants.ts",
+        "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
+        "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      ],
+      "exports": ["createStudioProjectUpdateDashboardService"]
     },
     {
       "path": "src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts",
@@ -1020,6 +1124,12 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["readReviewedPendingModuleStep", "ReviewedPendingModuleStep"]
+    },
+    {
+      "path": "src/features/project-updates/utils/readProjectUpdateOperationId.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["readProjectUpdateOperationId"]
     },
     {
       "path": "src/features/projects/adapters/outbound/ProjectGenerationStateStore.test.ts",
@@ -4276,6 +4386,16 @@
         "StudioRuntimeProjectionReason",
         "StudioRuntimeProjectionState",
         "StudioRuntimeProjectionStatus"
+      ]
+    },
+    {
+      "path": "src/types/project-update-dashboard.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "ProjectUpdateDashboardEvent",
+        "ProjectUpdateDashboardState",
+        "ProjectUpdatePermissionId"
       ]
     },
     {
@@ -10998,7 +11118,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/ProjectDetailScreen.tsx",
-        "line": 21,
+        "line": 22,
         "column": 1
       }
     },
@@ -11007,7 +11127,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/ProjectDetailScreen.tsx",
-        "line": 39,
+        "line": 38,
         "column": 3
       }
     },
@@ -11016,7 +11136,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/ProjectDetailScreen.tsx",
-        "line": 57,
+        "line": 56,
         "column": 9
       }
     },
@@ -11025,7 +11145,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/ProjectDetailScreen.tsx",
-        "line": 74,
+        "line": 73,
         "column": 9
       }
     },
@@ -11034,7 +11154,7 @@
       "description": "Resolve the active project ID from Expo Router params.",
       "sourceLocation": {
         "filePath": "src/app/ProjectDetailScreen.tsx",
-        "line": 214,
+        "line": 189,
         "column": 1
       }
     },
@@ -11043,7 +11163,7 @@
       "description": "Normalize one scalar-or-array Expo Router parameter.",
       "sourceLocation": {
         "filePath": "src/app/ProjectDetailScreen.tsx",
-        "line": 220,
+        "line": 195,
         "column": 1
       }
     },
@@ -12668,6 +12788,96 @@
       }
     },
     {
+      "name": "ProjectUpdateDashboardPanel",
+      "description": "Render the project-scoped APM inspect, review, apply/recovery, and verify Dashboard lifecycle.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "StatusSection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "line": 119,
+        "column": 1
+      }
+    },
+    {
+      "name": "PlanSection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "line": 162,
+        "column": 1
+      }
+    },
+    {
+      "name": "ExecutionSection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "line": 231,
+        "column": 1
+      }
+    },
+    {
+      "name": "RecoverySection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "line": 264,
+        "column": 1
+      }
+    },
+    {
+      "name": "VerificationSection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "line": 308,
+        "column": 1
+      }
+    },
+    {
+      "name": "DetailItems",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "line": 335,
+        "column": 1
+      }
+    },
+    {
+      "name": "ReasonItems",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "line": 360,
+        "column": 1
+      }
+    },
+    {
+      "name": "EffectItems",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "line": 380,
+        "column": 1
+      }
+    },
+    {
+      "name": "permissionSelection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "line": 397,
+        "column": 1
+      }
+    },
+    {
       "name": "createServer",
       "description": "Create one isolated Fastify fixture around a fake APM lifecycle port.",
       "sourceLocation": {
@@ -13028,6 +13238,69 @@
       }
     },
     {
+      "name": "useProjectUpdateDashboard",
+      "description": "Bind one selected project to the authorized Dashboard APM lifecycle and its reviewed state.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "line": 11,
+        "column": 1
+      }
+    },
+    {
+      "name": "selectionToPermissions",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "line": 113,
+        "column": 1
+      }
+    },
+    {
+      "name": "readErrorMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "line": 123,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProjectUpdateHostHttpAdapter",
+      "description": "Create the browser-safe outbound adapter for Studio's project-scoped APM host routes.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "requestJsonAsync",
+      "description": "Execute one bounded Studio host request and preserve structured APM results as untrusted JSON.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
+        "line": 42,
+        "column": 1
+      }
+    },
+    {
+      "name": "readResponseJsonAsync",
+      "description": "Read a response body without turning an invalid error payload into a second exception.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
+        "line": 58,
+        "column": 1
+      }
+    },
+    {
+      "name": "readFailureMessage",
+      "description": "Read the bounded host error message without echoing arbitrary response values.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
+        "line": 67,
+        "column": 1
+      }
+    },
+    {
       "name": "getGeneratedPackagePolicy",
       "description": "Return Studio-owned generated-app dependency policy from this exact package artifact.",
       "sourceLocation": {
@@ -13244,6 +13517,15 @@
       }
     },
     {
+      "name": "createProjectUpdateDashboardState",
+      "description": "Create isolated Dashboard APM lifecycle state for one selected Studio project.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/createProjectUpdateDashboardState.ts",
+        "line": 4,
+        "column": 1
+      }
+    },
+    {
       "name": "planPendingModuleLifecycleAsync",
       "description": "Plan reviewed Orchestrator removals plus APM-native Studio lifecycle file finalization.",
       "sourceLocation": {
@@ -13370,12 +13652,156 @@
       }
     },
     {
+      "name": "createHostPort",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts",
+        "line": 62,
+        "column": 1
+      }
+    },
+    {
+      "name": "requireProjectId",
+      "description": "Reject an empty project identity before invoking the host boundary.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts",
+        "line": 65,
+        "column": 1
+      }
+    },
+    {
+      "name": "requireOperationId",
+      "description": "Reject an empty durable operation identity before resume or verification.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts",
+        "line": 72,
+        "column": 1
+      }
+    },
+    {
       "name": "createOwnerEvidencePort",
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/project-updates/application/ProjectUpdateService.test.ts",
         "line": 16,
         "column": 7
+      }
+    },
+    {
+      "name": "reduceProjectUpdateDashboardState",
+      "description": "Reduce Dashboard APM lifecycle events while invalidating reviewed plans on fresh evidence.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveProjectUpdateDashboardPresentation",
+      "description": "Resolve untrusted structured APM host results into the bounded Dashboard presentation model.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStatus",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "line": 15,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolvePlan",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "line": 54,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveExecution",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "line": 95,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveVerification",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "line": 112,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveEffect",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "line": 130,
+        "column": 1
+      }
+    },
+    {
+      "name": "readReasonRows",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "line": 139,
+        "column": 1
+      }
+    },
+    {
+      "name": "isOperation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "line": 147,
+        "column": 1
+      }
+    },
+    {
+      "name": "readRecords",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "line": 154,
+        "column": 1
+      }
+    },
+    {
+      "name": "readStrings",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "line": 158,
+        "column": 1
+      }
+    },
+    {
+      "name": "readString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "line": 164,
+        "column": 1
+      }
+    },
+    {
+      "name": "readOptionalString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "line": 168,
+        "column": 1
       }
     },
     {
@@ -13492,6 +13918,15 @@
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
         "line": 227,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioProjectUpdateDashboardService",
+      "description": "Compose Dashboard APM lifecycle orchestration with Studio's authorized HTTP host adapter.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts",
+        "line": 6,
         "column": 1
       }
     },
@@ -13870,6 +14305,15 @@
       "sourceLocation": {
         "filePath": "src/features/project-updates/domain/pendingModulePlanStep.ts",
         "line": 31,
+        "column": 1
+      }
+    },
+    {
+      "name": "readProjectUpdateOperationId",
+      "description": "Read a durable APM operation id from one structured apply/resume result.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/utils/readProjectUpdateOperationId.ts",
+        "line": 4,
         "column": 1
       }
     },
@@ -28487,6 +28931,11 @@
       },
       {
         "fromPath": "src/app/ProjectDetailScreen.tsx",
+        "toPath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromPath": "src/app/ProjectDetailScreen.tsx",
         "toPath": "src/hooks/useProjects.ts",
         "sourcePath": "src/app/ProjectDetailScreen.tsx"
       },
@@ -31226,6 +31675,11 @@
         "sourcePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts"
       },
       {
+        "fromPath": "src/features/project-updates/application/createProjectUpdateDashboardState.ts",
+        "toPath": "src/types/project-update-dashboard.ts",
+        "sourcePath": "src/features/project-updates/application/createProjectUpdateDashboardState.ts"
+      },
+      {
         "fromPath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts",
         "toPath": "src/contractGuards.ts",
         "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
@@ -31246,6 +31700,21 @@
         "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
       },
       {
+        "fromPath": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts",
+        "toPath": "src/features/project-updates/application/ports/outbound/ProjectUpdateHostPort.ts",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts",
+        "toPath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts",
+        "toPath": "src/features/project-updates/application/ports/outbound/ProjectUpdateHostPort.ts",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      },
+      {
         "fromPath": "src/features/project-updates/application/ProjectUpdateService.test.ts",
         "toPath": "src/features/project-updates/application/ProjectUpdateService.ts",
         "sourcePath": "src/features/project-updates/application/ProjectUpdateService.test.ts"
@@ -31254,6 +31723,41 @@
         "fromPath": "src/features/project-updates/application/ProjectUpdateService.ts",
         "toPath": "src/types/project-updates.ts",
         "sourcePath": "src/features/project-updates/application/ProjectUpdateService.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts",
+        "toPath": "src/features/project-updates/application/createProjectUpdateDashboardState.ts",
+        "sourcePath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts",
+        "toPath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.ts",
+        "sourcePath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.ts",
+        "toPath": "src/types/project-update-dashboard.ts",
+        "sourcePath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.ts",
+        "toPath": "src/features/project-updates/application/createProjectUpdateDashboardState.ts",
+        "sourcePath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts",
+        "toPath": "src/features/project-updates/application/createProjectUpdateDashboardState.ts",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts",
+        "toPath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "toPath": "src/types/project-update-dashboard.ts",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
       },
       {
         "fromPath": "src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts",
@@ -31294,6 +31798,21 @@
         "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
         "toPath": "src/features/project-updates/domain/pendingModulePlanStep.ts",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts",
+        "toPath": "src/core/constants.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts",
+        "toPath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts"
       },
       {
         "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts",
@@ -32486,6 +33005,26 @@
         "sourcePath": "src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.test.ts"
       },
       {
+        "fromPath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "toPath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "sourcePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "toPath": "src/types/project-update-dashboard.ts",
+        "sourcePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "toPath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "sourcePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "toPath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "sourcePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx"
+      },
+      {
         "fromPath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts",
         "toPath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts",
         "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts"
@@ -32524,6 +33063,36 @@
         "fromPath": "src/features/project-updates/adapters/inbound/studioUpdateExtension.ts",
         "toPath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
         "sourcePath": "src/features/project-updates/adapters/inbound/studioUpdateExtension.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toPath": "src/types/project-update-dashboard.ts",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toPath": "src/features/project-updates/application/createProjectUpdateDashboardState.ts",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toPath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.ts",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toPath": "src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toPath": "src/features/project-updates/utils/readProjectUpdateOperationId.ts",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
+        "toPath": "src/features/project-updates/application/ports/outbound/ProjectUpdateHostPort.ts",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"
       },
       {
         "fromPath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
@@ -39690,18 +40259,6 @@
         "fromSymbol": "ProjectDetailScreen",
         "toSymbol": "formatDate",
         "callExpression": "formatDate",
-        "sourcePath": "src/app/ProjectDetailScreen.tsx"
-      },
-      {
-        "fromSymbol": "src/app/ProjectDetailScreen.tsx",
-        "toSymbol": "syncProject",
-        "callExpression": "syncProject",
-        "sourcePath": "src/app/ProjectDetailScreen.tsx"
-      },
-      {
-        "fromSymbol": "src/app/ProjectDetailScreen.tsx",
-        "toSymbol": "installProjectPackages",
-        "callExpression": "installProjectPackages",
         "sourcePath": "src/app/ProjectDetailScreen.tsx"
       },
       {
@@ -57645,6 +58202,132 @@
         "sourcePath": "src/features/project-updates/application/planPendingModuleLifecycleAsync.ts"
       },
       {
+        "fromSymbol": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts",
+        "toSymbol": "createHostPort",
+        "callExpression": "createHostPort",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts",
+        "toSymbol": "inspectAsync",
+        "callExpression": "service.inspectAsync",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts",
+        "toSymbol": "planAsync",
+        "callExpression": "service.planAsync",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts",
+        "toSymbol": "applyAsync",
+        "callExpression": "service.applyAsync",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts",
+        "toSymbol": "resumeAsync",
+        "callExpression": "service.resumeAsync",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts",
+        "toSymbol": "verifyAsync",
+        "callExpression": "service.verifyAsync",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.test.ts"
+      },
+      {
+        "fromSymbol": "inspectAsync",
+        "toSymbol": "statusAsync",
+        "callExpression": "this.host.statusAsync",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      },
+      {
+        "fromSymbol": "inspectAsync",
+        "toSymbol": "requireProjectId",
+        "callExpression": "requireProjectId",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      },
+      {
+        "fromSymbol": "planAsync",
+        "toSymbol": "planAsync",
+        "callExpression": "this.host.planAsync",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      },
+      {
+        "fromSymbol": "planAsync",
+        "toSymbol": "requireProjectId",
+        "callExpression": "requireProjectId",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      },
+      {
+        "fromSymbol": "applyAsync",
+        "toSymbol": "applyAsync",
+        "callExpression": "this.host.applyAsync",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      },
+      {
+        "fromSymbol": "applyAsync",
+        "toSymbol": "requireProjectId",
+        "callExpression": "requireProjectId",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      },
+      {
+        "fromSymbol": "resumeAsync",
+        "toSymbol": "resumeAsync",
+        "callExpression": "this.host.resumeAsync",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      },
+      {
+        "fromSymbol": "resumeAsync",
+        "toSymbol": "requireProjectId",
+        "callExpression": "requireProjectId",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      },
+      {
+        "fromSymbol": "resumeAsync",
+        "toSymbol": "requireOperationId",
+        "callExpression": "requireOperationId",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      },
+      {
+        "fromSymbol": "verifyAsync",
+        "toSymbol": "verifyAsync",
+        "callExpression": "this.host.verifyAsync",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      },
+      {
+        "fromSymbol": "verifyAsync",
+        "toSymbol": "requireProjectId",
+        "callExpression": "requireProjectId",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      },
+      {
+        "fromSymbol": "verifyAsync",
+        "toSymbol": "requireOperationId",
+        "callExpression": "requireOperationId",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+      },
+      {
         "fromSymbol": "src/features/project-updates/application/ProjectUpdateService.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -57757,6 +58440,258 @@
         "toSymbol": "verifyProjectAsync",
         "callExpression": "verifyProjectAsync",
         "sourcePath": "src/features/project-updates/application/ProjectUpdateService.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts",
+        "toSymbol": "createProjectUpdateDashboardState",
+        "callExpression": "createProjectUpdateDashboardState",
+        "sourcePath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts",
+        "toSymbol": "reduceProjectUpdateDashboardState",
+        "callExpression": "reduceProjectUpdateDashboardState",
+        "sourcePath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.test.ts"
+      },
+      {
+        "fromSymbol": "reduceProjectUpdateDashboardState",
+        "toSymbol": "createProjectUpdateDashboardState",
+        "callExpression": "createProjectUpdateDashboardState",
+        "sourcePath": "src/features/project-updates/application/reduceProjectUpdateDashboardState.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts",
+        "toSymbol": "resolveProjectUpdateDashboardPresentation",
+        "callExpression": "resolveProjectUpdateDashboardPresentation",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts",
+        "toSymbol": "createProjectUpdateDashboardState",
+        "callExpression": "createProjectUpdateDashboardState",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.test.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectUpdateDashboardPresentation",
+        "toSymbol": "resolveStatus",
+        "callExpression": "resolveStatus",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectUpdateDashboardPresentation",
+        "toSymbol": "resolvePlan",
+        "callExpression": "resolvePlan",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectUpdateDashboardPresentation",
+        "toSymbol": "resolveExecution",
+        "callExpression": "resolveExecution",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectUpdateDashboardPresentation",
+        "toSymbol": "resolveVerification",
+        "callExpression": "resolveVerification",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveStatus",
+        "toSymbol": "isOperation",
+        "callExpression": "isOperation",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveStatus",
+        "toSymbol": "readRecords",
+        "callExpression": "readRecords",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "toSymbol": "readOptionalString",
+        "callExpression": "readOptionalString",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "toSymbol": "readReasonRows",
+        "callExpression": "readReasonRows",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveStatus",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveStatus",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveStatus",
+        "toSymbol": "readReasonRows",
+        "callExpression": "readReasonRows",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolvePlan",
+        "toSymbol": "isOperation",
+        "callExpression": "isOperation",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolvePlan",
+        "toSymbol": "readRecords",
+        "callExpression": "readRecords",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts",
+        "toSymbol": "readStrings",
+        "callExpression": "readStrings",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolvePlan",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolvePlan",
+        "toSymbol": "readReasonRows",
+        "callExpression": "readReasonRows",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveExecution",
+        "toSymbol": "isOperation",
+        "callExpression": "isOperation",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveExecution",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveExecution",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveExecution",
+        "toSymbol": "readReasonRows",
+        "callExpression": "readReasonRows",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveExecution",
+        "toSymbol": "readRecords",
+        "callExpression": "readRecords",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveVerification",
+        "toSymbol": "isOperation",
+        "callExpression": "isOperation",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveVerification",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveVerification",
+        "toSymbol": "readRecords",
+        "callExpression": "readRecords",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveVerification",
+        "toSymbol": "readReasonRows",
+        "callExpression": "readReasonRows",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveEffect",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "resolveEffect",
+        "toSymbol": "readOptionalString",
+        "callExpression": "readOptionalString",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "readReasonRows",
+        "toSymbol": "readRecords",
+        "callExpression": "readRecords",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
+      },
+      {
+        "fromSymbol": "isOperation",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts"
       },
       {
         "fromSymbol": "applyCurrentGeneratedPackagePolicy",
@@ -57919,6 +58854,12 @@
         "toSymbol": "failed",
         "callExpression": "failed",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
+      },
+      {
+        "fromSymbol": "createStudioProjectUpdateDashboardService",
+        "toSymbol": "createProjectUpdateHostHttpAdapter",
+        "callExpression": "createProjectUpdateHostHttpAdapter",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts"
       },
       {
         "fromSymbol": "inspectExtensionEvidenceAsync",
@@ -58423,6 +59364,12 @@
         "toSymbol": "readEvidenceDigest",
         "callExpression": "readEvidenceDigest",
         "sourcePath": "src/features/project-updates/domain/pendingModulePlanStep.ts"
+      },
+      {
+        "fromSymbol": "readProjectUpdateOperationId",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/utils/readProjectUpdateOperationId.ts"
       },
       {
         "fromSymbol": "src/features/selection/adapters/nativeElementMeasurement.test.ts",
@@ -63585,6 +64532,60 @@
         "sourcePath": "src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.ts"
       },
       {
+        "fromSymbol": "ProjectUpdateDashboardPanel",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx"
+      },
+      {
+        "fromSymbol": "ProjectUpdateDashboardPanel",
+        "toSymbol": "useProjectUpdateDashboard",
+        "callExpression": "useProjectUpdateDashboard",
+        "sourcePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx"
+      },
+      {
+        "fromSymbol": "ProjectUpdateDashboardPanel",
+        "toSymbol": "resolveProjectUpdateDashboardPresentation",
+        "callExpression": "resolveProjectUpdateDashboardPresentation",
+        "sourcePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "toSymbol": "inspectAsync",
+        "callExpression": "inspectAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "toSymbol": "planAsync",
+        "callExpression": "planAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "toSymbol": "applyAsync",
+        "callExpression": "applyAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "toSymbol": "resumeAsync",
+        "callExpression": "resumeAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx",
+        "toSymbol": "verifyAsync",
+        "callExpression": "verifyAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx"
+      },
+      {
+        "fromSymbol": "PlanSection",
+        "toSymbol": "permissionSelection",
+        "callExpression": "permissionSelection",
+        "sourcePath": "src/features/project-updates/adapters/inbound/ProjectUpdateDashboardPanel.tsx"
+      },
+      {
         "fromSymbol": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts",
         "toSymbol": "afterEach",
         "callExpression": "afterEach",
@@ -64273,6 +65274,138 @@
         "toSymbol": "createHash",
         "callExpression": "createHash",
         "sourcePath": "src/features/project-updates/adapters/inbound/studioUpdateExtension.ts"
+      },
+      {
+        "fromSymbol": "useProjectUpdateDashboard",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toSymbol": "createStudioProjectUpdateDashboardService",
+        "callExpression": "createStudioProjectUpdateDashboardService",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromSymbol": "useProjectUpdateDashboard",
+        "toSymbol": "useReducer",
+        "callExpression": "useReducer",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromSymbol": "useProjectUpdateDashboard",
+        "toSymbol": "useEffect",
+        "callExpression": "useEffect",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toSymbol": "dispatch",
+        "callExpression": "dispatch",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromSymbol": "useProjectUpdateDashboard",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toSymbol": "inspectAsync",
+        "callExpression": "service.inspectAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toSymbol": "readErrorMessage",
+        "callExpression": "readErrorMessage",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toSymbol": "planAsync",
+        "callExpression": "service.planAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toSymbol": "applyAsync",
+        "callExpression": "service.applyAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toSymbol": "readProjectUpdateOperationId",
+        "callExpression": "readProjectUpdateOperationId",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toSymbol": "resumeAsync",
+        "callExpression": "service.resumeAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toSymbol": "verifyAsync",
+        "callExpression": "service.verifyAsync",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts",
+        "toSymbol": "selectionToPermissions",
+        "callExpression": "selectionToPermissions",
+        "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
+      },
+      {
+        "fromSymbol": "statusAsync",
+        "toSymbol": "requestJsonAsync",
+        "callExpression": "requestJsonAsync",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"
+      },
+      {
+        "fromSymbol": "planAsync",
+        "toSymbol": "requestJsonAsync",
+        "callExpression": "requestJsonAsync",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"
+      },
+      {
+        "fromSymbol": "applyAsync",
+        "toSymbol": "requestJsonAsync",
+        "callExpression": "requestJsonAsync",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"
+      },
+      {
+        "fromSymbol": "resumeAsync",
+        "toSymbol": "requestJsonAsync",
+        "callExpression": "requestJsonAsync",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"
+      },
+      {
+        "fromSymbol": "verifyAsync",
+        "toSymbol": "requestJsonAsync",
+        "callExpression": "requestJsonAsync",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"
+      },
+      {
+        "fromSymbol": "requestJsonAsync",
+        "toSymbol": "readResponseJsonAsync",
+        "callExpression": "readResponseJsonAsync",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"
+      },
+      {
+        "fromSymbol": "requestJsonAsync",
+        "toSymbol": "readFailureMessage",
+        "callExpression": "readFailureMessage",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"
+      },
+      {
+        "fromSymbol": "readFailureMessage",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"
       },
       {
         "fromSymbol": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
