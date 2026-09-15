@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.6.0",
+      "value": "v2.6.1",
       "color": "cb3837"
     },
     {
@@ -781,6 +781,28 @@
         "src/types/project-updates.ts"
       ],
       "exports": ["applyCurrentGeneratedPackagePolicy"]
+    },
+    {
+      "path": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts"
+      ],
+      "exports": ["createStudioProjectWriterProxy"]
+    },
+    {
+      "path": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["runWithStudioProjectWriterLockAsync"]
     },
     {
       "path": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts",
@@ -1910,6 +1932,7 @@
       "path": "src/host/orchestrator/moduleManager.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
         "src/host/modules/adminRuntime.ts",
         "src/host/modules/catalog.ts",
         "src/host/modules/runtime/LocalFsTargetAdapter.ts",
@@ -1962,6 +1985,7 @@
       "path": "src/host/orchestrator/projectManager.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
         "src/host/layout/layoutGenerator.ts",
         "src/host/manifestSystem/index.ts",
         "src/host/media/projectBundledMediaService.ts",
@@ -12540,6 +12564,60 @@
       }
     },
     {
+      "name": "createStudioProjectWriterProxy",
+      "description": "Wrap selected async Studio manager operations with the canonical APM project writer lock.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "isCallable",
+      "description": "Narrow an unknown property to a callable manager method.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
+        "line": 40,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveProjectId",
+      "description": "Resolve the project id from the two supported Studio manager mutation signatures.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
+        "line": 45,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProjectRootAsync",
+      "description": "Create one isolated existing project root for writer-lock behavior tests.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
+        "line": 106,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectRejectedMessageAsync",
+      "description": "Assert one project-writer operation rejects with the expected stable message fragment.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
+        "line": 111,
+        "column": 1
+      }
+    },
+    {
+      "name": "runWithStudioProjectWriterLockAsync",
+      "description": "Serialize one Studio project mutation through APM's canonical project writer lock.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts",
+        "line": 11,
+        "column": 1
+      }
+    },
+    {
       "name": "applyGeneratedPackagePolicy",
       "description": "Apply one explicit Studio package policy while preserving all user-owned package manifest entries.",
       "sourceLocation": {
@@ -16495,7 +16573,7 @@
       "description": "Narrow an unknown non-array object to a string-keyed record.\n@utility @ankhorage/utility/object",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/moduleManager.ts",
-        "line": 529,
+        "line": 546,
         "column": 1
       }
     },
@@ -16576,7 +16654,7 @@
       "description": "Require canonical deploy targets before project generation/synchronization.\n@todo Move deploy-target validation to the deploy/projects domain boundary rather than host/orchestrator.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 415,
+        "line": 431,
         "column": 1
       }
     },
@@ -16585,7 +16663,7 @@
       "description": "Report whether a filesystem path is accessible.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 429,
+        "line": 445,
         "column": 1
       }
     },
@@ -16594,7 +16672,7 @@
       "description": "Resolve the generated auth-provider mode from the manifest's global auth infrastructure ownership.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 439,
+        "line": 455,
         "column": 1
       }
     },
@@ -16603,7 +16681,7 @@
       "description": "Resolve the generated storage-provider mode when automatic storage should follow Supabase-owned auth/database infrastructure.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 448,
+        "line": 464,
         "column": 1
       }
     },
@@ -29132,6 +29210,11 @@
       },
       {
         "fromPath": "src/host/orchestrator/moduleManager.ts",
+        "toPath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/moduleManager.ts",
         "toPath": "src/manifestState.ts",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
@@ -29199,6 +29282,11 @@
         "fromPath": "src/host/orchestrator/projectGenerationState.test.ts",
         "toPath": "src/host/orchestrator/projectGenerationState.ts",
         "sourcePath": "src/host/orchestrator/projectGenerationState.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectManager.ts",
+        "toPath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
         "fromPath": "src/host/orchestrator/projectManager.ts",
@@ -30219,6 +30307,16 @@
         "fromPath": "src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts",
         "toPath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts",
         "sourcePath": "src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
+        "toPath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
+        "toPath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts",
+        "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts"
       },
       {
         "fromPath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts",
@@ -49021,6 +49119,18 @@
         "sourcePath": "src/host/orchestrator/infraSession.ts"
       },
       {
+        "fromSymbol": "ModuleManager",
+        "toSymbol": "createStudioProjectWriterProxy",
+        "callExpression": "createStudioProjectWriterProxy",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectRoot",
+        "toSymbol": "getAppPath",
+        "callExpression": "this.getAppPath",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
         "fromSymbol": "listModules",
         "toSymbol": "getAppPath",
         "callExpression": "this.getAppPath",
@@ -49930,6 +50040,18 @@
         "fromSymbol": "ProjectManager",
         "toSymbol": "getAppsRoot",
         "callExpression": "getAppsRoot",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "ProjectManager",
+        "toSymbol": "createStudioProjectWriterProxy",
+        "callExpression": "createStudioProjectWriterProxy",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectRoot",
+        "toSymbol": "getProjectPath",
+        "callExpression": "getProjectPath",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -56771,6 +56893,114 @@
         "toSymbol": "getGeneratedPackagePolicy",
         "callExpression": "getGeneratedPackagePolicy",
         "sourcePath": "src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts"
+      },
+      {
+        "fromSymbol": "get",
+        "toSymbol": "isCallable",
+        "callExpression": "isCallable",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
+        "toSymbol": "resolveProjectId",
+        "callExpression": "resolveProjectId",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
+        "toSymbol": "resolveProjectRoot",
+        "callExpression": "options.resolveProjectRoot",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts",
+        "toSymbol": "runWithStudioProjectWriterLockAsync",
+        "callExpression": "runWithStudioProjectWriterLockAsync",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectId",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectWriterProxy.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
+        "toSymbol": "createProjectRootAsync",
+        "callExpression": "createProjectRootAsync",
+        "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
+        "toSymbol": "createNodeApplyLockPort",
+        "callExpression": "createNodeApplyLockPort",
+        "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
+        "toSymbol": "runWithStudioProjectWriterLockAsync",
+        "callExpression": "runWithStudioProjectWriterLockAsync",
+        "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
+        "toSymbol": "expectRejectedMessageAsync",
+        "callExpression": "expectRejectedMessageAsync",
+        "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts"
+      },
+      {
+        "fromSymbol": "createProjectRootAsync",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts"
+      },
+      {
+        "fromSymbol": "createProjectRootAsync",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts"
+      },
+      {
+        "fromSymbol": "expectRejectedMessageAsync",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts",
+        "toSymbol": "createNodeApplyLockPort",
+        "callExpression": "createNodeApplyLockPort",
+        "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts"
+      },
+      {
+        "fromSymbol": "runWithStudioProjectWriterLockAsync",
+        "toSymbol": "writeAsync",
+        "callExpression": "writeAsync",
+        "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts"
+      },
+      {
+        "fromSymbol": "runWithStudioProjectWriterLockAsync",
+        "toSymbol": "randomUUID",
+        "callExpression": "randomUUID",
+        "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts"
       },
       {
         "fromSymbol": "src/features/selection/adapters/nativeElementMeasurement.test.ts",

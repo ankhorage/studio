@@ -48,9 +48,10 @@ lifecycle state, or infrastructure are current.
    the currently installed Studio and owner package metadata. This is valid as target-owner policy,
    but cannot be used as registry update discovery by an older host. The APM owner extension must bind
    policy to the selected target owner artifact/version.
-5. **Studio/APM writers are not yet serialized together.** Autosave, module lifecycle and package
-   reconciliation can mutate the project without the APM operation lock. Host integration must use
-   the same released APM writer boundary before update apply is exposed.
+5. **Studio/APM writers share the APM-owned project lock.** Studio #507 consumes the released
+   `@ankhorage/apm@0.7.0` Node writer boundary for autosave/persistence, module lifecycle and direct
+   project mutations. Nested Studio operations are re-entrant only within the owning async operation;
+   independent Studio requests and APM apply operations contend on the same project-root lock.
 6. **Pending module removal is explicit but hidden from APM.** `.ankh/pending.json` correctly records
    deferred work today; the Studio owner extension must project that pending work into APM status/plan
    rather than letting `syncProject` consume it as an unrelated hidden side effect.
@@ -71,11 +72,12 @@ lifecycle state, or infrastructure are current.
 
 ## Next implementation slice
 
-1. Add released `@ankhorage/apm` as the Studio host dependency.
-2. Introduce a Studio-owned APM feature/composition boundary rather than wiring APM into generic
-   `host/orchestrator` classes.
-3. Expose Studio target-owner package/projection policy through the released APM extension protocol.
-4. Project pending module lifecycle work into status/plan.
-5. Route host update operations through released APM lock/journal before replacing the direct package
-   update path.
-6. Only after behavior parity, remove obsolete sync/reconciliation aliases and update the Dashboard.
+1. Project pending module lifecycle work into APM status/plan instead of consuming it as a hidden
+   Studio sync side effect.
+2. Make runtime-relevant authoring actions maintain their required projections immediately or expose
+   explicit pending/failed projection state.
+3. Expose the composed APM lifecycle through authorized Studio host routes without introducing a second
+   update engine.
+4. Add the Dashboard status/plan/apply/verify flow on top of those host routes.
+5. After behavior parity and published-package acceptance, remove the obsolete `syncProject`
+   compatibility alias and any superseded direct update path.

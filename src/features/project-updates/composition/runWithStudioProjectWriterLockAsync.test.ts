@@ -88,7 +88,9 @@ test('independent concurrent Studio mutations still contend on the project write
     await entered.promise;
 
     await expectRejectedMessageAsync(
-      runWithStudioProjectWriterLockAsync(rootPath, 'second-write', () => Promise.resolve(undefined)),
+      runWithStudioProjectWriterLockAsync(rootPath, 'second-write', () =>
+        Promise.resolve(undefined),
+      ),
       'Another operation owns the project writer lock.',
     );
 

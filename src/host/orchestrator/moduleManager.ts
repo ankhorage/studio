@@ -53,7 +53,7 @@ export class ModuleManager {
     this.adapter = new LocalFsTargetAdapter();
     return createStudioProjectWriterProxy(this, {
       owner: 'module-manager',
-      firstArgumentProjectIdMethods: [
+      methods: [
         'installModule',
         'uninstallModule',
         'updateModuleConfig',
@@ -63,8 +63,8 @@ export class ModuleManager {
         'syncProjectRuntime',
         'saveProjectManifest',
         'rebuildRootLayout',
+        'syncProject',
       ],
-      objectArgumentProjectIdMethods: ['syncProject'],
       resolveProjectRoot: (projectId) => this.getAppPath(projectId),
     });
   }

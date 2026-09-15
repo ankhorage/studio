@@ -67,13 +67,11 @@ export class ProjectManager {
     };
     return createStudioProjectWriterProxy(this, {
       owner: 'project-manager',
-      firstArgumentProjectIdMethods: [
+      methods: [
         'deleteProject',
         'installProjectPackages',
         'connectProjectRepository',
         'regenerateInfrastructure',
-      ],
-      objectArgumentProjectIdMethods: [
         'persistProjectManifest',
         'saveProjectManifest',
         'syncProjectRuntime',

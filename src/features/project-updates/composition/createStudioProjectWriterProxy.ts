@@ -20,7 +20,8 @@ export function createStudioProjectWriterProxy<T extends object>(
   return new Proxy(target, {
     get(instance, property, receiver) {
       const value: unknown = Reflect.get(instance, property, receiver);
-      if (typeof property !== 'string' || !isCallable(value) || !methods.has(property)) return value;
+      if (typeof property !== 'string' || !isCallable(value) || !methods.has(property))
+        return value;
 
       return (...args: unknown[]) => {
         const projectId = resolveProjectId(property, args);
