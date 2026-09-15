@@ -3,9 +3,14 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import Fastify from 'fastify';
 
 import { isAppCategory, isAppManifest } from '../../contractGuards';
+import { registerProjectUpdateRoutes } from '../../features/project-updates/adapters/inbound/registerProjectUpdateRoutes';
+import { createStudioProjectUpdateService } from '../../features/project-updates/composition/createStudioProjectUpdateService';
 import { ProjectCreationValidationError } from '../../projectIdentity';
+import { ProjectDeployService } from '../deploy/ProjectDeployService';
+import { createStudioPendingModuleLifecyclePort } from '../orchestrator/createStudioPendingModuleLifecyclePort';
 import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
+import { getProjectPath } from '../orchestrator/projectPaths';
 import { upProjectInfrastructure } from '../orchestrator/studioInfraUp';
 import {
   getProjectTemplateSource,
@@ -38,17 +43,21 @@ function resolveProjectTemplateSelection(body: {
 }
 
 /***
- * Compose the Fastify Studio host by applying security middleware and registering project, template, infrastructure, runtime, media and module HTTP endpoints.
+ * Compose the Fastify Studio host by applying security middleware and registering project, template, infrastructure, runtime, project-update, media and module HTTP endpoints.
  * @todo Split the remaining inline project/template/infrastructure endpoints into domain-owned HTTP route adapters so this server remains composition/bootstrap only and can satisfy canonical function-size lint rules without local overrides.
  */
 export async function createStudioHostServer(args: {
   projectManager: ProjectManager;
   orchestrator: ModuleManager;
   projectRoot: string;
+  projectUpdateService?: ReturnType<typeof createStudioProjectUpdateService>;
   fastifyInstance?: FastifyInstance;
 }) {
   const { projectManager, orchestrator, projectRoot } = args;
   const fastify = args.fastifyInstance ?? Fastify({ logger: true });
+  const projectUpdateService =
+    args.projectUpdateService ??
+    createStudioProjectUpdateService({}, createStudioPendingModuleLifecyclePort());
 
   await fastify.register(cors, {
     origin: (origin, cb) => {
@@ -65,6 +74,14 @@ export async function createStudioHostServer(args: {
 
   registerProjectMediaRoutes(fastify, { projectManager, workspaceRoot: projectRoot });
   registerProjectRuntimeRoutes(fastify, { projectManager, workspaceRoot: projectRoot });
+  registerProjectUpdateRoutes(fastify, {
+    service: projectUpdateService,
+    resolveProjectRootAsync: async (projectId) => {
+      const projects = await projectManager.listProjects();
+      if (!projects.some((project) => project.id === projectId)) return undefined;
+      return getProjectPath(projectRoot, projectId);
+    },
+  });
 
   // --- PROJECT ROUTES ---
 
