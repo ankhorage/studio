@@ -1,5 +1,5 @@
 import type { ProjectStoreListingAssetLocation } from '@ankhorage/deploy/project';
-import { Button, Card, ConfirmDialog, Select, Text } from '@ankhorage/zora';
+import { Button, ButtonGroup, Card, Dialog, Select, Text } from '@ankhorage/zora';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
@@ -171,15 +171,21 @@ export function DeployStoreAssetAuthoringCard(props: {
           )}
         </View>
       ) : null}
-      <ConfirmDialog
+      <Dialog
         visible={confirmRemove}
         title="Remove store asset?"
         description="Remove the selected semantic asset location through the Deploy owner API?"
-        confirmLabel="Remove asset"
-        confirmColor="danger"
-        cancelLabel="Cancel"
-        onCancel={() => setConfirmRemove(false)}
-        onConfirm={() => void remove()}
+        onDismiss={() => setConfirmRemove(false)}
+        footer={
+          <ButtonGroup align="end" orientation="responsive">
+            <Button color="neutral" variant="ghost" onPress={() => setConfirmRemove(false)}>
+              Cancel
+            </Button>
+            <Button color="danger" onPress={() => void remove()}>
+              Remove asset
+            </Button>
+          </ButtonGroup>
+        }
       />
     </Card>
   );
