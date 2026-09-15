@@ -4,9 +4,10 @@ import type {
   ApmApplyStepPort,
 } from '@ankhorage/apm/types';
 
-import type { StudioPendingModuleLifecyclePort } from '../application/StudioPendingModuleLifecyclePort';
-import { readPendingModuleLifecycleStateAsync } from '../adapters/outbound/readPendingModuleLifecycleStateAsync';
 import { readCurrentStudioApmArtifactBindingAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
+import { readPendingModuleLifecycleStateAsync } from '../adapters/outbound/readPendingModuleLifecycleStateAsync';
+import { readStudioManifestDigestAsync } from '../adapters/outbound/readStudioManifestDigestAsync';
+import type { StudioPendingModuleLifecyclePort } from '../application/StudioPendingModuleLifecyclePort';
 import { readReviewedPendingModuleStep } from '../domain/pendingModulePlanStep';
 
 /*** Compose Studio pending-module execution around any pre-existing trusted owner step adapter. */
@@ -39,7 +40,7 @@ export function createStudioProjectUpdateApplyOwnerStepPort(
 type ReviewedStep = NonNullable<ReturnType<typeof readReviewedPendingModuleStep>>;
 type ApplyStepInput = Parameters<ApmApplyStepPort['observeAsync']>[0];
 
-/*** Observe exact pending/artifact preconditions before deciding whether one removal is already complete. */
+/*** Observe exact pending/manifest/artifact preconditions before one irreversible module effect. */
 async function observePendingModuleAsync(
   rootPath: string,
   reviewed: ReviewedStep,
@@ -49,6 +50,8 @@ async function observePendingModuleAsync(
   if (binding !== undefined) return binding;
   const pending = await pendingObservationAsync(rootPath, reviewed.pendingDigest);
   if (pending !== undefined) return pending;
+  const manifest = await manifestObservationAsync(rootPath, reviewed.manifestDigest);
+  if (manifest !== undefined) return manifest;
   const installed = await lifecycle.isModuleInstalledAsync(rootPath, reviewed.moduleId);
   if (installed === undefined) {
     return {
@@ -135,6 +138,29 @@ async function pendingObservationAsync(
     evidence: [expectedDigest, pending.state === 'valid' ? pending.digest : pending.state],
     reason: 'Studio pending module lifecycle state changed after the reviewed plan was created.',
   };
+}
+
+/*** Require the canonical manifest to remain byte-identical before irreversible Orchestrator effects. */
+async function manifestObservationAsync(
+  rootPath: string,
+  expectedDigest: string,
+): Promise<ApmApplyStepObservation | undefined> {
+  try {
+    const actualDigest = await readStudioManifestDigestAsync(rootPath);
+    return actualDigest === expectedDigest
+      ? undefined
+      : {
+          state: 'conflict',
+          evidence: [expectedDigest, actualDigest],
+          reason: 'Studio manifest changed after the reviewed pending-module plan was created.',
+        };
+  } catch (error) {
+    return {
+      state: 'unknown',
+      evidence: [error instanceof Error ? error.message : 'unknown manifest read failure'],
+      reason: 'Studio manifest cannot be read safely before the reviewed module removal.',
+    };
+  }
 }
 
 /*** Delegate an unrelated owner observation or remain explicitly unavailable. */
