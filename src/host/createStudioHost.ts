@@ -1,7 +1,6 @@
 import { createStudioProjectUpdateService } from '../features/project-updates/composition/createStudioProjectUpdateService';
 import { ProjectDeployService } from './deploy/ProjectDeployService';
 import { createStudioPendingModuleLifecyclePort } from './orchestrator/createStudioPendingModuleLifecyclePort';
-import { stopAllProjectInfraPortForwards } from './orchestrator/infraSession';
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
 
@@ -10,7 +9,7 @@ export interface CreateStudioHostOptions {
 }
 
 /***
- * Compose the Studio host edge from project, module, update, deploy, and infrastructure-session owners.
+ * Compose the Studio host edge from project, module, update, deploy, and infrastructure lifecycle owners.
  * @todo Keep this as thin host composition while moving domain services out of host-owned folders.
  */
 export function createStudioHost(options: CreateStudioHostOptions) {
@@ -30,10 +29,8 @@ export function createStudioHost(options: CreateStudioHostOptions) {
     moduleManager,
     projectUpdateService,
     projectDeployService,
-    /*** Close host-owned infrastructure sessions during Studio host shutdown. */
-    async close() {
-      await stopAllProjectInfraPortForwards();
-    },
+    /*** Close Studio host-owned resources. Provider-neutral Infra lifecycle operations own their own runtime handles. */
+    async close(): Promise<void> {},
   };
 }
 
