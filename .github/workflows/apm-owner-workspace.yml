@@ -1,0 +1,49 @@
+name: APM owner workspace
+
+on:
+  push:
+    branches: [fix/500-apm-release-gate]
+    paths: [.github/workflows/apm-owner-workspace.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Prepare frozen owner workspace
+        run: |
+          bun install --frozen-lockfile --ignore-scripts
+          mkdir -p "$RUNNER_TEMP/apm-owner"
+          git bundle create "$RUNNER_TEMP/apm-owner/repository.bundle" HEAD refs/remotes/origin/main
+          tar -czf "$RUNNER_TEMP/apm-owner/dependencies.tgz" node_modules
+      - name: Inspect the published Studio Node entrypoint
+        run: |
+          npm pack @ankhorage/studio@2.6.0 --ignore-scripts --pack-destination "$RUNNER_TEMP/apm-owner" > "$RUNNER_TEMP/apm-owner/published-tarball.txt"
+          mkdir -p "$RUNNER_TEMP/studio-published"
+          tar -xzf "$RUNNER_TEMP/apm-owner/ankhorage-studio-2.6.0.tgz" -C "$RUNNER_TEMP/studio-published"
+          ln -s "$GITHUB_WORKSPACE/node_modules" "$RUNNER_TEMP/studio-published/package/node_modules"
+          cd "$RUNNER_TEMP/studio-published/package"
+          if node --input-type=module -e "await import('@ankhorage/studio/apm')" > "$RUNNER_TEMP/apm-owner/published-node-import.txt" 2>&1; then
+            echo 'Published Studio Node import passed.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'Published Studio Node import failed; diagnostic captured for the owner fix.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+          cat "$RUNNER_TEMP/apm-owner/published-node-import.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apm-owner-workspace
+          path: ${{ runner.temp }}/apm-owner/
+          retention-days: 1
+          compression-level: 0
