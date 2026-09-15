@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.7.3
+
+### Patch Changes
+
+- c391329: Add the project Dashboard APM lifecycle for evidence inspection, concrete plan review, explicit execution permissions, durable resume, verification, and shipment follow-up presentation.
+
 ## 2.7.2
 
 ### Patch Changes
