@@ -1,12 +1,12 @@
 import type { AppManifest, AuthOAuthProviderConfig } from '@ankhorage/contracts';
 import type { AuthOAuthSetupFieldRequirement } from '@ankhorage/contracts/auth';
 import type { AppDeployTargetId } from '@ankhorage/contracts/deploy';
+import type { AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type { SecretMetadata } from '@ankhorage/contracts/secrets';
 import { getSupabaseOAuthProviderDefinition } from '@ankhorage/supabase-auth';
 
 import { validateStudioAuthSettings } from './authSettings';
 import { resolveProjectEnabledTargets, resolveProjectOAuthSetupPlan } from './projectOAuthSetup';
-import type { AppEnvironmentId } from '@ankhorage/contracts/environments';
 
 export type ProjectAuthHealthStatus = 'healthy' | 'warning' | 'error' | 'unconfigured';
 
@@ -124,6 +124,7 @@ export function analyzeProjectAuthHealth(input: {
     analyzeProviderHealth({
       provider,
       index,
+      environment,
       secretMetadata: provider.credentialsRef
         ? secretMetadataByRef.get(provider.credentialsRef)
         : undefined,
@@ -168,6 +169,7 @@ export function analyzeProjectAuthHealth(input: {
 function analyzeProviderHealth(input: {
   readonly provider: AuthOAuthProviderConfig;
   readonly index: number;
+  readonly environment: AppEnvironmentId;
   readonly secretMetadata: SecretMetadata | undefined;
   readonly setupPlan: ReturnType<typeof resolveProjectOAuthSetupPlan>;
   readonly diagnostics: ProjectAuthDiagnostic[];
@@ -176,7 +178,7 @@ function analyzeProviderHealth(input: {
   const definition = getSupabaseOAuthProviderDefinition(provider.id);
   const enabled = provider.enabled === true;
   const { credentialsRef } = provider;
-  const path = `infra.environments.${input.setupPlan.environment}.auth.oauth.providers[${input.index}]`;
+  const path = `infra.environments.${input.environment}.auth.oauth.providers[${input.index}]`;
   const requiredFields =
     setupPlan?.requirements
       .filter(
