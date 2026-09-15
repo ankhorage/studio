@@ -28,8 +28,8 @@ export async function resolveProjectMediaStorage(args: {
   }
 
   const outputs = await args.projectManager.getInfrastructureOutputs(args.projectId);
-  const url = readPublicEnvironmentOutput(outputs, 'EXPO_PUBLIC_SUPABASE_URL');
-  const anonKey = readPublicEnvironmentOutput(outputs, 'EXPO_PUBLIC_SUPABASE_ANON_KEY');
+  const url = readPublicEnvironmentOutput(outputs.outputs, 'EXPO_PUBLIC_SUPABASE_URL');
+  const anonKey = readPublicEnvironmentOutput(outputs.outputs, 'EXPO_PUBLIC_SUPABASE_ANON_KEY');
   if (!url || !anonKey) throw new Error('Run Infra Up before importing media.');
 
   return { adapter: createContractsSupabaseStorageAdapter({ url, anonKey, bucket }), bucket };
