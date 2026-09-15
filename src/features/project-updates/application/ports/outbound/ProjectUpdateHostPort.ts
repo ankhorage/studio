@@ -4,7 +4,7 @@ import type {
   ApmStatusAvailabilityMode,
 } from '@ankhorage/apm/types';
 
-export interface ProjectUpdateHostPlanInput {
+interface ProjectUpdateHostPlanInput {
   readonly availability: ApmStatusAvailabilityMode;
   readonly policy: ApmPlanPolicyInput;
 }
