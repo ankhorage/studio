@@ -1,0 +1,80 @@
+name: Published APM owner proof
+
+on:
+  push:
+    branches: [test/500-published-apm-owner]
+    paths: [.github/workflows/published-apm-owner-proof.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  published-owner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      OWNER_VERSION: '2.6.1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: v2.6.1
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Fetch and verify the actual registry artifact
+        run: |
+          mkdir -p "$RUNNER_TEMP/published-owner/archive" "$RUNNER_TEMP/published-owner/evidence" "$RUNNER_TEMP/published-owner/consumer"
+          npm view "@ankhorage/studio@${OWNER_VERSION}" dist --json > "$RUNNER_TEMP/published-owner/evidence/registry-dist.json"
+          npm pack "@ankhorage/studio@${OWNER_VERSION}" --ignore-scripts --json --pack-destination "$RUNNER_TEMP/published-owner/archive" > "$RUNNER_TEMP/published-owner/evidence/registry-pack.json"
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import {createHash} from 'node:crypto';
+          import {readFile,writeFile} from 'node:fs/promises';
+          const root=process.env.RUNNER_TEMP+'/published-owner';
+          const dist=JSON.parse(await readFile(root+'/evidence/registry-dist.json','utf8'));
+          const [packed]=JSON.parse(await readFile(root+'/evidence/registry-pack.json','utf8'));
+          assert.equal(packed.name,'@ankhorage/studio');
+          assert.equal(packed.version,process.env.OWNER_VERSION);
+          assert.equal(packed.filename,'ankhorage-studio-'+process.env.OWNER_VERSION+'.tgz');
+          const integrity='sha512-'+createHash('sha512').update(await readFile(root+'/archive/'+packed.filename)).digest('base64');
+          assert.equal(integrity,dist.integrity);
+          await writeFile(root+'/evidence/integrity.txt',integrity);
+          await writeFile(root+'/consumer/package.json',JSON.stringify({name:'published-studio-owner-consumer',private:true,type:'module',dependencies:{'@ankhorage/studio':process.env.OWNER_VERSION}}));
+          JS
+      - name: Install only the released Studio package outside the checkout
+        run: |
+          consumer="$RUNNER_TEMP/published-owner/consumer"
+          cp scripts/apm-owner-consumer.ts "$consumer/verify-owner.ts"
+          export BUN_INSTALL_CACHE_DIR="$RUNNER_TEMP/published-owner/cache"
+          bun install --cwd "$consumer" --lockfile-only --ignore-scripts
+          bun install --cwd "$consumer" --frozen-lockfile --ignore-scripts
+      - name: Verify public Node owner planning and materialization from npm
+        run: |
+          cd "$RUNNER_TEMP/published-owner/consumer"
+          export STUDIO_ARTIFACT_INTEGRITY="$(cat "$RUNNER_TEMP/published-owner/evidence/integrity.txt")"
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import {realpath,readFile} from 'node:fs/promises';
+          const entry=import.meta.resolve('@ankhorage/studio/apm');
+          const installed=await realpath(new URL('../',entry));
+          assert.ok(!installed.startsWith(process.env.GITHUB_WORKSPACE));
+          const p=JSON.parse(await readFile(new URL('../package.json',entry),'utf8'));
+          assert.equal(p.version,process.env.OWNER_VERSION);
+          JS
+          node verify-owner.ts > "$RUNNER_TEMP/published-owner/evidence/owner-protocol-proof.json"
+          cat "$RUNNER_TEMP/published-owner/evidence/owner-protocol-proof.json"
+          cp package.json bun.lock "$RUNNER_TEMP/published-owner/evidence/"
+          node --version > "$RUNNER_TEMP/published-owner/evidence/node-version.txt"
+          bun --version > "$RUNNER_TEMP/published-owner/evidence/bun-version.txt"
+          echo 'Verified the actual npm Studio owner through its public APM protocol with no sibling implementation or separately installed APM CLI.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'This proves owner-boundary release adoption, not the unfinished Dashboard/full update lifecycle acceptance.' >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: published-studio-owner-proof
+          path: ${{ runner.temp }}/published-owner/evidence/
+          retention-days: 30
+          if-no-files-found: error
