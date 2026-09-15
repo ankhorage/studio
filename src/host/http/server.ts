@@ -6,7 +6,6 @@ import { isAppCategory, isAppManifest } from '../../contractGuards';
 import { registerProjectUpdateRoutes } from '../../features/project-updates/adapters/inbound/registerProjectUpdateRoutes';
 import { createStudioProjectUpdateService } from '../../features/project-updates/composition/createStudioProjectUpdateService';
 import { ProjectCreationValidationError } from '../../projectIdentity';
-import { ProjectDeployService } from '../deploy/ProjectDeployService';
 import { createStudioPendingModuleLifecyclePort } from '../orchestrator/createStudioPendingModuleLifecyclePort';
 import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
