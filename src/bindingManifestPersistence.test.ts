@@ -20,7 +20,17 @@ function createManifest(): StudioManifest {
     themes: [],
     activeThemeId: 'default',
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
-    infra: { modules: [] },
+    infra: {
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+        },
+      },
+      modules: [],
+    },
   };
 }
 

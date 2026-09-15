@@ -34,7 +34,17 @@ test('project summary reads canonical category, active theme, and timestamps', a
       ],
       activeThemeId: 'default',
       activeThemeMode: 'dark',
-      infra: { modules: [] },
+      infra: {
+        environments: {
+          local: {
+            deployment: {
+              compute: { provider: 'local' },
+              runtime: { provider: 'minikube' },
+            },
+          },
+        },
+        modules: [],
+      },
       navigator: { type: 'stack', routes: [] },
       screens: {},
       settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
@@ -111,7 +121,17 @@ function createManifest(name: string): AppManifest {
       },
     ],
     activeThemeId: 'default',
-    infra: { modules: [] },
+    infra: {
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+        },
+      },
+      modules: [],
+    },
     navigator: { type: 'stack', routes: [] },
     screens: {},
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },

@@ -10,15 +10,14 @@ import {
   type SecretStoreAdapter,
   type SecretStoreResult,
 } from '@ankhorage/contracts/secrets';
-import { createInfraSecretStoreAdapter } from '@ankhorage/infra';
 import {
   getSupabaseOAuthProviderDefinition,
   validateSupabaseOAuthSecretPayload,
 } from '@ankhorage/supabase-auth';
+import { createSupabaseVaultAdapter } from '@ankhorage/supabase-vault';
 
 import { findProjectSecretUsages, type ProjectSecretUsageSummary } from '../../projectSecretUsage';
 import type { ProjectManager } from '../orchestrator/projectManager';
-import { getProjectPath } from '../orchestrator/projectPaths';
 import {
   type BunSupabaseVaultClient,
   createBunSupabaseVaultClient,
@@ -29,7 +28,7 @@ export interface ProjectSecretServiceOptions {
   readonly projectManager: ProjectManager;
   readonly workspaceRoot: string;
   readonly createClient?: (databaseUrl: string) => BunSupabaseVaultClient;
-  readonly resolveDatabaseUrl?: (projectPath: string, target: string) => Promise<string>;
+  readonly resolveDatabaseUrl?: () => Promise<string> | string;
 }
 
 export interface ConfigureOAuthProviderInput {
@@ -81,9 +80,8 @@ export class ProjectSecretUsageError extends Error {
 
 export class ProjectSecretService {
   private readonly projectManager: ProjectManager;
-  private readonly workspaceRoot: string;
   private readonly createClient: (databaseUrl: string) => BunSupabaseVaultClient;
-  private readonly resolveDatabaseUrl: (projectPath: string, target: string) => Promise<string>;
+  private readonly resolveDatabaseUrl: () => Promise<string> | string;
 
   /***
    * @todo Keep this service in the Secrets application/host boundary; it owns project secret-store lifecycle and trusted Vault access rather than generic persistence.
@@ -91,11 +89,8 @@ export class ProjectSecretService {
    */
   constructor(options: ProjectSecretServiceOptions) {
     this.projectManager = options.projectManager;
-    this.workspaceRoot = options.workspaceRoot;
     this.createClient = options.createClient ?? createBunSupabaseVaultClient;
-    this.resolveDatabaseUrl =
-      options.resolveDatabaseUrl ??
-      ((projectPath, target) => resolveProjectSecretDatabaseUrl({ projectPath, target }));
+    this.resolveDatabaseUrl = options.resolveDatabaseUrl ?? resolveProjectSecretDatabaseUrl;
   }
 
   /*** List secret metadata for a project/environment scope with optional kind and provider filters. */
@@ -128,7 +123,7 @@ export class ProjectSecretService {
     );
   }
 
-  /*** Create a new project secret through the configured Infra secret-store adapter. */
+  /*** Create a new project secret through the configured project secret-store owner. */
   create(input: {
     readonly projectId: string;
     readonly environment?: string;
@@ -227,24 +222,17 @@ export class ProjectSecretService {
 
     try {
       const manifest = await this.readEditableManifest(input.projectId);
-      const projectPath = getProjectPath(this.workspaceRoot, input.projectId);
-      const infraStatus = await this.projectManager.getInfrastructureStatus(input.projectId);
-      if (!infraStatus.target) throw new Error('Project infrastructure target is unavailable.');
-      const databaseUrl = await this.resolveDatabaseUrl(projectPath, infraStatus.target);
+      const databaseUrl = await this.resolveDatabaseUrl();
       client = this.createClient(databaseUrl);
-      const adapter = createInfraSecretStoreAdapter({
-        manifest: manifest.infra,
-        providers: {
-          supabaseVault: { client },
-        },
-      });
+      const adapter = createProjectSecretStoreAdapter(manifest, client);
 
       if (!adapter) {
         return {
           ok: false,
           error: {
             code: 'invalid_config',
-            message: 'This project does not configure infra.secretStore.provider.',
+            message:
+              'This project does not configure infra.environments.local.secretStore.provider.',
           },
         };
       }
@@ -269,14 +257,7 @@ export class ProjectSecretService {
 
       return { ok: true, data: usages };
     } catch {
-      return {
-        ok: false,
-        error: {
-          code: 'unavailable',
-          message:
-            'The project secret store is unavailable. Verify local Supabase is running and the trusted database URL is configured.',
-        },
-      };
+      return { ok: false, error: createUnavailableSecretStoreError() };
     } finally {
       await client?.close();
     }
@@ -373,42 +354,37 @@ export class ProjectSecretService {
 
     try {
       const manifest = await this.readEditableManifest(projectId);
-      const projectPath = getProjectPath(this.workspaceRoot, projectId);
-      const infraStatus = await this.projectManager.getInfrastructureStatus(projectId);
-      if (!infraStatus.target) throw new Error('Project infrastructure target is unavailable.');
-      const databaseUrl = await this.resolveDatabaseUrl(projectPath, infraStatus.target);
+      const databaseUrl = await this.resolveDatabaseUrl();
       client = this.createClient(databaseUrl);
-      const adapter = createInfraSecretStoreAdapter({
-        manifest: manifest.infra,
-        providers: {
-          supabaseVault: { client },
-        },
-      });
+      const adapter = createProjectSecretStoreAdapter(manifest, client);
 
       if (!adapter) {
         return {
           ok: false,
           error: {
             code: 'invalid_config',
-            message: 'This project does not configure infra.secretStore.provider.',
+            message:
+              'This project does not configure infra.environments.local.secretStore.provider.',
           },
         };
       }
 
       return await operation(adapter, manifest);
     } catch {
-      return {
-        ok: false,
-        error: {
-          code: 'unavailable',
-          message:
-            'The project secret store is unavailable. Verify local Supabase is running and the trusted database URL is configured.',
-        },
-      };
+      return { ok: false, error: createUnavailableSecretStoreError() };
     } finally {
       await client?.close();
     }
   }
+}
+
+/*** Create the configured project secret-store adapter at the trusted Studio host boundary. */
+function createProjectSecretStoreAdapter(
+  manifest: AppManifest,
+  client: BunSupabaseVaultClient,
+): SecretStoreAdapter | null {
+  if (manifest.infra.environments.local.secretStore?.provider !== 'supabase-vault') return null;
+  return createSupabaseVaultAdapter({ client });
 }
 
 /*** Build the canonical project/environment scope used by the Secret-store contract. */
@@ -416,6 +392,18 @@ function createScope(projectId: string, environment = 'local') {
   return {
     projectId,
     environment: normalizeOptionalText(environment) ?? 'local',
+  };
+}
+
+/*** Build the stable public error returned when the trusted project secret store cannot be reached. */
+function createUnavailableSecretStoreError(): {
+  readonly code: 'unavailable';
+  readonly message: string;
+} {
+  return {
+    code: 'unavailable',
+    message:
+      'The project secret store is unavailable. Verify local Supabase is running and ANKH_SECRET_STORE_DATABASE_URL is configured.',
   };
 }
 

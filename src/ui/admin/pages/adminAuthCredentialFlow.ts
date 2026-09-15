@@ -262,7 +262,6 @@ function isDefaultOAuthSettings(oauth: NonNullable<StudioAuthSettings['oauth']>)
 function isDefaultAuthShell(settings: StudioAuthSettings): boolean {
   return (
     settings.scope === 'none' &&
-    settings.provider === 'supabase' &&
     JSON.stringify(settings.flow) === JSON.stringify(DEFAULT_AUTH_FLOW) &&
     settings.signIn.identifiers.length === 1 &&
     settings.signIn.identifiers[0] === 'email' &&

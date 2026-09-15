@@ -125,22 +125,28 @@ function createAdminSmokeManifest(): AppManifest {
     },
     infra: {
       ...nutritionManifest.infra,
-      auth: {
-        scope: 'global',
-        provider: 'supabase',
-        flow: {
-          signInRoute: 'sign-in',
-          signUpRoute: 'sign-up',
-          signOutRoute: 'sign-out',
-          forgotPasswordRoute: 'forgot-password',
-          postSignInRoute: 'products',
-          unauthorizedRoute: 'sign-in',
-        },
-        signIn: { identifiers: ['email'] },
-        oauth: {
-          enabled: false,
-          callbackRoute: '/auth/callback',
-          providers: [],
+      environments: {
+        ...nutritionManifest.infra.environments,
+        local: {
+          ...nutritionManifest.infra.environments.local,
+          auth: {
+            scope: 'global',
+            provider: 'supabase',
+            flow: {
+              signInRoute: 'sign-in',
+              signUpRoute: 'sign-up',
+              signOutRoute: 'sign-out',
+              forgotPasswordRoute: 'forgot-password',
+              postSignInRoute: 'products',
+              unauthorizedRoute: 'sign-in',
+            },
+            signIn: { identifiers: ['email'] },
+            oauth: {
+              enabled: false,
+              callbackRoute: '/auth/callback',
+              providers: [],
+            },
+          },
         },
       },
     },

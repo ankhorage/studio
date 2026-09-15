@@ -18,7 +18,17 @@ function createManifest(): AppManifest {
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     deploy: { targets: { web: { enabled: true } } },
-    infra: { modules: [] },
+    infra: {
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+        },
+      },
+      modules: [],
+    },
     navigator: {
       type: 'stack',
       initialRouteName: 'index',
@@ -40,34 +50,42 @@ function createOAuthManifest(): AppManifest {
   return {
     ...createManifest(),
     infra: {
-      modules: [],
-      auth: {
-        scope: 'global',
-        provider: 'supabase',
-        flow: {
-          signInRoute: 'sign-in',
-          signUpRoute: 'sign-up',
-          signOutRoute: 'sign-out',
-          postSignInRoute: 'dashboard',
-          unauthorizedRoute: 'sign-in',
-        },
-        signIn: { identifiers: ['email'] },
-        signUp: { requiredFields: ['email', 'password'] },
-        oauth: {
-          enabled: true,
-          callbackRoute: 'auth/callback',
-          providers: [
-            {
-              id: 'google',
-              label: 'Continue with Google',
-              enabled: true,
-              scopes: ['openid', 'email', 'profile'],
-              queryParams: { prompt: 'select_account' },
-              credentialsRef: 'sentinel-phase3-secret-do-not-leak',
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+          auth: {
+            scope: 'global',
+            provider: 'supabase',
+            flow: {
+              signInRoute: 'sign-in',
+              signUpRoute: 'sign-up',
+              signOutRoute: 'sign-out',
+              postSignInRoute: 'dashboard',
+              unauthorizedRoute: 'sign-in',
             },
-          ],
+            signIn: { identifiers: ['email'] },
+            signUp: { requiredFields: ['email', 'password'] },
+            oauth: {
+              enabled: true,
+              callbackRoute: 'auth/callback',
+              providers: [
+                {
+                  id: 'google',
+                  label: 'Continue with Google',
+                  enabled: true,
+                  scopes: ['openid', 'email', 'profile'],
+                  queryParams: { prompt: 'select_account' },
+                  credentialsRef: 'sentinel-phase3-secret-do-not-leak',
+                },
+              ],
+            },
+          },
         },
       },
+      modules: [],
     },
     navigator: {
       type: 'stack',
@@ -432,16 +450,40 @@ describe('GeneratedAppFileGenerator', () => {
 
   test('does not let namespace or networking domain affect generated Auth endpoint source', () => {
     const firstManifest = createOAuthManifest();
-    const secondManifest = createOAuthManifest();
-    secondManifest.infra.networking = { domain: 'local.example.test', cdn: false };
+    const secondBase = createOAuthManifest();
+    const secondManifest: AppManifest = {
+      ...secondBase,
+      infra: {
+        ...secondBase.infra,
+        environments: {
+          ...secondBase.infra.environments,
+          local: {
+            ...secondBase.infra.environments.local,
+            networking: { domain: 'local.example.test' },
+          },
+        },
+      },
+    };
 
     expect(getGeneratedAuthAdapter(firstManifest)).toBe(getGeneratedAuthAdapter(secondManifest));
   });
 
   test('keeps generated Auth endpoint source independent of project display identity', () => {
-    const manifest = createOAuthManifest();
-    manifest.metadata.slug = 'scanner';
-    manifest.infra.networking = { domain: 'local.example.test', cdn: false };
+    const base = createOAuthManifest();
+    const manifest: AppManifest = {
+      ...base,
+      metadata: { ...base.metadata, slug: 'scanner' },
+      infra: {
+        ...base.infra,
+        environments: {
+          ...base.infra.environments,
+          local: {
+            ...base.infra.environments.local,
+            networking: { domain: 'local.example.test' },
+          },
+        },
+      },
+    };
 
     const adapter = getGeneratedAuthAdapter(manifest);
 
@@ -473,7 +515,8 @@ describe('GeneratedAppFileGenerator', () => {
 
   test('does not generate OAuth artifacts when OAuth is disabled', () => {
     const manifest = createOAuthManifest();
-    if (manifest.infra.auth?.oauth) manifest.infra.auth.oauth.enabled = false;
+    if (manifest.infra.environments.local.auth?.oauth)
+      manifest.infra.environments.local.auth.oauth.enabled = false;
     const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', manifest, [], {
       includeStudio: false,
     });

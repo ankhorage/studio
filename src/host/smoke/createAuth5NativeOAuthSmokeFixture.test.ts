@@ -21,9 +21,16 @@ interface GeneratedManifest {
     };
   };
   readonly infra?: {
-    readonly auth?: {
-      readonly oauth?: {
-        readonly providers?: readonly { readonly id?: string; readonly credentialsRef?: string }[];
+    readonly environments?: {
+      readonly local?: {
+        readonly auth?: {
+          readonly oauth?: {
+            readonly providers?: readonly {
+              readonly id?: string;
+              readonly credentialsRef?: string;
+            }[];
+          };
+        };
       };
     };
   };
@@ -43,7 +50,7 @@ test('prepares a secret-free real generated app for Auth 5 native smoke validati
     expect(fixture.projectId).toBe(AUTH5_NATIVE_OAUTH_SMOKE.projectId);
     expect(manifest.deploy?.targets?.android?.scheme).toBe(AUTH5_NATIVE_OAUTH_SMOKE.android.scheme);
     expect(manifest.deploy?.targets?.ios?.scheme).toBe(AUTH5_NATIVE_OAUTH_SMOKE.ios.scheme);
-    expect(manifest.infra?.auth?.oauth?.providers).toEqual([
+    expect(manifest.infra?.environments?.local?.auth?.oauth?.providers).toEqual([
       expect.objectContaining({ id: 'google', credentialsRef: 'auth/oauth/google' }),
     ]);
 

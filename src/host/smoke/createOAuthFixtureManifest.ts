@@ -26,11 +26,17 @@ export function createOAuthFixtureManifest(args: {
     },
     infra: {
       ...base.infra,
-      auth: {
-        ...base.infra.auth,
-        scope: base.infra.auth?.scope ?? 'global',
-        provider: base.infra.auth?.provider ?? 'supabase',
-        oauth: fixture.oauth,
+      environments: {
+        ...base.infra.environments,
+        local: {
+          ...base.infra.environments.local,
+          auth: {
+            ...base.infra.environments.local.auth,
+            scope: base.infra.environments.local.auth?.scope ?? 'global',
+            provider: base.infra.environments.local.auth?.provider ?? 'supabase',
+            oauth: fixture.oauth,
+          },
+        },
       },
     },
   };

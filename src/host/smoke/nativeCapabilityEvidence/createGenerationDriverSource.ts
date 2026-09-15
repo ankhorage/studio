@@ -77,7 +77,7 @@ const baseManifest = {
   infra: {
     ...composed.manifest.infra,
     auth: {
-      ...composed.manifest.infra.auth,
+      ...composed.manifest.infra.environments.local.auth,
       oauth,
     },
   },

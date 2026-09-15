@@ -34,13 +34,9 @@ test('materializes project creation assets and persists their bundled media sour
     splashScreen: {
       backgroundColor: '#111111',
       image: { mediaId: 'hero' },
-      imageWidth: 240,
-      resizeMode: 'contain',
       dark: {
         backgroundColor: '#000000',
         image: { mediaId: 'hero' },
-        imageWidth: 240,
-        resizeMode: 'contain',
       },
     },
   };
@@ -97,7 +93,7 @@ test('projects SharkPrey splash artwork to its materialized Expo asset path', as
   });
 
   const created = await manager.createProject('SharkPrey Splash', source);
-  const splashPath = 'assets/authoring/sharkprey-logo/sharkprey-logo.png';
+  const splashPath = 'assets/authoring/sharkprey-splash/sharkprey-splash.png';
   const appConfig = await readFile(path.join(created.path, 'app.config.ts'), 'utf8');
 
   expect(appConfig).toContain(`image: './${splashPath}'`);

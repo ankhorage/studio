@@ -1,14 +1,11 @@
 import type { AppManifest } from '@ankhorage/contracts';
 import { type ExpoRuntimePlan, resolveExpoRuntimePlan } from '@ankhorage/expo-runtime/planning';
-import {
-  inspectProjectInfrastructure,
-  runProjectInfrastructureLifecycle,
-  syncProjectInfrastructure,
-} from '@ankhorage/infra/project';
 import { connectGitHubRepositoryAsync } from '@ankhorage/repository/github';
 import { promises as fs } from 'fs';
 import path from 'path';
 
+import { initializeProjectLocalInfraNetworking } from '../../features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking';
+import { createStudioProjectInfraLifecycle } from '../../features/infrastructure/composition/createStudioProjectInfraLifecycle';
 import { createStudioProjectWriterProxy } from '../../features/project-updates/composition/createStudioProjectWriterProxy';
 import {
   ProjectCreationValidationError,
@@ -32,7 +29,7 @@ import type { GeneratedAuthProvider, GeneratedStorageProvider } from './template
 interface ProjectManagerDependencies {
   readonly connectGitHubRepositoryAsync: typeof connectGitHubRepositoryAsync;
   readonly reconcileProjectPackageRootAsync: typeof reconcileProjectPackageRootAsync;
-  readonly runProjectInfrastructureLifecycle: typeof runProjectInfrastructureLifecycle;
+  readonly infraLifecycle: ReturnType<typeof createStudioProjectInfraLifecycle>;
 }
 
 /***
@@ -62,7 +59,7 @@ export class ProjectManager {
     this.dependencies = {
       connectGitHubRepositoryAsync,
       reconcileProjectPackageRootAsync,
-      runProjectInfrastructureLifecycle,
+      infraLifecycle: createStudioProjectInfraLifecycle(),
       ...dependencies,
     };
     return createStudioProjectWriterProxy(this, {
@@ -76,7 +73,6 @@ export class ProjectManager {
         'saveProjectManifest',
         'syncProjectRuntime',
         'rebuildRootLayout',
-        'syncProject',
       ],
       resolveProjectRoot: (projectId) => getProjectPath(rootPath, projectId),
     });
@@ -93,16 +89,14 @@ export class ProjectManager {
     let infraDestroyed = false;
 
     if (await exists(projectPath)) {
-      const manifest = await this.store.readManifest(projectId);
-      const infraStatus = await inspectProjectInfrastructure({
-        projectId,
-        projectPath,
-        manifest,
-      });
-
-      if (!infraStatus.skipped && infraStatus.hasDeployment && infraStatus.target) {
-        await syncProjectInfrastructure({ projectId, projectPath, manifest });
-        await this.destroyProjectInfrastructure(projectId, projectPath, infraStatus.target);
+      if (projectId !== 'studio') {
+        const manifest = await this.store.readManifest(projectId);
+        await this.dependencies.infraLifecycle.destroyAsync({
+          projectId,
+          projectPath,
+          manifest,
+          deletePersistentResources: true,
+        });
         infraDestroyed = true;
       }
     }
@@ -140,9 +134,10 @@ export class ProjectManager {
       templateData,
       source.assets,
     );
-    const { category } = materializedTemplate.metadata;
-    const deploy = materializedTemplate.deploy ?? createDefaultAppDeployManifest(slug);
-    const scaffoldManifest = applySystemTemplates({ ...materializedTemplate, deploy });
+    const initializedTemplate = initializeProjectLocalInfraNetworking(materializedTemplate, slug);
+    const { category } = initializedTemplate.metadata;
+    const deploy = initializedTemplate.deploy ?? createDefaultAppDeployManifest(slug);
+    const scaffoldManifest = applySystemTemplates({ ...initializedTemplate, deploy });
     const zoraExtensions = resolveZoraExtensionsForManifest(scaffoldManifest);
     await this.scaffolder.scaffoldProject(projectPath, name, slug, {
       includeStudio,
@@ -156,7 +151,7 @@ export class ProjectManager {
     await writeProjectStudioInclusion(projectPath, includeStudio);
     const manifest = await this.scaffolder.finalizeManifest(
       projectPath,
-      materializedTemplate,
+      initializedTemplate,
       name,
       slug,
       category,
@@ -169,7 +164,6 @@ export class ProjectManager {
       runtimePlan,
     });
     await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
-    await syncProjectInfrastructure({ projectId: slug, projectPath, manifest });
     if (onProjectCreated) await onProjectCreated(slug);
     return { success: true, id: slug, path: projectPath };
   }
@@ -208,11 +202,14 @@ export class ProjectManager {
     projectId: string;
     manifest: AppManifest;
   }): Promise<AppManifest> {
-    const normalizedManifest = applySystemTemplates(args.manifest);
+    const normalizedManifest = initializeProjectLocalInfraNetworking(
+      applySystemTemplates(args.manifest),
+      args.projectId,
+    );
     return this.store.writeManifest(args.projectId, normalizedManifest);
   }
 
-  /*** Persist a project manifest, optionally regenerate current scaffold/router ownership, and synchronize infrastructure. */
+  /*** Persist a project manifest and optionally regenerate current scaffold/router ownership. */
   async saveProjectManifest(args: {
     projectId: string;
     manifest: AppManifest;
@@ -241,11 +238,10 @@ export class ProjectManager {
       await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
     }
 
-    await syncProjectInfrastructure({ projectId, projectPath, manifest: updated });
     return { success: true };
   }
 
-  /*** Regenerate current project scaffold/runtime files from the persisted manifest and synchronize infrastructure without changing manifest state. */
+  /*** Regenerate current project scaffold/runtime files from the persisted manifest without changing manifest or infrastructure state. */
   async syncProjectRuntime(args: {
     projectId: string;
     mutations: LayoutMutation[];
@@ -271,7 +267,6 @@ export class ProjectManager {
       runtimePlan,
     });
     await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
-    await syncProjectInfrastructure({ projectId, projectPath, manifest });
     return { success: true };
   }
 
@@ -295,30 +290,59 @@ export class ProjectManager {
     return { success: true };
   }
 
-  /***
-   * Delegate project synchronization to syncProjectRuntime.
-   * @todo Remove this compatibility alias and keep one canonical project synchronization operation.
-   */
-  async syncProject(args: {
-    projectId: string;
-    mutations: LayoutMutation[];
-    includeStudio?: boolean;
-  }) {
-    return this.syncProjectRuntime(args);
-  }
-
-  /*** Regenerate the infrastructure projection for one persisted project manifest. */
+  /*** Regenerate provider-neutral infrastructure artifacts for one persisted project manifest. */
   async regenerateInfrastructure(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
     const manifest = await this.getProjectManifest(projectId);
-    return syncProjectInfrastructure({ projectId, projectPath, manifest });
+    return this.dependencies.infraLifecycle.generateAsync({ projectId, projectPath, manifest });
   }
 
-  /*** Inspect current infrastructure status for one persisted project manifest. */
+  /*** Reconcile one project's selected infrastructure environment to its desired running state. */
+  async upInfrastructure(
+    projectId: string,
+    executionEnvironment?: Readonly<Record<string, string | undefined>>,
+  ) {
+    const projectPath = getProjectPath(this.rootPath, projectId);
+    const manifest = await this.getProjectManifest(projectId);
+    return this.dependencies.infraLifecycle.upAsync({
+      projectId,
+      projectPath,
+      manifest,
+      ...(executionEnvironment === undefined ? {} : { executionEnvironment }),
+    });
+  }
+
+  /*** Inspect provider-neutral infrastructure status for one persisted project manifest. */
   async getInfrastructureStatus(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
     const manifest = await this.getProjectManifest(projectId);
-    return inspectProjectInfrastructure({ projectId, projectPath, manifest });
+    return this.dependencies.infraLifecycle.statusAsync({ projectId, projectPath, manifest });
+  }
+
+  /*** Read canonical infrastructure outputs for one persisted project manifest. */
+  async getInfrastructureOutputs(projectId: string) {
+    const projectPath = getProjectPath(this.rootPath, projectId);
+    const manifest = await this.getProjectManifest(projectId);
+    return this.dependencies.infraLifecycle.outputsAsync({ projectId, projectPath, manifest });
+  }
+
+  /*** Suspend one project's selected infrastructure environment without deleting persistent resources. */
+  async downInfrastructure(projectId: string) {
+    const projectPath = getProjectPath(this.rootPath, projectId);
+    const manifest = await this.getProjectManifest(projectId);
+    return this.dependencies.infraLifecycle.downAsync({ projectId, projectPath, manifest });
+  }
+
+  /*** Destroy one project's selected infrastructure environment with explicit persistence policy. */
+  async destroyInfrastructure(projectId: string, deletePersistentResources: boolean) {
+    const projectPath = getProjectPath(this.rootPath, projectId);
+    const manifest = await this.getProjectManifest(projectId);
+    return this.dependencies.infraLifecycle.destroyAsync({
+      projectId,
+      projectPath,
+      manifest,
+      deletePersistentResources,
+    });
   }
 
   /*** Materialize source images through Studio's existing bundled-media path before manifest persistence. */
@@ -341,27 +365,6 @@ export class ProjectManager {
         assets: mediaAssets,
       },
     };
-  }
-
-  /*** Execute infrastructure teardown and wrap provider/lifecycle failures with project context. */
-  private async destroyProjectInfrastructure(
-    projectId: string,
-    projectPath: string,
-    target: string,
-  ): Promise<void> {
-    try {
-      await this.dependencies.runProjectInfrastructureLifecycle({
-        projectId,
-        projectPath,
-        target,
-        script: 'destroy',
-      });
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      throw new Error(`Infrastructure teardown failed for project '${projectId}': ${message}`, {
-        cause: error,
-      });
-    }
   }
 
   /*** Generate current app files, write them to disk and initialize or reconcile generated-route ownership. */
@@ -453,8 +456,8 @@ async function exists(filePath: string): Promise<boolean> {
 
 /*** Resolve the generated auth-provider mode from the manifest's global auth infrastructure ownership. */
 function resolveGeneratedAuthProvider(manifest: AppManifest): GeneratedAuthProvider {
-  const { auth } = manifest.infra;
-  if (auth?.scope === 'global' && auth.provider === 'supabase') {
+  const { auth } = manifest.infra.environments.local;
+  if (auth?.scope === 'global') {
     return 'supabase';
   }
   return null;
@@ -462,8 +465,8 @@ function resolveGeneratedAuthProvider(manifest: AppManifest): GeneratedAuthProvi
 
 /*** Resolve the generated storage-provider mode when automatic storage should follow Supabase-owned auth/database infrastructure. */
 function resolveGeneratedStorageProvider(manifest: AppManifest): GeneratedStorageProvider {
-  const { auth, database, storage } = manifest.infra;
-  if (storage?.provider !== 'auto') return null;
-  const usesSupabase = auth?.provider === 'supabase' || database?.provider === 'supabase';
+  const { auth, database, objectStorage } = manifest.infra.environments.local;
+  if (objectStorage?.provider !== 'supabase') return null;
+  const usesSupabase = auth !== undefined || database !== undefined;
   return usesSupabase ? 'supabase' : null;
 }

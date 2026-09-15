@@ -9,10 +9,6 @@ import type {
   AuthOAuthSetupFieldRequirement,
 } from '@ankhorage/contracts/auth';
 import {
-  APP_DEPLOY_ENVIRONMENT_IDS,
-  type AppDeployEnvironmentId,
-} from '@ankhorage/contracts/deploy';
-import {
   getSupabaseOAuthProviderDefinition,
   SUPABASE_OAUTH_PROVIDER_IDS,
   type SupabaseOAuthProviderId,
@@ -40,6 +36,7 @@ import { configureProjectOAuthProvider } from '../../../projectSecretApi';
 import { syncProjectRuntime } from '../../../studioRuntimeApi';
 import { useAuthAdminSession } from '../AuthAdminSession';
 import { AuthHealthRefreshCoordinator } from './adminAuthHealthFlow';
+import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 import {
   persistStoredOAuthCredentialLinkAndPatchLocalDraft,
   persistStoredOAuthCredentialLink,
@@ -87,10 +84,12 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   } = studio;
   const router = useRouter();
   const [draft, setDraft] = useState<StudioAuthSettings>(
-    () => readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
+    () =>
+      readStudioAuthSettings(manifest ?? createFallbackManifest(), 'local') ??
+      createDefaultSettings(),
   );
   const [health, setHealth] = useState<ProjectAuthHealth | null>(null);
-  const [environment, setEnvironment] = useState<AppDeployEnvironmentId>('local');
+  const [environment, setEnvironment] = useState<AppEnvironmentId>('local');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -103,8 +102,8 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   useEffect(() => {
     if (initializedDraftFromManifestRef.current || !manifest) return;
     initializedDraftFromManifestRef.current = true;
-    setDraft(readStudioAuthSettings(manifest) ?? createDefaultSettings());
-  }, [manifest]);
+    setDraft(readStudioAuthSettings(manifest, environment) ?? createDefaultSettings());
+  }, [environment, manifest]);
 
   /*** Refresh auth health for the selected environment without allowing stale requests to overwrite newer state. */
   const refreshHealth = useCallback(async () => {
@@ -122,7 +121,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       loadHealth: () => getProjectAuthHealth({ projectId, environment }),
       onHealth: (loadedHealth) => {
         const canonicalAuthSettings = canonicalManifestRef.current
-          ? readStudioAuthSettings(canonicalManifestRef.current)
+          ? readStudioAuthSettings(canonicalManifestRef.current, environment)
           : null;
         setDraft(canonicalAuthSettings ?? createDefaultSettings());
         setHealth(loadedHealth);
@@ -130,7 +129,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       },
       onError: (error) => {
         const canonicalAuthSettings = canonicalManifestRef.current
-          ? readStudioAuthSettings(canonicalManifestRef.current)
+          ? readStudioAuthSettings(canonicalManifestRef.current, environment)
           : null;
         if (canonicalAuthSettings) setDraft(canonicalAuthSettings);
         setMessage(toMessage(error));
@@ -152,7 +151,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   const persistAuthDraft = useCallback(
     async (nextDraft: StudioAuthSettings, nextMessage: string) => {
       const canonicalAuthSettings = canonicalManifestRef.current
-        ? readStudioAuthSettings(canonicalManifestRef.current)
+        ? readStudioAuthSettings(canonicalManifestRef.current, environment)
         : null;
       const rebasedDraft = rebaseAuthDraftOntoCanonicalCredentialRefs({
         draft: nextDraft,
@@ -164,7 +163,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       setMessage(nextMessage);
       await refreshHealth();
     },
-    [flushManifest, projectId, refreshHealth, updateAuthSettings],
+    [environment, flushManifest, projectId, refreshHealth, updateAuthSettings],
   );
 
   /*** Persist one stored OAuth credential reference into the manifest and maintain pending-recovery state when manifest persistence fails. */
@@ -442,7 +441,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
         <Card title="OAuth providers">
           <Text weight="semiBold">Environment</Text>
           <View style={styles.choiceRow}>
-            {APP_DEPLOY_ENVIRONMENT_IDS.map((environmentId) => (
+            {APP_ENVIRONMENT_IDS.map((environmentId) => (
               <Choice
                 key={environmentId}
                 label={environmentId}
@@ -659,7 +658,7 @@ function OAuthProviderSetting(props: {
   readonly projectId: string;
   readonly providerId: SupabaseOAuthProviderId;
   readonly manifest: AppManifest;
-  readonly environment: AppDeployEnvironmentId;
+  readonly environment: AppEnvironmentId;
   readonly oauth: NonNullable<StudioAuthSettings['oauth']>;
   readonly providerHealth: ProjectAuthHealth['providers'][number] | undefined;
   readonly onChange: (
@@ -937,7 +936,17 @@ function createFallbackManifest(): AppManifest {
       themeId: 'default',
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
-    infra: { modules: [] },
+    infra: {
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+        },
+      },
+      modules: [],
+    },
     navigator: { type: 'stack', routes: [] },
     screens: {},
     themes: [],

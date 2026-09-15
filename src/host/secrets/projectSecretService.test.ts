@@ -20,8 +20,16 @@ function createManifest(): AppManifest {
       },
     },
     infra: {
-      secretStore: {
-        provider: 'supabase-vault',
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+          secretStore: {
+            provider: 'supabase-vault',
+          },
+        },
       },
       modules: [],
     },
@@ -151,7 +159,9 @@ describe('ProjectSecretService guarded removal', () => {
 
     expect(removed.ok).toBe(true);
     expect(transactionCount).toBe(1);
-    expect(manifest.infra.auth?.oauth?.providers[0]?.credentialsRef).toBe('auth/oauth/google');
+    expect(manifest.infra.environments.local.auth?.oauth?.providers[0]?.credentialsRef).toBe(
+      'auth/oauth/google',
+    );
   });
 
   test('normalizes refs before usage checks and removal', async () => {
@@ -190,7 +200,7 @@ describe('ProjectSecretService guarded removal', () => {
       usages: [
         {
           ref: 'auth/oauth/google',
-          path: 'infra.auth.oauth.providers[google].credentialsRef',
+          path: 'infra.environments.local.auth.oauth.providers[google].credentialsRef',
           category: 'oauth-provider',
           label: 'Google OAuth provider',
           ownerId: 'google',

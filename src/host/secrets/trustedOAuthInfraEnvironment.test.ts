@@ -215,27 +215,31 @@ function createOAuthManifest(args: {
       },
     },
     infra: {
-      deployment: {
-        target: 'minikube',
-        monitoring: false,
-      },
-      auth: {
-        scope: 'global',
-        provider: 'supabase',
-        oauth: {
-          enabled: args.oauthEnabled,
-          callbackRoute: '/auth/callback',
-          providers: [
-            {
-              id: 'google',
-              enabled: args.providerEnabled,
-              credentialsRef: args.credentialsRef,
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+          auth: {
+            scope: 'global',
+            provider: 'supabase',
+            oauth: {
+              enabled: args.oauthEnabled,
+              callbackRoute: '/auth/callback',
+              providers: [
+                {
+                  id: 'google',
+                  enabled: args.providerEnabled,
+                  credentialsRef: args.credentialsRef,
+                },
+              ],
             },
-          ],
+          },
+          secretStore: {
+            provider: 'supabase-vault',
+          },
         },
-      },
-      secretStore: {
-        provider: 'supabase-vault',
       },
       modules: [],
     },

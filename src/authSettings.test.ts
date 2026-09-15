@@ -23,21 +23,28 @@ function createManifest(): AppManifest {
       },
     },
     infra: {
-      modules: [],
-      auth: {
-        scope: 'global',
-        provider: 'supabase',
-        authorization: { kind: 'RBAC', engine: 'native' },
-        flow: {
-          signInRoute: 'sign-in',
-          signUpRoute: 'sign-up',
-          signOutRoute: 'sign-out',
-          forgotPasswordRoute: 'forgot-password',
-          postSignInRoute: '/',
-          unauthorizedRoute: 'sign-in',
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+          auth: {
+            scope: 'global',
+            provider: 'supabase',
+            flow: {
+              signInRoute: 'sign-in',
+              signUpRoute: 'sign-up',
+              signOutRoute: 'sign-out',
+              forgotPasswordRoute: 'forgot-password',
+              postSignInRoute: '/',
+              unauthorizedRoute: 'sign-in',
+            },
+            signIn: { identifiers: ['email'] },
+          },
         },
-        signIn: { identifiers: ['email'] },
       },
+      modules: [],
     },
     navigator: { type: 'stack', routes: [] },
     screens: {},
@@ -92,21 +99,32 @@ describe('authSettings', () => {
     if (!parsed.ok) throw new Error(parsed.error.message);
 
     const next = applyStudioAuthSettings(createManifest(), parsed.data);
-    expect(next.infra.auth?.flow?.forgotPasswordRoute).toBe('forgot-password');
-    expect(next.infra.auth?.signUp?.signUpPolicy).toBe('requireVerification');
-    expect(next.infra.auth?.oauth?.providers[0]?.credentialsRef).toBe('auth/oauth/google');
-    expect(next.infra.auth?.profile?.table).toBe('profiles');
-    expect(next.infra.auth?.authorization).toEqual({ kind: 'RBAC', engine: 'native' });
+    expect(next.infra.environments.local.auth?.flow?.forgotPasswordRoute).toBe('forgot-password');
+    expect(next.infra.environments.local.auth?.signUp?.signUpPolicy).toBe('requireVerification');
+    expect(next.infra.environments.local.auth?.oauth?.providers[0]?.credentialsRef).toBe(
+      'auth/oauth/google',
+    );
+    expect(next.infra.environments.local.auth?.profile?.table).toBe('profiles');
     expect('authFlow' in next.settings).toBe(false);
   });
 
   test('reads defaults for optional canonical flow and sign-in fields', () => {
     const manifest = createManifest();
-    if (!manifest.infra.auth) throw new Error('Expected auth fixture.');
-    delete manifest.infra.auth.flow;
-    delete manifest.infra.auth.signIn;
+    const { auth } = manifest.infra.environments.local;
+    if (!auth) throw new Error('Expected auth fixture.');
+    const { flow: _flow, signIn: _signIn, ...authWithoutDefaults } = auth;
+    const withoutDefaults: AppManifest = {
+      ...manifest,
+      infra: {
+        ...manifest.infra,
+        environments: {
+          ...manifest.infra.environments,
+          local: { ...manifest.infra.environments.local, auth: authWithoutDefaults },
+        },
+      },
+    };
 
-    const settings = readStudioAuthSettings(manifest);
+    const settings = readStudioAuthSettings(withoutDefaults);
     expect(settings?.flow.signInRoute).toBe('sign-in');
     expect(settings?.signIn.identifiers).toEqual(['email']);
   });

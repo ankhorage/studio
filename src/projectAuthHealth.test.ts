@@ -16,24 +16,32 @@ function createManifest(): AppManifest {
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     deploy: { targets: { web: { enabled: true } } },
     infra: {
-      modules: [],
-      auth: {
-        scope: 'global',
-        provider: 'supabase',
-        flow: { signInRoute: 'sign-in', postSignInRoute: '/' },
-        signIn: { identifiers: ['email'] },
-        oauth: {
-          enabled: true,
-          callbackRoute: '/auth/callback',
-          providers: [
-            {
-              id: 'google',
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+          auth: {
+            scope: 'global',
+            provider: 'supabase',
+            flow: { signInRoute: 'sign-in', postSignInRoute: '/' },
+            signIn: { identifiers: ['email'] },
+            oauth: {
               enabled: true,
-              credentialsRef: 'auth/oauth/google',
+              callbackRoute: '/auth/callback',
+              providers: [
+                {
+                  id: 'google',
+                  enabled: true,
+                  credentialsRef: 'auth/oauth/google',
+                },
+              ],
             },
-          ],
+          },
         },
       },
+      modules: [],
     },
     navigator: { type: 'stack', routes: [] },
     screens: {},
@@ -81,11 +89,11 @@ describe('projectAuthHealth', () => {
       manifest: createManifest(),
       secretMetadata: [googleMetadata],
       secretStoreAvailable: true,
-      environment: 'production',
+      environment: 'local',
     });
     expect(complete.providers[0]?.status).toBe('configured');
     expect(complete.providers[0]?.requiredFields).toEqual(['clientId', 'clientSecret']);
-    expect(complete.setup).toEqual({ environment: 'production', targets: ['web'] });
+    expect(complete.setup).toEqual({ environment: 'local', targets: ['web'] });
     expect(JSON.stringify(complete)).not.toContain('sentinel-phase2-secret-do-not-leak');
   });
 

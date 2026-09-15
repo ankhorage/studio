@@ -18,7 +18,7 @@ export function OverviewAdminPage() {
   const routes = manifest?.navigator.routes.length ?? 0;
   const screens = manifest ? Object.keys(manifest.screens).length : 0;
   const dataSources = manifest?.dataSources ? Object.keys(manifest.dataSources).length : 0;
-  const authScope = manifest?.infra.auth?.scope ?? 'none';
+  const authScope = manifest?.infra.environments.local.auth?.scope ?? 'none';
 
   return (
     <AdminScroll>

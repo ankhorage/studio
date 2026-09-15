@@ -31,7 +31,7 @@ test('auth saves go through StudioProvider manifest state', () => {
   expect(source).toContain('updateAuthSettings(rebasedDraft)');
   expect(source).toContain('await flushManifest()');
   expect(source).toContain('await syncProjectRuntime(projectId)');
-  expect(source).toContain('readStudioAuthSettings(canonicalManifestRef.current)');
+  expect(source).toContain('readStudioAuthSettings(canonicalManifestRef.current, environment)');
   expect(source).toContain('rebaseAuthDraftOntoCanonicalCredentialRefs');
   expect(source).toContain('mutateAuthSettings');
   expect(source).not.toContain('getProjectAuthSettings');

@@ -80,23 +80,31 @@ function createRuntimeSmokeManifest(): AppManifest {
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     deploy: { targets: { web: { enabled: true } } },
     infra: {
-      modules: [],
-      auth: {
-        scope: 'global',
-        provider: 'supabase',
-        flow: {
-          signInRoute: 'sign-in',
-          signUpRoute: 'sign-up',
-          signOutRoute: 'sign-out',
-          postSignInRoute: 'dashboard',
-          unauthorizedRoute: 'sign-in',
-        },
-        signIn: { identifiers: ['email'] },
-        signUp: {
-          requiredFields: ['email', 'password'],
-          signUpPolicy: 'autoSignIn',
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+          auth: {
+            scope: 'global',
+            provider: 'supabase',
+            flow: {
+              signInRoute: 'sign-in',
+              signUpRoute: 'sign-up',
+              signOutRoute: 'sign-out',
+              postSignInRoute: 'dashboard',
+              unauthorizedRoute: 'sign-in',
+            },
+            signIn: { identifiers: ['email'] },
+            signUp: {
+              requiredFields: ['email', 'password'],
+              signUpPolicy: 'autoSignIn',
+            },
+          },
         },
       },
+      modules: [],
     },
     navigator: {
       type: 'stack',

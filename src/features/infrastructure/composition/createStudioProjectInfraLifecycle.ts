@@ -1,0 +1,124 @@
+import type { AppManifest } from '@ankhorage/contracts';
+import type { AppEnvironmentId } from '@ankhorage/contracts/environments';
+import type {
+  InfraDiagnostic,
+  InfraResourceIdentity,
+  InfraResult,
+  InfraStatus,
+} from '@ankhorage/contracts/infra';
+import {
+  createEnvironmentInfraCredentialPort,
+  createEnvironmentInfraSecretPort,
+  type InfraDestroyResult,
+  type InfraDownResult,
+  type InfraGenerateResult,
+  type InfraOutputsResult,
+  type InfraUpResult,
+} from '@ankhorage/infra';
+import {
+  createProjectInfraLifecycle,
+  type ProjectInfraLifecycle,
+  readStoredInfraStateAsync,
+} from '@ankhorage/infra/project';
+
+import { createStudioInfraAdapterPackageResolver } from '../adapters/outbound/createStudioInfraAdapterPackageResolver';
+
+interface StudioProjectInfraRequest {
+  readonly environment?: AppEnvironmentId;
+  readonly executionEnvironment?: Readonly<Record<string, string | undefined>>;
+  readonly manifest: AppManifest;
+  readonly projectId: string;
+  readonly projectPath: string;
+}
+
+interface StudioProjectInfraDestroyRequest extends StudioProjectInfraRequest {
+  readonly deletePersistentResources: boolean;
+}
+
+export interface StudioProjectInfraLifecycle {
+  readonly generateAsync: (request: StudioProjectInfraRequest) => Promise<InfraGenerateResult>;
+  readonly upAsync: (request: StudioProjectInfraRequest) => Promise<InfraUpResult>;
+  readonly statusAsync: (request: StudioProjectInfraRequest) => Promise<InfraStatus>;
+  readonly outputsAsync: (request: StudioProjectInfraRequest) => Promise<InfraOutputsResult>;
+  readonly downAsync: (request: StudioProjectInfraRequest) => Promise<InfraDownResult>;
+  readonly destroyAsync: (request: StudioProjectInfraDestroyRequest) => Promise<InfraDestroyResult>;
+}
+
+/*** Compose Studio's project infrastructure boundary on top of the provider-neutral Infra lifecycle. */
+export function createStudioProjectInfraLifecycle(
+  lifecycle: ProjectInfraLifecycle = createDefaultStudioProjectInfraLifecycle(),
+): StudioProjectInfraLifecycle {
+  return {
+    generateAsync: async (request) =>
+      requireInfraSuccess(await lifecycle.generateAsync(toInfraRequest(request))),
+    upAsync: async (request) =>
+      requireInfraSuccess(await lifecycle.upAsync(toInfraRequest(request))),
+    statusAsync: async (request) =>
+      requireInfraSuccess(await lifecycle.statusAsync(toInfraRequest(request))),
+    outputsAsync: async (request) =>
+      requireInfraSuccess(await lifecycle.outputsAsync(toInfraRequest(request))),
+    downAsync: async (request) =>
+      requireInfraSuccess(await lifecycle.downAsync(toInfraRequest(request))),
+    destroyAsync: async (request) => {
+      const environment = request.environment ?? 'local';
+      const state = await readStoredInfraStateAsync(request.projectPath, environment);
+      const confirmedResources = request.deletePersistentResources
+        ? persistentResourceIdentities(state?.ledger.resources ?? [])
+        : [];
+      return requireInfraSuccess(
+        await lifecycle.destroyAsync({
+          ...toInfraRequest(request),
+          confirmation: { projectId: request.projectId, environment },
+          persistence: request.deletePersistentResources
+            ? { policy: 'delete', confirmedResources }
+            : { policy: 'retain' },
+        }),
+      );
+    },
+  };
+}
+
+/*** Compose Infra's project lifecycle with Studio's bundled adapter packages and canonical environment credential ports. */
+function createDefaultStudioProjectInfraLifecycle(): ProjectInfraLifecycle {
+  return createProjectInfraLifecycle({
+    services: {
+      createDependencies: (context) => ({
+        adapterResolver: createStudioInfraAdapterPackageResolver(),
+        credentials: createEnvironmentInfraCredentialPort(context.env),
+        secrets: createEnvironmentInfraSecretPort(context.env),
+      }),
+    },
+  });
+}
+
+/*** Convert a Studio project request into Infra's explicit environment lifecycle request. */
+function toInfraRequest(request: StudioProjectInfraRequest) {
+  return {
+    projectId: request.projectId,
+    projectPath: request.projectPath,
+    manifest: request.manifest.infra,
+    environment: request.environment ?? 'local',
+    ...(request.executionEnvironment === undefined
+      ? {}
+      : { executionEnvironment: request.executionEnvironment }),
+  };
+}
+
+/*** Extract explicit persistent resource confirmations from one stored Infra ownership ledger. */
+function persistentResourceIdentities(
+  resources: readonly { readonly identity: InfraResourceIdentity; readonly persistent: boolean }[],
+): readonly InfraResourceIdentity[] {
+  return resources.filter(({ persistent }) => persistent).map(({ identity }) => identity);
+}
+
+/*** Convert provider-neutral Infra diagnostics into one stable Studio operation failure. */
+function requireInfraSuccess<T>(result: InfraResult<T>): T {
+  if (result.ok) return result.value;
+  const message = formatInfraDiagnostics(result.diagnostics);
+  throw new Error(message.length > 0 ? message : 'Infrastructure operation failed.');
+}
+
+/*** Format safe Infra diagnostics without exposing privileged values. */
+function formatInfraDiagnostics(diagnostics: readonly InfraDiagnostic[]): string {
+  return diagnostics.map(({ code, message }) => `${code}: ${message}`).join('\n');
+}

@@ -218,7 +218,7 @@ export class ModuleManager {
       return { success: true, applied: 0 };
     }
 
-    await this.projectManager.syncProject({
+    await this.projectManager.syncProjectRuntime({
       projectId,
       mutations: await this.resolveLayoutMutations(projectId),
     });
@@ -243,7 +243,7 @@ export class ModuleManager {
     const { projectId, includeStudio = true } = args;
     await this.ensureProjectExists(projectId);
     await this.applyPendingOperations(projectId);
-    return this.projectManager.syncProject({
+    return this.projectManager.syncProjectRuntime({
       projectId,
       mutations: await this.resolveLayoutMutations(projectId),
       includeStudio,
@@ -351,7 +351,7 @@ export class ModuleManager {
   /*** Synchronize current project state and pending operations before a module lifecycle mutation. */
   private async prepareProjectForLifecycle(projectId: string) {
     await this.ensureProjectExists(projectId);
-    await this.projectManager.syncProject({
+    await this.projectManager.syncProjectRuntime({
       projectId,
       mutations: await this.resolveLayoutMutations(projectId),
     });

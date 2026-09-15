@@ -19,6 +19,14 @@ function createManifest(): StudioManifest {
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     infra: {
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+        },
+      },
       modules: [],
       modulesConfig: { preserved: true },
       apis: [
@@ -105,7 +113,9 @@ describe('studioManifestDraftModel', () => {
       children: 'After',
     });
 
-    expect(withNode.infra.auth?.oauth?.providers[0]?.credentialsRef).toBe('auth/oauth/google');
+    expect(withNode.infra.environments.local.auth?.oauth?.providers[0]?.credentialsRef).toBe(
+      'auth/oauth/google',
+    );
     expect(withNode.themes[0]?.dark.primaryColor).toBe('#333333');
     expect(withNode.screens['screen-details']?.root.children?.[0]?.props?.children).toBe('After');
   });

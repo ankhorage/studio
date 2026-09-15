@@ -1,7 +1,4 @@
-import {
-  APP_DEPLOY_ENVIRONMENT_IDS,
-  type AppDeployEnvironmentId,
-} from '@ankhorage/contracts/deploy';
+import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type {
   AndroidDeploymentTrack,
   ReleaseControlExecutionResult,
@@ -28,7 +25,7 @@ import { DeployLifecycleControls } from './DeployLifecycleControls';
 import { DeployPlanPreview } from './DeployPlanPreview';
 import { DeployResumeActions } from './DeployResumeActions';
 
-type EnvironmentSelection = AppDeployEnvironmentId | 'unselected';
+type EnvironmentSelection = AppEnvironmentId | 'unselected';
 type TrackSelection = AndroidDeploymentTrack | 'unselected';
 
 interface ReleasePreview {
@@ -50,7 +47,7 @@ interface ExecutionOutcome {
 
 const ENVIRONMENT_OPTIONS = [
   { value: 'unselected', label: 'Choose environment' },
-  ...APP_DEPLOY_ENVIRONMENT_IDS.map((value) => ({ value, label: value })),
+  ...APP_ENVIRONMENT_IDS.map((value) => ({ value, label: value })),
 ] satisfies readonly { readonly value: EnvironmentSelection; readonly label: string }[];
 
 const ANDROID_TRACK_OPTIONS = [

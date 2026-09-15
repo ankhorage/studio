@@ -22,7 +22,19 @@ function createManifest(overrides: Partial<StudioManifest> = {}): StudioManifest
     activeThemeId: '',
     activeThemeMode: 'light',
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
-    infra: { modules: [], modulesConfig: {}, apis: [] },
+    infra: {
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+        },
+      },
+      modules: [],
+      modulesConfig: {},
+      apis: [],
+    },
     ...overrides,
   } as StudioManifest;
 }
@@ -56,6 +68,14 @@ describe('StudioExternalApiService mutations', () => {
     const store = createProjectStore(
       createManifest({
         infra: {
+          environments: {
+            local: {
+              deployment: {
+                compute: { provider: 'local' },
+                runtime: { provider: 'minikube' },
+              },
+            },
+          },
           modules: [],
           modulesConfig: {},
           apis: [
@@ -116,6 +136,14 @@ describe('StudioExternalApiService mutations', () => {
     const store = createProjectStore(
       createManifest({
         infra: {
+          environments: {
+            local: {
+              deployment: {
+                compute: { provider: 'local' },
+                runtime: { provider: 'minikube' },
+              },
+            },
+          },
           modules: [],
           modulesConfig: {},
           apis: [

@@ -9,7 +9,7 @@ const source = readFileSync(
 );
 
 test('auth administration uses canonical environments and adapter-owned setup requirements', () => {
-  expect(source).toContain('APP_DEPLOY_ENVIRONMENT_IDS.map');
+  expect(source).toContain('APP_ENVIRONMENT_IDS.map');
   expect(source).toContain('getProjectAuthHealth({ projectId, environment })');
   expect(source).toContain('environment: props.environment');
   expect(source).toContain("field.sensitivity === 'secret'");

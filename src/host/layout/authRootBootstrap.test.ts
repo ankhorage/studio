@@ -20,18 +20,26 @@ function createAuthManifest(postSignInRoute: 'index' | 'products'): AppManifest 
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     deploy: { targets: { web: { enabled: true } } },
     infra: {
-      modules: [],
-      auth: {
-        scope: 'global',
-        provider: 'supabase',
-        flow: {
-          signInRoute: 'sign-in',
-          signUpRoute: 'sign-up',
-          signOutRoute: 'sign-out',
-          postSignInRoute,
-          unauthorizedRoute: 'sign-in',
+      environments: {
+        local: {
+          deployment: {
+            compute: { provider: 'local' },
+            runtime: { provider: 'minikube' },
+          },
+          auth: {
+            scope: 'global',
+            provider: 'supabase',
+            flow: {
+              signInRoute: 'sign-in',
+              signUpRoute: 'sign-up',
+              signOutRoute: 'sign-out',
+              postSignInRoute,
+              unauthorizedRoute: 'sign-in',
+            },
+          },
         },
       },
+      modules: [],
     },
     navigator: {
       type: 'tabs',
@@ -65,9 +73,19 @@ function generateAuthFiles(postSignInRoute: 'index' | 'products') {
 }
 
 function generateScopeFiles(scope: 'integrated' | 'none') {
-  const manifest = createAuthManifest('index');
-  if (!manifest.infra.auth) throw new Error('Expected auth fixture configuration.');
-  manifest.infra.auth = { ...manifest.infra.auth, scope };
+  const base = createAuthManifest('index');
+  const { auth } = base.infra.environments.local;
+  if (!auth) throw new Error('Expected auth fixture configuration.');
+  const manifest: AppManifest = {
+    ...base,
+    infra: {
+      ...base.infra,
+      environments: {
+        ...base.infra.environments,
+        local: { ...base.infra.environments.local, auth: { ...auth, scope } },
+      },
+    },
+  };
   return new GeneratedAppFileGenerator().generateFiles(
     '/tmp/auth-bootstrap-fixture',
     manifest,

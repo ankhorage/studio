@@ -1,51 +1,52 @@
+import type { InfraOutput } from '@ankhorage/contracts/infra';
 import type { MediaStorageAdapter } from '@ankhorage/contracts/storage';
-import { readProjectInfrastructureEnvironment } from '@ankhorage/infra/project';
 import { createContractsSupabaseStorageAdapter } from '@ankhorage/supabase-storage/contracts';
 
 import type { ProjectManager } from '../orchestrator/projectManager';
-import { getProjectPath } from '../orchestrator/projectPaths';
 
 export interface ProjectMediaStorageContext {
   readonly adapter: MediaStorageAdapter;
   readonly bucket: string;
 }
 
-/*** Resolve the active project's canonical authoring-media storage adapter from manifest and generated Infra state. */
+/*** Resolve the active project's canonical authoring-media storage adapter from manifest and Infra outputs. */
 export async function resolveProjectMediaStorage(args: {
   readonly projectId: string;
   readonly projectManager: ProjectManager;
   readonly workspaceRoot: string;
 }): Promise<ProjectMediaStorageContext> {
   const manifest = await args.projectManager.getProjectManifest(args.projectId);
-  const { storage } = manifest.infra;
-  const bucket = storage?.buckets.find((value) => value.trim().length > 0)?.trim();
-  if (!storage || !bucket)
-    throw new Error('Configure an infra.storage bucket before importing media.');
-  if (storage.provider !== 'auto') {
+  const { objectStorage } = manifest.infra.environments.local;
+  const bucket = objectStorage?.buckets?.find((value) => value.trim().length > 0)?.trim();
+  if (!objectStorage || !bucket) {
     throw new Error(
-      `Studio media ingestion does not support storage provider '${storage.provider}' yet.`,
+      'Configure an infra.environments.local.objectStorage bucket before importing media.',
     );
   }
-  const usesSupabase =
-    manifest.infra.auth?.provider === 'supabase' ||
-    manifest.infra.database?.provider === 'supabase';
-  if (!usesSupabase)
-    throw new Error('Storage provider auto cannot resolve a media storage adapter.');
-  const status = await args.projectManager.getInfrastructureStatus(args.projectId);
-  if (!status.target) throw new Error('Run infrastructure generation before importing media.');
-  const environment = await readProjectInfrastructureEnvironment({
-    keys: [
-      'EXPO_PUBLIC_SUPABASE_URL',
-      'SUPABASE_URL',
-      'EXPO_PUBLIC_SUPABASE_ANON_KEY',
-      'SUPABASE_ANON_KEY',
-    ],
-    projectPath: getProjectPath(args.workspaceRoot, args.projectId),
-    target: status.target,
-  });
-  const url = environment.EXPO_PUBLIC_SUPABASE_URL?.trim() ?? environment.SUPABASE_URL?.trim();
-  const anonKey =
-    environment.EXPO_PUBLIC_SUPABASE_ANON_KEY?.trim() ?? environment.SUPABASE_ANON_KEY?.trim();
+  if (objectStorage.provider !== 'supabase') {
+    throw new Error(
+      `Studio media ingestion does not support object-storage provider '${objectStorage.provider}' yet.`,
+    );
+  }
+
+  const outputs = await args.projectManager.getInfrastructureOutputs(args.projectId);
+  const url = readPublicEnvironmentOutput(outputs.outputs, 'EXPO_PUBLIC_SUPABASE_URL');
+  const anonKey = readPublicEnvironmentOutput(outputs.outputs, 'EXPO_PUBLIC_SUPABASE_ANON_KEY');
   if (!url || !anonKey) throw new Error('Run Infra Up before importing media.');
+
   return { adapter: createContractsSupabaseStorageAdapter({ url, anonKey, bucket }), bucket };
+}
+
+/*** Read one non-empty public Infra output by its application environment-variable name. */
+function readPublicEnvironmentOutput(
+  outputs: readonly InfraOutput[],
+  environmentVariable: string,
+): string | undefined {
+  const output = outputs.find(
+    (candidate) =>
+      candidate.visibility === 'public' && candidate.environmentVariable === environmentVariable,
+  );
+  if (output?.visibility !== 'public') return undefined;
+  const value = String(output.value).trim();
+  return value.length > 0 ? value : undefined;
 }

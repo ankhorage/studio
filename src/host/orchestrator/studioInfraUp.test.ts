@@ -1,70 +1,80 @@
 import type { AppManifest } from '@ankhorage/contracts';
+import type { InfraGenerateResult, InfraUpResult } from '@ankhorage/infra';
 import { describe, expect, test } from 'bun:test';
 
 import { upProjectInfrastructure } from './studioInfraUp';
 
-describe('Studio Infrastructure Up', () => {
-  test('ensures the application runtime after successful Infra Up', async () => {
-    const calls: unknown[][] = [];
-    const regenerated = { generated: 5, removed: 0, warnings: [] } as const;
-    const manifest = { infra: {} } as AppManifest;
+const manifest: AppManifest = {
+  metadata: {
+    name: 'Demo',
+    slug: 'demo',
+    version: '1.0.0',
+    category: 'developer_tools',
+    themeId: 'default',
+  },
+  settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
+  infra: {
+    environments: {
+      local: { deployment: { compute: { provider: 'local' }, runtime: { provider: 'minikube' } } },
+    },
+    modules: [],
+  },
+  navigator: { type: 'stack', routes: [] },
+  screens: {},
+  themes: [],
+  activeThemeId: 'default',
+};
+const ledger = {
+  schemaVersion: 1 as const,
+  projectId: 'project-one',
+  environment: 'local' as const,
+  targets: [],
+  resources: [],
+  outputs: [],
+  artifacts: [],
+};
+const regenerated: InfraGenerateResult = { environment: 'local', artifacts: [], ledger };
+const reconciled: InfraUpResult = {
+  environment: 'local',
+  targets: [],
+  resources: [],
+  outputs: [],
+  ledger,
+};
 
-    const result = await upProjectInfrastructure(
-      {
-        projectId: 'project-one',
-        workspaceRoot: '/workspace',
-        projectManager: {
-          regenerateInfrastructure: (projectId) => {
-            calls.push(['regenerate', projectId]);
-            return Promise.resolve(regenerated);
-          },
-          getInfrastructureStatus: (projectId) => {
-            calls.push(['status', projectId]);
-            return Promise.resolve({
-              generated: true,
-              generatedAt: '2026-08-22T00:00:00.000Z',
-              hasDeployment: true,
-              target: 'minikube',
-              trackedFiles: 5,
-              warnings: [],
-            });
-          },
-          getProjectManifest: (projectId) => {
-            calls.push(['manifest', projectId]);
-            return Promise.resolve(manifest);
-          },
+describe('Studio Infrastructure Up', () => {
+  test('regenerates and reconciles through the provider-neutral project manager boundary', async () => {
+    const calls: string[] = [];
+    const result = await upProjectInfrastructure({
+      projectId: 'project-one',
+      workspaceRoot: '/workspace',
+      projectManager: {
+        regenerateInfrastructure: (projectId) => {
+          calls.push(`regenerate:${projectId}`);
+          return Promise.resolve(regenerated);
+        },
+        getProjectManifest: (projectId) => {
+          calls.push(`manifest:${projectId}`);
+          return Promise.resolve(manifest);
+        },
+        upInfrastructure: (projectId) => {
+          calls.push(`up:${projectId}`);
+          return Promise.resolve(reconciled);
         },
       },
-      {
-        runProjectInfrastructureLifecycle: (args) => {
-          calls.push(['up', args.projectId, args.projectPath, args.target, args.script]);
-          return Promise.resolve({ stdout: '', stderr: '' });
-        },
-        ensureProjectInfrastructureRuntimeSession: (args) => {
-          calls.push(['runtime', args]);
-          return Promise.resolve();
-        },
-      },
-    );
+    });
 
     expect(result).toEqual({
-      target: 'minikube',
+      runtime: 'minikube',
       regenerated,
+      reconciled,
       trustedOAuth: { deferred: false },
     });
     expect(calls).toEqual([
-      ['regenerate', 'project-one'],
-      ['status', 'project-one'],
-      ['manifest', 'project-one'],
-      ['up', 'project-one', '/workspace/apps/project-one', 'minikube', 'up'],
-      [
-        'runtime',
-        {
-          projectId: 'project-one',
-          projectPath: '/workspace/apps/project-one',
-          target: 'minikube',
-        },
-      ],
+      'regenerate:project-one',
+      'manifest:project-one',
+      'manifest:project-one',
+      'up:project-one',
     ]);
   });
 });
