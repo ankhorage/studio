@@ -51,7 +51,9 @@ describe('project update HTTP adapter', () => {
       url: '/api/projects/project-one/updates/status?availability=offline',
     });
     expect(response.statusCode).toBe(200);
-    expect(calls).toEqual([{ operation: 'status', input: { rootPath: ROOT, availability: 'offline' } }]);
+    expect(calls).toEqual([
+      { operation: 'status', input: { rootPath: ROOT, availability: 'offline' } },
+    ]);
 
     const injected = await server.inject({
       method: 'GET',
@@ -96,9 +98,7 @@ describe('project update HTTP adapter', () => {
     });
 
     expect(response.statusCode).toBe(200);
-    expect(calls).toEqual([
-      { operation: 'apply', input: { mode: 'start', plan, permissions } },
-    ]);
+    expect(calls).toEqual([{ operation: 'apply', input: { mode: 'start', plan, permissions } }]);
 
     const mismatched = await server.inject({
       method: 'POST',
