@@ -13,6 +13,10 @@ import type {
 
 import { isAppManifest } from '../../../contractGuards';
 import {
+  digestProjectUpdateText,
+  readPendingModuleLifecycleStateAsync,
+} from '../adapters/outbound/readPendingModuleLifecycleStateAsync';
+import {
   STUDIO_PENDING_MODULE_LIFECYCLE_FILE,
   STUDIO_PENDING_MODULE_LIFECYCLE_PROJECTION_ID,
 } from '../constants';
@@ -21,10 +25,6 @@ import {
   removeReviewedPendingModules,
   serializePendingModuleLifecycleState,
 } from '../domain/pendingModuleLifecycleState';
-import {
-  digestProjectUpdateText,
-  readPendingModuleLifecycleStateAsync,
-} from '../adapters/outbound/readPendingModuleLifecycleStateAsync';
 
 const STUDIO_MANIFEST_FILE = 'ankh.config.json';
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
@@ -62,6 +62,7 @@ export async function planPendingModuleLifecycleAsync(input: {
 
   const manifestPath = path.join(input.rootPath, STUDIO_MANIFEST_FILE);
   const manifestContent = await readFile(manifestPath, 'utf8');
+  const manifestDigest = digestProjectUpdateText(manifestContent);
   const manifest = parseManifest(manifestContent);
   const reviewedIds = new Set(moduleIds);
   const nextManifest = projectReviewedRemovals(manifest, reviewedIds, input.nowIso());
@@ -75,53 +76,62 @@ export async function planPendingModuleLifecycleAsync(input: {
       nextPending.ops.length === 0 ? undefined : serializePendingModuleLifecycleState(nextPending),
   });
   const removalSteps = moduleIds.map((moduleId, index) =>
-    removalStep(
+    removalStep({
       moduleId,
-      index === 0 ? [] : [removalStepId(moduleIds[index - 1] ?? '')],
-      pending.digest,
-      artifactResolution.artifact,
-    ),
+      prerequisites: index === 0 ? [] : [removalStepId(moduleIds[index - 1] ?? '')],
+      pendingDigest: pending.digest,
+      manifestDigest,
+      artifact: artifactResolution.artifact,
+    }),
   );
-  const finalPrerequisites =
-    removalSteps.length === 0 ? [] : [removalSteps[removalSteps.length - 1]?.id ?? ''];
+  const lastRemovalStep = removalSteps.at(-1);
   return {
     files,
     artifacts: [toPlanArtifact(artifactResolution.artifact)],
-    steps: [...removalSteps, finalizationStep(files, finalPrerequisites)],
+    steps: [
+      ...removalSteps,
+      finalizationStep(files, lastRemovalStep === undefined ? [] : [lastRemovalStep.id]),
+    ],
     blockers: [],
   };
 }
 
 /*** Build one non-restartable dynamic owner step for exactly one Orchestrator module removal. */
-function removalStep(
-  moduleId: string,
-  prerequisites: readonly string[],
-  pendingDigest: string,
-  artifact: ApmExtensionArtifactIdentity,
-): ApmPlanStep {
-  const projectionId = `pending-module-remove:${moduleId}`;
+function removalStep(input: {
+  readonly moduleId: string;
+  readonly prerequisites: readonly string[];
+  readonly pendingDigest: string;
+  readonly manifestDigest: string;
+  readonly artifact: ApmExtensionArtifactIdentity;
+}): ApmPlanStep {
+  const projectionId = `pending-module-remove:${input.moduleId}`;
+  const evidence = [
+    `module-uninstall:${input.moduleId}`,
+    `pending-digest:${input.pendingDigest}`,
+    `manifest-digest:${input.manifestDigest}`,
+  ];
   return {
-    id: removalStepId(moduleId),
+    id: removalStepId(input.moduleId),
     kind: 'projection',
-    prerequisites,
+    prerequisites: input.prerequisites,
     owner: STUDIO_PACKAGE_NAME,
-    reason: `Remove reviewed pending Orchestrator module '${moduleId}'.`,
-    evidence: [`module-uninstall:${moduleId}`, `pending-digest:${pendingDigest}`],
+    reason: `Remove reviewed pending Orchestrator module '${input.moduleId}'.`,
+    evidence,
     execution: {
       kind: 'projection',
       descriptor: {
         id: projectionId,
-        claims: [{ kind: 'dynamic', scope: `orchestrator-module:${moduleId}` }],
+        claims: [{ kind: 'dynamic', scope: `orchestrator-module:${input.moduleId}` }],
         requiresExtension: false,
         reason: 'Studio delegates module uninstall side effects to the published Orchestrator owner.',
       },
-      artifact,
+      artifact: input.artifact,
       plan: {
         projectionId,
         mutations: [],
-        inputFingerprint: `pending:${pendingDigest}:${moduleId}`,
-        generatorFingerprint: artifact.descriptorDigest,
-        evidence: [`module-uninstall:${moduleId}`, `pending-digest:${pendingDigest}`],
+        inputFingerprint: `pending:${input.pendingDigest}:manifest:${input.manifestDigest}:${input.moduleId}`,
+        generatorFingerprint: input.artifact.descriptorDigest,
+        evidence,
       },
     },
   };
@@ -276,10 +286,4 @@ function emptySlice(): PendingModuleLifecyclePlanSlice {
 /*** Build the stable reviewed owner-step id for one module. */
 export function removalStepId(moduleId: string): string {
   return `${REMOVAL_STEP_PREFIX}${moduleId}`;
-}
-
-/*** Compare stable serialized identifiers without locale-dependent ordering. */
-export function compareProjectUpdateText(left: string, right: string): number {
-  if (left < right) return -1;
-  return left > right ? 1 : 0;
 }
