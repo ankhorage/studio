@@ -8,16 +8,15 @@ import { observeProjectAuthRuntimeDiagnostics } from './projectAuthRuntimeDiagno
 
 type ProjectAuthHealthManager = Pick<
   ProjectManager,
-  'getInfrastructureStatus' | 'getProjectManifest'
+  'getInfrastructureOutputs' | 'getInfrastructureStatus' | 'getProjectManifest'
 >;
 
 export class ProjectAuthHealthService {
   private readonly projectManager: ProjectAuthHealthManager;
   private readonly secretService: Pick<ProjectSecretService, 'list'>;
-  private readonly workspaceRoot: string;
 
   /***
-   * Create the Studio host service that combines authored Auth state, secret availability, and generated-runtime diagnostics.
+   * Create the Studio host service that combines authored Auth state, secret availability, and provider-neutral Infra diagnostics.
    * @todo Move this service under the auth domain's host/application boundary.
    */
   constructor(options: {
@@ -27,10 +26,9 @@ export class ProjectAuthHealthService {
   }) {
     this.projectManager = options.projectManager;
     this.secretService = options.secretService;
-    this.workspaceRoot = options.workspaceRoot;
   }
 
-  /*** Resolve one project's bounded Auth health result without leaking infrastructure script output. */
+  /*** Resolve one project's bounded Auth health result without relying on provider-specific runtime scripts. */
   async get(input: {
     readonly projectId: string;
     readonly environment?: string;
@@ -59,7 +57,8 @@ export class ProjectAuthHealthService {
       secretStoreAvailable: secretResult.ok,
       environment,
     });
-    const oauth = manifest.infra.environments.local.auth?.oauth;
+    const environmentSpec = manifest.infra.environments[environment];
+    const oauth = environmentSpec?.auth?.oauth;
 
     if (!oauth?.enabled || !oauth.providers.some((provider) => provider.enabled === true)) {
       return {
@@ -70,14 +69,17 @@ export class ProjectAuthHealthService {
     }
 
     try {
-      const infraStatus = await this.projectManager.getInfrastructureStatus(input.projectId);
+      const [infraStatus, infraOutputs] = await Promise.all([
+        this.projectManager.getInfrastructureStatus(input.projectId),
+        this.projectManager.getInfrastructureOutputs(input.projectId),
+      ]);
       const runtimeDiagnostics = await observeProjectAuthRuntimeDiagnostics({
-        rootPath: this.workspaceRoot,
-        projectId: input.projectId,
-        target: infraStatus.target,
-        generated: infraStatus.generated,
-        environment,
+        status: infraStatus,
+        outputs: infraOutputs.outputs,
         callbackRoute: oauth.callbackRoute,
+        ...(environmentSpec.networking?.publicBaseUrl
+          ? { publicBaseUrl: environmentSpec.networking.publicBaseUrl }
+          : {}),
       });
 
       return {
