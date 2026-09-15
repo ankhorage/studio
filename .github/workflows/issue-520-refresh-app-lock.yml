@@ -1,4 +1,4 @@
-name: Issue 520 Renovate dry run
+name: Issue 520 Contracts graph
 
 on:
   push:
@@ -7,46 +7,60 @@ on:
 
 permissions:
   contents: read
-  issues: read
-  pull-requests: read
 
 jobs:
   inspect:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: '24'
-      - name: Prove canonical Renovate manager and dependency extraction
-        env:
-          LOG_FILE: renovate.log
-          LOG_FILE_LEVEL: debug
-          LOG_FORMAT: json
-          LOG_LEVEL: debug
-          RENOVATE_DRY_RUN: full
-          RENOVATE_ONBOARDING: 'false'
-          RENOVATE_PLATFORM: github
-          RENOVATE_REQUIRE_CONFIG: required
-          RENOVATE_TOKEN: ${{ github.token }}
+          bun-version: '1.4.2'
+      - name: Install fresh standalone Studio graph
         run: |
-          npx --yes renovate@44.43.1 ankhorage/studio
+          rm apps/studio/bun.lock
+          bun install --cwd apps/studio
+      - name: Inspect physical Contracts ownership
+        run: |
           node --input-type=module <<'NODE'
-          import { readFileSync } from 'node:fs';
+          import { existsSync, readFileSync, realpathSync } from 'node:fs';
+          import path from 'node:path';
 
-          const log = readFileSync('renovate.log', 'utf8');
-          const requiredEvidence = [
-            '"enabledManagers":["bun","custom.regex"]',
-            '"manager":"bun"',
-            '@ankhorage/contracts',
-            '@ankhorage/zora',
-            '@ankhorage/expo-runtime',
+          const appRoot = path.resolve('apps/studio');
+          const studioLink = path.join(appRoot, 'node_modules/@ankhorage/studio');
+          const runtimeLink = path.join(appRoot, 'node_modules/@ankhorage/expo-runtime');
+          const readPackage = (packagePath) => {
+            if (!existsSync(packagePath)) return null;
+            const value = JSON.parse(readFileSync(packagePath, 'utf8'));
+            return {
+              path: packagePath,
+              realPath: realpathSync(packagePath),
+              version: value.version,
+              environments: value.exports?.['./environments'] ?? null,
+            };
+          };
+          const packageRoot = (link) => realpathSync(link);
+          const candidates = [
+            path.join(appRoot, 'node_modules/@ankhorage/contracts/package.json'),
+            path.join(studioLink, 'node_modules/@ankhorage/contracts/package.json'),
+            path.join(runtimeLink, 'node_modules/@ankhorage/contracts/package.json'),
+            path.join(packageRoot(studioLink), 'node_modules/@ankhorage/contracts/package.json'),
+            path.join(packageRoot(runtimeLink), 'node_modules/@ankhorage/contracts/package.json'),
           ];
-          for (const evidence of requiredEvidence) {
-            if (!log.includes(evidence)) {
-              throw new Error(`Renovate dry-run evidence missing: ${evidence}`);
-            }
-          }
-          console.log('Renovate dry-run detected Bun-managed Ankhorage dependencies.');
+          console.log(JSON.stringify({
+            studio: {
+              realPath: packageRoot(studioLink),
+              manifest: readPackage(path.join(studioLink, 'package.json')),
+            },
+            expoRuntime: {
+              realPath: packageRoot(runtimeLink),
+              manifest: readPackage(path.join(runtimeLink, 'package.json')),
+            },
+            contracts: [...new Set(candidates)].map(readPackage).filter(Boolean),
+          }, null, 2));
           NODE
+          echo '--- all Contracts manifests under standalone node_modules ---'
+          find apps/studio/node_modules -path '*/@ankhorage/contracts/package.json' -print | sort
+          echo '--- Bun-store Contracts manifests ---'
+          find apps/studio/node_modules/.bun -path '*ankhorage+contracts*/node_modules/@ankhorage/contracts/package.json' -print | sort || true
