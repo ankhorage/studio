@@ -1,7 +1,7 @@
 import type { ProjectUpdateServiceOptions } from '../../../types/project-updates';
+import { getGeneratedPackagePolicy } from '../adapters/outbound/getGeneratedPackagePolicy';
 import { ProjectUpdateService } from '../application/ProjectUpdateService';
 import type { StudioPendingModuleLifecyclePort } from '../application/StudioPendingModuleLifecyclePort';
-import { getGeneratedPackagePolicy } from '../adapters/outbound/getGeneratedPackagePolicy';
 import { createStudioProjectUpdateApplyOwnerStepPort } from './createStudioProjectUpdateApplyOwnerStepPort';
 import { createStudioProjectUpdateExtensionEvidencePort } from './createStudioProjectUpdateExtensionEvidencePort';
 import { createStudioProjectUpdateProtocolPort } from './createStudioProjectUpdateProtocolPort';
