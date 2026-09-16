@@ -308,7 +308,10 @@ async function runStudioLifecycleAsync(
   });
   assert.equal(readOwnProperty(verify, 'verified'), true);
 
-  return lifecycleEvidence(status, plan, verify, targetVersion, operationStatus, readOnlySentinels);
+  return {
+    ...lifecycleEvidence(status, plan, verify, targetVersion, operationStatus),
+    readOnlySentinels,
+  };
 }
 
 async function installPublishedApmCliAsync(apmVersion: string): Promise<void> {
@@ -361,9 +364,8 @@ function lifecycleEvidence(
   verify: Readonly<Record<string, unknown>>,
   targetVersion: string,
   operationStatus: string,
-  readOnlySentinels?: Readonly<Record<string, string>>,
-): StudioLifecycleEvidence | LifecycleEvidence {
-  const evidence = {
+): LifecycleEvidence {
+  return {
     targetVersion,
     operationStatus,
     verified: readOwnProperty(verify, 'verified') === true,
@@ -373,7 +375,6 @@ function lifecycleEvidence(
     verificationFindings: normalizeFindings(readArray(verify, 'findings')),
     followUp: readArray(verify, 'followUp'),
   };
-  return readOnlySentinels === undefined ? evidence : { ...evidence, readOnlySentinels };
 }
 
 function assertLifecycleParity(studio: LifecycleEvidence, cli: LifecycleEvidence): void {
