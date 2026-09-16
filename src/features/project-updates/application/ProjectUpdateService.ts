@@ -17,15 +17,18 @@ import type {
 } from '@ankhorage/apm/types';
 
 import type { ProjectUpdateServiceOptions } from '../../../types/project-updates';
+import { enforceStudioHostRestartBoundary } from './enforceStudioHostRestartBoundary';
 
 /*** Compose Studio's project update lifecycle through the released APM Node use cases. */
 export class ProjectUpdateService {
   private readonly options: ProjectUpdateServiceOptions;
+  private readonly runningStudioVersion: string | undefined;
   private readonly statusPort: ApmProjectStatusPort;
 
-  /*** Create one Studio update service with optional package-owned protocol and execution ports. */
-  constructor(options: ProjectUpdateServiceOptions = {}) {
+  /*** Create one Studio update service with optional package-owned ports and exact running owner identity. */
+  constructor(options: ProjectUpdateServiceOptions = {}, runningStudioVersion?: string) {
     this.options = options;
+    this.runningStudioVersion = runningStudioVersion;
     this.statusPort = {
       inspectStatusAsync: (input) =>
         statusProjectAsync(input, {
@@ -44,12 +47,15 @@ export class ProjectUpdateService {
     };
   }
 
-  /*** Produce one reviewable APM plan using Studio-owned protocol evidence when available. */
+  /*** Produce one reviewable APM plan and enforce Studio's running-host restart boundary. */
   async planAsync(input: ApmPlanProjectInput): Promise<ApmPlanResult> {
-    return planProjectAsync(input, {
+    const plan = await planProjectAsync(input, {
       status: this.statusPort,
       ...(this.options.protocol === undefined ? {} : { protocol: this.options.protocol }),
     });
+    return this.runningStudioVersion === undefined
+      ? plan
+      : enforceStudioHostRestartBoundary(plan, this.runningStudioVersion);
   }
 
   /*** Start or resume one durable APM operation using Studio-owned execution adapters when required. */
