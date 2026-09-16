@@ -15,8 +15,10 @@ test('blocks selected Studio project updates behind the running host restart bou
     code: 'plan.host-upgrade-required',
     scope: { kind: 'host', id: 'studio' },
     evidence: ['installed host 2.7.6', 'latest 2.7.7', 'selected 2.7.7'],
-    reason: 'Selected project changes require Studio 2.7.7, but the running host is Studio 2.7.6.',
-    nextAction: 'Upgrade Studio to 2.7.7, restart the host, then inspect and create a fresh plan.',
+    reason:
+      'Selected project changes require Studio 2.7.7, but the running host is Studio 2.7.6.',
+    nextAction:
+      'Upgrade Studio to 2.7.7, restart the host, then inspect and create a fresh plan.',
   });
 });
 
@@ -77,7 +79,12 @@ function protocolRequest(
                 ],
         },
       ],
-      extensions: { state: 'unavailable', complete: true, observations: [], diagnostics: [] },
+      extensions: {
+        state: 'unavailable',
+        complete: true,
+        observations: [],
+        diagnostics: [],
+      },
       findings: [],
       diagnostics: [],
     },
