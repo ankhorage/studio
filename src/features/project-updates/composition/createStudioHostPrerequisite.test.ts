@@ -15,10 +15,8 @@ test('blocks selected Studio project updates behind the running host restart bou
     code: 'plan.host-upgrade-required',
     scope: { kind: 'host', id: 'studio' },
     evidence: ['installed host 2.7.6', 'latest 2.7.7', 'selected 2.7.7'],
-    reason:
-      'Selected project changes require Studio 2.7.7, but the running host is Studio 2.7.6.',
-    nextAction:
-      'Upgrade Studio to 2.7.7, restart the host, then inspect and create a fresh plan.',
+    reason: 'Selected project changes require Studio 2.7.7, but the running host is Studio 2.7.6.',
+    nextAction: 'Upgrade Studio to 2.7.7, restart the host, then inspect and create a fresh plan.',
   });
 });
 
@@ -32,10 +30,7 @@ test('does not block when the selected Studio project version matches the runnin
 });
 
 /*** Build host availability and selected-target evidence matching APM's public planning boundary. */
-function protocolRequest(
-  runningVersion: string,
-  targetVersion: string,
-): ApmPlanProtocolRequest {
+function protocolRequest(runningVersion: string, targetVersion: string): ApmPlanProtocolRequest {
   return {
     status: {
       schemaVersion: 2,
