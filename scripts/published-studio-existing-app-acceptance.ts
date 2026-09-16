@@ -141,7 +141,9 @@ async function assertPublishedStudioConsumerAsync(): Promise<{
   readonly apmVersion: string;
 }> {
   const consumerManifest = await readJsonObjectAsync(path.join(studioToolRoot, 'package.json'));
-  assert.deepEqual(Object.keys(readObject(consumerManifest, 'dependencies')), ['@ankhorage/studio']);
+  assert.deepEqual(Object.keys(readObject(consumerManifest, 'dependencies')), [
+    '@ankhorage/studio',
+  ]);
 
   const studioPackagePath = path.join(
     studioToolRoot,
@@ -445,12 +447,26 @@ async function requestJsonAsync(
     headers: { 'Content-Type': 'application/json', ...init.headers },
   });
   const body = await response.text();
-  if (!response.ok) {
-    throw new Error(`${init.method ?? 'GET'} ${route} failed (${response.status}): ${body}`);
-  }
   const value: unknown = JSON.parse(body);
+  if (!response.ok) {
+    throw new Error(
+      `${init.method ?? 'GET'} ${route} failed (${response.status}): ${JSON.stringify(compactHttpFailure(value))}`,
+    );
+  }
   if (!isRecord(value)) throw new Error(`Expected object JSON from ${route}.`);
   return value;
+}
+
+/*** Keep failed lifecycle output bounded to actionable structured evidence. */
+function compactHttpFailure(value: unknown): unknown {
+  if (!isRecord(value)) return value;
+  return {
+    status: readOwnProperty(value, 'status'),
+    operationId: readOwnProperty(value, 'operationId'),
+    planId: readOwnProperty(value, 'planId'),
+    blockers: readOwnProperty(value, 'blockers'),
+    diagnostics: readOwnProperty(value, 'diagnostics'),
+  };
 }
 
 async function runJsonCommandAsync(
