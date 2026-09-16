@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.7.4
+
+### Patch Changes
+
+- 7f58d3f: Allow reviewed APM apply plans with large lockfile diffs through the authorized Studio host route while keeping other request limits unchanged.
+
 ## 2.7.3
 
 ### Patch Changes
