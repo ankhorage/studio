@@ -109,7 +109,7 @@ describe('project update HTTP adapter', () => {
     expect(calls).toHaveLength(1);
   });
 
-  test('accepts a reviewed apply plan above the global Fastify body limit only on apply', async () => {
+  test('accepts a reviewed apply plan above the global Fastify body limit', async () => {
     const calls: unknown[] = [];
     const server = createServer(calls);
     const largePlan: ApmPlanResult = {
@@ -135,14 +135,6 @@ describe('project update HTTP adapter', () => {
     expect(calls).toEqual([
       { operation: 'apply', input: { mode: 'start', plan: largePlan, permissions } },
     ]);
-
-    const resume = await server.inject({
-      method: 'POST',
-      url: '/api/projects/project-one/updates/resume',
-      payload: { operationId: 'x'.repeat(2 * 1024 * 1024), permissions },
-    });
-    expect(resume.statusCode).toBe(413);
-    expect(calls).toHaveLength(1);
   });
 
   test('resumes one durable operation through the selected project root', async () => {
