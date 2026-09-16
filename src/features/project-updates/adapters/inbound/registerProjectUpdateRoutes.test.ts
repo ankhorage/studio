@@ -109,6 +109,42 @@ describe('project update HTTP adapter', () => {
     expect(calls).toHaveLength(1);
   });
 
+  test('accepts a reviewed apply plan above the global Fastify body limit only on apply', async () => {
+    const calls: unknown[] = [];
+    const server = createServer(calls);
+    const largePlan: ApmPlanResult = {
+      ...plan,
+      files: [
+        {
+          path: 'bun.lock',
+          kind: 'update',
+          beforeContent: 'before',
+          beforeDigest: 'before-digest',
+          afterContent: 'x'.repeat(2 * 1024 * 1024),
+          afterDigest: 'after-digest',
+        },
+      ],
+    };
+
+    const applied = await server.inject({
+      method: 'POST',
+      url: '/api/projects/project-one/updates/apply',
+      payload: { plan: largePlan, permissions },
+    });
+    expect(applied.statusCode).toBe(200);
+    expect(calls).toEqual([
+      { operation: 'apply', input: { mode: 'start', plan: largePlan, permissions } },
+    ]);
+
+    const resume = await server.inject({
+      method: 'POST',
+      url: '/api/projects/project-one/updates/resume',
+      payload: { operationId: 'x'.repeat(2 * 1024 * 1024), permissions },
+    });
+    expect(resume.statusCode).toBe(413);
+    expect(calls).toHaveLength(1);
+  });
+
   test('resumes one durable operation through the selected project root', async () => {
     const calls: unknown[] = [];
     const server = createServer(calls, { applyStatus: 'blocked' });
