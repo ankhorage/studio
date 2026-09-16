@@ -1,0 +1,59 @@
+name: Issue 520 refresh Infra consumer locks
+
+on:
+  push:
+    branches:
+      - fix/520-acceptance-baseline
+    paths:
+      - '.github/workflows/issue-520-refresh-infra-locks.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/520-acceptance-baseline
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+
+      - name: Require released Infra floor
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const path = 'package.json';
+          const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+          pkg.dependencies['@ankhorage/infra'] = '^5.1.5';
+          fs.writeFileSync(path, `${JSON.stringify(pkg, null, 2)}\n`);
+          NODE
+
+      - name: Regenerate Bun locks
+        run: |
+          bun install
+          bun install --cwd apps/studio
+
+      - name: Verify released Infra resolution
+        run: |
+          grep -q '@ankhorage/infra@5.1.5' bun.lock
+          grep -q '@ankhorage/infra@5.1.5' apps/studio/bun.lock
+          node -e "const p=require('./package.json'); if(p.dependencies['@ankhorage/infra'] !== '^5.1.5') process.exit(1)"
+
+      - name: Commit canonical consumer state and remove helper
+        run: |
+          git rm .github/workflows/issue-520-refresh-infra-locks.yml
+          git add package.json bun.lock apps/studio/bun.lock
+          if git diff --cached --quiet; then
+            echo 'Expected Infra consumer updates were not produced.' >&2
+            exit 1
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'chore: consume released Infra destroy fix'
+          git push origin HEAD:fix/520-acceptance-baseline
