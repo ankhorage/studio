@@ -55,9 +55,33 @@ jobs:
 
       - name: Verify released Infra resolution
         run: |
-          grep -q '@ankhorage/infra@5.1.5' bun.lock
-          grep -q '@ankhorage/infra@5.1.5' apps/studio/bun.lock
-          node -e "const p=require('./package.json'); if(p.dependencies['@ankhorage/infra'] !== '^5.1.5') process.exit(1)"
+          node <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const { createRequire } = require('node:module');
+
+          const rootPackage = require('./package.json');
+          if (rootPackage.dependencies['@ankhorage/infra'] !== '^5.1.5') {
+            throw new Error('Studio root does not declare the released Infra floor.');
+          }
+
+          const rootInfra = require('./node_modules/@ankhorage/infra/package.json');
+          if (rootInfra.version !== '5.1.5') {
+            throw new Error(`Studio root resolved Infra ${rootInfra.version} instead of 5.1.5.`);
+          }
+
+          const installedStudioPackagePath = path.resolve(
+            'apps/studio/node_modules/@ankhorage/studio/package.json',
+          );
+          const studioRequire = createRequire(installedStudioPackagePath);
+          const installedInfraPath = studioRequire.resolve('@ankhorage/infra/package.json');
+          const installedInfra = JSON.parse(fs.readFileSync(installedInfraPath, 'utf8'));
+          if (installedInfra.version !== '5.1.5') {
+            throw new Error(
+              `Standalone published Studio resolved Infra ${installedInfra.version} instead of 5.1.5.`,
+            );
+          }
+          NODE
 
       - name: Commit canonical consumer state and remove helper
         run: |
