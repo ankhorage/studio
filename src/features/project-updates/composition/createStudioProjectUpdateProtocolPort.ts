@@ -4,6 +4,7 @@ import type {
   ApmPlanBlocker,
   ApmPlanProtocolPort,
   ApmPlanProtocolResult,
+  ApmStatusHostPackageResult,
 } from '@ankhorage/apm/types';
 
 import { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
@@ -13,6 +14,8 @@ import {
   STUDIO_PENDING_MODULE_LIFECYCLE_PROJECTION_ID,
 } from '../constants';
 
+const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
+
 interface StudioProjectUpdateProtocolOptions {
   readonly pendingLifecycleExecution?: boolean;
   readonly resolveArtifactAsync?: (
@@ -21,7 +24,7 @@ interface StudioProjectUpdateProtocolOptions {
   readonly nowIso?: () => string;
 }
 
-/*** Extend package-owner planning with reviewed Studio pending-module lifecycle execution. */
+/*** Extend package-owner planning with Studio host prerequisites and reviewed module lifecycle execution. */
 export function createStudioProjectUpdateProtocolPort(
   base?: ApmPlanProtocolPort,
   options: StudioProjectUpdateProtocolOptions = {},
@@ -37,6 +40,7 @@ export function createStudioProjectUpdateProtocolPort(
         input.status.rootPath,
         options,
       );
+      const hostBlockers = studioHostPrerequisiteBlockers(input.status.hosts, input.targets);
       const unhandled =
         base === undefined
           ? input.status.extensions.observations.filter(
@@ -47,7 +51,12 @@ export function createStudioProjectUpdateProtocolPort(
           : [];
       const unhandledBlockers =
         unhandled.length === 0 ? [] : [protocolUnavailableBlocker(unhandled)];
-      const blockers = [...baseResult.blockers, ...pendingSlice.blockers, ...unhandledBlockers];
+      const blockers = [
+        ...baseResult.blockers,
+        ...hostBlockers,
+        ...pendingSlice.blockers,
+        ...unhandledBlockers,
+      ];
       return {
         ...baseResult,
         complete: baseResult.complete && blockers.length === 0,
@@ -80,6 +89,35 @@ async function readBaseProtocolResultAsync(
   input: Parameters<ApmPlanProtocolPort['planProtocolAsync']>[0],
 ): Promise<ApmPlanProtocolResult> {
   return base === undefined ? EMPTY_PROTOCOL_RESULT : base.planProtocolAsync(input);
+}
+
+/*** Block project execution when the selected Studio dependency requires a newer running Studio host. */
+function studioHostPrerequisiteBlockers(
+  hosts: readonly ApmStatusHostPackageResult[],
+  targets: Parameters<ApmPlanProtocolPort['planProtocolAsync']>[0]['targets'],
+): readonly ApmPlanBlocker[] {
+  const selectedStudio = targets.find(({ name }) => name === STUDIO_PACKAGE_NAME);
+  if (selectedStudio === undefined) return [];
+  const host = hosts.find(({ name }) => name === STUDIO_PACKAGE_NAME);
+  if (host === undefined || selectedStudio.targetVersion === host.version) return [];
+  const update = host.findings.find(({ code }) => code === 'host-update');
+  if (update === undefined) return [];
+  return [hostUpgradeBlocker(host, selectedStudio.targetVersion, update.evidence)];
+}
+
+/*** Describe the explicit Studio upgrade, restart, and fresh-plan boundary. */
+function hostUpgradeBlocker(
+  host: ApmStatusHostPackageResult,
+  requiredVersion: string,
+  evidence: readonly string[],
+): ApmPlanBlocker {
+  return {
+    code: 'plan.host-upgrade-required',
+    scope: { kind: 'host', id: host.id },
+    evidence: [...evidence, `selected ${requiredVersion}`],
+    reason: `Selected project changes require Studio ${requiredVersion}, but the running host is Studio ${host.version}.`,
+    nextAction: `Upgrade Studio to ${requiredVersion}, restart the host, then inspect and create a fresh plan.`,
+  };
 }
 
 /*** Plan the pending lifecycle observation only when the host supplied its trusted execution adapter. */
