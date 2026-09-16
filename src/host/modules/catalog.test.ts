@@ -1,31 +1,46 @@
 import { expect, test } from 'bun:test';
 import path from 'path';
 
+import { listHostModules, resolveHostModuleAdminContribution } from './catalog';
+
 const sourceRoot = path.join(import.meta.dir, '..');
 
-test('generic host module registry > registers unwrapped package-owned lifecycle, layout, and optional admin contributions', async () => {
+test('generic host module registry > registers package-owned host contributions without Studio lifecycle wrappers', async () => {
   const source = await Bun.file(path.join(import.meta.dir, 'catalog.ts')).text();
+  const contributions = listHostModules();
 
-  expect(source).toContain('lifecycle: expoLocalizationModuleProvider');
-  expect(source).toContain('lifecycle: expoGoogleFontsModuleProvider');
-  expect(source).toContain('layout: expoLocalizationLayoutContribution');
-  expect(source).toContain('layout: expoGoogleFontsLayoutContribution');
+  expect(contributions.map((contribution) => contribution.id)).toEqual([
+    'expo-localization',
+    'expo-google-fonts',
+  ]);
+  expect(source).toContain('expoLocalizationHostContribution');
+  expect(source).toContain('expoGoogleFontsHostContribution');
   expect(source).not.toContain('new ExpoLocalizationModuleProvider');
   expect(source).not.toContain('new ExpoGoogleFontsModuleProvider');
 });
 
-test('generic host module registry > isolates malformed optional admin contributions from generic lifecycle state', async () => {
-  const source = await Bun.file(path.join(import.meta.dir, 'catalog.ts')).text();
+test('generic host module registry > isolates malformed optional admin contributions from generic lifecycle state', () => {
+  const result = resolveHostModuleAdminContribution({
+    id: 'broken-module',
+    admin: {
+      kind: 'config-schema',
+      title: 'Broken module',
+      description: 'Malformed field metadata.',
+      fields: [{ key: 'broken' }],
+    },
+  });
 
-  expect(source).toContain('resolveHostModuleAdminContribution');
-  expect(source).toContain('adminError');
+  expect(result.admin).toBeNull();
+  expect(result.error).toBe("Module 'broken-module' has an invalid admin contribution.");
 });
 
-test('generic host module registry > accepts only the generic single-entry admin runtime shape', async () => {
+test('generic host module registry > keeps admin runtime opaque until the dedicated runtime boundary validates it', async () => {
   const source = await Bun.file(path.join(import.meta.dir, 'catalog.ts')).text();
+  const runtimeSource = await Bun.file(path.join(import.meta.dir, 'adminRuntime.ts')).text();
 
-  expect(source).toContain("entry.kind !== 'runtime'");
-  expect(source).toContain('entry.module !== contribution.id');
+  expect(source).toContain('readonly adminRuntime?: unknown;');
+  expect(runtimeSource).toContain("value.kind === 'module-admin-runtime'");
+  expect(runtimeSource).toContain("typeof value.execute === 'function'");
 });
 
 test('generic host module registry > keeps module domain and Orchestrator ledger implementation out of generic Studio code', async () => {
