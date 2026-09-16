@@ -115,10 +115,8 @@ function hostUpgradeBlocker(
     code: 'plan.host-upgrade-required',
     scope: { kind: 'host', id: host.id },
     evidence: [...evidence, `selected ${requiredVersion}`],
-    reason:
-      `Selected project changes require Studio ${requiredVersion}, but the running host is Studio ${host.version}.`,
-    nextAction:
-      `Upgrade Studio to ${requiredVersion}, restart the host, then inspect and create a fresh plan.`,
+    reason: `Selected project changes require Studio ${requiredVersion}, but the running host is Studio ${host.version}.`,
+    nextAction: `Upgrade Studio to ${requiredVersion}, restart the host, then inspect and create a fresh plan.`,
   };
 }
 
