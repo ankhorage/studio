@@ -120,7 +120,10 @@ async function deleteHostProjectAsync(apiUrl: string, projectId: string): Promis
     method: 'DELETE',
   });
   if (!response.ok) {
-    throw new Error(`Could not delete standalone host fixture project: ${response.status}.`);
+    const body = await response.text();
+    throw new Error(
+      `Could not delete standalone host fixture project: ${response.status}. ${body}`,
+    );
   }
 }
 
