@@ -34,8 +34,22 @@ jobs:
           fs.writeFileSync(path, `${JSON.stringify(pkg, null, 2)}\n`);
           NODE
 
-      - name: Regenerate Bun locks
+      - name: Await npm registry visibility
         run: |
+          for attempt in $(seq 1 18); do
+            if [ "$(npm view @ankhorage/infra@5.1.5 version 2>/dev/null)" = '5.1.5' ]; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo '@ankhorage/infra@5.1.5 is still unavailable from the npm registry.' >&2
+          exit 1
+
+      - name: Regenerate Bun locks
+        env:
+          BUN_INSTALL_CACHE_DIR: ${{ runner.temp }}/bun-install
+        run: |
+          rm -rf "$BUN_INSTALL_CACHE_DIR"
           bun install
           bun install --cwd apps/studio
 
