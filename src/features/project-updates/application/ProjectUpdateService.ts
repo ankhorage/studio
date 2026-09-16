@@ -36,7 +36,12 @@ export class ProjectUpdateService {
 
   /*** Inspect dependency/update evidence without mutating the project. */
   async statusAsync(input: ApmStatusInput): Promise<ApmStatusResult> {
-    return this.statusPort.inspectStatusAsync(input);
+    const status = await this.statusPort.inspectStatusAsync(input);
+    return {
+      ...status,
+      findings: uniquePresentationRows(status.findings),
+      diagnostics: uniquePresentationRows(status.diagnostics),
+    };
   }
 
   /*** Produce one reviewable APM plan using Studio-owned protocol evidence when available. */
@@ -70,4 +75,23 @@ export class ProjectUpdateService {
         : { ownerStep: this.options.verifyOwnerStep }),
     });
   }
+}
+
+/*** Collapse top-level status rows that Studio renders identically while retaining raw scoped APM evidence for planning. */
+function uniquePresentationRows<T extends StatusPresentationRow>(rows: readonly T[]): readonly T[] {
+  return rows.filter(
+    (row, index, allRows) =>
+      allRows.findIndex(
+        (candidate) =>
+          candidate.code === row.code &&
+          candidate.reason === row.reason &&
+          candidate.nextAction === row.nextAction,
+      ) === index,
+  );
+}
+
+interface StatusPresentationRow {
+  readonly code: string;
+  readonly reason: string;
+  readonly nextAction?: string;
 }

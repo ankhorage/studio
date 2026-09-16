@@ -75,8 +75,10 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
       search: '',
     });
     await browser.waitForBodyTextAsync('Project Detail');
-    await pointerClickAsync(browser, 'button', 'Install packages');
-    await browser.waitForBodyTextAsync('Project packages installed.');
+    await pointerClickAsync(browser, 'button', 'Offline evidence');
+    await pointerClickAsync(browser, 'button', 'Inspect updates');
+    await browser.waitForBodyTextAsync('Evidence');
+    await browser.waitForBodyTextAsync('unknown · incomplete');
 
     await browser.navigateAsync(`${appUrl}/projects/release-monitor?view=details`);
     await browser.waitForLocationAsync({
@@ -118,7 +120,10 @@ async function deleteHostProjectAsync(apiUrl: string, projectId: string): Promis
     method: 'DELETE',
   });
   if (!response.ok) {
-    throw new Error(`Could not delete standalone host fixture project: ${response.status}.`);
+    const body = await response.text();
+    throw new Error(
+      `Could not delete standalone host fixture project: ${response.status}. ${body}`,
+    );
   }
 }
 

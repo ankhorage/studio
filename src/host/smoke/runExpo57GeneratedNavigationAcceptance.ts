@@ -203,7 +203,8 @@ async function assertGeneratedNavigationContractAsync(project: NavigationProject
   }
   const metroConfig = await readFile(path.join(project.path, 'metro.config.js'), 'utf8');
   if (
-    !metroConfig.includes('ancestorNodeModules') ||
+    metroConfig.includes('ancestorNodeModules') ||
+    metroConfig.includes('config.resolver.blockList = [') ||
     metroConfig.includes('disableHierarchicalLookup') ||
     metroConfig.includes('extraNodeModules') ||
     metroConfig.includes('nodeModulesPaths')

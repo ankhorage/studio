@@ -46,7 +46,7 @@ test('accepts newer compatible registry patches installed and locked inside the 
   await createExpo57StudioStandaloneFixtureAsync({ fixtureRoot, repositoryRoot });
 
   const installedVersions = await createCompatibleInstalledVersionsAsync(repositoryRoot);
-  await writeInstalledGraphAsync(fixtureRoot, installedVersions);
+  await writeInstalledGraphAsync(fixtureRoot, repositoryRoot, installedVersions);
 
   await assertExpo57StudioStandaloneContractAsync({
     fixtureRoot,
@@ -62,7 +62,7 @@ test('rejects a registry package below the declared fixture range', async () => 
   const fixturePackageJson = await readPackageJsonAsync(path.join(fixtureRoot, 'package.json'));
   const studioRange = requireDependencyRange(fixturePackageJson.dependencies, '@ankhorage/studio');
   const incompatibleStudioVersion = createVersionBelowRange(studioRange);
-  await writeInstalledGraphAsync(fixtureRoot, {
+  await writeInstalledGraphAsync(fixtureRoot, repositoryRoot, {
     ...(await createCompatibleInstalledVersionsAsync(repositoryRoot)),
     '@ankhorage/studio': incompatibleStudioVersion,
   });
@@ -82,7 +82,7 @@ test('requires ZORA to satisfy the range declared by installed registry Studio',
   const repositoryRoot = process.cwd();
   const fixtureRoot = await createFixtureRootAsync();
   await createExpo57StudioStandaloneFixtureAsync({ fixtureRoot, repositoryRoot });
-  await writeInstalledGraphAsync(fixtureRoot, {
+  await writeInstalledGraphAsync(fixtureRoot, repositoryRoot, {
     ...(await createCompatibleInstalledVersionsAsync(repositoryRoot)),
     '@ankhorage/zora': '3.3.4',
   });
@@ -255,10 +255,28 @@ function requireDependencyRange(
   return range;
 }
 
+function resolveInstalledPackageDependencies(
+  packageName: string,
+  zoraSurfaceRange: string,
+): Readonly<Record<string, string>> | undefined {
+  if (packageName === '@ankhorage/studio') {
+    const policy = getGeneratedPackagePolicy();
+    return {
+      '@ankhorage/runtime': policy.dependencies.runtime,
+      '@ankhorage/zora': policy.dependencies.zora,
+    };
+  }
+  if (packageName === '@ankhorage/zora') {
+    return { '@ankhorage/surface': zoraSurfaceRange };
+  }
+  return undefined;
+}
+
 async function writeInstalledPackageAsync(
   fixtureRoot: string,
   packageName: string,
   version: string,
+  dependencies: Readonly<Record<string, string>> | undefined,
 ): Promise<void> {
   const packageRoot = path.join(fixtureRoot, 'node_modules', ...packageName.split('/'));
   await mkdir(packageRoot, { recursive: true });
@@ -269,9 +287,7 @@ async function writeInstalledPackageAsync(
       ...(packageName.startsWith('@ankhorage/') && packageName !== '@ankhorage/devtools'
         ? { peerDependencies: { 'react-native': '0.86.x' } }
         : {}),
-      ...(packageName === '@ankhorage/studio'
-        ? { dependencies: { '@ankhorage/zora': getGeneratedPackagePolicy().dependencies.zora } }
-        : {}),
+      ...(dependencies === undefined ? {} : { dependencies }),
       version,
     })}\n`,
   );
@@ -279,10 +295,23 @@ async function writeInstalledPackageAsync(
 
 async function writeInstalledGraphAsync(
   fixtureRoot: string,
+  repositoryRoot: string,
   installedVersions: Readonly<Record<string, string>>,
 ): Promise<void> {
+  const zoraPackageJson = await readPackageJsonAsync(
+    path.join(repositoryRoot, 'node_modules', '@ankhorage', 'zora', 'package.json'),
+  );
+  const zoraSurfaceRange = requireDependencyRange(
+    zoraPackageJson.dependencies,
+    '@ankhorage/surface',
+  );
   for (const [packageName, version] of Object.entries(installedVersions)) {
-    await writeInstalledPackageAsync(fixtureRoot, packageName, version);
+    await writeInstalledPackageAsync(
+      fixtureRoot,
+      packageName,
+      version,
+      resolveInstalledPackageDependencies(packageName, zoraSurfaceRange),
+    );
   }
   await writeFile(
     path.join(fixtureRoot, 'bun.lock'),

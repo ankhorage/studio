@@ -80,7 +80,8 @@ studioWorkspaceWebSmokeTest(
         await expectRouteText(page, `${appUrl}/projects/${FIXTURE_PROJECT_ID}`, [
           'Project Detail',
           FIXTURE_PROJECT_NAME,
-          'Sync',
+          'Updates',
+          'Inspect updates',
           'Infrastructure Up',
           'Open running app',
           'Delete project',

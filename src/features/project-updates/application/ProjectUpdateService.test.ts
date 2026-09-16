@@ -56,6 +56,43 @@ test('uses the released APM lifecycle without mutating an incomplete project', a
   }
 });
 
+test('collapses repeated host-facing status rows while preserving scoped dependencies', async () => {
+  const rootPath = await mkdtemp(path.join(tmpdir(), 'studio-status-presentation-'));
+  const manifestPath = path.join(rootPath, 'package.json');
+  const manifest = `${JSON.stringify(
+    {
+      name: 'fixture',
+      packageManager: 'bun@1.4.2',
+      dependencies: {
+        'is-number': '^7.0.0',
+        'left-pad': '^1.3.0',
+      },
+    },
+    null,
+    2,
+  )}\n`;
+  const service = new ProjectUpdateService();
+
+  try {
+    await writeFile(manifestPath, manifest, 'utf8');
+    const status = await service.statusAsync({ rootPath, availability: 'offline' });
+
+    expect(status.dependencies.map((dependency) => dependency.name).sort()).toEqual([
+      'is-number',
+      'left-pad',
+    ]);
+    expect(
+      status.diagnostics.filter(
+        (diagnostic) => diagnostic.code === 'status.registry.availability-unknown',
+      ),
+    ).toHaveLength(1);
+    expect(status.findings.filter((finding) => finding.code === 'lock-stale')).toHaveLength(1);
+    expect(await readFile(manifestPath, 'utf8')).toBe(manifest);
+  } finally {
+    await rm(rootPath, { recursive: true, force: true });
+  }
+});
+
 test('preserves Studio owner evidence in status and planning fingerprints', async () => {
   const rootPath = await mkdtemp(path.join(tmpdir(), 'studio-owner-aware-updates-'));
   const manifestPath = path.join(rootPath, 'package.json');

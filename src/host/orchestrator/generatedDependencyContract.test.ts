@@ -76,7 +76,7 @@ describe('generated app dependency contract', () => {
     expectStudioAuthoringDependencies(studioDependencies, 'defined');
   });
 
-  it('preserves app-owned entry configuration while enforcing the project-isolated Metro boundary', async () => {
+  it('preserves app-owned entry configuration while enforcing the current Metro boundary', async () => {
     const { projectPath, scaffolder } = await createScaffoldHarness();
     await scaffolder.scaffoldProject(projectPath, 'Fixture', 'fixture');
     await Promise.all(
@@ -100,9 +100,10 @@ describe('generated app dependency contract', () => {
         );
       }),
     );
-    expect(await readFile(path.join(projectPath, 'metro.config.js'), 'utf8')).toContain(
-      'config.resolver.blockList = [',
-    );
+    const metroConfig = await readFile(path.join(projectPath, 'metro.config.js'), 'utf8');
+    expect(metroConfig).toContain("path.resolve(__dirname, 'metro.empty-module.js')");
+    expect(metroConfig).not.toContain('ancestorNodeModules');
+    expect(metroConfig).not.toContain('config.resolver.blockList = [');
   });
 
   it('preserves application-owned development dependencies outside the current template', async () => {
