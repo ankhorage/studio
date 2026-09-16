@@ -242,7 +242,7 @@ async function reservePort(): Promise<number> {
         server.close(() => resolve(port));
         return;
       }
-      server.close(() => reject(new Error('Could not reserve local port.'));
+      server.close(() => reject(new Error('Could not reserve local port.')));
     });
   });
 }
