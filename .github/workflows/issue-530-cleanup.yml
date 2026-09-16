@@ -1,0 +1,292 @@
+name: Issue 530 cleanup
+
+on:
+  push:
+    branches:
+      - refactor/530-remove-legacy-update-paths
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/530-remove-legacy-update-paths
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: bun install --frozen-lockfile
+      - name: Remove superseded update paths
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          def replace(path: str, old: str, new: str, expected: int = 1) -> None:
+              file = Path(path)
+              text = file.read_text()
+              actual = text.count(old)
+              if actual != expected:
+                  raise RuntimeError(f'{path}: expected {expected} exact matches, found {actual}')
+              file.write_text(text.replace(old, new))
+
+          def sub(path: str, pattern: str, repl: str, expected: int = 1) -> None:
+              file = Path(path)
+              text = file.read_text()
+              updated, count = re.subn(pattern, repl, text, flags=re.S)
+              if count != expected:
+                  raise RuntimeError(f'{path}: expected {expected} regex matches, found {count}: {pattern}')
+              file.write_text(updated)
+
+          replace(
+              'package.json',
+              '      "studio.projects.delete",\n      "studio.projects.sync"\n',
+              '      "studio.projects.delete"\n',
+          )
+
+          replace('src/cli/index.ts', "  'studio.projects.sync',\n", '')
+          replace(
+              'src/cli/index.ts',
+              "  {\n    path: ['projects', 'sync'],\n    capability: 'studio.projects.sync',\n    summary: 'Synchronize generated app host files.',\n    examples: ['ankh studio projects sync shop'],\n  },\n",
+              '',
+          )
+          replace(
+              'src/cli/index.ts',
+              "  createHandler(['projects', 'sync'], syncProject),\n",
+              '',
+          )
+          sub(
+              'src/cli/index.ts',
+              r"\n/\*\*\* Synchronize one generated Studio project\. \*/\nasync function syncProject\(request: Parameters<AnkhCommandHandler>\[0\]\) \{.*?\n\}\n",
+              '\n',
+          )
+
+          replace('src/host/orchestrator/projectManager.ts', "        'installProjectPackages',\n", '')
+          sub(
+              'src/host/orchestrator/projectManager.ts',
+              r"\n  /\*\*\* Install packages inside one generated project's independent package root\. \*/\n  async installProjectPackages\(projectId: string\) \{.*?\n  \}\n",
+              '\n',
+          )
+
+          replace('src/host/orchestrator/moduleManager.ts', "        'applyPendingOperations',\n", '')
+          replace('src/host/orchestrator/moduleManager.ts', "        'syncProject',\n", '')
+          sub(
+              'src/host/orchestrator/moduleManager.ts',
+              r"\n  /\*\*\* Apply queued module removals after synchronizing generated layout state, then persist lifecycle projection\. \*/\n  async applyPendingOperations\(projectId: string\) \{.*?\n  \}\n",
+              '\n',
+          )
+          sub(
+              'src/host/orchestrator/moduleManager.ts',
+              r"\n  /\*\*\* Apply pending module lifecycle work and synchronize the generated project\. \*/\n  async syncProject\(args: \{ projectId: string; includeStudio\?: boolean \}\) \{.*?\n  \}\n",
+              '\n',
+          )
+
+          sub(
+              'src/host/http/server.ts',
+              r"\n  fastify\.post\('/api/projects/:id/sync', async \(req: FastifyRequest\) => \{.*?\n  \}\);\n",
+              '\n',
+          )
+          sub(
+              'src/host/http/server.ts',
+              r"\n  fastify\.post\('/api/projects/:id/packages/install', async \(req: FastifyRequest, reply\) => \{.*?\n  \}\);\n",
+              '\n',
+          )
+          replace(
+              'src/host/http/server.ts',
+              "    const { id } = req.params as { id: string };\n    const { finalize } = req.query as { finalize?: string };\n\n    try {\n      // Apply pending operations ONLY if explicitly requested via query param.\n      // In normal Studio dev mode, we should NOT call this to avoid Metro crashes.\n      if (finalize === 'true') {\n        await orchestrator.applyPendingOperations(id);\n      }\n\n      return await projectManager.getProjectManifest(id);\n",
+              "    const { id } = req.params as { id: string };\n\n    try {\n      return await projectManager.getProjectManifest(id);\n",
+          )
+
+          replace('src/host/http/moduleRoutes.ts', "  | 'applyPendingOperations'\n", '')
+          sub(
+              'src/host/http/moduleRoutes.ts',
+              r"  /\*\*\* Apply pending module operations for one project\. \*/\n  fastify\.post<\{ Params: ProjectParams \}>\(\n    '/api/projects/:id/modules/finalize-pending',.*?\n  \);\n\n",
+              '',
+          )
+
+          replace('src/host/http/moduleRoutes.test.ts', "      | 'applyPendingOperations'\n", '')
+          replace('src/host/http/moduleRoutes.test.ts', "  | 'applyPendingOperations'\n", '')
+          sub(
+              'src/host/http/moduleRoutes.test.ts',
+              r"      applyPendingOperations: \(projectId\) => \{\n        calls\.push\(\['applyPendingOperations', projectId\]\);\n        return Promise\.resolve\(\{ success: true, applied: 1 \}\);\n      \},\n",
+              '',
+          )
+          sub(
+              'src/host/http/moduleRoutes.test.ts',
+              r"    expect\(\n      \(\n        await server\.inject\(\{\n          method: 'POST',\n          url: '/api/projects/project-one/modules/finalize-pending',\n        \}\)\n      \)\.statusCode,\n    \)\.toBe\(200\);\n",
+              '',
+          )
+          replace(
+              'src/host/http/moduleRoutes.test.ts',
+              "      ['uninstallModule', 'project-one', 'vendor/module'],\n      ['applyPendingOperations', 'project-one'],\n",
+              "      ['uninstallModule', 'project-one', 'vendor/module'],\n",
+          )
+          replace(
+              'src/host/http/moduleRoutes.test.ts',
+              "    applyPendingOperations: () => Promise.resolve({ success: true, applied: 0 }),\n",
+              '',
+          )
+
+          sub(
+              'src/moduleAdminApi.ts',
+              r"\n/\*\*\*\n \* Ask the Studio host to finalize pending module changes and return the applied count\.\n \* @todo Move pending-module finalization into the modules application responsibility\.\n \*/\nexport async function finalizePendingProjectModules\(projectId: string\): Promise<number> \{.*?\n\}\n",
+              '\n',
+          )
+
+          replace('src/ui/admin/pages/ModulesAdminPage.tsx', '  finalizePendingProjectModules,\n', '')
+          replace('src/ui/admin/pages/ModulesAdminPage.tsx', '  const [finalizing, setFinalizing] = useState(false);\n', '')
+          replace(
+              'src/ui/admin/pages/ModulesAdminPage.tsx',
+              '/*** Render the project module catalog, lifecycle actions, pending-removal finalization, and navigation to module details. */',
+              '/*** Render the project module catalog, lifecycle actions, pending-removal state, and navigation to module details. */',
+          )
+          replace(
+              'src/ui/admin/pages/ModulesAdminPage.tsx',
+              "            ? `${module.name} removal is pending. Reload the generated app before finalizing it.`\n",
+              "            ? `${module.name} removal is pending. Apply the reviewed removal from the Studio Updates panel.`\n",
+          )
+          sub(
+              'src/ui/admin/pages/ModulesAdminPage.tsx',
+              r"\n  /\*\*\* Finalize all pending module removals after the generated app has released package-owned state\. \*/\n  const finalizePending = useCallback\(async \(\) => \{.*?\n  \}, \[studio\]\);\n",
+              '\n',
+          )
+          sub(
+              'src/ui/admin/pages/ModulesAdminPage.tsx',
+              r"      \{modules\.some\(\(module\) => module\.pendingRemoval\) \? \(\n        <Card title=\"Pending module removal\">\n          <Text color=\"neutral\" emphasis=\"muted\">\n            Reload the generated app first, then finalize to let Orchestrator remove package-owned\n            files and lifecycle state safely\.\n          </Text>\n          <Button\n            loading=\{finalizing\}\n            disabled=\{busyId !== null\}\n            onPress=\{\(\) => void finalizePending\(\)\}\n          >\n            Finalize pending removals\n          </Button>\n        </Card>\n      \) : null\}",
+              "      {modules.some((module) => module.pendingRemoval) ? (\n        <Card title=\"Pending module removal\">\n          <Text color=\"neutral\" emphasis=\"muted\">\n            Pending removals are reviewed and applied from the Studio Updates panel. The module\n            remains installed until that APM update completes and verifies successfully.\n          </Text>\n        </Card>\n      ) : null}",
+          )
+          replace('src/ui/admin/pages/ModulesAdminPage.tsx', 'disabled={busyId !== null || finalizing}', 'disabled={busyId !== null}')
+          replace('src/ui/admin/pages/ModulesAdminPage.tsx', 'disabled={busyId !== null || finalizing || module.dependents.length > 0}', 'disabled={busyId !== null || module.dependents.length > 0}')
+
+          sub(
+              'src/hooks/useProjects.ts',
+              r"\nexport interface SyncProjectResponse \{\n  success: boolean;\n\}\n\nexport interface InstallProjectPackagesResponse \{\n  success: boolean;\n  scope: 'project';\n\}\n",
+              '\n',
+          )
+          sub(
+              'src/hooks/useProjects.ts',
+              r"\nfunction parseSyncProjectResponse\(value: unknown\): SyncProjectResponse \{.*?\n\}\n\nfunction parseInstallProjectPackagesResponse\(value: unknown\): InstallProjectPackagesResponse \{.*?\n\}\n",
+              '\n',
+          )
+          sub(
+              'src/hooks/useProjects.ts',
+              r"\n  const syncProject = useCallback\(async \(projectId: string\): Promise<SyncProjectResponse> => \{.*?\n  \}, \[\]\);\n\n  const installProjectPackages = useCallback\(\n    async \(projectId: string\): Promise<InstallProjectPackagesResponse> => \{.*?\n    \},\n    \[\],\n  \);\n",
+              '\n',
+          )
+          replace('src/hooks/useProjects.ts', '    syncProject,\n    installProjectPackages,\n', '')
+
+          for path in [
+              'src/host/oauthFixtureConsumer.smoke.test.ts',
+              'src/host/generatedAdminExpoWeb.smoke.test.ts',
+              'src/host/generatedAuthAdapterRuntime.smoke.test.ts',
+          ]:
+              sub(
+                  path,
+                  r"await moduleManager\.syncProject\(\{ projectId: created\.id, includeStudio: (?:true|false) \}\);",
+                  'await moduleManager.syncProjectRuntime(created.id);',
+              )
+
+          replace(
+              'docs/generated-project-lifecycle.md',
+              '## ProjectSync\n\nProjectSync requires a valid canonical manifest, target state, Studio-inclusion state when the\ncaller does not supply it explicitly, and a supported route ownership ledger. It derives current\noutput and removes only files present in the previous ownership ledger but absent from the next\nledger. Files outside that owned set are preserved. Missing or malformed required state is an\nexplicit error, and filesystem failures prevent sync from reporting success.\n\nScaffold synchronization similarly updates only current generator-owned files and dependencies.\n',
+              '## Runtime projection\n\nRuntime projection requires a valid canonical manifest, target state, persisted Studio-inclusion\nstate, and a supported route ownership ledger. It derives current output and removes only files\npresent in the previous ownership ledger but absent from the next ledger. Files outside that owned\nset are preserved. Missing or malformed required state is an explicit error, and filesystem\nfailures prevent projection from reporting success.\n\nScaffold projection similarly updates only current generator-owned files and dependencies.\n',
+          )
+          replace(
+              'docs/canonical-target-generation.md',
+              '- ProjectSync requires `deploy.targets` and fails explicitly when that canonical state is missing or\n  invalid.\n',
+              '- Runtime regeneration requires `deploy.targets` and fails explicitly when that canonical state is\n  missing or invalid.\n',
+          )
+          replace(
+              'docs/local-studio-host.md',
+              'The Studio app owns project lifecycle management: listing projects, creating projects, opening a selected project detail screen, synchronizing generated project files, starting generated infrastructure, opening the infrastructure-hosted running app, deleting projects after confirmation, installing packages inside a generated project\'s independent package root, and connecting that app to a private GitHub repository.\n',
+              'The Studio app owns project lifecycle management: listing projects, creating projects, opening a selected project detail screen, inspecting and applying reviewed project updates through APM, starting generated infrastructure, opening the infrastructure-hosted running app, deleting projects after confirmation, and connecting that app to a private GitHub repository.\n',
+          )
+          replace(
+              'docs/local-studio-host.md',
+              'The dashboard uses the HTTP adapter. Studio CLI project commands call `ProjectManager` and `ModuleManager` directly. Both paths share the same project, manifest, module, infrastructure, launch, and workspace services.\n',
+              'The dashboard uses the HTTP adapter. Studio CLI project commands cover workspace lifecycle operations; reviewed dependency and migration updates use the shared APM lifecycle instead of a Studio-specific sync command.\n',
+          )
+          replace(
+              'docs/local-studio-host.md',
+              'The HTTP routes are transport adapters only. Project generation, manifest persistence, module changes, dependency installation, infrastructure operations, launch behavior, and process cleanup stay in shared `src/host` services.\n',
+              'The HTTP routes are transport adapters only. Project generation, manifest persistence, module changes, runtime projection, infrastructure operations, launch behavior, and process cleanup stay in their owning services. Update discovery, reviewed apply, recovery, and verification stay in APM.\n',
+          )
+          sub(
+              'docs/local-studio-host.md',
+              r"\nWorkspace lifecycle labels are explicit:\n\n- `Sync`.*?- `Install packages`.*?\n- `Connect GitHub`",
+              "\nWorkspace lifecycle labels are explicit:\n\n- `Updates` inspects current package/projection evidence, previews a concrete reviewed plan, applies or resumes it through APM, and verifies the resulting state. Pending module removals are finalized only through this reviewed lifecycle.\n- `Infrastructure Up` regenerates infrastructure artifacts as required, resolves trusted environment/secrets, executes the generated infrastructure `up` lifecycle, and registers port-forward ownership.\n- `Open running app` starts or reuses the generated infrastructure app port-forward and opens the returned URL. It is not local Expo, web, iOS, or Android source startup.\n- `Connect GitHub`",
+          )
+          replace(
+              'docs/local-studio-host.md',
+              'The smoke test creates a real app from the published template catalog, synchronizes it, edits its Studio manifest, verifies generated imports, checks infrastructure status, and deletes the project without using `ankhorage4`.\n',
+              'The smoke test creates a real app from the published template catalog, projects its runtime state, edits its Studio manifest, verifies generated imports, checks infrastructure status, and deletes the project without using `ankhorage4`.\n',
+          )
+          replace(
+              'docs/local-studio-host.md',
+              '- Package installation failure: run `bun install --frozen-lockfile` in the affected app root and inspect the command output.\n',
+              '- Update failure: inspect the Studio Updates plan/operation evidence and use resume or re-plan rather than invoking a second package-install path.\n',
+          )
+
+          audit = Path('docs/apm-update-projection-audit.md')
+          audit_text = audit.read_text()
+          audit_text = re.sub(r'^\| Legacy pending removal sync.*\n', '', audit_text, flags=re.M)
+          audit_text = re.sub(r'^\| Install project packages.*\n', '', audit_text, flags=re.M)
+          audit_text = audit_text.replace(
+              '| Explicit runtime sync           | project sync HTTP/Studio action → `ModuleManager.syncProject` / `syncProjectRuntime`',
+              '| Explicit runtime projection     | runtime sync HTTP/Studio action → `ModuleManager.syncProjectRuntime`',
+          )
+          audit_text = audit_text.replace(
+              '8. **`ProjectManager.syncProject` and imperative pending-apply paths remain compatibility paths.** They\n   must not survive as second canonical update/synchronization operations after #500 host/UI/CLI and\n   published-package parity.\n',
+              '8. **Superseded imperative update paths are removed by Studio #530.** The old project-sync command/route, pending-finalize mutation routes and direct package-install update endpoint no longer compete with the reviewed APM lifecycle. Explicit runtime projection remains an authoring/generation concern, while create and repository-connect preparation remain at their semantic owners.\n',
+          )
+          audit_text = re.sub(
+              r'## Next implementation slice\n\n1\. Add the Dashboard.*?3\. After behavior parity and published-package acceptance, remove `syncProject`, imperative pending-\n   apply compatibility and any superseded direct dependency-update path\.\n',
+              '## Next implementation slice\n\nStudio-side APM integration and legacy-path cleanup are complete after #530. Final cross-package published lifecycle evidence remains coordinated by ankhorage/apm#7.\n',
+              audit_text,
+              flags=re.S,
+          )
+          audit.write_text(audit_text)
+
+          Path('.changeset/remove-legacy-update-paths.md').write_text(
+              '---\n"@ankhorage/studio": patch\n---\n\nRemove superseded Studio project-sync, pending-finalization, and direct package-install update paths now that reviewed project updates use the APM lifecycle.\n'
+          )
+          PY
+      - name: Refresh formatting and docs
+        run: |
+          bun run format
+          bun run docs
+          bun run format
+      - name: Validate focused cleanup
+        run: |
+          bun test src/host/http/moduleRoutes.test.ts
+          bun test src/features/project-updates
+          bun run build
+          bun run check-types
+          bun run lint
+          bun run knip:check
+          bun run test
+          bun run format:check
+      - name: Ensure removed product paths stay absent
+        run: |
+          ! grep -R "studio.projects.sync\|/api/projects/:id/sync\|modules/finalize-pending\|packages/install\|finalizePendingProjectModules\|applyPendingOperations" src package.json
+      - name: Commit cleanup
+        run: |
+          git config user.name "Fabio Gartenmann"
+          git config user.email "137318798+artiphishle@users.noreply.github.com"
+          git add -A
+          git commit -m "refactor: remove superseded Studio update paths"
+          bun run changeset:status
+      - name: Remove helper workflow and push
+        run: |
+          git rm .github/workflows/issue-530-cleanup.yml
+          git commit -m "chore: remove issue 530 cleanup workflow"
+          git push origin HEAD:refactor/530-remove-legacy-update-paths
