@@ -52,7 +52,7 @@ jobs:
           rm -rf "$BUN_INSTALL_CACHE_DIR"
           bun install
           bun install --cwd apps/studio
-          bun update --cwd apps/studio @ankhorage/infra
+          (cd apps/studio && bun update @ankhorage/infra)
 
       - name: Verify released Infra resolution
         run: |
