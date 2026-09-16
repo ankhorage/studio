@@ -1,0 +1,88 @@
+name: Issue 530 cleanup final
+
+on:
+  push:
+    branches:
+      - refactor/530-remove-legacy-update-paths
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/530-remove-legacy-update-paths
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: bun install --frozen-lockfile
+      - name: Apply issue 530 cleanup
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          workflow = Path('.github/workflows/issue-530-cleanup.yml').read_text()
+          marker = "          python - <<'PY'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index("\n          PY", start)
+          exec(compile(textwrap.dedent(workflow[start:end]), 'issue-530-cleanup.py', 'exec'))
+
+          path = Path('src/host/orchestrator/moduleManager.ts')
+          text = path.read_text()
+          pending_call = "    await this.applyPendingOperations(projectId);\n"
+          if text.count(pending_call) != 1:
+              raise RuntimeError(
+                  f'Expected one hidden pending-operation call after legacy method removal, found {text.count(pending_call)}.'
+              )
+          text = text.replace(pending_call, '')
+
+          old_comment = (
+              '  /*** Synchronize current project state and pending operations before a module lifecycle mutation. */'
+          )
+          new_comment = '  /*** Project current runtime state before a module lifecycle mutation. */'
+          if text.count(old_comment) != 1:
+              raise RuntimeError(
+                  f'Expected one legacy lifecycle-preparation comment, found {text.count(old_comment)}.'
+              )
+          path.write_text(text.replace(old_comment, new_comment))
+          PY
+      - name: Refresh formatting and docs
+        run: |
+          bun run format
+          bun run docs
+          bun run format
+      - name: Validate cleanup
+        run: |
+          bun test src/host/http/moduleRoutes.test.ts
+          bun test src/features/project-updates
+          bun run build
+          bun run check-types
+          bun run lint
+          bun run knip:check
+          bun run test
+          bun run format:check
+      - name: Ensure removed product paths stay absent
+        run: |
+          ! grep -R "studio.projects.sync\|/api/projects/:id/sync\|modules/finalize-pending\|packages/install\|finalizePendingProjectModules\|applyPendingOperations" src package.json
+      - name: Commit cleanup and remove helpers
+        run: |
+          git config user.name "Fabio Gartenmann"
+          git config user.email "137318798+artiphishle@users.noreply.github.com"
+          git add -A
+          git commit -m "refactor: remove superseded Studio update paths"
+          bun run changeset:status
+          git rm \
+            .github/workflows/issue-530-cleanup.yml \
+            .github/workflows/issue-530-cleanup-fix.yml \
+            .github/workflows/issue-530-cleanup-final.yml
+          git commit -m "chore: remove issue 530 cleanup workflows"
+          git push origin HEAD:refactor/530-remove-legacy-update-paths
