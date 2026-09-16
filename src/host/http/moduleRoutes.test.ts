@@ -17,7 +17,6 @@ describe('canonical module HTTP adapter', () => {
     const moduleState = createModuleState();
     const orchestrator: Pick<
       ModuleManager,
-      | 'applyPendingOperations'
       | 'executeModuleAdminOperation'
       | 'getModuleState'
       | 'installModule'
@@ -64,10 +63,6 @@ describe('canonical module HTTP adapter', () => {
       executeModuleAdminOperation: (projectId, moduleId, request) => {
         calls.push(['executeModuleAdminOperation', projectId, moduleId, request]);
         return Promise.resolve({ success: true, result: { handled: true } });
-      },
-      applyPendingOperations: (projectId) => {
-        calls.push(['applyPendingOperations', projectId]);
-        return Promise.resolve({ success: true, applied: 1 });
       },
     };
     const server = Fastify({ logger: false });
@@ -118,14 +113,6 @@ describe('canonical module HTTP adapter', () => {
       ).statusCode,
     ).toBe(200);
     expect((await server.inject('/api/modules')).statusCode).toBe(404);
-    expect(
-      (
-        await server.inject({
-          method: 'POST',
-          url: '/api/projects/project-one/modules/finalize-pending',
-        })
-      ).statusCode,
-    ).toBe(200);
 
     expect(calls).toEqual([
       ['listModules', 'project-one'],
@@ -143,7 +130,6 @@ describe('canonical module HTTP adapter', () => {
         },
       ],
       ['uninstallModule', 'project-one', 'vendor/module'],
-      ['applyPendingOperations', 'project-one'],
     ]);
   });
 
@@ -171,7 +157,6 @@ function createAdminOnlyManager(
   calls: unknown[][],
 ): Pick<
   ModuleManager,
-  | 'applyPendingOperations'
   | 'executeModuleAdminOperation'
   | 'getModuleState'
   | 'installModule'
@@ -189,7 +174,6 @@ function createAdminOnlyManager(
       calls.push([projectId, moduleId, request]);
       return Promise.resolve({ success: true, result: null });
     },
-    applyPendingOperations: () => Promise.resolve({ success: true, applied: 0 }),
   };
 }
 

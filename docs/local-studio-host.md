@@ -16,7 +16,7 @@ The host resolves the nearest package named `@ankhorage/studio` that contains an
 
 Project IDs are derived from project names with the shared Studio project identity model. For example, `Release Monitor` derives to `release-monitor` and `Infra Health` derives to `infra-health`. The ID `studio` is reserved, and names that derive to `studio` are rejected before any filesystem mutation.
 
-The Studio app owns project lifecycle management: listing projects, creating projects, opening a selected project detail screen, synchronizing generated project files, starting generated infrastructure, opening the infrastructure-hosted running app, deleting projects after confirmation, installing packages inside a generated project's independent package root, and connecting that app to a private GitHub repository.
+The Studio app owns project lifecycle management: listing projects, creating projects, opening a selected project detail screen, inspecting and applying reviewed project updates through APM, starting generated infrastructure, opening the infrastructure-hosted running app, deleting projects after confirmation, and connecting that app to a private GitHub repository.
 
 Generated apps own their own `/ankh` administration workspace. The workspace Studio app does not route a selected generated project's `/ankh` pages as local Studio routes.
 
@@ -32,9 +32,9 @@ The Studio app uses normal Expo Router stack routes:
 /create/[category]/[templateId]
 ```
 
-The dashboard uses the HTTP adapter. Studio CLI project commands call `ProjectManager` and `ModuleManager` directly. Both paths share the same project, manifest, module, infrastructure, launch, and workspace services.
+The dashboard uses the HTTP adapter. Studio CLI project commands cover workspace lifecycle operations; reviewed dependency and migration updates use the shared APM lifecycle instead of a Studio-specific sync command.
 
-The HTTP routes are transport adapters only. Project generation, manifest persistence, module changes, dependency installation, infrastructure operations, launch behavior, and process cleanup stay in shared `src/host` services.
+The HTTP routes are transport adapters only. Project generation, manifest persistence, module changes, runtime projection, infrastructure operations, launch behavior, and process cleanup stay in their owning services. Update discovery, reviewed apply, recovery, and verification stay in APM.
 
 Module transport is project-scoped under `/api/projects/<project-id>/modules`. The generic host
 adapter queries and mutates lifecycle state through `@ankhorage/orchestrator`; it does not read the
@@ -58,10 +58,9 @@ For local Infra, Studio consumes `@ankhorage/infra` 1.0.0 generated app-owned Mi
 
 Workspace lifecycle labels are explicit:
 
-- `Sync` promotes the Studio draft manifest where applicable, synchronizes the scaffold, regenerates generated routes/files, reconciles app-owned dependencies and focused Devtools configuration, verifies the app-owned frozen lockfile, and synchronizes infrastructure artifacts. It does not start infrastructure.
+- `Updates` inspects current package/projection evidence, previews a concrete reviewed plan, applies or resumes it through APM, and verifies the resulting state. Pending module removals are finalized only through this reviewed lifecycle.
 - `Infrastructure Up` regenerates infrastructure artifacts as required, resolves trusted environment/secrets, executes the generated infrastructure `up` lifecycle, and registers port-forward ownership.
 - `Open running app` starts or reuses the generated infrastructure app port-forward and opens the returned URL. It is not local Expo, web, iOS, or Android source startup.
-- `Install packages` reconciles the selected generated app from its own package root. The app owns its `node_modules`, `bun.lock`, focused Devtools configuration, and quality scripts.
 - `Connect GitHub` reconciles the app first, then delegates private repository creation and initial publication to `@ankhorage/repository`. Its default repository name comes from the package name with enabled `android` and `ios` targets appended as dash-separated suffixes.
 
 The repository root has no package-manager workspaces. `apps/studio` and every generated app are independent package roots with their own lockfile and install graph. Root tooling ignores `apps/` so application checks cannot silently consume the aggregate repository's dependency graph.
@@ -80,7 +79,7 @@ Host consumers import the supported service boundary from `@ankhorage/studio/hos
 bun run test:host-smoke
 ```
 
-The smoke test creates a real app from the published template catalog, synchronizes it, edits its Studio manifest, verifies generated imports, checks infrastructure status, and deletes the project without using `ankhorage4`.
+The smoke test creates a real app from the published template catalog, projects its runtime state, edits its Studio manifest, verifies generated imports, checks infrastructure status, and deletes the project without using `ankhorage4`.
 
 Changes that affect local Infra orchestration must also pass the opt-in Docker/Minikube gate:
 
@@ -94,5 +93,5 @@ That gated test exercises Studio orchestration against generated Infra without a
 
 - Port conflict: stop the process using port 3000 or set `ANKHORAGE_STUDIO_HOST_PORT` for the standalone host.
 - Native Studio connection failure: keep the native development client and development machine on the same LAN and verify that the client resolves the Studio API to the development machine's LAN address on port 3000. `EXPO_PUBLIC_API_URL` remains the explicit client override.
-- Package installation failure: run `bun install --frozen-lockfile` in the affected app root and inspect the command output.
+- Update failure: inspect the Studio Updates plan/operation evidence and use resume or re-plan rather than invoking a second package-install path.
 - Dashboard connection failure: start both services with `ankh studio dev`.

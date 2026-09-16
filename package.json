@@ -157,8 +157,7 @@
       "studio.dev",
       "studio.projects.list",
       "studio.projects.create",
-      "studio.projects.delete",
-      "studio.projects.sync"
+      "studio.projects.delete"
     ],
     "apm": {
       "protocolVersion": 1,

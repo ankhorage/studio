@@ -130,26 +130,6 @@ export async function createStudioHostServer(args: {
     }
   });
 
-  fastify.post('/api/projects/:id/sync', async (req: FastifyRequest) => {
-    const { id } = req.params as { id: string };
-    const { includeStudio = true } = (req.body as { includeStudio?: boolean } | undefined) ?? {};
-
-    return await orchestrator.syncProject({
-      projectId: id,
-      includeStudio,
-    });
-  });
-
-  fastify.post('/api/projects/:id/packages/install', async (req: FastifyRequest, reply) => {
-    try {
-      const { id } = req.params as { id: string };
-      return await projectManager.installProjectPackages(id);
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : String(err);
-      reply.status(500).send({ error: message });
-    }
-  });
-
   fastify.post('/api/projects/:id/repository/connect', async (req: FastifyRequest, reply) => {
     try {
       const { id } = req.params as { id: string };
@@ -239,15 +219,8 @@ export async function createStudioHostServer(args: {
   // GET manifest
   fastify.get('/api/projects/:id/manifest', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
-    const { finalize } = req.query as { finalize?: string };
 
     try {
-      // Apply pending operations ONLY if explicitly requested via query param.
-      // In normal Studio dev mode, we should NOT call this to avoid Metro crashes.
-      if (finalize === 'true') {
-        await orchestrator.applyPendingOperations(id);
-      }
-
       return await projectManager.getProjectManifest(id);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);

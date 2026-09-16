@@ -68,7 +68,6 @@ export class ProjectManager {
       owner: 'project-manager',
       methods: [
         'deleteProject',
-        'installProjectPackages',
         'connectProjectRepository',
         'regenerateInfrastructure',
         'persistProjectManifest',
@@ -172,14 +171,6 @@ export class ProjectManager {
     );
     if (onProjectCreated) await onProjectCreated(slug);
     return { success: true, id: slug, path: projectPath };
-  }
-
-  /*** Install packages inside one generated project's independent package root. */
-  async installProjectPackages(projectId: string) {
-    await this.dependencies.reconcileProjectPackageRootAsync(
-      getProjectPath(this.rootPath, projectId),
-    );
-    return { success: true, scope: 'project' as const };
   }
 
   /*** Connect one reconciled project snapshot to its private GitHub repository through the Repository owner. */
