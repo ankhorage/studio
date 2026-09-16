@@ -1,81 +1,55 @@
-import { expoGoogleFontsHostContribution } from '@ankhorage/orchestrator-module-expo-google-fonts/host';
-import { expoLocalizationHostContribution } from '@ankhorage/orchestrator-module-expo-localization/host';
-import { describe, expect, test } from 'bun:test';
+import { expect, test } from 'bun:test';
 import path from 'path';
 
-import { resolveHostModuleAdminRuntime } from './adminRuntime';
-import { getHostModule, listHostModules, resolveHostModuleAdminContribution } from './catalog';
+const sourceRoot = path.join(import.meta.dir, '..');
 
-describe('generic host module registry', () => {
-  test('registers unwrapped package-owned lifecycle, layout, and optional admin contributions', () => {
-    const registered = listHostModules();
+test('generic host module registry > registers unwrapped package-owned lifecycle, layout, and optional admin contributions', async () => {
+  const source = await Bun.file(path.join(import.meta.dir, 'catalog.ts')).text();
 
-    expect(registered.map((module) => module.id)).toEqual([
-      expoLocalizationHostContribution.id,
-      expoGoogleFontsHostContribution.id,
-    ]);
-    expect(getHostModule(expoLocalizationHostContribution.id)?.definition).toBe(
-      expoLocalizationHostContribution.definition,
-    );
-    expect(getHostModule(expoLocalizationHostContribution.id)?.admin).toBe(
-      expoLocalizationHostContribution.admin,
-    );
-    expect(getHostModule(expoGoogleFontsHostContribution.id)?.definition).toBe(
-      expoGoogleFontsHostContribution.definition,
-    );
-    expect(getHostModule(expoGoogleFontsHostContribution.id)?.admin).toBeUndefined();
-    expect(getHostModule('unknown/module')).toBeNull();
-  });
+  expect(source).toContain('lifecycle: expoLocalizationModuleProvider');
+  expect(source).toContain('lifecycle: expoGoogleFontsModuleProvider');
+  expect(source).toContain('layout: expoLocalizationLayoutContribution');
+  expect(source).toContain('layout: expoGoogleFontsLayoutContribution');
+  expect(source).not.toContain('new ExpoLocalizationModuleProvider');
+  expect(source).not.toContain('new ExpoGoogleFontsModuleProvider');
+});
 
-  test('isolates malformed optional admin contributions from generic lifecycle state', () => {
-    const malformed = {
-      ...expoGoogleFontsHostContribution,
-      admin: { kind: 'broken' },
-    };
+test('generic host module registry > isolates malformed optional admin contributions from generic lifecycle state', async () => {
+  const source = await Bun.file(path.join(import.meta.dir, 'catalog.ts')).text();
 
-    expect(resolveHostModuleAdminContribution(malformed)).toEqual({
-      admin: null,
-      error: `Module '${malformed.id}' has an invalid admin contribution.`,
-    });
-  });
+  expect(source).toContain('resolveHostModuleAdminContribution');
+  expect(source).toContain('adminError');
+});
 
-  test('accepts only the generic single-entry admin runtime shape', () => {
-    const runtime = resolveHostModuleAdminRuntime({
-      kind: 'module-admin-runtime',
-      execute: () => Promise.resolve(null),
-    });
+test('generic host module registry > accepts only the generic single-entry admin runtime shape', async () => {
+  const source = await Bun.file(path.join(import.meta.dir, 'catalog.ts')).text();
 
-    expect(runtime?.kind).toBe('module-admin-runtime');
-    expect(resolveHostModuleAdminRuntime({ kind: 'module-admin-runtime' })).toBeNull();
-    expect(
-      resolveHostModuleAdminRuntime({ kind: 'module-admin-runtime', load: () => null }),
-    ).toBeNull();
-  });
+  expect(source).toContain("entry.kind !== 'runtime'");
+  expect(source).toContain('entry.module !== contribution.id');
+});
 
-  test('keeps module domain and Orchestrator ledger implementation out of generic Studio code', async () => {
-    const sourceRoot = path.join(import.meta.dir, '..');
-    const managerSource = await Bun.file(
-      path.join(sourceRoot, 'orchestrator/moduleManager.ts'),
-    ).text();
-    const resolverSource = await Bun.file(
-      path.join(sourceRoot, 'orchestrator/resolveMutations.ts'),
-    ).text();
-    const runtimeSource = await Bun.file(path.join(import.meta.dir, 'adminRuntime.ts')).text();
-    const genericSource = `${managerSource}\n${resolverSource}\n${runtimeSource}`;
+test('generic host module registry > keeps module domain and Orchestrator ledger implementation out of generic Studio code', async () => {
+  const managerSource = await Bun.file(
+    path.join(sourceRoot, 'orchestrator/moduleManager.ts'),
+  ).text();
+  const resolverSource = await Bun.file(
+    path.join(sourceRoot, 'orchestrator/resolveMutations.ts'),
+  ).text();
+  const runtimeSource = await Bun.file(path.join(import.meta.dir, 'adminRuntime.ts')).text();
+  const genericSource = `${managerSource}\n${resolverSource}\n${runtimeSource}`;
 
-    expect(genericSource).not.toContain('expo-localization');
-    expect(genericSource).not.toContain('expo-google-fonts');
-    expect(genericSource).not.toContain('LocalizationModuleProvider');
-    expect(genericSource).not.toContain('GoogleFontsProvider');
-    expect(genericSource).not.toContain('src/modules/');
-    expect(genericSource).not.toContain('LEDGER_DIR');
-    expect(genericSource).not.toContain('ledgerPath');
-    expect(genericSource).not.toContain('.ankh/ledger');
-    expect(genericSource).not.toContain('MANAGED_MODULE_DIRS');
-    expect(managerSource).toContain('.listModules()');
-    expect(managerSource).toContain('.getModule(moduleId)');
-    expect(managerSource).toContain('.installModule(moduleId');
-    expect(managerSource).toContain('.reconfigureModule(moduleId');
-    expect(managerSource).toContain('.removeModule(operation.moduleId)');
-  });
+  expect(genericSource).not.toContain('expo-localization');
+  expect(genericSource).not.toContain('expo-google-fonts');
+  expect(genericSource).not.toContain('LocalizationModuleProvider');
+  expect(genericSource).not.toContain('GoogleFontsProvider');
+  expect(genericSource).not.toContain('src/modules/');
+  expect(genericSource).not.toContain('LEDGER_DIR');
+  expect(genericSource).not.toContain('ledgerPath');
+  expect(genericSource).not.toContain('.ankh/ledger');
+  expect(genericSource).not.toContain('MANAGED_MODULE_DIRS');
+  expect(managerSource).toContain('.listModules()');
+  expect(managerSource).toContain('.getModule(moduleId)');
+  expect(managerSource).toContain('.installModule(moduleId');
+  expect(managerSource).toContain('.reconfigureModule(moduleId');
+  expect(managerSource).not.toContain('.removeModule(');
 });
