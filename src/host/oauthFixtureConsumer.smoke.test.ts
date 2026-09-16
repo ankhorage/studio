@@ -74,7 +74,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
       { includeStudio: false },
     );
     expect(created.id).toBe(PROJECT_ID);
-    await moduleManager.syncProject({ projectId: created.id, includeStudio: false });
+    await moduleManager.syncProjectRuntime(created.id);
 
     const persistedManifest = await projectManager.getProjectManifest(created.id);
     expect(persistedManifest.infra.environments.local.auth?.oauth?.callbackRoute).toBe(

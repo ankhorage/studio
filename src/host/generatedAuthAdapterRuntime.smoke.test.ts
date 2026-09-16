@@ -148,7 +148,7 @@ async function createGeneratedProject(): Promise<{ workspaceRoot: string; projec
     projectId: created.id,
     manifest: createRuntimeSmokeManifest(),
   });
-  await moduleManager.syncProject({ projectId: created.id, includeStudio: false });
+  await moduleManager.syncProjectRuntime(created.id);
   await writeRuntimeSmokeScript(created.path);
   await writeRuntimeSmokeNodeModules(created.path);
 

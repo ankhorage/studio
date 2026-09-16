@@ -58,12 +58,10 @@ export class ModuleManager {
         'uninstallModule',
         'updateModuleConfig',
         'executeModuleAdminOperation',
-        'applyPendingOperations',
         'persistProjectManifest',
         'syncProjectRuntime',
         'saveProjectManifest',
         'rebuildRootLayout',
-        'syncProject',
       ],
       resolveProjectRoot: (projectId) => this.getAppPath(projectId),
     });
@@ -209,47 +207,6 @@ export class ModuleManager {
     return { success: true, result };
   }
 
-  /*** Apply queued module removals after synchronizing generated layout state, then persist lifecycle projection. */
-  async applyPendingOperations(projectId: string) {
-    const appPath = this.getAppPath(projectId);
-    await this.ensureProjectExists(projectId);
-    const pending = await this.readPending(appPath);
-    if (pending.ops.length === 0) {
-      return { success: true, applied: 0 };
-    }
-
-    await this.projectManager.syncProjectRuntime({
-      projectId,
-      mutations: await this.resolveLayoutMutations(projectId),
-    });
-
-    const orchestrator = this.getModuleOrchestrator(appPath);
-    let applied = 0;
-    for (const operation of pending.ops) {
-      const state = await orchestrator.getModule(operation.moduleId);
-      if (state?.installed) {
-        await orchestrator.removeModule(operation.moduleId);
-        applied += 1;
-      }
-    }
-
-    await this.clearPending(appPath);
-    await this.persistLifecycleProjection(projectId);
-    return { success: true, applied };
-  }
-
-  /*** Apply pending module lifecycle work and synchronize the generated project. */
-  async syncProject(args: { projectId: string; includeStudio?: boolean }) {
-    const { projectId, includeStudio = true } = args;
-    await this.ensureProjectExists(projectId);
-    await this.applyPendingOperations(projectId);
-    return this.projectManager.syncProjectRuntime({
-      projectId,
-      mutations: await this.resolveLayoutMutations(projectId),
-      includeStudio,
-    });
-  }
-
   /*** Project current module lifecycle state into and persist one canonical project manifest. */
   async persistProjectManifest(args: { projectId: string; manifest: AppManifest }) {
     await this.ensureProjectExists(args.projectId);
@@ -348,14 +305,13 @@ export class ModuleManager {
     await this.persistProjectManifest({ projectId, manifest: nextManifest });
   }
 
-  /*** Synchronize current project state and pending operations before a module lifecycle mutation. */
+  /*** Project current runtime state before a module lifecycle mutation. */
   private async prepareProjectForLifecycle(projectId: string) {
     await this.ensureProjectExists(projectId);
     await this.projectManager.syncProjectRuntime({
       projectId,
       mutations: await this.resolveLayoutMutations(projectId),
     });
-    await this.applyPendingOperations(projectId);
   }
 
   /*** Project module lifecycle state into the manifest and trigger the normal project regeneration path. */

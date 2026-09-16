@@ -394,7 +394,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/cli/index.ts">
                 src/cli/index.ts
-                <small>12 functions</small>
+                <small>11 functions</small>
               </button>
             </li>
             <li>
@@ -723,6 +723,16 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/features/project-updates/application/ProjectUpdateService.ts"
+              >
+                src/features/project-updates/application/ProjectUpdateService.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/features/project-updates/application/reduceProjectUpdateDashboardState.ts"
               >
                 src/features/project-updates/application/reduceProjectUpdateDashboardState.ts
@@ -972,7 +982,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/hooks/useProjects.ts">
                 src/hooks/useProjects.ts
-                <small>19 functions</small>
+                <small>17 functions</small>
               </button>
             </li>
             <li>
@@ -2152,7 +2162,7 @@
                 data-target="src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
               >
                 src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts
-                <small>11 functions</small>
+                <small>10 functions</small>
               </button>
             </li>
             <li>
@@ -2362,7 +2372,7 @@
                 data-target="src/host/smoke/expo57StudioStandaloneFixture.test.ts"
               >
                 src/host/smoke/expo57StudioStandaloneFixture.test.ts
-                <small>9 functions</small>
+                <small>10 functions</small>
               </button>
             </li>
             <li>
@@ -2724,7 +2734,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/moduleAdminApi.ts">
                 src/moduleAdminApi.ts
-                <small>17 functions</small>
+                <small>16 functions</small>
               </button>
             </li>
             <li>
@@ -5655,7 +5665,7 @@
             </article>
             <article
               class="item"
-              data-search="src/hooks/useProjects.ts src/contractGuards.ts src/core/constants.ts src/projectWorkspaceContracts.ts ConnectProjectRepositoryResponse CreateProjectInput CreateProjectResponse InstallProjectPackagesResponse LaunchProjectResponse ProjectCreationError SyncProjectResponse UpProjectInfrastructureResponse useProjects"
+              data-search="src/hooks/useProjects.ts src/contractGuards.ts src/core/constants.ts src/projectWorkspaceContracts.ts ConnectProjectRepositoryResponse CreateProjectInput CreateProjectResponse LaunchProjectResponse ProjectCreationError UpProjectInfrastructureResponse useProjects"
             >
               <h3>src/hooks/useProjects.ts</h3>
               <p class="muted">Referenced module</p>
@@ -5666,8 +5676,7 @@
               <p>
                 <strong>Exports:</strong> <code>ConnectProjectRepositoryResponse</code>,
                 <code>CreateProjectInput</code>, <code>CreateProjectResponse</code>,
-                <code>InstallProjectPackagesResponse</code>, <code>LaunchProjectResponse</code>,
-                <code>ProjectCreationError</code>, <code>SyncProjectResponse</code>,
+                <code>LaunchProjectResponse</code>, <code>ProjectCreationError</code>,
                 <code>UpProjectInfrastructureResponse</code>, <code>useProjects</code>
               </p>
             </article>
@@ -7009,14 +7018,11 @@
             </article>
             <article
               class="item"
-              data-search="src/host/modules/catalog.test.ts src/host/modules/adminRuntime.ts src/host/modules/catalog.ts"
+              data-search="src/host/modules/catalog.test.ts src/host/modules/catalog.ts"
             >
               <h3>src/host/modules/catalog.test.ts</h3>
               <p class="muted">Referenced module</p>
-              <p>
-                <strong>Dependencies:</strong> <code>src/host/modules/adminRuntime.ts</code>,
-                <code>src/host/modules/catalog.ts</code>
-              </p>
+              <p><strong>Dependencies:</strong> <code>src/host/modules/catalog.ts</code></p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
@@ -8818,7 +8824,7 @@
             </article>
             <article
               class="item"
-              data-search="src/moduleAdminApi.ts src/moduleAdminContracts.ts createProjectModuleAdminOperationApiPath createProjectModuleApiPath executeProjectModuleAdminOperation finalizePendingProjectModules getProjectModule installProjectModule listProjectModules parseStudioModuleState StudioModuleApiError uninstallProjectModule updateProjectModuleConfig"
+              data-search="src/moduleAdminApi.ts src/moduleAdminContracts.ts createProjectModuleAdminOperationApiPath createProjectModuleApiPath executeProjectModuleAdminOperation getProjectModule installProjectModule listProjectModules parseStudioModuleState StudioModuleApiError uninstallProjectModule updateProjectModuleConfig"
             >
               <h3>src/moduleAdminApi.ts</h3>
               <p class="muted">Referenced module</p>
@@ -8826,8 +8832,7 @@
               <p>
                 <strong>Exports:</strong> <code>createProjectModuleAdminOperationApiPath</code>,
                 <code>createProjectModuleApiPath</code>,
-                <code>executeProjectModuleAdminOperation</code>,
-                <code>finalizePendingProjectModules</code>, <code>getProjectModule</code>,
+                <code>executeProjectModuleAdminOperation</code>, <code>getProjectModule</code>,
                 <code>installProjectModule</code>, <code>listProjectModules</code>,
                 <code>parseStudioModuleState</code>, <code>StudioModuleApiError</code>,
                 <code>uninstallProjectModule</code>, <code>updateProjectModuleConfig</code>
@@ -19025,9 +19030,7 @@
                 package__ankhorage_studio -.-&gt; module_src_host_modules_adminRuntime_ts
                 module_src_host_modules_catalog_test_ts[&quot;src/host/modules/catalog.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_modules_catalog_test_ts
-                module_src_host_modules_catalog_test_ts --&gt;
-                module_src_host_modules_adminRuntime_ts module_src_host_modules_catalog_test_ts
-                --&gt; module_src_host_modules_catalog_ts
+                module_src_host_modules_catalog_test_ts --&gt; module_src_host_modules_catalog_ts
                 module_src_host_modules_catalog_ts[&quot;src/host/modules/catalog.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_modules_catalog_ts
                 module_src_host_modules_catalog_ts --&gt; module_src_host_modules_layout_ts
@@ -21762,7 +21765,6 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_host_modules_adminRuntime_ts
   module_src_host_modules_catalog_test_ts[&quot;src/host/modules/catalog.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_modules_catalog_test_ts
-  module_src_host_modules_catalog_test_ts --&gt; module_src_host_modules_adminRuntime_ts
   module_src_host_modules_catalog_test_ts --&gt; module_src_host_modules_catalog_ts
   module_src_host_modules_catalog_ts[&quot;src/host/modules/catalog.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_modules_catalog_ts
@@ -24326,10 +24328,9 @@ graph TD
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_modules_adminRuntime_test_ts --&gt;
                 module_src_host_modules_adminRuntime_ts module_src_host_modules_catalog_test_ts
-                --&gt; module_src_host_modules_adminRuntime_ts
-                module_src_host_modules_catalog_test_ts --&gt; module_src_host_modules_catalog_ts
-                module_src_host_modules_catalog_ts --&gt; module_src_host_modules_layout_ts
-                module_src_host_modules_catalog_ts --&gt; module_src_moduleAdminContracts_ts
+                --&gt; module_src_host_modules_catalog_ts module_src_host_modules_catalog_ts --&gt;
+                module_src_host_modules_layout_ts module_src_host_modules_catalog_ts --&gt;
+                module_src_moduleAdminContracts_ts
                 module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt;
                 module_src_host_orchestrator_moduleManager_ts
                 module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt;
@@ -26349,7 +26350,6 @@ graph LR
   module_src_host_media_projectMediaService_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_media_projectMediaStorage_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_modules_adminRuntime_test_ts --&gt; module_src_host_modules_adminRuntime_ts
-  module_src_host_modules_catalog_test_ts --&gt; module_src_host_modules_adminRuntime_ts
   module_src_host_modules_catalog_test_ts --&gt; module_src_host_modules_catalog_ts
   module_src_host_modules_catalog_ts --&gt; module_src_host_modules_layout_ts
   module_src_host_modules_catalog_ts --&gt; module_src_moduleAdminContracts_ts
@@ -31380,7 +31380,7 @@ sequenceDiagram
               data-search="createHandler src/cli/index.ts Pair one canonical Studio command path with its runtime handler."
             >
               <h3>createHandler</h3>
-              <p class="muted"><code>src/cli/index.ts:72:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:64:1</code></p>
               <p>Pair one canonical Studio command path with its runtime handler.</p>
             </article>
             <article
@@ -31388,7 +31388,7 @@ sequenceDiagram
               data-search="resolvePackageRoot src/cli/index.ts Resolve the installed Studio package root from the compiled CLI entrypoint."
             >
               <h3>resolvePackageRoot</h3>
-              <p class="muted"><code>src/cli/index.ts:88:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:80:1</code></p>
               <p>Resolve the installed Studio package root from the compiled CLI entrypoint.</p>
             </article>
             <article
@@ -31396,7 +31396,7 @@ sequenceDiagram
               data-search="resolveHostWorkspaceRoot src/cli/index.ts Resolve the workspace root used by direct Studio CLI commands."
             >
               <h3>resolveHostWorkspaceRoot</h3>
-              <p class="muted"><code>src/cli/index.ts:93:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:85:1</code></p>
               <p>Resolve the workspace root used by direct Studio CLI commands.</p>
             </article>
             <article
@@ -31404,12 +31404,12 @@ sequenceDiagram
               data-search="runStudioDev src/cli/index.ts Start the Studio host and first-party Studio application together."
             >
               <h3>runStudioDev</h3>
-              <p class="muted"><code>src/cli/index.ts:98:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:90:1</code></p>
               <p>Start the Studio host and first-party Studio application together.</p>
             </article>
             <article class="item" data-search="shutdown src/cli/index.ts ">
               <h3>shutdown</h3>
-              <p class="muted"><code>src/cli/index.ts:109:9</code></p>
+              <p class="muted"><code>src/cli/index.ts:101:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -31417,7 +31417,7 @@ sequenceDiagram
               data-search="listProjects src/cli/index.ts List current Studio projects through the shared ProjectManager."
             >
               <h3>listProjects</h3>
-              <p class="muted"><code>src/cli/index.ts:130:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:122:1</code></p>
               <p>List current Studio projects through the shared ProjectManager.</p>
             </article>
             <article
@@ -31425,7 +31425,7 @@ sequenceDiagram
               data-search="createProject src/cli/index.ts Create one Studio project from a published standalone template."
             >
               <h3>createProject</h3>
-              <p class="muted"><code>src/cli/index.ts:142:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:134:1</code></p>
               <p>Create one Studio project from a published standalone template.</p>
             </article>
             <article
@@ -31433,23 +31433,15 @@ sequenceDiagram
               data-search="deleteProject src/cli/index.ts Delete one Studio project by ID."
             >
               <h3>deleteProject</h3>
-              <p class="muted"><code>src/cli/index.ts:156:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:148:1</code></p>
               <p>Delete one Studio project by ID.</p>
-            </article>
-            <article
-              class="item"
-              data-search="syncProject src/cli/index.ts Synchronize one generated Studio project."
-            >
-              <h3>syncProject</h3>
-              <p class="muted"><code>src/cli/index.ts:169:1</code></p>
-              <p>Synchronize one generated Studio project.</p>
             </article>
             <article
               class="item"
               data-search="requireProjectId src/cli/index.ts Read the required project ID positional argument for one Studio command."
             >
               <h3>requireProjectId</h3>
-              <p class="muted"><code>src/cli/index.ts:182:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:161:1</code></p>
               <p>Read the required project ID positional argument for one Studio command.</p>
             </article>
             <article
@@ -31457,7 +31449,7 @@ sequenceDiagram
               data-search="parseCreateProjectArgs src/cli/index.ts Parse project creation flags into one canonical template selection."
             >
               <h3>parseCreateProjectArgs</h3>
-              <p class="muted"><code>src/cli/index.ts:191:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:170:1</code></p>
               <p>Parse project creation flags into one canonical template selection.</p>
             </article>
             <article
@@ -31465,7 +31457,7 @@ sequenceDiagram
               data-search="readFlag src/cli/index.ts Read the non-empty value immediately following one CLI flag."
             >
               <h3>readFlag</h3>
-              <p class="muted"><code>src/cli/index.ts:208:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:187:1</code></p>
               <p>Read the non-empty value immediately following one CLI flag.</p>
             </article>
           </section>
@@ -32566,7 +32558,7 @@ sequenceDiagram
               <h3>createServer</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts:170:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts:198:1</code
                 >
               </p>
               <p>Create one isolated Fastify fixture around a fake APM lifecycle port.</p>
@@ -32588,7 +32580,7 @@ sequenceDiagram
               <h3>registerProjectUpdateRoutes</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:29:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:31:1</code
                 >
               </p>
               <p>
@@ -32603,7 +32595,7 @@ sequenceDiagram
               <h3>resolveRequestContext</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:107:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:113:1</code
                 >
               </p>
               <p>Resolve a request&#39;s validated project id to its server-owned project root.</p>
@@ -32615,7 +32607,7 @@ sequenceDiagram
               <h3>invokeReadOnly</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:130:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:136:1</code
                 >
               </p>
               <p>Execute one read-only APM request without leaking host exception details.</p>
@@ -32627,7 +32619,7 @@ sequenceDiagram
               <h3>invokeLifecycle</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:142:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:148:1</code
                 >
               </p>
               <p>
@@ -32642,7 +32634,7 @@ sequenceDiagram
               <h3>isLifecycleConflict</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:156:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:162:1</code
                 >
               </p>
               <p>
@@ -32656,7 +32648,7 @@ sequenceDiagram
               <h3>sendInvalidRequest</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:165:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:171:1</code
                 >
               </p>
               <p>Return a stable bad-request response without echoing untrusted request data.</p>
@@ -32668,7 +32660,7 @@ sequenceDiagram
               <h3>isAvailability</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:170:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:176:1</code
                 >
               </p>
               <p>Validate the optional APM availability mode.</p>
@@ -32680,7 +32672,7 @@ sequenceDiagram
               <h3>isPlanRequest</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:175:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:181:1</code
                 >
               </p>
               <p>Validate the bounded request body accepted by the plan route.</p>
@@ -32692,7 +32684,7 @@ sequenceDiagram
               <h3>isPlanPolicy</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:188:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:194:1</code
                 >
               </p>
               <p>Validate the APM plan policy fields exposed by the host adapter.</p>
@@ -32704,7 +32696,7 @@ sequenceDiagram
               <h3>isPlanPackageSelection</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:214:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:220:1</code
                 >
               </p>
               <p>Validate one package selection in a host-authored APM plan request.</p>
@@ -32716,7 +32708,7 @@ sequenceDiagram
               <h3>isPlanTargetSelection</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:234:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:240:1</code
                 >
               </p>
               <p>Validate one compatible/latest/exact APM target selection.</p>
@@ -32728,7 +32720,7 @@ sequenceDiagram
               <h3>isApplyRequest</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:264:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:270:1</code
                 >
               </p>
               <p>
@@ -32743,7 +32735,7 @@ sequenceDiagram
               <h3>isResumeRequest</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:276:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:282:1</code
                 >
               </p>
               <p>
@@ -32758,7 +32750,7 @@ sequenceDiagram
               <h3>isOperationRequest</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:288:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:294:1</code
                 >
               </p>
               <p>Validate the verify request&#39;s operation identity.</p>
@@ -32770,7 +32762,7 @@ sequenceDiagram
               <h3>isApplyPermissions</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:294:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:300:1</code
                 >
               </p>
               <p>Validate explicit APM execution permissions.</p>
@@ -32782,7 +32774,7 @@ sequenceDiagram
               <h3>isPlanResult</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:305:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:311:1</code
                 >
               </p>
               <p>
@@ -32797,7 +32789,7 @@ sequenceDiagram
               <h3>isOptionalString</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:329:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:335:1</code
                 >
               </p>
               <p>Validate an optional string field.</p>
@@ -32809,7 +32801,7 @@ sequenceDiagram
               <h3>isOptionalBoolean</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:334:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:340:1</code
                 >
               </p>
               <p>Validate an optional boolean field.</p>
@@ -32821,7 +32813,7 @@ sequenceDiagram
               <h3>isNonEmptyString</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:339:1</code
+                  >src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts:345:1</code
                 >
               </p>
               <p>Validate a required non-empty string.</p>
@@ -33901,6 +33893,29 @@ sequenceDiagram
                 >
               </p>
               <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-features-project-updates-application-projectupdateservice-ts"
+          class="view"
+          data-view="src/features/project-updates/application/ProjectUpdateService.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/features/project-updates/application/ProjectUpdateService.ts</h2>
+            <article
+              class="item"
+              data-search="uniquePresentationRows src/features/project-updates/application/ProjectUpdateService.ts Collapse top-level status rows that Studio renders identically while retaining raw scoped APM evidence for planning."
+            >
+              <h3>uniquePresentationRows</h3>
+              <p class="muted">
+                <code>src/features/project-updates/application/ProjectUpdateService.ts:81:1</code>
+              </p>
+              <p>
+                Collapse top-level status rows that Studio renders identically while retaining raw
+                scoped APM evidence for planning.
+              </p>
             </article>
           </section>
         </section>
@@ -35284,47 +35299,47 @@ sequenceDiagram
             <h2>src/hooks/useProjects.ts</h2>
             <article class="item" data-search="isRecord src/hooks/useProjects.ts ">
               <h3>isRecord</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:65:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:56:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isThemeModeConfig src/hooks/useProjects.ts ">
               <h3>isThemeModeConfig</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:69:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:60:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isThemeConfig src/hooks/useProjects.ts ">
               <h3>isThemeConfig</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:73:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:64:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isActiveThemeMode src/hooks/useProjects.ts ">
               <h3>isActiveThemeMode</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:83:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:74:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isProject src/hooks/useProjects.ts ">
               <h3>isProject</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:87:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:78:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readJson src/hooks/useProjects.ts ">
               <h3>readJson</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:103:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:94:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readError src/hooks/useProjects.ts ">
               <h3>readError</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:107:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:98:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseProjectList src/hooks/useProjects.ts ">
               <h3>parseProjectList</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:115:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:106:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="requestProjects src/hooks/useProjects.ts ">
               <h3>requestProjects</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:123:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:114:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -35332,7 +35347,7 @@ sequenceDiagram
               data-search="parseCreateProjectResponse src/hooks/useProjects.ts "
             >
               <h3>parseCreateProjectResponse</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:129:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:120:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -35340,20 +35355,7 @@ sequenceDiagram
               data-search="parseProjectCreationFailure src/hooks/useProjects.ts "
             >
               <h3>parseProjectCreationFailure</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:146:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article class="item" data-search="parseSyncProjectResponse src/hooks/useProjects.ts ">
-              <h3>parseSyncProjectResponse</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:167:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="parseInstallProjectPackagesResponse src/hooks/useProjects.ts "
-            >
-              <h3>parseInstallProjectPackagesResponse</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:175:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:137:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -35361,7 +35363,7 @@ sequenceDiagram
               data-search="parseConnectProjectRepositoryResponse src/hooks/useProjects.ts "
             >
               <h3>parseConnectProjectRepositoryResponse</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:183:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:158:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -35369,7 +35371,7 @@ sequenceDiagram
               data-search="parseUpProjectInfrastructureResponse src/hooks/useProjects.ts "
             >
               <h3>parseUpProjectInfrastructureResponse</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:209:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:184:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -35377,22 +35379,22 @@ sequenceDiagram
               data-search="parseLaunchProjectResponse src/hooks/useProjects.ts "
             >
               <h3>parseLaunchProjectResponse</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:222:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:197:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="requestProjectAction src/hooks/useProjects.ts ">
               <h3>requestProjectAction</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:236:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:211:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="requestCreateProject src/hooks/useProjects.ts ">
               <h3>requestCreateProject</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:255:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:230:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="useProjects src/hooks/useProjects.ts ">
               <h3>useProjects</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:269:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:244:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -37496,7 +37498,7 @@ sequenceDiagram
               data-search="createAdminOnlyManager src/host/http/moduleRoutes.test.ts "
             >
               <h3>createAdminOnlyManager</h3>
-              <p class="muted"><code>src/host/http/moduleRoutes.test.ts:170:1</code></p>
+              <p class="muted"><code>src/host/http/moduleRoutes.test.ts:156:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -37504,7 +37506,7 @@ sequenceDiagram
               data-search="createModuleState src/host/http/moduleRoutes.test.ts "
             >
               <h3>createModuleState</h3>
-              <p class="muted"><code>src/host/http/moduleRoutes.test.ts:196:1</code></p>
+              <p class="muted"><code>src/host/http/moduleRoutes.test.ts:180:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -37522,7 +37524,7 @@ sequenceDiagram
               data-search="registerProjectModuleRoutes src/host/http/moduleRoutes.ts Register Studio module lifecycle/config/admin HTTP adapters around the ModuleManager contract."
             >
               <h3>registerProjectModuleRoutes</h3>
-              <p class="muted"><code>src/host/http/moduleRoutes.ts:29:1</code></p>
+              <p class="muted"><code>src/host/http/moduleRoutes.ts:28:1</code></p>
               <p>
                 Register Studio module lifecycle/config/admin HTTP adapters around the ModuleManager
                 contract.
@@ -37533,7 +37535,7 @@ sequenceDiagram
               data-search="isRecord src/host/http/moduleRoutes.ts Narrow an unknown non-array object to a string-keyed record.&#10;@utility @ankhorage/utility/object"
             >
               <h3>isRecord</h3>
-              <p class="muted"><code>src/host/http/moduleRoutes.ts:139:1</code></p>
+              <p class="muted"><code>src/host/http/moduleRoutes.ts:126:1</code></p>
               <p>
                 Narrow an unknown non-array object to a string-keyed record. @utility
                 @ankhorage/utility/object
@@ -37544,7 +37546,7 @@ sequenceDiagram
               data-search="toMessage src/host/http/moduleRoutes.ts Convert an unknown thrown value to a human-readable message.&#10;@utility @ankhorage/utility/error"
             >
               <h3>toMessage</h3>
-              <p class="muted"><code>src/host/http/moduleRoutes.ts:147:1</code></p>
+              <p class="muted"><code>src/host/http/moduleRoutes.ts:134:1</code></p>
               <p>
                 Convert an unknown thrown value to a human-readable message. @utility
                 @ankhorage/utility/error
@@ -37751,7 +37753,7 @@ sequenceDiagram
               data-search="startStudioHostServer src/host/http/server.ts Resolve host options, construct Studio managers/server composition and listen on the requested local interface."
             >
               <h3>startStudioHostServer</h3>
-              <p class="muted"><code>src/host/http/server.ts:294:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:267:1</code></p>
               <p>
                 Resolve host options, construct Studio managers/server composition and listen on the
                 requested local interface.
@@ -38961,7 +38963,7 @@ sequenceDiagram
               data-search="getOAuthViewSource src/host/layout/templates/auth/screen.ts Render the optional OAuth provider controls injected into the generated shared auth screen."
             >
               <h3>getOAuthViewSource</h3>
-              <p class="muted"><code>src/host/layout/templates/auth/screen.ts:183:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/auth/screen.ts:189:1</code></p>
               <p>
                 Render the optional OAuth provider controls injected into the generated shared auth
                 screen.
@@ -39988,7 +39990,7 @@ sequenceDiagram
             >
               <h3>createScaffoldHarness</h3>
               <p class="muted">
-                <code>src/host/orchestrator/generatedDependencyContract.test.ts:185:1</code>
+                <code>src/host/orchestrator/generatedDependencyContract.test.ts:186:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -39998,7 +40000,7 @@ sequenceDiagram
             >
               <h3>readGeneratedDependencies</h3>
               <p class="muted">
-                <code>src/host/orchestrator/generatedDependencyContract.test.ts:195:1</code>
+                <code>src/host/orchestrator/generatedDependencyContract.test.ts:196:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -40008,7 +40010,7 @@ sequenceDiagram
             >
               <h3>expectRuntimePeers</h3>
               <p class="muted">
-                <code>src/host/orchestrator/generatedDependencyContract.test.ts:203:1</code>
+                <code>src/host/orchestrator/generatedDependencyContract.test.ts:204:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -40018,7 +40020,7 @@ sequenceDiagram
             >
               <h3>expectStudioAuthoringDependencies</h3>
               <p class="muted">
-                <code>src/host/orchestrator/generatedDependencyContract.test.ts:232:1</code>
+                <code>src/host/orchestrator/generatedDependencyContract.test.ts:233:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -40212,7 +40214,7 @@ sequenceDiagram
               data-search="isRecord src/host/orchestrator/moduleManager.ts Narrow an unknown non-array object to a string-keyed record.&#10;@utility @ankhorage/utility/object"
             >
               <h3>isRecord</h3>
-              <p class="muted"><code>src/host/orchestrator/moduleManager.ts:543:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/moduleManager.ts:499:1</code></p>
               <p>
                 Narrow an unknown non-array object to a string-keyed record. @utility
                 @ankhorage/utility/object
@@ -40273,7 +40275,7 @@ sequenceDiagram
               data-search="requireProjectDeployTargets src/host/orchestrator/projectManager.ts Require canonical deploy targets before project generation/synchronization.&#10;@todo Move deploy-target validation to the deploy/projects domain boundary rather than host/orchestrator."
             >
               <h3>requireProjectDeployTargets</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:481:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:472:1</code></p>
               <p>
                 Require canonical deploy targets before project generation/synchronization. @todo
                 Move deploy-target validation to the deploy/projects domain boundary rather than
@@ -40285,7 +40287,7 @@ sequenceDiagram
               data-search="exists src/host/orchestrator/projectManager.ts Report whether a filesystem path is accessible.&#10;@utility @ankhorage/utility/node/fs"
             >
               <h3>exists</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:495:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:486:1</code></p>
               <p>
                 Report whether a filesystem path is accessible. @utility @ankhorage/utility/node/fs
               </p>
@@ -40295,7 +40297,7 @@ sequenceDiagram
               data-search="resolveGeneratedAuthProvider src/host/orchestrator/projectManager.ts Resolve the generated auth-provider mode from the manifest&#39;s global auth infrastructure ownership."
             >
               <h3>resolveGeneratedAuthProvider</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:505:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:496:1</code></p>
               <p>
                 Resolve the generated auth-provider mode from the manifest&#39;s global auth
                 infrastructure ownership.
@@ -40306,7 +40308,7 @@ sequenceDiagram
               data-search="resolveGeneratedStorageProvider src/host/orchestrator/projectManager.ts Resolve the generated storage-provider mode when automatic storage should follow Supabase-owned auth/database infrastructure."
             >
               <h3>resolveGeneratedStorageProvider</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:514:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:505:1</code></p>
               <p>
                 Resolve the generated storage-provider mode when automatic storage should follow
                 Supabase-owned auth/database infrastructure.
@@ -40878,7 +40880,7 @@ sequenceDiagram
               data-search="expectCompatibleCaretRanges src/host/orchestrator/templates.test.ts "
             >
               <h3>expectCompatibleCaretRanges</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.test.ts:420:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.test.ts:422:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -40886,7 +40888,7 @@ sequenceDiagram
               data-search="getCaretCompatibilityLine src/host/orchestrator/templates.test.ts "
             >
               <h3>getCaretCompatibilityLine</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.test.ts:429:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.test.ts:431:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -41055,7 +41057,7 @@ sequenceDiagram
               data-search="getMetroEmptyModuleJs src/host/orchestrator/templateSources.ts "
             >
               <h3>getMetroEmptyModuleJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1079:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1064:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -41063,7 +41065,7 @@ sequenceDiagram
               data-search="getTsConfigJson src/host/orchestrator/templateSources.ts "
             >
               <h3>getTsConfigJson</h3>
-              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1083:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1068:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -41071,7 +41073,7 @@ sequenceDiagram
               data-search="createPlatformDependencyMap src/host/orchestrator/templateSources.ts "
             >
               <h3>createPlatformDependencyMap</h3>
-              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1116:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1101:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -41609,7 +41611,7 @@ sequenceDiagram
             >
               <h3>assertExpo57StudioStandaloneContractAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:22:1</code>
+                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:23:1</code>
               </p>
               <p>
                 Verify that a generated standalone Studio fixture is checkout-independent, declares
@@ -41624,7 +41626,7 @@ sequenceDiagram
             >
               <h3>assertCopiedFilesAreIndependentAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:107:1</code>
+                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:102:1</code>
               </p>
               <p>
                 Assert that every copied fixture file is a real file and does not embed a path back
@@ -41637,7 +41639,7 @@ sequenceDiagram
             >
               <h3>assertInstalledContractAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:127:1</code>
+                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:122:1</code>
               </p>
               <p>
                 Verify installed registry packages, React Native owner ranges and generated Expo
@@ -41646,13 +41648,16 @@ sequenceDiagram
             </article>
             <article
               class="item"
-              data-search="resolveInstalledStudioOwnerRangesAsync src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts Reads the ZORA range owned by the installed registry Studio package."
+              data-search="resolveInstalledStudioOwnerRangesAsync src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts Resolve Runtime, ZORA and Surface ranges from the installed registry Studio dependency graph."
             >
               <h3>resolveInstalledStudioOwnerRangesAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:179:1</code>
+                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:171:1</code>
               </p>
-              <p>Reads the ZORA range owned by the installed registry Studio package.</p>
+              <p>
+                Resolve Runtime, ZORA and Surface ranges from the installed registry Studio
+                dependency graph.
+              </p>
             </article>
             <article
               class="item"
@@ -41660,7 +41665,7 @@ sequenceDiagram
             >
               <h3>assertRegistryDependencyRanges</h3>
               <p class="muted">
-                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:196:1</code>
+                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:205:1</code>
               </p>
               <p>
                 Assert that fixture dependency ranges resolve from the registry and scripts do not
@@ -41673,7 +41678,7 @@ sequenceDiagram
             >
               <h3>isWithin</h3>
               <p class="muted">
-                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:216:1</code>
+                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:225:1</code>
               </p>
               <p>
                 Report whether a target path is equal to or nested within a parent path. @utility
@@ -41686,7 +41691,7 @@ sequenceDiagram
             >
               <h3>listFilesAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:225:1</code>
+                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:234:1</code>
               </p>
               <p>
                 Recursively list filesystem entries under a root while skipping traversal into
@@ -41699,7 +41704,7 @@ sequenceDiagram
             >
               <h3>resolveRequiredReleaseRangesAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:238:1</code>
+                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:247:1</code>
               </p>
               <p>
                 Resolve the canonical Studio, Expo Runtime and Devtools release ranges required by a
@@ -41708,24 +41713,11 @@ sequenceDiagram
             </article>
             <article
               class="item"
-              data-search="resolveOwnerRangesAsync src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts Resolve the Runtime, Studio and Surface ranges owned by the repository&#39;s current package graph for standalone acceptance."
-            >
-              <h3>resolveOwnerRangesAsync</h3>
-              <p class="muted">
-                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:275:1</code>
-              </p>
-              <p>
-                Resolve the Runtime, Studio and Surface ranges owned by the repository&#39;s current
-                package graph for standalone acceptance.
-              </p>
-            </article>
-            <article
-              class="item"
               data-search="readPackageJsonAsync src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts Read and parse a package.json-compatible manifest from disk.&#10;@utility @ankhorage/utility/node/package"
             >
               <h3>readPackageJsonAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:310:1</code>
+                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:287:1</code>
               </p>
               <p>
                 Read and parse a package.json-compatible manifest from disk. @utility
@@ -41738,7 +41730,7 @@ sequenceDiagram
             >
               <h3>requireDependencyRange</h3>
               <p class="muted">
-                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:318:1</code>
+                <code>src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts:295:1</code>
               </p>
               <p>
                 Require and return one dependency range from a selected package manifest dependency
@@ -42540,11 +42532,21 @@ sequenceDiagram
             </article>
             <article
               class="item"
+              data-search="resolveInstalledPackageDependencies src/host/smoke/expo57StudioStandaloneFixture.test.ts "
+            >
+              <h3>resolveInstalledPackageDependencies</h3>
+              <p class="muted">
+                <code>src/host/smoke/expo57StudioStandaloneFixture.test.ts:258:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
               data-search="writeInstalledPackageAsync src/host/smoke/expo57StudioStandaloneFixture.test.ts "
             >
               <h3>writeInstalledPackageAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/expo57StudioStandaloneFixture.test.ts:258:1</code>
+                <code>src/host/smoke/expo57StudioStandaloneFixture.test.ts:275:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -42554,7 +42556,7 @@ sequenceDiagram
             >
               <h3>writeInstalledGraphAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/expo57StudioStandaloneFixture.test.ts:280:1</code>
+                <code>src/host/smoke/expo57StudioStandaloneFixture.test.ts:296:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -44111,7 +44113,7 @@ sequenceDiagram
             >
               <h3>assertReleasedStudioPackageAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:257:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:258:1</code>
               </p>
               <p>
                 Assert that a Studio-enabled generated navigation fixture installs its declared
@@ -44124,7 +44126,7 @@ sequenceDiagram
             >
               <h3>assertRouterTypesAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:276:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:277:1</code>
               </p>
               <p>
                 Assert that generated Expo Router declarations are non-empty and contain the
@@ -44137,7 +44139,7 @@ sequenceDiagram
             >
               <h3>generateRouterTypesAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:300:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:301:1</code>
               </p>
               <p>
                 Generate Expo Router type declarations for one navigation fixture under the isolated
@@ -44150,7 +44152,7 @@ sequenceDiagram
             >
               <h3>createProjectAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:313:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:314:1</code>
               </p>
               <p>
                 Create and persist one generated navigation fixture variant from the shared
@@ -44163,7 +44165,7 @@ sequenceDiagram
             >
               <h3>createAuthHiddenRouteDrawerStudioAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:346:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:347:1</code>
               </p>
               <p>
                 Create the focused global-auth Drawer fixture whose auth-injected sign-out route
@@ -44176,7 +44178,7 @@ sequenceDiagram
             >
               <h3>createWorkspaceAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:359:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:360:1</code>
               </p>
               <p>
                 Create the temporary Bun workspace root used by generated navigation acceptance
@@ -44189,7 +44191,7 @@ sequenceDiagram
             >
               <h3>installGeneratedProjectAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:377:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:378:1</code>
               </p>
               <p>
                 Create one generated project&#39;s app-owned lockfile, cold-install it frozen and
@@ -44202,7 +44204,7 @@ sequenceDiagram
             >
               <h3>hash</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:399:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:400:1</code>
               </p>
               <p>
                 Compute a SHA-256 hex digest for byte content. @utility @ankhorage/utility/crypto
@@ -44214,7 +44216,7 @@ sequenceDiagram
             >
               <h3>listSourceFilesAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:407:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:408:1</code>
               </p>
               <p>
                 Recursively list JavaScript/TypeScript source files beneath a source root. @utility
@@ -44227,7 +44229,7 @@ sequenceDiagram
             >
               <h3>pathExistsAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:422:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:423:1</code>
               </p>
               <p>
                 Report whether a filesystem path currently exists, propagating non-ENOENT stat
@@ -44240,7 +44242,7 @@ sequenceDiagram
             >
               <h3>runCommandAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:433:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:434:1</code>
               </p>
               <p>
                 Run one acceptance command with isolated Expo home, telemetry disabled and optional
@@ -44253,7 +44255,7 @@ sequenceDiagram
             >
               <h3>runDevelopmentNavigationSmokeAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:448:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:449:1</code>
               </p>
               <p>
                 Exercise dynamic/static routes, browser history, nested tabs/drawer and hidden-route
@@ -44266,7 +44268,7 @@ sequenceDiagram
             >
               <h3>runDevelopmentWebAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:495:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:496:1</code>
               </p>
               <p>
                 Launch the generated project&#39;s Expo Web development server and execute a
@@ -44279,7 +44281,7 @@ sequenceDiagram
             >
               <h3>runFocusedRootNavigatorChecksAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:533:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:534:1</code>
               </p>
               <p>
                 Validate one root-tabs/root-drawer fixture&#39;s generated bridge, typed Router
@@ -44292,7 +44294,7 @@ sequenceDiagram
             >
               <h3>runGeneratedProjectChecksAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:573:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:574:1</code>
               </p>
               <p>
                 Run typed-route generation, navigation lint, Expo compatibility/Doctor, TypeScript
@@ -44305,7 +44307,7 @@ sequenceDiagram
             >
               <h3>runStaticExportSmokeAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:630:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:631:1</code>
               </p>
               <p>
                 Exercise the served static navigation export at mobile and desktop widths using real
@@ -44318,7 +44320,7 @@ sequenceDiagram
             >
               <h3>runSignedOutAuthNavigationSmokeAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:651:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:652:1</code>
               </p>
               <p>
                 Assert signed-out global-auth navigation redirects protected generated content to
@@ -44331,7 +44333,7 @@ sequenceDiagram
             >
               <h3>runGlobalStudioAuthNavigationSmokeAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:667:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:668:1</code>
               </p>
               <p>
                 Exercise global-auth Studio bootstrap, signed-out Admin denial, authenticated
@@ -44344,7 +44346,7 @@ sequenceDiagram
             >
               <h3>runGlobalStudioAuthBypassNavigationSmokeAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:718:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:719:1</code>
               </p>
               <p>
                 Exercise the explicit development auth bypass and verify direct Studio Admin access
@@ -44357,7 +44359,7 @@ sequenceDiagram
             >
               <h3>runAuthHiddenRouteDrawerStudioNavigationSmokeAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:744:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:745:1</code>
               </p>
               <p>
                 Assert the auth-injected sign-out route is hidden in the Navigator-owned Drawer and
@@ -44370,7 +44372,7 @@ sequenceDiagram
             >
               <h3>runScopeAwareStudioChecksAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:790:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:791:1</code>
               </p>
               <p>
                 Validate integrated/none auth-scope fixtures keep the public app root accessible and
@@ -44383,7 +44385,7 @@ sequenceDiagram
             >
               <h3>waitForHttpAsync</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:824:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:825:1</code>
               </p>
               <p>
                 Poll an HTTP endpoint until it responds below the 5xx range, including
@@ -44396,7 +44398,7 @@ sequenceDiagram
             >
               <h3>collectProcessOutput</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:841:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:842:1</code>
               </p>
               <p>
                 Collect UTF-8 stdout and stderr chunks from a child process into a shared output
@@ -44409,7 +44411,7 @@ sequenceDiagram
             >
               <h3>stopProcess</h3>
               <p class="muted">
-                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:853:1</code>
+                <code>src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts:854:1</code>
               </p>
               <p>
                 Terminate a detached child-process group, falling back to the direct child when
@@ -44552,7 +44554,7 @@ sequenceDiagram
               <h3>collectOutput</h3>
               <p class="muted">
                 <code
-                  >src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts:110:1</code
+                  >src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts:112:1</code
                 >
               </p>
               <p>
@@ -44567,7 +44569,7 @@ sequenceDiagram
               <h3>deleteHostProjectAsync</h3>
               <p class="muted">
                 <code
-                  >src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts:116:1</code
+                  >src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts:118:1</code
                 >
               </p>
               <p>Delete one host fixture project through the standalone Studio HTTP API.</p>
@@ -44579,7 +44581,7 @@ sequenceDiagram
               <h3>pointerClickAsync</h3>
               <p class="muted">
                 <code
-                  >src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts:126:1</code
+                  >src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts:131:1</code
                 >
               </p>
               <p>
@@ -44594,7 +44596,7 @@ sequenceDiagram
               <h3>stopProcessAsync</h3>
               <p class="muted">
                 <code
-                  >src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts:140:1</code
+                  >src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts:145:1</code
                 >
               </p>
               <p>
@@ -44609,7 +44611,7 @@ sequenceDiagram
               <h3>waitForHttpAsync</h3>
               <p class="muted">
                 <code
-                  >src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts:157:1</code
+                  >src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts:162:1</code
                 >
               </p>
               <p>
@@ -44790,7 +44792,7 @@ sequenceDiagram
               data-search="createSmokeWorkspaceFixture src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>createSmokeWorkspaceFixture</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:110:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:111:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -44798,7 +44800,7 @@ sequenceDiagram
               data-search="createSmokeManifest src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>createSmokeManifest</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:137:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:138:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -44806,7 +44808,7 @@ sequenceDiagram
               data-search="spawnStudioExpoWeb src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>spawnStudioExpoWeb</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:194:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:195:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -44814,7 +44816,7 @@ sequenceDiagram
               data-search="expectRouteText src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>expectRouteText</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:212:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:213:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -44822,7 +44824,7 @@ sequenceDiagram
               data-search="reservePort src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>reservePort</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:233:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:234:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -44830,7 +44832,7 @@ sequenceDiagram
               data-search="resolveChromePath src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>resolveChromePath</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:249:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:250:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -44838,7 +44840,7 @@ sequenceDiagram
               data-search="canAccess src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>canAccess</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:272:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:273:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -44846,7 +44848,7 @@ sequenceDiagram
               data-search="spawnChrome src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>spawnChrome</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:281:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:282:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -44854,7 +44856,7 @@ sequenceDiagram
               data-search="openChromePage src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>openChromePage</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:298:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:299:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -44862,7 +44864,7 @@ sequenceDiagram
               data-search="waitForHttp src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>waitForHttp</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:415:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:416:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -44870,7 +44872,7 @@ sequenceDiagram
               data-search="parseChromeProtocolMessage src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>parseChromeProtocolMessage</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:432:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:433:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -44878,7 +44880,7 @@ sequenceDiagram
               data-search="collectProcessOutput src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>collectProcessOutput</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:447:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:448:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -44886,7 +44888,7 @@ sequenceDiagram
               data-search="stopProcess src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>stopProcess</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:458:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:459:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -44894,7 +44896,7 @@ sequenceDiagram
               data-search="formatProcessOutput src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>formatProcessOutput</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:467:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:468:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -44902,7 +44904,7 @@ sequenceDiagram
               data-search="isRecord src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>isRecord</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:473:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:474:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -46577,21 +46579,10 @@ sequenceDiagram
             </article>
             <article
               class="item"
-              data-search="finalizePendingProjectModules src/moduleAdminApi.ts Ask the Studio host to finalize pending module changes and return the applied count.&#10;@todo Move pending-module finalization into the modules application responsibility."
-            >
-              <h3>finalizePendingProjectModules</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:118:1</code></p>
-              <p>
-                Ask the Studio host to finalize pending module changes and return the applied count.
-                @todo Move pending-module finalization into the modules application responsibility.
-              </p>
-            </article>
-            <article
-              class="item"
               data-search="parseStudioModuleState src/moduleAdminApi.ts Validate an unknown module-state response and project it into the canonical Studio module model.&#10;@todo Keep module response semantics in the modules domain rather than the source root."
             >
               <h3>parseStudioModuleState</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:134:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:118:1</code></p>
               <p>
                 Validate an unknown module-state response and project it into the canonical Studio
                 module model. @todo Keep module response semantics in the modules domain rather than
@@ -46603,7 +46594,7 @@ sequenceDiagram
               data-search="parseAdminContribution src/moduleAdminApi.ts Validate and normalize a module-provided admin configuration-schema contribution."
             >
               <h3>parseAdminContribution</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:177:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:161:1</code></p>
               <p>
                 Validate and normalize a module-provided admin configuration-schema contribution.
               </p>
@@ -46613,7 +46604,7 @@ sequenceDiagram
               data-search="mutateProjectModule src/moduleAdminApi.ts Execute an install/uninstall module mutation through the shared module request and result parser."
             >
               <h3>mutateProjectModule</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:213:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:197:1</code></p>
               <p>
                 Execute an install/uninstall module mutation through the shared module request and
                 result parser.
@@ -46624,7 +46615,7 @@ sequenceDiagram
               data-search="parseOperationResult src/moduleAdminApi.ts Validate and normalize the host result of a module mutation."
             >
               <h3>parseOperationResult</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:223:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:207:1</code></p>
               <p>Validate and normalize the host result of a module mutation.</p>
             </article>
             <article
@@ -46632,7 +46623,7 @@ sequenceDiagram
               data-search="requestJson src/moduleAdminApi.ts Fetch a path, decode a JSON response, and surface non-success status as a typed HTTP error.&#10;@utility @ankhorage/utility/http"
             >
               <h3>requestJson</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:248:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:232:1</code></p>
               <p>
                 Fetch a path, decode a JSON response, and surface non-success status as a typed HTTP
                 error. @utility @ankhorage/utility/http
@@ -46643,7 +46634,7 @@ sequenceDiagram
               data-search="createProjectModuleApiPath src/moduleAdminApi.ts Build the encoded REST path for a project-owned resource identified by two path segments.&#10;@utility @ankhorage/utility/url"
             >
               <h3>createProjectModuleApiPath</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:271:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:255:1</code></p>
               <p>
                 Build the encoded REST path for a project-owned resource identified by two path
                 segments. @utility @ankhorage/utility/url
@@ -46654,7 +46645,7 @@ sequenceDiagram
               data-search="createProjectModuleAdminOperationApiPath src/moduleAdminApi.ts Extend an encoded resource path with one required non-empty operation segment.&#10;@utility @ankhorage/utility/url"
             >
               <h3>createProjectModuleAdminOperationApiPath</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:282:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:266:1</code></p>
               <p>
                 Extend an encoded resource path with one required non-empty operation segment.
                 @utility @ankhorage/utility/url
@@ -46665,7 +46656,7 @@ sequenceDiagram
               data-search="asRecord src/moduleAdminApi.ts Narrow an unknown value to a strict non-array record or return null.&#10;@utility @ankhorage/utility/value"
             >
               <h3>asRecord</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:296:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:280:1</code></p>
               <p>
                 Narrow an unknown value to a strict non-array record or return null. @utility
                 @ankhorage/utility/value
@@ -46676,7 +46667,7 @@ sequenceDiagram
               data-search="isAdminControl src/moduleAdminApi.ts Return whether an unknown value is a non-empty string.&#10;@utility @ankhorage/utility/string"
             >
               <h3>isAdminControl</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:304:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:288:1</code></p>
               <p>
                 Return whether an unknown value is a non-empty string. @utility
                 @ankhorage/utility/string
@@ -46687,7 +46678,7 @@ sequenceDiagram
               data-search="invalidResponse src/moduleAdminApi.ts Create a typed bad-gateway-style API error for an invalid upstream response.&#10;@utility @ankhorage/utility/http"
             >
               <h3>invalidResponse</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:312:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:296:1</code></p>
               <p>
                 Create a typed bad-gateway-style API error for an invalid upstream response.
                 @utility @ankhorage/utility/http
@@ -52211,13 +52202,13 @@ sequenceDiagram
             <h2>src/ui/admin/pages/ModulesAdminPage.tsx</h2>
             <article
               class="item"
-              data-search="ModulesAdminPage src/ui/admin/pages/ModulesAdminPage.tsx Render the project module catalog, lifecycle actions, pending-removal finalization, and navigation to module details."
+              data-search="ModulesAdminPage src/ui/admin/pages/ModulesAdminPage.tsx Render the project module catalog, lifecycle actions, pending-removal state, and navigation to module details."
             >
               <h3>ModulesAdminPage</h3>
-              <p class="muted"><code>src/ui/admin/pages/ModulesAdminPage.tsx:18:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/ModulesAdminPage.tsx:17:1</code></p>
               <p>
-                Render the project module catalog, lifecycle actions, pending-removal finalization,
-                and navigation to module details.
+                Render the project module catalog, lifecycle actions, pending-removal state, and
+                navigation to module details.
               </p>
             </article>
             <article
@@ -52225,7 +52216,7 @@ sequenceDiagram
               data-search="formatStatus src/ui/admin/pages/ModulesAdminPage.tsx Format the lifecycle availability/installation/pending-removal state of one Studio module for display."
             >
               <h3>formatStatus</h3>
-              <p class="muted"><code>src/ui/admin/pages/ModulesAdminPage.tsx:169:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/ModulesAdminPage.tsx:144:1</code></p>
               <p>
                 Format the lifecycle availability/installation/pending-removal state of one Studio
                 module for display.
@@ -52236,7 +52227,7 @@ sequenceDiagram
               data-search="toMessage src/ui/admin/pages/ModulesAdminPage.tsx Normalize an unknown thrown value to a display message.&#10;@utility @ankhorage/utility/error"
             >
               <h3>toMessage</h3>
-              <p class="muted"><code>src/ui/admin/pages/ModulesAdminPage.tsx:180:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/ModulesAdminPage.tsx:155:1</code></p>
               <p>
                 Normalize an unknown thrown value to a display message. @utility
                 @ankhorage/utility/error

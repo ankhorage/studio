@@ -112,22 +112,6 @@ export async function executeProjectModuleAdminOperation(input: {
 }
 
 /***
- * Ask the Studio host to finalize pending module changes and return the applied count.
- * @todo Move pending-module finalization into the modules application responsibility.
- */
-export async function finalizePendingProjectModules(projectId: string): Promise<number> {
-  const value = await requestJson(
-    `/projects/${encodeURIComponent(projectId)}/modules/finalize-pending`,
-    { method: 'POST' },
-  );
-  const record = asRecord(value);
-  if (record?.success !== true || typeof record.applied !== 'number') {
-    throw invalidResponse('Pending module operation response was invalid.');
-  }
-  return record.applied;
-}
-
-/***
  * Validate an unknown module-state response and project it into the canonical Studio module model.
  * @todo Keep module response semantics in the modules domain rather than the source root.
  */

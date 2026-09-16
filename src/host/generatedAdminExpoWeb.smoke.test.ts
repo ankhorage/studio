@@ -1664,7 +1664,7 @@ async function createGeneratedAdminProject(workspaceRoot: string): Promise<strin
     projectId: created.id,
     manifest: createAdminSmokeManifest(),
   });
-  await moduleManager.syncProject({ projectId: created.id, includeStudio: true });
+  await moduleManager.syncProjectRuntime(created.id);
   await writeSmokeRuntimeExtensions(created.path);
   await installSmokeNavigationProbe(created.path);
   await writeSmokeMetroConfig(created.path);

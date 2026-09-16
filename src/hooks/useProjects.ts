@@ -14,15 +14,6 @@ export interface CreateProjectResponse {
   path: string;
 }
 
-export interface SyncProjectResponse {
-  success: boolean;
-}
-
-export interface InstallProjectPackagesResponse {
-  success: boolean;
-  scope: 'project';
-}
-
 export interface ConnectProjectRepositoryResponse {
   status: 'already-connected' | 'connected';
   repository: {
@@ -162,22 +153,6 @@ function parseProjectCreationFailure(value: unknown): ProjectCreationValidationF
     code: value.code,
     message: value.message,
   };
-}
-
-function parseSyncProjectResponse(value: unknown): SyncProjectResponse {
-  if (!isRecord(value) || typeof value.success !== 'boolean') {
-    throw new Error('Sync response was invalid');
-  }
-
-  return { success: value.success };
-}
-
-function parseInstallProjectPackagesResponse(value: unknown): InstallProjectPackagesResponse {
-  if (!isRecord(value) || value.success !== true || value.scope !== 'project') {
-    throw new Error('Install project packages response was invalid');
-  }
-
-  return { success: true, scope: 'project' };
 }
 
 function parseConnectProjectRepositoryResponse(value: unknown): ConnectProjectRepositoryResponse {
@@ -321,25 +296,6 @@ export function useProjects() {
     if (!response.ok) throw new Error(`Project deletion failed with ${response.status}`);
   }, []);
 
-  const syncProject = useCallback(async (projectId: string): Promise<SyncProjectResponse> => {
-    return await requestProjectAction(
-      `/projects/${encodeURIComponent(projectId)}/sync`,
-      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' },
-      parseSyncProjectResponse,
-    );
-  }, []);
-
-  const installProjectPackages = useCallback(
-    async (projectId: string): Promise<InstallProjectPackagesResponse> => {
-      return await requestProjectAction(
-        `/projects/${encodeURIComponent(projectId)}/packages/install`,
-        { method: 'POST' },
-        parseInstallProjectPackagesResponse,
-      );
-    },
-    [],
-  );
-
   const connectProjectRepository = useCallback(
     async (projectId: string): Promise<ConnectProjectRepositoryResponse> => {
       return await requestProjectAction(
@@ -377,8 +333,6 @@ export function useProjects() {
     refresh,
     createProject,
     deleteProject,
-    syncProject,
-    installProjectPackages,
     connectProjectRepository,
     upProjectInfrastructure,
     launchProject,

@@ -22,7 +22,6 @@ const STUDIO_CAPABILITIES = [
   'studio.projects.list',
   'studio.projects.create',
   'studio.projects.delete',
-  'studio.projects.sync',
 ] as const;
 
 const COMMANDS = [
@@ -50,12 +49,6 @@ const COMMANDS = [
     summary: 'Delete a Studio project.',
     examples: ['ankh studio projects delete shop'],
   },
-  {
-    path: ['projects', 'sync'],
-    capability: 'studio.projects.sync',
-    summary: 'Synchronize generated app host files.',
-    examples: ['ankh studio projects sync shop'],
-  },
 ] as const;
 
 type CommandPath = (typeof COMMANDS)[number]['path'];
@@ -65,7 +58,6 @@ const handlers = [
   createHandler(['projects', 'list'], listProjects),
   createHandler(['projects', 'create'], createProject),
   createHandler(['projects', 'delete'], deleteProject),
-  createHandler(['projects', 'sync'], syncProject),
 ] as const;
 
 /*** Pair one canonical Studio command path with its runtime handler. */
@@ -158,19 +150,6 @@ async function deleteProject(request: Parameters<AnkhCommandHandler>[0]) {
   const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
   try {
     const result = await studioHost.projectManager.deleteProject(projectId);
-    request.context.writeStdout(`${JSON.stringify(result, null, 2)}\n`);
-    return { exitCode: 0 };
-  } finally {
-    studioHost.close();
-  }
-}
-
-/*** Synchronize one generated Studio project. */
-async function syncProject(request: Parameters<AnkhCommandHandler>[0]) {
-  const projectId = requireProjectId(request.argv, 'projects sync');
-  const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
-  try {
-    const result = await studioHost.moduleManager.syncProject({ projectId, includeStudio: true });
     request.context.writeStdout(`${JSON.stringify(result, null, 2)}\n`);
     return { exitCode: 0 };
   } finally {

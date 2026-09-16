@@ -4,7 +4,6 @@ import type { ModuleManager } from '../orchestrator/moduleManager';
 
 type ProjectModuleRouteManager = Pick<
   ModuleManager,
-  | 'applyPendingOperations'
   | 'executeModuleAdminOperation'
   | 'getModuleState'
   | 'installModule'
@@ -30,18 +29,6 @@ export function registerProjectModuleRoutes(
   fastify: FastifyInstance,
   orchestrator: ProjectModuleRouteManager,
 ): void {
-  /*** Apply pending module operations for one project. */
-  fastify.post<{ Params: ProjectParams }>(
-    '/api/projects/:id/modules/finalize-pending',
-    async (req, reply) => {
-      try {
-        return await orchestrator.applyPendingOperations(req.params.id);
-      } catch (error: unknown) {
-        return reply.status(500).send({ error: toMessage(error) });
-      }
-    },
-  );
-
   /*** List module states for one project. */
   fastify.get<{ Params: ProjectParams }>('/api/projects/:id/modules', async (req, reply) => {
     try {
