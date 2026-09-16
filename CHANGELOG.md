@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.7.6
+
+### Patch Changes
+
+- 1777ab6: Remove superseded Studio project-sync, pending-finalization, and direct package-install update paths now that reviewed project updates use the APM lifecycle.
+
 ## 2.7.5
 
 ### Patch Changes
