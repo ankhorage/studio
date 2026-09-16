@@ -218,7 +218,7 @@
     "@ankhorage/data-sources": "^2.0.3",
     "@ankhorage/deploy": "^0.12.5",
     "@ankhorage/expo-runtime": "^3.2.15",
-    "@ankhorage/infra": "^5.1.2",
+    "@ankhorage/infra": "^5.1.5",
     "@ankhorage/local": "^0.3.0",
     "@ankhorage/minikube": "^0.4.1",
     "@ankhorage/navigator": "^3.2.4",
