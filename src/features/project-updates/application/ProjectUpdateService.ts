@@ -10,6 +10,7 @@ import type {
   ApmPlanProjectInput,
   ApmPlanResult,
   ApmProjectStatusPort,
+  ApmStatusHostPackage,
   ApmStatusInput,
   ApmStatusResult,
   ApmVerifyInput,
@@ -17,7 +18,9 @@ import type {
 } from '@ankhorage/apm/types';
 
 import type { ProjectUpdateServiceOptions } from '../../../types/project-updates';
-import { enforceStudioHostRestartBoundary } from './enforceStudioHostRestartBoundary';
+
+const STUDIO_HOST_ID = 'studio';
+const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
 
 /*** Compose Studio's project update lifecycle through the released APM Node use cases. */
 export class ProjectUpdateService {
@@ -31,7 +34,7 @@ export class ProjectUpdateService {
     this.runningStudioVersion = runningStudioVersion;
     this.statusPort = {
       inspectStatusAsync: (input) =>
-        statusProjectAsync(input, {
+        statusProjectAsync(withStudioHostPackage(input, runningStudioVersion), {
           ...(options.extensions === undefined ? {} : { extensions: options.extensions }),
         }),
     };
@@ -47,15 +50,12 @@ export class ProjectUpdateService {
     };
   }
 
-  /*** Produce one reviewable APM plan and enforce Studio's running-host restart boundary. */
+  /*** Produce one reviewable APM plan using Studio-owned protocol evidence when available. */
   async planAsync(input: ApmPlanProjectInput): Promise<ApmPlanResult> {
-    const plan = await planProjectAsync(input, {
+    return planProjectAsync(input, {
       status: this.statusPort,
       ...(this.options.protocol === undefined ? {} : { protocol: this.options.protocol }),
     });
-    return this.runningStudioVersion === undefined
-      ? plan
-      : enforceStudioHostRestartBoundary(plan, this.runningStudioVersion);
   }
 
   /*** Start or resume one durable APM operation using Studio-owned execution adapters when required. */
@@ -81,6 +81,26 @@ export class ProjectUpdateService {
         : { ownerStep: this.options.verifyOwnerStep }),
     });
   }
+}
+
+/*** Add the exact running Studio artifact to APM's separate host-package evidence channel. */
+function withStudioHostPackage(
+  input: ApmStatusInput,
+  runningStudioVersion: string | undefined,
+): ApmStatusInput {
+  if (runningStudioVersion === undefined) return input;
+  const studioHost: ApmStatusHostPackage = {
+    id: STUDIO_HOST_ID,
+    name: STUDIO_PACKAGE_NAME,
+    version: runningStudioVersion,
+  };
+  return {
+    ...input,
+    hostPackages: [
+      ...(input.hostPackages ?? []).filter(({ id }) => id !== STUDIO_HOST_ID),
+      studioHost,
+    ],
+  };
 }
 
 /*** Collapse top-level status rows that Studio renders identically while retaining raw scoped APM evidence for planning. */
