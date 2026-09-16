@@ -25,6 +25,8 @@ interface ProjectUpdateRouteOptions {
   readonly resolveProjectRootAsync: (projectId: string) => Promise<string | undefined>;
 }
 
+const MAX_REVIEWED_APM_APPLY_BODY_BYTES = 16 * 1024 * 1024;
+
 /*** Register the authorized HTTP adapter for Studio's composed APM project-update lifecycle. */
 export function registerProjectUpdateRoutes(
   fastify: FastifyInstance,
@@ -57,22 +59,26 @@ export function registerProjectUpdateRoutes(
     return invokeLifecycle(reply, () => options.service.planAsync(input));
   });
 
-  fastify.post('/api/projects/:id/updates/apply', async (request, reply) => {
-    const context = await resolveRequestContext(request.params, options, reply);
-    if (context === undefined) return;
-    const { body } = request;
-    if (!isApplyRequest(body)) return sendInvalidRequest(reply);
-    if (body.plan.rootPath !== context.rootPath) {
-      return reply.status(409).send({ error: 'The reviewed plan belongs to another project.' });
-    }
-    return invokeLifecycle(reply, () =>
-      options.service.applyAsync({
-        mode: 'start',
-        plan: body.plan,
-        permissions: body.permissions,
-      }),
-    );
-  });
+  fastify.post(
+    '/api/projects/:id/updates/apply',
+    { bodyLimit: MAX_REVIEWED_APM_APPLY_BODY_BYTES },
+    async (request, reply) => {
+      const context = await resolveRequestContext(request.params, options, reply);
+      if (context === undefined) return;
+      const { body } = request;
+      if (!isApplyRequest(body)) return sendInvalidRequest(reply);
+      if (body.plan.rootPath !== context.rootPath) {
+        return reply.status(409).send({ error: 'The reviewed plan belongs to another project.' });
+      }
+      return invokeLifecycle(reply, () =>
+        options.service.applyAsync({
+          mode: 'start',
+          plan: body.plan,
+          permissions: body.permissions,
+        }),
+      );
+    },
+  );
 
   fastify.post('/api/projects/:id/updates/resume', async (request, reply) => {
     const context = await resolveRequestContext(request.params, options, reply);
