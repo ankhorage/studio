@@ -80,7 +80,8 @@ studioWorkspaceWebSmokeTest(
         await expectRouteText(page, `${appUrl}/projects/${FIXTURE_PROJECT_ID}`, [
           'Project Detail',
           FIXTURE_PROJECT_NAME,
-          'Sync',
+          'Updates',
+          'Inspect updates',
           'Infrastructure Up',
           'Open running app',
           'Delete project',
@@ -241,7 +242,7 @@ async function reservePort(): Promise<number> {
         server.close(() => resolve(port));
         return;
       }
-      server.close(() => reject(new Error('Could not reserve local port.')));
+      server.close(() => reject(new Error('Could not reserve local port.'));
     });
   });
 }
