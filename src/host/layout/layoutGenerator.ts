@@ -20,6 +20,7 @@ import {
 } from './auth/resolveAuthLayoutPlan';
 import { composeGeneratedImports } from './generatedImportComposer';
 import { createNavigatorGenerationBindings } from './navigator/createNavigatorGenerationBindings';
+import { createStudioAdminNavigator } from './navigator/createStudioAdminNavigator';
 import { generateNavigatorLayoutFiles } from './navigator/generateNavigatorLayoutFiles';
 import {
   getAuthAdapterTs,
@@ -166,12 +167,22 @@ export class GeneratedAppFileGenerator {
     const addStudioAdminRouteFiles = () => {
       if (!includeStudio) return;
 
-      files.push(
-        {
+      files.push(...createStudioAdminRouteGeneratedFiles(appRootRel));
+      if (!authLayoutPlan.enabled) {
+        files.push({
           path: normalizeRel(path.join(appRootRel, 'ankh', '_layout.tsx')),
-          content: getStudioAdminLayoutTsx(authLayoutPlan.enabled),
-        },
-        ...createStudioAdminRouteGeneratedFiles(appRootRel),
+          content: getUnavailableStudioAdminLayoutTsx(),
+        });
+        return;
+      }
+
+      files.push(
+        ...generateNavigatorLayoutFiles({
+          navigator: createStudioAdminNavigator(),
+          rootDirectory: normalizeRel(path.join(appRootRel, 'ankh')),
+          bindings: navigatorBindings.bindings,
+          targets,
+        }),
       );
     };
 
@@ -336,7 +347,7 @@ export class GeneratedAppFileGenerator {
   ): string {
     const studioAdminStackScreen = includeStudio
       ? `
-      <Stack.Protected guard={canAccessStudioAdmin}>
+      <Stack.Protected guard={__DEV__ && canAccessStudioAdmin}>
         <Stack.Screen key="ankh" name="ankh" />
       </Stack.Protected>`
       : '';
@@ -585,28 +596,12 @@ export class GeneratedAppFileGenerator {
   }
 }
 
-/***
- * Generate the Studio Admin route-group layout, redirecting when generated global auth is unavailable and guarding production builds from the development Admin shell.
- */
-function getStudioAdminLayoutTsx(hasGeneratedGlobalAuth: boolean): string {
-  if (!hasGeneratedGlobalAuth) {
-    return `import { Redirect } from 'expo-router';
+/*** Generate the fail-closed Studio Admin layout used when generated global auth is unavailable. */
+function getUnavailableStudioAdminLayoutTsx(): string {
+  return `import { Redirect } from 'expo-router';
 
 export default function AnkhLayout() {
   return <Redirect href="/" />;
-}
-`;
-  }
-
-  return `import { AnkhAdminShell } from '@ankhorage/studio';
-import { Redirect } from 'expo-router';
-
-export default function AnkhLayout() {
-  if (!__DEV__) {
-    return <Redirect href="/" />;
-  }
-
-  return <AnkhAdminShell />;
 }
 `;
 }
