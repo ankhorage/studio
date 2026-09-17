@@ -15,6 +15,11 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
       ([name]) => !OBSOLETE_GENERATED_DEPENDENCIES.has(name),
     ),
   );
+  const zoraExtensionDependencies = Object.fromEntries(
+    Object.entries(policy.dependencies.zoraExtensions).filter(([packageName]) =>
+      Object.hasOwn(packageJson.dependencies, packageName),
+    ),
+  );
   const dependencies = {
     ...baseDependencies,
     '@ankhorage/contracts': policy.dependencies.contracts,
@@ -35,6 +40,7 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
       ? { '@ankhorage/supabase-storage': policy.dependencies.supabaseStorage }
       : {}),
     '@ankhorage/zora': policy.dependencies.zora,
+    ...zoraExtensionDependencies,
     '@react-native-vector-icons/fontawesome': policy.peerDependencies.fontawesome,
     '@react-native-vector-icons/fontawesome5': policy.peerDependencies.fontawesome5,
     '@react-native-vector-icons/fontawesome6': policy.peerDependencies.fontawesome6,
