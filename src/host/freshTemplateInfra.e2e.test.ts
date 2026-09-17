@@ -6,11 +6,11 @@ import type { AppManifest } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
 
 import { ProjectManager } from './orchestrator/projectManager';
-import { upProjectInfrastructure, type StudioInfraUpResult } from './orchestrator/studioInfraUp';
-import { getProjectTemplateSource, type ProjectTemplateSelection } from './templates';
+import { type StudioInfraUpResult, upProjectInfrastructure } from './orchestrator/studioInfraUp';
+import { type ProjectTemplateSelection, getProjectTemplateSource } from './templates';
 
 const freshTemplateInfraTest =
-  process.env.ANKH_STUDIO_FRESH_TEMPLATE_INFRA_E2E === '1' ? test : test.skip;
+  Bun.env.ANKH_STUDIO_FRESH_TEMPLATE_INFRA_E2E === '1' ? test : test.skip;
 const bootstrapEnvironmentVariable = 'SUPABASE_BOOTSTRAP';
 const prefixedBootstrapEnvironmentVariable = 'ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP';
 const privateBootstrapFieldNames = [
@@ -54,8 +54,8 @@ async function runFreshTemplateInfraAcceptanceAsync(templateCase: {
   readonly selection: ProjectTemplateSelection;
 }): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'ankh-studio538-infra-'));
-  const previousBootstrap = process.env.SUPABASE_BOOTSTRAP;
-  const previousPrefixedBootstrap = process.env.ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP;
+  const previousBootstrap = Bun.env.SUPABASE_BOOTSTRAP;
+  const previousPrefixedBootstrap = Bun.env.ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP;
   delete process.env.SUPABASE_BOOTSTRAP;
   delete process.env.ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP;
 
@@ -70,8 +70,8 @@ async function runFreshTemplateInfraAcceptanceAsync(templateCase: {
     });
 
     try {
-      expect(process.env.SUPABASE_BOOTSTRAP).toBeUndefined();
-      expect(process.env.ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP).toBeUndefined();
+      expect(Bun.env.SUPABASE_BOOTSTRAP).toBeUndefined();
+      expect(Bun.env.ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP).toBeUndefined();
 
       const first = await upProjectInfrastructure({
         projectId: created.id,
