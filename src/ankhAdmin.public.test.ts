@@ -1,18 +1,11 @@
 import { expect, test } from 'bun:test';
 
-import type { AnkhAdminPage, AnkhAdminShell } from './root';
+import type { AnkhAdminPage } from './root';
 
-type AdminShellExport = typeof AnkhAdminShell;
 type AdminPageExport = typeof AnkhAdminPage;
 
-test('exports generated-app admin composition components', () => {
-  const exportsAreTyped: {
-    readonly shell: AdminShellExport | null;
-    readonly page: AdminPageExport | null;
-  } = {
-    shell: null,
-    page: null,
-  };
+test('exports the generated-app admin page renderer', () => {
+  const exportedPage: AdminPageExport | null = null;
 
-  expect(exportsAreTyped).toEqual({ shell: null, page: null });
+  expect(exportedPage).toBeNull();
 });
