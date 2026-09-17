@@ -108,7 +108,10 @@ jobs:
           '
 
       - name: Run fresh template Infra acceptance
-        run: bun run test:e2e:fresh-template-infra
+        run: >-
+          env -u SUPABASE_BOOTSTRAP
+          -u ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP
+          bun run test:e2e:fresh-template-infra
 
       - name: Collect failure diagnostics
         if: failure()
