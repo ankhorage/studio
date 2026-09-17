@@ -189,7 +189,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminSources).not.toContain('return null;');
   });
 
-  test('generates auth-protected and production-gated Studio admin routes', () => {
+  test('generates auth-protected and production-gated Studio admin routes through Navigator', () => {
     const files = new GeneratedAppFileGenerator().generateFiles(
       '/tmp/demo',
       createOAuthManifest(),
@@ -198,14 +198,20 @@ describe('GeneratedAppFileGenerator', () => {
         includeStudio: true,
       },
     );
+    const paths = files.map((file) => file.path);
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
-    const adminLayout = files.find((file) => file.path === 'src/app/ankh/_layout.tsx')?.content;
-    const adminPage = files.find(
-      (file) => file.path === 'src/app/ankh/auth/providers.tsx',
-    )?.content;
+    const adminLayout = files.find((file) => file.path === 'src/app/ankh/_layout.tsx')?.content ?? '';
+    const screensLayout =
+      files.find((file) => file.path === 'src/app/ankh/screens/_layout.tsx')?.content ?? '';
+    const themeComponentsLayout =
+      files.find((file) => file.path === 'src/app/ankh/theme/components/_layout.tsx')?.content ?? '';
+    const bindingsLayout =
+      files.find((file) => file.path === 'src/app/ankh/bindings/_layout.tsx')?.content ?? '';
+    const adminPage =
+      files.find((file) => file.path === 'src/app/ankh/auth/providers.tsx')?.content ?? '';
 
     expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
-    expect(rootLayout).toContain('<Stack.Protected guard={canAccessStudioAdmin}>');
+    expect(rootLayout).toContain('<Stack.Protected guard={__DEV__ && canAccessStudioAdmin}>');
     expect(rootLayout).toContain("if (authState === 'pending') {");
     expect(rootLayout).toContain('isStudioAdminPath(appPathname) ? (');
     expect(rootLayout).toContain('} = useGeneratedAuthNavigation();');
@@ -213,9 +219,21 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('useGlobalSearchParams');
     expect(rootLayout).toContain('resolveStudioLastNonAdminLocation');
     expect(rootLayout).toContain('!isStudioAdminPath(appPathname) &&');
-    expect(adminLayout).toContain('if (!__DEV__)');
-    expect(adminLayout).toContain('<Redirect href="/" />');
-    expect(adminLayout).toContain('<AnkhAdminShell />');
+
+    expect(paths).toContain('src/app/ankh/screens/_layout.tsx');
+    expect(paths).toContain('src/app/ankh/apis/_layout.tsx');
+    expect(paths).toContain('src/app/ankh/theme/_layout.tsx');
+    expect(paths).toContain('src/app/ankh/theme/components/_layout.tsx');
+    expect(paths).toContain('src/app/ankh/bindings/_layout.tsx');
+    expect(adminLayout).toContain("from 'expo-router/drawer'");
+    expect(adminLayout).toContain('<Drawer');
+    expect(adminLayout).not.toContain('AnkhAdminShell');
+    expect(adminLayout).not.toContain('<Redirect href="/" />');
+    expect(screensLayout).toContain("from 'expo-router'");
+    expect(screensLayout).toContain('<Stack');
+    expect(themeComponentsLayout).toContain('<Stack');
+    expect(bindingsLayout).toContain('<Stack');
+
     expect(adminPage).toContain('if (!__DEV__)');
     expect(adminPage).toContain('<Redirect href="/" />');
     expect(adminPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
@@ -325,6 +343,7 @@ describe('GeneratedAppFileGenerator', () => {
 
     expect(source).toContain('STUDIO_ADMIN_ROUTE_REGISTRY.map');
     expect(source).toContain('resolveStudioAdminRouteFilePath(route.id)');
+    expect(source).toContain('navigator: createStudioAdminNavigator()');
     expect(source).not.toContain("path.join(appRootRel, 'ankh', 'auth', 'providers.tsx')");
     expect(source).not.toContain('type StudioAdminGeneratedRouteName =');
   });
