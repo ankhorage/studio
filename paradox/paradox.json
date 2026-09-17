@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.7.8",
+      "value": "v2.7.9",
       "color": "cb3837"
     },
     {
@@ -1429,6 +1429,16 @@
       "dependencies": [
         "src/host/orchestrator/projectManager.ts",
         "src/host/smoke/createSmokeProjectSource.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/host/freshTemplateInfra.e2e.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/orchestrator/studioInfraUp.ts",
+        "src/host/templates/index.ts"
       ],
       "exports": []
     },
@@ -12753,7 +12763,7 @@
     },
     {
       "name": "createDefaultStudioProjectInfraLifecycle",
-      "description": "Compose Infra's project lifecycle with Studio's bundled adapter packages and canonical environment credential ports.",
+      "description": "Compose Infra's project lifecycle with Studio's bundled adapter packages and project-scoped credentials.",
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
         "line": 82,
@@ -12765,7 +12775,7 @@
       "description": "Convert a Studio project request into Infra's explicit environment lifecycle request.",
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 95,
+        "line": 99,
         "column": 1
       }
     },
@@ -12774,7 +12784,7 @@
       "description": "Extract explicit persistent resource confirmations from one stored Infra ownership ledger.",
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 108,
+        "line": 112,
         "column": 1
       }
     },
@@ -12783,7 +12793,7 @@
       "description": "Convert provider-neutral Infra diagnostics into one stable Studio operation failure.",
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 115,
+        "line": 119,
         "column": 1
       }
     },
@@ -12792,7 +12802,7 @@
       "description": "Format safe Infra diagnostics without exposing privileged values.",
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 122,
+        "line": 126,
         "column": 1
       }
     },
@@ -15133,6 +15143,60 @@
       "sourceLocation": {
         "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
         "line": 54,
+        "column": 1
+      }
+    },
+    {
+      "name": "runFreshTemplateInfraAcceptanceAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
+        "line": 54,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectCredentialNeutralLocalSupabaseManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
+        "line": 122,
+        "column": 1
+      }
+    },
+    {
+      "name": "readSupabasePublicOutputs",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
+        "line": 135,
+        "column": 1
+      }
+    },
+    {
+      "name": "resourceIdentities",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
+        "line": 151,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectSafeStudioInfraResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
+        "line": 159,
+        "column": 1
+      }
+    },
+    {
+      "name": "createWorkspaceAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
+        "line": 166,
         "column": 1
       }
     },
@@ -29292,6 +29356,21 @@
         "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
       },
       {
+        "fromPath": "src/host/freshTemplateInfra.e2e.test.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/freshTemplateInfra.e2e.test.ts",
+        "toPath": "src/host/orchestrator/studioInfraUp.ts",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/freshTemplateInfra.e2e.test.ts",
+        "toPath": "src/host/templates/index.ts",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
         "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toPath": "src/moduleAdminContracts.ts",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -42914,6 +42993,150 @@
         "toSymbol": "rm",
         "callExpression": "rm",
         "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/freshTemplateInfra.e2e.test.ts",
+        "toSymbol": "freshTemplateInfraTest",
+        "callExpression": "freshTemplateInfraTest",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/freshTemplateInfra.e2e.test.ts",
+        "toSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "callExpression": "runFreshTemplateInfraAcceptanceAsync",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/freshTemplateInfra.e2e.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/freshTemplateInfra.e2e.test.ts",
+        "toSymbol": "getProjectTemplateSource",
+        "callExpression": "getProjectTemplateSource",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/freshTemplateInfra.e2e.test.ts",
+        "toSymbol": "expectCredentialNeutralLocalSupabaseManifest",
+        "callExpression": "expectCredentialNeutralLocalSupabaseManifest",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "createWorkspaceAsync",
+        "callExpression": "createWorkspaceAsync",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "getProjectTemplateSource",
+        "callExpression": "getProjectTemplateSource",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "expectCredentialNeutralLocalSupabaseManifest",
+        "callExpression": "expectCredentialNeutralLocalSupabaseManifest",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "createProject",
+        "callExpression": "firstManager.createProject",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "upProjectInfrastructure",
+        "callExpression": "upProjectInfrastructure",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "readSupabasePublicOutputs",
+        "callExpression": "readSupabasePublicOutputs",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "expectSafeStudioInfraResult",
+        "callExpression": "expectSafeStudioInfraResult",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "getInfrastructureStatus",
+        "callExpression": "firstManager.getInfrastructureStatus",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "resourceIdentities",
+        "callExpression": "resourceIdentities",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "downInfrastructure",
+        "callExpression": "secondManager.downInfrastructure",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "destroyInfrastructure",
+        "callExpression": "new ProjectManager(workspaceRoot)\n          .destroyInfrastructure",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectCredentialNeutralLocalSupabaseManifest",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectSafeStudioInfraResult",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
       },
       {
         "fromSymbol": "createAdminSmokeManifest",
@@ -59039,8 +59262,8 @@
       },
       {
         "fromSymbol": "createDependencies",
-        "toSymbol": "createEnvironmentInfraCredentialPort",
-        "callExpression": "createEnvironmentInfraCredentialPort",
+        "toSymbol": "createProjectInfraCredentialPort",
+        "callExpression": "createProjectInfraCredentialPort",
         "sourcePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts"
       },
       {

@@ -1,0 +1,178 @@
+name: Fresh template Infra acceptance
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/fresh-template-infra.yml'
+      - 'src/features/infrastructure/**'
+      - 'src/host/freshTemplateInfra.e2e.test.ts'
+      - 'src/host/orchestrator/projectManager.ts'
+      - 'src/host/orchestrator/studioInfraUp.ts'
+      - 'src/host/templates/**'
+      - 'package.json'
+      - 'bun.lock'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/fresh-template-infra.yml'
+      - 'src/features/infrastructure/**'
+      - 'src/host/freshTemplateInfra.e2e.test.ts'
+      - 'src/host/orchestrator/projectManager.ts'
+      - 'src/host/orchestrator/studioInfraUp.ts'
+      - 'src/host/templates/**'
+      - 'package.json'
+      - 'bun.lock'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install Minikube
+        env:
+          MINIKUBE_VERSION: v1.37.0
+        run: |
+          curl --fail --location --silent --show-error \
+            --output /tmp/minikube \
+            "https://github.com/kubernetes/minikube/releases/download/${MINIKUBE_VERSION}/minikube-linux-amd64"
+          curl --fail --location --silent --show-error \
+            --output /tmp/minikube.sha256 \
+            "https://github.com/kubernetes/minikube/releases/download/${MINIKUBE_VERSION}/minikube-linux-amd64.sha256"
+          echo "$(cat /tmp/minikube.sha256)  /tmp/minikube" | sha256sum --check --status
+          sudo install /tmp/minikube /usr/local/bin/minikube
+          minikube version
+
+      - name: Install kubectl
+        env:
+          KUBECTL_VERSION: v1.34.1
+        run: |
+          curl --fail --location --silent --show-error \
+            --output /tmp/kubectl \
+            "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+          curl --fail --location --silent --show-error \
+            --output /tmp/kubectl.sha256 \
+            "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl.sha256"
+          echo "$(cat /tmp/kubectl.sha256)  /tmp/kubectl" | sha256sum --check --status
+          sudo install /tmp/kubectl /usr/local/bin/kubectl
+          kubectl version --client=true
+
+      - name: Verify Docker
+        run: docker info
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Verify released Infra provider ranges
+        run: |
+          bun --eval '
+          import { fileURLToPath } from "node:url";
+          const packageJson = await Bun.file("package.json").json();
+          const infraPath = fileURLToPath(import.meta.resolve("@ankhorage/infra/package.json"));
+          const infra = await Bun.file(infraPath).json();
+          const supabasePath = fileURLToPath(import.meta.resolve("@ankhorage/supabase/package.json"));
+          const supabase = await Bun.file(supabasePath).json();
+          const vaultPath = fileURLToPath(import.meta.resolve("@ankhorage/supabase-vault/package.json"));
+          const vault = await Bun.file(vaultPath).json();
+          const infraRange = packageJson.dependencies?.["@ankhorage/infra"];
+          const supabaseRange = packageJson.dependencies?.["@ankhorage/supabase"];
+          const vaultRange = packageJson.dependencies?.["@ankhorage/supabase-vault"];
+          if (typeof infraRange !== "string" || !Bun.semver.satisfies(infra.version, infraRange)) {
+            throw new Error(`Resolved Infra ${infra.version} does not satisfy ${infraRange ?? "<missing>"}.`);
+          }
+          if (typeof supabaseRange !== "string" || !Bun.semver.satisfies(supabase.version, supabaseRange)) {
+            throw new Error(`Resolved Supabase ${supabase.version} does not satisfy ${supabaseRange ?? "<missing>"}.`);
+          }
+          if (typeof vaultRange !== "string" || !Bun.semver.satisfies(vault.version, vaultRange)) {
+            throw new Error(`Resolved Supabase Vault ${vault.version} does not satisfy ${vaultRange ?? "<missing>"}.`);
+          }
+          console.log(`Infra: ${infra.version} (${infraRange})`);
+          console.log(`Supabase: ${supabase.version} (${supabaseRange})`);
+          console.log(`Supabase Vault: ${vault.version} (${vaultRange})`);
+          '
+
+      - name: Verify image-seeded Minikube runtime
+        run: |
+          bun --eval '
+          import { fileURLToPath } from "node:url";
+          const packageJson = await Bun.file("package.json").json();
+          const minikubePath = fileURLToPath(import.meta.resolve("@ankhorage/minikube/package.json"));
+          const minikube = await Bun.file(minikubePath).json();
+          const kubernetesPath = fileURLToPath(import.meta.resolve("@ankhorage/kubernetes/package.json", minikubePath));
+          const kubernetes = await Bun.file(kubernetesPath).json();
+          const minikubeRange = packageJson.dependencies?.["@ankhorage/minikube"];
+          const kubernetesRange = minikube.dependencies?.["@ankhorage/kubernetes"];
+          if (typeof minikubeRange !== "string" || !Bun.semver.satisfies(minikube.version, minikubeRange)) {
+            throw new Error(`Resolved Minikube ${minikube.version} does not satisfy ${minikubeRange ?? "<missing>"}.`);
+          }
+          if (typeof kubernetesRange !== "string" || !Bun.semver.satisfies(kubernetes.version, kubernetesRange)) {
+            throw new Error(`Resolved Kubernetes ${kubernetes.version} does not satisfy Minikube range ${kubernetesRange ?? "<missing>"}.`);
+          }
+          if (!Bun.semver.satisfies(kubernetes.version, ">=0.8.0")) {
+            throw new Error(`Resolved Kubernetes ${kubernetes.version} lacks image-seeded persistence semantics.`);
+          }
+          console.log(`Minikube: ${minikube.version} (${minikubeRange})`);
+          console.log(`Kubernetes: ${kubernetes.version} (${kubernetesRange})`);
+          '
+
+      - name: Run fresh template Infra acceptance
+        run: >-
+          env -u SUPABASE_BOOTSTRAP
+          -u ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP
+          ANKH_STUDIO_PRESERVE_FAILED_INFRA=1
+          bun run test:e2e:fresh-template-infra
+
+      - name: Collect failure diagnostics
+        if: failure()
+        shell: bash
+        run: |
+          minikube profile list || true
+
+          for profile in sharkprey-infra-acceptance-local stillpath-infra-acceptance-local; do
+            echo "::group::${profile} Supabase database diagnostics"
+            minikube -p "$profile" kubectl -- -n "$profile" get pods -o wide || true
+            minikube -p "$profile" kubectl -- -n "$profile" get deployment supabase-db -o wide || true
+
+            pod="$(minikube -p "$profile" kubectl -- -n "$profile" get pods -o name 2>/dev/null | grep '^pod/supabase-db-' | head -n 1 | cut -d/ -f2 || true)"
+            if [ -n "$pod" ]; then
+              echo "Supabase DB pod: $pod"
+              minikube -p "$profile" kubectl -- -n "$profile" describe pod "$pod" || true
+              echo '--- current supabase-db logs ---'
+              minikube -p "$profile" kubectl -- -n "$profile" logs "$pod" -c supabase-db || true
+              echo '--- previous supabase-db logs ---'
+              minikube -p "$profile" kubectl -- -n "$profile" logs "$pod" -c supabase-db --previous || true
+            else
+              echo 'No supabase-db pod found.'
+            fi
+
+            minikube -p "$profile" kubectl -- get events --all-namespaces --sort-by=.lastTimestamp || true
+            echo "::endgroup::"
+          done
+
+      - name: Cleanup Minikube
+        if: always()
+        run: minikube delete --all --purge || true

@@ -1175,6 +1175,16 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/host/freshTemplateInfra.e2e.test.ts"
+              >
+                src/host/freshTemplateInfra.e2e.test.ts
+                <small>6 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/host/generatedAdminExpoWeb.smoke.test.ts"
               >
                 src/host/generatedAdminExpoWeb.smoke.test.ts
@@ -3951,7 +3961,7 @@
             <div class="summary">
               <div><strong>151</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>560</strong><span class="muted">modules</span></div>
+              <div><strong>561</strong><span class="muted">modules</span></div>
               <div><strong>2</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -6032,6 +6042,19 @@
               <p>
                 <strong>Dependencies:</strong> <code>src/host/orchestrator/projectManager.ts</code>,
                 <code>src/host/smoke/createSmokeProjectSource.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/freshTemplateInfra.e2e.test.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/studioInfraUp.ts src/host/templates/index.ts"
+            >
+              <h3>src/host/freshTemplateInfra.e2e.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/projectManager.ts</code>,
+                <code>src/host/orchestrator/studioInfraUp.ts</code>,
+                <code>src/host/templates/index.ts</code>
               </p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
@@ -18648,6 +18671,14 @@
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --&gt;
                 module_src_host_smoke_createSmokeProjectSource_ts
+                module_src_host_freshTemplateInfra_e2e_test_ts[&quot;src/host/freshTemplateInfra.e2e.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_freshTemplateInfra_e2e_test_ts
+                module_src_host_freshTemplateInfra_e2e_test_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_freshTemplateInfra_e2e_test_ts --&gt;
+                module_src_host_orchestrator_studioInfraUp_ts
+                module_src_host_freshTemplateInfra_e2e_test_ts --&gt;
+                module_src_host_templates_index_ts
                 module_src_host_generatedAdminExpoWeb_smoke_test_ts[&quot;src/host/generatedAdminExpoWeb.smoke.test.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_host_generatedAdminExpoWeb_smoke_test_ts
@@ -21529,6 +21560,11 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_host_expo57GeneratedProductionInfra_e2e_test_ts
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --&gt; module_src_host_smoke_createSmokeProjectSource_ts
+  module_src_host_freshTemplateInfra_e2e_test_ts[&quot;src/host/freshTemplateInfra.e2e.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_freshTemplateInfra_e2e_test_ts
+  module_src_host_freshTemplateInfra_e2e_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_freshTemplateInfra_e2e_test_ts --&gt; module_src_host_orchestrator_studioInfraUp_ts
+  module_src_host_freshTemplateInfra_e2e_test_ts --&gt; module_src_host_templates_index_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts[&quot;src/host/generatedAdminExpoWeb.smoke.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_generatedAdminExpoWeb_smoke_test_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt; module_src_host_installedPackageProvenance_ts
@@ -23248,6 +23284,7 @@ graph TD
                 module_src_host_deploy_ProjectDeployService_ts[&quot;src/host/deploy/ProjectDeployService.ts&quot;]
                 module_src_host_deploy_serializeProjectDeploySecret_ts[&quot;src/host/deploy/serializeProjectDeploySecret.ts&quot;]
                 module_src_host_expo57GeneratedProductionInfra_e2e_test_ts[&quot;src/host/expo57GeneratedProductionInfra.e2e.test.ts&quot;]
+                module_src_host_freshTemplateInfra_e2e_test_ts[&quot;src/host/freshTemplateInfra.e2e.test.ts&quot;]
                 module_src_host_generatedAdminExpoWeb_smoke_test_ts[&quot;src/host/generatedAdminExpoWeb.smoke.test.ts&quot;]
                 module_src_host_generatedAuthAdapterRuntime_smoke_test_ts[&quot;src/host/generatedAuthAdapterRuntime.smoke.test.ts&quot;]
                 module_src_host_generatedNativeOAuthLifecycle_e2e_test_ts[&quot;src/host/generatedNativeOAuthLifecycle.e2e.test.ts&quot;]
@@ -24161,6 +24198,12 @@ graph TD
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --&gt;
                 module_src_host_smoke_createSmokeProjectSource_ts
+                module_src_host_freshTemplateInfra_e2e_test_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_freshTemplateInfra_e2e_test_ts --&gt;
+                module_src_host_orchestrator_studioInfraUp_ts
+                module_src_host_freshTemplateInfra_e2e_test_ts --&gt;
+                module_src_host_templates_index_ts
                 module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt;
                 module_src_host_installedPackageProvenance_ts
                 module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt;
@@ -25611,6 +25654,7 @@ graph LR
   module_src_host_deploy_ProjectDeployService_ts[&quot;src/host/deploy/ProjectDeployService.ts&quot;]
   module_src_host_deploy_serializeProjectDeploySecret_ts[&quot;src/host/deploy/serializeProjectDeploySecret.ts&quot;]
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts[&quot;src/host/expo57GeneratedProductionInfra.e2e.test.ts&quot;]
+  module_src_host_freshTemplateInfra_e2e_test_ts[&quot;src/host/freshTemplateInfra.e2e.test.ts&quot;]
   module_src_host_generatedAdminExpoWeb_smoke_test_ts[&quot;src/host/generatedAdminExpoWeb.smoke.test.ts&quot;]
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts[&quot;src/host/generatedAuthAdapterRuntime.smoke.test.ts&quot;]
   module_src_host_generatedNativeOAuthLifecycle_e2e_test_ts[&quot;src/host/generatedNativeOAuthLifecycle.e2e.test.ts&quot;]
@@ -26288,6 +26332,9 @@ graph LR
   module_src_host_deploy_ProjectDeployService_ts --&gt; module_src_projectDeployRuntimeInput_ts
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts --&gt; module_src_host_smoke_createSmokeProjectSource_ts
+  module_src_host_freshTemplateInfra_e2e_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_freshTemplateInfra_e2e_test_ts --&gt; module_src_host_orchestrator_studioInfraUp_ts
+  module_src_host_freshTemplateInfra_e2e_test_ts --&gt; module_src_host_templates_index_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt; module_src_host_installedPackageProvenance_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
@@ -27195,6 +27242,7 @@ graph LR
                 module_src_host_deploy_ProjectDeployService_ts[&quot;src/host/deploy/ProjectDeployService.ts&quot;]
                 module_src_host_deploy_serializeProjectDeploySecret_ts[&quot;src/host/deploy/serializeProjectDeploySecret.ts&quot;]
                 module_src_host_expo57GeneratedProductionInfra_e2e_test_ts[&quot;src/host/expo57GeneratedProductionInfra.e2e.test.ts&quot;]
+                module_src_host_freshTemplateInfra_e2e_test_ts[&quot;src/host/freshTemplateInfra.e2e.test.ts&quot;]
                 module_src_host_generatedAdminExpoWeb_smoke_test_ts[&quot;src/host/generatedAdminExpoWeb.smoke.test.ts&quot;]
                 module_src_host_generatedAuthAdapterRuntime_smoke_test_ts[&quot;src/host/generatedAuthAdapterRuntime.smoke.test.ts&quot;]
                 module_src_host_generatedNativeOAuthLifecycle_e2e_test_ts[&quot;src/host/generatedNativeOAuthLifecycle.e2e.test.ts&quot;]
@@ -28166,6 +28214,7 @@ graph LR
   module_src_host_deploy_ProjectDeployService_ts[&quot;src/host/deploy/ProjectDeployService.ts&quot;]
   module_src_host_deploy_serializeProjectDeploySecret_ts[&quot;src/host/deploy/serializeProjectDeploySecret.ts&quot;]
   module_src_host_expo57GeneratedProductionInfra_e2e_test_ts[&quot;src/host/expo57GeneratedProductionInfra.e2e.test.ts&quot;]
+  module_src_host_freshTemplateInfra_e2e_test_ts[&quot;src/host/freshTemplateInfra.e2e.test.ts&quot;]
   module_src_host_generatedAdminExpoWeb_smoke_test_ts[&quot;src/host/generatedAdminExpoWeb.smoke.test.ts&quot;]
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts[&quot;src/host/generatedAuthAdapterRuntime.smoke.test.ts&quot;]
   module_src_host_generatedNativeOAuthLifecycle_e2e_test_ts[&quot;src/host/generatedNativeOAuthLifecycle.e2e.test.ts&quot;]
@@ -32421,7 +32470,7 @@ sequenceDiagram
             </article>
             <article
               class="item"
-              data-search="createDefaultStudioProjectInfraLifecycle src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts Compose Infra&#39;s project lifecycle with Studio&#39;s bundled adapter packages and canonical environment credential ports."
+              data-search="createDefaultStudioProjectInfraLifecycle src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts Compose Infra&#39;s project lifecycle with Studio&#39;s bundled adapter packages and project-scoped credentials."
             >
               <h3>createDefaultStudioProjectInfraLifecycle</h3>
               <p class="muted">
@@ -32431,7 +32480,7 @@ sequenceDiagram
               </p>
               <p>
                 Compose Infra&#39;s project lifecycle with Studio&#39;s bundled adapter packages and
-                canonical environment credential ports.
+                project-scoped credentials.
               </p>
             </article>
             <article
@@ -32441,7 +32490,7 @@ sequenceDiagram
               <h3>toInfraRequest</h3>
               <p class="muted">
                 <code
-                  >src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:95:1</code
+                  >src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:99:1</code
                 >
               </p>
               <p>
@@ -32456,7 +32505,7 @@ sequenceDiagram
               <h3>persistentResourceIdentities</h3>
               <p class="muted">
                 <code
-                  >src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:108:1</code
+                  >src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:112:1</code
                 >
               </p>
               <p>
@@ -32471,7 +32520,7 @@ sequenceDiagram
               <h3>requireInfraSuccess</h3>
               <p class="muted">
                 <code
-                  >src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:115:1</code
+                  >src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:119:1</code
                 >
               </p>
               <p>
@@ -32485,7 +32534,7 @@ sequenceDiagram
               <h3>formatInfraDiagnostics</h3>
               <p class="muted">
                 <code
-                  >src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:122:1</code
+                  >src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:126:1</code
                 >
               </p>
               <p>Format safe Infra diagnostics without exposing privileged values.</p>
@@ -36239,6 +36288,64 @@ sequenceDiagram
               <p class="muted">
                 <code>src/host/expo57GeneratedProductionInfra.e2e.test.ts:54:1</code>
               </p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-freshtemplateinfra-e2e-test-ts"
+          class="view"
+          data-view="src/host/freshTemplateInfra.e2e.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/freshTemplateInfra.e2e.test.ts</h2>
+            <article
+              class="item"
+              data-search="runFreshTemplateInfraAcceptanceAsync src/host/freshTemplateInfra.e2e.test.ts "
+            >
+              <h3>runFreshTemplateInfraAcceptanceAsync</h3>
+              <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:54:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectCredentialNeutralLocalSupabaseManifest src/host/freshTemplateInfra.e2e.test.ts "
+            >
+              <h3>expectCredentialNeutralLocalSupabaseManifest</h3>
+              <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:122:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="readSupabasePublicOutputs src/host/freshTemplateInfra.e2e.test.ts "
+            >
+              <h3>readSupabasePublicOutputs</h3>
+              <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:135:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resourceIdentities src/host/freshTemplateInfra.e2e.test.ts "
+            >
+              <h3>resourceIdentities</h3>
+              <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:151:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectSafeStudioInfraResult src/host/freshTemplateInfra.e2e.test.ts "
+            >
+              <h3>expectSafeStudioInfraResult</h3>
+              <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:159:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createWorkspaceAsync src/host/freshTemplateInfra.e2e.test.ts "
+            >
+              <h3>createWorkspaceAsync</h3>
+              <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:166:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
