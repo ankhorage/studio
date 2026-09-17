@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.7.12
+
+### Patch Changes
+
+- 98cca60: Require Navigator 3.2.6 for Studio and generated apps so headless tabs use the current Surface 9 runtime.
+
 ## 2.7.11
 
 ### Patch Changes
