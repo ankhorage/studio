@@ -10,8 +10,8 @@ import { promisify } from 'node:util';
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 
 const execFileAsync = promisify(execFile);
-const OLD_STUDIO_VERSION = '2.7.7';
-const CURRENT_STUDIO_VERSION = '2.7.8';
+const OLD_STUDIO_VERSION = '2.7.8';
+const CURRENT_STUDIO_VERSION = '2.7.9';
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
 const COMMAND_TIMEOUT_MS = 300_000;
 const USER_FILE_NAME = 'USER_NOTES.md';
@@ -139,7 +139,7 @@ async function runOldHostBoundaryAsync(host: ReturnType<typeof spawn>): Promise<
   }
 }
 
-/*** Reconstruct and validate the retained 2.7.7 lock state that existed before 2.7.8 was published. */
+/*** Reconstruct and validate the retained 2.7.8 lock state that existed before 2.7.9 was published. */
 async function retainOldStudioReleaseAsync(projectRoot: string): Promise<void> {
   const packagePath = path.join(projectRoot, 'package.json');
   const manifest = await readJsonObjectAsync(packagePath);
