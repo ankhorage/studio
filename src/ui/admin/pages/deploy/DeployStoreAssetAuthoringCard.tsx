@@ -178,7 +178,12 @@ export function DeployStoreAssetAuthoringCard(props: {
         onDismiss={() => setConfirmRemove(false)}
         footer={
           <ZoraView direction={{ base: 'column', md: 'row' }} gap="s" justify="flex-end">
-            <Button color="neutral" variant="soft" disabled={busy} onPress={() => setConfirmRemove(false)}>
+            <Button
+              color="neutral"
+              variant="soft"
+              disabled={busy}
+              onPress={() => setConfirmRemove(false)}
+            >
               Cancel
             </Button>
             <Button color="danger" disabled={busy} onPress={() => void remove()}>

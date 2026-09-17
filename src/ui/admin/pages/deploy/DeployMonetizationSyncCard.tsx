@@ -130,7 +130,12 @@ export function DeployMonetizationSyncCard(props: {
         onDismiss={() => setConfirm(false)}
         footer={
           <View direction={{ base: 'column', md: 'row' }} gap="s" justify="flex-end">
-            <Button color="neutral" variant="soft" disabled={busy} onPress={() => setConfirm(false)}>
+            <Button
+              color="neutral"
+              variant="soft"
+              disabled={busy}
+              onPress={() => setConfirm(false)}
+            >
               Cancel
             </Button>
             <Button color="danger" disabled={busy} onPress={() => void execute()}>

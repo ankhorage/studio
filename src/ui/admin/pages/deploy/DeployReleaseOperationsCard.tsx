@@ -260,7 +260,12 @@ export function DeployReleaseOperationsCard(props: {
         onDismiss={() => setConfirmExecute(false)}
         footer={
           <View direction={{ base: 'column', md: 'row' }} gap="s" justify="flex-end">
-            <Button color="neutral" variant="soft" disabled={busy} onPress={() => setConfirmExecute(false)}>
+            <Button
+              color="neutral"
+              variant="soft"
+              disabled={busy}
+              onPress={() => setConfirmExecute(false)}
+            >
               Cancel
             </Button>
             <Button color="danger" disabled={busy} onPress={() => void executeRelease()}>
@@ -276,7 +281,12 @@ export function DeployReleaseOperationsCard(props: {
         onDismiss={() => setPendingResume(null)}
         footer={
           <View direction={{ base: 'column', md: 'row' }} gap="s" justify="flex-end">
-            <Button color="neutral" variant="soft" disabled={busy} onPress={() => setPendingResume(null)}>
+            <Button
+              color="neutral"
+              variant="soft"
+              disabled={busy}
+              onPress={() => setPendingResume(null)}
+            >
               Cancel
             </Button>
             <Button disabled={busy} onPress={() => void resumeRelease()}>
@@ -294,7 +304,12 @@ export function DeployReleaseOperationsCard(props: {
         onDismiss={() => setPendingControl(null)}
         footer={
           <View direction={{ base: 'column', md: 'row' }} gap="s" justify="flex-end">
-            <Button color="neutral" variant="soft" disabled={busy} onPress={() => setPendingControl(null)}>
+            <Button
+              color="neutral"
+              variant="soft"
+              disabled={busy}
+              onPress={() => setPendingControl(null)}
+            >
               Cancel
             </Button>
             <Button disabled={busy} onPress={() => void executeControl()}>

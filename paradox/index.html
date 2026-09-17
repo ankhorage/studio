@@ -726,7 +726,7 @@
                 data-target="src/features/project-updates/application/ProjectUpdateService.ts"
               >
                 src/features/project-updates/application/ProjectUpdateService.ts
-                <small>1 function</small>
+                <small>2 functions</small>
               </button>
             </li>
             <li>
@@ -756,6 +756,16 @@
                 data-target="src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts"
               >
                 src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/features/project-updates/composition/createStudioHostPrerequisite.test.ts"
+              >
+                src/features/project-updates/composition/createStudioHostPrerequisite.test.ts
                 <small>1 function</small>
               </button>
             </li>
@@ -806,7 +816,7 @@
                 data-target="src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
               >
                 src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts
-                <small>9 functions</small>
+                <small>11 functions</small>
               </button>
             </li>
             <li>
@@ -3941,7 +3951,7 @@
             <div class="summary">
               <div><strong>151</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>557</strong><span class="muted">modules</span></div>
+              <div><strong>560</strong><span class="muted">modules</span></div>
               <div><strong>2</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -4075,6 +4085,21 @@
                 <strong>Dependencies:</strong>
                 <code>src/host/smoke/runPackedStudioHostAcceptance.ts</code>
               </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article class="item" data-search="scripts/published-studio-existing-app-acceptance.ts">
+              <h3>scripts/published-studio-existing-app-acceptance.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="scripts/published-studio-restart-boundary-acceptance.ts"
+            >
+              <h3>scripts/published-studio-restart-boundary-acceptance.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article class="item" data-search="src/ankhAdmin.public.test.ts src/root.ts">
@@ -5281,6 +5306,20 @@
             </article>
             <article
               class="item"
+              data-search="src/features/project-updates/composition/createStudioHostPrerequisite.test.ts src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
+            >
+              <h3>src/features/project-updates/composition/createStudioHostPrerequisite.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong>
+                <code
+                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts</code
+                >
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
               data-search="src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts src/features/project-updates/adapters/outbound/readStudioManifestDigestAsync.ts src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts src/features/project-updates/domain/pendingModulePlanStep.ts createStudioProjectUpdateApplyOwnerStepPort"
             >
               <h3>
@@ -5389,13 +5428,15 @@
             </article>
             <article
               class="item"
-              data-search="src/features/project-updates/composition/createStudioProjectUpdateService.ts src/features/project-updates/application/ProjectUpdateService.ts src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts src/types/project-updates.ts createStudioProjectUpdateService"
+              data-search="src/features/project-updates/composition/createStudioProjectUpdateService.ts src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts src/features/project-updates/application/ProjectUpdateService.ts src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts src/features/project-updates/composition/createStudioProjectUpdateVerifyOwnerStepPort.ts src/types/project-updates.ts createStudioProjectUpdateService"
             >
               <h3>src/features/project-updates/composition/createStudioProjectUpdateService.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong>
-                <code>src/features/project-updates/application/ProjectUpdateService.ts</code>,
+                <code
+                  >src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts</code
+                >, <code>src/features/project-updates/application/ProjectUpdateService.ts</code>,
                 <code
                   >src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts</code
                 >,
@@ -17751,6 +17792,12 @@
                 package__ankhorage_studio -.-&gt; module_scripts_packed_studio_host_acceptance_ts
                 module_scripts_packed_studio_host_acceptance_ts --&gt;
                 module_src_host_smoke_runPackedStudioHostAcceptance_ts
+                module_scripts_published_studio_existing_app_acceptance_ts[&quot;scripts/published-studio-existing-app-acceptance.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_scripts_published_studio_existing_app_acceptance_ts
+                module_scripts_published_studio_restart_boundary_acceptance_ts[&quot;scripts/published-studio-restart-boundary-acceptance.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_scripts_published_studio_restart_boundary_acceptance_ts
                 module_src_ankhAdmin_public_test_ts[&quot;src/ankhAdmin.public.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_ankhAdmin_public_test_ts
                 module_src_ankhAdmin_public_test_ts --&gt; module_src_root_ts
@@ -18233,6 +18280,12 @@
                 --&gt; module_src_features_project_updates_domain_applyGeneratedPackagePolicy_ts
                 module_src_features_project_updates_composition_applyCurrentGeneratedPackagePolicy_ts
                 --&gt; module_src_types_project_updates_ts
+                module_src_features_project_updates_composition_createStudioHostPrerequisite_test_ts[&quot;src/features/project-updates/composition/createStudioHostPrerequisite.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_features_project_updates_composition_createStudioHostPrerequisite_test_ts
+                module_src_features_project_updates_composition_createStudioHostPrerequisite_test_ts
+                --&gt;
+                module_src_features_project_updates_composition_createStudioProjectUpdateProtocolPort_ts
                 module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts
@@ -18295,6 +18348,9 @@
                 module_src_features_project_updates_composition_createStudioProjectUpdateService_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateService.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_features_project_updates_composition_createStudioProjectUpdateService_ts
+                module_src_features_project_updates_composition_createStudioProjectUpdateService_ts
+                --&gt;
+                module_src_features_project_updates_adapters_outbound_getGeneratedPackagePolicy_ts
                 module_src_features_project_updates_composition_createStudioProjectUpdateService_ts
                 --&gt; module_src_features_project_updates_application_ProjectUpdateService_ts
                 module_src_features_project_updates_composition_createStudioProjectUpdateService_ts
@@ -20924,6 +20980,10 @@ graph TD
   module_scripts_packed_studio_host_acceptance_ts[&quot;scripts/packed-studio-host-acceptance.ts&quot;]
   package__ankhorage_studio -.-&gt; module_scripts_packed_studio_host_acceptance_ts
   module_scripts_packed_studio_host_acceptance_ts --&gt; module_src_host_smoke_runPackedStudioHostAcceptance_ts
+  module_scripts_published_studio_existing_app_acceptance_ts[&quot;scripts/published-studio-existing-app-acceptance.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_scripts_published_studio_existing_app_acceptance_ts
+  module_scripts_published_studio_restart_boundary_acceptance_ts[&quot;scripts/published-studio-restart-boundary-acceptance.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_scripts_published_studio_restart_boundary_acceptance_ts
   module_src_ankhAdmin_public_test_ts[&quot;src/ankhAdmin.public.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ankhAdmin_public_test_ts
   module_src_ankhAdmin_public_test_ts --&gt; module_src_root_ts
@@ -21264,6 +21324,9 @@ graph TD
   module_src_features_project_updates_composition_applyCurrentGeneratedPackagePolicy_ts --&gt; module_src_features_project_updates_adapters_outbound_getGeneratedPackagePolicy_ts
   module_src_features_project_updates_composition_applyCurrentGeneratedPackagePolicy_ts --&gt; module_src_features_project_updates_domain_applyGeneratedPackagePolicy_ts
   module_src_features_project_updates_composition_applyCurrentGeneratedPackagePolicy_ts --&gt; module_src_types_project_updates_ts
+  module_src_features_project_updates_composition_createStudioHostPrerequisite_test_ts[&quot;src/features/project-updates/composition/createStudioHostPrerequisite.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_features_project_updates_composition_createStudioHostPrerequisite_test_ts
+  module_src_features_project_updates_composition_createStudioHostPrerequisite_test_ts --&gt; module_src_features_project_updates_composition_createStudioProjectUpdateProtocolPort_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts --&gt; module_src_features_project_updates_adapters_outbound_readPendingModuleLifecycleStateAsync_ts
@@ -21292,6 +21355,7 @@ graph TD
   module_src_features_project_updates_composition_createStudioProjectUpdateProtocolPort_ts --&gt; module_src_features_project_updates_constants_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateService_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateService.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_features_project_updates_composition_createStudioProjectUpdateService_ts
+  module_src_features_project_updates_composition_createStudioProjectUpdateService_ts --&gt; module_src_features_project_updates_adapters_outbound_getGeneratedPackagePolicy_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateService_ts --&gt; module_src_features_project_updates_application_ProjectUpdateService_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateService_ts --&gt; module_src_features_project_updates_application_StudioPendingModuleLifecyclePort_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateService_ts --&gt; module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts
@@ -23040,6 +23104,8 @@ graph TD
                 module_scripts_expo57_native_capability_evidence_ts[&quot;scripts/expo57-native-capability-evidence.ts&quot;]
                 module_scripts_expo57_studio_standalone_acceptance_ts[&quot;scripts/expo57-studio-standalone-acceptance.ts&quot;]
                 module_scripts_packed_studio_host_acceptance_ts[&quot;scripts/packed-studio-host-acceptance.ts&quot;]
+                module_scripts_published_studio_existing_app_acceptance_ts[&quot;scripts/published-studio-existing-app-acceptance.ts&quot;]
+                module_scripts_published_studio_restart_boundary_acceptance_ts[&quot;scripts/published-studio-restart-boundary-acceptance.ts&quot;]
                 module_src_ankhAdmin_public_test_ts[&quot;src/ankhAdmin.public.test.ts&quot;]
                 module_src_apm_ts[&quot;src/apm.ts&quot;]
                 module_src_app_CreateCategoriesScreen_tsx[&quot;src/app/CreateCategoriesScreen.tsx&quot;]
@@ -23132,6 +23198,7 @@ graph TD
                 module_src_features_project_updates_application_resolveProjectUpdateDashboardPresentation_ts[&quot;src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts&quot;]
                 module_src_features_project_updates_application_StudioPendingModuleLifecyclePort_ts[&quot;src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts&quot;]
                 module_src_features_project_updates_composition_applyCurrentGeneratedPackagePolicy_ts[&quot;src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts&quot;]
+                module_src_features_project_updates_composition_createStudioHostPrerequisite_test_ts[&quot;src/features/project-updates/composition/createStudioHostPrerequisite.test.ts&quot;]
                 module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts&quot;]
                 module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts&quot;]
                 module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts&quot;]
@@ -23867,6 +23934,9 @@ graph TD
                 --&gt; module_src_features_project_updates_domain_applyGeneratedPackagePolicy_ts
                 module_src_features_project_updates_composition_applyCurrentGeneratedPackagePolicy_ts
                 --&gt; module_src_types_project_updates_ts
+                module_src_features_project_updates_composition_createStudioHostPrerequisite_test_ts
+                --&gt;
+                module_src_features_project_updates_composition_createStudioProjectUpdateProtocolPort_ts
                 module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts
                 --&gt;
                 module_src_features_project_updates_adapters_outbound_readPendingModuleLifecycleStateAsync_ts
@@ -23911,6 +23981,9 @@ graph TD
                 module_src_features_project_updates_application_planPendingModuleLifecycleAsync_ts
                 module_src_features_project_updates_composition_createStudioProjectUpdateProtocolPort_ts
                 --&gt; module_src_features_project_updates_constants_ts
+                module_src_features_project_updates_composition_createStudioProjectUpdateService_ts
+                --&gt;
+                module_src_features_project_updates_adapters_outbound_getGeneratedPackagePolicy_ts
                 module_src_features_project_updates_composition_createStudioProjectUpdateService_ts
                 --&gt; module_src_features_project_updates_application_ProjectUpdateService_ts
                 module_src_features_project_updates_composition_createStudioProjectUpdateService_ts
@@ -25394,6 +25467,8 @@ graph LR
   module_scripts_expo57_native_capability_evidence_ts[&quot;scripts/expo57-native-capability-evidence.ts&quot;]
   module_scripts_expo57_studio_standalone_acceptance_ts[&quot;scripts/expo57-studio-standalone-acceptance.ts&quot;]
   module_scripts_packed_studio_host_acceptance_ts[&quot;scripts/packed-studio-host-acceptance.ts&quot;]
+  module_scripts_published_studio_existing_app_acceptance_ts[&quot;scripts/published-studio-existing-app-acceptance.ts&quot;]
+  module_scripts_published_studio_restart_boundary_acceptance_ts[&quot;scripts/published-studio-restart-boundary-acceptance.ts&quot;]
   module_src_ankhAdmin_public_test_ts[&quot;src/ankhAdmin.public.test.ts&quot;]
   module_src_apm_ts[&quot;src/apm.ts&quot;]
   module_src_app_CreateCategoriesScreen_tsx[&quot;src/app/CreateCategoriesScreen.tsx&quot;]
@@ -25486,6 +25561,7 @@ graph LR
   module_src_features_project_updates_application_resolveProjectUpdateDashboardPresentation_ts[&quot;src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts&quot;]
   module_src_features_project_updates_application_StudioPendingModuleLifecyclePort_ts[&quot;src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts&quot;]
   module_src_features_project_updates_composition_applyCurrentGeneratedPackagePolicy_ts[&quot;src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts&quot;]
+  module_src_features_project_updates_composition_createStudioHostPrerequisite_test_ts[&quot;src/features/project-updates/composition/createStudioHostPrerequisite.test.ts&quot;]
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts&quot;]
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts&quot;]
   module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts&quot;]
@@ -26107,6 +26183,7 @@ graph LR
   module_src_features_project_updates_composition_applyCurrentGeneratedPackagePolicy_ts --&gt; module_src_features_project_updates_adapters_outbound_getGeneratedPackagePolicy_ts
   module_src_features_project_updates_composition_applyCurrentGeneratedPackagePolicy_ts --&gt; module_src_features_project_updates_domain_applyGeneratedPackagePolicy_ts
   module_src_features_project_updates_composition_applyCurrentGeneratedPackagePolicy_ts --&gt; module_src_types_project_updates_ts
+  module_src_features_project_updates_composition_createStudioHostPrerequisite_test_ts --&gt; module_src_features_project_updates_composition_createStudioProjectUpdateProtocolPort_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts --&gt; module_src_features_project_updates_adapters_outbound_readPendingModuleLifecycleStateAsync_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts --&gt; module_src_features_project_updates_adapters_outbound_readStudioManifestDigestAsync_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts --&gt; module_src_features_project_updates_adapters_outbound_resolveCurrentStudioApmArtifactAsync_ts
@@ -26123,6 +26200,7 @@ graph LR
   module_src_features_project_updates_composition_createStudioProjectUpdateProtocolPort_ts --&gt; module_src_features_project_updates_adapters_outbound_resolveCurrentStudioApmArtifactAsync_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateProtocolPort_ts --&gt; module_src_features_project_updates_application_planPendingModuleLifecycleAsync_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateProtocolPort_ts --&gt; module_src_features_project_updates_constants_ts
+  module_src_features_project_updates_composition_createStudioProjectUpdateService_ts --&gt; module_src_features_project_updates_adapters_outbound_getGeneratedPackagePolicy_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateService_ts --&gt; module_src_features_project_updates_application_ProjectUpdateService_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateService_ts --&gt; module_src_features_project_updates_application_StudioPendingModuleLifecyclePort_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateService_ts --&gt; module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts
@@ -26973,6 +27051,8 @@ graph LR
                 module_scripts_expo57_native_capability_evidence_ts[&quot;scripts/expo57-native-capability-evidence.ts&quot;]
                 module_scripts_expo57_studio_standalone_acceptance_ts[&quot;scripts/expo57-studio-standalone-acceptance.ts&quot;]
                 module_scripts_packed_studio_host_acceptance_ts[&quot;scripts/packed-studio-host-acceptance.ts&quot;]
+                module_scripts_published_studio_existing_app_acceptance_ts[&quot;scripts/published-studio-existing-app-acceptance.ts&quot;]
+                module_scripts_published_studio_restart_boundary_acceptance_ts[&quot;scripts/published-studio-restart-boundary-acceptance.ts&quot;]
                 module_src_ankhAdmin_public_test_ts[&quot;src/ankhAdmin.public.test.ts&quot;]
                 module_src_apm_ts[&quot;src/apm.ts&quot;]
                 module_src_app_CreateCategoriesScreen_tsx[&quot;src/app/CreateCategoriesScreen.tsx&quot;]
@@ -27065,6 +27145,7 @@ graph LR
                 module_src_features_project_updates_application_resolveProjectUpdateDashboardPresentation_ts[&quot;src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts&quot;]
                 module_src_features_project_updates_application_StudioPendingModuleLifecyclePort_ts[&quot;src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts&quot;]
                 module_src_features_project_updates_composition_applyCurrentGeneratedPackagePolicy_ts[&quot;src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts&quot;]
+                module_src_features_project_updates_composition_createStudioHostPrerequisite_test_ts[&quot;src/features/project-updates/composition/createStudioHostPrerequisite.test.ts&quot;]
                 module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts&quot;]
                 module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts&quot;]
                 module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts&quot;]
@@ -27941,6 +28022,8 @@ graph LR
   module_scripts_expo57_native_capability_evidence_ts[&quot;scripts/expo57-native-capability-evidence.ts&quot;]
   module_scripts_expo57_studio_standalone_acceptance_ts[&quot;scripts/expo57-studio-standalone-acceptance.ts&quot;]
   module_scripts_packed_studio_host_acceptance_ts[&quot;scripts/packed-studio-host-acceptance.ts&quot;]
+  module_scripts_published_studio_existing_app_acceptance_ts[&quot;scripts/published-studio-existing-app-acceptance.ts&quot;]
+  module_scripts_published_studio_restart_boundary_acceptance_ts[&quot;scripts/published-studio-restart-boundary-acceptance.ts&quot;]
   module_src_ankhAdmin_public_test_ts[&quot;src/ankhAdmin.public.test.ts&quot;]
   module_src_apm_ts[&quot;src/apm.ts&quot;]
   module_src_app_CreateCategoriesScreen_tsx[&quot;src/app/CreateCategoriesScreen.tsx&quot;]
@@ -28033,6 +28116,7 @@ graph LR
   module_src_features_project_updates_application_resolveProjectUpdateDashboardPresentation_ts[&quot;src/features/project-updates/application/resolveProjectUpdateDashboardPresentation.ts&quot;]
   module_src_features_project_updates_application_StudioPendingModuleLifecyclePort_ts[&quot;src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts&quot;]
   module_src_features_project_updates_composition_applyCurrentGeneratedPackagePolicy_ts[&quot;src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts&quot;]
+  module_src_features_project_updates_composition_createStudioHostPrerequisite_test_ts[&quot;src/features/project-updates/composition/createStudioHostPrerequisite.test.ts&quot;]
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts&quot;]
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts&quot;]
   module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts&quot;]
@@ -33298,7 +33382,7 @@ sequenceDiagram
               <h3>readPackageManifest</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:112:1</code
+                  >src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:111:1</code
                 >
               </p>
               <p>Parse one owner package manifest as a validated object.</p>
@@ -33310,7 +33394,7 @@ sequenceDiagram
               <h3>readStudioVersion</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:122:1</code
+                  >src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:121:1</code
                 >
               </p>
               <p>Read and validate Studio&#39;s exact package version.</p>
@@ -33322,7 +33406,7 @@ sequenceDiagram
               <h3>readStudioPackageManager</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:131:1</code
+                  >src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:130:1</code
                 >
               </p>
               <p>Read and validate Studio&#39;s exact Bun package-manager pin.</p>
@@ -33334,7 +33418,7 @@ sequenceDiagram
               <h3>readRequiredSection</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:140:1</code
+                  >src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:139:1</code
                 >
               </p>
               <p>Read one required package-manifest dependency section.</p>
@@ -33346,7 +33430,7 @@ sequenceDiagram
               <h3>readRequiredString</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:153:1</code
+                  >src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:152:1</code
                 >
               </p>
               <p>Read one required non-empty string property from package metadata.</p>
@@ -33906,11 +33990,24 @@ sequenceDiagram
             <h2>src/features/project-updates/application/ProjectUpdateService.ts</h2>
             <article
               class="item"
+              data-search="withStudioHostPackage src/features/project-updates/application/ProjectUpdateService.ts Add the exact running Studio artifact to APM&#39;s separate host-package evidence channel."
+            >
+              <h3>withStudioHostPackage</h3>
+              <p class="muted">
+                <code>src/features/project-updates/application/ProjectUpdateService.ts:87:1</code>
+              </p>
+              <p>
+                Add the exact running Studio artifact to APM&#39;s separate host-package evidence
+                channel.
+              </p>
+            </article>
+            <article
+              class="item"
               data-search="uniquePresentationRows src/features/project-updates/application/ProjectUpdateService.ts Collapse top-level status rows that Studio renders identically while retaining raw scoped APM evidence for planning."
             >
               <h3>uniquePresentationRows</h3>
               <p class="muted">
-                <code>src/features/project-updates/application/ProjectUpdateService.ts:81:1</code>
+                <code>src/features/project-updates/application/ProjectUpdateService.ts:107:1</code>
               </p>
               <p>
                 Collapse top-level status rows that Studio renders identically while retaining raw
@@ -34122,6 +34219,31 @@ sequenceDiagram
                 >
               </p>
               <p>Apply package policy owned by this exact installed Studio artifact.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-features-project-updates-composition-createstudiohostprerequisite-test-ts"
+          class="view"
+          data-view="src/features/project-updates/composition/createStudioHostPrerequisite.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/features/project-updates/composition/createStudioHostPrerequisite.test.ts</h2>
+            <article
+              class="item"
+              data-search="protocolRequest src/features/project-updates/composition/createStudioHostPrerequisite.test.ts Build host availability and selected-target evidence matching APM&#39;s public planning boundary."
+            >
+              <h3>protocolRequest</h3>
+              <p class="muted">
+                <code
+                  >src/features/project-updates/composition/createStudioHostPrerequisite.test.ts:48:1</code
+                >
+              </p>
+              <p>
+                Build host availability and selected-target evidence matching APM&#39;s public
+                planning boundary.
+              </p>
             </article>
           </section>
         </section>
@@ -34446,17 +34568,17 @@ sequenceDiagram
             </h2>
             <article
               class="item"
-              data-search="createStudioProjectUpdateProtocolPort src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts Extend package-owner planning with reviewed Studio pending-module lifecycle execution."
+              data-search="createStudioProjectUpdateProtocolPort src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts Extend package-owner planning with Studio host prerequisites and reviewed module lifecycle execution."
             >
               <h3>createStudioProjectUpdateProtocolPort</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:25:1</code
+                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:28:1</code
                 >
               </p>
               <p>
-                Extend package-owner planning with reviewed Studio pending-module lifecycle
-                execution.
+                Extend package-owner planning with Studio host prerequisites and reviewed module
+                lifecycle execution.
               </p>
             </article>
             <article
@@ -34466,10 +34588,37 @@ sequenceDiagram
               <h3>readBaseProtocolResultAsync</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:78:1</code
+                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:87:1</code
                 >
               </p>
               <p>Delegate existing package-owner planning when present instead of replacing it.</p>
+            </article>
+            <article
+              class="item"
+              data-search="studioHostPrerequisiteBlockers src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts Block project execution whenever the selected Studio owner version differs from the running host."
+            >
+              <h3>studioHostPrerequisiteBlockers</h3>
+              <p class="muted">
+                <code
+                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:95:1</code
+                >
+              </p>
+              <p>
+                Block project execution whenever the selected Studio owner version differs from the
+                running host.
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="hostUpgradeBlocker src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts Describe the explicit Studio upgrade, restart, and fresh-plan boundary."
+            >
+              <h3>hostUpgradeBlocker</h3>
+              <p class="muted">
+                <code
+                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:109:1</code
+                >
+              </p>
+              <p>Describe the explicit Studio upgrade, restart, and fresh-plan boundary.</p>
             </article>
             <article
               class="item"
@@ -34478,7 +34627,7 @@ sequenceDiagram
               <h3>planPendingObservationAsync</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:86:1</code
+                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:124:1</code
                 >
               </p>
               <p>
@@ -34493,7 +34642,7 @@ sequenceDiagram
               <h3>isPendingModuleLifecycleObservation</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:108:1</code
+                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:146:1</code
                 >
               </p>
               <p>
@@ -34507,7 +34656,7 @@ sequenceDiagram
               <h3>readPendingDigest</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:113:1</code
+                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:151:1</code
                 >
               </p>
               <p>Read the exact pending-file precondition frozen into status evidence.</p>
@@ -34519,7 +34668,7 @@ sequenceDiagram
               <h3>requiresProtocolPlanning</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:120:1</code
+                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:158:1</code
                 >
               </p>
               <p>
@@ -34534,7 +34683,7 @@ sequenceDiagram
               <h3>pendingLifecycleBlocker</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:130:1</code
+                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:168:1</code
                 >
               </p>
               <p>
@@ -34548,7 +34697,7 @@ sequenceDiagram
               <h3>missingPendingDigestBlocker</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:143:1</code
+                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:181:1</code
                 >
               </p>
               <p>
@@ -34563,7 +34712,7 @@ sequenceDiagram
               <h3>protocolUnavailableBlocker</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:154:1</code
+                  >src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts:192:1</code
                 >
               </p>
               <p>
@@ -34588,7 +34737,7 @@ sequenceDiagram
               <h3>createStudioProjectUpdateService</h3>
               <p class="muted">
                 <code
-                  >src/features/project-updates/composition/createStudioProjectUpdateService.ts:10:1</code
+                  >src/features/project-updates/composition/createStudioProjectUpdateService.ts:11:1</code
                 >
               </p>
               <p>
@@ -34885,15 +35034,15 @@ sequenceDiagram
             <h2>src/features/project-updates/domain/applyGeneratedPackagePolicy.ts</h2>
             <article
               class="item"
-              data-search="applyGeneratedPackagePolicy src/features/project-updates/domain/applyGeneratedPackagePolicy.ts Apply one explicit Studio package policy while preserving all user-owned package manifest entries."
+              data-search="applyGeneratedPackagePolicy src/features/project-updates/domain/applyGeneratedPackagePolicy.ts Apply one explicit Studio package policy while preserving user-owned package manifest entries outside superseded Studio-managed dependencies."
             >
               <h3>applyGeneratedPackagePolicy</h3>
               <p class="muted">
-                <code>src/features/project-updates/domain/applyGeneratedPackagePolicy.ts:7:1</code>
+                <code>src/features/project-updates/domain/applyGeneratedPackagePolicy.ts:9:1</code>
               </p>
               <p>
-                Apply one explicit Studio package policy while preserving all user-owned package
-                manifest entries.
+                Apply one explicit Studio package policy while preserving user-owned package
+                manifest entries outside superseded Studio-managed dependencies.
               </p>
             </article>
           </section>
@@ -40020,7 +40169,7 @@ sequenceDiagram
             >
               <h3>expectStudioAuthoringDependencies</h3>
               <p class="muted">
-                <code>src/host/orchestrator/generatedDependencyContract.test.ts:233:1</code>
+                <code>src/host/orchestrator/generatedDependencyContract.test.ts:229:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -41041,7 +41190,7 @@ sequenceDiagram
               data-search="getEasJson src/host/orchestrator/templateSources.ts "
             >
               <h3>getEasJson</h3>
-              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1037:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1036:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -41049,7 +41198,7 @@ sequenceDiagram
               data-search="getMetroConfigJs src/host/orchestrator/templateSources.ts "
             >
               <h3>getMetroConfigJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1053:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1052:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -41057,7 +41206,7 @@ sequenceDiagram
               data-search="getMetroEmptyModuleJs src/host/orchestrator/templateSources.ts "
             >
               <h3>getMetroEmptyModuleJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1064:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1063:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -41065,7 +41214,7 @@ sequenceDiagram
               data-search="getTsConfigJson src/host/orchestrator/templateSources.ts "
             >
               <h3>getTsConfigJson</h3>
-              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1068:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1067:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -41073,7 +41222,7 @@ sequenceDiagram
               data-search="createPlatformDependencyMap src/host/orchestrator/templateSources.ts "
             >
               <h3>createPlatformDependencyMap</h3>
-              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1101:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templateSources.ts:1100:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -49654,15 +49803,14 @@ sequenceDiagram
             <h2>src/ui/admin/AnkhAdminShell.tsx</h2>
             <article
               class="item"
-              data-search="AnkhAdminShell src/ui/admin/AnkhAdminShell.tsx Compose the Studio administration app bar, responsive navigation modal/sidebar, and routed page content.&#10;@todo Keep this as package-wide admin UI composition; route construction/availability/active-state policy belongs to the routes domain and reusable responsive primitives belong to ZORA."
+              data-search="AnkhAdminShell src/ui/admin/AnkhAdminShell.tsx Compose the Studio administration app bar, responsive navigation dialog/sidebar, and routed page content.&#10;@todo Keep this as package-wide admin UI composition until Navigator owns the complete admin topology."
             >
               <h3>AnkhAdminShell</h3>
-              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:38:1</code></p>
+              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:30:1</code></p>
               <p>
-                Compose the Studio administration app bar, responsive navigation modal/sidebar, and
-                routed page content. @todo Keep this as package-wide admin UI composition; route
-                construction/availability/active-state policy belongs to the routes domain and
-                reusable responsive primitives belong to ZORA.
+                Compose the Studio administration app bar, responsive navigation dialog/sidebar, and
+                routed page content. @todo Keep this as package-wide admin UI composition until
+                Navigator owns the complete admin topology.
               </p>
             </article>
             <article
@@ -49670,7 +49818,7 @@ sequenceDiagram
               data-search="openRoute src/ui/admin/AnkhAdminShell.tsx Open one available Studio admin route, synchronize route selection state, and close compact navigation."
             >
               <h3>openRoute</h3>
-              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:50:9</code></p>
+              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:44:9</code></p>
               <p>
                 Open one available Studio admin route, synchronize route selection state, and close
                 compact navigation.
@@ -49681,7 +49829,7 @@ sequenceDiagram
               data-search="goBackToApp src/ui/admin/AnkhAdminShell.tsx Return from administration to the most recently recorded non-admin application location."
             >
               <h3>goBackToApp</h3>
-              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:65:9</code></p>
+              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:59:9</code></p>
               <p>
                 Return from administration to the most recently recorded non-admin application
                 location.
@@ -49692,7 +49840,7 @@ sequenceDiagram
               data-search="AdminNavigation src/ui/admin/AnkhAdminShell.tsx Render navigation entries from the Studio admin-route registry using current availability and hierarchy state."
             >
               <h3>AdminNavigation</h3>
-              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:134:1</code></p>
+              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:124:1</code></p>
               <p>
                 Render navigation entries from the Studio admin-route registry using current
                 availability and hierarchy state.
@@ -51304,7 +51452,7 @@ sequenceDiagram
             >
               <h3>toDraft</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx:202:1</code>
+                <code>src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx:213:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -51314,7 +51462,7 @@ sequenceDiagram
             >
               <h3>toOwnerLocale</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx:217:1</code>
+                <code>src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx:228:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -51324,7 +51472,7 @@ sequenceDiagram
             >
               <h3>optionalField</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx:236:1</code>
+                <code>src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx:247:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -51334,7 +51482,7 @@ sequenceDiagram
             >
               <h3>readError</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx:241:1</code>
+                <code>src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx:252:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -51464,7 +51612,7 @@ sequenceDiagram
             >
               <h3>ViewFailure</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx:140:1</code>
+                <code>src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx:151:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -51474,7 +51622,7 @@ sequenceDiagram
             >
               <h3>readError</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx:155:1</code>
+                <code>src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx:166:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -51642,7 +51790,7 @@ sequenceDiagram
             >
               <h3>createRuntime</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx:290:1</code>
+                <code>src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx:325:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -51652,7 +51800,7 @@ sequenceDiagram
             >
               <h3>beginMutation</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx:303:1</code>
+                <code>src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx:338:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -51662,7 +51810,7 @@ sequenceDiagram
             >
               <h3>endMutation</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx:313:1</code>
+                <code>src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx:348:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -51672,7 +51820,7 @@ sequenceDiagram
             >
               <h3>readError</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx:321:1</code>
+                <code>src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx:356:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -51752,7 +51900,7 @@ sequenceDiagram
             >
               <h3>createLocation</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx:188:1</code>
+                <code>src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx:199:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -51762,7 +51910,7 @@ sequenceDiagram
             >
               <h3>readError</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx:212:1</code>
+                <code>src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx:223:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -52510,7 +52658,7 @@ sequenceDiagram
               data-search="ScreensAdminPage src/ui/admin/pages/ScreensAdminPage.tsx Render canonical screens and primary-navigation authoring controls from the derived Studio screen navigation model."
             >
               <h3>ScreensAdminPage</h3>
-              <p class="muted"><code>src/ui/admin/pages/ScreensAdminPage.tsx:40:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/ScreensAdminPage.tsx:41:1</code></p>
               <p>
                 Render canonical screens and primary-navigation authoring controls from the derived
                 Studio screen navigation model.
@@ -52521,7 +52669,7 @@ sequenceDiagram
               data-search="dispatch src/ui/admin/pages/ScreensAdminPage.tsx Dispatch one typed screens-admin action against the current Studio mutation target."
             >
               <h3>dispatch</h3>
-              <p class="muted"><code>src/ui/admin/pages/ScreensAdminPage.tsx:50:9</code></p>
+              <p class="muted"><code>src/ui/admin/pages/ScreensAdminPage.tsx:51:9</code></p>
               <p>
                 Dispatch one typed screens-admin action against the current Studio mutation target.
               </p>
@@ -52531,7 +52679,7 @@ sequenceDiagram
               data-search="createScreen src/ui/admin/pages/ScreensAdminPage.tsx Trim and create the requested screen, then clear the creation draft."
             >
               <h3>createScreen</h3>
-              <p class="muted"><code>src/ui/admin/pages/ScreensAdminPage.tsx:54:9</code></p>
+              <p class="muted"><code>src/ui/admin/pages/ScreensAdminPage.tsx:55:9</code></p>
               <p>Trim and create the requested screen, then clear the creation draft.</p>
             </article>
             <article
@@ -52539,7 +52687,7 @@ sequenceDiagram
               data-search="confirmDelete src/ui/admin/pages/ScreensAdminPage.tsx Apply the pending destructive screen deletion after confirmation."
             >
               <h3>confirmDelete</h3>
-              <p class="muted"><code>src/ui/admin/pages/ScreensAdminPage.tsx:62:9</code></p>
+              <p class="muted"><code>src/ui/admin/pages/ScreensAdminPage.tsx:63:9</code></p>
               <p>Apply the pending destructive screen deletion after confirmation.</p>
             </article>
             <article
@@ -52547,7 +52695,7 @@ sequenceDiagram
               data-search="ScreenOverviewRow src/ui/admin/pages/ScreensAdminPage.tsx Render one canonical screen with route references, detail navigation, and guarded deletion."
             >
               <h3>ScreenOverviewRow</h3>
-              <p class="muted"><code>src/ui/admin/pages/ScreensAdminPage.tsx:179:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/ScreensAdminPage.tsx:187:1</code></p>
               <p>
                 Render one canonical screen with route references, detail navigation, and guarded
                 deletion.
@@ -52558,7 +52706,7 @@ sequenceDiagram
               data-search="ScreenRouteReferenceControls src/ui/admin/pages/ScreensAdminPage.tsx Render primary-navigation visibility, initial-route, and sibling-order controls for one screen route reference."
             >
               <h3>ScreenRouteReferenceControls</h3>
-              <p class="muted"><code>src/ui/admin/pages/ScreensAdminPage.tsx:247:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/ScreensAdminPage.tsx:255:1</code></p>
               <p>
                 Render primary-navigation visibility, initial-route, and sibling-order controls for
                 one screen route reference.
@@ -52569,7 +52717,7 @@ sequenceDiagram
               data-search="formatParentPath src/ui/admin/pages/ScreensAdminPage.tsx Format a route parent-path segment array as a slash-delimited display label with a root fallback.&#10;@utility @ankhorage/utility/route"
             >
               <h3>formatParentPath</h3>
-              <p class="muted"><code>src/ui/admin/pages/ScreensAdminPage.tsx:339:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/ScreensAdminPage.tsx:351:1</code></p>
               <p>
                 Format a route parent-path segment array as a slash-delimited display label with a
                 root fallback. @utility @ankhorage/utility/route

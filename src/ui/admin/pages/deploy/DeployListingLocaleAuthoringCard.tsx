@@ -192,7 +192,12 @@ export function DeployListingLocaleAuthoringCard(props: {
         onDismiss={() => setConfirmDelete(false)}
         footer={
           <View direction={{ base: 'column', md: 'row' }} gap="s" justify="flex-end">
-            <Button color="neutral" variant="soft" disabled={busy} onPress={() => setConfirmDelete(false)}>
+            <Button
+              color="neutral"
+              variant="soft"
+              disabled={busy}
+              onPress={() => setConfirmDelete(false)}
+            >
               Cancel
             </Button>
             <Button color="danger" disabled={busy} onPress={() => void remove()}>
