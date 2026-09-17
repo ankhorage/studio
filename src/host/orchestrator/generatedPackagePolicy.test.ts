@@ -95,5 +95,5 @@ test('reconciles only ZORA extensions already installed by a generated app', () 
   );
 
   expect(updated.dependencies['@ankhorage/zora-tabletop']).toBe(tabletopRange);
-  expect(updated.dependencies['@ankhorage/zora-chess']).toBeUndefined();
+  expect(Object.hasOwn(updated.dependencies, '@ankhorage/zora-chess')).toBe(false);
 });
