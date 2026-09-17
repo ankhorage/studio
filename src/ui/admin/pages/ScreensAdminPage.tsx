@@ -3,16 +3,17 @@ import {
   Button,
   ButtonGroup,
   Card,
-  ConfirmDialog,
-  TextInput,
-  ListRow,
+  Dialog,
+  ListItem,
   ListSection,
   Select,
-  SwitchField,
+  Switch,
   Text,
+  TextInput,
+  View as ZoraView,
 } from '@ankhorage/zora';
-import React, { useMemo, useState } from 'react';
 import { useRouter } from 'expo-router';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { useStudio } from '../../../core/StudioContext';
@@ -129,7 +130,7 @@ export function ScreensAdminPage() {
             description="Resolve these manifest states before relying on ambiguous route mutations."
           >
             {model.diagnostics.map((diagnostic, index) => (
-              <ListRow
+              <ListItem
                 key={`${diagnostic.code}:${diagnostic.routeName ?? diagnostic.screenId ?? index}`}
                 title={diagnostic.code}
                 description={diagnostic.message}
@@ -158,7 +159,7 @@ export function ScreensAdminPage() {
         </ListSection>
       </AdminScroll>
 
-      <ConfirmDialog
+      <Dialog
         visible={pendingDelete !== null}
         title="Delete screen?"
         description={
@@ -166,10 +167,17 @@ export function ScreensAdminPage() {
             ? `Delete ${pendingDelete.label}, all of its route references, and bindings owned by its node tree?`
             : undefined
         }
-        confirmLabel="Delete screen"
-        confirmColor="danger"
-        onCancel={() => setPendingDelete(null)}
-        onConfirm={confirmDelete}
+        onDismiss={() => setPendingDelete(null)}
+        footer={
+          <ZoraView direction={{ base: 'column', md: 'row' }} gap="s" justify="flex-end">
+            <Button color="neutral" variant="soft" onPress={() => setPendingDelete(null)}>
+              Cancel
+            </Button>
+            <Button color="danger" onPress={confirmDelete}>
+              Delete screen
+            </Button>
+          </ZoraView>
+        }
       />
     </>
   );
@@ -189,7 +197,7 @@ function ScreenOverviewRow(props: {
   const canDelete = props.screenCount > 1;
 
   return (
-    <ListRow
+    <ListItem
       title={label}
       meta={entry.screenId}
       variant="card"
@@ -265,17 +273,21 @@ function ScreenRouteReferenceControls(props: {
 
       {reference.isPrimaryNavigatorMember ? (
         <>
-          <SwitchField
-            label="Visible in primary navigation"
+          <ListItem
+            title="Visible in primary navigation"
             description="Hidden routes remain valid and programmatically navigable."
-            value={reference.showInPrimaryNavigation}
-            onValueChange={(showInPrimaryNavigation) =>
-              props.dispatch({
-                type: 'set-primary-navigation-visibility',
-                parentPath: reference.parentPath,
-                routeName: reference.route.name,
-                showInPrimaryNavigation,
-              })
+            action={
+              <Switch
+                checked={reference.showInPrimaryNavigation}
+                onCheckedChange={(showInPrimaryNavigation: boolean) =>
+                  props.dispatch({
+                    type: 'set-primary-navigation-visibility',
+                    parentPath: reference.parentPath,
+                    routeName: reference.route.name,
+                    showInPrimaryNavigation,
+                  })
+                }
+              />
             }
           />
           <ButtonGroup orientation="responsive" align="start">
