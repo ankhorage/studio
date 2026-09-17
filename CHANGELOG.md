@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.7.7
+
+### Patch Changes
+
+- 7622a03: Block reviewed project-update plans when they select a Studio owner artifact different from the running host, requiring an explicit host upgrade, restart, and fresh plan before project mutation.
+
 ## 2.7.6
 
 ### Patch Changes
