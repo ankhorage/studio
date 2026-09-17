@@ -20,6 +20,21 @@ test('blocks selected Studio project updates behind the running host restart bou
   });
 });
 
+test('blocks a Studio host version mismatch even without a host-update finding', async () => {
+  const result = await createStudioProjectUpdateProtocolPort().planProtocolAsync(
+    protocolRequest('2.7.7', '2.7.8', false),
+  );
+
+  expect(result.complete).toBe(false);
+  expect(result.blockers).toContainEqual({
+    code: 'plan.host-upgrade-required',
+    scope: { kind: 'host', id: 'studio' },
+    evidence: ['installed host 2.7.7', 'selected 2.7.8'],
+    reason: 'Selected project changes require Studio 2.7.8, but the running host is Studio 2.7.7.',
+    nextAction: 'Upgrade Studio to 2.7.8, restart the host, then inspect and create a fresh plan.',
+  });
+});
+
 test('does not block when the selected Studio project version matches the running host', async () => {
   const result = await createStudioProjectUpdateProtocolPort().planProtocolAsync(
     protocolRequest('2.7.7', '2.7.7'),
@@ -30,7 +45,11 @@ test('does not block when the selected Studio project version matches the runnin
 });
 
 /*** Build host availability and selected-target evidence matching APM's public planning boundary. */
-function protocolRequest(runningVersion: string, targetVersion: string): ApmPlanProtocolRequest {
+function protocolRequest(
+  runningVersion: string,
+  targetVersion: string,
+  includeHostUpdate = runningVersion !== targetVersion,
+): ApmPlanProtocolRequest {
   return {
     status: {
       schemaVersion: 2,
@@ -60,18 +79,17 @@ function protocolRequest(runningVersion: string, targetVersion: string): ApmPlan
             latestVersion: targetVersion,
             compatibleVersion: targetVersion,
           },
-          findings:
-            runningVersion === targetVersion
-              ? []
-              : [
-                  {
-                    code: 'host-update',
-                    scope: { kind: 'host', id: 'studio' },
-                    evidence: [`installed host ${runningVersion}`, `latest ${targetVersion}`],
-                    reason:
-                      'A newer host or extension package is available separately from application updates.',
-                  },
-                ],
+          findings: includeHostUpdate
+            ? [
+                {
+                  code: 'host-update',
+                  scope: { kind: 'host', id: 'studio' },
+                  evidence: [`installed host ${runningVersion}`, `latest ${targetVersion}`],
+                  reason:
+                    'A newer host or extension package is available separately from application updates.',
+                },
+              ]
+            : [],
         },
       ],
       extensions: {
