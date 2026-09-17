@@ -119,6 +119,7 @@ jobs:
         run: >-
           env -u SUPABASE_BOOTSTRAP
           -u ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP
+          ANKH_STUDIO_PRESERVE_FAILED_INFRA=1
           bun run test:e2e:fresh-template-infra
 
       - name: Collect failure diagnostics
