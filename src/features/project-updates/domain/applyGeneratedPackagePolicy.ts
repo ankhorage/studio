@@ -28,7 +28,6 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
       ? { '@ankhorage/supabase-storage': policy.dependencies.supabaseStorage }
       : {}),
     '@ankhorage/zora': policy.dependencies.zora,
-    '@react-native-picker/picker': policy.peerDependencies.nativePicker,
     '@react-native-vector-icons/fontawesome': policy.peerDependencies.fontawesome,
     '@react-native-vector-icons/fontawesome5': policy.peerDependencies.fontawesome5,
     '@react-native-vector-icons/fontawesome6': policy.peerDependencies.fontawesome6,
