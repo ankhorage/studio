@@ -14,18 +14,21 @@ test('uses canonical admin path helpers for navigation', () => {
   expect(source).not.toContain('`/ankh/properties/${');
 });
 
-test('uses explicit shell composition without nested SettingsLayout headers', () => {
+test('uses explicit shell composition without removed ZORA layout wrappers', () => {
   expect(source).toContain('AppBar');
-  expect(source).toContain('SidebarLayout');
+  expect(source).toContain('Dialog');
+  expect(source).toContain('desktopLayout');
+  expect(source).not.toContain('SidebarLayout');
+  expect(source).not.toContain('Show');
+  expect(source).not.toContain('Modal');
   expect(source).not.toContain('SettingsLayout');
 });
 
-test('uses the canonical lg responsive contract and bounded wide shell', () => {
-  expect(source).toContain('const COMPACT_VISIBILITY = { base: true, lg: false } as const;');
-  expect(source).toContain('sizing="fill"');
-  expect(source).not.toContain('useWindowDimensions');
-  expect(source).not.toContain('width < 900');
-  expect(source).not.toContain('1024');
+test('uses a bounded compact breakpoint for the current shell composition', () => {
+  expect(source).toContain('const COMPACT_MAX_WIDTH = 1023;');
+  expect(source).toContain('useWindowDimensions');
+  expect(source).not.toContain('COMPACT_VISIBILITY');
+  expect(source).not.toContain('sizing="fill"');
 });
 
 test('uses parent-aware active navigation state', () => {
