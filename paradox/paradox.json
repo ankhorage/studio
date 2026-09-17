@@ -16698,7 +16698,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 124,
+        "line": 116,
         "column": 1
       }
     },
@@ -16707,7 +16707,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 137,
+        "line": 129,
         "column": 1
       }
     },
@@ -16716,7 +16716,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 153,
+        "line": 145,
         "column": 1
       }
     },
@@ -16725,16 +16725,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 161,
-        "column": 1
-      }
-    },
-    {
-      "name": "restoreBootstrapEnvironment",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 168,
+        "line": 153,
         "column": 1
       }
     },
@@ -16743,7 +16734,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 182,
+        "line": 160,
         "column": 1
       }
     },
@@ -44609,12 +44600,6 @@
       },
       {
         "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
-      },
-      {
-        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
         "toSymbol": "upProjectInfrastructure",
         "callExpression": "upProjectInfrastructure",
         "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
@@ -44623,6 +44608,12 @@
         "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
         "toSymbol": "readSupabasePublicOutputs",
         "callExpression": "readSupabasePublicOutputs",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "expect",
+        "callExpression": "expect",
         "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
       },
       {
@@ -44653,12 +44644,6 @@
         "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
         "toSymbol": "destroyInfrastructure",
         "callExpression": "new ProjectManager(workspaceRoot)\n        .destroyInfrastructure",
-        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
-      },
-      {
-        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
-        "toSymbol": "restoreBootstrapEnvironment",
-        "callExpression": "restoreBootstrapEnvironment",
         "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
       },
       {
