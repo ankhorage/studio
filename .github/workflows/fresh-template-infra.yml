@@ -1,0 +1,124 @@
+name: Fresh template Infra acceptance
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/fresh-template-infra.yml'
+      - 'src/features/infrastructure/**'
+      - 'src/host/freshTemplateInfra.e2e.test.ts'
+      - 'src/host/orchestrator/projectManager.ts'
+      - 'src/host/orchestrator/studioInfraUp.ts'
+      - 'src/host/templates/**'
+      - 'package.json'
+      - 'bun.lock'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/fresh-template-infra.yml'
+      - 'src/features/infrastructure/**'
+      - 'src/host/freshTemplateInfra.e2e.test.ts'
+      - 'src/host/orchestrator/projectManager.ts'
+      - 'src/host/orchestrator/studioInfraUp.ts'
+      - 'src/host/templates/**'
+      - 'package.json'
+      - 'bun.lock'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install Minikube
+        env:
+          MINIKUBE_VERSION: v1.37.0
+        run: |
+          curl --fail --location --silent --show-error \
+            --output /tmp/minikube \
+            "https://github.com/kubernetes/minikube/releases/download/${MINIKUBE_VERSION}/minikube-linux-amd64"
+          curl --fail --location --silent --show-error \
+            --output /tmp/minikube.sha256 \
+            "https://github.com/kubernetes/minikube/releases/download/${MINIKUBE_VERSION}/minikube-linux-amd64.sha256"
+          echo "$(cat /tmp/minikube.sha256)  /tmp/minikube" | sha256sum --check --status
+          sudo install /tmp/minikube /usr/local/bin/minikube
+          minikube version
+
+      - name: Install kubectl
+        env:
+          KUBECTL_VERSION: v1.34.1
+        run: |
+          curl --fail --location --silent --show-error \
+            --output /tmp/kubectl \
+            "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+          curl --fail --location --silent --show-error \
+            --output /tmp/kubectl.sha256 \
+            "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl.sha256"
+          echo "$(cat /tmp/kubectl.sha256)  /tmp/kubectl" | sha256sum --check --status
+          sudo install /tmp/kubectl /usr/local/bin/kubectl
+          kubectl version --client=true
+
+      - name: Verify Docker
+        run: docker info
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Verify released Infra consumer ranges
+        run: |
+          bun --eval '
+          const packageJson = await Bun.file("package.json").json();
+          const infraEntry = import.meta.resolve("@ankhorage/infra/package.json");
+          const infra = await Bun.file(infraEntry).json();
+          const supabaseEntry = import.meta.resolve("@ankhorage/supabase/package.json");
+          const supabase = await Bun.file(supabaseEntry).json();
+          const infraRange = packageJson.dependencies?.["@ankhorage/infra"];
+          const supabaseRange = packageJson.dependencies?.["@ankhorage/supabase"];
+          if (typeof infraRange !== "string" || !Bun.semver.satisfies(infra.version, infraRange)) {
+            throw new Error(`Resolved Infra ${infra.version} does not satisfy ${infraRange ?? "<missing>"}.`);
+          }
+          if (typeof supabaseRange !== "string" || !Bun.semver.satisfies(supabase.version, supabaseRange)) {
+            throw new Error(`Resolved Supabase ${supabase.version} does not satisfy ${supabaseRange ?? "<missing>"}.`);
+          }
+          console.log(`Infra: ${infra.version} (${infraRange})`);
+          console.log(`Supabase: ${supabase.version} (${supabaseRange})`);
+          '
+
+      - name: Run fresh template Infra acceptance
+        env:
+          ANKH_STUDIO_FRESH_TEMPLATE_INFRA_E2E: '1'
+        run: bun test src/host/freshTemplateInfra.e2e.test.ts
+
+      - name: Collect failure diagnostics
+        if: failure()
+        run: |
+          minikube profile list || true
+          kubectl get pods --all-namespaces -o wide || true
+          kubectl get events --all-namespaces --sort-by=.lastTimestamp || true
+
+      - name: Cleanup Minikube
+        if: always()
+        run: minikube delete --all --purge || true
