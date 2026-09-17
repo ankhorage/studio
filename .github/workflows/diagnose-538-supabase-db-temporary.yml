@@ -61,6 +61,7 @@ jobs:
           env -u SUPABASE_BOOTSTRAP
           -u ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP
           ANKH_STUDIO_FRESH_TEMPLATE_INFRA_E2E=1
+          ANKH_STUDIO_PRESERVE_FAILED_INFRA=1
           bun test src/host/freshTemplateInfra.e2e.test.ts
           --test-name-pattern sharkprey
       - name: Collect Supabase DB crash diagnostics
