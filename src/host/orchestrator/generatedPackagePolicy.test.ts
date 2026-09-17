@@ -8,7 +8,9 @@ const WEB_TARGETS = { web: { enabled: true } } as const;
 
 test('derives generated dependency ranges from owner package metadata', async () => {
   const policy = getGeneratedPackagePolicy();
-  const studioPackage = (await Bun.file(new URL('../../../package.json', import.meta.url)).json()) as {
+  const studioPackage = (await Bun.file(
+    new URL('../../../package.json', import.meta.url),
+  ).json()) as {
     readonly dependencies?: Readonly<Record<string, string>>;
   };
   const packageJson = getPackageJson({
@@ -66,7 +68,6 @@ test('does not introduce optional generated dependencies when their capability i
   expect(packageJson.dependencies['@ankhorage/supabase-storage']).toBeUndefined();
   expect(Object.hasOwn(packageJson.dependencies, '@react-native-picker/picker')).toBe(false);
 });
-
 
 test('reconciles only ZORA extensions already installed by a generated app', () => {
   const policy = getGeneratedPackagePolicy();
