@@ -11,6 +11,8 @@ import { getProjectTemplateSource, type ProjectTemplateSelection } from './templ
 
 const freshTemplateInfraTest =
   process.env.ANKH_STUDIO_FRESH_TEMPLATE_INFRA_E2E === '1' ? test : test.skip;
+const preserveFailedInfrastructureForDiagnostics =
+  process.env.ANKH_STUDIO_PRESERVE_FAILED_INFRA === '1';
 const bootstrapEnvironmentVariable = 'SUPABASE_BOOTSTRAP';
 const prefixedBootstrapEnvironmentVariable = 'ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP';
 const privateBootstrapFieldNames = [
@@ -64,6 +66,7 @@ async function runFreshTemplateInfraAcceptanceAsync(templateCase: {
     const created = await firstManager.createProject(templateCase.name, source, undefined, {
       includeStudio: false,
     });
+    let completed = false;
 
     try {
       const first = await upProjectInfrastructure({
@@ -103,10 +106,13 @@ async function runFreshTemplateInfraAcceptanceAsync(templateCase: {
 
       const health = await fetch(`${firstPublic.url}/auth/v1/health`);
       expect(health.ok).toBe(true);
+      completed = true;
     } finally {
-      await new ProjectManager(workspaceRoot)
-        .destroyInfrastructure(created.id, true)
-        .catch(() => undefined);
+      if (completed || !preserveFailedInfrastructureForDiagnostics) {
+        await new ProjectManager(workspaceRoot)
+          .destroyInfrastructure(created.id, true)
+          .catch(() => undefined);
+      }
     }
   } finally {
     await rm(workspaceRoot, { recursive: true, force: true });
