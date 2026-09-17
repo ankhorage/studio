@@ -24,7 +24,7 @@ export function createStudioAppBarActions(
     React.createElement(IconButton, {
       key: 'administration',
       icon: { name: 'settings-outline' },
-      label: 'Administration',
+      label: 'Admin Settings',
       variant: 'ghost',
       color: 'neutral',
       onPress: handlers.openAdministration,
