@@ -90,11 +90,12 @@ jobs:
       - name: Verify released Infra consumer ranges
         run: |
           bun --eval '
+          import { fileURLToPath } from "node:url";
           const packageJson = await Bun.file("package.json").json();
-          const infraEntry = import.meta.resolve("@ankhorage/infra/package.json");
-          const infra = await Bun.file(infraEntry).json();
-          const supabaseEntry = import.meta.resolve("@ankhorage/supabase/package.json");
-          const supabase = await Bun.file(supabaseEntry).json();
+          const infraPath = fileURLToPath(import.meta.resolve("@ankhorage/infra/package.json"));
+          const infra = await Bun.file(infraPath).json();
+          const supabasePath = fileURLToPath(import.meta.resolve("@ankhorage/supabase/package.json"));
+          const supabase = await Bun.file(supabasePath).json();
           const infraRange = packageJson.dependencies?.["@ankhorage/infra"];
           const supabaseRange = packageJson.dependencies?.["@ankhorage/supabase"];
           if (typeof infraRange !== "string" || !Bun.semver.satisfies(infra.version, infraRange)) {
