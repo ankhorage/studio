@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   finalize:
-    if: github.actor != 'github-actions[bot]'
+    if: github.actor != 'github-actions[bot]' && github.event.head_commit.message == 'chore(ci): run issue 518 validation'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
