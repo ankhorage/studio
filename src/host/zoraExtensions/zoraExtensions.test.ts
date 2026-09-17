@@ -2,10 +2,7 @@ import type { AppManifest } from '@ankhorage/contracts';
 import { describe, expect, it } from 'bun:test';
 
 import { getGeneratedPackagePolicy } from '../../features/project-updates/adapters/outbound/getGeneratedPackagePolicy';
-import {
-  resolveZoraExtensionsForManifest,
-  resolveZoraExtensionsFromDependencies,
-} from './index';
+import { resolveZoraExtensionsForManifest, resolveZoraExtensionsFromDependencies } from './index';
 
 describe('ZORA extension owner discovery', () => {
   it('derives Tabletop component ownership from the installed plugin descriptor', () => {
