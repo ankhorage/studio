@@ -115,6 +115,30 @@ jobs:
           console.log(`Supabase Vault: ${vault.version} (${vaultRange})`);
           '
 
+      - name: Verify image-seeded Minikube runtime
+        run: |
+          bun --eval '
+          import { fileURLToPath } from "node:url";
+          const packageJson = await Bun.file("package.json").json();
+          const minikubePath = fileURLToPath(import.meta.resolve("@ankhorage/minikube/package.json"));
+          const minikube = await Bun.file(minikubePath).json();
+          const kubernetesPath = fileURLToPath(import.meta.resolve("@ankhorage/kubernetes/package.json", minikubePath));
+          const kubernetes = await Bun.file(kubernetesPath).json();
+          const minikubeRange = packageJson.dependencies?.["@ankhorage/minikube"];
+          const kubernetesRange = minikube.dependencies?.["@ankhorage/kubernetes"];
+          if (typeof minikubeRange !== "string" || !Bun.semver.satisfies(minikube.version, minikubeRange)) {
+            throw new Error(`Resolved Minikube ${minikube.version} does not satisfy ${minikubeRange ?? "<missing>"}.`);
+          }
+          if (typeof kubernetesRange !== "string" || !Bun.semver.satisfies(kubernetes.version, kubernetesRange)) {
+            throw new Error(`Resolved Kubernetes ${kubernetes.version} does not satisfy Minikube range ${kubernetesRange ?? "<missing>"}.`);
+          }
+          if (!Bun.semver.satisfies(kubernetes.version, ">=0.8.0")) {
+            throw new Error(`Resolved Kubernetes ${kubernetes.version} lacks image-seeded persistence semantics.`);
+          }
+          console.log(`Minikube: ${minikube.version} (${minikubeRange})`);
+          console.log(`Kubernetes: ${kubernetes.version} (${kubernetesRange})`);
+          '
+
       - name: Run fresh template Infra acceptance
         run: >-
           env -u SUPABASE_BOOTSTRAP
