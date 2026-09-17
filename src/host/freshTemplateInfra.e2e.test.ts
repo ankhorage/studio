@@ -6,7 +6,7 @@ import type { AppManifest } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
 
 import { ProjectManager } from './orchestrator/projectManager';
-import { upProjectInfrastructure, type StudioInfraUpResult } from './orchestrator/studioInfraUp';
+import { type StudioInfraUpResult, upProjectInfrastructure } from './orchestrator/studioInfraUp';
 import { getProjectTemplateSource, type ProjectTemplateSelection } from './templates';
 
 const freshTemplateInfraTest =
