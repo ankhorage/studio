@@ -26,19 +26,49 @@ jobs:
         with:
           bun-version: 1.4.2
 
-      - name: Align dependency floors
+      - name: Align current ZORA dependency contract
         run: |
-          bun -e "const path='package.json'; const p=JSON.parse(await Bun.file(path).text()); p.dependencies['@ankhorage/zora']='^19.0.1'; p.dependencies['@ankhorage/templates']='^11.0.5'; await Bun.write(path, JSON.stringify(p, null, 2) + '\n');"
+          bun <<'EOF'
+          const rootPath = 'package.json';
+          const root = JSON.parse(await Bun.file(rootPath).text());
+          root.dependencies['@ankhorage/zora'] = '^19.0.1';
+          root.dependencies['@ankhorage/templates'] = '^11.0.5';
+          delete root.peerDependencies['@react-native-picker/picker'];
+          await Bun.write(rootPath, `${JSON.stringify(root, null, 2)}\n`);
+
+          const appPath = 'apps/studio/package.json';
+          const app = JSON.parse(await Bun.file(appPath).text());
+          delete app.dependencies['@react-native-picker/picker'];
+          await Bun.write(appPath, `${JSON.stringify(app, null, 2)}\n`);
+
+          async function replaceExact(path, before, after = '') {
+            const source = await Bun.file(path).text();
+            if (!source.includes(before)) throw new Error(`${path} no longer contains expected migration source: ${JSON.stringify(before)}`);
+            await Bun.write(path, source.replace(before, after));
+          }
+
+          await replaceExact(
+            'src/host/orchestrator/templateSources.ts',
+            "      '@react-native-picker/picker': '2.11.4',\n",
+          );
+          const dependencyContractPath = 'src/host/orchestrator/generatedDependencyContract.test.ts';
+          await replaceExact(dependencyContractPath, "    '@react-native-picker/picker': nativePicker,\n");
+          await replaceExact(dependencyContractPath, '    expect(nativePicker).toBeDefined();\n');
+          await replaceExact(dependencyContractPath, "    '@react-native-picker/picker': expectedNativePicker,\n");
+          await replaceExact(dependencyContractPath, '  expect(nativePicker).toBe(expectedNativePicker);\n');
+          EOF
           cat > .changeset/align-zora-19.md <<'EOF'
           ---
           "@ankhorage/studio": patch
           ---
 
-          Align Studio and generated-app dependency policy with the released ZORA 19 boundary and ZORA-19-compatible Templates release.
+          Align Studio and generated-app dependency policy with the released ZORA 19 boundary, the ZORA-19-compatible Templates release, and remove the obsolete native picker projection.
           EOF
 
-      - name: Refresh lockfile
-        run: bun install
+      - name: Refresh lockfiles
+        run: |
+          bun install
+          bun install --cwd apps/studio
 
       - name: Format
         run: bun run format
