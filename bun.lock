@@ -13,7 +13,7 @@
         "@ankhorage/expo-runtime": "^3.2.15",
         "@ankhorage/infra": "^7.1.1",
         "@ankhorage/local": "^0.3.0",
-        "@ankhorage/minikube": "^0.4.1",
+        "@ankhorage/minikube": "^0.4.4",
         "@ankhorage/navigator": "^3.2.4",
         "@ankhorage/orchestrator": "^0.3.2",
         "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.5",
@@ -91,11 +91,11 @@
 
     "@ankhorage/infra": ["@ankhorage/infra@7.1.1", "", { "dependencies": { "@ankhorage/contracts": "^21.0.0", "@ankhorage/utility": "^1.2.0" }, "bin": { "ankhorage-infra": "dist/cli/bin.js" } }, "sha512-6fw+QjpiCbEzNApsca5qW0lQT4IqYQod7QRYQbKBJLOWH9OwrAYze1+4ovnAZDlgvvKTWWGyMjhe6D+grhtJaQ=="],
 
-    "@ankhorage/kubernetes": ["@ankhorage/kubernetes@0.7.3", "", { "dependencies": { "@ankhorage/contracts": "^19.1.0" } }, "sha512-jEb3hHZP4IaoO7xyPkyDlHQlvslZVXqj861vIuh/pBikMyHYc/soO+MZLC/75rBW7DLk6l9dkDsdSzYi8o7ZTQ=="],
+    "@ankhorage/kubernetes": ["@ankhorage/kubernetes@0.8.1", "", { "dependencies": { "@ankhorage/contracts": "^19.4.0" } }, "sha512-mLLAl8+pdPkXJEr/lew37tOjYh/NS1rkylfux5AZ1KnG7m2jd82ObHG6RDL6TEuPEhTVzRRuLKMSEv2Kh6yZgA=="],
 
     "@ankhorage/local": ["@ankhorage/local@0.3.0", "", { "dependencies": { "@ankhorage/contracts": "^19.0.0" } }, "sha512-TdF1LyEhOl6ahMJNVn3zb15a3rZjSliRdd7RQcDufeBre2qeeCSBHxcc2ipbCRGtY6oa3/gaunkBVhbCvOEEBA=="],
 
-    "@ankhorage/minikube": ["@ankhorage/minikube@0.4.1", "", { "dependencies": { "@ankhorage/contracts": "^19.1.0", "@ankhorage/kubernetes": "^0.7.2" } }, "sha512-8ieUZdNZLqPArDNwOXSiDZSeI6lJXv27Zoq5MeRhzoU71qVx1Dr+xK9l4b+MuEnGTQRZItzYaKTGpIS/1qp5wg=="],
+    "@ankhorage/minikube": ["@ankhorage/minikube@0.4.4", "", { "dependencies": { "@ankhorage/contracts": "^19.4.0", "@ankhorage/kubernetes": "^0.8.0" } }, "sha512-0HTtu7D2dEtpQzTOjX1pm7a2sIQU1BF2zXRSvz4TnjCx/1XxFRvm07enQBdHWMiSMkn1S1aRVJtln6kdtq4GcQ=="],
 
     "@ankhorage/navigator": ["@ankhorage/navigator@3.2.4", "", { "dependencies": { "@ankhorage/contracts": "^12.0.1", "@ankhorage/utility": "^0.5.0" }, "peerDependencies": { "@ankhorage/surface": "^4.0.0", "@react-native-vector-icons/fontawesome": "^13.1.3", "@react-native-vector-icons/fontawesome5": "^13.1.3", "@react-native-vector-icons/fontawesome6": "^13.1.3", "@react-native-vector-icons/ionicons": "^13.1.3", "@react-native-vector-icons/material-design-icons": "^13.1.3", "expo-router": ">=57.0.0 <58.0.0", "react": "19.2.3", "react-dom": "19.2.3", "react-native": "0.86.x", "react-native-gesture-handler": "*", "react-native-pager-view": "8.0.2", "react-native-reanimated": "*", "react-native-safe-area-context": "~5.7.0", "react-native-tab-view": "^4.3.2", "react-native-web": "~0.21.0", "react-native-worklets": "*" }, "optionalPeers": ["react-native-gesture-handler", "react-native-pager-view", "react-native-reanimated", "react-native-tab-view", "react-native-worklets"] }, "sha512-WWA0oHoISUsAX1L2sC4csDal3dXY9MHFIdSY09nfE5wky7I4ELxU8/Mg4Ecta06z42A3KCDcn0iVVMEzdr+e7A=="],
 
