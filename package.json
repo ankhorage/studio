@@ -1,6 +1,6 @@
 {
   "name": "@ankhorage/studio",
-  "version": "2.7.8",
+  "version": "2.7.9",
   "description": "Studio authoring package for Ankhorage apps",
   "license": "MIT",
   "homepage": "https://github.com/ankhorage/studio#readme",
@@ -182,7 +182,6 @@
     "test:acceptance:expo57-studio-standalone": "bun scripts/expo57-studio-standalone-acceptance.ts",
     "test:acceptance:packed-studio-host": "bun scripts/packed-studio-host-acceptance.ts",
     "test:e2e": "bun run test:e2e:generated-app-web && bun run test:e2e:infra",
-    "test:e2e:fresh-template-infra": "ANKH_STUDIO_FRESH_TEMPLATE_INFRA_E2E=1 bun test src/host/freshTemplateInfra.e2e.test.ts",
     "test:e2e:generated-app-web": "CHROME_PATH=\"${CHROME_PATH:-$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || printf '%s' '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')}\" ANKH_STUDIO_ADMIN_WEB_SMOKE=1 bun test src/host/generatedAdminExpoWeb.smoke.test.ts",
     "test:e2e:infra": "ANKH_STUDIO_INFRA_E2E=1 bun test src/host/studioInfra.e2e.test.ts",
     "test:e2e:expo57-production-infra": "ANKH_STUDIO_EXPO57_INFRA_E2E=1 bun test src/host/expo57GeneratedProductionInfra.e2e.test.ts",
@@ -199,7 +198,8 @@
     "knip:check": "ankhorage-knip",
     "test:apm": "bun test src/features/project-updates/adapters/inbound/studioUpdateExtension.test.ts",
     "check-types": "tsc --noEmit -p tsconfig.json",
-    "test:apm:consumer": "node scripts/apm-owner-consumer.ts"
+    "test:apm:consumer": "node scripts/apm-owner-consumer.ts",
+    "test:e2e:fresh-template-infra": "ANKH_STUDIO_FRESH_TEMPLATE_INFRA_E2E=1 bun test src/host/freshTemplateInfra.e2e.test.ts"
   },
   "keywords": [
     "ankhorage",
@@ -233,9 +233,9 @@
     "@ankhorage/supabase-auth": "^1.2.11",
     "@ankhorage/supabase-storage": "^0.2.5",
     "@ankhorage/supabase-vault": "^0.3.3",
-    "@ankhorage/templates": "^11.0.4",
+    "@ankhorage/templates": "^11.0.5",
     "@ankhorage/utility": "^0.6.0",
-    "@ankhorage/zora": "^10.0.0",
+    "@ankhorage/zora": "^19.0.1",
     "@ankhorage/zora-chess": "^0.2.0",
     "@ankhorage/zora-tabletop": "^0.1.1",
     "@fastify/cors": "^11.2.0",
@@ -245,7 +245,6 @@
     "fastify": "^5.7.4"
   },
   "peerDependencies": {
-    "@react-native-picker/picker": "2.11.4",
     "@react-native-vector-icons/fontawesome": "^13.1.3",
     "@react-native-vector-icons/fontawesome5": "^13.1.3",
     "@react-native-vector-icons/fontawesome6": "^13.1.3",

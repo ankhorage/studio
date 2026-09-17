@@ -982,7 +982,6 @@ export function getPackageJson(args: {
         ? { '@ankhorage/supabase-storage': SUPABASE_STORAGE_VERSION }
         : {}),
       '@ankhorage/zora': ZORA_VERSION,
-      '@react-native-picker/picker': '2.11.4',
       '@react-native-vector-icons/fontawesome': '^13.1.3',
       '@react-native-vector-icons/fontawesome5': '^13.1.3',
       '@react-native-vector-icons/fontawesome6': '^13.1.3',

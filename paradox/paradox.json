@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.7.8",
+      "value": "v2.7.9",
       "color": "cb3837"
     },
     {
@@ -13369,7 +13369,7 @@
       "description": "Parse one owner package manifest as a validated object.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 112,
+        "line": 111,
         "column": 1
       }
     },
@@ -13378,7 +13378,7 @@
       "description": "Read and validate Studio's exact package version.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 122,
+        "line": 121,
         "column": 1
       }
     },
@@ -13387,7 +13387,7 @@
       "description": "Read and validate Studio's exact Bun package-manager pin.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 131,
+        "line": 130,
         "column": 1
       }
     },
@@ -13396,7 +13396,7 @@
       "description": "Read one required package-manifest dependency section.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 140,
+        "line": 139,
         "column": 1
       }
     },
@@ -13405,7 +13405,7 @@
       "description": "Read one required non-empty string property from package metadata.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 153,
+        "line": 152,
         "column": 1
       }
     },
@@ -14293,10 +14293,10 @@
     },
     {
       "name": "applyGeneratedPackagePolicy",
-      "description": "Apply one explicit Studio package policy while preserving all user-owned package manifest entries.",
+      "description": "Apply one explicit Studio package policy while preserving user-owned package manifest entries outside superseded Studio-managed dependencies.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts",
-        "line": 7,
+        "line": 9,
         "column": 1
       }
     },
@@ -15151,7 +15151,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 52,
+        "line": 54,
         "column": 1
       }
     },
@@ -15160,7 +15160,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 116,
+        "line": 122,
         "column": 1
       }
     },
@@ -15169,7 +15169,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 129,
+        "line": 135,
         "column": 1
       }
     },
@@ -15178,7 +15178,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 145,
+        "line": 151,
         "column": 1
       }
     },
@@ -15187,7 +15187,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 153,
+        "line": 159,
         "column": 1
       }
     },
@@ -15196,7 +15196,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 160,
+        "line": 166,
         "column": 1
       }
     },
@@ -18193,7 +18193,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 233,
+        "line": 229,
         "column": 1
       }
     },
@@ -18886,7 +18886,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1037,
+        "line": 1036,
         "column": 1
       }
     },
@@ -18895,7 +18895,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1053,
+        "line": 1052,
         "column": 1
       }
     },
@@ -18904,7 +18904,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1064,
+        "line": 1063,
         "column": 1
       }
     },
@@ -18913,7 +18913,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1068,
+        "line": 1067,
         "column": 1
       }
     },
@@ -18922,7 +18922,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1101,
+        "line": 1100,
         "column": 1
       }
     },
@@ -24886,10 +24886,10 @@
     },
     {
       "name": "AnkhAdminShell",
-      "description": "Compose the Studio administration app bar, responsive navigation modal/sidebar, and routed page content.\n@todo Keep this as package-wide admin UI composition; route construction/availability/active-state policy belongs to the routes domain and reusable responsive primitives belong to ZORA.",
+      "description": "Compose the Studio administration app bar, responsive navigation dialog/sidebar, and routed page content.\n@todo Keep this as package-wide admin UI composition until Navigator owns the complete admin topology.",
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 38,
+        "line": 30,
         "column": 1
       }
     },
@@ -24898,7 +24898,7 @@
       "description": "Open one available Studio admin route, synchronize route selection state, and close compact navigation.",
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 50,
+        "line": 44,
         "column": 9
       }
     },
@@ -24907,7 +24907,7 @@
       "description": "Return from administration to the most recently recorded non-admin application location.",
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 65,
+        "line": 59,
         "column": 9
       }
     },
@@ -24916,7 +24916,7 @@
       "description": "Render navigation entries from the Studio admin-route registry using current availability and hierarchy state.",
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 134,
+        "line": 124,
         "column": 1
       }
     },
@@ -26014,7 +26014,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 202,
+        "line": 213,
         "column": 1
       }
     },
@@ -26023,7 +26023,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 217,
+        "line": 228,
         "column": 1
       }
     },
@@ -26032,7 +26032,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 236,
+        "line": 247,
         "column": 1
       }
     },
@@ -26041,7 +26041,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 241,
+        "line": 252,
         "column": 1
       }
     },
@@ -26122,7 +26122,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
-        "line": 140,
+        "line": 151,
         "column": 1
       }
     },
@@ -26131,7 +26131,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
-        "line": 155,
+        "line": 166,
         "column": 1
       }
     },
@@ -26257,7 +26257,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 290,
+        "line": 325,
         "column": 1
       }
     },
@@ -26266,7 +26266,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 303,
+        "line": 338,
         "column": 1
       }
     },
@@ -26275,7 +26275,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 313,
+        "line": 348,
         "column": 1
       }
     },
@@ -26284,7 +26284,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 321,
+        "line": 356,
         "column": 1
       }
     },
@@ -26338,7 +26338,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
-        "line": 188,
+        "line": 199,
         "column": 1
       }
     },
@@ -26347,7 +26347,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
-        "line": 212,
+        "line": 223,
         "column": 1
       }
     },
@@ -26833,7 +26833,7 @@
       "description": "Render canonical screens and primary-navigation authoring controls from the derived Studio screen navigation model.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ScreensAdminPage.tsx",
-        "line": 40,
+        "line": 41,
         "column": 1
       }
     },
@@ -26842,7 +26842,7 @@
       "description": "Dispatch one typed screens-admin action against the current Studio mutation target.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ScreensAdminPage.tsx",
-        "line": 50,
+        "line": 51,
         "column": 9
       }
     },
@@ -26851,7 +26851,7 @@
       "description": "Trim and create the requested screen, then clear the creation draft.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ScreensAdminPage.tsx",
-        "line": 54,
+        "line": 55,
         "column": 9
       }
     },
@@ -26860,7 +26860,7 @@
       "description": "Apply the pending destructive screen deletion after confirmation.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ScreensAdminPage.tsx",
-        "line": 62,
+        "line": 63,
         "column": 9
       }
     },
@@ -26869,7 +26869,7 @@
       "description": "Render one canonical screen with route references, detail navigation, and guarded deletion.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ScreensAdminPage.tsx",
-        "line": 179,
+        "line": 187,
         "column": 1
       }
     },
@@ -26878,7 +26878,7 @@
       "description": "Render primary-navigation visibility, initial-route, and sibling-order controls for one screen route reference.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ScreensAdminPage.tsx",
-        "line": 247,
+        "line": 255,
         "column": 1
       }
     },
@@ -26887,7 +26887,7 @@
       "description": "Format a route parent-path segment array as a slash-delimited display label with a root fallback.\n@utility @ankhorage/utility/route",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ScreensAdminPage.tsx",
-        "line": 339,
+        "line": 351,
         "column": 1
       }
     },
@@ -43105,7 +43105,7 @@
       {
         "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
         "toSymbol": "destroyInfrastructure",
-        "callExpression": "new ProjectManager(workspaceRoot)\n        .destroyInfrastructure",
+        "callExpression": "new ProjectManager(workspaceRoot)\n          .destroyInfrastructure",
         "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
       },
       {
@@ -58694,6 +58694,12 @@
         "fromSymbol": "AnkhAdminShell",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "useWindowDimensions",
+        "callExpression": "useWindowDimensions",
         "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
       },
       {

@@ -22,7 +22,8 @@ test('keeps external API administration progressive and owner-backed', () => {
 
   expect(pageSource).toContain('showAuthoring && fallback');
   expect(pageSource).toContain("const showOperations = routeId === 'api-operations';");
-  expect(pageSource).toContain('ConfirmDialog');
+  expect(pageSource).toContain('Dialog');
+  expect(pageSource).not.toContain('ConfirmDialog');
   expect(pageSource).toContain('removeExternalApiConnection');
   expect(pageSource).toContain('accessibilityLiveRegion="polite"');
 
@@ -31,7 +32,8 @@ test('keeps external API administration progressive and owner-backed', () => {
   expect(manualSource).toContain('attemptedUrl');
 
   expect(catalogSource).toContain('ListSection');
-  expect(catalogSource).toContain('ListRow');
+  expect(catalogSource).toContain('ListItem');
+  expect(catalogSource).not.toContain('ListRow');
   expect(catalogSource).toContain('Badge');
   expect(catalogSource).toContain('Edit');
   expect(catalogSource).toContain('Remove');

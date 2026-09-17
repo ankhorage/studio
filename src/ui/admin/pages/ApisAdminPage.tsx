@@ -1,4 +1,4 @@
-import { ConfirmDialog, Text } from '@ankhorage/zora';
+import { Button, Dialog, Text, View as ZoraView } from '@ankhorage/zora';
 import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
 
@@ -155,7 +155,7 @@ export function ApisAdminPage({ routeId }: { readonly routeId: ApisAdminRouteId 
         {showOperations ? <ApiOperationsCard apis={apis} /> : null}
       </AdminScroll>
 
-      <ConfirmDialog
+      <Dialog
         visible={pendingRemoveId !== null}
         title="Remove API?"
         description={
@@ -163,14 +163,20 @@ export function ApisAdminPage({ routeId }: { readonly routeId: ApisAdminRouteId 
             ? `Remove ${pendingRemoveApi.name ?? pendingRemoveApi.id} from the canonical project manifest? Existing bindings to this API will no longer resolve.`
             : undefined
         }
-        confirmLabel="Remove API"
-        confirmColor="danger"
-        busy={removeBusy}
-        onCancel={cancelRemove}
-        onConfirm={() => void confirmRemove()}
+        onDismiss={cancelRemove}
+        footer={
+          <ZoraView direction={{ base: 'column', md: 'row' }} gap="s" justify="flex-end">
+            <Button color="neutral" variant="soft" disabled={removeBusy} onPress={cancelRemove}>
+              Cancel
+            </Button>
+            <Button color="danger" disabled={removeBusy} onPress={() => void confirmRemove()}>
+              {removeBusy ? 'Removing…' : 'Remove API'}
+            </Button>
+          </ZoraView>
+        }
       >
         {removeError ? <Text color="danger">{removeError}</Text> : null}
-      </ConfirmDialog>
+      </Dialog>
     </>
   );
 }

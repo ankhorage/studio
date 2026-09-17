@@ -1,5 +1,5 @@
-import { Button, TextInput, ListRow, ListSection, Modal, Stack } from '@ankhorage/zora';
 import type { UiNode } from '@ankhorage/contracts';
+import { Button, Dialog, ListItem, ListSection, TextInput, View } from '@ankhorage/zora';
 import React from 'react';
 import { ScrollView } from 'react-native';
 
@@ -34,7 +34,7 @@ export function StudioInsertDialog(props: StudioInsertDialogProps): React.JSX.El
   });
 
   return (
-    <Modal
+    <Dialog
       closeOnBackdrop
       description="Choose a component or recipe for the current canvas context."
       footer={
@@ -47,7 +47,7 @@ export function StudioInsertDialog(props: StudioInsertDialogProps): React.JSX.El
       visible={props.visible}
       width="wide"
     >
-      <Stack gap="m">
+      <View gap="m">
         <TextInput
           accessibilityLabel="Search insert catalog"
           onChangeText={setQuery}
@@ -55,7 +55,7 @@ export function StudioInsertDialog(props: StudioInsertDialogProps): React.JSX.El
           value={query}
         />
         <ScrollView style={{ maxHeight: 520 }}>
-          <Stack gap="l">
+          <View gap="l">
             {groups.map((group) => (
               <ListSection key={group.category} title={group.label}>
                 {group.entries.map((entry) => {
@@ -69,7 +69,7 @@ export function StudioInsertDialog(props: StudioInsertDialogProps): React.JSX.El
                     entry.status === 'disabled' ? entry.disabledReason?.detail : entry.description;
 
                   return entry.status === 'enabled' ? (
-                    <ListRow
+                    <ListItem
                       key={entry.id}
                       description={description}
                       meta={placementHint}
@@ -77,7 +77,7 @@ export function StudioInsertDialog(props: StudioInsertDialogProps): React.JSX.El
                       title={entry.label}
                     />
                   ) : (
-                    <ListRow
+                    <ListItem
                       key={entry.id}
                       disabled
                       description={description}
@@ -87,9 +87,9 @@ export function StudioInsertDialog(props: StudioInsertDialogProps): React.JSX.El
                 })}
               </ListSection>
             ))}
-          </Stack>
+          </View>
         </ScrollView>
-      </Stack>
-    </Modal>
+      </View>
+    </Dialog>
   );
 }

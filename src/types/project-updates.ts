@@ -38,7 +38,6 @@ export interface GeneratedPackagePolicy {
     readonly typesReact: string;
   };
   readonly peerDependencies: {
-    readonly nativePicker: string;
     readonly fontawesome: string;
     readonly fontawesome5: string;
     readonly fontawesome6: string;

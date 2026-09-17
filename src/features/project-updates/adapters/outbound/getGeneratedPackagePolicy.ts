@@ -88,7 +88,6 @@ function readGeneratedPeerDependencies(
   peerDependencies: Readonly<Record<string, unknown>>,
 ): GeneratedPackagePolicy['peerDependencies'] {
   return {
-    nativePicker: readRequiredString(peerDependencies, '@react-native-picker/picker', 'Studio'),
     fontawesome: readRequiredString(
       peerDependencies,
       '@react-native-vector-icons/fontawesome',

@@ -27,12 +27,12 @@ test('derives generated dependency ranges from owner package metadata', () => {
     '@ankhorage/supabase-auth': policy.dependencies.supabaseAuth,
     '@ankhorage/supabase-storage': policy.dependencies.supabaseStorage,
     '@ankhorage/zora': policy.dependencies.zora,
-    '@react-native-picker/picker': policy.peerDependencies.nativePicker,
     '@react-native-vector-icons/fontawesome': policy.peerDependencies.fontawesome,
     '@react-native-vector-icons/fontawesome5': policy.peerDependencies.fontawesome5,
     '@react-native-vector-icons/fontawesome6': policy.peerDependencies.fontawesome6,
     '@react-native-vector-icons/ionicons': policy.peerDependencies.ionicons,
   });
+  expect(Object.hasOwn(packageJson.dependencies, '@react-native-picker/picker')).toBe(false);
   expect(packageJson.devDependencies).toMatchObject({
     '@ankhorage/ankh': policy.devDependencies.ankh,
     '@ankhorage/devtools': policy.devDependencies.devtools,
@@ -53,4 +53,5 @@ test('does not introduce optional generated dependencies when their capability i
   expect(packageJson.dependencies['@ankhorage/utility']).toBeUndefined();
   expect(packageJson.dependencies['@ankhorage/supabase-auth']).toBeUndefined();
   expect(packageJson.dependencies['@ankhorage/supabase-storage']).toBeUndefined();
+  expect(Object.hasOwn(packageJson.dependencies, '@react-native-picker/picker')).toBe(false);
 });

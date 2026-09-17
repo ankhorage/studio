@@ -22,8 +22,8 @@ import {
 
 ## Studio integration
 
-The first-party Studio shell renders the contextual Insert surface with ordinary ZORA `Modal`,
-`Input`, `ListSection`, and `ListRow` components. The app bar says **Add child** when the selected
+The first-party Studio shell renders the contextual Insert surface with ordinary ZORA `Dialog`,
+`TextInput`, `ListSection`, and `ListItem` components. The app bar says **Add child** when the selected
 node accepts a direct child and **Insert** when placement falls back to an ancestor or sibling.
 Search and category state are transient; enabled rows show their resolved placement hint, while
 disabled rows retain the catalog's exact explanation.
@@ -31,9 +31,9 @@ disabled rows retain the catalog's exact explanation.
 `StudioProvider` receives concrete component metadata from the generated app and exposes the
 package-neutral catalog, insert, delete, and placement-backed move capabilities through the Studio
 context. Insertion creates nodes from the catalog blueprint and defaults, persists through the
-canonical manifest placement mutation, and selects the inserted node. Deletion uses a ZORA
-confirmation dialog, rejects the screen root, removes the complete subtree and its bindings, and
-selects the deleted node's former parent.
+canonical manifest placement mutation, and selects the inserted node. Deletion composes confirmation
+actions through ZORA `Dialog`, rejects the screen root, removes the complete subtree and its bindings,
+and selects the deleted node's former parent.
 
 There is no parallel Toolbox or Studio-only component registry. Hosts still own which concrete
 metadata registry they inject and where the contextual app-bar augmentation is mounted.
