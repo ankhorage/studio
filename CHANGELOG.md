@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.7.10
+
+### Patch Changes
+
+- 48d5a0b: Restore fresh local Supabase infrastructure startup by composing Studio's bundled providers with Infra's project-scoped credential persistence and consuming the released image-seeded Minikube/Kubernetes runtime required by Supabase persistent configuration.
+
 ## 2.7.9
 
 ### Patch Changes
