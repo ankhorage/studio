@@ -123,10 +123,30 @@ jobs:
 
       - name: Collect failure diagnostics
         if: failure()
+        shell: bash
         run: |
           minikube profile list || true
-          kubectl get pods --all-namespaces -o wide || true
-          kubectl get events --all-namespaces --sort-by=.lastTimestamp || true
+
+          for profile in sharkprey-infra-acceptance-local stillpath-infra-acceptance-local; do
+            echo "::group::${profile} Supabase database diagnostics"
+            minikube -p "$profile" kubectl -- -n "$profile" get pods -o wide || true
+            minikube -p "$profile" kubectl -- -n "$profile" get deployment supabase-db -o wide || true
+
+            pod="$(minikube -p "$profile" kubectl -- -n "$profile" get pods -o name 2>/dev/null | grep '^pod/supabase-db-' | head -n 1 | cut -d/ -f2 || true)"
+            if [ -n "$pod" ]; then
+              echo "Supabase DB pod: $pod"
+              minikube -p "$profile" kubectl -- -n "$profile" describe pod "$pod" || true
+              echo '--- current supabase-db logs ---'
+              minikube -p "$profile" kubectl -- -n "$profile" logs "$pod" -c supabase-db || true
+              echo '--- previous supabase-db logs ---'
+              minikube -p "$profile" kubectl -- -n "$profile" logs "$pod" -c supabase-db --previous || true
+            else
+              echo 'No supabase-db pod found.'
+            fi
+
+            minikube -p "$profile" kubectl -- get events --all-namespaces --sort-by=.lastTimestamp || true
+            echo "::endgroup::"
+          done
 
       - name: Cleanup Minikube
         if: always()
