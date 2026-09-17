@@ -1,6 +1,6 @@
 import type { AppManifest, UiNode } from '@ankhorage/contracts';
-import type { ZoraPluginMetadata } from '@ankhorage/zora';
 import { readOwnProperty } from '@ankhorage/utility/object';
+import type { ZoraPluginMetadata } from '@ankhorage/zora';
 
 import { STUDIO_ZORA_EXTENSION_SOURCES } from '../../constants';
 import { getGeneratedPackagePolicy } from '../../features/project-updates/adapters/outbound/getGeneratedPackagePolicy';
