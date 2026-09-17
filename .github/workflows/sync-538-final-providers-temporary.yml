@@ -1,0 +1,73 @@
+name: Temporary #538 final provider sync
+
+on:
+  push:
+    branches:
+      - test/538-fresh-template-infra-up
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout task branch
+        uses: actions/checkout@v4
+        with:
+          ref: test/538-fresh-template-infra-up
+          fetch-depth: 0
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - name: Wait for final provider releases
+        shell: bash
+        run: |
+          for attempt in $(seq 1 12); do
+            supabase_version="$(npm view @ankhorage/supabase@0.5.12 version 2>/dev/null || true)"
+            vault_version="$(npm view @ankhorage/supabase-vault@0.3.3 version 2>/dev/null || true)"
+            if [ "$supabase_version" = "0.5.12" ] && [ "$vault_version" = "0.3.3" ]; then
+              printf 'Registry ready: supabase=%s vault=%s\n' "$supabase_version" "$vault_version"
+              exit 0
+            fi
+            printf 'Registry not ready yet (attempt %s): supabase=%s vault=%s\n' "$attempt" "${supabase_version:-missing}" "${vault_version:-missing}"
+            sleep 5
+          done
+          exit 1
+      - name: Update released provider ranges
+        run: |
+          bun --eval '
+          const path = "package.json";
+          const packageJson = await Bun.file(path).json();
+          packageJson.dependencies["@ankhorage/supabase"] = "^0.5.12";
+          packageJson.dependencies["@ankhorage/supabase-vault"] = "^0.3.3";
+          await Bun.write(path, `${JSON.stringify(packageJson, null, 2)}\n`);
+          '
+      - name: Clear Bun install cache
+        run: rm -rf ~/.bun/install/cache
+      - name: Refresh lockfile
+        run: bun install
+      - name: Verify released providers
+        run: |
+          bun --eval '
+          import { fileURLToPath } from "node:url";
+          for (const [name, range] of [["@ankhorage/supabase", "^0.5.12"], ["@ankhorage/supabase-vault", "^0.3.3"]]) {
+            const path = fileURLToPath(import.meta.resolve(`${name}/package.json`));
+            const packageJson = await Bun.file(path).json();
+            if (!Bun.semver.satisfies(packageJson.version, range)) throw new Error(`${name} ${packageJson.version} does not satisfy ${range}`);
+            console.log(`${name}: ${packageJson.version}`);
+          }
+          '
+      - name: Commit dependency sync
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json bun.lock
+          if git diff --cached --quiet; then
+            echo "No dependency changes."
+            exit 0
+          fi
+          git commit -m "fix(studio): consume corrected Supabase bootstrap providers"
+          git push origin HEAD:test/538-fresh-template-infra-up
