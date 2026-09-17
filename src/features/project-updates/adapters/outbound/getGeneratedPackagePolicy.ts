@@ -92,10 +92,7 @@ function readGeneratedZoraExtensionDependencies(
     Object.keys(dependencies)
       .filter((packageName) => packageName.startsWith('@ankhorage/zora-'))
       .sort()
-      .map((packageName) => [
-        packageName,
-        readRequiredString(dependencies, packageName, 'Studio'),
-      ]),
+      .map((packageName) => [packageName, readRequiredString(dependencies, packageName, 'Studio')]),
   );
 }
 
