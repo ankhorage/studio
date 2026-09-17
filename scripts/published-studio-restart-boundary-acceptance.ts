@@ -49,10 +49,7 @@ try {
     assertStudioHost(currentStatus, CURRENT_STUDIO_VERSION);
     const currentPlan = await planProjectAsync(projectId);
     assert.equal(readOwnProperty(currentPlan, 'complete'), true);
-    assert.equal(
-      findByCode(currentPlan, 'blockers', 'plan.host-upgrade-required'),
-      undefined,
-    );
+    assert.equal(findByCode(currentPlan, 'blockers', 'plan.host-upgrade-required'), undefined);
     assert.equal(studioTargetVersion(currentPlan), CURRENT_STUDIO_VERSION);
     const currentPlanId = readRequiredString(currentPlan, 'planId');
     const oldPlanId = readRequiredString(
@@ -80,14 +77,8 @@ try {
     );
     assert.equal(readOwnProperty(verify, 'verified'), true);
     assert.equal(await installedStudioVersionAsync(projectRoot), CURRENT_STUDIO_VERSION);
-    assert.equal(
-      await readFile(path.join(projectRoot, USER_FILE_NAME), 'utf8'),
-      USER_FILE_CONTENT,
-    );
-    assert.notEqual(
-      (await readMutationSentinelsAsync(projectRoot)).lockfile,
-      beforeApply.lockfile,
-    );
+    assert.equal(await readFile(path.join(projectRoot, USER_FILE_NAME), 'utf8'), USER_FILE_CONTENT);
+    assert.notEqual((await readMutationSentinelsAsync(projectRoot)).lockfile, beforeApply.lockfile);
 
     console.log(
       JSON.stringify(
@@ -122,7 +113,7 @@ async function runOldHostBoundaryAsync(host: ReturnType<typeof spawn>): Promise<
     await waitForHostAsync(host);
     const projectId = await createExistingProjectAsync();
     const projectRoot = path.join(workspaceRoot, 'apps', projectId);
-    assert.equal(await installedStudioVersionAsync(projectRoot), OLD_STUDIO_VERSION);
+    await retainOldStudioReleaseAsync(projectRoot);
     await writeFile(path.join(projectRoot, USER_FILE_NAME), USER_FILE_CONTENT, 'utf8');
     const before = await readMutationSentinelsAsync(projectRoot);
     const status = await statusProjectAsync(projectId);
@@ -146,6 +137,73 @@ async function runOldHostBoundaryAsync(host: ReturnType<typeof spawn>): Promise<
   } finally {
     await stopHostAsync(host);
   }
+}
+
+/*** Reconstruct and validate the retained 2.7.7 lock state that existed before 2.7.8 was published. */
+async function retainOldStudioReleaseAsync(projectRoot: string): Promise<void> {
+  const packagePath = path.join(projectRoot, 'package.json');
+  const manifest = await readJsonObjectAsync(packagePath);
+  const section = studioDependencySection(manifest);
+  const dependencies = readObject(manifest, section);
+  const releaseRange = readRequiredString(dependencies, STUDIO_PACKAGE_NAME);
+  assert.equal(releaseRange, `^${OLD_STUDIO_VERSION}`);
+
+  await writeJsonAsync(packagePath, {
+    ...manifest,
+    [section]: { ...dependencies, [STUDIO_PACKAGE_NAME]: OLD_STUDIO_VERSION },
+  });
+  await runCommandAsync('bun', ['install', '--ignore-scripts'], projectRoot);
+  assert.equal(await installedStudioVersionAsync(projectRoot), OLD_STUDIO_VERSION);
+
+  const exactManifest = await readJsonObjectAsync(packagePath);
+  await writeJsonAsync(packagePath, {
+    ...exactManifest,
+    [section]: {
+      ...readObject(exactManifest, section),
+      [STUDIO_PACKAGE_NAME]: releaseRange,
+    },
+  });
+  await restoreBunLockReleaseRangeAsync(projectRoot, section, releaseRange);
+  await runCommandAsync('bun', ['install', '--frozen-lockfile', '--ignore-scripts'], projectRoot);
+  assert.equal(await installedStudioVersionAsync(projectRoot), OLD_STUDIO_VERSION);
+}
+
+/*** Restore the historical semver declaration without changing the resolved published package. */
+async function restoreBunLockReleaseRangeAsync(
+  projectRoot: string,
+  section: 'dependencies' | 'devDependencies',
+  releaseRange: string,
+): Promise<void> {
+  const lockPath = path.join(projectRoot, 'bun.lock');
+  const parsed: unknown = Bun.JSONC.parse(await readFile(lockPath, 'utf8'));
+  if (!isRecord(parsed)) throw new Error('Expected Bun text lock object.');
+  const workspaces = readObject(parsed, 'workspaces');
+  const rootWorkspace = readObject(workspaces, '');
+  const dependencies = readObject(rootWorkspace, section);
+  assert.equal(readRequiredString(dependencies, STUDIO_PACKAGE_NAME), OLD_STUDIO_VERSION);
+  await writeJsonAsync(lockPath, {
+    ...parsed,
+    workspaces: {
+      ...workspaces,
+      '': {
+        ...rootWorkspace,
+        [section]: { ...dependencies, [STUDIO_PACKAGE_NAME]: releaseRange },
+      },
+    },
+  });
+}
+
+/*** Locate the generated project's Studio declaration without assuming dependency ownership. */
+function studioDependencySection(
+  manifest: Readonly<Record<string, unknown>>,
+): 'dependencies' | 'devDependencies' {
+  const sections = ['dependencies', 'devDependencies'] as const;
+  const section = sections.find((candidate) => {
+    const dependencies = readOwnProperty(manifest, candidate);
+    return isRecord(dependencies) && typeof readOwnProperty(dependencies, STUDIO_PACKAGE_NAME) === 'string';
+  });
+  if (section === undefined) throw new Error('Generated project has no Studio dependency declaration.');
+  return section;
 }
 
 async function installPublishedStudioAsync(root: string, version: string): Promise<void> {
@@ -339,9 +397,7 @@ async function stopHostAsync(host: ReturnType<typeof spawn>): Promise<void> {
   if (!(await Promise.race([exited, sleepAsync(5_000).then(() => false)]))) host.kill('SIGKILL');
 }
 
-async function readJsonObjectAsync(
-  filePath: string,
-): Promise<Readonly<Record<string, unknown>>> {
+async function readJsonObjectAsync(filePath: string): Promise<Readonly<Record<string, unknown>>> {
   const value: unknown = JSON.parse(await readFile(filePath, 'utf8'));
   if (!isRecord(value)) throw new Error(`Expected JSON object at ${filePath}.`);
   return value;
