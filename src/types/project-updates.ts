@@ -29,6 +29,7 @@ export interface GeneratedPackagePolicy {
     readonly supabaseAuth: string;
     readonly supabaseStorage: string;
     readonly zora: string;
+    readonly zoraExtensions: Readonly<Record<string, string>>;
   };
   readonly devDependencies: {
     readonly ankh: string;
