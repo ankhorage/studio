@@ -369,7 +369,7 @@ function lifecycleEvidence(
     targetVersion,
     operationStatus,
     verified: readOwnProperty(verify, 'verified') === true,
-    statusFindings: normalizeFindings(readArray(status, 'findings')),
+    statusFindings: normalizeStatusFindings(readArray(status, 'findings')),
     planTargets: normalizePlanTargets(readArray(plan, 'targets')),
     planEffects: readArray(plan, 'effects'),
     verificationFindings: normalizeFindings(readArray(verify, 'findings')),
@@ -396,6 +396,19 @@ function normalizeFindings(values: readonly unknown[]): readonly PresentationFin
       ? { nextAction: readRequiredString(finding, 'nextAction') }
       : {}),
   }));
+}
+
+function normalizeStatusFindings(values: readonly unknown[]): readonly PresentationFinding[] {
+  const findings = normalizeFindings(values);
+  return findings.filter(
+    (finding, index) =>
+      findings.findIndex(
+        (candidate) =>
+          candidate.code === finding.code &&
+          candidate.reason === finding.reason &&
+          candidate.nextAction === finding.nextAction,
+      ) === index,
+  );
 }
 
 function normalizePlanTargets(values: readonly unknown[]): readonly PlanTargetEvidence[] {
