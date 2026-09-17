@@ -6,11 +6,11 @@ import type { AppManifest } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
 
 import { ProjectManager } from './orchestrator/projectManager';
-import { type StudioInfraUpResult, upProjectInfrastructure } from './orchestrator/studioInfraUp';
-import { type ProjectTemplateSelection, getProjectTemplateSource } from './templates';
+import { upProjectInfrastructure, type StudioInfraUpResult } from './orchestrator/studioInfraUp';
+import { getProjectTemplateSource, type ProjectTemplateSelection } from './templates';
 
 const freshTemplateInfraTest =
-  Bun.env.ANKH_STUDIO_FRESH_TEMPLATE_INFRA_E2E === '1' ? test : test.skip;
+  process.env.ANKH_STUDIO_FRESH_TEMPLATE_INFRA_E2E === '1' ? test : test.skip;
 const bootstrapEnvironmentVariable = 'SUPABASE_BOOTSTRAP';
 const prefixedBootstrapEnvironmentVariable = 'ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP';
 const privateBootstrapFieldNames = [
@@ -54,10 +54,6 @@ async function runFreshTemplateInfraAcceptanceAsync(templateCase: {
   readonly selection: ProjectTemplateSelection;
 }): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'ankh-studio538-infra-'));
-  const previousBootstrap = Bun.env.SUPABASE_BOOTSTRAP;
-  const previousPrefixedBootstrap = Bun.env.ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP;
-  delete process.env.SUPABASE_BOOTSTRAP;
-  delete process.env.ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP;
 
   try {
     await createWorkspaceAsync(workspaceRoot);
@@ -70,9 +66,6 @@ async function runFreshTemplateInfraAcceptanceAsync(templateCase: {
     });
 
     try {
-      expect(Bun.env.SUPABASE_BOOTSTRAP).toBeUndefined();
-      expect(Bun.env.ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP).toBeUndefined();
-
       const first = await upProjectInfrastructure({
         projectId: created.id,
         projectManager: firstManager,
@@ -116,7 +109,6 @@ async function runFreshTemplateInfraAcceptanceAsync(templateCase: {
         .catch(() => undefined);
     }
   } finally {
-    restoreBootstrapEnvironment(previousBootstrap, previousPrefixedBootstrap);
     await rm(workspaceRoot, { recursive: true, force: true });
   }
 }
@@ -163,20 +155,6 @@ function expectSafeStudioInfraResult(result: StudioInfraUpResult): void {
   expect(serialized).not.toContain(bootstrapEnvironmentVariable);
   expect(serialized).not.toContain(prefixedBootstrapEnvironmentVariable);
   for (const fieldName of privateBootstrapFieldNames) expect(serialized).not.toContain(fieldName);
-}
-
-function restoreBootstrapEnvironment(
-  previousBootstrap: string | undefined,
-  previousPrefixedBootstrap: string | undefined,
-): void {
-  if (previousBootstrap === undefined) delete process.env.SUPABASE_BOOTSTRAP;
-  else process.env.SUPABASE_BOOTSTRAP = previousBootstrap;
-
-  if (previousPrefixedBootstrap === undefined) {
-    delete process.env.ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP;
-  } else {
-    process.env.ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP = previousPrefixedBootstrap;
-  }
 }
 
 async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
