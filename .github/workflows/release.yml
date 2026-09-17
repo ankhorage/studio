@@ -143,6 +143,52 @@ jobs:
             fi
           done
 
+      - name: Synchronize standalone Studio consumer
+        run: |
+          root_version="$(node -p "require('./package.json').version")"
+          node - "$root_version" <<'NODE'
+          const fs = require('node:fs');
+          const version = process.argv[2];
+          if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version ?? '')) {
+            throw new Error('Root Studio version must be exact semver.');
+          }
+          const path = 'apps/studio/package.json';
+          const app = JSON.parse(fs.readFileSync(path, 'utf8'));
+          if (app.dependencies?.['@ankhorage/studio'] === undefined) {
+            throw new Error('Standalone Studio app must declare @ankhorage/studio.');
+          }
+          app.dependencies['@ankhorage/studio'] = '^' + version;
+          fs.writeFileSync(path, JSON.stringify(app, null, 2) + '\n');
+          NODE
+
+          for attempt in 1 2 3 4 5 6; do
+            if npm view "@ankhorage/studio@${root_version}" version --json >/dev/null 2>&1; then
+              break
+            fi
+            if [ "$attempt" -eq 6 ]; then
+              echo "Published @ankhorage/studio@${root_version} did not become visible in time."
+              exit 1
+            fi
+            sleep $((attempt * 5))
+          done
+
+          bun install --cwd apps/studio --lockfile-only --ignore-scripts
+
+          if git diff --quiet -- apps/studio/package.json apps/studio/bun.lock; then
+            echo "Standalone Studio consumer already matches @ankhorage/studio@${root_version}."
+            exit 0
+          fi
+
+          git config user.name "ankhorage-renovate-sync[bot]"
+          git config user.email "ankhorage-renovate-sync[bot]@users.noreply.github.com"
+          git add apps/studio/package.json apps/studio/bun.lock
+          git commit -m "chore(release): synchronize Studio app with @ankhorage/studio@${root_version}"
+          if ! git push origin HEAD:main; then
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+          fi
+
       - name: Create the scoped rollout token
         id: rollout-token
         if: steps.release.outputs.versioned == 'true' && steps.release.outputs.package_name == '@ankhorage/devtools'
