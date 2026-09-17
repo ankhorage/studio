@@ -1,6 +1,6 @@
 import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type { ProjectMonetizationExecutionResult } from '@ankhorage/deploy/project';
-import { Button, Card, ConfirmDialog, Select, Text } from '@ankhorage/zora';
+import { Button, Card, Dialog, Select, Text, View } from '@ankhorage/zora';
 import React, { useRef, useState } from 'react';
 
 import {
@@ -121,17 +121,23 @@ export function DeployMonetizationSyncCard(props: {
         />
       ) : null}
       {result ? <DeployMonetizationExecutionView result={result} /> : null}
-      <ConfirmDialog
+      <Dialog
         visible={confirm}
         title="Synchronize monetization?"
         description={`Execute this exact Deploy monetization plan with ${
           successful?.plan.steps.length ?? 0
         } step(s)? Deploy will re-inspect for drift before provider mutation and verify afterward.`}
-        confirmLabel="Synchronize monetization"
-        confirmColor="danger"
-        cancelLabel="Cancel"
-        onCancel={() => setConfirm(false)}
-        onConfirm={() => void execute()}
+        onDismiss={() => setConfirm(false)}
+        footer={
+          <View direction={{ base: 'column', md: 'row' }} gap="s" justify="flex-end">
+            <Button color="neutral" variant="soft" disabled={busy} onPress={() => setConfirm(false)}>
+              Cancel
+            </Button>
+            <Button color="danger" disabled={busy} onPress={() => void execute()}>
+              Synchronize monetization
+            </Button>
+          </View>
+        }
       />
     </Card>
   );
