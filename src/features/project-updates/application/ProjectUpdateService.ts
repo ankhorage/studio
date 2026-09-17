@@ -10,6 +10,7 @@ import type {
   ApmPlanProjectInput,
   ApmPlanResult,
   ApmProjectStatusPort,
+  ApmStatusHostPackage,
   ApmStatusInput,
   ApmStatusResult,
   ApmVerifyInput,
@@ -18,17 +19,22 @@ import type {
 
 import type { ProjectUpdateServiceOptions } from '../../../types/project-updates';
 
+const STUDIO_HOST_ID = 'studio';
+const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
+
 /*** Compose Studio's project update lifecycle through the released APM Node use cases. */
 export class ProjectUpdateService {
   private readonly options: ProjectUpdateServiceOptions;
+  private readonly runningStudioVersion: string | undefined;
   private readonly statusPort: ApmProjectStatusPort;
 
-  /*** Create one Studio update service with optional package-owned protocol and execution ports. */
-  constructor(options: ProjectUpdateServiceOptions = {}) {
+  /*** Create one Studio update service with optional package-owned ports and exact running owner identity. */
+  constructor(options: ProjectUpdateServiceOptions = {}, runningStudioVersion?: string) {
     this.options = options;
+    this.runningStudioVersion = runningStudioVersion;
     this.statusPort = {
       inspectStatusAsync: (input) =>
-        statusProjectAsync(input, {
+        statusProjectAsync(withStudioHostPackage(input, runningStudioVersion), {
           ...(options.extensions === undefined ? {} : { extensions: options.extensions }),
         }),
     };
@@ -75,6 +81,26 @@ export class ProjectUpdateService {
         : { ownerStep: this.options.verifyOwnerStep }),
     });
   }
+}
+
+/*** Add the exact running Studio artifact to APM's separate host-package evidence channel. */
+function withStudioHostPackage(
+  input: ApmStatusInput,
+  runningStudioVersion: string | undefined,
+): ApmStatusInput {
+  if (runningStudioVersion === undefined) return input;
+  const studioHost: ApmStatusHostPackage = {
+    id: STUDIO_HOST_ID,
+    name: STUDIO_PACKAGE_NAME,
+    version: runningStudioVersion,
+  };
+  return {
+    ...input,
+    hostPackages: [
+      ...(input.hostPackages ?? []).filter(({ id }) => id !== STUDIO_HOST_ID),
+      studioHost,
+    ],
+  };
 }
 
 /*** Collapse top-level status rows that Studio renders identically while retaining raw scoped APM evidence for planning. */

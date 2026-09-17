@@ -1,4 +1,5 @@
 import type { ProjectUpdateServiceOptions } from '../../../types/project-updates';
+import { getGeneratedPackagePolicy } from '../adapters/outbound/getGeneratedPackagePolicy';
 import { ProjectUpdateService } from '../application/ProjectUpdateService';
 import type { StudioPendingModuleLifecyclePort } from '../application/StudioPendingModuleLifecyclePort';
 import { createStudioProjectUpdateApplyOwnerStepPort } from './createStudioProjectUpdateApplyOwnerStepPort';
@@ -11,23 +12,27 @@ export function createStudioProjectUpdateService(
   options: ProjectUpdateServiceOptions = {},
   lifecycle?: StudioPendingModuleLifecyclePort,
 ): ProjectUpdateService {
-  return new ProjectUpdateService({
-    ...options,
-    extensions: createStudioProjectUpdateExtensionEvidencePort(options.extensions),
-    protocol: createStudioProjectUpdateProtocolPort(options.protocol, {
-      pendingLifecycleExecution: lifecycle !== undefined,
-    }),
-    ...(lifecycle === undefined
-      ? {}
-      : {
-          applyOwnerStep: createStudioProjectUpdateApplyOwnerStepPort(
-            lifecycle,
-            options.applyOwnerStep,
-          ),
-          verifyOwnerStep: createStudioProjectUpdateVerifyOwnerStepPort(
-            lifecycle,
-            options.verifyOwnerStep,
-          ),
-        }),
-  });
+  const runningStudioVersion = getGeneratedPackagePolicy().ownerVersion;
+  return new ProjectUpdateService(
+    {
+      ...options,
+      extensions: createStudioProjectUpdateExtensionEvidencePort(options.extensions),
+      protocol: createStudioProjectUpdateProtocolPort(options.protocol, {
+        pendingLifecycleExecution: lifecycle !== undefined,
+      }),
+      ...(lifecycle === undefined
+        ? {}
+        : {
+            applyOwnerStep: createStudioProjectUpdateApplyOwnerStepPort(
+              lifecycle,
+              options.applyOwnerStep,
+            ),
+            verifyOwnerStep: createStudioProjectUpdateVerifyOwnerStepPort(
+              lifecycle,
+              options.verifyOwnerStep,
+            ),
+          }),
+    },
+    runningStudioVersion,
+  );
 }
