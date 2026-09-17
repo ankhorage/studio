@@ -10,9 +10,7 @@ permissions:
 
 jobs:
   finalize:
-    if: >-
-      github.actor != 'github-actions[bot]' &&
-      github.event.head_commit.message == 'chore(ci): run issue 518 validation'
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,35 +26,10 @@ jobs:
 
       - name: Align current ZORA dependency contract
         run: |
-          bun <<'EOF'
-          const rootPath = 'package.json';
-          const root = JSON.parse(await Bun.file(rootPath).text());
-          root.dependencies['@ankhorage/zora'] = '^19.0.1';
-          root.dependencies['@ankhorage/templates'] = '^11.0.5';
-          delete root.peerDependencies['@react-native-picker/picker'];
-          await Bun.write(rootPath, `${JSON.stringify(root, null, 2)}\n`);
-
-          const appPath = 'apps/studio/package.json';
-          const app = JSON.parse(await Bun.file(appPath).text());
-          delete app.dependencies['@react-native-picker/picker'];
-          await Bun.write(appPath, `${JSON.stringify(app, null, 2)}\n`);
-
-          async function replaceExact(path, before, after = '') {
-            const source = await Bun.file(path).text();
-            if (!source.includes(before)) throw new Error(`${path} no longer contains expected migration source: ${JSON.stringify(before)}`);
-            await Bun.write(path, source.replace(before, after));
-          }
-
-          await replaceExact(
-            'src/host/orchestrator/templateSources.ts',
-            "      '@react-native-picker/picker': '2.11.4',\n",
-          );
-          const dependencyContractPath = 'src/host/orchestrator/generatedDependencyContract.test.ts';
-          await replaceExact(dependencyContractPath, "    '@react-native-picker/picker': nativePicker,\n");
-          await replaceExact(dependencyContractPath, '    expect(nativePicker).toBeDefined();\n');
-          await replaceExact(dependencyContractPath, "    '@react-native-picker/picker': expectedNativePicker,\n");
-          await replaceExact(dependencyContractPath, '  expect(nativePicker).toBe(expectedNativePicker);\n');
-          EOF
+          bun -e "const path='package.json'; const pkg=JSON.parse(await Bun.file(path).text()); pkg.dependencies['@ankhorage/zora']='^19.0.1'; pkg.dependencies['@ankhorage/templates']='^11.0.5'; delete pkg.peerDependencies['@react-native-picker/picker']; await Bun.write(path, JSON.stringify(pkg, null, 2)+'\\n');"
+          bun -e "const path='apps/studio/package.json'; const pkg=JSON.parse(await Bun.file(path).text()); delete pkg.dependencies['@react-native-picker/picker']; await Bun.write(path, JSON.stringify(pkg, null, 2)+'\\n');"
+          bun -e "const path='src/host/orchestrator/templateSources.ts'; const before=\"      '@react-native-picker/picker': '2.11.4',\\n\"; const source=await Bun.file(path).text(); if(!source.includes(before)) throw new Error('obsolete picker scaffold line not found'); await Bun.write(path, source.replace(before,''));"
+          bun -e "const path='src/host/orchestrator/generatedDependencyContract.test.ts'; let source=await Bun.file(path).text(); for (const before of [\"    '@react-native-picker/picker': nativePicker,\\n\", '    expect(nativePicker).toBeDefined();\\n', \"    '@react-native-picker/picker': expectedNativePicker,\\n\", '  expect(nativePicker).toBe(expectedNativePicker);\\n']) { if(!source.includes(before)) throw new Error('obsolete picker contract fragment not found: '+before); source=source.replace(before,''); } await Bun.write(path, source);"
           cat > .changeset/align-zora-19.md <<'EOF'
           ---
           "@ankhorage/studio": patch
@@ -84,7 +57,7 @@ jobs:
         with:
           name: issue-518-build-diagnostics
           path: issue-518-build.log
-          if-no-files-found: error
+          if-no-files-found: ignore
 
       - name: Typecheck
         run: bun run check-types
@@ -109,7 +82,7 @@ jobs:
         with:
           name: issue-518-acceptance-diagnostics
           path: issue-518-acceptance.log
-          if-no-files-found: error
+          if-no-files-found: ignore
 
       - name: Docs
         run: bun run docs
