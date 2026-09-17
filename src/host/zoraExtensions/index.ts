@@ -70,7 +70,7 @@ export function collectZoraExtensionDependencies(
   }, {});
 }
 
-/*** Build one generated-app extension definition from the installed plugin descriptor and Studio dependency policy. */
+/*** Build one generated-app extension definition from installed plugin metadata and Studio dependency policy. */
 function createZoraExtensionDefinition(
   metadata: ZoraPluginMetadata,
   descriptorExportName: string,
