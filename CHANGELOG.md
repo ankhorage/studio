@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.7.8
+
+### Patch Changes
+
+- 61842e7: Fail closed at the Studio host restart boundary whenever the selected Studio owner version differs from the running host, even if separate host-update availability evidence is missing.
+
 ## 2.7.7
 
 ### Patch Changes
