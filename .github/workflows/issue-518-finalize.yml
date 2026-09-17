@@ -69,7 +69,17 @@ jobs:
         run: bun run test
 
       - name: Generated Expo 57 acceptance
-        run: bun run test:acceptance:expo57-generated-app
+        run: |
+          set -o pipefail
+          bun run test:acceptance:expo57-generated-app 2>&1 | tee issue-518-acceptance.log
+
+      - name: Upload acceptance diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue-518-acceptance-diagnostics
+          path: issue-518-acceptance.log
+          if-no-files-found: error
 
       - name: Docs
         run: bun run docs
@@ -89,7 +99,7 @@ jobs:
       - name: Commit validated rollout
         run: |
           rm .github/workflows/issue-518-finalize.yml
-          rm -f issue-518-build.log
+          rm -f issue-518-build.log issue-518-acceptance.log
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
