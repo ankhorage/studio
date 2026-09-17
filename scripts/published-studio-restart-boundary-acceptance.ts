@@ -49,7 +49,10 @@ try {
     assertStudioHost(currentStatus, CURRENT_STUDIO_VERSION);
     const currentPlan = await planProjectAsync(projectId);
     assert.equal(readOwnProperty(currentPlan, 'complete'), true);
-    assert.equal(findByCode(currentPlan, 'blockers', 'plan.host-upgrade-required'), undefined);
+    assert.equal(
+      findByCode(currentPlan, 'blockers', 'plan.host-upgrade-required'),
+      undefined,
+    );
     assert.equal(studioTargetVersion(currentPlan), CURRENT_STUDIO_VERSION);
     const currentPlanId = readRequiredString(currentPlan, 'planId');
     const oldPlanId = readRequiredString(
@@ -59,13 +62,16 @@ try {
     assert.notEqual(currentPlanId, oldPlanId);
 
     const beforeApply = await readMutationSentinelsAsync(projectRoot);
-    const apply = await requestJsonAsync(`/api/projects/${encodeURIComponent(projectId)}/updates/apply`, {
-      method: 'POST',
-      body: JSON.stringify({
-        plan: currentPlan,
-        permissions: { ownerCode: true, lifecycleScripts: true, externalEffects: true },
-      }),
-    });
+    const apply = await requestJsonAsync(
+      `/api/projects/${encodeURIComponent(projectId)}/updates/apply`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          plan: currentPlan,
+          permissions: { ownerCode: true, lifecycleScripts: true, externalEffects: true },
+        }),
+      },
+    );
     assert.equal(readOwnProperty(apply, 'status'), 'completed');
     const operationId = readRequiredString(apply, 'operationId');
     const verify = await requestJsonAsync(
@@ -74,8 +80,14 @@ try {
     );
     assert.equal(readOwnProperty(verify, 'verified'), true);
     assert.equal(await installedStudioVersionAsync(projectRoot), CURRENT_STUDIO_VERSION);
-    assert.equal(await readFile(path.join(projectRoot, USER_FILE_NAME), 'utf8'), USER_FILE_CONTENT);
-    assert.notEqual((await readMutationSentinelsAsync(projectRoot)).lockfile, beforeApply.lockfile);
+    assert.equal(
+      await readFile(path.join(projectRoot, USER_FILE_NAME), 'utf8'),
+      USER_FILE_CONTENT,
+    );
+    assert.notEqual(
+      (await readMutationSentinelsAsync(projectRoot)).lockfile,
+      beforeApply.lockfile,
+    );
 
     console.log(
       JSON.stringify(
@@ -110,18 +122,23 @@ async function runOldHostBoundaryAsync(host: ReturnType<typeof spawn>): Promise<
     await waitForHostAsync(host);
     const projectId = await createExistingProjectAsync();
     const projectRoot = path.join(workspaceRoot, 'apps', projectId);
-    await freezeProjectStudioAsync(projectRoot);
+    assert.equal(await installedStudioVersionAsync(projectRoot), OLD_STUDIO_VERSION);
     await writeFile(path.join(projectRoot, USER_FILE_NAME), USER_FILE_CONTENT, 'utf8');
     const before = await readMutationSentinelsAsync(projectRoot);
     const status = await statusProjectAsync(projectId);
     const studioHost = assertStudioHost(status, OLD_STUDIO_VERSION);
-    assert.equal(readRequiredString(readObject(studioHost, 'availability'), 'latestVersion'), CURRENT_STUDIO_VERSION);
+    assert.equal(
+      readRequiredString(readObject(studioHost, 'availability'), 'latestVersion'),
+      CURRENT_STUDIO_VERSION,
+    );
     assert.notEqual(findByCode(studioHost, 'findings', 'host-update'), undefined);
     const plan = await planProjectAsync(projectId);
     assert.equal(readOwnProperty(plan, 'complete'), false);
     assert.equal(studioTargetVersion(plan), CURRENT_STUDIO_VERSION);
     const blocker = findByCode(plan, 'blockers', 'plan.host-upgrade-required');
-    if (blocker === undefined) throw new Error('Old Studio host did not expose its restart prerequisite.');
+    if (blocker === undefined) {
+      throw new Error('Old Studio host did not expose its restart prerequisite.');
+    }
     assert.match(readRequiredString(blocker, 'nextAction'), /restart/u);
     assert.deepEqual(await readMutationSentinelsAsync(projectRoot), before);
     await writeJsonAsync(path.join(fixtureRoot, 'old-plan.json'), plan);
@@ -198,41 +215,26 @@ async function createExistingProjectAsync(): Promise<string> {
   return readRequiredString(created, 'id');
 }
 
-async function freezeProjectStudioAsync(projectRoot: string): Promise<void> {
-  const packagePath = path.join(projectRoot, 'package.json');
-  const manifest = await readJsonObjectAsync(packagePath);
-  const section = ['dependencies', 'devDependencies'].find((key) => {
-    const value = readOwnProperty(manifest, key);
-    return isRecord(value) && typeof readOwnProperty(value, STUDIO_PACKAGE_NAME) === 'string';
-  });
-  if (section === undefined) throw new Error('Generated project has no Studio dependency declaration.');
-  const dependencies = readObject(manifest, section);
-  const originalRange = readRequiredString(dependencies, STUDIO_PACKAGE_NAME);
-  await writeJsonAsync(packagePath, {
-    ...manifest,
-    [section]: { ...dependencies, [STUDIO_PACKAGE_NAME]: OLD_STUDIO_VERSION },
-  });
-  await runCommandAsync('bun', ['install', '--ignore-scripts'], projectRoot);
-  const installedManifest = await readJsonObjectAsync(packagePath);
-  await writeJsonAsync(packagePath, {
-    ...installedManifest,
-    [section]: {
-      ...readObject(installedManifest, section),
-      [STUDIO_PACKAGE_NAME]: originalRange,
-    },
-  });
-  assert.equal(await installedStudioVersionAsync(projectRoot), OLD_STUDIO_VERSION);
-}
-
 async function statusProjectAsync(projectId: string) {
-  return requestJsonAsync(`/api/projects/${encodeURIComponent(projectId)}/updates/status?availability=refresh`);
+  return requestJsonAsync(
+    `/api/projects/${encodeURIComponent(projectId)}/updates/status?availability=refresh`,
+  );
 }
 
-async function planProjectAsync(projectId: string) {
-  return requestJsonAsync(`/api/projects/${encodeURIComponent(projectId)}/updates/plan`, {
+async function planProjectAsync(projectId: string): Promise<Readonly<Record<string, unknown>>> {
+  const route = `/api/projects/${encodeURIComponent(projectId)}/updates/plan`;
+  const response = await fetch(`http://127.0.0.1:${port}${route}`, {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ availability: 'refresh' }),
   });
+  const body = await response.text();
+  const value: unknown = JSON.parse(body);
+  if (response.status !== 200 && response.status !== 409) {
+    throw new Error(`POST ${route} failed (${response.status}): ${body}`);
+  }
+  if (!isRecord(value)) throw new Error(`Expected object JSON from ${route}.`);
+  return value;
 }
 
 function assertStudioHost(
@@ -240,7 +242,8 @@ function assertStudioHost(
   version: string,
 ): Readonly<Record<string, unknown>> {
   const host = readArray(status, 'hosts').find(
-    (candidate) => isRecord(candidate) && readOwnProperty(candidate, 'name') === STUDIO_PACKAGE_NAME,
+    (candidate) =>
+      isRecord(candidate) && readOwnProperty(candidate, 'name') === STUDIO_PACKAGE_NAME,
   );
   if (!isRecord(host)) throw new Error('Status did not expose the running Studio host package.');
   assert.equal(readRequiredString(host, 'version'), version);
@@ -249,7 +252,8 @@ function assertStudioHost(
 
 function studioTargetVersion(plan: Readonly<Record<string, unknown>>): string {
   const target = readArray(plan, 'targets').find(
-    (candidate) => isRecord(candidate) && readOwnProperty(candidate, 'name') === STUDIO_PACKAGE_NAME,
+    (candidate) =>
+      isRecord(candidate) && readOwnProperty(candidate, 'name') === STUDIO_PACKAGE_NAME,
   );
   if (!isRecord(target)) throw new Error('Plan did not select a Studio owner target.');
   return readRequiredString(target, 'targetVersion');
@@ -291,12 +295,18 @@ async function requestJsonAsync(
   });
   const body = await response.text();
   const value: unknown = JSON.parse(body);
-  if (!response.ok) throw new Error(`${init.method ?? 'GET'} ${route} failed (${response.status}): ${body}`);
+  if (!response.ok) {
+    throw new Error(`${init.method ?? 'GET'} ${route} failed (${response.status}): ${body}`);
+  }
   if (!isRecord(value)) throw new Error(`Expected object JSON from ${route}.`);
   return value;
 }
 
-async function runCommandAsync(command: string, args: readonly string[], cwd: string): Promise<void> {
+async function runCommandAsync(
+  command: string,
+  args: readonly string[],
+  cwd: string,
+): Promise<void> {
   await execFileAsync(command, [...args], {
     cwd,
     encoding: 'utf8',
@@ -308,7 +318,9 @@ async function runCommandAsync(command: string, args: readonly string[], cwd: st
 
 async function waitForHostAsync(host: ReturnType<typeof spawn>): Promise<void> {
   for (const attempt of Array.from({ length: 100 }, (_, index) => index)) {
-    if (host.exitCode !== null) throw new Error(`Published Studio host exited with ${host.exitCode}.`);
+    if (host.exitCode !== null) {
+      throw new Error(`Published Studio host exited with ${host.exitCode}.`);
+    }
     try {
       const response = await fetch(`http://127.0.0.1:${port}/health`);
       if (response.ok) return;
@@ -327,13 +339,18 @@ async function stopHostAsync(host: ReturnType<typeof spawn>): Promise<void> {
   if (!(await Promise.race([exited, sleepAsync(5_000).then(() => false)]))) host.kill('SIGKILL');
 }
 
-async function readJsonObjectAsync(filePath: string): Promise<Readonly<Record<string, unknown>>> {
+async function readJsonObjectAsync(
+  filePath: string,
+): Promise<Readonly<Record<string, unknown>>> {
   const value: unknown = JSON.parse(await readFile(filePath, 'utf8'));
   if (!isRecord(value)) throw new Error(`Expected JSON object at ${filePath}.`);
   return value;
 }
 
-function readObject(value: Readonly<Record<string, unknown>>, key: string) {
+function readObject(
+  value: Readonly<Record<string, unknown>>,
+  key: string,
+): Readonly<Record<string, unknown>> {
   const property = readOwnProperty(value, key);
   if (!isRecord(property)) throw new Error(`Expected ${key} to be an object.`);
   return property;
