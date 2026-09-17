@@ -1,31 +1,20 @@
 import type { AppManifest, UiNode } from '@ankhorage/contracts';
+import type { ZoraPluginDescriptor } from '@ankhorage/zora';
+import { readOwnProperty } from '@ankhorage/utility/object';
+
+import { STUDIO_ZORA_EXTENSION_SOURCES } from '../../constants';
+import { getGeneratedPackagePolicy } from '../../features/project-updates/adapters/outbound/getGeneratedPackagePolicy';
 
 export interface ZoraExtensionDefinition {
   packageName: string;
   descriptorExportName: string;
   componentTypes: readonly string[];
-  dependencies?: Record<string, string>;
+  dependencies?: Readonly<Record<string, string>>;
 }
 
-const ZORA_CHESS_EXTENSION = {
-  packageName: '@ankhorage/zora-chess',
-  descriptorExportName: 'ZORA_CHESS_PLUGIN',
-  componentTypes: ['ChessBoard', 'OpeningBook'],
-  dependencies: {
-    '@ankhorage/zora-chess': '^0.2.0',
-  },
-} satisfies ZoraExtensionDefinition;
-
-const ZORA_TABLETOP_EXTENSION = {
-  packageName: '@ankhorage/zora-tabletop',
-  descriptorExportName: 'ZORA_TABLETOP_PLUGIN',
-  componentTypes: ['TabletopTable'],
-  dependencies: {
-    '@ankhorage/zora-tabletop': '^0.1.0',
-  },
-} satisfies ZoraExtensionDefinition;
-
-const KNOWN_ZORA_EXTENSIONS = [ZORA_CHESS_EXTENSION, ZORA_TABLETOP_EXTENSION] as const;
+const KNOWN_ZORA_EXTENSIONS = STUDIO_ZORA_EXTENSION_SOURCES.map(
+  ({ descriptorExportName, plugin }) => createZoraExtensionDefinition(plugin, descriptorExportName),
+);
 
 /***
  * Resolve extension packages from the component types actually used by one manifest.
@@ -68,10 +57,7 @@ export function mergeZoraExtensions(
   return [...extensions.values()];
 }
 
-/***
- * Project dependency requirements from selected ZORA extension definitions.
- * @todo Replace extension dependency ranges such as `latest` with canonical owned release ranges; generated projects must not bypass reproducible dependency ownership.
- */
+/*** Project dependency requirements from selected ZORA extension definitions. */
 export function collectZoraExtensionDependencies(
   extensions: readonly ZoraExtensionDefinition[],
 ): Record<string, string> {
@@ -81,6 +67,29 @@ export function collectZoraExtensionDependencies(
       ...(extension.dependencies ?? {}),
     };
   }, {});
+}
+
+/*** Build one generated-app extension definition from the installed plugin descriptor and Studio dependency policy. */
+function createZoraExtensionDefinition(
+  plugin: ZoraPluginDescriptor,
+  descriptorExportName: string,
+): ZoraExtensionDefinition {
+  const dependencyRange = readOwnProperty(
+    getGeneratedPackagePolicy().dependencies.zoraExtensions,
+    plugin.packageName,
+  );
+  if (typeof dependencyRange !== 'string' || dependencyRange.trim() === '') {
+    throw new Error(
+      `Studio package policy is missing the dependency range for ZORA extension ${plugin.packageName}.`,
+    );
+  }
+
+  return {
+    packageName: plugin.packageName,
+    descriptorExportName,
+    componentTypes: Object.keys(plugin.componentRegistry).sort(),
+    dependencies: Object.fromEntries([[plugin.packageName, dependencyRange]]),
+  };
 }
 
 /*** Collect component types recursively from one manifest UI node. */
