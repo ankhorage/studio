@@ -51,10 +51,10 @@ try {
     assert.equal(readOwnProperty(currentPlan, 'complete'), true);
     assert.equal(findByCode(currentPlan, 'blockers', 'plan.host-upgrade-required'), undefined);
     assert.equal(studioTargetVersion(currentPlan), CURRENT_STUDIO_VERSION);
-    const currentPlanId = readRequiredString(currentPlan, 'planId');
+    const currentPlanId = readRequiredString(currentPlan, 'id');
     const oldPlanId = readRequiredString(
       await readJsonObjectAsync(path.join(fixtureRoot, 'old-plan.json')),
-      'planId',
+      'id',
     );
     assert.notEqual(currentPlanId, oldPlanId);
 
@@ -200,9 +200,14 @@ function studioDependencySection(
   const sections = ['dependencies', 'devDependencies'] as const;
   const section = sections.find((candidate) => {
     const dependencies = readOwnProperty(manifest, candidate);
-    return isRecord(dependencies) && typeof readOwnProperty(dependencies, STUDIO_PACKAGE_NAME) === 'string';
+    return (
+      isRecord(dependencies) &&
+      typeof readOwnProperty(dependencies, STUDIO_PACKAGE_NAME) === 'string'
+    );
   });
-  if (section === undefined) throw new Error('Generated project has no Studio dependency declaration.');
+  if (section === undefined) {
+    throw new Error('Generated project has no Studio dependency declaration.');
+  }
   return section;
 }
 
