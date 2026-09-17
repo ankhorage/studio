@@ -7,7 +7,6 @@ import type {
   InfraStatus,
 } from '@ankhorage/contracts/infra';
 import {
-  createEnvironmentInfraCredentialPort,
   createEnvironmentInfraSecretPort,
   type InfraDestroyResult,
   type InfraDownResult,
@@ -16,6 +15,7 @@ import {
   type InfraUpResult,
 } from '@ankhorage/infra';
 import {
+  createProjectInfraCredentialPort,
   createProjectInfraLifecycle,
   type ProjectInfraLifecycle,
   readStoredInfraStateAsync,
@@ -78,13 +78,17 @@ export function createStudioProjectInfraLifecycle(
   };
 }
 
-/*** Compose Infra's project lifecycle with Studio's bundled adapter packages and canonical environment credential ports. */
+/*** Compose Infra's project lifecycle with Studio's bundled adapter packages and project-scoped credentials. */
 function createDefaultStudioProjectInfraLifecycle(): ProjectInfraLifecycle {
   return createProjectInfraLifecycle({
     services: {
-      createDependencies: (context) => ({
+      createDependencies: (context, scope) => ({
         adapterResolver: createStudioInfraAdapterPackageResolver(),
-        credentials: createEnvironmentInfraCredentialPort(context.env),
+        credentials: createProjectInfraCredentialPort({
+          projectPath: scope.projectPath,
+          environment: scope.environment,
+          processEnvironment: context.env,
+        }),
         secrets: createEnvironmentInfraSecretPort(context.env),
       }),
     },
