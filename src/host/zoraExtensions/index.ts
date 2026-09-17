@@ -1,5 +1,5 @@
 import type { AppManifest, UiNode } from '@ankhorage/contracts';
-import type { ZoraPluginDescriptor } from '@ankhorage/zora';
+import type { ZoraPluginMetadata } from '@ankhorage/zora';
 import { readOwnProperty } from '@ankhorage/utility/object';
 
 import { STUDIO_ZORA_EXTENSION_SOURCES } from '../../constants';
@@ -13,7 +13,8 @@ export interface ZoraExtensionDefinition {
 }
 
 const KNOWN_ZORA_EXTENSIONS = STUDIO_ZORA_EXTENSION_SOURCES.map(
-  ({ descriptorExportName, plugin }) => createZoraExtensionDefinition(plugin, descriptorExportName),
+  ({ descriptorExportName, metadata }) =>
+    createZoraExtensionDefinition(metadata, descriptorExportName),
 );
 
 /***
@@ -71,24 +72,24 @@ export function collectZoraExtensionDependencies(
 
 /*** Build one generated-app extension definition from the installed plugin descriptor and Studio dependency policy. */
 function createZoraExtensionDefinition(
-  plugin: ZoraPluginDescriptor,
+  metadata: ZoraPluginMetadata,
   descriptorExportName: string,
 ): ZoraExtensionDefinition {
   const dependencyRange = readOwnProperty(
     getGeneratedPackagePolicy().dependencies.zoraExtensions,
-    plugin.packageName,
+    metadata.packageName,
   );
   if (typeof dependencyRange !== 'string' || dependencyRange.trim() === '') {
     throw new Error(
-      `Studio package policy is missing the dependency range for ZORA extension ${plugin.packageName}.`,
+      `Studio package policy is missing the dependency range for ZORA extension ${metadata.packageName}.`,
     );
   }
 
   return {
-    packageName: plugin.packageName,
+    packageName: metadata.packageName,
     descriptorExportName,
-    componentTypes: Object.keys(plugin.componentRegistry).sort(),
-    dependencies: Object.fromEntries([[plugin.packageName, dependencyRange]]),
+    componentTypes: Object.keys(metadata.componentMeta).sort(),
+    dependencies: Object.fromEntries([[metadata.packageName, dependencyRange]]),
   };
 }
 
