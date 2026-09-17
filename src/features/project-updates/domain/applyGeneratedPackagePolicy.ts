@@ -3,13 +3,20 @@ import type {
   GeneratedPackagePolicy,
 } from '../../../types/project-updates.js';
 
-/*** Apply one explicit Studio package policy while preserving all user-owned package manifest entries. */
+const OBSOLETE_GENERATED_DEPENDENCIES = new Set(['@react-native-picker/picker']);
+
+/*** Apply one explicit Studio package policy while preserving user-owned package manifest entries outside superseded Studio-managed dependencies. */
 export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
   packageJson: T,
   policy: GeneratedPackagePolicy,
 ): T {
+  const baseDependencies = Object.fromEntries(
+    Object.entries(packageJson.dependencies).filter(
+      ([name]) => !OBSOLETE_GENERATED_DEPENDENCIES.has(name),
+    ),
+  );
   const dependencies = {
-    ...packageJson.dependencies,
+    ...baseDependencies,
     '@ankhorage/contracts': policy.dependencies.contracts,
     '@ankhorage/data-sources': policy.dependencies.dataSources,
     '@ankhorage/expo-runtime': policy.dependencies.expoRuntime,
