@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.7.13
+
+### Patch Changes
+
+- f4f5169: Keep Studio CLI provider help headless by deferring host runtime imports until command execution.
+
 ## 2.7.12
 
 ### Patch Changes
