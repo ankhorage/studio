@@ -110,7 +110,6 @@ export default [
     'src/app/StudioApp.tsx',
     'src/app/workspace/WorkspacePrimitives.tsx',
     'src/ui/StudioInsertDialog.tsx',
-    'src/ui/admin/AnkhAdminShell.tsx',
     'src/ui/admin/pages/MediaPropertyInput.tsx',
     'src/ui/admin/pages/SecretsAdminPage.tsx',
     'src/ui/admin/pages/ThemeModeEditorSelector.tsx',
