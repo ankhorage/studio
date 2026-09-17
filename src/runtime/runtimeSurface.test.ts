@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'bun:test';
 
 const runtimeIndexSource = readFileSync(join(import.meta.dir, 'index.ts'), 'utf8');
+const zoraExtensionSourcesSource = readFileSync(join(import.meta.dir, '../constants.ts'), 'utf8');
 const appExtensionRegistrySource = readFileSync(
   join(import.meta.dir, 'appExtensionRegistry.ts'),
   'utf8',
@@ -19,8 +20,9 @@ describe('Studio runtime surface', () => {
     expect(runtimeIndexSource).toContain("export * from './useRuntimeAction.js';");
     expect(appExtensionRegistrySource).toContain('composeZoraPlugins([');
     expect(appExtensionRegistrySource).toContain('ZORA_CORE_PLUGIN');
-    expect(appExtensionRegistrySource).toContain('ZORA_CHESS_PLUGIN');
-    expect(appExtensionRegistrySource).toContain('ZORA_TABLETOP_PLUGIN');
+    expect(zoraExtensionSourcesSource).toContain('ZORA_CHESS_PLUGIN');
+    expect(zoraExtensionSourcesSource).toContain('ZORA_TABLETOP_PLUGIN');
+    expect(appExtensionRegistrySource).toContain('STUDIO_ZORA_EXTENSION_SOURCES');
     expect(appExtensionRegistrySource).toContain('STUDIO_ZORA_PLUGIN_CATALOG');
     expect(registrySource).toContain('STUDIO_ZORA_PLUGIN_CATALOG');
     expect(registrySource).not.toContain('createComponentRegistry');
