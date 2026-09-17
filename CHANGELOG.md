@@ -1,5 +1,12 @@
 # @ankhorage/studio
 
+## 2.7.11
+
+### Patch Changes
+
+- acf459e: Derive generated ZORA extension component inventories from metadata-only public plugin surfaces and
+  extension dependency ranges from Studio package policy instead of duplicating package-owned metadata.
+
 ## 2.7.10
 
 ### Patch Changes
