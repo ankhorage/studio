@@ -91,7 +91,7 @@ async function readBaseProtocolResultAsync(
   return base === undefined ? EMPTY_PROTOCOL_RESULT : base.planProtocolAsync(input);
 }
 
-/*** Block project execution when the selected Studio dependency requires a newer running Studio host. */
+/*** Block project execution whenever the selected Studio owner version differs from the running host. */
 function studioHostPrerequisiteBlockers(
   hosts: readonly ApmStatusHostPackageResult[],
   targets: Parameters<ApmPlanProtocolPort['planProtocolAsync']>[0]['targets'],
@@ -101,8 +101,8 @@ function studioHostPrerequisiteBlockers(
   const host = hosts.find(({ name }) => name === STUDIO_PACKAGE_NAME);
   if (host === undefined || selectedStudio.targetVersion === host.version) return [];
   const update = host.findings.find(({ code }) => code === 'host-update');
-  if (update === undefined) return [];
-  return [hostUpgradeBlocker(host, selectedStudio.targetVersion, update.evidence)];
+  const evidence = update?.evidence ?? [`installed host ${host.version}`];
+  return [hostUpgradeBlocker(host, selectedStudio.targetVersion, evidence)];
 }
 
 /*** Describe the explicit Studio upgrade, restart, and fresh-plan boundary. */
