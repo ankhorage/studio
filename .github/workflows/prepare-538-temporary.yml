@@ -27,12 +27,12 @@ jobs:
           node-version: '24'
       - name: Install dependencies
         run: bun install --frozen-lockfile
-      - name: Format sources
-        run: bun run format
       - name: Autofix task lint
         run: bun x ankhorage-eslint src/host/freshTemplateInfra.e2e.test.ts --fix --max-warnings=0
       - name: Regenerate Paradox documentation
         run: bun run docs
+      - name: Format sources and generated documentation
+        run: bun run format
       - name: Commit generated formatting and documentation
         shell: bash
         run: |
