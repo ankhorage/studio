@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Card, ListRow, ListSection, Text } from '@ankhorage/zora';
+import { Button, ButtonGroup, Card, ListItem, ListSection, Text } from '@ankhorage/zora';
 import { useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -131,7 +131,7 @@ export function ScreenDetailAdminPage({ screenId }: ScreenDetailAdminPageProps) 
         description={formatRouteReferenceSummary(entry.routeReferences.length)}
       >
         {entry.routeReferences.length === 0 ? (
-          <ListRow
+          <ListItem
             title="Unrouted screen"
             description="This screen exists canonically but has no navigator route reference."
             variant="card"
@@ -193,7 +193,7 @@ function RouteReferenceRow(props: {
     : 'Not applicable outside the primary navigator';
 
   return (
-    <ListRow
+    <ListItem
       title={reference.route.label ?? reference.route.name}
       meta={`Reference ${props.index + 1}`}
       variant="card"

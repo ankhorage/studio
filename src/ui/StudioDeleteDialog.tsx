@@ -1,4 +1,4 @@
-import { ConfirmDialog } from '@ankhorage/zora';
+import { Button, Dialog, View } from '@ankhorage/zora';
 import React from 'react';
 
 export interface StudioDeleteDialogProps {
@@ -10,13 +10,19 @@ export interface StudioDeleteDialogProps {
 
 export function StudioDeleteDialog(props: StudioDeleteDialogProps): React.JSX.Element {
   return (
-    <ConfirmDialog
-      cancelLabel="Cancel"
-      confirmColor="danger"
-      confirmLabel="Delete"
+    <Dialog
       description={`Delete ${props.label} and all of its children? This cannot be undone.`}
-      onCancel={props.onCancel}
-      onConfirm={props.onConfirm}
+      footer={
+        <View direction={{ base: 'column', md: 'row' }} gap="s" justify="flex-end">
+          <Button color="neutral" variant="soft" onPress={props.onCancel}>
+            Cancel
+          </Button>
+          <Button color="danger" onPress={props.onConfirm}>
+            Delete
+          </Button>
+        </View>
+      }
+      onDismiss={props.onCancel}
       title="Delete component"
       visible={props.visible}
     />

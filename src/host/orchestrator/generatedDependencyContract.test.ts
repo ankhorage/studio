@@ -204,7 +204,6 @@ async function readGeneratedDependencies(projectPath: string): Promise<Record<st
 function expectRuntimePeers(
   {
     '@expo/metro-runtime': metroRuntime,
-    '@react-native-picker/picker': nativePicker,
     '@react-native-vector-icons/ionicons': ionicons,
     'expo-font': expoFont,
   }: Record<string, string>,
@@ -212,7 +211,6 @@ function expectRuntimePeers(
 ) {
   if (expected === undefined) {
     expect(metroRuntime).toBe(EXPO_PLATFORM.packages.metroRuntime.version);
-    expect(nativePicker).toBeDefined();
     expect(ionicons).toBeDefined();
     expect(expoFont).toBe(EXPO_PLATFORM.packages.font.version);
     return;
@@ -220,12 +218,10 @@ function expectRuntimePeers(
 
   const {
     '@expo/metro-runtime': expectedMetroRuntime,
-    '@react-native-picker/picker': expectedNativePicker,
     '@react-native-vector-icons/ionicons': expectedIonicons,
     'expo-font': expectedExpoFont,
   } = expected;
   expect(metroRuntime).toBe(expectedMetroRuntime);
-  expect(nativePicker).toBe(expectedNativePicker);
   expect(ionicons).toBe(expectedIonicons);
   expect(expoFont).toBe(expectedExpoFont);
 }

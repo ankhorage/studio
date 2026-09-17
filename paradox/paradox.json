@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.7.5",
+      "value": "v2.7.8",
       "color": "cb3837"
     },
     {
@@ -139,6 +139,18 @@
       "path": "scripts/packed-studio-host-acceptance.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/smoke/runPackedStudioHostAcceptance.ts"],
+      "exports": []
+    },
+    {
+      "path": "scripts/published-studio-existing-app-acceptance.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
+      "path": "scripts/published-studio-restart-boundary-acceptance.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
       "exports": []
     },
     {
@@ -980,6 +992,14 @@
       "exports": ["applyCurrentGeneratedPackagePolicy"]
     },
     {
+      "path": "src/features/project-updates/composition/createStudioHostPrerequisite.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1034,6 +1054,7 @@
       "path": "src/features/project-updates/composition/createStudioProjectUpdateService.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
         "src/features/project-updates/application/ProjectUpdateService.ts",
         "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
         "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
@@ -13338,7 +13359,7 @@
       "description": "Parse one owner package manifest as a validated object.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 112,
+        "line": 111,
         "column": 1
       }
     },
@@ -13347,7 +13368,7 @@
       "description": "Read and validate Studio's exact package version.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 122,
+        "line": 121,
         "column": 1
       }
     },
@@ -13356,7 +13377,7 @@
       "description": "Read and validate Studio's exact Bun package-manager pin.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 131,
+        "line": 130,
         "column": 1
       }
     },
@@ -13365,7 +13386,7 @@
       "description": "Read one required package-manifest dependency section.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 140,
+        "line": 139,
         "column": 1
       }
     },
@@ -13374,7 +13395,7 @@
       "description": "Read one required non-empty string property from package metadata.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 153,
+        "line": 152,
         "column": 1
       }
     },
@@ -13676,11 +13697,20 @@
       }
     },
     {
+      "name": "withStudioHostPackage",
+      "description": "Add the exact running Studio artifact to APM's separate host-package evidence channel.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/application/ProjectUpdateService.ts",
+        "line": 87,
+        "column": 1
+      }
+    },
+    {
       "name": "uniquePresentationRows",
       "description": "Collapse top-level status rows that Studio renders identically while retaining raw scoped APM evidence for planning.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/application/ProjectUpdateService.ts",
-        "line": 81,
+        "line": 107,
         "column": 1
       }
     },
@@ -13807,6 +13837,15 @@
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts",
         "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "protocolRequest",
+      "description": "Build host availability and selected-target evidence matching APM's public planning boundary.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioHostPrerequisite.test.ts",
+        "line": 48,
         "column": 1
       }
     },
@@ -13983,10 +14022,10 @@
     },
     {
       "name": "createStudioProjectUpdateProtocolPort",
-      "description": "Extend package-owner planning with reviewed Studio pending-module lifecycle execution.",
+      "description": "Extend package-owner planning with Studio host prerequisites and reviewed module lifecycle execution.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 25,
+        "line": 28,
         "column": 1
       }
     },
@@ -13995,7 +14034,25 @@
       "description": "Delegate existing package-owner planning when present instead of replacing it.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 78,
+        "line": 87,
+        "column": 1
+      }
+    },
+    {
+      "name": "studioHostPrerequisiteBlockers",
+      "description": "Block project execution whenever the selected Studio owner version differs from the running host.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
+        "line": 95,
+        "column": 1
+      }
+    },
+    {
+      "name": "hostUpgradeBlocker",
+      "description": "Describe the explicit Studio upgrade, restart, and fresh-plan boundary.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
+        "line": 109,
         "column": 1
       }
     },
@@ -14004,7 +14061,7 @@
       "description": "Plan the pending lifecycle observation only when the host supplied its trusted execution adapter.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 86,
+        "line": 124,
         "column": 1
       }
     },
@@ -14013,7 +14070,7 @@
       "description": "Identify the Studio-owned pending module lifecycle observation by stable evidence.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 108,
+        "line": 146,
         "column": 1
       }
     },
@@ -14022,7 +14079,7 @@
       "description": "Read the exact pending-file precondition frozen into status evidence.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 113,
+        "line": 151,
         "column": 1
       }
     },
@@ -14031,7 +14088,7 @@
       "description": "Mirror APM's owner-planning requirement for evidence not handled by Studio's local planner.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 120,
+        "line": 158,
         "column": 1
       }
     },
@@ -14040,7 +14097,7 @@
       "description": "Block apply when this service instance has no trusted module-lifecycle executor.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 130,
+        "line": 168,
         "column": 1
       }
     },
@@ -14049,7 +14106,7 @@
       "description": "Block planning when pending evidence lacks the immutable file digest required for reviewed execution.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 143,
+        "line": 181,
         "column": 1
       }
     },
@@ -14058,7 +14115,7 @@
       "description": "Preserve APM's fail-closed behavior when another owner observation lacks a planner.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
-        "line": 154,
+        "line": 192,
         "column": 1
       }
     },
@@ -14067,7 +14124,7 @@
       "description": "Compose Studio-owned APM evidence, planning, execution, and verification around one host lifecycle port.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts",
-        "line": 10,
+        "line": 11,
         "column": 1
       }
     },
@@ -14226,10 +14283,10 @@
     },
     {
       "name": "applyGeneratedPackagePolicy",
-      "description": "Apply one explicit Studio package policy while preserving all user-owned package manifest entries.",
+      "description": "Apply one explicit Studio package policy while preserving user-owned package manifest entries outside superseded Studio-managed dependencies.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts",
-        "line": 7,
+        "line": 9,
         "column": 1
       }
     },
@@ -18072,7 +18129,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 233,
+        "line": 229,
         "column": 1
       }
     },
@@ -18765,7 +18822,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1037,
+        "line": 1036,
         "column": 1
       }
     },
@@ -18774,7 +18831,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1053,
+        "line": 1052,
         "column": 1
       }
     },
@@ -18783,7 +18840,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1064,
+        "line": 1063,
         "column": 1
       }
     },
@@ -18792,7 +18849,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1068,
+        "line": 1067,
         "column": 1
       }
     },
@@ -18801,7 +18858,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1101,
+        "line": 1100,
         "column": 1
       }
     },
@@ -24765,10 +24822,10 @@
     },
     {
       "name": "AnkhAdminShell",
-      "description": "Compose the Studio administration app bar, responsive navigation modal/sidebar, and routed page content.\n@todo Keep this as package-wide admin UI composition; route construction/availability/active-state policy belongs to the routes domain and reusable responsive primitives belong to ZORA.",
+      "description": "Compose the Studio administration app bar, responsive navigation dialog/sidebar, and routed page content.\n@todo Keep this as package-wide admin UI composition until Navigator owns the complete admin topology.",
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 38,
+        "line": 30,
         "column": 1
       }
     },
@@ -24777,7 +24834,7 @@
       "description": "Open one available Studio admin route, synchronize route selection state, and close compact navigation.",
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 50,
+        "line": 44,
         "column": 9
       }
     },
@@ -24786,7 +24843,7 @@
       "description": "Return from administration to the most recently recorded non-admin application location.",
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 65,
+        "line": 59,
         "column": 9
       }
     },
@@ -24795,7 +24852,7 @@
       "description": "Render navigation entries from the Studio admin-route registry using current availability and hierarchy state.",
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 134,
+        "line": 124,
         "column": 1
       }
     },
@@ -25893,7 +25950,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 202,
+        "line": 213,
         "column": 1
       }
     },
@@ -25902,7 +25959,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 217,
+        "line": 228,
         "column": 1
       }
     },
@@ -25911,7 +25968,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 236,
+        "line": 247,
         "column": 1
       }
     },
@@ -25920,7 +25977,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 241,
+        "line": 252,
         "column": 1
       }
     },
@@ -26001,7 +26058,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
-        "line": 140,
+        "line": 151,
         "column": 1
       }
     },
@@ -26010,7 +26067,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
-        "line": 155,
+        "line": 166,
         "column": 1
       }
     },
@@ -26136,7 +26193,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 290,
+        "line": 325,
         "column": 1
       }
     },
@@ -26145,7 +26202,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 303,
+        "line": 338,
         "column": 1
       }
     },
@@ -26154,7 +26211,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 313,
+        "line": 348,
         "column": 1
       }
     },
@@ -26163,7 +26220,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 321,
+        "line": 356,
         "column": 1
       }
     },
@@ -26217,7 +26274,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
-        "line": 188,
+        "line": 199,
         "column": 1
       }
     },
@@ -26226,7 +26283,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
-        "line": 212,
+        "line": 223,
         "column": 1
       }
     },
@@ -26712,7 +26769,7 @@
       "description": "Render canonical screens and primary-navigation authoring controls from the derived Studio screen navigation model.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ScreensAdminPage.tsx",
-        "line": 40,
+        "line": 41,
         "column": 1
       }
     },
@@ -26721,7 +26778,7 @@
       "description": "Dispatch one typed screens-admin action against the current Studio mutation target.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ScreensAdminPage.tsx",
-        "line": 50,
+        "line": 51,
         "column": 9
       }
     },
@@ -26730,7 +26787,7 @@
       "description": "Trim and create the requested screen, then clear the creation draft.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ScreensAdminPage.tsx",
-        "line": 54,
+        "line": 55,
         "column": 9
       }
     },
@@ -26739,7 +26796,7 @@
       "description": "Apply the pending destructive screen deletion after confirmation.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ScreensAdminPage.tsx",
-        "line": 62,
+        "line": 63,
         "column": 9
       }
     },
@@ -26748,7 +26805,7 @@
       "description": "Render one canonical screen with route references, detail navigation, and guarded deletion.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ScreensAdminPage.tsx",
-        "line": 179,
+        "line": 187,
         "column": 1
       }
     },
@@ -26757,7 +26814,7 @@
       "description": "Render primary-navigation visibility, initial-route, and sibling-order controls for one screen route reference.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ScreensAdminPage.tsx",
-        "line": 247,
+        "line": 255,
         "column": 1
       }
     },
@@ -26766,7 +26823,7 @@
       "description": "Format a route parent-path segment array as a slash-delimited display label with a root fallback.\n@utility @ankhorage/utility/route",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ScreensAdminPage.tsx",
-        "line": 339,
+        "line": 351,
         "column": 1
       }
     },
@@ -31740,6 +31797,11 @@
         "sourcePath": "src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts"
       },
       {
+        "fromPath": "src/features/project-updates/composition/createStudioHostPrerequisite.test.ts",
+        "toPath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioHostPrerequisite.test.ts"
+      },
+      {
         "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts",
         "toPath": "src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateApplyOwnerStepPort.ts"
@@ -31822,6 +31884,11 @@
       {
         "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts",
         "toPath": "src/types/project-updates.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts"
       },
       {
@@ -33751,6 +33818,1152 @@
         "toSymbol": "runPackedStudioHostAcceptance",
         "callExpression": "runPackedStudioHostAcceptance",
         "sourcePath": "scripts/packed-studio-host-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "promisify",
+        "callExpression": "promisify",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "findFreePortAsync",
+        "callExpression": "findFreePortAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "installPublishedStudioAsync",
+        "callExpression": "installPublishedStudioAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "assertPublishedStudioConsumerAsync",
+        "callExpression": "assertPublishedStudioConsumerAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "startPublishedStudioHostAsync",
+        "callExpression": "startPublishedStudioHostAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "waitForHostAsync",
+        "callExpression": "waitForHostAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "createExistingProjectAsync",
+        "callExpression": "createExistingProjectAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "introduceSupportedDependencyDriftAsync",
+        "callExpression": "introduceSupportedDependencyDriftAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "copyProjectBaselineAsync",
+        "callExpression": "copyProjectBaselineAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "installProjectAsync",
+        "callExpression": "installProjectAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "readMutationSentinelsAsync",
+        "callExpression": "readMutationSentinelsAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "runStudioLifecycleAsync",
+        "callExpression": "runStudioLifecycleAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "installPublishedApmCliAsync",
+        "callExpression": "installPublishedApmCliAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "runCliLifecycleAsync",
+        "callExpression": "runCliLifecycleAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "assertLifecycleParity",
+        "callExpression": "assertLifecycleParity",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "installedDependencyVersionAsync",
+        "callExpression": "installedDependencyVersionAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "stopHostAsync",
+        "callExpression": "stopHostAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "installPublishedStudioAsync",
+        "toSymbol": "writeJsonAsync",
+        "callExpression": "writeJsonAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "installPublishedStudioAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertPublishedStudioConsumerAsync",
+        "toSymbol": "readJsonObjectAsync",
+        "callExpression": "readJsonObjectAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertPublishedStudioConsumerAsync",
+        "toSymbol": "readObject",
+        "callExpression": "readObject",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertPublishedStudioConsumerAsync",
+        "toSymbol": "isWithin",
+        "callExpression": "isWithin",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertPublishedStudioConsumerAsync",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertPublishedStudioConsumerAsync",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "startPublishedStudioHostAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "startPublishedStudioHostAsync",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "stopHostAsync",
+        "toSymbol": "sleepAsync",
+        "callExpression": "sleepAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "waitForHostAsync",
+        "toSymbol": "sleepAsync",
+        "callExpression": "sleepAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "createExistingProjectAsync",
+        "toSymbol": "requestJsonAsync",
+        "callExpression": "requestJsonAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "createExistingProjectAsync",
+        "toSymbol": "readArray",
+        "callExpression": "readArray",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "readArray",
+        "callExpression": "readArray",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "createExistingProjectAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "createExistingProjectAsync",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "introduceSupportedDependencyDriftAsync",
+        "toSymbol": "readJsonObjectAsync",
+        "callExpression": "readJsonObjectAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "introduceSupportedDependencyDriftAsync",
+        "toSymbol": "writeJsonAsync",
+        "callExpression": "writeJsonAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "introduceSupportedDependencyDriftAsync",
+        "toSymbol": "readOptionalObject",
+        "callExpression": "readOptionalObject",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "introduceSupportedDependencyDriftAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "introduceSupportedDependencyDriftAsync",
+        "toSymbol": "installedDependencyVersionAsync",
+        "callExpression": "installedDependencyVersionAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "copyProjectBaselineAsync",
+        "toSymbol": "cp",
+        "callExpression": "cp",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "installProjectAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioLifecycleAsync",
+        "toSymbol": "requestJsonAsync",
+        "callExpression": "requestJsonAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioLifecycleAsync",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioLifecycleAsync",
+        "toSymbol": "readMutationSentinelsAsync",
+        "callExpression": "readMutationSentinelsAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioLifecycleAsync",
+        "toSymbol": "dependencyTargetVersion",
+        "callExpression": "dependencyTargetVersion",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioLifecycleAsync",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioLifecycleAsync",
+        "toSymbol": "lifecycleEvidence",
+        "callExpression": "lifecycleEvidence",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "installPublishedApmCliAsync",
+        "toSymbol": "writeJsonAsync",
+        "callExpression": "writeJsonAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "installPublishedApmCliAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runCliLifecycleAsync",
+        "toSymbol": "runJsonCommandAsync",
+        "callExpression": "runJsonCommandAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runCliLifecycleAsync",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runCliLifecycleAsync",
+        "toSymbol": "dependencyTargetVersion",
+        "callExpression": "dependencyTargetVersion",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runCliLifecycleAsync",
+        "toSymbol": "writeJsonAsync",
+        "callExpression": "writeJsonAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runCliLifecycleAsync",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runCliLifecycleAsync",
+        "toSymbol": "lifecycleEvidence",
+        "callExpression": "lifecycleEvidence",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "lifecycleEvidence",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "lifecycleEvidence",
+        "toSymbol": "normalizeStatusFindings",
+        "callExpression": "normalizeStatusFindings",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "lifecycleEvidence",
+        "toSymbol": "readArray",
+        "callExpression": "readArray",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "lifecycleEvidence",
+        "toSymbol": "normalizePlanTargets",
+        "callExpression": "normalizePlanTargets",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "lifecycleEvidence",
+        "toSymbol": "normalizeFindings",
+        "callExpression": "normalizeFindings",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "normalizeStatusFindings",
+        "toSymbol": "normalizeFindings",
+        "callExpression": "normalizeFindings",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readMutationSentinelsAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "installedDependencyVersionAsync",
+        "toSymbol": "readJsonObjectAsync",
+        "callExpression": "readJsonObjectAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "installedDependencyVersionAsync",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "dependencyTargetVersion",
+        "toSymbol": "readArray",
+        "callExpression": "readArray",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "dependencyTargetVersion",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "dependencyTargetVersion",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "dependencyTargetVersion",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "requestJsonAsync",
+        "toSymbol": "compactHttpFailure",
+        "callExpression": "compactHttpFailure",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "requestJsonAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "compactHttpFailure",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "compactHttpFailure",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runJsonCommandAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runJsonCommandAsync",
+        "toSymbol": "extractJson",
+        "callExpression": "extractJson",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runJsonCommandAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runCommandAsync",
+        "toSymbol": "execFileAsync",
+        "callExpression": "execFileAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runCommandAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runCommandAsync",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readJsonObjectAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readJsonObjectAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readObject",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readObject",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readOptionalObject",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readOptionalObject",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readArray",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readRequiredString",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readRequiredString",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "writeJsonAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "createServer",
+        "callExpression": "createServer",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "reject",
+        "callExpression": "reject",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "promisify",
+        "callExpression": "promisify",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "findFreePortAsync",
+        "callExpression": "findFreePortAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "installPublishedStudioAsync",
+        "callExpression": "installPublishedStudioAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "assertPublishedStudioAsync",
+        "callExpression": "assertPublishedStudioAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "startPublishedStudioHostAsync",
+        "callExpression": "startPublishedStudioHostAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "runOldHostBoundaryAsync",
+        "callExpression": "runOldHostBoundaryAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "waitForHostAsync",
+        "callExpression": "waitForHostAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "statusProjectAsync",
+        "callExpression": "statusProjectAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "assertStudioHost",
+        "callExpression": "assertStudioHost",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "planProjectAsync",
+        "callExpression": "planProjectAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "findByCode",
+        "callExpression": "findByCode",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "studioTargetVersion",
+        "callExpression": "studioTargetVersion",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "readJsonObjectAsync",
+        "callExpression": "readJsonObjectAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "readMutationSentinelsAsync",
+        "callExpression": "readMutationSentinelsAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "requestJsonAsync",
+        "callExpression": "requestJsonAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "installedStudioVersionAsync",
+        "callExpression": "installedStudioVersionAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "stopHostAsync",
+        "callExpression": "stopHostAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "waitForHostAsync",
+        "callExpression": "waitForHostAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "createExistingProjectAsync",
+        "callExpression": "createExistingProjectAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "retainOldStudioReleaseAsync",
+        "callExpression": "retainOldStudioReleaseAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "readMutationSentinelsAsync",
+        "callExpression": "readMutationSentinelsAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "statusProjectAsync",
+        "callExpression": "statusProjectAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "assertStudioHost",
+        "callExpression": "assertStudioHost",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "readObject",
+        "callExpression": "readObject",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "findByCode",
+        "callExpression": "findByCode",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "planProjectAsync",
+        "callExpression": "planProjectAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "studioTargetVersion",
+        "callExpression": "studioTargetVersion",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "writeJsonAsync",
+        "callExpression": "writeJsonAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runOldHostBoundaryAsync",
+        "toSymbol": "stopHostAsync",
+        "callExpression": "stopHostAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "retainOldStudioReleaseAsync",
+        "toSymbol": "readJsonObjectAsync",
+        "callExpression": "readJsonObjectAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "retainOldStudioReleaseAsync",
+        "toSymbol": "studioDependencySection",
+        "callExpression": "studioDependencySection",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "retainOldStudioReleaseAsync",
+        "toSymbol": "readObject",
+        "callExpression": "readObject",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "retainOldStudioReleaseAsync",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "retainOldStudioReleaseAsync",
+        "toSymbol": "writeJsonAsync",
+        "callExpression": "writeJsonAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "retainOldStudioReleaseAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "retainOldStudioReleaseAsync",
+        "toSymbol": "installedStudioVersionAsync",
+        "callExpression": "installedStudioVersionAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "retainOldStudioReleaseAsync",
+        "toSymbol": "restoreBunLockReleaseRangeAsync",
+        "callExpression": "restoreBunLockReleaseRangeAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "restoreBunLockReleaseRangeAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "restoreBunLockReleaseRangeAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "restoreBunLockReleaseRangeAsync",
+        "toSymbol": "readObject",
+        "callExpression": "readObject",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "restoreBunLockReleaseRangeAsync",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "restoreBunLockReleaseRangeAsync",
+        "toSymbol": "writeJsonAsync",
+        "callExpression": "writeJsonAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "installPublishedStudioAsync",
+        "toSymbol": "writeJsonAsync",
+        "callExpression": "writeJsonAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "installPublishedStudioAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertPublishedStudioAsync",
+        "toSymbol": "isWithin",
+        "callExpression": "isWithin",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertPublishedStudioAsync",
+        "toSymbol": "readJsonObjectAsync",
+        "callExpression": "readJsonObjectAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertPublishedStudioAsync",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "startPublishedStudioHostAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "startPublishedStudioHostAsync",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "createExistingProjectAsync",
+        "toSymbol": "requestJsonAsync",
+        "callExpression": "requestJsonAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "createExistingProjectAsync",
+        "toSymbol": "readArray",
+        "callExpression": "readArray",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "readArray",
+        "callExpression": "readArray",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "createExistingProjectAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "createExistingProjectAsync",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "statusProjectAsync",
+        "toSymbol": "requestJsonAsync",
+        "callExpression": "requestJsonAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "planProjectAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertStudioHost",
+        "toSymbol": "readArray",
+        "callExpression": "readArray",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertStudioHost",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertStudioHost",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "studioTargetVersion",
+        "toSymbol": "readArray",
+        "callExpression": "readArray",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "studioTargetVersion",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "studioTargetVersion",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "findByCode",
+        "toSymbol": "readArray",
+        "callExpression": "readArray",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "installedStudioVersionAsync",
+        "toSymbol": "readJsonObjectAsync",
+        "callExpression": "readJsonObjectAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "installedStudioVersionAsync",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readMutationSentinelsAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "requestJsonAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runCommandAsync",
+        "toSymbol": "execFileAsync",
+        "callExpression": "execFileAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "waitForHostAsync",
+        "toSymbol": "sleepAsync",
+        "callExpression": "sleepAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "stopHostAsync",
+        "toSymbol": "sleepAsync",
+        "callExpression": "sleepAsync",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readJsonObjectAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readJsonObjectAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readObject",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readObject",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readArray",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readRequiredString",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "readRequiredString",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "writeJsonAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "createServer",
+        "callExpression": "createServer",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-restart-boundary-acceptance.ts",
+        "toSymbol": "reject",
+        "callExpression": "reject",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
       },
       {
         "fromSymbol": "src/ankhAdmin.public.test.ts",
@@ -57262,6 +58475,12 @@
       },
       {
         "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "useWindowDimensions",
+        "callExpression": "useWindowDimensions",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
         "toSymbol": "useState",
         "callExpression": "useState",
         "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
@@ -58215,6 +59434,12 @@
         "sourcePath": "src/features/project-updates/application/ProjectUpdateService.ts"
       },
       {
+        "fromSymbol": "inspectStatusAsync",
+        "toSymbol": "withStudioHostPackage",
+        "callExpression": "withStudioHostPackage",
+        "sourcePath": "src/features/project-updates/application/ProjectUpdateService.ts"
+      },
+      {
         "fromSymbol": "statusAsync",
         "toSymbol": "uniquePresentationRows",
         "callExpression": "uniquePresentationRows",
@@ -58503,6 +59728,30 @@
         "sourcePath": "src/features/project-updates/composition/applyCurrentGeneratedPackagePolicy.ts"
       },
       {
+        "fromSymbol": "src/features/project-updates/composition/createStudioHostPrerequisite.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/project-updates/composition/createStudioHostPrerequisite.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/createStudioHostPrerequisite.test.ts",
+        "toSymbol": "createStudioProjectUpdateProtocolPort",
+        "callExpression": "createStudioProjectUpdateProtocolPort",
+        "sourcePath": "src/features/project-updates/composition/createStudioHostPrerequisite.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/createStudioHostPrerequisite.test.ts",
+        "toSymbol": "protocolRequest",
+        "callExpression": "protocolRequest",
+        "sourcePath": "src/features/project-updates/composition/createStudioHostPrerequisite.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/composition/createStudioHostPrerequisite.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/project-updates/composition/createStudioHostPrerequisite.test.ts"
+      },
+      {
         "fromSymbol": "observeAsync",
         "toSymbol": "readReviewedPendingModuleStep",
         "callExpression": "readReviewedPendingModuleStep",
@@ -58773,6 +60022,12 @@
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
       },
       {
+        "fromSymbol": "planProtocolAsync",
+        "toSymbol": "studioHostPrerequisiteBlockers",
+        "callExpression": "studioHostPrerequisiteBlockers",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
+      },
+      {
         "fromSymbol": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts",
         "toSymbol": "isPendingModuleLifecycleObservation",
         "callExpression": "isPendingModuleLifecycleObservation",
@@ -58788,6 +60043,12 @@
         "fromSymbol": "planProtocolAsync",
         "toSymbol": "protocolUnavailableBlocker",
         "callExpression": "protocolUnavailableBlocker",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
+      },
+      {
+        "fromSymbol": "studioHostPrerequisiteBlockers",
+        "toSymbol": "hostUpgradeBlocker",
+        "callExpression": "hostUpgradeBlocker",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
       },
       {
@@ -58813,6 +60074,12 @@
         "toSymbol": "planPendingModuleLifecycleAsync",
         "callExpression": "planPendingModuleLifecycleAsync",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateProtocolPort.ts"
+      },
+      {
+        "fromSymbol": "createStudioProjectUpdateService",
+        "toSymbol": "getGeneratedPackagePolicy",
+        "callExpression": "getGeneratedPackagePolicy",
+        "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateService.ts"
       },
       {
         "fromSymbol": "createStudioProjectUpdateService",

@@ -1,15 +1,7 @@
-import {
-  AppBar,
-  IconButton,
-  Modal,
-  Show,
-  SidebarLayout,
-  Text,
-  useZoraTheme,
-} from '@ankhorage/zora';
+import { AppBar, Dialog, IconButton, Text, useZoraTheme } from '@ankhorage/zora';
 import { Slot, usePathname, useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useStudio } from '../../core/StudioContext';
@@ -25,22 +17,24 @@ import {
   STUDIO_ADMIN_ROUTE_REGISTRY,
 } from '../../studioAdminRouteModel';
 
-const COMPACT_VISIBILITY = { base: true, lg: false } as const;
+const COMPACT_MAX_WIDTH = 1023;
 
 export interface AnkhAdminShellProps {
   readonly children?: React.ReactNode;
 }
 
 /***
- * Compose the Studio administration app bar, responsive navigation modal/sidebar, and routed page content.
- * @todo Keep this as package-wide admin UI composition; route construction/availability/active-state policy belongs to the routes domain and reusable responsive primitives belong to ZORA.
+ * Compose the Studio administration app bar, responsive navigation dialog/sidebar, and routed page content.
+ * @todo Keep this as package-wide admin UI composition until Navigator owns the complete admin topology.
  */
 export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
   const studio = useStudio();
   const pathname = usePathname();
   const router = useRouter();
   const { theme } = useZoraTheme();
+  const { width } = useWindowDimensions();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const compact = width <= COMPACT_MAX_WIDTH;
   const activeRouteId = resolveStudioAdminActiveRouteId(pathname);
   const contextualScreenId = resolveStudioScreenId(pathname) ?? studio.activeScreenId;
   const contextualModuleId = resolveStudioModuleId(pathname);
@@ -93,7 +87,7 @@ export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
           />
         }
         actions={
-          <Show when={COMPACT_VISIBILITY}>
+          compact ? (
             <IconButton
               icon={{ name: 'menu-outline' }}
               label="Open administration navigation"
@@ -101,30 +95,26 @@ export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
               color="neutral"
               onPress={() => setDrawerOpen(true)}
             />
-          </Show>
+          ) : null
         }
       />
-      <Show when={COMPACT_VISIBILITY}>
-        <Modal
-          visible={drawerOpen}
-          title="Administration"
-          closeOnBackdrop
-          onDismiss={() => setDrawerOpen(false)}
-        >
-          {nav}
-        </Modal>
-      </Show>
+      <Dialog
+        visible={compact && drawerOpen}
+        title="Administration"
+        closeOnBackdrop
+        onDismiss={() => setDrawerOpen(false)}
+      >
+        {nav}
+      </Dialog>
       <View style={styles.body}>
-        <Show
-          when={COMPACT_VISIBILITY}
-          fallback={
-            <SidebarLayout sidebar={nav} sidebarWidth={260} sizing="fill">
-              {content}
-            </SidebarLayout>
-          }
-        >
-          {content}
-        </Show>
+        {compact ? (
+          content
+        ) : (
+          <View style={styles.desktopLayout}>
+            <View style={[styles.sidebar, { borderColor: theme.colors.border }]}>{nav}</View>
+            {content}
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -195,6 +185,17 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 12,
+  },
+  desktopLayout: {
+    flex: 1,
+    flexDirection: 'row',
+    gap: 16,
+    minHeight: 0,
+  },
+  sidebar: {
+    width: 260,
+    borderRightWidth: StyleSheet.hairlineWidth,
+    paddingRight: 12,
   },
   contentOnly: {
     flex: 1,
