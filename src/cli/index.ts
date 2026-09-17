@@ -8,10 +8,7 @@ import { fileURLToPath } from 'node:url';
 
 import type { AnkhCommandHandler, AnkhRuntimeCommandProvider } from '@ankhorage/ankh';
 
-import { createStudioHost } from '../host/createStudioHost';
-import { startStudioHostServer } from '../host/http/server';
-import { getProjectTemplateSource, type ProjectTemplateSelection } from '../host/templates';
-import { resolveWorkspaceRoot } from '../host/utils/workspaceRoot';
+import type { ProjectTemplateSelection } from '../host/templates';
 
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
 const STUDIO_COMMAND_CATEGORY = 'studio';
@@ -82,12 +79,17 @@ function resolvePackageRoot() {
 }
 
 /*** Resolve the workspace root used by direct Studio CLI commands. */
-function resolveHostWorkspaceRoot() {
+async function resolveHostWorkspaceRoot() {
+  const { resolveWorkspaceRoot } = await import('../host/utils/workspaceRoot');
   return resolveWorkspaceRoot(resolvePackageRoot());
 }
 
 /*** Start the Studio host and first-party Studio application together. */
 async function runStudioDev() {
+  const [{ startStudioHostServer }, { resolveWorkspaceRoot }] = await Promise.all([
+    import('../host/http/server'),
+    import('../host/utils/workspaceRoot'),
+  ]);
   const packageRoot = resolvePackageRoot();
   const projectRoot = resolveWorkspaceRoot(packageRoot);
   const host = await startStudioHostServer({ projectRoot, host: '127.0.0.1', port: 3000 });
@@ -120,7 +122,8 @@ async function runStudioDev() {
 
 /*** List current Studio projects through the shared ProjectManager. */
 async function listProjects(request: Parameters<AnkhCommandHandler>[0]) {
-  const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
+  const { createStudioHost } = await import('../host/createStudioHost');
+  const studioHost = createStudioHost({ workspaceRoot: await resolveHostWorkspaceRoot() });
   try {
     const projects = await studioHost.projectManager.listProjects();
     request.context.writeStdout(`${JSON.stringify(projects, null, 2)}\n`);
@@ -132,8 +135,12 @@ async function listProjects(request: Parameters<AnkhCommandHandler>[0]) {
 
 /*** Create one Studio project from a published standalone template. */
 async function createProject(request: Parameters<AnkhCommandHandler>[0]) {
+  const [{ createStudioHost }, { getProjectTemplateSource }] = await Promise.all([
+    import('../host/createStudioHost'),
+    import('../host/templates'),
+  ]);
   const input = parseCreateProjectArgs(request.argv);
-  const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
+  const studioHost = createStudioHost({ workspaceRoot: await resolveHostWorkspaceRoot() });
   try {
     const source = await getProjectTemplateSource({ category: input.category, slug: input.slug });
     const project = await studioHost.projectManager.createProject(input.name, source);
@@ -146,8 +153,9 @@ async function createProject(request: Parameters<AnkhCommandHandler>[0]) {
 
 /*** Delete one Studio project by ID. */
 async function deleteProject(request: Parameters<AnkhCommandHandler>[0]) {
+  const { createStudioHost } = await import('../host/createStudioHost');
   const projectId = requireProjectId(request.argv, 'projects delete');
-  const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
+  const studioHost = createStudioHost({ workspaceRoot: await resolveHostWorkspaceRoot() });
   try {
     const result = await studioHost.projectManager.deleteProject(projectId);
     request.context.writeStdout(`${JSON.stringify(result, null, 2)}\n`);
