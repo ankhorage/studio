@@ -133,8 +133,7 @@ describe('generated OAuth scaffold templates', () => {
     );
     expect(dependencies['@ankhorage/data-sources']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/expo-runtime']).toMatch(CARET_SEMVER_RANGE);
-    expectCompatibleCaretRanges(
-      dependencies['@ankhorage/navigator'],
+    expect(dependencies['@ankhorage/navigator']).toBe(
       studioPackage.dependencies?.['@ankhorage/navigator'],
     );
     expect(pkg.overrides).toEqual({ '@ankhorage/contracts': '$@ankhorage/contracts' });
