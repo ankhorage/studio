@@ -1,0 +1,52 @@
+name: Temporary #538 dependency sync
+
+on:
+  push:
+    branches:
+      - test/538-fresh-template-infra-up
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout task branch
+        uses: actions/checkout@v4
+        with:
+          ref: test/538-fresh-template-infra-up
+          fetch-depth: 0
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Update required released package ranges
+        run: |
+          bun --eval '
+          const packageJson = await Bun.file("package.json").json();
+          packageJson.dependencies["@ankhorage/contracts"] = "^21.0.0";
+          packageJson.dependencies["@ankhorage/infra"] = "^7.1.1";
+          packageJson.dependencies["@ankhorage/supabase"] = "^0.5.10";
+          await Bun.write("package.json", `${JSON.stringify(packageJson, null, 2)}\n`);
+          '
+          rm -rf "$HOME/.bun/install/cache"
+          bun install
+      - name: Build
+        run: bun run build
+      - name: Typecheck
+        run: bun run check-types
+      - name: Lint
+        run: bun run lint
+      - name: Commit synchronized dependencies
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json bun.lock
+          git commit -m "chore(studio): consume credential bootstrap releases"
+          git push origin HEAD:test/538-fresh-template-infra-up
