@@ -4,7 +4,7 @@ import type {
   ReleaseControlExecutionResult,
   ReleaseLifecycleControl,
 } from '@ankhorage/deploy';
-import { Button, Card, ConfirmDialog, Select, Text } from '@ankhorage/zora';
+import { Button, Card, Dialog, Select, Text, View } from '@ankhorage/zora';
 import React, { useRef, useState } from 'react';
 
 import { canExecuteProjectDeployRelease } from '../../../../canExecuteProjectDeployRelease';
@@ -251,37 +251,57 @@ export function DeployReleaseOperationsCard(props: {
         <DeployExecutionResultView label={outcome.label} response={outcome.response} />
       ) : null}
       {controlResult ? <DeployControlResultView result={controlResult} /> : null}
-      <ConfirmDialog
+      <Dialog
         visible={confirmExecute}
         title="Execute deployment plan?"
         description={`Execute this exact Deploy plan with ${
           successfulResult?.plan.steps.length ?? 0
         } steps, including ${irreversibleCount} irreversible step(s)? Deploy remains authoritative for drift safety.`}
-        confirmLabel="Execute deployment"
-        confirmColor="danger"
-        cancelLabel="Cancel"
-        onCancel={() => setConfirmExecute(false)}
-        onConfirm={() => void executeRelease()}
+        onDismiss={() => setConfirmExecute(false)}
+        footer={
+          <View direction={{ base: 'column', md: 'row' }} gap="s" justify="flex-end">
+            <Button color="neutral" variant="soft" disabled={busy} onPress={() => setConfirmExecute(false)}>
+              Cancel
+            </Button>
+            <Button color="danger" disabled={busy} onPress={() => void executeRelease()}>
+              Execute deployment
+            </Button>
+          </View>
+        }
       />
-      <ConfirmDialog
+      <Dialog
         visible={pendingResume !== null}
         title="Resume release execution?"
         description={`Resume ${pendingResume?.previousExecutionId ?? ''} through the Deploy owner API?`}
-        confirmLabel="Resume execution"
-        cancelLabel="Cancel"
-        onCancel={() => setPendingResume(null)}
-        onConfirm={() => void resumeRelease()}
+        onDismiss={() => setPendingResume(null)}
+        footer={
+          <View direction={{ base: 'column', md: 'row' }} gap="s" justify="flex-end">
+            <Button color="neutral" variant="soft" disabled={busy} onPress={() => setPendingResume(null)}>
+              Cancel
+            </Button>
+            <Button disabled={busy} onPress={() => void resumeRelease()}>
+              Resume execution
+            </Button>
+          </View>
+        }
       />
-      <ConfirmDialog
+      <Dialog
         visible={pendingControl !== null}
         title="Execute lifecycle control?"
         description={`Execute ${pendingControl?.control.target ?? ''}:${
           pendingControl?.control.action ?? ''
         } through the Deploy owner API?`}
-        confirmLabel="Execute control"
-        cancelLabel="Cancel"
-        onCancel={() => setPendingControl(null)}
-        onConfirm={() => void executeControl()}
+        onDismiss={() => setPendingControl(null)}
+        footer={
+          <View direction={{ base: 'column', md: 'row' }} gap="s" justify="flex-end">
+            <Button color="neutral" variant="soft" disabled={busy} onPress={() => setPendingControl(null)}>
+              Cancel
+            </Button>
+            <Button disabled={busy} onPress={() => void executeControl()}>
+              Execute control
+            </Button>
+          </View>
+        }
       />
     </Card>
   );
