@@ -144,8 +144,8 @@ function readSupabasePublicOutputs(result: StudioInfraUpResult): {
   const anonKey = result.reconciled.outputs.find(
     ({ environmentVariable }) => environmentVariable === 'EXPO_PUBLIC_SUPABASE_ANON_KEY',
   )?.value;
-  if (url === undefined || anonKey === undefined) {
-    throw new Error('Expected public Supabase URL and anon-key outputs from Studio Infra up.');
+  if (typeof url !== 'string' || typeof anonKey !== 'string') {
+    throw new Error('Expected string Supabase URL and anon-key outputs from Studio Infra up.');
   }
   return { url, anonKey };
 }
