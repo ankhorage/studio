@@ -69,6 +69,12 @@ jobs:
       - name: Generated Expo 57 acceptance
         run: bun run test:acceptance:expo57-generated-app
 
+      - name: Docs
+        run: bun run docs
+
+      - name: Format generated artifacts
+        run: bun run format
+
       - name: Changeset status
         run: bun run changeset:status
 
