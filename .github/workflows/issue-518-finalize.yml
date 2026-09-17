@@ -1,0 +1,78 @@
+name: Finalize issue 518 dependency rollout
+
+on:
+  push:
+    branches:
+      - fix/518-zora19-templates
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: fix/518-zora19-templates
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+
+      - name: Align dependency floors
+        run: |
+          bun -e "const path='package.json'; const p=JSON.parse(await Bun.file(path).text()); p.dependencies['@ankhorage/zora']='^19.0.1'; p.dependencies['@ankhorage/templates']='^11.0.5'; await Bun.write(path, JSON.stringify(p, null, 2) + '\n');"
+          cat > .changeset/align-zora-19.md <<'EOF'
+          ---
+          "@ankhorage/studio": patch
+          ---
+
+          Align Studio and generated-app dependency policy with the released ZORA 19 boundary and ZORA-19-compatible Templates release.
+          EOF
+
+      - name: Refresh lockfile
+        run: bun install
+
+      - name: Format
+        run: bun run format
+
+      - name: Build
+        run: bun run build
+
+      - name: Typecheck
+        run: bun run check-types
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Knip
+        run: bun run knip:check
+
+      - name: Tests
+        run: bun run test
+
+      - name: Generated Expo 57 acceptance
+        run: bun run test:acceptance:expo57-generated-app
+
+      - name: Changeset status
+        run: bun run changeset:status
+
+      - name: Format check
+        run: bun run format:check
+
+      - name: Diff check
+        run: git diff --check
+
+      - name: Commit validated rollout
+        run: |
+          rm .github/workflows/issue-518-finalize.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "fix(deps): align Studio with ZORA 19"
+          git push origin HEAD:fix/518-zora19-templates
