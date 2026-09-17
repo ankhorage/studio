@@ -124,7 +124,7 @@ describe('generated auth root bootstrap', () => {
     expect(rootLayout).toContain("if (authState === 'pending') {");
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'authenticated'}>");
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'unauthenticated'}>");
-    expect(rootLayout).toContain('<Stack.Protected guard={canAccessStudioAdmin}>');
+    expect(rootLayout).toContain('<Stack.Protected guard={__DEV__ && canAccessStudioAdmin}>');
     expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
     expect(rootLayout).toContain(`return (
     <Stack screenOptions={rootStackScreenOptions}>
@@ -134,7 +134,7 @@ describe('generated auth root bootstrap', () => {
       <Stack.Protected guard={authState === 'unauthenticated'}>
         <Stack.Screen key="auth" name="(auth)" />
       </Stack.Protected>
-      <Stack.Protected guard={canAccessStudioAdmin}>
+      <Stack.Protected guard={__DEV__ && canAccessStudioAdmin}>
         <Stack.Screen key="ankh" name="ankh" />
       </Stack.Protected>
     </Stack>
