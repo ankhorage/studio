@@ -22,7 +22,7 @@ test('uses the URL as the admin route source of truth', () => {
   expect(source).toContain('createStudioBindingsRoutePath');
   expect(source).toContain('resolveStudioLastNonAdminLocation');
   expect(source).toContain('setLastNonAdminLocation(appLocation)');
-  expect(actionSource).toContain("label: 'Administration'");
+  expect(actionSource).toContain("label: 'Admin Settings'");
   expect(actionSource).toContain("key: 'preview-mode'");
   expect(actionSource).toContain('handlers.togglePreviewMode');
   expect(source).toContain('isStudioAdminPath(pathname)');
