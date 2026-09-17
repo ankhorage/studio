@@ -29,6 +29,8 @@ jobs:
         run: bun install --frozen-lockfile
       - name: Format sources
         run: bun run format
+      - name: Autofix task lint
+        run: bun x ankhorage-eslint src/host/freshTemplateInfra.e2e.test.ts --fix --max-warnings=0
       - name: Regenerate Paradox documentation
         run: bun run docs
       - name: Commit generated formatting and documentation
@@ -41,7 +43,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "docs(studio): refresh generated documentation"
+          git commit -m "chore(studio): apply generated #538 fixes"
           git push origin HEAD:test/538-fresh-template-infra-up
       - name: Build
         run: bun run build
