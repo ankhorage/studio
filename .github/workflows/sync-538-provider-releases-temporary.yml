@@ -21,6 +21,21 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: '1.4.2'
+      - name: Wait for published providers
+        shell: bash
+        run: |
+          for attempt in $(seq 1 12); do
+            supabase_version="$(npm view @ankhorage/supabase@0.5.11 version 2>/dev/null || true)"
+            vault_version="$(npm view @ankhorage/supabase-vault@0.3.2 version 2>/dev/null || true)"
+            if [ "$supabase_version" = "0.5.11" ] && [ "$vault_version" = "0.3.2" ]; then
+              printf 'Registry ready: supabase=%s vault=%s\n' "$supabase_version" "$vault_version"
+              exit 0
+            fi
+            printf 'Registry not ready yet (attempt %s): supabase=%s vault=%s\n' "$attempt" "${supabase_version:-missing}" "${vault_version:-missing}"
+            sleep 5
+          done
+          echo 'Required provider releases are not visible in the npm registry.' >&2
+          exit 1
       - name: Update released provider ranges
         run: |
           bun --eval '
