@@ -1,4 +1,4 @@
-import type { AppManifest } from '@ankhorage/contracts';
+import { isSerializableValue, type AppManifest } from '@ankhorage/contracts';
 import type { ModuleState, Orchestrator } from '@ankhorage/orchestrator';
 import path from 'path';
 
@@ -338,10 +338,13 @@ export class ModuleManager {
     const modules = Object.fromEntries(
       [...installed]
         .sort((left, right) => left.moduleId.localeCompare(right.moduleId))
-        .map((state) => [
-          state.moduleId,
-          { config: state.installation.config },
-        ]),
+        .map((state) => {
+          const { config } = state.installation;
+          if (config !== undefined && !isSerializableValue(config)) {
+            throw new Error(`Module '${state.moduleId}' produced non-serializable config.`);
+          }
+          return [state.moduleId, config === undefined ? {} : { config }] as const;
+        }),
     );
 
     return {
