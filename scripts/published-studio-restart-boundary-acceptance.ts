@@ -341,7 +341,24 @@ async function planProjectAsync(projectId: string): Promise<Readonly<Record<stri
   const response = await fetch(`http://127.0.0.1:${port}${route}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ availability: 'refresh' }),
+    body: JSON.stringify({
+      availability: 'refresh',
+      policy: {
+        dependencyUpdates: 'selected',
+        selections: [
+          {
+            selector: { name: STUDIO_PACKAGE_NAME },
+            target: {
+              kind: 'version',
+              version: CURRENT_STUDIO_VERSION,
+              manifestRange: `^${CURRENT_STUDIO_VERSION}`,
+            },
+          },
+        ],
+        repairInstallations: true,
+        repairProjections: true,
+      },
+    }),
   });
   const body = await response.text();
   const value: unknown = JSON.parse(body);
