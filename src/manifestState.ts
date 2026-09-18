@@ -161,7 +161,7 @@ export function createStudioManifestFingerprint(manifest: StudioManifest | null)
     screens: Object.keys(manifest.screens),
     dataBindings: Object.keys(manifest.dataBindings ?? {}),
     dataSources: Object.keys(manifest.dataSources ?? {}),
-    themes: manifest.themes.map((theme) => theme.id),
+    themes: Object.keys(manifest.themes).sort(),
     activeThemeId: manifest.activeThemeId,
     activeThemeMode: manifest.activeThemeMode,
     settings: manifest.settings,
