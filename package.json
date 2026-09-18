@@ -214,7 +214,7 @@
   "dependencies": {
     "@ankhorage/apm": "^0.8.6",
     "@ankhorage/color-theory": "^0.3.1",
-    "@ankhorage/contracts": "^21.0.0",
+    "@ankhorage/contracts": "^22.0.0",
     "@ankhorage/data-sources": "^2.0.5",
     "@ankhorage/deploy": "^0.12.8",
     "@ankhorage/expo-runtime": "^3.2.16",
@@ -228,7 +228,7 @@
     "@ankhorage/permissions": "^0.2.5",
     "@ankhorage/react-native-reanimated-dnd-web": "^0.4.0",
     "@ankhorage/repository": "^0.4.5",
-    "@ankhorage/runtime": "^2.3.1",
+    "@ankhorage/runtime": "^3.0.0",
     "@ankhorage/supabase": "^0.5.13",
     "@ankhorage/supabase-auth": "^1.2.12",
     "@ankhorage/supabase-storage": "^0.2.7",
