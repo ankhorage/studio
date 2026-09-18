@@ -1,4 +1,5 @@
 import type { ExternalApiFetch, ExternalApiFetchResponse } from '@ankhorage/data-sources';
+import { readOwnProperty } from '@ankhorage/utility/object';
 import { describe, expect, test } from 'bun:test';
 
 import type { StudioManifest } from '../../index';
@@ -18,8 +19,15 @@ function createManifest(overrides: Partial<StudioManifest> = {}): StudioManifest
     },
     dataBindings: {},
     dataSources: {},
-    themes: [],
-    activeThemeId: '',
+    themes: {
+      default: {
+        id: 'default',
+        name: 'Default',
+        light: { primaryColor: '#3366ff', harmony: 'analogous' },
+        dark: { primaryColor: '#6699ff', harmony: 'analogous' },
+      },
+    },
+    activeThemeId: 'default',
     activeThemeMode: 'light',
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     infra: {
@@ -31,9 +39,8 @@ function createManifest(overrides: Partial<StudioManifest> = {}): StudioManifest
           },
         },
       },
-      modules: [],
-      modulesConfig: {},
-      apis: [],
+      modules: {},
+      apis: {},
     },
     ...overrides,
   } as StudioManifest;
@@ -76,10 +83,9 @@ describe('StudioExternalApiService mutations', () => {
               },
             },
           },
-          modules: [],
-          modulesConfig: {},
-          apis: [
-            {
+          modules: {},
+          apis: {
+            inventory: {
               id: 'inventory',
               origin: 'external',
               protocol: 'rest',
@@ -101,7 +107,7 @@ describe('StudioExternalApiService mutations', () => {
                 },
               },
             },
-          ],
+          },
         },
       }),
     );
@@ -115,8 +121,8 @@ describe('StudioExternalApiService mutations', () => {
     });
 
     expect(result).toEqual({ ok: true, apiId: 'inventory', diagnostics: [] });
-    expect(store.read().infra.apis).toHaveLength(1);
-    expect(store.read().infra.apis?.[0]).toMatchObject({
+    expect(Object.keys(store.read().infra.apis ?? {})).toHaveLength(1);
+    expect(store.read().infra.apis ? readOwnProperty(store.read().infra.apis, 'inventory') : undefined).toMatchObject({
       id: 'inventory',
       name: 'Inventory v2',
       baseUrl: 'https://api-v2.example.com',
@@ -126,7 +132,7 @@ describe('StudioExternalApiService mutations', () => {
         scope: 'header:authorization',
       },
     });
-    expect(store.read().infra.apis?.[0]?.endpoints.items?.operations.list).toMatchObject({
+    expect(store.read().infra.apis ? readOwnProperty(store.read().infra.apis, 'inventory') : undefined?.endpoints.items?.operations.list).toMatchObject({
       method: 'GET',
       path: '/items',
     });
@@ -144,8 +150,7 @@ describe('StudioExternalApiService mutations', () => {
               },
             },
           },
-          modules: [],
-          modulesConfig: {},
+          modules: {},
           apis: [
             {
               id: 'inventory',
@@ -170,7 +175,7 @@ describe('StudioExternalApiService mutations', () => {
     const result = await service.remove('demo', { apiId: 'inventory' });
 
     expect(result).toEqual({ ok: true, apiId: 'inventory', diagnostics: [] });
-    expect(store.read().infra.apis?.map((api) => api.id)).toEqual(['inventory-v2']);
+    expect(Object.values(store.read().infra.apis ?? {}).map((api) => api.id)).toEqual(['inventory-v2']);
   });
 
   test('returns discovery diagnostics without persisting a second model when automatic discovery fails', async () => {
@@ -189,6 +194,6 @@ describe('StudioExternalApiService mutations', () => {
 
     expect(result.ok).toBe(false);
     expect(result.diagnostics.length).toBeGreaterThan(0);
-    expect(store.read().infra.apis).toEqual([]);
+    expect(store.read().infra.apis).toEqual({});
   });
 });
