@@ -335,11 +335,13 @@ export class ModuleManager {
   ): Promise<AppManifest> {
     const states = await this.getModuleOrchestrator(this.getAppPath(projectId)).listModules();
     const installed = states.filter((state) => state.installed);
-    const modules = installed
-      .map((state) => state.moduleId)
-      .sort((left, right) => left.localeCompare(right));
-    const modulesConfig = Object.fromEntries(
-      installed.map((state) => [state.moduleId, state.installation.config]),
+    const modules = Object.fromEntries(
+      installed
+        .toSorted((left, right) => left.moduleId.localeCompare(right.moduleId))
+        .map((state) => [
+          state.moduleId,
+          { config: state.installation.config },
+        ]),
     );
 
     return {
@@ -347,7 +349,6 @@ export class ModuleManager {
       infra: {
         ...manifest.infra,
         modules,
-        modulesConfig,
       },
     };
   }
