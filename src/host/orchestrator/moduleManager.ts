@@ -1,7 +1,6 @@
-import path from 'path';
-
 import { isSerializableValue, type AppManifest } from '@ankhorage/contracts';
 import type { ModuleState, Orchestrator } from '@ankhorage/orchestrator';
+import path from 'path';
 
 import { createStudioProjectWriterProxy } from '../../features/project-updates/composition/createStudioProjectWriterProxy';
 import { findNodeInManifest, updateStudioManifestNode } from '../../manifestState';
