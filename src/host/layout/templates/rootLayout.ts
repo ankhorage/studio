@@ -62,6 +62,10 @@ export function getRootLayoutImportRequirements(
       namedImports: [{ imported: 'createExpoBundledMediaResolver' }],
     },
     {
+      source: '@ankhorage/utility/object',
+      namedImports: [{ imported: 'readOwnProperty' }],
+    },
+    {
       source: '@ankhorage/expo-runtime/icon-fonts',
       namedImports: [{ imported: 'ExpoZoraIconFontProvider' }],
     },
@@ -435,9 +439,13 @@ export const unstable_settings = {
 export default function RootLayout() {
 ${indentedRootHookBlock}  const manifestContext = useOptionalManifestContext();
   const runtimeManifest = manifestContext?.manifest ?? fallbackManifest;${indentedStudioRuntimeLines}
-  const activeTheme =
-    runtimeManifest.themes.find((theme) => theme.id === runtimeManifest.activeThemeId) ??
-    runtimeManifest.themes[0];
+  const activeTheme = readOwnProperty(
+    runtimeManifest.themes,
+    runtimeManifest.activeThemeId,
+  );
+  if (!activeTheme) {
+    throw new Error(`Manifest active theme '${runtimeManifest.activeThemeId}' is missing.`);
+  }
   const activeThemeMode = resolveThemeMode(runtimeManifest.activeThemeMode, 'light');
   const executeOperation = useMemo(
     () =>
