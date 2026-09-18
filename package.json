@@ -212,7 +212,7 @@
     "supabase-vault"
   ],
   "dependencies": {
-    "@ankhorage/apm": "^0.8.7",
+    "@ankhorage/apm": "^0.8.8",
     "@ankhorage/color-theory": "^0.3.1",
     "@ankhorage/contracts": "^22.0.3",
     "@ankhorage/data-sources": "^2.0.5",
@@ -249,9 +249,9 @@
     "@react-native-vector-icons/fontawesome5": "^13.1.3",
     "@react-native-vector-icons/fontawesome6": "^13.1.3",
     "@react-native-vector-icons/ionicons": "^13.1.3",
-    "expo": "57.0.23",
-    "expo-constants": "~57.0.18",
-    "expo-router": "~57.0.21",
+    "expo": "~57.0.24",
+    "expo-constants": "~57.0.19",
+    "expo-router": "~57.0.22",
     "expo-status-bar": "~57.0.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
