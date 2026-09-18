@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 3.1.1
+
+### Patch Changes
+
+- e944004: Keep repeated APM update findings and detail rows keyed uniquely in the Studio Dashboard.
+
 ## 3.1.0
 
 ### Minor Changes
