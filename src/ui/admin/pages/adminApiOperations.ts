@@ -1,4 +1,4 @@
-import type { ApiDefinitionList } from '@ankhorage/contracts/data';
+import type { ApiDefinitionRegistry } from '@ankhorage/contracts/data';
 
 export interface ApiOperationRow {
   readonly apiId: string;
@@ -18,8 +18,8 @@ export interface ApiOperationRow {
  * Flatten canonical API definitions, endpoints, and operations into administration-table rows with inherited path/origin metadata.
  * @todo Move this external-API administration projection from `ui/` into the external-apis application/presentation model domain.
  */
-export function collectApiOperationRows(apis: ApiDefinitionList): ApiOperationRow[] {
-  return apis.flatMap((api) =>
+export function collectApiOperationRows(apis: ApiDefinitionRegistry): ApiOperationRow[] {
+  return Object.values(apis).flatMap((api) =>
     Object.entries(api.endpoints).flatMap(([endpointId, endpoint]) =>
       Object.entries(endpoint.operations).map(([operationId, operation]) => ({
         apiId: api.id,
