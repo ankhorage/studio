@@ -1,5 +1,6 @@
-import { pathExists } from '@ankhorage/utility/node/fs';
 import path from 'node:path';
+
+import { pathExists } from '@ankhorage/utility/node/fs';
 
 import { getProjectPath } from '../orchestrator/projectPaths';
 
