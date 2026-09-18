@@ -5,6 +5,19 @@ import { getGeneratedPackagePolicy } from '../../features/project-updates/adapte
 import { resolveZoraExtensionsForManifest, resolveZoraExtensionsFromDependencies } from './index';
 
 describe('ZORA extension owner discovery', () => {
+  it('derives Game ownership from the installed plugin descriptor', () => {
+    const [extension] = resolveZoraExtensionsForManifest(createManifest(['Game']));
+
+    expect(extension?.packageName).toBe('@ankhorage/zora-game');
+    expect(extension?.descriptorExportName).toBe('ZORA_GAME_PLUGIN');
+    expect(extension?.componentTypes).toContain('Game');
+    expect(extension?.componentTypes).toContain('GameEntity');
+    expect(extension?.componentTypes).toContain('GameInputZone');
+    expect(extension?.dependencies).toEqual({
+      '@ankhorage/zora-game': readExtensionRange('@ankhorage/zora-game'),
+    });
+  });
+
   it('derives Tabletop component ownership from the installed plugin descriptor', () => {
     const [extension] = resolveZoraExtensionsForManifest(createManifest(['PokerTrainingTable']));
 
@@ -19,25 +32,35 @@ describe('ZORA extension owner discovery', () => {
 
   it('resolves mixed manifests without duplicating plugin-owned component inventories', () => {
     const extensions = resolveZoraExtensionsForManifest(
-      createManifest(['ChessBoard', 'PokerTrainingTable']),
+      createManifest(['ChessBoard', 'Game', 'PokerTrainingTable']),
     );
 
     expect(extensions.map(({ packageName }) => packageName)).toEqual([
       '@ankhorage/zora-chess',
+      '@ankhorage/zora-game',
       '@ankhorage/zora-tabletop',
     ]);
     expect(extensions[0]?.componentTypes).toEqual(['ChessBoard', 'OpeningBook']);
-    expect(extensions[1]?.componentTypes).toContain('PokerTrainingTable');
+    expect(extensions[1]?.componentTypes).toContain('Game');
+    expect(extensions[2]?.componentTypes).toContain('PokerTrainingTable');
   });
+});
 
+describe('ZORA extension generated dependency policy', () => {
   it('reuses Studio package policy when preserving an existing generated extension', () => {
     const [extension] = resolveZoraExtensionsFromDependencies({
-      '@ankhorage/zora-tabletop': '^0.0.1',
+      '@ankhorage/zora-game': '^0.0.1',
     });
 
     expect(extension?.dependencies).toEqual({
-      '@ankhorage/zora-tabletop': readExtensionRange('@ankhorage/zora-tabletop'),
+      '@ankhorage/zora-game': readExtensionRange('@ankhorage/zora-game'),
     });
+  });
+
+  it('selects one Game extension for multiple independent Game nodes', () => {
+    const extensions = resolveZoraExtensionsForManifest(createManifest(['Game', 'Game']));
+
+    expect(extensions.map(({ packageName }) => packageName)).toEqual(['@ankhorage/zora-game']);
   });
 });
 
