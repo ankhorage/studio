@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 3.0.2
+
+### Patch Changes
+
+- 3b06967: Repair the current Studio update lifecycle, generated Contracts 22 theme registry access, and standalone Studio dependency alignment.
+
 ## 3.0.1
 
 ### Patch Changes
