@@ -19,7 +19,7 @@ jobs:
           bun-version: '1.4.2'
       - run: bun install --lockfile-only
       - run: bun install --cwd apps/studio --lockfile-only
-      - run: bun update --cwd apps/studio @ankhorage/apm --lockfile-only
+      - run: cd apps/studio && bun update @ankhorage/apm --lockfile-only
       - name: Commit lockfiles
         run: |
           if git diff --quiet -- bun.lock apps/studio/bun.lock; then
