@@ -129,14 +129,7 @@ function StatusSection(props: {
       <Text variant="bodySmall" weight="semiBold">
         {props.status.currency} · {props.status.complete ? 'complete' : 'incomplete'}
       </Text>
-      <DetailItems
-        title="Dependencies"
-        empty="No dependency changes are currently reported."
-        items={props.status.dependencies.map(
-          (dependency) =>
-            `${dependency.name} · ${dependency.direct ? 'direct' : 'transitive'} · ${dependency.currentVersion} → ${dependency.availableVersion}`,
-        )}
-      />
+      <DependencyItems dependencies={props.status.dependencies} />
       <DetailItems
         title="Migration & projection evidence"
         empty="No extension observations are currently reported."
@@ -328,6 +321,33 @@ function VerificationSection(props: {
       <ReasonItems title="Remaining findings" items={props.verification.findings} />
       <ReasonItems title="Verification diagnostics" items={props.verification.diagnostics} />
       <EffectItems title="Shipment & follow-up" effects={props.verification.followUp} />
+    </View>
+  );
+}
+
+/*** Render APM dependency instances with their stable package identity as the React key. */
+function DependencyItems(props: {
+  readonly dependencies: NonNullable<
+    ReturnType<typeof resolveProjectUpdateDashboardPresentation>['status']
+  >['dependencies'];
+}) {
+  return (
+    <View style={styles.detailList}>
+      <Text weight="semiBold" variant="bodySmall">
+        Dependencies
+      </Text>
+      {props.dependencies.length === 0 ? (
+        <Text color="neutral" emphasis="muted" variant="caption">
+          No dependency changes are currently reported.
+        </Text>
+      ) : (
+        props.dependencies.map((dependency) => (
+          <Text key={dependency.packageId} variant="caption">
+            • {dependency.name} · {dependency.direct ? 'direct' : 'transitive'} ·{' '}
+            {dependency.currentVersion} → {dependency.availableVersion}
+          </Text>
+        ))
+      )}
     </View>
   );
 }
