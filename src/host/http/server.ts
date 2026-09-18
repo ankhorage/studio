@@ -9,7 +9,6 @@ import { ProjectCreationValidationError } from '../../projectIdentity';
 import { createStudioPendingModuleLifecyclePort } from '../orchestrator/createStudioPendingModuleLifecyclePort';
 import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
-import { getProjectPath } from '../orchestrator/projectPaths';
 import { upProjectInfrastructure } from '../orchestrator/studioInfraUp';
 import {
   getProjectTemplateSource,
@@ -20,6 +19,7 @@ import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
 import { registerProjectMediaRoutes } from './mediaRoutes';
 import { registerProjectModuleRoutes } from './moduleRoutes';
 import { registerProjectRuntimeRoutes } from './projectRuntimeRoutes';
+import { resolveProjectUpdateRootAsync } from './resolveProjectUpdateRootAsync';
 import { isOriginAllowed } from './security';
 
 /*** Parse one template selection from the trusted Studio project-create request body. */
@@ -75,11 +75,7 @@ export async function createStudioHostServer(args: {
   registerProjectRuntimeRoutes(fastify, { projectManager, workspaceRoot: projectRoot });
   registerProjectUpdateRoutes(fastify, {
     service: projectUpdateService,
-    resolveProjectRootAsync: async (projectId) => {
-      const projects = await projectManager.listProjects();
-      if (!projects.some((project) => project.id === projectId)) return undefined;
-      return getProjectPath(projectRoot, projectId);
-    },
+    resolveProjectRootAsync: (projectId) => resolveProjectUpdateRootAsync(projectRoot, projectId),
   });
 
   // --- PROJECT ROUTES ---

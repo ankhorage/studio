@@ -1,6 +1,6 @@
 {
   "name": "@ankhorage/studio",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "Studio authoring package for Ankhorage apps",
   "license": "MIT",
   "homepage": "https://github.com/ankhorage/studio#readme",
@@ -212,7 +212,7 @@
     "supabase-vault"
   ],
   "dependencies": {
-    "@ankhorage/apm": "^0.8.7",
+    "@ankhorage/apm": "^0.8.8",
     "@ankhorage/color-theory": "^0.3.1",
     "@ankhorage/contracts": "^22.0.3",
     "@ankhorage/data-sources": "^2.0.5",
@@ -237,13 +237,13 @@
     "@ankhorage/utility": "^1.2.0",
     "@ankhorage/zora": "^20.0.2",
     "@ankhorage/zora-chess": "^0.2.2",
-    "@ankhorage/zora-game": "^0.8.1",
     "@ankhorage/zora-tabletop": "^0.1.5",
     "@fastify/cors": "^11.3.0",
     "expo-document-picker": "~57.0.2",
     "expo-file-system": "~57.0.7",
     "expo-image-picker": "~57.0.18",
-    "fastify": "^5.12.5"
+    "fastify": "^5.12.5",
+    "@ankhorage/zora-game": "^0.8.1"
   },
   "peerDependencies": {
     "@react-native-vector-icons/fontawesome": "^13.1.3",

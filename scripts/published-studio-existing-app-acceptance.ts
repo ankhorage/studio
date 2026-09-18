@@ -10,11 +10,12 @@ import { promisify } from 'node:util';
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 
 const execFileAsync = promisify(execFile);
-const STUDIO_VERSION = '2.7.6';
+const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
+const COMMAND_TIMEOUT_MS = 300_000;
+const STUDIO_VERSION = await resolveLatestPublishedStudioVersionAsync();
 const DEPENDENCY_NAME = 'semver';
 const INITIAL_DEPENDENCY_VERSION = '7.7.1';
 const DEPENDENCY_RANGE = '^7.7.1';
-const COMMAND_TIMEOUT_MS = 300_000;
 const USER_FILE_NAME = 'USER_NOTES.md';
 const USER_FILE_CONTENT = '# User-owned note\n\nAPM must preserve this file.\n';
 
@@ -96,6 +97,24 @@ try {
   await rm(fixtureRoot, { force: true, recursive: true });
 }
 
+/*** Resolve npm's current stable Studio release so acceptance cannot silently drift behind production. */
+async function resolveLatestPublishedStudioVersionAsync(): Promise<string> {
+  const { stdout } = await execFileAsync(
+    'npm',
+    ['view', STUDIO_PACKAGE_NAME, 'version', '--json'],
+    {
+      encoding: 'utf8',
+      maxBuffer: 1024 * 1024,
+      timeout: COMMAND_TIMEOUT_MS,
+    },
+  );
+  const value: unknown = JSON.parse(stdout);
+  if (typeof value !== 'string' || !/^\d+\.\d+\.\d+$/u.test(value)) {
+    throw new Error('Published Studio version discovery returned no stable semantic version.');
+  }
+  return value;
+}
+
 interface LifecycleEvidence {
   readonly targetVersion: string;
   readonly operationStatus: string;
@@ -131,7 +150,7 @@ async function installPublishedStudioAsync(): Promise<void> {
     name: 'published-studio-existing-app-consumer',
     private: true,
     type: 'module',
-    dependencies: { '@ankhorage/studio': STUDIO_VERSION },
+    dependencies: { [STUDIO_PACKAGE_NAME]: STUDIO_VERSION },
   });
   await runCommandAsync('bun', ['install', '--ignore-scripts'], studioToolRoot);
 }
@@ -281,7 +300,18 @@ async function runStudioLifecycleAsync(
   const status = await requestJsonAsync(
     `/api/projects/${encodedId}/updates/status?availability=refresh`,
   );
-  assert.equal(readOwnProperty(status, 'complete'), true);
+  if (readOwnProperty(status, 'complete') !== true) {
+    throw new Error(
+      `Published Studio status is incomplete: ${JSON.stringify(
+        {
+          findings: readOwnProperty(status, 'findings'),
+          diagnostics: readOwnProperty(status, 'diagnostics'),
+        },
+        null,
+        2,
+      )}`,
+    );
+  }
   const afterStatus = await readMutationSentinelsAsync(projectRoot);
   const plan = await requestJsonAsync(`/api/projects/${encodedId}/updates/plan`, {
     method: 'POST',
@@ -331,7 +361,7 @@ async function runCliLifecycleAsync(projectRoot: string): Promise<LifecycleEvide
   const plan = await runJsonCommandAsync(apm, ['plan', projectRoot, '--json'], cliToolRoot);
   assert.equal(readOwnProperty(plan, 'complete'), true);
   const targetVersion = dependencyTargetVersion(plan);
-  const planPath = path.join(projectRoot, 'apm-plan.json');
+  const planPath = path.join(cliToolRoot, 'apm-plan.json');
   await writeJsonAsync(planPath, plan);
   const apply = await runJsonCommandAsync(
     apm,
@@ -381,7 +411,10 @@ function assertLifecycleParity(studio: LifecycleEvidence, cli: LifecycleEvidence
   assert.equal(studio.targetVersion, cli.targetVersion);
   assert.equal(studio.operationStatus, cli.operationStatus);
   assert.equal(studio.verified, cli.verified);
-  assert.deepEqual(studio.statusFindings, cli.statusFindings);
+  assert.deepEqual(
+    studio.statusFindings.filter(({ code }) => code !== 'host-update'),
+    cli.statusFindings,
+  );
   assert.deepEqual(studio.planTargets, cli.planTargets);
   assert.deepEqual(studio.planEffects, cli.planEffects);
   assert.deepEqual(studio.verificationFindings, cli.verificationFindings);

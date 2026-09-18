@@ -219,6 +219,7 @@ function createVersionBelowRange(range: string): string {
   const patch = Number(version.patch);
   if (patch > 0) return `${version.major}.${version.minor}.${patch - 1}`;
   if (version.minor > 0) return `${version.major}.${version.minor - 1}.0`;
+  if (version.major > 0) return `${version.major - 1}.0.0`;
   throw new Error(`Cannot create an incompatible lower version for ${range}.`);
 }
 

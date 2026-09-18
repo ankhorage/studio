@@ -69,6 +69,7 @@ describe('ZORA extension owner discovery', () => {
 
     expect(extensions.map(({ packageName }) => packageName)).toEqual(['@ankhorage/zora-game']);
   });
+
 });
 
 function createManifest(componentTypes: readonly string[]): AppManifest {
