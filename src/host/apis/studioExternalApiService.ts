@@ -12,6 +12,7 @@ import {
   introspectGraphQlApi,
   testEndpoint,
 } from '@ankhorage/data-sources';
+import { readOwnProperty } from '@ankhorage/utility/object';
 
 import type {
   ExternalApiConnectRequest,
@@ -117,7 +118,7 @@ export class StudioExternalApiService {
     request: ManualRestApiSettingsRequest,
   ): Promise<ExternalApiMutationResult> {
     const manifest = await this.projectManager.getProjectManifest(projectId);
-    const api = manifest.infra.apis?.find((candidate) => candidate.id === request.apiId);
+    const api = manifest.infra.apis ? readOwnProperty(manifest.infra.apis, request.apiId) : undefined;
     if (!api) return missingApiMutationResult(request.apiId);
     if (api.origin !== 'external' || api.protocol !== 'rest' || api.openApi) {
       return invalidMutationResult(
@@ -134,7 +135,7 @@ export class StudioExternalApiService {
       description: clean(request.description),
       credential: request.credential,
     };
-    const upsert = upsertExternalApi(manifest.infra.apis ?? [], updated);
+    const upsert = upsertExternalApi(manifest.infra.apis ?? {}, updated);
     await this.projectManager.persistProjectManifest({
       projectId,
       manifest: { ...manifest, infra: { ...manifest.infra, apis: upsert.apis } },
@@ -150,7 +151,7 @@ export class StudioExternalApiService {
     const apiId = request.apiId.trim();
     if (!apiId) return invalidMutationResult('API ID is required.');
     const manifest = await this.projectManager.getProjectManifest(projectId);
-    const api = manifest.infra.apis?.find((candidate) => candidate.id === apiId);
+    const api = manifest.infra.apis ? readOwnProperty(manifest.infra.apis, apiId) : undefined;
     if (!api) return missingApiMutationResult(apiId);
     if (api.origin !== 'external') {
       return invalidMutationResult(
@@ -158,7 +159,7 @@ export class StudioExternalApiService {
       );
     }
 
-    const removal = removeExternalApi(manifest.infra.apis ?? [], apiId);
+    const removal = removeExternalApi(manifest.infra.apis ?? {}, apiId);
     await this.projectManager.persistProjectManifest({
       projectId,
       manifest: { ...manifest, infra: { ...manifest.infra, apis: removal.apis } },
@@ -172,7 +173,7 @@ export class StudioExternalApiService {
     request: ExternalApiOperationTestRequest,
   ): Promise<ExternalApiOperationTestResult> {
     const manifest = await this.projectManager.getProjectManifest(projectId);
-    const api = manifest.infra.apis?.find((candidate) => candidate.id === request.apiId);
+    const api = manifest.infra.apis ? readOwnProperty(manifest.infra.apis, request.apiId) : undefined;
     if (!api) return missingApiResult(request.apiId);
     if (api.origin !== 'external') return unsupportedTestApiResult(request.apiId);
 
@@ -235,7 +236,7 @@ export class StudioExternalApiService {
     diagnostics: readonly DataSourceDiagnostic[] = [],
   ): Promise<ExternalApiConnectResult> {
     const manifest = await this.projectManager.getProjectManifest(projectId);
-    const upsert = upsertExternalApi(manifest.infra.apis ?? [], api);
+    const upsert = upsertExternalApi(manifest.infra.apis ?? {}, api);
     await this.projectManager.persistProjectManifest({
       projectId,
       manifest: { ...manifest, infra: { ...manifest.infra, apis: upsert.apis } },
