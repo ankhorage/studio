@@ -731,7 +731,9 @@ describe('manifestState', () => {
 
     expect(oauth.navigator.type).toBe('drawer');
     expect(oauth.navigator.initialRouteName).toBe('about');
-    expect(Object.values(oauth.themes).find((theme) => theme.id === 'theme-2')?.name).toBe('Updated Theme');
+    expect(
+      Object.values(oauth.themes).find((theme) => theme.id === 'theme-2')?.name,
+    ).toBe('Updated Theme');
     expect(oauth.infra.environments.local.auth?.oauth?.providers).toHaveLength(1);
   });
 });
@@ -750,8 +752,8 @@ test('updates canonical global tokens and recipe overrides without dropping mode
     },
   });
 
-  const updatedTheme = Object.values(updated.themes)[0];
-  const originalTheme = Object.values(manifest.themes)[0];
+  const [updatedTheme] = Object.values(updated.themes);
+  const [originalTheme] = Object.values(manifest.themes);
   expect(updatedTheme).toMatchObject({
     light: originalTheme?.light,
     dark: originalTheme?.dark,
