@@ -15789,7 +15789,7 @@
       "description": "Serialize one current Studio pending uninstall operation.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
-        "line": 256,
+        "line": 257,
         "column": 1
       }
     },
@@ -15798,7 +15798,7 @@
       "description": "Build the minimum durable APM journal required by the Studio owner-step adapter.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
-        "line": 261,
+        "line": 262,
         "column": 1
       }
     },
@@ -15807,7 +15807,7 @@
       "description": "Build one complete reviewed plan around a single owner step for adapter tests.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
-        "line": 285,
+        "line": 286,
         "column": 1
       }
     },
@@ -15816,7 +15816,7 @@
       "description": "Build complete fresh status evidence for owner verification.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
-        "line": 318,
+        "line": 319,
         "column": 1
       }
     },
@@ -15825,7 +15825,7 @@
       "description": "Read Infra module ids from an unknown manifest only for a test assertion.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
-        "line": 343,
+        "line": 344,
         "column": 1
       }
     },
@@ -15834,7 +15834,7 @@
       "description": "Remove one temporary project root after each owner-step test.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/reviewedPendingModuleLifecycle.test.ts",
-        "line": 352,
+        "line": 353,
         "column": 1
       }
     },
