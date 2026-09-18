@@ -27,17 +27,18 @@ function createManifest(): StudioManifest {
           },
         },
       },
-      modules: [],
-      modulesConfig: { preserved: true },
-      apis: [
-        {
+      modules: {
+        preserved: { config: true },
+      },
+      apis: {
+        source: {
           id: 'source',
           origin: 'external',
           protocol: 'rest',
           baseUrl: 'https://api.example.test',
           endpoints: {},
         },
-      ],
+      },
     },
     navigator: {
       type: 'stack',
@@ -65,14 +66,14 @@ function createManifest(): StudioManifest {
     },
     dataBindings: { preserved: { componentId: 'details-title', props: {} } },
     dataSources: {},
-    themes: [
-      {
+    themes: {
+      'theme-1': {
         id: 'theme-1',
         name: 'Theme',
         light: { primaryColor: '#111111', harmony: 'monochromatic' },
         dark: { primaryColor: '#222222', harmony: 'analogous' },
       },
-    ],
+    },
     activeThemeId: 'theme-1',
     activeThemeMode: 'dark',
   };
@@ -116,7 +117,7 @@ describe('studioManifestDraftModel', () => {
     expect(withNode.infra.environments.local.auth?.oauth?.providers[0]?.credentialsRef).toBe(
       'auth/oauth/google',
     );
-    expect(withNode.themes[0]?.dark.primaryColor).toBe('#333333');
+    expect(Object.values(withNode.themes)[0]?.dark.primaryColor).toBe('#333333');
     expect(withNode.screens['screen-details']?.root.children?.[0]?.props?.children).toBe('After');
   });
 
@@ -133,14 +134,14 @@ describe('studioManifestDraftModel', () => {
       preserved: { componentId: 'details-title', props: {} },
     });
     expect(updated.dataSources).toEqual({});
-    expect(updated.infra.apis).toEqual([
-      {
+    expect(updated.infra.apis).toEqual({
+      source: {
         id: 'source',
         origin: 'external',
         protocol: 'rest',
         baseUrl: 'https://api.example.test',
         endpoints: {},
       },
-    ]);
+    });
   });
 });
