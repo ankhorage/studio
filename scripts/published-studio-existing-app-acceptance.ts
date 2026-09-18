@@ -281,7 +281,18 @@ async function runStudioLifecycleAsync(
   const status = await requestJsonAsync(
     `/api/projects/${encodedId}/updates/status?availability=refresh`,
   );
-  assert.equal(readOwnProperty(status, 'complete'), true);
+  if (readOwnProperty(status, 'complete') !== true) {
+    throw new Error(
+      `Published Studio status is incomplete: ${JSON.stringify(
+        {
+          findings: readOwnProperty(status, 'findings'),
+          diagnostics: readOwnProperty(status, 'diagnostics'),
+        },
+        null,
+        2,
+      )}`,
+    );
+  }
   const afterStatus = await readMutationSentinelsAsync(projectRoot);
   const plan = await requestJsonAsync(`/api/projects/${encodedId}/updates/plan`, {
     method: 'POST',
