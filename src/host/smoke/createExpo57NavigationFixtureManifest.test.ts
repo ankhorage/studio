@@ -34,13 +34,13 @@ const BASE_MANIFEST: AppManifest = {
     index: { id: 'index', name: 'Index', root: { id: 'index-root', type: 'Screen' } },
   },
   themes: {
-      default: {
-        id: 'default',
-        name: 'Default',
-        light: { primaryColor: '#2563eb', harmony: 'analogous' },
-        dark: { primaryColor: '#60a5fa', harmony: 'analogous' },
-      },
+    default: {
+      id: 'default',
+      name: 'Default',
+      light: { primaryColor: '#2563eb', harmony: 'analogous' },
+      dark: { primaryColor: '#60a5fa', harmony: 'analogous' },
     },
+  },
   activeThemeId: 'default',
 };
 
