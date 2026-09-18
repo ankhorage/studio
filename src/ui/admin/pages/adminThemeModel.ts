@@ -1,4 +1,5 @@
-import type { AppManifest, ThemeConfig, ThemeModeConfig } from '@ankhorage/contracts';
+import type { AppManifest, ThemeConfig, ThemeModeConfig, ThemeRegistry } from '@ankhorage/contracts';
+import { readOwnProperty } from '@ankhorage/utility/object';
 
 type ActiveThemeMode = NonNullable<AppManifest['activeThemeMode']>;
 
@@ -9,16 +10,16 @@ export interface ActiveThemeModeSelection {
 }
 
 /***
- * Resolve the active theme by configured id with first-theme fallback, then select the requested light/dark mode config.
+ * Resolve the active theme by configured id, then select the requested light/dark mode config.
  * @todo Move active-theme selection policy from admin UI into the theme domain/application model.
  */
 export function resolveActiveThemeModeSelection(args: {
-  readonly themes: readonly ThemeConfig[];
+  readonly themes: ThemeRegistry;
   readonly activeThemeId: string | undefined;
   readonly surfaceMode: ActiveThemeMode;
 }): ActiveThemeModeSelection | null {
-  const theme =
-    args.themes.find((candidate) => candidate.id === args.activeThemeId) ?? args.themes[0] ?? null;
+  if (!args.activeThemeId) return null;
+  const theme = readOwnProperty<ThemeConfig>(args.themes, args.activeThemeId);
   if (!theme) return null;
 
   const modeConfig = theme[args.surfaceMode];
