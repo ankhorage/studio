@@ -1,4 +1,9 @@
-import type { AppManifest, ThemeConfig, ThemeModeConfig, ThemeRegistry } from '@ankhorage/contracts';
+import type {
+  AppManifest,
+  ThemeConfig,
+  ThemeModeConfig,
+  ThemeRegistry,
+} from '@ankhorage/contracts';
 import { readOwnProperty } from '@ankhorage/utility/object';
 
 type ActiveThemeMode = NonNullable<AppManifest['activeThemeMode']>;
