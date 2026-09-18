@@ -1,4 +1,5 @@
 ---
+'@ankhorage/studio': patch
 ---
 
-Keep the published Studio existing-app acceptance aligned with the current published Studio/APM lifecycle without changing package behavior.
+Repair the current Studio update lifecycle, generated Contracts 22 theme registry access, and standalone Studio dependency alignment.
