@@ -217,7 +217,7 @@
     "@ankhorage/contracts": "^22.0.2",
     "@ankhorage/data-sources": "^2.0.5",
     "@ankhorage/deploy": "^0.12.8",
-    "@ankhorage/expo-runtime": "^3.2.16",
+    "@ankhorage/expo-runtime": "^4.0.0",
     "@ankhorage/infra": "^7.1.3",
     "@ankhorage/local": "^0.3.0",
     "@ankhorage/minikube": "^0.4.4",
@@ -265,7 +265,7 @@
   },
   "devDependencies": {
     "@ankhorage/ankh": "^0.8.15",
-    "@ankhorage/devtools": "^1.15.9",
+    "@ankhorage/devtools": "^1.17.0",
     "@ankhorage/paradox": "^0.1.26",
     "@types/bun": "^1.4.2",
     "@types/node": "^24.13.3",
