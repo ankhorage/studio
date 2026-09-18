@@ -88,6 +88,26 @@ describe('project update HTTP adapter', () => {
     ]);
   });
 
+  test('returns incomplete plans as reviewable structured results instead of HTTP conflicts', async () => {
+    const calls: unknown[] = [];
+    const server = createServer(calls, { planComplete: false });
+    const response = await server.inject({
+      method: 'POST',
+      url: '/api/projects/project-one/updates/plan',
+      payload: {
+        availability: 'refresh',
+        policy: { dependencyUpdates: 'safe', repairInstallations: true, repairProjections: true },
+      },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.json()).toMatchObject({
+      operation: 'plan',
+      complete: false,
+      blockers: [{ code: 'plan.target-unavailable' }],
+    });
+  });
+
   test('starts only the reviewed plan for the selected project with explicit permissions', async () => {
     const calls: unknown[] = [];
     const server = createServer(calls);
@@ -197,7 +217,10 @@ describe('project update HTTP adapter', () => {
 /*** Create one isolated Fastify fixture around a fake APM lifecycle port. */
 function createServer(
   calls: unknown[],
-  options: { readonly applyStatus?: 'completed' | 'blocked' } = {},
+  options: {
+    readonly applyStatus?: 'completed' | 'blocked';
+    readonly planComplete?: boolean;
+  } = {},
 ): FastifyInstance {
   const server = Fastify({ logger: false });
   const service: Parameters<typeof registerProjectUpdateRoutes>[1]['service'] = {
@@ -207,7 +230,22 @@ function createServer(
     },
     planAsync: (input) => {
       calls.push({ operation: 'plan', input });
-      return Promise.resolve({ ...plan, rootPath: input.rootPath });
+      const complete = options.planComplete ?? true;
+      return Promise.resolve({
+        ...plan,
+        rootPath: input.rootPath,
+        complete,
+        blockers: complete
+          ? []
+          : [
+              {
+                code: 'plan.target-unavailable',
+                scope: { kind: 'project' },
+                evidence: [],
+                reason: 'A reviewed target is unavailable.',
+              },
+            ],
+      });
     },
     applyAsync: (input) => {
       calls.push({ operation: 'apply', input });

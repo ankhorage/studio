@@ -369,7 +369,6 @@ const shouldMountAppHeader =
       >
         <StudioShell
           output={output}
-          activeTheme={activeTheme}
           activeThemeMode={activeThemeMode}
           runtimeManifest={runtimeManifest}
           appPathname={appPathname}
@@ -416,12 +415,22 @@ function GeneratedRootView({ children }: { children: ReactNode }) {
   );
 }
 
-function resolveZoraSurfaceThemeConfig(theme: AppManifest['themes'][number]) {
+function resolveZoraSurfaceThemeConfig(theme: AppManifest['themes'][string]) {
   return {
     ...theme,
     light: { ...theme.light },
     dark: { ...theme.dark },
   };
+}
+
+function resolveManifestActiveTheme(
+  manifest: AppManifest,
+): AppManifest['themes'][string] {
+  const theme = readOwnProperty(manifest.themes, manifest.activeThemeId);
+  if (!theme) {
+    throw new Error("Manifest active theme '" + manifest.activeThemeId + "' is missing.");
+  }
+  return theme;
 }
 
 function resolveThemeMode(
@@ -439,13 +448,7 @@ export const unstable_settings = {
 export default function RootLayout() {
 ${indentedRootHookBlock}  const manifestContext = useOptionalManifestContext();
   const runtimeManifest = manifestContext?.manifest ?? fallbackManifest;${indentedStudioRuntimeLines}
-  const activeTheme = readOwnProperty(
-    runtimeManifest.themes,
-    runtimeManifest.activeThemeId,
-  );
-  if (!activeTheme) {
-    throw new Error(\`Manifest active theme '\${runtimeManifest.activeThemeId}' is missing.\`);
-  }
+  const activeTheme = resolveManifestActiveTheme(runtimeManifest);
   const activeThemeMode = resolveThemeMode(runtimeManifest.activeThemeMode, 'light');
   const executeOperation = useMemo(
     () =>
@@ -458,7 +461,6 @@ ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContent
 
   ${outputDeclaration}
 
-  if (!activeTheme) return null;
 
   const shell = (
     <GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>
@@ -474,7 +476,6 @@ ${indentedStudioShellBlock}  return <GeneratedRootView>{shell}</GeneratedRootVie
       ? `
 function StudioShell({
   output,
-  activeTheme,
   activeThemeMode,
   runtimeManifest,
   appPathname,
@@ -482,7 +483,6 @@ function StudioShell({
   shouldMountAppHeader,
 }: {
   output: ReactNode;
-  activeTheme: AppManifest['themes'][number];
   activeThemeMode: NonNullable<AppManifest['activeThemeMode']>;
   runtimeManifest: AppManifest;
   appPathname: string;
@@ -537,10 +537,7 @@ function StudioShell({
     <StudioAppHeader appHeaderTitle={appHeaderTitle} />
   ) : undefined;
   const studioRuntimeManifest = studioManifest ?? runtimeManifest;
-  const activeStudioTheme =
-    studioRuntimeManifest.themes.find(
-      (theme) => theme.id === studioRuntimeManifest.activeThemeId,
-    ) ?? activeTheme;
+  const activeStudioTheme = resolveManifestActiveTheme(studioRuntimeManifest);
   const activeStudioThemeMode = resolveThemeMode(
     studioRuntimeManifest.activeThemeMode,
     activeThemeMode,
@@ -605,7 +602,7 @@ function GeneratedZoraProvider({
   initialMode,
 }: {
   children: ReactNode;
-  theme: AppManifest['themes'][number];
+  theme: AppManifest['themes'][string];
   initialMode: NonNullable<AppManifest['activeThemeMode']>;
 }) {
   const themeConfig = useMemo(() => resolveZoraSurfaceThemeConfig(theme), [theme]);
