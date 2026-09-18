@@ -48,7 +48,7 @@ try {
     await waitForHostAsync(currentHost);
     const currentStatus = await statusProjectAsync(projectId);
     assertStudioHost(currentStatus, CURRENT_STUDIO_VERSION);
-    const currentPlan = await planProjectAsync(projectId);
+    const currentPlan = await planProjectAsync(projectId, resolveStudioPackageSelector(currentStatus));
     assert.equal(readOwnProperty(currentPlan, 'complete'), true);
     assert.equal(findByCode(currentPlan, 'blockers', 'plan.host-upgrade-required'), undefined);
     assert.equal(studioTargetVersion(currentPlan), CURRENT_STUDIO_VERSION);
@@ -124,7 +124,7 @@ async function runOldHostBoundaryAsync(host: ReturnType<typeof spawn>): Promise<
       CURRENT_STUDIO_VERSION,
     );
     assert.notEqual(findByCode(studioHost, 'findings', 'host-update'), undefined);
-    const plan = await planProjectAsync(projectId);
+    const plan = await planProjectAsync(projectId, resolveStudioPackageSelector(status));
     assert.equal(readOwnProperty(plan, 'complete'), false);
     assert.equal(studioTargetVersion(plan), CURRENT_STUDIO_VERSION);
     const blocker = findByCode(plan, 'blockers', 'plan.host-upgrade-required');
@@ -336,7 +336,10 @@ async function statusProjectAsync(projectId: string) {
   );
 }
 
-async function planProjectAsync(projectId: string): Promise<Readonly<Record<string, unknown>>> {
+async function planProjectAsync(
+  projectId: string,
+  selector: StudioPackageSelector,
+): Promise<Readonly<Record<string, unknown>>> {
   const route = `/api/projects/${encodeURIComponent(projectId)}/updates/plan`;
   const response = await fetch(`http://127.0.0.1:${port}${route}`, {
     method: 'POST',
@@ -347,7 +350,7 @@ async function planProjectAsync(projectId: string): Promise<Readonly<Record<stri
         dependencyUpdates: 'selected',
         selections: [
           {
-            selector: { name: STUDIO_PACKAGE_NAME },
+            selector,
             target: {
               kind: 'version',
               version: CURRENT_STUDIO_VERSION,
@@ -367,6 +370,35 @@ async function planProjectAsync(projectId: string): Promise<Readonly<Record<stri
   }
   if (!isRecord(value)) throw new Error(`Expected object JSON from ${route}.`);
   return value;
+}
+
+interface StudioPackageSelector {
+  readonly name: string;
+  readonly packageId: string;
+  readonly installRootId: string;
+  readonly ownerPath: string;
+}
+
+/*** Resolve the exact direct Studio package instance selected by the restart-boundary plan. */
+function resolveStudioPackageSelector(
+  status: Readonly<Record<string, unknown>>,
+): StudioPackageSelector {
+  const dependency = readArray(status, 'dependencies').find(
+    (candidate) =>
+      isRecord(candidate) &&
+      readOwnProperty(candidate, 'name') === STUDIO_PACKAGE_NAME &&
+      readOwnProperty(candidate, 'direct') === true,
+  );
+  if (!isRecord(dependency)) {
+    throw new Error('Status did not expose the direct Studio project dependency.');
+  }
+  const declaration = readObject(dependency, 'declaration');
+  return {
+    name: STUDIO_PACKAGE_NAME,
+    packageId: readRequiredString(dependency, 'packageId'),
+    installRootId: readRequiredString(dependency, 'installRootId'),
+    ownerPath: readRequiredString(declaration, 'ownerPath'),
+  };
 }
 
 function assertStudioHost(
