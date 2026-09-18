@@ -146,14 +146,14 @@ function createSmokeManifest(category: AppManifest['metadata']['category']): App
       created: '2026-01-01T00:00:00.000Z',
       updated: '2026-01-02T00:00:00.000Z',
     },
-    themes: [
-      {
+    themes: {
+      'smoke-theme': {
         id: 'smoke-theme',
         name: 'Smoke Theme',
         light: { primaryColor: '#2563eb', harmony: 'analogous' },
         dark: { primaryColor: '#60a5fa', harmony: 'analogous' },
       },
-    ],
+    },
     activeThemeId: 'smoke-theme',
     activeThemeMode: 'light',
     infra: {
@@ -165,12 +165,12 @@ function createSmokeManifest(category: AppManifest['metadata']['category']): App
           },
           objectStorage: {
             provider: 'supabase',
-            buckets: ['public'],
+            buckets: { public: true },
           },
           networking: {},
         },
       },
-      modules: [],
+      modules: {},
     },
     navigator: {
       type: 'stack',

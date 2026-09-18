@@ -1,11 +1,11 @@
-import type { ApiDefinition, ApiDefinitionList } from '@ankhorage/contracts/data';
+import type { ApiDefinition, ApiDefinitionRegistry } from '@ankhorage/contracts/data';
 import { Badge, Button, ButtonGroup, Card, ListItem, ListSection, Text } from '@ankhorage/zora';
 import { View } from 'react-native';
 
 import { externalApiAdminStyles } from './ExternalApiAdminPrimitives';
 
 interface ApiCatalogCardProps {
-  readonly apis: ApiDefinitionList;
+  readonly apis: ApiDefinitionRegistry;
   readonly onEdit?: (apiId: string) => void;
   readonly onRemove?: (apiId: string) => void;
 }
@@ -17,13 +17,13 @@ export function ApiCatalogCard({ apis, onEdit, onRemove }: ApiCatalogCardProps) 
       title="Connected APIs"
       description="Discovered endpoints stay read-only here; advanced settings are available per connected external API."
     >
-      {apis.length === 0 ? (
+      {Object.keys(apis).length === 0 ? (
         <Text color="neutral" emphasis="muted">
           No APIs are connected yet. Enter a service or schema URL above to discover one.
         </Text>
       ) : (
         <View style={externalApiAdminStyles.stack}>
-          {apis.map((api) => (
+          {Object.values(apis).map((api) => (
             <ListSection
               key={api.id}
               title={api.name ?? api.id}

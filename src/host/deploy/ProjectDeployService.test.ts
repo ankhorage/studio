@@ -102,7 +102,14 @@ async function createProject(workspaceRoot: string, projectId: string): Promise<
       category: 'developer_tools',
       themeId: 'default',
     },
-    themes: [],
+    themes: {
+      default: {
+        id: 'default',
+        name: 'Default',
+        light: { primaryColor: '#3366ff', harmony: 'analogous' },
+        dark: { primaryColor: '#6699ff', harmony: 'analogous' },
+      },
+    },
     activeThemeId: 'default',
     infra: {
       environments: {
@@ -113,7 +120,7 @@ async function createProject(workspaceRoot: string, projectId: string): Promise<
           },
         },
       },
-      modules: [],
+      modules: {},
     },
     navigator: {
       type: 'stack',

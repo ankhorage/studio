@@ -1,4 +1,4 @@
-import type { ApiDefinitionList } from '@ankhorage/contracts/data';
+import type { ApiDefinitionRegistry } from '@ankhorage/contracts/data';
 import { describe, expect, test } from 'bun:test';
 
 import { deriveExternalApiIdFromUrl } from './deriveExternalApiIdFromUrl';
@@ -34,29 +34,29 @@ describe('external API administration model', () => {
   });
 
   test('removes only the exact canonical API id', () => {
-    const apis: ApiDefinitionList = [
-      {
+    const apis: ApiDefinitionRegistry = {
+      inventory: {
         id: 'inventory',
         origin: 'external',
         protocol: 'rest',
         baseUrl: 'https://api.example.com',
         endpoints: {},
       },
-      {
+      'inventory-v2': {
         id: 'inventory-v2',
         origin: 'external',
         protocol: 'rest',
         baseUrl: 'https://api.example.com/v2',
         endpoints: {},
       },
-    ];
+    };
 
     const removed = removeExternalApi(apis, 'inventory');
     expect(removed.removed).toBe(true);
-    expect(removed.apis.map((api) => api.id)).toEqual(['inventory-v2']);
+    expect(Object.values(removed.apis).map((api) => api.id)).toEqual(['inventory-v2']);
 
     const missing = removeExternalApi(removed.apis, 'inventory');
     expect(missing.removed).toBe(false);
-    expect(missing.apis.map((api) => api.id)).toEqual(['inventory-v2']);
+    expect(Object.values(missing.apis).map((api) => api.id)).toEqual(['inventory-v2']);
   });
 });

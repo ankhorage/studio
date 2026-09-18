@@ -24,14 +24,14 @@ test('project summary reads canonical category, active theme, and timestamps', a
         created: '2026-01-01T00:00:00.000Z',
         updated: '2026-01-02T00:00:00.000Z',
       },
-      themes: [
-        {
+      themes: {
+        default: {
           id: 'default',
           name: 'Default',
           light: { primaryColor: '#2563eb', harmony: 'analogous' },
           dark: { primaryColor: '#60a5fa', harmony: 'analogous' },
         },
-      ],
+      },
       activeThemeId: 'default',
       activeThemeMode: 'dark',
       infra: {
@@ -43,7 +43,7 @@ test('project summary reads canonical category, active theme, and timestamps', a
             },
           },
         },
-        modules: [],
+        modules: {},
       },
       navigator: { type: 'stack', routes: [] },
       screens: {},
@@ -112,14 +112,14 @@ function createManifest(name: string): AppManifest {
       category: 'developer_tools',
       themeId: 'default',
     },
-    themes: [
-      {
+    themes: {
+      default: {
         id: 'default',
         name: 'Default',
         light: { primaryColor: '#2563eb', harmony: 'analogous' },
         dark: { primaryColor: '#60a5fa', harmony: 'analogous' },
       },
-    ],
+    },
     activeThemeId: 'default',
     infra: {
       environments: {
@@ -130,7 +130,7 @@ function createManifest(name: string): AppManifest {
           },
         },
       },
-      modules: [],
+      modules: {},
     },
     navigator: { type: 'stack', routes: [] },
     screens: {},

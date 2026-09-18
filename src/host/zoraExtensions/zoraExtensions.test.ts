@@ -44,10 +44,17 @@ describe('ZORA extension owner discovery', () => {
     expect(extensions[1]?.componentTypes).toContain('Game');
     expect(extensions[2]?.componentTypes).toContain('PokerTrainingTable');
   });
-});
 
-describe('ZORA extension generated dependency policy', () => {
   it('reuses Studio package policy when preserving an existing generated extension', () => {
+    const [extension] = resolveZoraExtensionsFromDependencies({
+      '@ankhorage/zora-tabletop': '^0.0.1',
+    });
+
+    expect(extension?.dependencies).toEqual({
+      '@ankhorage/zora-tabletop': readExtensionRange('@ankhorage/zora-tabletop'),
+    });
+  });
+  it('reuses Studio package policy for the Game extension', () => {
     const [extension] = resolveZoraExtensionsFromDependencies({
       '@ankhorage/zora-game': '^0.0.1',
     });
@@ -62,6 +69,7 @@ describe('ZORA extension generated dependency policy', () => {
 
     expect(extensions.map(({ packageName }) => packageName)).toEqual(['@ankhorage/zora-game']);
   });
+
 });
 
 function createManifest(componentTypes: readonly string[]): AppManifest {
@@ -83,7 +91,7 @@ function createManifest(componentTypes: readonly string[]): AppManifest {
           },
         },
       },
-      modules: [],
+      modules: {},
     },
     navigator: {
       type: 'stack',
@@ -104,7 +112,14 @@ function createManifest(componentTypes: readonly string[]): AppManifest {
         },
       },
     },
-    themes: [],
+    themes: {
+      default: {
+        id: 'default',
+        name: 'Default',
+        light: { primaryColor: '#3366ff', harmony: 'analogous' },
+        dark: { primaryColor: '#6699ff', harmony: 'analogous' },
+      },
+    },
     activeThemeId: 'default',
   };
 }

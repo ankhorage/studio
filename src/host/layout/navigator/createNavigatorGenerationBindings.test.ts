@@ -17,7 +17,7 @@ function createManifest(navigator: NavigatorNode): AppManifest {
           },
         },
       },
-      modules: [],
+      modules: {},
     },
     media: {
       assets: {
@@ -39,7 +39,14 @@ function createManifest(navigator: NavigatorNode): AppManifest {
     navigator,
     screens: {},
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
-    themes: [],
+    themes: {
+      default: {
+        id: 'default',
+        name: 'Default',
+        light: { primaryColor: '#2563eb', harmony: 'analogous' },
+        dark: { primaryColor: '#60a5fa', harmony: 'analogous' },
+      },
+    },
   };
 }
 

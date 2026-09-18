@@ -35,7 +35,7 @@ const theme = {
 describe('adminThemeModel', () => {
   test('selects the active theme config for the actual surface mode', () => {
     const selection = resolveActiveThemeModeSelection({
-      themes: [theme],
+      themes: { 'theme-1': theme },
       activeThemeId: 'theme-1',
       surfaceMode: 'dark',
     });
@@ -75,7 +75,7 @@ describe('adminThemeModel', () => {
     expect(surfaceConfig.dark).not.toBe(theme.dark);
   });
 
-  test('active theme ID selection falls back only when the active ID is missing', () => {
+  test('active theme ID selection never invents a fallback theme', () => {
     const otherTheme = {
       ...theme,
       id: 'theme-2',
@@ -85,17 +85,17 @@ describe('adminThemeModel', () => {
 
     expect(
       resolveActiveThemeModeSelection({
-        themes: [theme, otherTheme],
+        themes: { 'theme-1': theme, 'theme-2': otherTheme },
         activeThemeId: 'theme-2',
         surfaceMode: 'light',
       })?.theme.id,
     ).toBe('theme-2');
     expect(
       resolveActiveThemeModeSelection({
-        themes: [theme, otherTheme],
+        themes: { 'theme-1': theme, 'theme-2': otherTheme },
         activeThemeId: 'missing',
         surfaceMode: 'light',
       })?.theme.id,
-    ).toBe('theme-1');
+    ).toBeUndefined();
   });
 });

@@ -35,11 +35,15 @@ export function createStudioRuntimeSyncSignature(manifest: StudioManifest): stri
   return JSON.stringify({
     navigator: manifest.navigator,
     screens: createRuntimeScreenSignatures(manifest),
-    apis: manifest.infra.apis ?? [],
+    apis: Object.fromEntries(
+      Object.entries(manifest.infra.apis ?? {}).sort(([leftId], [rightId]) =>
+        leftId.localeCompare(rightId),
+      ),
+    ),
     dataBindings: manifest.dataBindings ?? {},
     dataSources: manifest.dataSources ?? {},
     environments: manifest.infra.environments,
-    modules: [...manifest.infra.modules].sort(),
+    modules: Object.keys(manifest.infra.modules).sort(),
   });
 }
 

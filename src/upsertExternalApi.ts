@@ -1,27 +1,24 @@
 import type {
-  ApiDefinitionList,
+  ApiDefinitionRegistry,
   ExternalGraphQlApiDefinition,
   ExternalRestApiDefinition,
 } from '@ankhorage/contracts/data';
-import { upsertBy } from '@ankhorage/utility/array';
+import { readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
 
 type ExternalApiDefinition = ExternalGraphQlApiDefinition | ExternalRestApiDefinition;
 
 export interface ExternalApiUpsertResult {
-  readonly apis: ApiDefinitionList;
+  readonly apis: ApiDefinitionRegistry;
   readonly created: boolean;
 }
 
-/***
- * Use canonical keyed upsert behavior while reporting Studio's domain-specific creation metadata.
- */
+/*** Add or replace one canonical API by stable identity while reporting whether it was newly created. */
 export function upsertExternalApi(
-  apis: ApiDefinitionList,
+  apis: ApiDefinitionRegistry,
   api: ExternalApiDefinition,
 ): ExternalApiUpsertResult {
-  const created = !apis.some((candidate) => candidate.id === api.id);
-  return {
-    apis: upsertBy(apis, api, (candidate) => candidate.id),
-    created,
-  };
+  const created = readOwnProperty(apis, api.id) === undefined;
+  const next = { ...apis };
+  setOwnProperty(next, api.id, api);
+  return { apis: next, created };
 }

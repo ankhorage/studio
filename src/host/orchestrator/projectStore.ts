@@ -1,5 +1,6 @@
 import type { AppManifest, ThemeConfig } from '@ankhorage/contracts';
 import { pathExists, writeJsonFileAtomic } from '@ankhorage/utility/node/fs';
+import { readOwnProperty } from '@ankhorage/utility/object';
 import { promises as fs } from 'fs';
 import path from 'path';
 
@@ -159,7 +160,7 @@ function parseReadableAppManifest(value: unknown): AppManifest {
 
 /*** Resolve the active theme referenced by one project manifest. */
 function resolveActiveTheme(manifest: AppManifest): ThemeConfig {
-  const activeTheme = manifest.themes.find((theme) => theme.id === manifest.activeThemeId);
+  const activeTheme = readOwnProperty<ThemeConfig>(manifest.themes, manifest.activeThemeId);
   if (!activeTheme) {
     throw new Error(`Manifest active theme '${manifest.activeThemeId}' is missing.`);
   }

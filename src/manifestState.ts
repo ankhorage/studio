@@ -11,6 +11,7 @@ import type {
   UiNode,
 } from '@ankhorage/contracts';
 import { NAVIGATOR_TYPES } from '@ankhorage/contracts';
+import { deleteOwnProperty, readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
 
 import type {
   NodePlacement,
@@ -161,7 +162,7 @@ export function createStudioManifestFingerprint(manifest: StudioManifest | null)
     screens: Object.keys(manifest.screens),
     dataBindings: Object.keys(manifest.dataBindings ?? {}),
     dataSources: Object.keys(manifest.dataSources ?? {}),
-    themes: manifest.themes.map((theme) => theme.id),
+    themes: Object.keys(manifest.themes).sort(),
     activeThemeId: manifest.activeThemeId,
     activeThemeMode: manifest.activeThemeMode,
     settings: manifest.settings,
@@ -821,9 +822,11 @@ export function createDefaultThemeConfig(
  */
 export function addStudioManifestTheme(
   manifest: StudioManifest,
-  theme = createDefaultThemeConfig(manifest.themes.length),
+  theme = createDefaultThemeConfig(Object.keys(manifest.themes).length),
 ): StudioManifest {
-  return { ...manifest, themes: [...manifest.themes, theme] };
+  const themes = { ...manifest.themes };
+  setOwnProperty(themes, theme.id, theme);
+  return { ...manifest, themes };
 }
 
 /***
@@ -835,20 +838,19 @@ export function updateStudioManifestTheme(
   themeId: string,
   updates: ThemeUpdates,
 ): StudioManifest {
-  return {
-    ...manifest,
-    themes: manifest.themes.map((theme) => {
-      if (theme.id !== themeId) return theme;
+  const theme = readOwnProperty<ThemeConfig>(manifest.themes, themeId);
+  if (!theme) return manifest;
 
-      const { light, dark, ...sharedUpdates } = updates;
-      return {
-        ...theme,
-        ...sharedUpdates,
-        ...(light ? { light: { ...theme.light, ...light } } : {}),
-        ...(dark ? { dark: { ...theme.dark, ...dark } } : {}),
-      };
-    }),
+  const { light, dark, ...sharedUpdates } = updates;
+  const nextTheme = {
+    ...theme,
+    ...sharedUpdates,
+    ...(light ? { light: { ...theme.light, ...light } } : {}),
+    ...(dark ? { dark: { ...theme.dark, ...dark } } : {}),
   };
+  const themes = { ...manifest.themes };
+  setOwnProperty(themes, themeId, nextTheme);
+  return { ...manifest, themes };
 }
 
 /***
@@ -859,12 +861,14 @@ export function deleteStudioManifestTheme(
   manifest: StudioManifest,
   themeId: string,
 ): StudioManifest {
-  if (manifest.themes.length <= 1) return manifest;
+  if (Object.keys(manifest.themes).length <= 1) return manifest;
+  if (readOwnProperty(manifest.themes, themeId) === undefined) return manifest;
 
-  const themes = manifest.themes.filter((theme) => theme.id !== themeId);
+  const themes = { ...manifest.themes };
+  deleteOwnProperty(themes, themeId);
   const activeThemeId =
     manifest.activeThemeId === themeId
-      ? (themes[0]?.id ?? manifest.activeThemeId)
+      ? (Object.keys(themes).sort()[0] ?? manifest.activeThemeId)
       : manifest.activeThemeId;
 
   return { ...manifest, themes, activeThemeId };
@@ -878,7 +882,9 @@ export function setStudioManifestActiveThemeId(
   manifest: StudioManifest,
   activeThemeId: string,
 ): StudioManifest {
-  return { ...manifest, activeThemeId };
+  return readOwnProperty(manifest.themes, activeThemeId) === undefined
+    ? manifest
+    : { ...manifest, activeThemeId };
 }
 
 /***

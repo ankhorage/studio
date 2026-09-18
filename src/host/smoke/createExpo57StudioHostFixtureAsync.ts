@@ -65,14 +65,14 @@ function createManifest(category: AppCategory): AppManifest {
       created: '2026-01-01T00:00:00.000Z',
       updated: '2026-01-02T00:00:00.000Z',
     },
-    themes: [
-      {
+    themes: {
+      'standalone-theme': {
         id: 'standalone-theme',
         name: 'Standalone Theme',
         light: { primaryColor: '#2563eb', harmony: 'analogous' },
         dark: { primaryColor: '#60a5fa', harmony: 'analogous' },
       },
-    ],
+    },
     activeThemeId: 'standalone-theme',
     activeThemeMode: 'dark',
     infra: {
@@ -84,12 +84,12 @@ function createManifest(category: AppCategory): AppManifest {
           },
           objectStorage: {
             provider: 'supabase',
-            buckets: ['public'],
+            buckets: { public: true },
           },
           networking: {},
         },
       },
-      modules: [],
+      modules: {},
     },
     navigator: {
       type: 'stack',

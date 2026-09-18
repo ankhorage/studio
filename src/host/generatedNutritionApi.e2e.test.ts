@@ -8,12 +8,14 @@ import type {
   DataSourceDiagnostic,
   UiNode,
 } from '@ankhorage/contracts';
+import type { ApiDefinition } from '@ankhorage/contracts/data';
 import type { EndpointTestFetch, EndpointTestFetchInit } from '@ankhorage/data-sources';
 import {
   createRuntimeApiOperationExecutor,
   resolveRuntimeBindingValue,
 } from '@ankhorage/runtime/bindings';
 import { composeCategoryAppManifest } from '@ankhorage/templates';
+import { readOwnProperty } from '@ankhorage/utility/object';
 import { expect, test } from 'bun:test';
 
 import { StudioExternalApiService } from './apis/studioExternalApiService';
@@ -127,8 +129,8 @@ function createNutritionApiFixtureManifest(): AppManifest {
     ...manifest,
     infra: {
       ...manifest.infra,
-      apis: [
-        {
+      apis: {
+        nutrition: {
           id: 'nutrition',
           origin: 'external',
           protocol: 'rest',
@@ -191,7 +193,7 @@ function createNutritionApiFixtureManifest(): AppManifest {
             },
           },
         },
-      ],
+      },
     },
     dataBindings: {
       [SCANNER_ID]: {
@@ -229,8 +231,11 @@ async function createWorkspaceRoot(): Promise<string> {
 function assertCanonicalNutritionManifest(
   manifest: Awaited<ReturnType<ProjectManager['getProjectManifest']>>,
 ): OperationRepeatSource {
-  expect(manifest.infra.apis).toHaveLength(1);
-  expect(manifest.infra.apis?.at(0)).toMatchObject({
+  expect(Object.keys(manifest.infra.apis ?? {})).toHaveLength(1);
+  const nutrition = manifest.infra.apis
+    ? readOwnProperty<ApiDefinition>(manifest.infra.apis, 'nutrition')
+    : undefined;
+  expect(nutrition).toMatchObject({
     id: 'nutrition',
     origin: 'external',
     protocol: 'rest',
@@ -305,7 +310,7 @@ async function executeGeneratedBarcodeLookup(
   operation: BindingOperationRef,
   endpointFetch: EndpointTestFetch,
 ): Promise<void> {
-  const api = apis?.find(({ id }) => id === operation.apiId);
+  const api = apis ? readOwnProperty<ApiDefinition>(apis, operation.apiId) : undefined;
   const endpoint = api
     ? Object.values(api.endpoints).find(({ id }) => id === operation.endpointId)
     : undefined;
