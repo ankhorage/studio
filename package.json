@@ -237,6 +237,7 @@
     "@ankhorage/utility": "^1.2.0",
     "@ankhorage/zora": "^19.0.1",
     "@ankhorage/zora-chess": "^0.2.2",
+    "@ankhorage/zora-game": "^0.5.0",
     "@ankhorage/zora-tabletop": "^0.1.4",
     "@fastify/cors": "^11.3.0",
     "expo-document-picker": "~57.0.2",
