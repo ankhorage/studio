@@ -32,7 +32,6 @@ test('uses the APM Dashboard lifecycle instead of direct sync/install update con
   expect(updatePanelSource).not.toContain('rootPath');
 });
 
-
 test('keeps repeated Dashboard detail rows keyed independently', () => {
   expect(updatePanelSource).toContain('props.items.map((item, index) => (');
   expect(updatePanelSource).toContain('<Text key={`${item} · ${index}`} variant="caption">');
