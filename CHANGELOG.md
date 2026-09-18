@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.7.16
+
+### Patch Changes
+
+- 763f81e: Keep the Studio Ankh CLI provider importable with peer dependencies omitted and cover that contract with packed-package acceptance.
+
 ## 2.7.15
 
 ### Patch Changes
