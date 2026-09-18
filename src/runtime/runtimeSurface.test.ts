@@ -20,6 +20,7 @@ describe('Studio runtime surface', () => {
     expect(appExtensionRegistrySource).toContain('composeZoraPlugins([');
     expect(appExtensionRegistrySource).toContain('ZORA_CORE_PLUGIN');
     expect(appExtensionRegistrySource).toContain('ZORA_CHESS_PLUGIN');
+    expect(appExtensionRegistrySource).toContain('ZORA_GAME_PLUGIN');
     expect(appExtensionRegistrySource).toContain('ZORA_TABLETOP_PLUGIN');
     expect(appExtensionRegistrySource).toContain('STUDIO_ZORA_PLUGIN_CATALOG');
     expect(registrySource).toContain('STUDIO_ZORA_PLUGIN_CATALOG');
