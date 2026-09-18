@@ -23,8 +23,15 @@ function createManifest(overrides: Partial<StudioManifest> = {}): StudioManifest
     },
     dataBindings: {},
     dataSources: {},
-    themes: [],
-    activeThemeId: '',
+    themes: {
+      default: {
+        id: 'default',
+        name: 'Default',
+        light: { primaryColor: '#3366ff', harmony: 'analogous' },
+        dark: { primaryColor: '#6699ff', harmony: 'analogous' },
+      },
+    },
+    activeThemeId: 'default',
     activeThemeMode: 'light',
     settings: {
       localization: { defaultLocale: 'en', locales: ['en'] },
@@ -38,8 +45,10 @@ function createManifest(overrides: Partial<StudioManifest> = {}): StudioManifest
           },
         },
       },
-      modulesConfig: {},
-      modules: ['expo-camera', 'expo-localization'],
+      modules: {
+        'expo-camera': {},
+        'expo-localization': {},
+      },
     },
     ...overrides,
   } as unknown as StudioManifest;
@@ -90,7 +99,7 @@ describe('manifestSync', () => {
           },
         },
       },
-      modules: [],
+      modules: {},
     });
     const first = createManifest({ infra: createAuthInfra('sign-in') });
     const second = createManifest({ infra: createAuthInfra('login') });
@@ -111,8 +120,7 @@ describe('manifestSync', () => {
             },
           },
         },
-        modulesConfig: {},
-        modules: ['b', 'a'],
+        modules: { b: {}, a: {} },
       },
     });
     const second = createManifest({
@@ -125,8 +133,7 @@ describe('manifestSync', () => {
             },
           },
         },
-        modulesConfig: {},
-        modules: ['a', 'b'],
+        modules: { a: {}, b: {} },
       },
     });
 
