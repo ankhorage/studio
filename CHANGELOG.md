@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.7.15
+
+### Patch Changes
+
+- bde88a0: Update Studio dependencies to current compatible releases while preserving the Expo platform owner ranges.
+
 ## 2.7.14
 
 ### Patch Changes
