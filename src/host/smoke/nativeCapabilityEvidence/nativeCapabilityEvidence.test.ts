@@ -43,7 +43,7 @@ describe('Expo 57 native capability evidence harness', () => {
       "import { composeCategoryAppManifest, resolveOAuthFixture } from '@ankhorage/templates';",
     );
     expect(driver).not.toContain('createOAuthFixtureManifest');
-    expect(driver).toContain('permissions: PERMISSIONS.map((permission) => ({ permission }))');
+    expect(driver).toContain('PERMISSIONS.map((permission) => [permission, true] as const)');
     expect(driver).not.toContain('const permissionNames');
     expect(route.trim()).toBe(
       "export { NativeEvidenceScreen as default } from '@/native-evidence/native-evidence-screen';",

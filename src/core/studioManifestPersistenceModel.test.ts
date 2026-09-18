@@ -23,18 +23,18 @@ function createManifest(name: string): StudioManifest {
           },
         },
       },
-      modules: [],
+      modules: {},
     },
     navigator: { type: 'stack', routes: [] },
     screens: {},
-    themes: [
-      {
+    themes: {
+      'theme-1': {
         id: 'theme-1',
         name: 'Theme',
         light: { primaryColor: '#111111', harmony: 'monochromatic' },
         dark: { primaryColor: '#222222', harmony: 'analogous' },
       },
-    ],
+    },
     activeThemeId: 'theme-1',
     activeThemeMode: 'light',
   };

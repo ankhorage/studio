@@ -4,3 +4,4 @@ bun.lock
 *.tsbuildinfo
 /apps/studio/expo-env.d.ts
 /apps/
+paradox/

@@ -1,18 +1,18 @@
-import type { ApiDefinitionList } from '@ankhorage/contracts/data';
+import type { ApiDefinitionRegistry } from '@ankhorage/contracts/data';
+import { deleteOwnProperty, readOwnProperty } from '@ankhorage/utility/object';
 
 export interface ExternalApiRemovalResult {
-  readonly apis: ApiDefinitionList;
+  readonly apis: ApiDefinitionRegistry;
   readonly removed: boolean;
 }
 
-/*** Remove exactly one canonical API id from an API definition list without affecting similarly named entries. */
+/*** Remove exactly one canonical API id from the API registry without affecting other entries. */
 export function removeExternalApi(
-  apis: ApiDefinitionList,
+  apis: ApiDefinitionRegistry,
   apiId: string,
 ): ExternalApiRemovalResult {
-  const next = apis.filter((api) => api.id !== apiId);
-  return {
-    apis: next,
-    removed: next.length !== apis.length,
-  };
+  if (readOwnProperty(apis, apiId) === undefined) return { apis, removed: false };
+  const next = { ...apis };
+  deleteOwnProperty(next, apiId);
+  return { apis: next, removed: true };
 }

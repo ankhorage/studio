@@ -75,7 +75,7 @@ describe('external API authoring public model', () => {
       baseUrl: 'https://api.example.com',
       endpoints: {},
     } as const;
-    const created: ExternalApiUpsertResult = upsertExternalApi([], api);
+    const created: ExternalApiUpsertResult = upsertExternalApi({}, api);
     const updated = upsertExternalApi(created.apis, {
       ...api,
       name: 'Inventory',
@@ -83,6 +83,6 @@ describe('external API authoring public model', () => {
 
     expect(created.created).toBe(true);
     expect(updated.created).toBe(false);
-    expect(updated.apis[0]?.name).toBe('Inventory');
+    expect(updated.apis.inventory?.name).toBe('Inventory');
   });
 });

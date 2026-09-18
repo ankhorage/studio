@@ -77,14 +77,14 @@ function createManifest(): StudioManifest {
     },
     dataBindings: { 'text-1': { sourceId: 'source-1', path: 'title' } },
     dataSources: {},
-    themes: [
-      {
+    themes: {
+      'theme-1': {
         id: 'theme-1',
         name: 'Theme 1',
         light: { primaryColor: '#111111', harmony: 'monochromatic' },
         dark: { primaryColor: '#222222', harmony: 'monochromatic' },
       },
-    ],
+    },
     activeThemeId: 'theme-1',
     activeThemeMode: 'light',
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
@@ -97,8 +97,7 @@ function createManifest(): StudioManifest {
           },
         },
       },
-      modules: [],
-      modulesConfig: {},
+      modules: {},
     },
   } as unknown as StudioManifest;
 }
@@ -265,15 +264,15 @@ describe('manifestState', () => {
       ...first,
       infra: {
         ...first.infra,
-        apis: [
-          {
+        apis: {
+          probe: {
             id: 'probe',
             origin: 'external',
             protocol: 'rest',
             baseUrl: 'https://api.example.test',
             endpoints: {},
           },
-        ],
+        },
       },
     } as StudioManifest;
 
@@ -354,38 +353,44 @@ describe('manifestState', () => {
   });
 
   test('derives nested route references, primary membership, paths, and unrouted screens', () => {
-    const manifest = createManifest();
-    manifest.screens['screen-unrouted'] = {
-      id: 'screen-unrouted',
-      name: 'Unrouted',
-      root: { id: 'root-unrouted', type: 'Screen', children: [] },
-    };
-    manifest.navigator = {
-      type: 'stack',
-      initialRouteName: '(app)',
-      routes: [
-        {
-          name: '(app)',
-          navigator: {
-            type: 'drawer',
-            initialRouteName: 'home',
-            routes: [
-              {
-                name: 'home',
-                screenId: 'screen-home',
-                showInPrimaryNavigation: false,
-              },
-              {
-                name: 'account',
-                navigator: {
-                  type: 'stack',
-                  routes: [{ name: '[id]', path: 'profile/:id', screenId: 'screen-about' }],
-                },
-              },
-            ],
-          },
+    const baseManifest = createManifest();
+    const manifest: StudioManifest = {
+      ...baseManifest,
+      screens: {
+        ...baseManifest.screens,
+        'screen-unrouted': {
+          id: 'screen-unrouted',
+          name: 'Unrouted',
+          root: { id: 'root-unrouted', type: 'Screen', children: [] },
         },
-      ],
+      },
+      navigator: {
+        type: 'stack',
+        initialRouteName: '(app)',
+        routes: [
+          {
+            name: '(app)',
+            navigator: {
+              type: 'drawer',
+              initialRouteName: 'home',
+              routes: [
+                {
+                  name: 'home',
+                  screenId: 'screen-home',
+                  showInPrimaryNavigation: false,
+                },
+                {
+                  name: 'account',
+                  navigator: {
+                    type: 'stack',
+                    routes: [{ name: '[id]', path: 'profile/:id', screenId: 'screen-about' }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
     };
 
     const model = deriveStudioScreenNavigationModel(manifest);
@@ -615,9 +620,15 @@ describe('manifestState', () => {
   });
 
   test('refuses to delete the final screen', () => {
-    const manifest = createManifest();
-    delete manifest.screens['screen-about'];
-    manifest.navigator.routes = [{ name: 'home', screenId: 'screen-home' }];
+    const baseManifest = createManifest();
+    const manifest: StudioManifest = {
+      ...baseManifest,
+      screens: createScreens('screen-home'),
+      navigator: {
+        ...baseManifest.navigator,
+        routes: [{ name: 'home', screenId: 'screen-home' }],
+      },
+    };
 
     expect(deleteStudioManifestScreen(manifest, 'screen-home', 'screen-home')).toEqual({
       manifest,
@@ -732,7 +743,9 @@ describe('manifestState', () => {
 
     expect(oauth.navigator.type).toBe('drawer');
     expect(oauth.navigator.initialRouteName).toBe('about');
-    expect(oauth.themes.find((theme) => theme.id === 'theme-2')?.name).toBe('Updated Theme');
+    expect(Object.values(oauth.themes).find((theme) => theme.id === 'theme-2')?.name).toBe(
+      'Updated Theme',
+    );
     expect(oauth.infra.environments.local.auth?.oauth?.providers).toHaveLength(1);
   });
 });
@@ -751,9 +764,11 @@ test('updates canonical global tokens and recipe overrides without dropping mode
     },
   });
 
-  expect(updated.themes[0]).toMatchObject({
-    light: manifest.themes[0]?.light,
-    dark: manifest.themes[0]?.dark,
+  const [updatedTheme] = Object.values(updated.themes);
+  const [originalTheme] = Object.values(manifest.themes);
+  expect(updatedTheme).toMatchObject({
+    light: originalTheme?.light,
+    dark: originalTheme?.dark,
     tokens: { spacing: { compact: 6 }, radii: { card: 12 }, shadows: { raised: 8 } },
     recipes: {
       components: { Button: { size: 'l' } },

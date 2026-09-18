@@ -17,7 +17,14 @@ function createManifest(): StudioManifest {
     navigator: { type: 'stack', routes: [] },
     screens: {},
     dataSources: {},
-    themes: [],
+    themes: {
+      default: {
+        id: 'default',
+        name: 'Default',
+        light: { primaryColor: '#3366ff', harmony: 'analogous' },
+        dark: { primaryColor: '#6699ff', harmony: 'analogous' },
+      },
+    },
     activeThemeId: 'default',
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     infra: {
@@ -29,7 +36,7 @@ function createManifest(): StudioManifest {
           },
         },
       },
-      modules: [],
+      modules: {},
     },
   };
 }

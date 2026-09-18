@@ -112,7 +112,7 @@ function createReaderScreen(format: (typeof READER_FORMATS)[number]): ScreenSpec
   return {
     id: format,
     name: `${format.toUpperCase()} Reader`,
-    requires: { capabilities: [{ capability: 'ebookReader' }] },
+    requires: { capabilities: { ebookReader: true } },
     root: {
       id: `reader-screen-${format}`,
       type: 'Screen',

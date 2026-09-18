@@ -14,12 +14,13 @@ test('accepts and rejects manifests according to the Contracts-owned parser', ()
   expect(
     isAppManifest({
       ...manifest,
-      themes: [
-        {
-          ...manifest.themes[0],
+      themes: {
+        ...manifest.themes,
+        default: {
+          ...manifest.themes.default,
           light: { primaryColor: '#2563eb', harmony: 'not-a-harmony' },
         },
-      ],
+      },
     }),
   ).toBe(false);
 });
@@ -40,14 +41,14 @@ function createManifest() {
       category: 'business_productivity',
       themeId: 'default',
     },
-    themes: [
-      {
+    themes: {
+      default: {
         id: 'default',
         name: 'Default',
         light: { primaryColor: '#2563eb', harmony: 'analogous' },
         dark: { primaryColor: '#60a5fa', harmony: 'analogous' },
       },
-    ],
+    },
     activeThemeId: 'default',
     infra: {
       environments: {
@@ -58,7 +59,7 @@ function createManifest() {
           },
         },
       },
-      modules: [],
+      modules: {},
     },
     navigator: { type: 'stack', routes: [] },
     screens: {},

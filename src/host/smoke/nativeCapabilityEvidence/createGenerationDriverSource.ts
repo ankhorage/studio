@@ -49,8 +49,10 @@ const composed = composeCategoryAppManifest({
       id: 'native-evidence',
       name: 'Native evidence',
       requires: {
-        capabilities: [{ capability: 'barcodeScanner' }],
-        permissions: PERMISSIONS.map((permission) => ({ permission })),
+        capabilities: { barcodeScanner: true },
+        permissions: Object.fromEntries(
+          PERMISSIONS.map((permission) => [permission, true] as const),
+        ),
       },
       root: {
         id: 'native-evidence-screen',

@@ -17,7 +17,10 @@ export async function resolveProjectMediaStorage(args: {
 }): Promise<ProjectMediaStorageContext> {
   const manifest = await args.projectManager.getProjectManifest(args.projectId);
   const { objectStorage } = manifest.infra.environments.local;
-  const bucket = objectStorage?.buckets?.find((value) => value.trim().length > 0)?.trim();
+  const bucket = Object.keys(objectStorage?.buckets ?? {})
+    .filter((value) => value.trim().length > 0)
+    .sort()[0]
+    ?.trim();
   if (!objectStorage || !bucket) {
     throw new Error(
       'Configure an infra.environments.local.objectStorage bucket before importing media.',

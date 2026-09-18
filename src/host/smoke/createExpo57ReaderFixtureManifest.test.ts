@@ -40,7 +40,7 @@ describe('createExpo57ReaderFixtureManifest', () => {
 
     expect(ZORA_COMPONENT_META.ReaderSurface).toMatchObject({
       directManifestNode: true,
-      requirements: { capabilities: [{ capability: 'ebookReader' }] },
+      requirements: { capabilities: { ebookReader: true } },
     });
     expect(reader).toMatchObject({
       id: 'reader-epub',

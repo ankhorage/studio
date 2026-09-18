@@ -1,8 +1,10 @@
+import type { ApiDefinition } from '@ankhorage/contracts/data';
 import type {
   EndpointTestFetch,
   ExternalApiFetch,
   ExternalApiFetchResponse,
 } from '@ankhorage/data-sources';
+import { readOwnProperty } from '@ankhorage/utility/object';
 import { describe, expect, test } from 'bun:test';
 
 import type { StudioManifest } from '../../index';
@@ -21,8 +23,15 @@ function createManifest(overrides: Partial<StudioManifest> = {}): StudioManifest
     },
     dataBindings: {},
     dataSources: {},
-    themes: [],
-    activeThemeId: '',
+    themes: {
+      default: {
+        id: 'default',
+        name: 'Default',
+        light: { primaryColor: '#3366ff', harmony: 'analogous' },
+        dark: { primaryColor: '#6699ff', harmony: 'analogous' },
+      },
+    },
+    activeThemeId: 'default',
     activeThemeMode: 'light',
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     infra: {
@@ -34,9 +43,8 @@ function createManifest(overrides: Partial<StudioManifest> = {}): StudioManifest
           },
         },
       },
-      modules: [],
-      modulesConfig: {},
-      apis: [],
+      modules: {},
+      apis: {},
     },
     ...overrides,
   } as StudioManifest;
@@ -128,8 +136,8 @@ describe('StudioExternalApiService', () => {
 
     expect(first).toMatchObject({ ok: true, apiId: 'inventory-api', created: true });
     expect(second).toMatchObject({ ok: true, apiId: 'inventory-api', created: false });
-    expect(store.read().infra.apis).toHaveLength(1);
-    expect(store.read().infra.apis?.[0]).toMatchObject({
+    expect(Object.keys(store.read().infra.apis ?? {})).toHaveLength(1);
+    expect(readApi(store.read(), 'inventory-api')).toMatchObject({
       id: 'inventory-api',
       origin: 'external',
       protocol: 'rest',
@@ -156,15 +164,15 @@ describe('StudioExternalApiService', () => {
     });
 
     expect(result).toMatchObject({ ok: true, apiId: 'catalog', protocol: 'graphql' });
-    expect(store.read().infra.apis?.[0]).toMatchObject({
+    expect(readApi(store.read(), 'catalog')).toMatchObject({
       id: 'catalog',
       origin: 'external',
       protocol: 'graphql',
       endpointUrl: 'https://api.example.com/graphql',
     });
-    expect(
-      store.read().infra.apis?.[0]?.endpoints.graphql?.operations['query.items'],
-    ).toBeDefined();
+    const catalog = readApi(store.read(), 'catalog');
+    const graphql = catalog?.endpoints.graphql;
+    expect(graphql ? readOwnProperty(graphql.operations, 'query.items') : undefined).toBeDefined();
   });
 
   test('creates manual REST APIs through the canonical owner helper', async () => {
@@ -182,7 +190,9 @@ describe('StudioExternalApiService', () => {
     });
 
     expect(result).toMatchObject({ ok: true, apiId: 'inventory', protocol: 'rest' });
-    expect(store.read().infra.apis?.[0]?.endpoints.items?.operations['list-items']).toMatchObject({
+    const inventory = readApi(store.read(), 'inventory');
+    const items = inventory?.endpoints.items;
+    expect(items ? readOwnProperty(items.operations, 'list-items') : undefined).toMatchObject({
       method: 'GET',
       path: '/items',
     });
@@ -200,10 +210,9 @@ describe('StudioExternalApiService', () => {
               },
             },
           },
-          modules: [],
-          modulesConfig: {},
-          apis: [
-            {
+          modules: {},
+          apis: {
+            catalog: {
               id: 'catalog',
               origin: 'external',
               protocol: 'rest',
@@ -226,7 +235,7 @@ describe('StudioExternalApiService', () => {
                 },
               },
             },
-          ],
+          },
         },
       }),
     );
@@ -271,17 +280,16 @@ describe('StudioExternalApiService', () => {
               },
             },
           },
-          modules: [],
-          modulesConfig: {},
-          apis: [
-            {
+          modules: {},
+          apis: {
+            orders: {
               id: 'orders',
               origin: 'internal',
               protocol: 'rest',
               basePath: '/api/orders',
               endpoints: {},
             },
-          ],
+          },
         },
       }),
     );
@@ -297,3 +305,9 @@ describe('StudioExternalApiService', () => {
     expect(result.diagnostics[0]).toMatchObject({ apiId: 'orders', severity: 'error' });
   });
 });
+
+function readApi(manifest: StudioManifest, apiId: string): ApiDefinition | undefined {
+  return manifest.infra.apis
+    ? readOwnProperty<ApiDefinition>(manifest.infra.apis, apiId)
+    : undefined;
+}

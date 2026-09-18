@@ -1,4 +1,4 @@
-import type { ApiDefinitionList } from '@ankhorage/contracts/data';
+import type { ApiDefinitionRegistry } from '@ankhorage/contracts/data';
 import { expect, test } from 'bun:test';
 import { readFileSync } from 'fs';
 import path from 'path';
@@ -46,8 +46,8 @@ test('keeps external API administration progressive and owner-backed', () => {
 });
 
 test('collects operations through canonical APIs, endpoints, and operations', () => {
-  const apis: ApiDefinitionList = [
-    {
+  const apis: ApiDefinitionRegistry = {
+    crm: {
       id: 'crm',
       origin: 'external',
       protocol: 'rest',
@@ -78,7 +78,7 @@ test('collects operations through canonical APIs, endpoints, and operations', ()
         },
       },
     },
-  ];
+  };
 
   expect(collectApiOperationRows(apis)).toEqual([
     {
