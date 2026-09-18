@@ -52,7 +52,6 @@ graph LR
   module_src_canvasDropZones_ts["src/canvasDropZones.ts"]
   module_src_cli_index_test_ts["src/cli/index.test.ts"]
   module_src_cli_index_ts["src/cli/index.ts"]
-  module_src_constants_ts["src/constants.ts"]
   module_src_contractGuards_test_ts["src/contractGuards.test.ts"]
   module_src_contractGuards_ts["src/contractGuards.ts"]
   module_src_core_apiBase_test_ts["src/core/apiBase.test.ts"]
@@ -350,7 +349,6 @@ graph LR
   module_src_host_utils_requirementsInference_ts["src/host/utils/requirementsInference.ts"]
   module_src_host_utils_workspaceRoot_ts["src/host/utils/workspaceRoot.ts"]
   module_src_host_zoraExtensions_index_ts["src/host/zoraExtensions/index.ts"]
-  module_src_host_zoraExtensions_zoraExtensions_test_ts["src/host/zoraExtensions/zoraExtensions.test.ts"]
   module_src_index_test_ts["src/index.test.ts"]
   module_src_index_ts["src/index.ts"]
   module_src_insertModalModel_public_test_ts["src/insertModalModel.public.test.ts"]
@@ -635,7 +633,10 @@ graph LR
   module_src_canvasDropZones_test_ts --> module_src_index_ts
   module_src_canvasDropZones_ts --> module_src_index_ts
   module_src_cli_index_test_ts --> module_src_cli_index_ts
+  module_src_cli_index_ts --> module_src_host_createStudioHost_ts
+  module_src_cli_index_ts --> module_src_host_http_server_ts
   module_src_cli_index_ts --> module_src_host_templates_index_ts
+  module_src_cli_index_ts --> module_src_host_utils_workspaceRoot_ts
   module_src_contractGuards_test_ts --> module_src_contractGuards_ts
   module_src_core_apiBase_test_ts --> module_src_core_apiBase_ts
   module_src_core_constants_ts --> module_src_core_apiBase_ts
@@ -993,7 +994,6 @@ graph LR
   module_src_host_orchestrator_generatedDependencyContract_test_ts --> module_src_host_orchestrator_scaffolder_ts
   module_src_host_orchestrator_generatedDependencyContract_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_generatedPackagePolicy_test_ts --> module_src_features_project_updates_adapters_outbound_getGeneratedPackagePolicy_ts
-  module_src_host_orchestrator_generatedPackagePolicy_test_ts --> module_src_features_project_updates_domain_applyGeneratedPackagePolicy_ts
   module_src_host_orchestrator_generatedPackagePolicy_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_GeneratedRouteFileOwnership_test_ts --> module_src_host_orchestrator_GeneratedRouteFileOwnership_ts
   module_src_host_orchestrator_moduleManager_ts --> module_src_features_project_updates_composition_createStudioProjectWriterProxy_ts
@@ -1196,10 +1196,6 @@ graph LR
   module_src_host_templates_catalog_test_ts --> module_src_host_templates_index_ts
   module_src_host_templates_index_ts --> module_src_host_orchestrator_projectCreationSource_ts
   module_src_host_templates_index_ts --> module_src_templateCatalogContracts_ts
-  module_src_host_zoraExtensions_index_ts --> module_src_constants_ts
-  module_src_host_zoraExtensions_index_ts --> module_src_features_project_updates_adapters_outbound_getGeneratedPackagePolicy_ts
-  module_src_host_zoraExtensions_zoraExtensions_test_ts --> module_src_features_project_updates_adapters_outbound_getGeneratedPackagePolicy_ts
-  module_src_host_zoraExtensions_zoraExtensions_test_ts --> module_src_host_zoraExtensions_index_ts
   module_src_index_test_ts --> module_src_index_ts
   module_src_index_ts --> module_src_authSettings_ts
   module_src_index_ts --> module_src_mediaAuthoringModel_ts
