@@ -1,3 +1,4 @@
+import type { ApiDefinition } from '@ankhorage/contracts/data';
 import type { ExternalApiFetch, ExternalApiFetchResponse } from '@ankhorage/data-sources';
 import { readOwnProperty } from '@ankhorage/utility/object';
 import { describe, expect, test } from 'bun:test';
@@ -122,7 +123,8 @@ describe('StudioExternalApiService mutations', () => {
 
     expect(result).toEqual({ ok: true, apiId: 'inventory', diagnostics: [] });
     expect(Object.keys(store.read().infra.apis ?? {})).toHaveLength(1);
-    expect(store.read().infra.apis ? readOwnProperty(store.read().infra.apis, 'inventory') : undefined).toMatchObject({
+    const inventory = readApi(store.read(), 'inventory');
+    expect(inventory).toMatchObject({
       id: 'inventory',
       name: 'Inventory v2',
       baseUrl: 'https://api-v2.example.com',
@@ -132,7 +134,7 @@ describe('StudioExternalApiService mutations', () => {
         scope: 'header:authorization',
       },
     });
-    expect(store.read().infra.apis ? readOwnProperty(store.read().infra.apis, 'inventory') : undefined?.endpoints.items?.operations.list).toMatchObject({
+    expect(inventory?.endpoints.items?.operations.list).toMatchObject({
       method: 'GET',
       path: '/items',
     });
@@ -151,22 +153,22 @@ describe('StudioExternalApiService mutations', () => {
             },
           },
           modules: {},
-          apis: [
-            {
+          apis: {
+            inventory: {
               id: 'inventory',
               origin: 'external',
               protocol: 'rest',
               baseUrl: 'https://api.example.com',
               endpoints: {},
             },
-            {
+            'inventory-v2': {
               id: 'inventory-v2',
               origin: 'external',
               protocol: 'rest',
               baseUrl: 'https://api.example.com/v2',
               endpoints: {},
             },
-          ],
+          },
         },
       }),
     );
@@ -197,3 +199,10 @@ describe('StudioExternalApiService mutations', () => {
     expect(store.read().infra.apis).toEqual({});
   });
 });
+
+
+function readApi(manifest: StudioManifest, apiId: string): ApiDefinition | undefined {
+  return manifest.infra.apis
+    ? readOwnProperty<ApiDefinition>(manifest.infra.apis, apiId)
+    : undefined;
+}
