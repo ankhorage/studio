@@ -1,5 +1,12 @@
 # @ankhorage/studio
 
+## 3.1.0
+
+### Minor Changes
+
+- 7314864: Integrate the current ZORA Game extension into Studio metadata discovery, runtime plugin
+  composition, and generated-app dependency selection.
+
 ## 3.0.2
 
 ### Patch Changes
