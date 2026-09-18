@@ -102,8 +102,7 @@ remain owned by the module package. Rich views never create parallel top-level r
 canonical module lifecycle/config boundary.
 
 Standalone module packages own config normalization, generated paths/files, layout contribution,
-cleanup behavior, and their optional administration implementation. Manifest `infra.modules` and
-`infra.modulesConfig` are deterministic lifecycle projections, not a second writable Studio store.
+cleanup behavior, and their optional administration implementation. Manifest `infra.modules` is the deterministic lifecycle registry. Each module entry owns its serializable `config`; Studio does not maintain a parallel configuration store.
 
 Properties is contextual. The selected node ID is encoded in `/ankh/properties/<node-id>`, decoded
 through the route model, resolved across the Studio manifest, mapped to its owning screen, and then

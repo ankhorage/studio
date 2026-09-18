@@ -1,4 +1,4 @@
-import type { ApiDefinitionList } from '@ankhorage/contracts/data';
+import type { ApiDefinitionRegistry } from '@ankhorage/contracts/data';
 import { Button, Card, Text } from '@ankhorage/zora';
 import { useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
@@ -10,7 +10,7 @@ import { type ApiOperationRow, collectApiOperationRows } from './adminApiOperati
 import { ExternalApiDiagnosticList, externalApiAdminStyles } from './ExternalApiAdminPrimitives';
 
 /*** Render canonical API operations and execute/dry-run external operations against the active Studio project. */
-export function ApiOperationsCard({ apis }: { readonly apis: ApiDefinitionList }) {
+export function ApiOperationsCard({ apis }: { readonly apis: ApiDefinitionRegistry }) {
   const studio = useStudio();
   const rows = useMemo(() => collectApiOperationRows(apis), [apis]);
   const [busyKey, setBusyKey] = useState<string | null>(null);

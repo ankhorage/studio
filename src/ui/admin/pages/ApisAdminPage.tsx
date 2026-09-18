@@ -1,3 +1,5 @@
+import type { ApiDefinition } from '@ankhorage/contracts/data';
+import { readOwnProperty } from '@ankhorage/utility/object';
 import { Button, Dialog, Text, View as ZoraView } from '@ankhorage/zora';
 import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
@@ -25,7 +27,7 @@ interface DiscoveryFallback {
 /*** Compose progressive API discovery, canonical endpoint catalog, advanced editing, removal, and secondary operation testing. */
 export function ApisAdminPage({ routeId }: { readonly routeId: ApisAdminRouteId }) {
   const studio = useStudio();
-  const apis = studio.manifest?.infra.apis ?? [];
+  const apis = studio.manifest?.infra.apis ?? {};
   const [fallback, setFallback] = useState<DiscoveryFallback | null>(null);
   const [editingApiId, setEditingApiId] = useState<string | null>(null);
   const [pendingRemoveId, setPendingRemoveId] = useState<string | null>(null);
@@ -35,9 +37,11 @@ export function ApisAdminPage({ routeId }: { readonly routeId: ApisAdminRouteId 
   const showAuthoring = routeId === 'apis';
   const showCatalog = routeId === 'apis' || routeId === 'api-catalog';
   const showOperations = routeId === 'api-operations';
-  const editingApi = apis.find((api) => api.id === editingApiId);
+  const editingApi = editingApiId ? readOwnProperty<ApiDefinition>(apis, editingApiId) : undefined;
   const editableApi = editingApi?.origin === 'external' ? editingApi : null;
-  const pendingRemoveApi = apis.find((api) => api.id === pendingRemoveId);
+  const pendingRemoveApi = pendingRemoveId
+    ? readOwnProperty<ApiDefinition>(apis, pendingRemoveId)
+    : undefined;
 
   /*** Clear transient fallback/edit state after a successful API add or manual fallback save. */
   const finishConnection = useCallback((apiId: string) => {

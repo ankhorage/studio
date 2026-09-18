@@ -113,11 +113,18 @@ function createManifest(): AppManifest {
           },
         },
       },
-      modules: [],
+      modules: {},
     },
     navigator: { type: 'stack', routes: [] },
     screens: {},
-    themes: [],
+    themes: {
+      default: {
+        id: 'default',
+        name: 'Default',
+        light: { primaryColor: '#2563eb', harmony: 'analogous' },
+        dark: { primaryColor: '#60a5fa', harmony: 'analogous' },
+      },
+    },
     activeThemeId: 'default',
   };
 }

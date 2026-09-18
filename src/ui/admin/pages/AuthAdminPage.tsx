@@ -945,11 +945,18 @@ function createFallbackManifest(): AppManifest {
           },
         },
       },
-      modules: [],
+      modules: {},
     },
     navigator: { type: 'stack', routes: [] },
     screens: {},
-    themes: [],
+    themes: {
+      default: {
+        id: 'default',
+        name: 'Default',
+        light: { primaryColor: '#3366ff', harmony: 'analogous' },
+        dark: { primaryColor: '#6699ff', harmony: 'analogous' },
+      },
+    },
     activeThemeId: 'default',
   };
 }

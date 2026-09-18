@@ -1,12 +1,13 @@
 import type {
   ApiDefinition,
-  ApiDefinitionList,
+  ApiDefinitionRegistry,
   BindingOperationRef,
   DataOperationConfig,
   DataSchema,
   UiBindableValueMeta,
 } from '@ankhorage/contracts';
 import { findByKey } from '@ankhorage/utility/array';
+import { readOwnProperty } from '@ankhorage/utility/object';
 
 import type {
   StudioBindingInputFieldOption,
@@ -19,9 +20,9 @@ import { collectStudioResponsePaths, resolveStudioSchemaValueMeta } from './bind
  * @todo Move binding operation catalog behavior under src/bindings/.
  */
 export function collectStudioBindingOperationOptions(
-  apis: ApiDefinitionList,
+  apis: ApiDefinitionRegistry,
 ): readonly StudioBindingOperationOption[] {
-  return apis
+  return Object.values(apis)
     .flatMap((api) => collectApiOperations(api))
     .sort((left, right) => left.label.localeCompare(right.label));
 }
@@ -104,7 +105,12 @@ function resolveSlotSchema(
   api: ApiDefinition,
   slot: { readonly schema?: DataSchema; readonly schemaRef?: { readonly id: string } } | undefined,
 ): DataSchema | undefined {
-  return slot?.schema ?? (slot?.schemaRef ? api.schemas?.[slot.schemaRef.id] : undefined);
+  return (
+    slot?.schema ??
+    (slot?.schemaRef && api.schemas
+      ? readOwnProperty<DataSchema>(api.schemas, slot.schemaRef.id)
+      : undefined)
+  );
 }
 
 /***

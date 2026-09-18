@@ -1,5 +1,5 @@
 import type {
-  ApiDefinitionList,
+  ApiDefinitionRegistry,
   ComponentDataBindingRegistry,
   PropBinding,
   UiComponentMetaRegistry,
@@ -56,8 +56,8 @@ const componentMeta: UiComponentMetaRegistry = {
   },
 };
 
-const apis: ApiDefinitionList = [
-  {
+const apis: ApiDefinitionRegistry = {
+  external: {
     id: 'external',
     origin: 'external',
     protocol: 'rest',
@@ -82,7 +82,7 @@ const apis: ApiDefinitionList = [
       },
     },
   },
-  {
+  inventory: {
     id: 'inventory',
     origin: 'external',
     protocol: 'rest',
@@ -114,7 +114,7 @@ const apis: ApiDefinitionList = [
       },
     },
   },
-];
+};
 
 describe('binding authoring metadata', () => {
   test('derives only explicitly bindable props and events from component metadata', () => {
@@ -183,8 +183,8 @@ describe('binding operations and schemas', () => {
   });
 
   test('enumerates the first item and its nested fields for array operation responses', () => {
-    const listApis: ApiDefinitionList = [
-      {
+    const listApis: ApiDefinitionRegistry = {
+      poker: {
         id: 'poker',
         origin: 'external',
         protocol: 'rest',
@@ -224,7 +224,7 @@ describe('binding operations and schemas', () => {
           },
         },
       },
-    ];
+    };
 
     const [operation] = collectStudioBindingOperationOptions(listApis);
 

@@ -1,5 +1,17 @@
 # @ankhorage/studio
 
+## 3.0.0
+
+### Major Changes
+
+- 0eef071: Migrate Studio authoring, runtime generation, APIs, themes, modules and requirements to the canonical Contracts 22 AppManifest collection semantics.
+
+## 2.7.17
+
+### Patch Changes
+
+- c2af05d: Update Ankhorage dependencies: `@ankhorage/apm`, `@ankhorage/deploy`, `@ankhorage/expo-runtime`, `@ankhorage/infra`, `@ankhorage/navigator`, `@ankhorage/orchestrator-module-expo-localization`, `@ankhorage/repository`, `@ankhorage/supabase-auth`, `@ankhorage/supabase-storage`, `@ankhorage/supabase-vault`, `@ankhorage/zora-tabletop`.
+
 ## 2.7.16
 
 ### Patch Changes

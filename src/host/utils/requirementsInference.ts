@@ -1,81 +1,77 @@
-import type {
-  AnkhorageCapabilityName,
-  AnkhoragePermissionName,
-  ScreenCapabilityRequirement,
-  ScreenPermissionRequirement,
-  ScreenRequirements,
-  UiNode,
+import {
+  ANKHORAGE_CAPABILITY_NAMES,
+  ANKHORAGE_PERMISSION_NAMES,
+  type AnkhorageCapabilityName,
+  type AnkhoragePermissionName,
+  type ScreenRequirements,
+  type UiNode,
 } from '@ankhorage/contracts';
+import { readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
 import { ZORA_COMPONENT_META } from '@ankhorage/zora/metadata';
 
 /***
- * Infer screen permission/capability requirements by walking authored UiNodes and collecting requirements declared by ZORA component metadata.
- * @todo Move this requirements-domain behavior out of generic `host/utils`; it depends directly on shared ScreenRequirements contracts and ZORA metadata and should live with the owning generation/requirements capability.
+ * Infer screen permission/capability requirements by walking authored UiNodes and collecting
+ * membership declared by ZORA component metadata.
+ * @todo Move this requirements-domain behavior out of generic `host/utils`; it depends directly
+ * on shared ScreenRequirements contracts and ZORA metadata and should live with the owning
+ * generation/requirements capability.
  */
 export function inferScreenRequirementsFromUi(root: UiNode): ScreenRequirements | undefined {
-  const permissions = new Map<AnkhoragePermissionName, ScreenPermissionRequirement>();
-  const capabilities = new Map<AnkhorageCapabilityName, ScreenCapabilityRequirement>();
+  const permissions: Partial<Record<AnkhoragePermissionName, true>> = {};
+  const capabilities: Partial<Record<AnkhorageCapabilityName, true>> = {};
 
-  /*** Visit one UiNode subtree and collect metadata-declared permissions/capabilities by semantic key. */
+  /*** Visit one UiNode subtree and collect metadata-declared requirement membership. */
   function walk(node: UiNode) {
     const meta = ZORA_COMPONENT_META[node.type];
 
     if (meta?.requirements) {
-      meta.requirements.permissions?.forEach((p) => {
-        permissions.set(p.permission, p);
-      });
-      meta.requirements.capabilities?.forEach((c) => {
-        capabilities.set(c.capability, c);
-      });
+      for (const permission of ANKHORAGE_PERMISSION_NAMES) {
+        if (readOwnProperty(meta.requirements.permissions ?? {}, permission) === true) {
+          setOwnProperty(permissions, permission, true);
+        }
+      }
+      for (const capability of ANKHORAGE_CAPABILITY_NAMES) {
+        if (readOwnProperty(meta.requirements.capabilities ?? {}, capability) === true) {
+          setOwnProperty(capabilities, capability, true);
+        }
+      }
     }
 
-    if (node.children) {
-      node.children.forEach(walk);
-    }
+    node.children?.forEach(walk);
   }
 
   walk(root);
-
-  if (permissions.size === 0 && capabilities.size === 0) {
-    return undefined;
-  }
-
-  return {
-    permissions: permissions.size > 0 ? Array.from(permissions.values()) : undefined,
-    capabilities: capabilities.size > 0 ? Array.from(capabilities.values()) : undefined,
-  };
+  return createRequirements(permissions, capabilities);
 }
 
 /***
- * Merge inferred and explicit ScreenRequirements by semantic key, with explicit declarations overriding inferred ones.
- * @todo This is reusable requirements-domain behavior, but the correct owner is the ScreenRequirements/contracts capability rather than generic Utility.
+ * Merge inferred and explicit ScreenRequirements membership, with explicit membership retained.
+ * @todo This is reusable requirements-domain behavior, but the correct owner is the
+ * ScreenRequirements/contracts capability rather than generic Utility.
  */
 export function mergeScreenRequirements(
   explicit?: ScreenRequirements,
   inferred?: ScreenRequirements,
 ): ScreenRequirements | undefined {
-  if (!explicit && !inferred) {
-    return undefined;
-  }
+  if (!explicit && !inferred) return undefined;
 
-  const permissions = new Map<AnkhoragePermissionName, ScreenPermissionRequirement>();
-  const capabilities = new Map<AnkhorageCapabilityName, ScreenCapabilityRequirement>();
+  return createRequirements(
+    { ...(inferred?.permissions ?? {}), ...(explicit?.permissions ?? {}) },
+    { ...(inferred?.capabilities ?? {}), ...(explicit?.capabilities ?? {}) },
+  );
+}
 
-  // Apply inferred first, then explicit to ensure explicit overrides
-  [inferred?.permissions, explicit?.permissions].forEach((perms) => {
-    perms?.forEach((p) => permissions.set(p.permission, p));
-  });
-
-  [inferred?.capabilities, explicit?.capabilities].forEach((caps) => {
-    caps?.forEach((c) => capabilities.set(c.capability, c));
-  });
-
-  if (permissions.size === 0 && capabilities.size === 0) {
+/*** Omit empty requirement sets so manifests contain only meaningful runtime requirements. */
+function createRequirements(
+  permissions: Partial<Record<AnkhoragePermissionName, true>>,
+  capabilities: Partial<Record<AnkhorageCapabilityName, true>>,
+): ScreenRequirements | undefined {
+  if (Object.keys(permissions).length === 0 && Object.keys(capabilities).length === 0) {
     return undefined;
   }
 
   return {
-    permissions: permissions.size > 0 ? Array.from(permissions.values()) : undefined,
-    capabilities: capabilities.size > 0 ? Array.from(capabilities.values()) : undefined,
+    permissions: Object.keys(permissions).length > 0 ? permissions : undefined,
+    capabilities: Object.keys(capabilities).length > 0 ? capabilities : undefined,
   };
 }
