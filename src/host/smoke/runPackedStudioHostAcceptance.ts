@@ -25,6 +25,7 @@ export async function runPackedStudioHostAcceptance(
   const fixtureRoot = await mkdtemp(path.join(tmpdir(), 'ankh-packed-studio-host-'));
   const artifactRoot = path.join(fixtureRoot, 'artifact');
   const consumerRoot = path.join(fixtureRoot, 'consumer');
+  const cliConsumerRoot = path.join(fixtureRoot, 'cli-consumer');
   const cacheRoot = path.join(fixtureRoot, 'cache');
 
   try {
@@ -34,6 +35,7 @@ export async function runPackedStudioHostAcceptance(
     await createConsumerAsync(consumerRoot, tarballPath);
     await installConsumerAsync(consumerRoot, cacheRoot);
     await assertPackedPackageAsync(consumerRoot, repositoryRoot);
+    await verifyPeerlessCliImportAsync(cliConsumerRoot, tarballPath, cacheRoot);
     const integrity = `sha512-${createHash('sha512')
       .update(await readFile(tarballPath))
       .digest('base64')}`;
@@ -92,6 +94,54 @@ async function assertPackedPackageAsync(
       'Packed Studio APM descriptor owner identity does not match the package artifact.',
     );
   }
+}
+
+/*** Verify the packed Studio CLI provider loads under Ankh's peer-omitted cache semantics. */
+async function verifyPeerlessCliImportAsync(
+  consumerRoot: string,
+  tarballPath: string,
+  cacheRoot: string,
+): Promise<void> {
+  await mkdir(consumerRoot, { recursive: true });
+  await writeFile(
+    path.join(consumerRoot, 'package.json'),
+    `${JSON.stringify(
+      {
+        name: 'packed-studio-peerless-cli-consumer',
+        private: true,
+        type: 'module',
+        dependencies: { '@ankhorage/studio': `file:${tarballPath}` },
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  await writeFile(
+    path.join(consumerRoot, 'cli-import.mjs'),
+    "const module = await import('@ankhorage/studio/cli');\nif (module.default?.category !== 'studio') throw new Error('Studio CLI provider did not load.');\n",
+  );
+  await runAcceptanceCommandAsync({
+    args: ['install', '--omit=peer', '--ignore-scripts'],
+    command: 'bun',
+    cwd: consumerRoot,
+    env: { BUN_INSTALL_CACHE_DIR: cacheRoot },
+    label: 'Install packed Studio without peer dependencies',
+    timeoutMs: COMMAND_TIMEOUT_MS,
+  });
+  for (const peerName of ['react', 'react-native']) {
+    const peerPackage = Bun.file(path.join(consumerRoot, 'node_modules', peerName, 'package.json'));
+    if (await peerPackage.exists()) {
+      throw new Error(`Peerless Studio CLI consumer unexpectedly installed ${peerName}.`);
+    }
+  }
+  await runAcceptanceCommandAsync({
+    args: ['cli-import.mjs'],
+    command: 'bun',
+    cwd: consumerRoot,
+    env: { BUN_INSTALL_CACHE_DIR: cacheRoot },
+    label: 'Import packed Studio CLI without UI peers',
+    timeoutMs: COMMAND_TIMEOUT_MS,
+  });
 }
 
 /*** Build and pack the current Studio checkout into the acceptance fixture artifact directory. */
