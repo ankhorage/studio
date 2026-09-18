@@ -422,7 +422,15 @@ function studioTargetVersion(plan: Readonly<Record<string, unknown>>): string {
     (candidate) =>
       isRecord(candidate) && readOwnProperty(candidate, 'name') === STUDIO_PACKAGE_NAME,
   );
-  if (!isRecord(target)) throw new Error('Plan did not select a Studio owner target.');
+  if (!isRecord(target)) {
+    throw new Error(
+      `Plan did not select a Studio owner target: ${JSON.stringify({
+        blockers: readOwnProperty(plan, 'blockers'),
+        policy: readOwnProperty(plan, 'policy'),
+        targets: readOwnProperty(plan, 'targets'),
+      })}`,
+    );
+  }
   return readRequiredString(target, 'targetVersion');
 }
 
