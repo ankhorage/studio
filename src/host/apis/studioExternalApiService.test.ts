@@ -1,3 +1,4 @@
+import type { ApiDefinition } from '@ankhorage/contracts/data';
 import type {
   EndpointTestFetch,
   ExternalApiFetch,
@@ -136,7 +137,7 @@ describe('StudioExternalApiService', () => {
     expect(first).toMatchObject({ ok: true, apiId: 'inventory-api', created: true });
     expect(second).toMatchObject({ ok: true, apiId: 'inventory-api', created: false });
     expect(Object.keys(store.read().infra.apis ?? {})).toHaveLength(1);
-    expect(store.read().infra.apis ? readOwnProperty(store.read().infra.apis, 'inventory-api') : undefined).toMatchObject({
+    expect(readApi(store.read(), 'inventory-api')).toMatchObject({
       id: 'inventory-api',
       origin: 'external',
       protocol: 'rest',
@@ -163,15 +164,13 @@ describe('StudioExternalApiService', () => {
     });
 
     expect(result).toMatchObject({ ok: true, apiId: 'catalog', protocol: 'graphql' });
-    expect(store.read().infra.apis ? readOwnProperty(store.read().infra.apis, 'catalog') : undefined).toMatchObject({
+    expect(readApi(store.read(), 'catalog')).toMatchObject({
       id: 'catalog',
       origin: 'external',
       protocol: 'graphql',
       endpointUrl: 'https://api.example.com/graphql',
     });
-    const catalog = store.read().infra.apis
-      ? readOwnProperty(store.read().infra.apis, 'catalog')
-      : undefined;
+    const catalog = readApi(store.read(), 'catalog');
     const graphql = catalog?.endpoints.graphql;
     expect(graphql ? readOwnProperty(graphql.operations, 'query.items') : undefined).toBeDefined();
   });
@@ -191,9 +190,7 @@ describe('StudioExternalApiService', () => {
     });
 
     expect(result).toMatchObject({ ok: true, apiId: 'inventory', protocol: 'rest' });
-    const inventory = store.read().infra.apis
-      ? readOwnProperty(store.read().infra.apis, 'inventory')
-      : undefined;
+    const inventory = readApi(store.read(), 'inventory');
     const items = inventory?.endpoints.items;
     expect(items ? readOwnProperty(items.operations, 'list-items') : undefined).toMatchObject({
       method: 'GET',
@@ -292,7 +289,7 @@ describe('StudioExternalApiService', () => {
               basePath: '/api/orders',
               endpoints: {},
             },
-          ],
+          },
         },
       }),
     );
@@ -308,3 +305,10 @@ describe('StudioExternalApiService', () => {
     expect(result.diagnostics[0]).toMatchObject({ apiId: 'orders', severity: 'error' });
   });
 });
+
+
+function readApi(manifest: StudioManifest, apiId: string): ApiDefinition | undefined {
+  return manifest.infra.apis
+    ? readOwnProperty<ApiDefinition>(manifest.infra.apis, apiId)
+    : undefined;
+}
