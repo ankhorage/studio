@@ -31,7 +31,7 @@ function createManifest(): AppManifest {
           },
         },
       },
-      modules: [],
+      modules: {},
     },
     navigator: {
       type: 'stack',
@@ -48,7 +48,14 @@ function createManifest(): AppManifest {
         },
       },
     },
-    themes: [],
+    themes: {
+      default: {
+        id: 'default',
+        name: 'Default',
+        light: { primaryColor: '#3366ff', harmony: 'analogous' },
+        dark: { primaryColor: '#6699ff', harmony: 'analogous' },
+      },
+    },
     activeThemeId: 'default',
   };
 }
