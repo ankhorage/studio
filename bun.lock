@@ -30,6 +30,7 @@
         "@ankhorage/utility": "^1.2.0",
         "@ankhorage/zora": "^19.0.1",
         "@ankhorage/zora-chess": "^0.2.2",
+        "@ankhorage/zora-game": "^0.5.0",
         "@ankhorage/zora-tabletop": "^0.1.4",
         "@fastify/cors": "^11.3.0",
         "expo-document-picker": "~57.0.2",
@@ -95,6 +96,8 @@
 
     "@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@3.2.16", "", { "dependencies": { "@ankhorage/contracts": "^11.1.0" }, "peerDependencies": { "@ankhorage/permissions": "^0.2.5", "@ankhorage/zora": "^4.3.0", "@react-native-vector-icons/fontawesome": "^13.1.3", "@react-native-vector-icons/fontawesome5": "^13.1.3", "@react-native-vector-icons/fontawesome6": "^13.1.3", "@react-native-vector-icons/ionicons": "^13.1.3", "@react-native-vector-icons/material-design-icons": "^13.1.3", "@readium/navigator": "2.8.2", "@readium/shared": "2.4.0", "@zip.js/zip.js": "2.9.0", "expo": "57.0.23", "expo-camera": "~57.0.5", "expo-constants": "~57.0.18", "expo-document-picker": "~57.0.2", "expo-file-system": "~57.0.7", "expo-font": "~57.0.4", "expo-image-picker": "~57.0.18", "pdfjs-dist": "6.3.289", "react": "19.2.3", "react-native": "0.86.3" }, "optionalPeers": ["@ankhorage/permissions", "@ankhorage/zora", "@react-native-vector-icons/fontawesome", "@react-native-vector-icons/fontawesome5", "@react-native-vector-icons/fontawesome6", "@react-native-vector-icons/ionicons", "@react-native-vector-icons/material-design-icons", "@readium/navigator", "@readium/shared", "@zip.js/zip.js", "expo", "expo-camera", "expo-constants", "expo-document-picker", "expo-file-system", "expo-font", "expo-image-picker", "pdfjs-dist", "react", "react-native"] }, "sha512-fFfi/Cm6zp80BHtAM3g2YrgbcedCCguzSvQ8/fqXQU3RH0Rtb0zMJY28rcAUZteXVRmHB6P89Rnc5M2HPwVBLA=="],
 
+    "@ankhorage/game": ["@ankhorage/game@0.1.1", "", {}, "sha512-QmdaJoec0gXeWmO/OeGzvOUP92m55N1Lnc5KoxRpZGUeT7obv3xs6WX+nYidizbqY4S1ZpPtHIKz5G0TzsFf0g=="],
+
     "@ankhorage/infra": ["@ankhorage/infra@7.1.3", "", { "dependencies": { "@ankhorage/ankh": "^0.9.1", "@ankhorage/contracts": "^21.0.0", "@ankhorage/utility": "^1.2.0" }, "bin": { "ankhorage-infra": "dist/cli/bin.js" } }, "sha512-3wBuTCuPxLRxY8WUjtjwHi1mPRZZ38L7VIur/sDpUKCX5K281A5xmi3dLqfbPJI1JmmOY/ZGA+FUzs7vsUJA8Q=="],
 
     "@ankhorage/kubernetes": ["@ankhorage/kubernetes@0.8.1", "", { "dependencies": { "@ankhorage/contracts": "^19.4.0" } }, "sha512-mLLAl8+pdPkXJEr/lew37tOjYh/NS1rkylfux5AZ1KnG7m2jd82ObHG6RDL6TEuPEhTVzRRuLKMSEv2Kh6yZgA=="],
@@ -140,6 +143,8 @@
     "@ankhorage/zora": ["@ankhorage/zora@19.0.1", "", { "dependencies": { "@ankhorage/color-theory": "^0.3.0", "@ankhorage/contracts": "^12.0.1", "@ankhorage/surface": "^9.0.1", "@ankhorage/utility": "^1.2.0", "expo-document-picker": "~57.0.1", "expo-image-picker": "~57.0.16" }, "peerDependencies": { "@react-native-vector-icons/fontawesome": "^13.1.3", "@react-native-vector-icons/fontawesome5": "^13.1.3", "@react-native-vector-icons/fontawesome6": "^13.1.3", "@react-native-vector-icons/ionicons": "^13.1.3", "react": "19.2.3", "react-native": "0.86.x", "react-native-gesture-handler": "~2.32.0", "react-native-reanimated": "4.5.1", "react-native-safe-area-context": "~5.7.0", "react-native-svg": "15.15.4", "react-native-web": "~0.21.0", "react-native-worklets": "0.10.1" } }, "sha512-dzJBmRNjteEt9eVfqOnRHPA+JiHSykZEb8oX7jil8+prjAZt8nYRIAoTT1wjYnY7xz41vyn2TRXe6Olpg65Utg=="],
 
     "@ankhorage/zora-chess": ["@ankhorage/zora-chess@0.2.2", "", { "dependencies": { "chess.js": "^1.4.0" }, "peerDependencies": { "@ankhorage/zora": ">=4.2.2", "react": ">=18.2.0", "react-native": ">=0.72.0" } }, "sha512-ZcL6Qk4KE5+tChW5bSr6kSAKv6H0FL3ab87TltPgSxBDe5HT+v7uA3wSvkS7WUL3MRx+8RUFmakKWLgwJl1/RA=="],
+
+    "@ankhorage/zora-game": ["@ankhorage/zora-game@0.5.0", "", { "dependencies": { "@ankhorage/game": "^0.1.0", "@ankhorage/runtime": "^2.3.1" }, "peerDependencies": { "@ankhorage/zora": ">=19.0.1", "react": "19.2.3", "react-native": "0.86.x" } }, "sha512-gj4koCej1NLE9D3yoiBOiEYWBvL8G/cGqcyUOWQYBEaagInhl4ANQ3Mkw3S1pzYLidoi49I/GFXxYEsT3ioc2w=="],
 
     "@ankhorage/zora-tabletop": ["@ankhorage/zora-tabletop@0.1.4", "", { "peerDependencies": { "@ankhorage/zora": ">=4.2.2", "react": ">=18.2.0", "react-native": ">=0.72.0" } }, "sha512-Yyqo+o+WddEehdLN0Ug3mNh5A8cEkVdEXgtJ/jEpq2m/Uuuw8kx8SzXQmmWOe8GYoeqeKK0rGG7ctO5aghKmaQ=="],
 
