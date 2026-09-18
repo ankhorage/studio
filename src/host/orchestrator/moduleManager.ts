@@ -336,8 +336,8 @@ export class ModuleManager {
     const states = await this.getModuleOrchestrator(this.getAppPath(projectId)).listModules();
     const installed = states.filter((state) => state.installed);
     const modules = Object.fromEntries(
-      installed
-        .toSorted((left, right) => left.moduleId.localeCompare(right.moduleId))
+      [...installed]
+        .sort((left, right) => left.moduleId.localeCompare(right.moduleId))
         .map((state) => [
           state.moduleId,
           { config: state.installation.config },
