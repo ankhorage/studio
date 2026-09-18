@@ -74,11 +74,14 @@ function createManifest(): StudioManifest {
     },
     dataBindings: {},
     dataSources: {},
-    themes: [createDefaultThemeConfig(0, 'theme-1'), createDefaultThemeConfig(1, 'theme-2')],
+    themes: {
+      'theme-1': createDefaultThemeConfig(0, 'theme-1'),
+      'theme-2': createDefaultThemeConfig(1, 'theme-2'),
+    },
     activeThemeId: 'theme-2',
     activeThemeMode: 'light',
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
-    infra: { modulesConfig: {} },
+    infra: { environments: { local: { deployment: { compute: { provider: 'local' }, runtime: { provider: 'minikube' } } } }, modules: {} },
   } as unknown as StudioManifest;
 }
 
