@@ -368,27 +368,27 @@ describe('manifestState', () => {
         type: 'stack',
         initialRouteName: '(app)',
         routes: [
-        {
-          name: '(app)',
-          navigator: {
-            type: 'drawer',
-            initialRouteName: 'home',
-            routes: [
-              {
-                name: 'home',
-                screenId: 'screen-home',
-                showInPrimaryNavigation: false,
-              },
-              {
-                name: 'account',
-                navigator: {
-                  type: 'stack',
-                  routes: [{ name: '[id]', path: 'profile/:id', screenId: 'screen-about' }],
+          {
+            name: '(app)',
+            navigator: {
+              type: 'drawer',
+              initialRouteName: 'home',
+              routes: [
+                {
+                  name: 'home',
+                  screenId: 'screen-home',
+                  showInPrimaryNavigation: false,
                 },
-              },
-            ],
+                {
+                  name: 'account',
+                  navigator: {
+                    type: 'stack',
+                    routes: [{ name: '[id]', path: 'profile/:id', screenId: 'screen-about' }],
+                  },
+                },
+              ],
+            },
           },
-        },
         ],
       },
     };
