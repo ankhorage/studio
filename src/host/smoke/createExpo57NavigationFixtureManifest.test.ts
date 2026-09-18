@@ -23,7 +23,7 @@ const BASE_MANIFEST: AppManifest = {
         },
       },
     },
-    modules: [],
+    modules: {},
   },
   navigator: {
     type: 'stack',
@@ -33,7 +33,14 @@ const BASE_MANIFEST: AppManifest = {
   screens: {
     index: { id: 'index', name: 'Index', root: { id: 'index-root', type: 'Screen' } },
   },
-  themes: [],
+  themes: {
+      default: {
+        id: 'default',
+        name: 'Default',
+        light: { primaryColor: '#2563eb', harmony: 'analogous' },
+        dark: { primaryColor: '#60a5fa', harmony: 'analogous' },
+      },
+    },
   activeThemeId: 'default',
 };
 
