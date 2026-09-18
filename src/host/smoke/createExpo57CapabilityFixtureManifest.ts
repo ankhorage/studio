@@ -56,8 +56,10 @@ export function createExpo57CapabilityFixtureManifest(): AppManifest {
         id: 'capability-acceptance',
         name: 'Capabilities',
         requires: {
-          capabilities: [{ capability: 'barcodeScanner' }],
-          permissions: EXPO57_CAPABILITY_PERMISSIONS.map((permission) => ({ permission })),
+          capabilities: { barcodeScanner: true },
+          permissions: Object.fromEntries(
+            EXPO57_CAPABILITY_PERMISSIONS.map((permission) => [permission, true] as const),
+          ),
         },
         root: {
           id: 'capability-acceptance-screen',
