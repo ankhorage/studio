@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.7.14
+
+### Patch Changes
+
+- 2e6c8e6: Key repeated update dependency rows by their stable APM package identity instead of their rendered label.
+
 ## 2.7.13
 
 ### Patch Changes
