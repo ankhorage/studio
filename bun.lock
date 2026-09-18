@@ -1979,15 +1979,8 @@
 
     "@ankhorage/runtime/@ankhorage/utility": ["@ankhorage/utility@0.3.0", "", {}, "sha512-cqmfcgXmA7NgM5FYxfVKeA3XpN4YskqGtNU45AT7G2Yr5MeN09r4a0GS8i0hthLCLMis65/tBXd7OjdfoYv7/w=="],
 
-<<<<<<< HEAD
-    "@ankhorage/surface/@ankhorage/utility": ["@ankhorage/utility@1.2.0", "", {}, "sha512-0Z5ucUJe9WIqWk5RFHxY9qhb0S8ijZHVQ5zFhw9u9mOqLq5R8IKVIDQZCe0t3/P85LsUUKRhVpk9nK7UgDe5zw=="],
-
     "@ankhorage/templates/@ankhorage/navigator": ["@ankhorage/navigator@3.2.5", "", { "dependencies": { "@ankhorage/contracts": "^12.0.1", "@ankhorage/utility": "^0.5.0" }, "peerDependencies": { "@ankhorage/surface": "^4.0.0", "@react-native-vector-icons/fontawesome": "^13.1.3", "@react-native-vector-icons/fontawesome5": "^13.1.3", "@react-native-vector-icons/fontawesome6": "^13.1.3", "@react-native-vector-icons/ionicons": "^13.1.3", "@react-native-vector-icons/material-design-icons": "^13.1.3", "expo-router": ">=57.0.0 <58.0.0", "react": "19.2.3", "react-dom": "19.2.3", "react-native": "0.86.x", "react-native-gesture-handler": "*", "react-native-pager-view": "8.0.2", "react-native-reanimated": "*", "react-native-safe-area-context": "~5.7.0", "react-native-tab-view": "^4.3.2", "react-native-web": "~0.21.0", "react-native-worklets": "*" }, "optionalPeers": ["react-native-gesture-handler", "react-native-pager-view", "react-native-reanimated", "react-native-tab-view", "react-native-worklets"] }, "sha512-YpStto6J54qllJTZZV8Q4hG5jK1NEP9Z+Rb9OnXqOkQ9WSkTONGFRZOBxe0+h2t3+9c5KS/pWwNOLRHdkQu1CA=="],
 
-    "@ankhorage/zora/@ankhorage/utility": ["@ankhorage/utility@1.2.0", "", {}, "sha512-0Z5ucUJe9WIqWk5RFHxY9qhb0S8ijZHVQ5zFhw9u9mOqLq5R8IKVIDQZCe0t3/P85LsUUKRhVpk9nK7UgDe5zw=="],
-
-=======
->>>>>>> a7479a1 (chore: update utility)
     "@babel/core/semver": ["semver@6.3.1", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA=="],
 
     "@babel/helper-compilation-targets/semver": ["semver@6.3.1", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA=="],
