@@ -11,11 +11,11 @@ import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 
 const execFileAsync = promisify(execFile);
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
+const COMMAND_TIMEOUT_MS = 300_000;
 const STUDIO_VERSION = await resolveLatestPublishedStudioVersionAsync();
 const DEPENDENCY_NAME = 'semver';
 const INITIAL_DEPENDENCY_VERSION = '7.7.1';
 const DEPENDENCY_RANGE = '^7.7.1';
-const COMMAND_TIMEOUT_MS = 300_000;
 const USER_FILE_NAME = 'USER_NOTES.md';
 const USER_FILE_CONTENT = '# User-owned note\n\nAPM must preserve this file.\n';
 
