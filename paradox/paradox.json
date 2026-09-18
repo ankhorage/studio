@@ -16392,7 +16392,7 @@
       "description": "Create the smallest current Studio manifest needed by external API mutation tests.",
       "sourceLocation": {
         "filePath": "src/host/apis/studioExternalApiMutation.test.ts",
-        "line": 9,
+        "line": 10,
         "column": 1
       }
     },
@@ -16401,7 +16401,7 @@
       "description": "Create an in-memory canonical project store that exposes its latest persisted manifest.",
       "sourceLocation": {
         "filePath": "src/host/apis/studioExternalApiMutation.test.ts",
-        "line": 50,
+        "line": 51,
         "column": 1
       }
     },
@@ -16410,7 +16410,7 @@
       "description": "Create a deterministic external API discovery response for failure-path tests.",
       "sourceLocation": {
         "filePath": "src/host/apis/studioExternalApiMutation.test.ts",
-        "line": 69,
+        "line": 70,
         "column": 1
       }
     },
@@ -16419,8 +16419,17 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/apis/studioExternalApiMutation.test.ts",
-        "line": 183,
+        "line": 185,
         "column": 11
+      }
+    },
+    {
+      "name": "readApi",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/apis/studioExternalApiMutation.test.ts",
+        "line": 204,
+        "column": 1
       }
     },
     {
@@ -16428,7 +16437,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/apis/studioExternalApiService.test.ts",
-        "line": 12,
+        "line": 13,
         "column": 1
       }
     },
@@ -16437,7 +16446,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/apis/studioExternalApiService.test.ts",
-        "line": 52,
+        "line": 53,
         "column": 1
       }
     },
@@ -16446,7 +16455,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/apis/studioExternalApiService.test.ts",
-        "line": 70,
+        "line": 71,
         "column": 1
       }
     },
@@ -16455,7 +16464,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/apis/studioExternalApiService.test.ts",
-        "line": 74,
+        "line": 75,
         "column": 1
       }
     },
@@ -16464,7 +16473,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/apis/studioExternalApiService.test.ts",
-        "line": 90,
+        "line": 91,
         "column": 1
       }
     },
@@ -16473,7 +16482,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/apis/studioExternalApiService.test.ts",
-        "line": 118,
+        "line": 119,
         "column": 11
       }
     },
@@ -16482,7 +16491,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/apis/studioExternalApiService.test.ts",
-        "line": 150,
+        "line": 151,
         "column": 11
       }
     },
@@ -16491,8 +16500,17 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/apis/studioExternalApiService.test.ts",
-        "line": 247,
+        "line": 244,
         "column": 11
+      }
+    },
+    {
+      "name": "readApi",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/apis/studioExternalApiService.test.ts",
+        "line": 310,
+        "column": 1
       }
     },
     {
@@ -49611,8 +49629,8 @@
       },
       {
         "fromSymbol": "src/host/apis/studioExternalApiMutation.test.ts",
-        "toSymbol": "readOwnProperty",
-        "callExpression": "readOwnProperty",
+        "toSymbol": "readApi",
+        "callExpression": "readApi",
         "sourcePath": "src/host/apis/studioExternalApiMutation.test.ts"
       },
       {
@@ -49631,6 +49649,12 @@
         "fromSymbol": "src/host/apis/studioExternalApiMutation.test.ts",
         "toSymbol": "connect",
         "callExpression": "service.connect",
+        "sourcePath": "src/host/apis/studioExternalApiMutation.test.ts"
+      },
+      {
+        "fromSymbol": "readApi",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
         "sourcePath": "src/host/apis/studioExternalApiMutation.test.ts"
       },
       {
@@ -49689,14 +49713,20 @@
       },
       {
         "fromSymbol": "src/host/apis/studioExternalApiService.test.ts",
-        "toSymbol": "readOwnProperty",
-        "callExpression": "readOwnProperty",
+        "toSymbol": "readApi",
+        "callExpression": "readApi",
         "sourcePath": "src/host/apis/studioExternalApiService.test.ts"
       },
       {
         "fromSymbol": "fetch",
         "toSymbol": "graphQlPayload",
         "callExpression": "graphQlPayload",
+        "sourcePath": "src/host/apis/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/apis/studioExternalApiService.test.ts",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
         "sourcePath": "src/host/apis/studioExternalApiService.test.ts"
       },
       {
@@ -49721,6 +49751,12 @@
         "fromSymbol": "src/host/apis/studioExternalApiService.test.ts",
         "toSymbol": "testOperation",
         "callExpression": "service.testOperation",
+        "sourcePath": "src/host/apis/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "readApi",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
         "sourcePath": "src/host/apis/studioExternalApiService.test.ts"
       },
       {
