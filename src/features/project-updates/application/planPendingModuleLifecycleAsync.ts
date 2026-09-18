@@ -189,7 +189,7 @@ function reviewedFileChanges(input: {
   return [manifest, pending];
 }
 
-/*** Project reviewed removals into canonical manifest module ids/config without touching other fields. */
+/*** Project reviewed removals into the canonical module registry without touching other fields. */
 function projectReviewedRemovals(
   manifest: AppManifest,
   reviewedIds: ReadonlySet<string>,
@@ -200,11 +200,8 @@ function projectReviewedRemovals(
     metadata: { ...manifest.metadata, updated },
     infra: {
       ...manifest.infra,
-      modules: manifest.infra.modules.filter((moduleId) => !reviewedIds.has(moduleId)),
-      modulesConfig: Object.fromEntries(
-        Object.entries(manifest.infra.modulesConfig ?? {}).filter(
-          ([moduleId]) => !reviewedIds.has(moduleId),
-        ),
+      modules: Object.fromEntries(
+        Object.entries(manifest.infra.modules).filter(([moduleId]) => !reviewedIds.has(moduleId)),
       ),
     },
   };
