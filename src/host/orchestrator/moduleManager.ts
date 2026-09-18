@@ -1,4 +1,4 @@
-import { isSerializableValue, type AppManifest } from '@ankhorage/contracts';
+import { type AppManifest, isSerializableValue } from '@ankhorage/contracts';
 import type { ModuleState, Orchestrator } from '@ankhorage/orchestrator';
 import path from 'path';
 
