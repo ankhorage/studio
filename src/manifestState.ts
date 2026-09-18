@@ -868,7 +868,7 @@ export function deleteStudioManifestTheme(
   deleteOwnProperty(themes, themeId);
   const activeThemeId =
     manifest.activeThemeId === themeId
-      ? (Object.keys(themes).toSorted()[0] ?? manifest.activeThemeId)
+      ? (Object.keys(themes).sort()[0] ?? manifest.activeThemeId)
       : manifest.activeThemeId;
 
   return { ...manifest, themes, activeThemeId };
