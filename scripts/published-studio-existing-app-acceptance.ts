@@ -10,7 +10,8 @@ import { promisify } from 'node:util';
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 
 const execFileAsync = promisify(execFile);
-const STUDIO_VERSION = '3.0.0';
+const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
+const STUDIO_VERSION = await resolveLatestPublishedStudioVersionAsync();
 const DEPENDENCY_NAME = 'semver';
 const INITIAL_DEPENDENCY_VERSION = '7.7.1';
 const DEPENDENCY_RANGE = '^7.7.1';
@@ -96,6 +97,24 @@ try {
   await rm(fixtureRoot, { force: true, recursive: true });
 }
 
+/*** Resolve npm's current stable Studio release so acceptance cannot silently drift behind production. */
+async function resolveLatestPublishedStudioVersionAsync(): Promise<string> {
+  const { stdout } = await execFileAsync(
+    'npm',
+    ['view', STUDIO_PACKAGE_NAME, 'version', '--json'],
+    {
+      encoding: 'utf8',
+      maxBuffer: 1024 * 1024,
+      timeout: COMMAND_TIMEOUT_MS,
+    },
+  );
+  const value: unknown = JSON.parse(stdout);
+  if (typeof value !== 'string' || !/^\d+\.\d+\.\d+$/u.test(value)) {
+    throw new Error('Published Studio version discovery returned no stable semantic version.');
+  }
+  return value;
+}
+
 interface LifecycleEvidence {
   readonly targetVersion: string;
   readonly operationStatus: string;
@@ -131,7 +150,7 @@ async function installPublishedStudioAsync(): Promise<void> {
     name: 'published-studio-existing-app-consumer',
     private: true,
     type: 'module',
-    dependencies: { '@ankhorage/studio': STUDIO_VERSION },
+    dependencies: { [STUDIO_PACKAGE_NAME]: STUDIO_VERSION },
   });
   await runCommandAsync('bun', ['install', '--ignore-scripts'], studioToolRoot);
 }
