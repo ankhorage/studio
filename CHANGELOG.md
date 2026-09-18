@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 3.0.1
+
+### Patch Changes
+
+- 5d7a1f3: Keep project update routes addressable across Studio host restarts even when the persisted project manifest still requires update work.
+
 ## 3.0.0
 
 ### Major Changes
