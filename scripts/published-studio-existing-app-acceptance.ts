@@ -342,7 +342,7 @@ async function runCliLifecycleAsync(projectRoot: string): Promise<LifecycleEvide
   const plan = await runJsonCommandAsync(apm, ['plan', projectRoot, '--json'], cliToolRoot);
   assert.equal(readOwnProperty(plan, 'complete'), true);
   const targetVersion = dependencyTargetVersion(plan);
-  const planPath = path.join(projectRoot, 'apm-plan.json');
+  const planPath = path.join(cliToolRoot, 'apm-plan.json');
   await writeJsonAsync(planPath, plan);
   const apply = await runJsonCommandAsync(
     apm,
