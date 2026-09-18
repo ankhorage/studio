@@ -138,11 +138,11 @@ function createManifest(projectId: string): AppManifest {
           deployment: { compute: { provider: 'local' }, runtime: { provider: 'minikube' } },
           auth: { scope: 'global', provider: 'supabase' },
           database: { provider: 'supabase', tier: 'dev' },
-          objectStorage: { provider: 'supabase', buckets: ['avatars'] },
+          objectStorage: { provider: 'supabase', buckets: { avatars: true } },
           secretStore: { provider: 'supabase-vault' },
         },
       },
-      modules: [],
+      modules: {},
     },
     navigator: {
       type: 'stack',
@@ -150,7 +150,14 @@ function createManifest(projectId: string): AppManifest {
       routes: [{ name: 'index', screenId: 'index' }],
     },
     screens: { index: { id: 'index', name: 'Index', root: { id: 'root', type: 'Page' } } },
-    themes: [],
+    themes: {
+      default: {
+        id: 'default',
+        name: 'Default',
+        light: { primaryColor: '#3366ff', harmony: 'analogous' },
+        dark: { primaryColor: '#6699ff', harmony: 'analogous' },
+      },
+    },
     activeThemeId: 'default',
   };
 }
