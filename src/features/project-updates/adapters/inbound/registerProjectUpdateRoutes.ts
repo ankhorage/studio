@@ -158,10 +158,9 @@ async function invokeLifecycle(
   }
 }
 
-/*** Detect structured APM plan/apply/verify results that require further user action. */
+/*** Detect mutation/verification results that require transport-level conflict handling. */
 function isLifecycleConflict(value: unknown): boolean {
   if (!isRecord(value) || typeof value.operation !== 'string') return false;
-  if (value.operation === 'plan') return value.complete === false;
   if (value.operation === 'apply') return value.status !== 'completed';
   if (value.operation === 'verify') return value.verified === false;
   return false;
