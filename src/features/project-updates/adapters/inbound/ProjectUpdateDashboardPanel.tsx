@@ -367,8 +367,8 @@ function DetailItems(props: {
           {props.empty}
         </Text>
       ) : (
-        props.items.map((item) => (
-          <Text key={item} variant="caption">
+        props.items.map((item, index) => (
+          <Text key={`${item} · ${index}`} variant="caption">
             • {item}
           </Text>
         ))
