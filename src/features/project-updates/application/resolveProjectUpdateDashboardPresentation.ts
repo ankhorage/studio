@@ -18,6 +18,7 @@ function resolveStatus(value: unknown) {
     const installed = isRecord(dependency.installed) ? dependency.installed : {};
     const availability = isRecord(dependency.availability) ? dependency.availability : {};
     return {
+      packageId: readString(dependency.packageId, 'unknown-package'),
       name: readString(dependency.name, 'Unknown package'),
       direct: dependency.direct === true,
       currentVersion:
