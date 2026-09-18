@@ -1,5 +1,6 @@
 import type { AppManifest } from '@ankhorage/contracts';
 import type {
+  ApiDefinition,
   DataSourceDiagnostic,
   ExternalGraphQlApiDefinition,
   ExternalRestApiDefinition,
@@ -118,7 +119,7 @@ export class StudioExternalApiService {
     request: ManualRestApiSettingsRequest,
   ): Promise<ExternalApiMutationResult> {
     const manifest = await this.projectManager.getProjectManifest(projectId);
-    const api = manifest.infra.apis ? readOwnProperty(manifest.infra.apis, request.apiId) : undefined;
+    const api = manifest.infra.apis ? readOwnProperty<ApiDefinition>(manifest.infra.apis, request.apiId) : undefined;
     if (!api) return missingApiMutationResult(request.apiId);
     if (api.origin !== 'external' || api.protocol !== 'rest' || api.openApi) {
       return invalidMutationResult(
@@ -151,7 +152,7 @@ export class StudioExternalApiService {
     const apiId = request.apiId.trim();
     if (!apiId) return invalidMutationResult('API ID is required.');
     const manifest = await this.projectManager.getProjectManifest(projectId);
-    const api = manifest.infra.apis ? readOwnProperty(manifest.infra.apis, apiId) : undefined;
+    const api = manifest.infra.apis ? readOwnProperty<ApiDefinition>(manifest.infra.apis, apiId) : undefined;
     if (!api) return missingApiMutationResult(apiId);
     if (api.origin !== 'external') {
       return invalidMutationResult(
@@ -173,7 +174,7 @@ export class StudioExternalApiService {
     request: ExternalApiOperationTestRequest,
   ): Promise<ExternalApiOperationTestResult> {
     const manifest = await this.projectManager.getProjectManifest(projectId);
-    const api = manifest.infra.apis ? readOwnProperty(manifest.infra.apis, request.apiId) : undefined;
+    const api = manifest.infra.apis ? readOwnProperty<ApiDefinition>(manifest.infra.apis, request.apiId) : undefined;
     if (!api) return missingApiResult(request.apiId);
     if (api.origin !== 'external') return unsupportedTestApiResult(request.apiId);
 
