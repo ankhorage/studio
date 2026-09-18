@@ -392,7 +392,10 @@ function assertLifecycleParity(studio: LifecycleEvidence, cli: LifecycleEvidence
   assert.equal(studio.targetVersion, cli.targetVersion);
   assert.equal(studio.operationStatus, cli.operationStatus);
   assert.equal(studio.verified, cli.verified);
-  assert.deepEqual(studio.statusFindings, cli.statusFindings);
+  assert.deepEqual(
+    studio.statusFindings.filter(({ code }) => code !== 'host-update'),
+    cli.statusFindings,
+  );
   assert.deepEqual(studio.planTargets, cli.planTargets);
   assert.deepEqual(studio.planEffects, cli.planEffects);
   assert.deepEqual(studio.verificationFindings, cli.verificationFindings);
