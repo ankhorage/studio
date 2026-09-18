@@ -731,9 +731,9 @@ describe('manifestState', () => {
 
     expect(oauth.navigator.type).toBe('drawer');
     expect(oauth.navigator.initialRouteName).toBe('about');
-    expect(
-      Object.values(oauth.themes).find((theme) => theme.id === 'theme-2')?.name,
-    ).toBe('Updated Theme');
+    expect(Object.values(oauth.themes).find((theme) => theme.id === 'theme-2')?.name).toBe(
+      'Updated Theme',
+    );
     expect(oauth.infra.environments.local.auth?.oauth?.providers).toHaveLength(1);
   });
 });
