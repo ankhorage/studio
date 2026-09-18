@@ -14,6 +14,7 @@ describe('resolveProjectUpdateDashboardPresentation', () => {
         rootPath: '/workspace/apps/project-one',
         dependencies: [
           {
+            packageId: 'root::@ankhorage/studio@2.7.1',
             name: '@ankhorage/studio',
             direct: true,
             lockedVersion: '2.7.1',
@@ -49,6 +50,7 @@ describe('resolveProjectUpdateDashboardPresentation', () => {
 
     expect(presentation.status?.dependencies).toEqual([
       {
+        packageId: 'root::@ankhorage/studio@2.7.1',
         name: '@ankhorage/studio',
         direct: true,
         currentVersion: '2.7.1',
@@ -64,6 +66,45 @@ describe('resolveProjectUpdateDashboardPresentation', () => {
       { kind: 'web-redeploy', state: 'required', reason: 'Web output changed.' },
     ]);
     expect(JSON.stringify(presentation)).not.toContain('/workspace/apps/project-one');
+  });
+
+  test('preserves distinct APM package identities when dependency labels are identical', () => {
+    const presentation = resolveProjectUpdateDashboardPresentation({
+      ...createProjectUpdateDashboardState('project-one'),
+      status: {
+        operation: 'status',
+        complete: true,
+        currency: 'outdated',
+        dependencies: [
+          {
+            packageId: 'root::color-name@1.1.3#first',
+            name: 'color-name',
+            direct: false,
+            lockedVersion: '1.1.3',
+            installed: { state: 'present', version: '1.1.3' },
+            availability: { state: 'known', compatibleVersion: '2.1.1' },
+            findings: [],
+          },
+          {
+            packageId: 'root::color-name@1.1.3#second',
+            name: 'color-name',
+            direct: false,
+            lockedVersion: '1.1.3',
+            installed: { state: 'present', version: '1.1.3' },
+            availability: { state: 'known', compatibleVersion: '2.1.1' },
+            findings: [],
+          },
+        ],
+        extensions: { observations: [] },
+        findings: [],
+        diagnostics: [],
+      },
+    });
+
+    expect(presentation.status?.dependencies.map(({ packageId }) => packageId)).toEqual([
+      'root::color-name@1.1.3#first',
+      'root::color-name@1.1.3#second',
+    ]);
   });
 
   test('keeps verification follow-up separate from successful project update verification', () => {
