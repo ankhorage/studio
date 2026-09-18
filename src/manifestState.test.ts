@@ -353,16 +353,21 @@ describe('manifestState', () => {
   });
 
   test('derives nested route references, primary membership, paths, and unrouted screens', () => {
-    const manifest = createManifest();
-    manifest.screens['screen-unrouted'] = {
-      id: 'screen-unrouted',
-      name: 'Unrouted',
-      root: { id: 'root-unrouted', type: 'Screen', children: [] },
-    };
-    manifest.navigator = {
-      type: 'stack',
-      initialRouteName: '(app)',
-      routes: [
+    const baseManifest = createManifest();
+    const manifest: StudioManifest = {
+      ...baseManifest,
+      screens: {
+        ...baseManifest.screens,
+        'screen-unrouted': {
+          id: 'screen-unrouted',
+          name: 'Unrouted',
+          root: { id: 'root-unrouted', type: 'Screen', children: [] },
+        },
+      },
+      navigator: {
+        type: 'stack',
+        initialRouteName: '(app)',
+        routes: [
         {
           name: '(app)',
           navigator: {
@@ -384,7 +389,8 @@ describe('manifestState', () => {
             ],
           },
         },
-      ],
+        ],
+      },
     };
 
     const model = deriveStudioScreenNavigationModel(manifest);
@@ -614,9 +620,15 @@ describe('manifestState', () => {
   });
 
   test('refuses to delete the final screen', () => {
-    const manifest = createManifest();
-    delete manifest.screens['screen-about'];
-    manifest.navigator.routes = [{ name: 'home', screenId: 'screen-home' }];
+    const baseManifest = createManifest();
+    const manifest: StudioManifest = {
+      ...baseManifest,
+      screens: createScreens('screen-home'),
+      navigator: {
+        ...baseManifest.navigator,
+        routes: [{ name: 'home', screenId: 'screen-home' }],
+      },
+    };
 
     expect(deleteStudioManifestScreen(manifest, 'screen-home', 'screen-home')).toEqual({
       manifest,
