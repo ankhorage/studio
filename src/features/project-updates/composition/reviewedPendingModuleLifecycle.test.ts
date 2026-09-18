@@ -246,8 +246,9 @@ function createFixtureManifest(): AppManifest {
     ...base,
     infra: {
       ...base.infra,
-      modules: ['module-a'],
-      modulesConfig: { 'module-a': { enabled: true } },
+      modules: {
+        'module-a': { config: { enabled: true } },
+      },
     },
   };
 }
@@ -340,12 +341,12 @@ function createStatus(rootPath: string): ApmStatusResult {
 }
 
 /*** Read Infra module ids from an unknown manifest only for a test assertion. */
-function readInfraModules(value: unknown): readonly unknown[] | undefined {
+function readInfraModules(value: unknown): readonly string[] | undefined {
   if (!isRecord(value)) return undefined;
   const infra = readOwnProperty(value, 'infra');
   if (!isRecord(infra)) return undefined;
   const modules = readOwnProperty(infra, 'modules');
-  return Array.isArray(modules) ? modules : undefined;
+  return isRecord(modules) ? Object.keys(modules).sort() : undefined;
 }
 
 /*** Remove one temporary project root after each owner-step test. */
