@@ -448,13 +448,7 @@ export const unstable_settings = {
 export default function RootLayout() {
 ${indentedRootHookBlock}  const manifestContext = useOptionalManifestContext();
   const runtimeManifest = manifestContext?.manifest ?? fallbackManifest;${indentedStudioRuntimeLines}
-  const activeTheme = readOwnProperty(
-    runtimeManifest.themes,
-    runtimeManifest.activeThemeId,
-  );
-  if (!activeTheme) {
-    throw new Error(\`Manifest active theme '\${runtimeManifest.activeThemeId}' is missing.\`);
-  }
+  const activeTheme = resolveManifestActiveTheme(runtimeManifest);
   const activeThemeMode = resolveThemeMode(runtimeManifest.activeThemeMode, 'light');
   const executeOperation = useMemo(
     () =>
