@@ -428,7 +428,7 @@ function resolveManifestActiveTheme(
 ): AppManifest['themes'][string] {
   const theme = readOwnProperty(manifest.themes, manifest.activeThemeId);
   if (!theme) {
-    throw new Error(`Manifest active theme '${manifest.activeThemeId}' is missing.`);
+    throw new Error("Manifest active theme '" + manifest.activeThemeId + "' is missing.");
   }
   return theme;
 }
