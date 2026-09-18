@@ -48,7 +48,10 @@ try {
     await waitForHostAsync(currentHost);
     const currentStatus = await statusProjectAsync(projectId);
     assertStudioHost(currentStatus, CURRENT_STUDIO_VERSION);
-    const currentPlan = await planProjectAsync(projectId, resolveStudioPackageSelector(currentStatus));
+    const currentPlan = await planProjectAsync(
+      projectId,
+      resolveStudioPackageSelector(currentStatus),
+    );
     assert.equal(readOwnProperty(currentPlan, 'complete'), true);
     assert.equal(findByCode(currentPlan, 'blockers', 'plan.host-upgrade-required'), undefined);
     assert.equal(studioTargetVersion(currentPlan), CURRENT_STUDIO_VERSION);
