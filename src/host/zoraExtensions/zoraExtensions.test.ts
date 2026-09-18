@@ -60,7 +60,7 @@ function createManifest(componentTypes: readonly string[]): AppManifest {
           },
         },
       },
-      modules: [],
+      modules: {},
     },
     navigator: {
       type: 'stack',
@@ -81,7 +81,14 @@ function createManifest(componentTypes: readonly string[]): AppManifest {
         },
       },
     },
-    themes: [],
+    themes: {
+      default: {
+        id: 'default',
+        name: 'Default',
+        light: { primaryColor: '#3366ff', harmony: 'analogous' },
+        dark: { primaryColor: '#6699ff', harmony: 'analogous' },
+      },
+    },
     activeThemeId: 'default',
   };
 }
