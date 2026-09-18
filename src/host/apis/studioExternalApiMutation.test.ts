@@ -177,7 +177,9 @@ describe('StudioExternalApiService mutations', () => {
     const result = await service.remove('demo', { apiId: 'inventory' });
 
     expect(result).toEqual({ ok: true, apiId: 'inventory', diagnostics: [] });
-    expect(Object.values(store.read().infra.apis ?? {}).map((api) => api.id)).toEqual(['inventory-v2']);
+    expect(Object.values(store.read().infra.apis ?? {}).map((api) => api.id)).toEqual([
+      'inventory-v2',
+    ]);
   });
 
   test('returns discovery diagnostics without persisting a second model when automatic discovery fails', async () => {
@@ -199,7 +201,6 @@ describe('StudioExternalApiService mutations', () => {
     expect(store.read().infra.apis).toEqual({});
   });
 });
-
 
 function readApi(manifest: StudioManifest, apiId: string): ApiDefinition | undefined {
   return manifest.infra.apis
