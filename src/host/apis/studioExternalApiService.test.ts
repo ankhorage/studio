@@ -306,7 +306,6 @@ describe('StudioExternalApiService', () => {
   });
 });
 
-
 function readApi(manifest: StudioManifest, apiId: string): ApiDefinition | undefined {
   return manifest.infra.apis
     ? readOwnProperty<ApiDefinition>(manifest.infra.apis, apiId)
