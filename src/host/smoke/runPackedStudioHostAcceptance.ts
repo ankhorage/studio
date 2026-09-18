@@ -96,7 +96,6 @@ async function assertPackedPackageAsync(
   }
 }
 
-
 /*** Verify the packed Studio CLI provider loads under Ankh's peer-omitted cache semantics. */
 async function verifyPeerlessCliImportAsync(
   consumerRoot: string,
@@ -130,9 +129,7 @@ async function verifyPeerlessCliImportAsync(
     timeoutMs: COMMAND_TIMEOUT_MS,
   });
   for (const peerName of ['react', 'react-native']) {
-    const peerPackage = Bun.file(
-      path.join(consumerRoot, 'node_modules', peerName, 'package.json'),
-    );
+    const peerPackage = Bun.file(path.join(consumerRoot, 'node_modules', peerName, 'package.json'));
     if (await peerPackage.exists()) {
       throw new Error(`Peerless Studio CLI consumer unexpectedly installed ${peerName}.`);
     }
