@@ -15,17 +15,15 @@ test('updates canonical screen metadata while preserving the screen tree', () =>
   expect(result.ok).toBe(true);
   if (!result.ok) return;
 
-  const screen = Object.values(result.manifest.screens).find(
-    (candidate) => candidate.id === 'screen-home',
-  );
-  expect(screen).toMatchObject({
+  expect(result.manifest.screens['screen-home']).toEqual({
     id: 'screen-home',
     name: 'Dashboard',
+    title: undefined,
     description: 'Updated metadata',
-    root: manifest.screens['screen-home']?.root,
+    root: { id: 'root', type: 'Box' },
   });
-  expect(screen).not.toHaveProperty('title');
   expect(manifest.screens['screen-home']?.name).toBe('Home');
+  expect(manifest.screens['screen-home']?.title).toBe('Welcome');
 });
 
 test('rejects metadata that attempts to change stable screen identity', () => {
@@ -38,57 +36,14 @@ test('rejects metadata that attempts to change stable screen identity', () => {
   expect(result).toEqual({ ok: false, manifest });
 });
 
-function createManifest(): AppManifest {
+function createManifest(): Pick<AppManifest, 'screens'> {
   return {
-    metadata: {
-      name: 'Test',
-      slug: 'test',
-      version: '1.0.0',
-      category: 'other',
-      themeId: 'default',
-    },
-    themes: {
-      default: {
-        id: 'default',
-        name: 'Default',
-        light: {
-          primaryColor: '#000000',
-          secondaryColor: '#000000',
-          tertiaryColor: '#000000',
-          quaternaryColor: '#000000',
-          backgroundColor: '#ffffff',
-          textColor: '#000000',
-        },
-        dark: {
-          primaryColor: '#ffffff',
-          secondaryColor: '#ffffff',
-          tertiaryColor: '#ffffff',
-          quaternaryColor: '#ffffff',
-          backgroundColor: '#000000',
-          textColor: '#ffffff',
-        },
-      },
-    },
-    activeThemeId: 'default',
-    infra: { modules: {} },
-    navigator: {
-      root: {
-        type: 'stack',
-        routes: [{ name: 'home', screenId: 'screen-home' }],
-      },
-    },
     screens: {
       'screen-home': {
         id: 'screen-home',
         name: 'Home',
         title: 'Welcome',
         root: { id: 'root', type: 'Box' },
-      },
-    },
-    settings: {
-      localization: {
-        defaultLocale: 'en',
-        locales: ['en'],
       },
     },
   };
