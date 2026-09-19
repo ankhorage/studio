@@ -6,6 +6,7 @@ import type {
   DataSourceRegistry,
   MediaAsset,
   NavigatorType,
+  ScreenMetadataSpec,
   ThemeConfig,
   ThemeModeConfig,
   UiComponentMetaRegistry,
@@ -429,6 +430,7 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   insertFromCatalogEntry: (entry: InsertCatalogEntry) => boolean;
   moveNodeToPlacement: (nodeId: StudioNodeId, placement: NodePlacement) => boolean;
   addScreen: (name: string) => void;
+  updateScreenMetadata: (id: StudioScreenId, metadata: ScreenMetadataSpec) => boolean;
   deleteScreen: (id: StudioScreenId) => void;
   setNavigatorType: (type: NavigatorType) => void;
   setNavigatorInitialRoute: (routeName: string) => void;
