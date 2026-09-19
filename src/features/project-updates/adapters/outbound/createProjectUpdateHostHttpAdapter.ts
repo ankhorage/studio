@@ -68,7 +68,6 @@ function readFailureMessage(value: unknown): string | undefined {
   return typeof value.message === 'string' ? value.message : undefined;
 }
 
-
 /*** Preserve reviewable APM lifecycle conflicts while rejecting unrelated HTTP 409 payloads. */
 function isStructuredLifecycleConflict(status: number, value: unknown): boolean {
   if (status !== 409 || !isRecord(value)) return false;
