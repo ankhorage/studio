@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v3.1.9",
+      "value": "v3.1.10",
       "color": "cb3837"
     },
     {
@@ -22835,7 +22835,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 111,
+        "line": 119,
         "column": 1
       }
     },
@@ -22844,7 +22844,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 138,
+        "line": 146,
         "column": 1
       }
     },
@@ -22853,7 +22853,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 195,
+        "line": 203,
         "column": 1
       }
     },
@@ -22862,7 +22862,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 213,
+        "line": 221,
         "column": 1
       }
     },
@@ -22871,7 +22871,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 234,
+        "line": 242,
         "column": 1
       }
     },
@@ -22880,7 +22880,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 250,
+        "line": 258,
         "column": 1
       }
     },
@@ -22889,7 +22889,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 273,
+        "line": 281,
         "column": 1
       }
     },
@@ -22898,7 +22898,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 282,
+        "line": 290,
         "column": 1
       }
     },
@@ -22907,7 +22907,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 299,
+        "line": 307,
         "column": 1
       }
     },
@@ -22916,39 +22916,12 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 416,
+        "line": 451,
         "column": 1
       }
     },
     {
-      "name": "parseChromeProtocolMessage",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 433,
-        "column": 1
-      }
-    },
-    {
-      "name": "collectProcessOutput",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 448,
-        "column": 1
-      }
-    },
-    {
-      "name": "stopProcess",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 459,
-        "column": 1
-      }
-    },
-    {
-      "name": "formatProcessOutput",
+      "name": "readEvaluatedBoolean",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
@@ -22957,11 +22930,47 @@
       }
     },
     {
+      "name": "parseChromeProtocolMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 473,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectProcessOutput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 488,
+        "column": 1
+      }
+    },
+    {
+      "name": "stopProcess",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 499,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatProcessOutput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 508,
+        "column": 1
+      }
+    },
+    {
       "name": "isRecord",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 474,
+        "line": 514,
         "column": 1
       }
     },
@@ -25652,7 +25661,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/root.test.ts",
-        "line": 181,
+        "line": 199,
         "column": 1
       }
     },
@@ -47744,6 +47753,30 @@
       },
       {
         "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "clickByAccessibilityLabel",
+        "callExpression": "page.clickByAccessibilityLabel",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "waitForBodyText",
+        "callExpression": "page.waitForBodyText",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "readPathname",
+        "callExpression": "page.readPathname",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
         "toSymbol": "close",
         "callExpression": "page.close",
         "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
@@ -47887,6 +47920,30 @@
         "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
       },
       {
+        "fromSymbol": "clickByAccessibilityLabel",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "clickByAccessibilityLabel",
+        "toSymbol": "readEvaluatedBoolean",
+        "callExpression": "readEvaluatedBoolean",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readPathname",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readPathname",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "waitForBodyText",
         "toSymbol": "readBodyText",
         "callExpression": "this.readBodyText",
@@ -47926,6 +47983,12 @@
         "fromSymbol": "waitForHttp",
         "toSymbol": "getDiagnostics",
         "callExpression": "getDiagnostics",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readEvaluatedBoolean",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
         "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
       },
       {

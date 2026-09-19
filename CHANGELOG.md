@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 3.1.10
+
+### Patch Changes
+
+- e4ed56d: Update Ankhorage dependencies: `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/expo-runtime`, `@ankhorage/minikube`, `@ankhorage/repository`, `@ankhorage/runtime`, `@ankhorage/supabase-auth`, `@ankhorage/supabase-storage`, `@ankhorage/zora-game`, `@ankhorage/zora-tabletop`, `@ankhorage/zora`.
+
 ## 3.1.9
 
 ### Patch Changes
