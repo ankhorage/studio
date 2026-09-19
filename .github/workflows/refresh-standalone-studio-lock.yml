@@ -1,0 +1,34 @@
+name: Refresh standalone Studio lock
+
+on:
+  push:
+    branches:
+      - fix/594-standalone-self-consumer-sync
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - name: Refresh standalone Studio dependency
+        run: |
+          cd apps/studio
+          bun update @ankhorage/studio --lockfile-only
+          bun install --frozen-lockfile --ignore-scripts
+      - name: Commit lockfile
+        run: |
+          if git diff --quiet -- apps/studio/bun.lock; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/studio/bun.lock
+          git commit -m "chore: refresh standalone Studio lock"
+          git push
