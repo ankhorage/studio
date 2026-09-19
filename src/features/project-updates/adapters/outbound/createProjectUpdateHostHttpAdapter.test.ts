@@ -38,14 +38,14 @@ test('returns structured APM plan conflicts for dashboard review', async () => {
   expect(result).toEqual(conflict);
 });
 
-test('rejects unrelated conflict payloads as transport failures', async () => {
+test('rejects unrelated conflict payloads as transport failures', () => {
   globalThis.fetch = mock(() =>
     Promise.resolve(Response.json({ error: 'Project root is unavailable.' }, { status: 409 })),
   ) as unknown as typeof fetch;
 
   const host = createProjectUpdateHostHttpAdapter('http://studio.test/api');
 
-  await expect(
+  expect(
     host.planAsync('example', {
       availability: 'refresh',
       policy: {
