@@ -46,12 +46,10 @@ async function requestJsonAsync(
 ): Promise<unknown> {
   const response = await fetch(`${apiBase}${path}`, init);
   const body = await readResponseJsonAsync(response);
-  if (!response.ok) {
-    throw new Error(
-      readFailureMessage(body) ?? `Project update request failed with ${response.status}.`,
-    );
-  }
-  return body;
+  if (response.ok || isStructuredLifecycleConflict(response.status, body)) return body;
+  throw new Error(
+    readFailureMessage(body) ?? `Project update request failed with ${response.status}.`,
+  );
 }
 
 /*** Read a response body without turning an invalid error payload into a second exception. */
@@ -68,4 +66,10 @@ function readFailureMessage(value: unknown): string | undefined {
   if (!isRecord(value)) return undefined;
   if (typeof value.error === 'string') return value.error;
   return typeof value.message === 'string' ? value.message : undefined;
+}
+
+/*** Preserve reviewable APM lifecycle conflicts while rejecting unrelated HTTP 409 payloads. */
+function isStructuredLifecycleConflict(status: number, value: unknown): boolean {
+  if (status !== 409 || !isRecord(value)) return false;
+  return value.operation === 'plan' || value.operation === 'apply' || value.operation === 'verify';
 }
