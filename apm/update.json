@@ -1,7 +1,7 @@
 {
   "protocolVersion": 1,
   "schemaVersion": 1,
-  "owner": { "name": "@ankhorage/studio", "version": "3.1.8" },
+  "owner": { "name": "@ankhorage/studio", "version": "3.1.9" },
   "history": {
     "supported": [{ "sourceRange": ">=2.5.7 <3.0.0", "mode": "no-migration" }],
     "unsupported": [],

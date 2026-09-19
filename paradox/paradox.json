@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v3.1.8",
+      "value": "v3.1.9",
       "color": "cb3837"
     },
     {
@@ -1012,6 +1012,14 @@
       "exports": [
         "useProjectUpdateDashboard"
       ]
+    },
+    {
+      "path": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"
+      ],
+      "exports": []
     },
     {
       "path": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
@@ -14889,7 +14897,7 @@
       "description": "Read a response body without turning an invalid error payload into a second exception.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
-        "line": 58,
+        "line": 56,
         "column": 1
       }
     },
@@ -14898,7 +14906,16 @@
       "description": "Read the bounded host error message without echoing arbitrary response values.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
-        "line": 67,
+        "line": 65,
+        "column": 1
+      }
+    },
+    {
+      "name": "isStructuredLifecycleConflict",
+      "description": "Preserve reviewable APM lifecycle conflicts while rejecting unrelated HTTP 409 payloads.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
+        "line": 72,
         "column": 1
       }
     },
@@ -25635,7 +25652,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/root.test.ts",
-        "line": 153,
+        "line": 181,
         "column": 1
       }
     },
@@ -34885,6 +34902,11 @@
         "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
       },
       {
+        "fromPath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts",
+        "toPath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts"
+      },
+      {
         "fromPath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
         "toPath": "src/features/project-updates/application/ports/outbound/ProjectUpdateHostPort.ts",
         "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"
@@ -42036,6 +42058,18 @@
         "fromSymbol": "src/root.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
+        "sourcePath": "src/root.test.ts"
+      },
+      {
+        "fromSymbol": "src/root.test.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/root.test.ts"
+      },
+      {
+        "fromSymbol": "src/root.test.ts",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
         "sourcePath": "src/root.test.ts"
       },
       {
@@ -68703,6 +68737,42 @@
         "sourcePath": "src/features/project-updates/adapters/inbound/useProjectUpdateDashboard.ts"
       },
       {
+        "fromSymbol": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts",
+        "toSymbol": "mock",
+        "callExpression": "mock",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts",
+        "toSymbol": "createProjectUpdateHostHttpAdapter",
+        "callExpression": "createProjectUpdateHostHttpAdapter",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts",
+        "toSymbol": "planAsync",
+        "callExpression": "host.planAsync",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.test.ts"
+      },
+      {
         "fromSymbol": "statusAsync",
         "toSymbol": "requestJsonAsync",
         "callExpression": "requestJsonAsync",
@@ -68740,12 +68810,24 @@
       },
       {
         "fromSymbol": "requestJsonAsync",
+        "toSymbol": "isStructuredLifecycleConflict",
+        "callExpression": "isStructuredLifecycleConflict",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"
+      },
+      {
+        "fromSymbol": "requestJsonAsync",
         "toSymbol": "readFailureMessage",
         "callExpression": "readFailureMessage",
         "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"
       },
       {
         "fromSymbol": "readFailureMessage",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"
+      },
+      {
+        "fromSymbol": "isStructuredLifecycleConflict",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts"

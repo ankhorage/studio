@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 3.1.9
+
+### Patch Changes
+
+- b8c92c1: Preserve structured APM plan, apply and verify conflicts in the Studio update dashboard instead of treating every HTTP 409 as a transport failure.
+
 ## 3.1.8
 
 ### Patch Changes
