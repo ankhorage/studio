@@ -350,3 +350,49 @@ jobs:
                 source_repository: release.sourceRepository,
               },
             });
+
+      - name: Setup Bun for standalone Studio synchronization
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+
+      - name: Synchronize standalone Studio consumer
+        env:
+          PUBLISHED_PACKAGE_NAME: ${{ needs.release.outputs.package_name }}
+          PUBLISHED_PACKAGE_VERSION: ${{ needs.release.outputs.package_version }}
+        run: |
+          set -euo pipefail
+          if [ "$PUBLISHED_PACKAGE_NAME" != "@ankhorage/studio" ]; then
+            exit 0
+          fi
+
+          git fetch origin main
+          git checkout -B main origin/main
+
+          node <<'NODE'
+          const { readFileSync, writeFileSync } = require('node:fs');
+          const path = 'apps/studio/package.json';
+          const packageJson = JSON.parse(readFileSync(path, 'utf8'));
+          packageJson.dependencies['@ankhorage/studio'] = `^${process.env.PUBLISHED_PACKAGE_VERSION}`;
+          writeFileSync(path, `${JSON.stringify(packageJson, null, 2)}\n`);
+          NODE
+
+          (
+            cd apps/studio
+            bun update @ankhorage/studio --lockfile-only
+            bun install --frozen-lockfile --ignore-scripts
+          )
+
+          if git diff --quiet -- apps/studio/package.json apps/studio/bun.lock; then
+            exit 0
+          fi
+
+          git config user.name "ankhorage-renovate-sync[bot]"
+          git config user.email "ankhorage-renovate-sync[bot]@users.noreply.github.com"
+          git add apps/studio/package.json apps/studio/bun.lock
+          git commit -m "chore: sync standalone Studio to ${PUBLISHED_PACKAGE_VERSION} [skip ci]"
+          if ! git push origin HEAD:main; then
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+          fi

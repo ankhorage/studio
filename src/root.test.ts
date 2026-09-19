@@ -1,4 +1,5 @@
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
+import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 import { expect, test } from 'bun:test';
 
 const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
@@ -61,6 +62,33 @@ test('keeps the package root independent from every nested app package', async (
       packageName.startsWith('@ankhorage/'),
     ),
   ).toEqual([]);
+});
+
+test('keeps the standalone Studio consumer synchronized with the root package release', async () => {
+  const packageJson = (await Bun.file(new URL('../package.json', import.meta.url)).json()) as {
+    readonly name?: string;
+    readonly version?: string;
+  };
+  const appPackageJson = (await Bun.file(
+    new URL('../apps/studio/package.json', import.meta.url),
+  ).json()) as {
+    readonly dependencies?: Readonly<Record<string, string>>;
+  };
+  const lockValue: unknown = Bun.JSONC.parse(
+    await Bun.file(new URL('../apps/studio/bun.lock', import.meta.url)).text(),
+  );
+
+  expect(packageJson.name).toBe('@ankhorage/studio');
+  expect(packageJson.version).toMatch(EXACT_SEMVER_VERSION);
+  expect(appPackageJson.dependencies?.['@ankhorage/studio']).toBe(`^${packageJson.version}`);
+
+  if (!isRecord(lockValue)) throw new Error('Standalone Studio lock must be an object.');
+  const packages = readOwnProperty(lockValue, 'packages');
+  if (!isRecord(packages)) throw new Error('Standalone Studio lock must contain packages.');
+  const studioEntry = readOwnProperty(packages, '@ankhorage/studio');
+  expect(Array.isArray(studioEntry) ? studioEntry[0] : undefined).toBe(
+    `@ankhorage/studio@${packageJson.version}`,
+  );
 });
 
 test('keeps Studio package metadata and the first-party app on the Expo owner contract', async () => {
