@@ -64,6 +64,24 @@ test('keeps the package root independent from every nested app package', async (
   ).toEqual([]);
 });
 
+test('keeps standalone synchronization outside the Devtools-managed release workflow', async () => {
+  const managedReleaseWorkflow = await Bun.file(
+    new URL('../.github/workflows/release.yml', import.meta.url),
+  ).text();
+  const standaloneSyncWorkflow = await Bun.file(
+    new URL('../.github/workflows/studio-self-consumer-sync.yml', import.meta.url),
+  ).text();
+
+  expect(managedReleaseWorkflow).not.toContain('Synchronize standalone Studio consumer');
+  expect(standaloneSyncWorkflow).toContain('workflow_run:');
+  expect(standaloneSyncWorkflow).toContain('workflows:');
+  expect(standaloneSyncWorkflow).toContain('- Release');
+  expect(standaloneSyncWorkflow).toContain("github.event.workflow_run.conclusion == 'success'");
+  expect(standaloneSyncWorkflow).toContain("github.event.workflow_run.head_branch == 'main'");
+  expect(standaloneSyncWorkflow).toContain('apps/studio/package.json');
+  expect(standaloneSyncWorkflow).toContain('apps/studio/bun.lock');
+});
+
 test('keeps the standalone Studio consumer synchronized with the root package release', async () => {
   const packageJson = (await Bun.file(new URL('../package.json', import.meta.url)).json()) as {
     readonly name?: string;
