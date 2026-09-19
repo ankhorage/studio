@@ -1,0 +1,86 @@
+name: Studio self-consumer sync
+
+on:
+  workflow_run:
+    workflows:
+      - Release
+    types:
+      - completed
+
+permissions:
+  contents: write
+
+concurrency:
+  group: studio-self-consumer-sync
+  cancel-in-progress: false
+
+jobs:
+  synchronize:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create the scoped synchronization token
+        id: sync-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.ANKHORAGE_RENOVATE_SYNC_CLIENT_ID }}
+          private-key: ${{ secrets.ANKHORAGE_RENOVATE_SYNC_PRIVATE_KEY }}
+          owner: ankhorage
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: write
+
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+          token: ${{ steps.sync-token.outputs.token }}
+
+      - name: Synchronize latest main
+        run: |
+          git fetch origin main
+          git checkout -B main origin/main
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+
+      - name: Synchronize standalone Studio consumer
+        run: |
+          set -euo pipefail
+          package_name="$(node -p "require('./package.json').name")"
+          package_version="$(node -p "require('./package.json').version")"
+          if [ "$package_name" != "@ankhorage/studio" ]; then
+            echo "Unexpected root package: $package_name"
+            exit 1
+          fi
+
+          PACKAGE_VERSION="$package_version" node <<'NODE'
+          const { readFileSync, writeFileSync } = require('node:fs');
+          const path = 'apps/studio/package.json';
+          const packageJson = JSON.parse(readFileSync(path, 'utf8'));
+          packageJson.dependencies['@ankhorage/studio'] = `^${process.env.PACKAGE_VERSION}`;
+          writeFileSync(path, `${JSON.stringify(packageJson, null, 2)}\n`);
+          NODE
+
+          (
+            cd apps/studio
+            bun update @ankhorage/studio --lockfile-only
+            bun install --frozen-lockfile --ignore-scripts
+          )
+
+          if git diff --quiet -- apps/studio/package.json apps/studio/bun.lock; then
+            exit 0
+          fi
+
+          git config user.name "ankhorage-renovate-sync[bot]"
+          git config user.email "ankhorage-renovate-sync[bot]@users.noreply.github.com"
+          git add apps/studio/package.json apps/studio/bun.lock
+          git commit -m "chore: sync standalone Studio to ${package_version} [skip ci]"
+          if ! git push origin HEAD:main; then
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+          fi
