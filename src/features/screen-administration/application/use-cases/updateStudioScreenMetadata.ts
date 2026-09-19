@@ -13,18 +13,19 @@ export function updateStudioScreenMetadata<TManifest extends ScreenMetadataManif
   const screen = Object.entries(manifest.screens).find(([key]) => key === screenId)?.[1];
   if (!screen || screen.id !== screenId) return { ok: false, manifest };
 
-  const screenDetails = Object.fromEntries(
-    Object.entries(screen).filter(
-      ([key]) => !['id', 'name', 'title', 'description'].includes(key),
-    ),
-  );
-  const nextScreen = { ...screenDetails, ...metadata };
-  const screens = Object.fromEntries(
+  const nextScreen = {
+    ...screen,
+    id: metadata.id,
+    name: metadata.name,
+    title: metadata.title,
+    description: metadata.description,
+  };
+  const screens: AppManifest['screens'] = Object.fromEntries(
     Object.entries(manifest.screens).map(([key, value]) => [
       key,
       key === screenId ? nextScreen : value,
     ]),
-  ) as AppManifest['screens'];
+  );
 
   return {
     ok: true,
