@@ -1,4 +1,5 @@
 name: Refresh Studio authoring engine lock
+# Temporary branch-only lock refresh.
 
 on:
   push:
