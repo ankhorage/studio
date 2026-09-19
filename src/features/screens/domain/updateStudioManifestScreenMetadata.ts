@@ -1,5 +1,5 @@
 import type { AppManifest, ScreenMetadataSpec, ScreenSpec } from '@ankhorage/contracts';
-import { deleteOwnProperty, readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
+import { readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
 
 /*** Replace canonical screen metadata while preserving the screen body and every unrelated manifest branch. */
 export function updateStudioManifestScreenMetadata(
@@ -24,24 +24,14 @@ function createScreenWithMetadata(
   screen: ScreenSpec,
   metadata: ScreenMetadataSpec,
 ): ScreenSpec {
-  const next: ScreenSpec = {
-    ...screen,
+  const { description: _description, title: _title, ...stableScreen } = screen;
+  return {
+    ...stableScreen,
     id: metadata.id,
     name: metadata.name,
+    ...(metadata.title === undefined ? {} : { title: metadata.title }),
+    ...(metadata.description === undefined ? {} : { description: metadata.description }),
   };
-  writeOptionalString(next, 'title', metadata.title);
-  writeOptionalString(next, 'description', metadata.description);
-  return next;
-}
-
-/*** Write or remove one optional screen metadata string on a cloned ScreenSpec. */
-function writeOptionalString(
-  screen: ScreenSpec,
-  key: 'description' | 'title',
-  value: string | undefined,
-): void {
-  if (value === undefined) deleteOwnProperty(screen, key);
-  else setOwnProperty(screen, key, value);
 }
 
 /*** Compare only the canonical metadata fields owned by ScreenMetadataSpec. */
