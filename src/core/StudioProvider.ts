@@ -4,6 +4,7 @@ import type {
   DataSourceRegistry,
   MediaAsset,
   NavigatorType,
+  type ScreenMetadataSpec,
   UiComponentMetaRegistry,
   UiNode,
 } from '@ankhorage/contracts';
@@ -15,6 +16,7 @@ import {
   type StudioAuthSettings,
   type StudioAuthSettingsMutation,
 } from '../authSettings';
+import { updateStudioManifestScreenMetadata } from '../features/screens/domain/updateStudioManifestScreenMetadata';
 import {
   createNodeFromCatalogEntry,
   findNodeById,
@@ -400,6 +402,14 @@ export const StudioProvider = ({
     [activeScreenId, selectedNodeId, updateManifest],
   );
 
+  /*** Update canonical screen metadata without exposing unrestricted manifest mutation to UI consumers. */
+  const updateScreenMetadata = useCallback(
+    (screenId: StudioScreenId, metadata: ScreenMetadataSpec) => {
+      updateManifest((current) => updateStudioManifestScreenMetadata(current, screenId, metadata));
+    },
+    [updateManifest],
+  );
+
   /*** Change the manifest navigator type. */
   const setNavigatorType = useCallback(
     (type: NavigatorType) => {
@@ -487,6 +497,7 @@ export const StudioProvider = ({
       moveNodeToPlacement: moveSelectedNodeToPlacement,
       addScreen,
       deleteScreen,
+      updateScreenMetadata,
       setNavigatorType,
       setNavigatorInitialRoute,
       setRoutePrimaryNavigationVisibility,
@@ -535,6 +546,7 @@ export const StudioProvider = ({
       moveSelectedNodeToPlacement,
       addScreen,
       deleteScreen,
+      updateScreenMetadata,
       setNavigatorType,
       setNavigatorInitialRoute,
       setRoutePrimaryNavigationVisibility,
