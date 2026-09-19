@@ -1,0 +1,50 @@
+name: Refresh standalone Studio lock
+
+on:
+  push:
+    branches:
+      - fix/577-sync-standalone-3.1.2
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: fix/577-sync-standalone-3.1.2
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+
+      - name: Wait for Studio 3.1.2
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            if npm view "@ankhorage/studio@3.1.2" version --json >/dev/null 2>&1; then
+              exit 0
+            fi
+            sleep $((attempt * 5))
+          done
+          echo "Published @ankhorage/studio@3.1.2 is not visible."
+          exit 1
+
+      - name: Refresh standalone lock
+        run: bun install --cwd apps/studio --lockfile-only --ignore-scripts
+
+      - name: Commit refreshed lock
+        run: |
+          if git diff --quiet -- apps/studio/bun.lock; then
+            echo "Standalone lock already resolves Studio 3.1.2."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/studio/bun.lock
+          git commit -m "chore: refresh standalone Studio lockfile"
+          git push origin HEAD:fix/577-sync-standalone-3.1.2
