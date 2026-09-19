@@ -212,7 +212,7 @@
     "supabase-vault"
   ],
   "dependencies": {
-    "@ankhorage/apm": "^0.8.8",
+    "@ankhorage/apm": "^0.8.9",
     "@ankhorage/color-theory": "^0.3.1",
     "@ankhorage/contracts": "^22.0.3",
     "@ankhorage/data-sources": "^2.0.5",
