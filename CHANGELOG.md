@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 3.1.2
+
+### Patch Changes
+
+- dc0a784: Consume APM 0.8.9 so optional transitive packages do not trigger unnecessary installation repair planning.
+
 ## 3.1.1
 
 ### Patch Changes
