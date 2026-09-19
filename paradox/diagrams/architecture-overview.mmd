@@ -182,10 +182,9 @@ graph TD
   module_src_cli_index_test_ts --> module_src_cli_index_ts
   module_src_cli_index_ts["src/cli/index.ts"]
   package__ankhorage_studio -.-> module_src_cli_index_ts
-  module_src_cli_index_ts --> module_src_host_createStudioHost_ts
-  module_src_cli_index_ts --> module_src_host_http_server_ts
   module_src_cli_index_ts --> module_src_host_templates_index_ts
-  module_src_cli_index_ts --> module_src_host_utils_workspaceRoot_ts
+  module_src_constants_ts["src/constants.ts"]
+  package__ankhorage_studio -.-> module_src_constants_ts
   module_src_contractGuards_test_ts["src/contractGuards.test.ts"]
   package__ankhorage_studio -.-> module_src_contractGuards_test_ts
   module_src_contractGuards_test_ts --> module_src_contractGuards_ts
@@ -667,6 +666,12 @@ graph TD
   module_src_host_http_projectRuntimeRoutes_ts["src/host/http/projectRuntimeRoutes.ts"]
   package__ankhorage_studio -.-> module_src_host_http_projectRuntimeRoutes_ts
   module_src_host_http_projectRuntimeRoutes_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_http_resolveProjectUpdateRootAsync_test_ts["src/host/http/resolveProjectUpdateRootAsync.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_http_resolveProjectUpdateRootAsync_test_ts
+  module_src_host_http_resolveProjectUpdateRootAsync_test_ts --> module_src_host_http_resolveProjectUpdateRootAsync_ts
+  module_src_host_http_resolveProjectUpdateRootAsync_ts["src/host/http/resolveProjectUpdateRootAsync.ts"]
+  package__ankhorage_studio -.-> module_src_host_http_resolveProjectUpdateRootAsync_ts
+  module_src_host_http_resolveProjectUpdateRootAsync_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_http_resolveStandaloneStudioHostOptions_test_ts["src/host/http/resolveStandaloneStudioHostOptions.test.ts"]
   package__ankhorage_studio -.-> module_src_host_http_resolveStandaloneStudioHostOptions_test_ts
   module_src_host_http_resolveStandaloneStudioHostOptions_test_ts --> module_src_host_http_resolveStandaloneStudioHostOptions_ts
@@ -686,11 +691,11 @@ graph TD
   module_src_host_http_server_ts --> module_src_host_http_mediaRoutes_ts
   module_src_host_http_server_ts --> module_src_host_http_moduleRoutes_ts
   module_src_host_http_server_ts --> module_src_host_http_projectRuntimeRoutes_ts
+  module_src_host_http_server_ts --> module_src_host_http_resolveProjectUpdateRootAsync_ts
   module_src_host_http_server_ts --> module_src_host_http_security_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_projectManager_ts
-  module_src_host_http_server_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_http_server_ts --> module_src_host_templates_index_ts
   module_src_host_http_server_ts --> module_src_host_utils_workspaceRoot_ts
@@ -933,6 +938,7 @@ graph TD
   module_src_host_orchestrator_generatedPackagePolicy_test_ts["src/host/orchestrator/generatedPackagePolicy.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_generatedPackagePolicy_test_ts
   module_src_host_orchestrator_generatedPackagePolicy_test_ts --> module_src_features_project_updates_adapters_outbound_getGeneratedPackagePolicy_ts
+  module_src_host_orchestrator_generatedPackagePolicy_test_ts --> module_src_features_project_updates_domain_applyGeneratedPackagePolicy_ts
   module_src_host_orchestrator_generatedPackagePolicy_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_GeneratedRouteFileOwnership_test_ts["src/host/orchestrator/GeneratedRouteFileOwnership.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_GeneratedRouteFileOwnership_test_ts
@@ -1339,6 +1345,12 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_utils_workspaceRoot_ts
   module_src_host_zoraExtensions_index_ts["src/host/zoraExtensions/index.ts"]
   package__ankhorage_studio -.-> module_src_host_zoraExtensions_index_ts
+  module_src_host_zoraExtensions_index_ts --> module_src_constants_ts
+  module_src_host_zoraExtensions_index_ts --> module_src_features_project_updates_adapters_outbound_getGeneratedPackagePolicy_ts
+  module_src_host_zoraExtensions_zoraExtensions_test_ts["src/host/zoraExtensions/zoraExtensions.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_zoraExtensions_zoraExtensions_test_ts
+  module_src_host_zoraExtensions_zoraExtensions_test_ts --> module_src_features_project_updates_adapters_outbound_getGeneratedPackagePolicy_ts
+  module_src_host_zoraExtensions_zoraExtensions_test_ts --> module_src_host_zoraExtensions_index_ts
   module_src_index_test_ts["src/index.test.ts"]
   package__ankhorage_studio -.-> module_src_index_test_ts
   module_src_index_test_ts --> module_src_index_ts
