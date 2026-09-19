@@ -4,6 +4,7 @@ import type {
   DataSourceRegistry,
   MediaAsset,
   NavigatorType,
+  ScreenMetadataSpec,
   UiComponentMetaRegistry,
   UiNode,
 } from '@ankhorage/contracts';
@@ -29,6 +30,8 @@ import {
   type StudioScreenId,
   type ThemeUpdates,
 } from '../index';
+import { updateStudioScreenMetadata } from '../features/screen-administration/application/use-cases/updateStudioScreenMetadata';
+
 import {
   addStudioManifestScreen,
   deleteStudioManifestNode,
@@ -378,6 +381,19 @@ export const StudioProvider = ({
     [activeScreenId, updateManifest],
   );
 
+  /*** Update one screen's canonical descriptor-backed metadata through the manifest autosave boundary. */
+  const updateScreenMetadata = useCallback(
+    (screenId: StudioScreenId, metadata: ScreenMetadataSpec): boolean => {
+      const { current } = manifestRef;
+      if (!current) return false;
+      const result = updateStudioScreenMetadata(current, screenId, metadata);
+      if (!result.ok) return false;
+      updateManifest(() => result.manifest);
+      return true;
+    },
+    [updateManifest],
+  );
+
   /*** Delete a screen and clear selection or drag state that referenced the deleted tree. */
   const deleteScreen = useCallback(
     (screenId: StudioScreenId) => {
@@ -486,6 +502,7 @@ export const StudioProvider = ({
       insertFromCatalogEntry,
       moveNodeToPlacement: moveSelectedNodeToPlacement,
       addScreen,
+      updateScreenMetadata,
       deleteScreen,
       setNavigatorType,
       setNavigatorInitialRoute,
@@ -534,6 +551,7 @@ export const StudioProvider = ({
       insertFromCatalogEntry,
       moveSelectedNodeToPlacement,
       addScreen,
+      updateScreenMetadata,
       deleteScreen,
       setNavigatorType,
       setNavigatorInitialRoute,
