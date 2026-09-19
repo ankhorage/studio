@@ -70,6 +70,14 @@ studioWorkspaceWebSmokeTest(
           'New project',
         ]);
 
+        await page.clickByAccessibilityLabel(`Open ${FIXTURE_PROJECT_NAME}`);
+        const detailBody = await page.waitForBodyText(
+          (text) => text.includes('Project Detail') && text.includes(FIXTURE_PROJECT_NAME),
+          HTTP_TIMEOUT_MS,
+        );
+        expect(await page.readPathname()).toBe(`/projects/${FIXTURE_PROJECT_ID}`);
+        expect(detailBody).not.toContain('New Project');
+
         await expectRouteText(page, `${appUrl}/create`, ['New Project', FIXTURE_CATEGORY_LABEL]);
 
         await expectRouteText(page, `${appUrl}/create/${FIXTURE_CATEGORY}`, [
@@ -348,6 +356,33 @@ class ChromePage {
     return typeof value === 'string' ? value : '';
   }
 
+  async clickByAccessibilityLabel(label: string): Promise<void> {
+    const result = await this.send('Runtime.evaluate', {
+      expression: `(() => {
+        const label = ${JSON.stringify(label)};
+        const element = Array.from(document.querySelectorAll('[aria-label]')).find(
+          (candidate) => candidate.getAttribute('aria-label') === label,
+        );
+        if (!(element instanceof HTMLElement)) return false;
+        element.click();
+        return true;
+      })()`,
+      returnByValue: true,
+    });
+    if (!readEvaluatedBoolean(result)) {
+      throw new Error(`Could not click accessibility label: ${label}`);
+    }
+  }
+
+  async readPathname(): Promise<string> {
+    const result = await this.send('Runtime.evaluate', {
+      expression: 'window.location.pathname',
+      returnByValue: true,
+    });
+    if (!isRecord(result) || !isRecord(result.result)) return '';
+    return typeof result.result.value === 'string' ? result.result.value : '';
+  }
+
   async waitForBodyText(predicate: (text: string) => boolean, timeoutMs: number): Promise<string> {
     const start = Date.now();
     let text = '';
@@ -428,6 +463,11 @@ async function waitForHttp(
     }
   }
   throw new Error(`Timed out waiting for ${url}.${getDiagnostics()}`);
+}
+
+function readEvaluatedBoolean(value: unknown): boolean {
+  if (!isRecord(value) || !isRecord(value.result)) return false;
+  return value.result.value === true;
 }
 
 function parseChromeProtocolMessage(data: unknown): ChromeProtocolMessage | null {
