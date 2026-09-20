@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 3.1.11
+
+### Patch Changes
+
+- eadc353: Update Ankhorage dependencies: `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/minikube`, `@ankhorage/repository`, `@ankhorage/runtime`, `@ankhorage/supabase-auth`, `@ankhorage/supabase-storage`, `@ankhorage/zora-game`, `@ankhorage/zora-tabletop`, `@ankhorage/zora`.
+
 ## 3.1.10
 
 ### Patch Changes
