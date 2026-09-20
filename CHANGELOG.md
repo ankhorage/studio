@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 3.2.0
+
+### Minor Changes
+
+- 4f2e645: Derive the existing screen-detail metadata editor from the released Contracts structural descriptor through a central neutral authoring engine, with immutable canonical manifest mutations.
+
 ## 3.1.11
 
 ### Patch Changes
