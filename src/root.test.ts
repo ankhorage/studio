@@ -1,5 +1,6 @@
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
+import { satisfiesCaretSemverRange } from '@ankhorage/utility/semver';
 import { expect, test } from 'bun:test';
 
 const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
@@ -84,11 +85,7 @@ test('keeps standalone synchronization outside the Devtools-managed release work
   expect(standaloneSyncWorkflow).toContain('apps/studio/bun.lock');
 });
 
-test('keeps the standalone Studio consumer synchronized with the root package release', async () => {
-  const packageJson = (await Bun.file(new URL('../package.json', import.meta.url)).json()) as {
-    readonly name?: string;
-    readonly version?: string;
-  };
+test('keeps the standalone Studio registry dependency consistent with its own lockfile', async () => {
   const appPackageJson = (await Bun.file(
     new URL('../apps/studio/package.json', import.meta.url),
   ).json()) as {
@@ -98,17 +95,24 @@ test('keeps the standalone Studio consumer synchronized with the root package re
     await Bun.file(new URL('../apps/studio/bun.lock', import.meta.url)).text(),
   );
 
-  expect(packageJson.name).toBe('@ankhorage/studio');
-  expect(packageJson.version).toMatch(EXACT_SEMVER_VERSION);
-  expect(appPackageJson.dependencies?.['@ankhorage/studio']).toBe(`^${packageJson.version}`);
+  // The root version may be unpublished; the standalone consumer advances after release succeeds.
+  const studioRange = appPackageJson.dependencies?.['@ankhorage/studio'];
+  expect(studioRange).toMatch(CARET_SEMVER_RANGE);
+  if (typeof studioRange !== 'string') throw new Error('Standalone Studio must declare its owner.');
+  expect(lockValue).toMatchObject({
+    workspaces: { '': { dependencies: { '@ankhorage/studio': studioRange } } },
+  });
 
   if (!isRecord(lockValue)) throw new Error('Standalone Studio lock must be an object.');
   const packages = readOwnProperty(lockValue, 'packages');
   if (!isRecord(packages)) throw new Error('Standalone Studio lock must contain packages.');
   const studioEntry = readOwnProperty(packages, '@ankhorage/studio');
-  expect(Array.isArray(studioEntry) ? studioEntry[0] : undefined).toBe(
-    `@ankhorage/studio@${packageJson.version}`,
-  );
+  const lockedPackage: unknown = Array.isArray(studioEntry) ? studioEntry[0] : undefined;
+  expect(lockedPackage).toMatch(/^@ankhorage\/studio@\d+\.\d+\.\d+$/u);
+  if (typeof lockedPackage !== 'string') throw new Error('Standalone Studio must lock its owner.');
+  expect(
+    satisfiesCaretSemverRange(lockedPackage.slice('@ankhorage/studio@'.length), studioRange),
+  ).toBe(true);
 });
 
 test('keeps Studio package metadata and the first-party app on the Expo owner contract', async () => {
