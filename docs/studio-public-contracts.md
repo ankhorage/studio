@@ -13,7 +13,8 @@ host needs to integrate Studio.
 - generic module lifecycle and administration contribution views.
 
 `StudioContextValue` carries the caller-injected `componentMeta` registry and the canonical
-`insertFromCatalogEntry`, `moveNodeToPlacement`, and `deleteNode` capabilities. The first-party
+`insertFromCatalogEntry`, `moveNodeToPlacement`, `deleteNode`, and descriptor-backed
+`updateScreenMetadata` capabilities. The first-party
 Studio application therefore applies the same component rules as Runtime rendering.
 
 Navigation authoring is parent-scoped. Hosts use `moveRoute` and

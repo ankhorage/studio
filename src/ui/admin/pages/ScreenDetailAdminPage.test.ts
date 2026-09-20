@@ -1,14 +1,10 @@
+import { readFileSync } from 'node:fs';
+
 import { expect, test } from 'bun:test';
-import { readFileSync } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
-const source = readFileSync(
-  path.join(path.dirname(fileURLToPath(import.meta.url)), 'ScreenDetailAdminPage.tsx'),
-  'utf8',
-);
+const source = readFileSync(new URL('./ScreenDetailAdminPage.tsx', import.meta.url), 'utf8');
 
-test('renders detail from the canonical screen model without a second screen state', () => {
+test('keeps route detail behavior while delegating screen metadata authoring to the central engine', () => {
   expect(source).toContain('deriveStudioScreenNavigationModel');
   expect(source).toContain('resolveStudioScreenAppPath');
   expect(source).toContain('Screen not found');
@@ -17,8 +13,18 @@ test('renders detail from the canonical screen model without a second screen sta
   expect(source).toContain('routeReferences.map');
   expect(source).toContain('Canonical pathname/pattern');
   expect(source).toContain('Primary-navigation visibility');
+
+  expect(source).toContain('STRUCTURE_DESCRIPTOR');
+  expect(source).toContain("'screen-metadata'");
+  expect(source).toContain('resolveContractsAuthoringStructure');
+  expect(source).toContain('deriveAuthoringModel');
+  expect(source).toContain('<AuthoringEditor');
+  expect(source).toContain('applyAuthoringMutation');
+  expect(source).toContain('studio.updateScreenMetadata');
+
+  expect(source).not.toContain('<MetadataFact label="Name"');
+  expect(source).not.toContain('<MetadataFact label="Title"');
+  expect(source).not.toContain('<MetadataFact label="Description"');
   expect(source).not.toContain('useState');
-  expect(source).not.toContain('route-key');
-  expect(source).not.toContain('rename');
   expect(source).not.toContain('model.screens.find');
 });

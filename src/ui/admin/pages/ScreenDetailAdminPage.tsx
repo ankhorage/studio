@@ -1,9 +1,16 @@
+import type { ScreenMetadataSpec, ScreenSpec } from '@ankhorage/contracts';
+import { STRUCTURE_DESCRIPTOR } from '@ankhorage/contracts/structure';
 import { Button, ButtonGroup, Card, ListItem, ListSection, Text } from '@ankhorage/zora';
 import { useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { useStudio } from '../../../core/StudioContext';
+import { AuthoringEditor } from '../../../features/authoring-engine/adapters/inbound/AuthoringEditor';
+import { resolveContractsAuthoringStructure } from '../../../features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure';
+import { applyAuthoringMutation } from '../../../features/authoring-engine/application/use-cases/applyAuthoringMutation';
+import { deriveAuthoringModel } from '../../../features/authoring-engine/application/use-cases/deriveAuthoringModel';
+import { screenMetadataAuthoringPolicy } from '../../../features/screen-administration/constants/screenMetadataAuthoringPolicy';
 import {
   deriveStudioScreenNavigationModel,
   resolveStudioScreenAppPath,
@@ -110,11 +117,28 @@ export function ScreenDetailAdminPage({ screenId }: ScreenDetailAdminPageProps) 
         description="Canonical screen metadata and every manifest route reference for this stable screen ID."
       />
 
-      <Card title="Screen metadata" description="Identity comes only from ScreenSpec.id.">
-        <MetadataFact label="Stable screen ID" value={entry.screen.id} />
-        <MetadataFact label="Name" value={entry.screen.name} />
-        <MetadataFact label="Title" value={entry.screen.title ?? 'Not set'} />
-        <MetadataFact label="Description" value={entry.screen.description ?? 'Not set'} />
+      <Card
+        title="Screen metadata"
+        description="Fields are derived from the released ScreenMetadataSpec structure; stable identity remains read-only."
+      >
+        {SCREEN_METADATA_STRUCTURE.ok ? (
+          <AuthoringEditor
+            model={deriveAuthoringModel({
+              structure: SCREEN_METADATA_STRUCTURE.structure,
+              value: createScreenMetadataValue(entry.screen),
+              policy: screenMetadataAuthoringPolicy,
+            })}
+            onMutation={(mutation) => {
+              const current = createScreenMetadataValue(entry.screen);
+              const result = applyAuthoringMutation(current, mutation);
+              if (result.ok) studio.updateScreenMetadata(entry.screenId, result.value);
+            }}
+          />
+        ) : (
+          <Text color="neutral" emphasis="muted" variant="caption">
+            {SCREEN_METADATA_STRUCTURE.diagnostic.message}
+          </Text>
+        )}
       </Card>
 
       <ButtonGroup orientation="responsive" align="start">
@@ -148,6 +172,16 @@ export function ScreenDetailAdminPage({ screenId }: ScreenDetailAdminPageProps) 
       </ListSection>
     </AdminScroll>
   );
+}
+
+/*** Project a complete ScreenSpec to the owner-defined metadata slice edited by this page. */
+function createScreenMetadataValue(screen: ScreenSpec): ScreenMetadataSpec {
+  return {
+    id: screen.id,
+    name: screen.name,
+    ...(screen.title === undefined ? {} : { title: screen.title }),
+    ...(screen.description === undefined ? {} : { description: screen.description }),
+  };
 }
 
 /*** Render one labeled screen/route metadata fact. */
@@ -244,3 +278,8 @@ const styles = StyleSheet.create({
     paddingTop: 4,
   },
 });
+
+const SCREEN_METADATA_STRUCTURE = resolveContractsAuthoringStructure(
+  STRUCTURE_DESCRIPTOR,
+  'screen-metadata',
+);
