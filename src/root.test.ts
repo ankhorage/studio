@@ -36,7 +36,9 @@ test('keeps the package root independent from every nested app package', async (
   };
 
   expect(packageJson.workspaces).toBeUndefined();
-  expect(packageJson.scripts?.test).toBe('bun test src');
+  expect(packageJson.scripts?.test).toBe(
+    "bun test src --path-ignore-patterns '**/*.e2e.test.ts' --path-ignore-patterns '**/*.smoke.test.ts'",
+  );
   const prettierIgnore = await Bun.file(new URL('../.prettierignore', import.meta.url)).text();
   expect(prettierIgnore).toContain('/apps/');
   expect(packageJson.peerDependencies?.expo).toBe(EXPO_PLATFORM.runtime.expo.version);
