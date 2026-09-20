@@ -1,4 +1,4 @@
-import { Field, Select, Switch, Text, TextInput } from '@ankhorage/zora';
+import { Button, Field, Select, Switch, Text, TextInput } from '@ankhorage/zora';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -16,6 +16,31 @@ export interface AuthoringEditorProps {
 
 /*** Render one neutral authoring model with ZORA controls without owning product-specific schema. */
 export function AuthoringEditor({ model, onMutation }: AuthoringEditorProps) {
+  const { inheritance } = model;
+  if (!inheritance || !model.optional || model.readOnly) {
+    return <AuthoringControl model={model} onMutation={onMutation} />;
+  }
+
+  return (
+    <View style={styles.fields}>
+      <AuthoringControl model={model} onMutation={onMutation} />
+      <Text color="neutral" emphasis="muted" variant="caption">
+        {inheritance.overridden ? 'Override' : 'Inherited'}
+        {inheritance.value === undefined ? '' : ` (default: ${String(inheritance.value)})`}
+      </Text>
+      <Button
+        variant="outline"
+        disabled={!inheritance.overridden}
+        onPress={() => onMutation({ kind: 'unset', path: model.path })}
+      >
+        {`Use inherited ${model.label}`}
+      </Button>
+    </View>
+  );
+}
+
+/*** Choose the ZORA control for one neutral structural node. */
+function AuthoringControl({ model, onMutation }: AuthoringEditorProps) {
   if (model.kind === 'object') {
     return (
       <View style={styles.fields}>
@@ -74,7 +99,8 @@ function ChoiceEditor(props: {
 
   const { values } = model;
   const options = values.map((value) => ({ label: value, value }));
-  const current = typeof model.value === 'string' ? model.value : undefined;
+  const effective = model.value === undefined ? model.inheritance?.value : model.value;
+  const current = typeof effective === 'string' ? effective : undefined;
 
   return (
     <Field label={model.label} description={model.description} required={!model.optional}>
@@ -97,7 +123,7 @@ function ScalarEditor(props: {
     return (
       <Field label={model.label} description={model.description} required={!model.optional}>
         <Switch
-          checked={model.value === true}
+          checked={(model.value === undefined ? model.inheritance?.value : model.value) === true}
           onCheckedChange={(checked) =>
             props.onMutation({ kind: 'set', path: model.path, value: checked })
           }
@@ -114,8 +140,9 @@ function ScalarEditor(props: {
     );
   }
 
+  const effective = model.value === undefined ? model.inheritance?.value : model.value;
   const value =
-    typeof model.value === 'number' || typeof model.value === 'string' ? String(model.value) : '';
+    typeof effective === 'number' || typeof effective === 'string' ? String(effective) : '';
   const numeric = model.scalarType === 'integer' || model.scalarType === 'number';
 
   return (
