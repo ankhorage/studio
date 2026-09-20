@@ -1,6 +1,5 @@
-import { expect, test } from 'bun:test';
-
 import { STRUCTURE_DESCRIPTOR } from '@ankhorage/contracts/structure';
+import { expect, test } from 'bun:test';
 
 import { resolveContractsAuthoringStructure } from './resolveContractsAuthoringStructure';
 

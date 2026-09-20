@@ -15,7 +15,7 @@ export function resolveContractsAuthoringStructure(
   document: StructureDescriptorDocument,
   rootName: string,
 ): AuthoringStructureResolution {
-  const rootId = document.roots[rootName];
+  const rootId = Object.entries(document.roots).find(([name]) => name === rootName)?.[1];
   if (!rootId) {
     return {
       ok: false,
@@ -27,7 +27,7 @@ export function resolveContractsAuthoringStructure(
     };
   }
 
-  const definition = document.descriptors[rootId];
+  const definition = Object.entries(document.descriptors).find(([id]) => id === rootId)?.[1];
   if (!definition) {
     return {
       ok: false,
@@ -106,7 +106,7 @@ function resolveReference(
     };
   }
 
-  const definition = document.descriptors[descriptor.id];
+  const definition = Object.entries(document.descriptors).find(([id]) => id === descriptor.id)?.[1];
   if (!definition) {
     return {
       kind: 'unsupported',
@@ -128,10 +128,7 @@ function resolveReference(
 }
 
 /*** Preserve an unsupported descriptor kind as an explicit authoring diagnostic. */
-function unsupportedStructure(
-  sourceKind: string,
-  path: readonly string[],
-): AuthoringStructure {
+function unsupportedStructure(sourceKind: string, path: readonly string[]): AuthoringStructure {
   const diagnostic: AuthoringDiagnostic = {
     code: 'unsupported-structure',
     message: `Structure kind "${sourceKind}" does not have a Studio authoring adapter yet.`,

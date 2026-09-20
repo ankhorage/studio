@@ -1,4 +1,4 @@
-import { Field, Input, Select, Switch, Text } from '@ankhorage/zora';
+import { Field, Select, Switch, Text, TextInput } from '@ankhorage/zora';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -20,11 +20,7 @@ export function AuthoringEditor({ model, onMutation }: AuthoringEditorProps) {
     return (
       <View style={styles.fields}>
         {model.fields.map((field) => (
-          <AuthoringEditor
-            key={field.path.join('.')}
-            model={field}
-            onMutation={onMutation}
-          />
+          <AuthoringEditor key={field.path.join('.')} model={field} onMutation={onMutation} />
         ))}
       </View>
     );
@@ -32,7 +28,7 @@ export function AuthoringEditor({ model, onMutation }: AuthoringEditorProps) {
 
   if (model.kind === 'unsupported') {
     return (
-      <Field label={model.label}>
+      <Field label={model.label} description={model.description} required={!model.optional}>
         <Text color="neutral" emphasis="muted" variant="caption">
           {model.diagnostic.message}
         </Text>
@@ -42,7 +38,12 @@ export function AuthoringEditor({ model, onMutation }: AuthoringEditorProps) {
 
   if (model.readOnly) {
     return (
-      <Field label={model.label}>
+      <Field
+        label={model.label}
+        description={model.description}
+        readOnly
+        required={!model.optional}
+      >
         <Text>{formatAuthoringValue(model.value)}</Text>
       </Field>
     );
@@ -71,12 +72,12 @@ function ChoiceEditor(props: {
     );
   }
 
-  const values = model.values as readonly string[];
+  const { values } = model;
   const options = values.map((value) => ({ label: value, value }));
   const current = typeof model.value === 'string' ? model.value : undefined;
 
   return (
-    <Field label={model.label}>
+    <Field label={model.label} description={model.description} required={!model.optional}>
       <Select
         options={options}
         value={current}
@@ -94,11 +95,11 @@ function ScalarEditor(props: {
   const { model } = props;
   if (model.scalarType === 'boolean') {
     return (
-      <Field label={model.label}>
+      <Field label={model.label} description={model.description} required={!model.optional}>
         <Switch
-          value={model.value === true}
-          onValueChange={(value) =>
-            props.onMutation({ kind: 'set', path: model.path, value })
+          checked={model.value === true}
+          onCheckedChange={(checked) =>
+            props.onMutation({ kind: 'set', path: model.path, value: checked })
           }
         />
       </Field>
@@ -107,21 +108,19 @@ function ScalarEditor(props: {
 
   if (model.scalarType === 'null') {
     return (
-      <Field label={model.label}>
+      <Field label={model.label} description={model.description} required={!model.optional}>
         <Text>null</Text>
       </Field>
     );
   }
 
   const value =
-    typeof model.value === 'number' || typeof model.value === 'string'
-      ? String(model.value)
-      : '';
+    typeof model.value === 'number' || typeof model.value === 'string' ? String(model.value) : '';
   const numeric = model.scalarType === 'integer' || model.scalarType === 'number';
 
   return (
-    <Field label={model.label}>
-      <Input
+    <Field label={model.label} description={model.description} required={!model.optional}>
+      <TextInput
         value={value}
         keyboardType={numeric ? 'numeric' : undefined}
         multiline={model.multiline}
@@ -156,7 +155,7 @@ function handleScalarTextChange(
 }
 
 /*** Format one authored primitive for read-only presentation. */
-function formatAuthoringValue(value: AuthoringScalarNode['value'] | AuthoringChoiceNode['value']) {
+function formatAuthoringValue(value: AuthoringScalarNode['value']) {
   if (value === undefined) return 'Not set';
   if (value === null) return 'null';
   return String(value);

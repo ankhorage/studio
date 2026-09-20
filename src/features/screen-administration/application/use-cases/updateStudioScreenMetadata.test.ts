@@ -1,6 +1,5 @@
-import { expect, test } from 'bun:test';
-
 import type { AppManifest } from '@ankhorage/contracts';
+import { expect, test } from 'bun:test';
 
 import { updateStudioScreenMetadata } from './updateStudioScreenMetadata';
 
@@ -18,7 +17,6 @@ test('updates canonical screen metadata while preserving the screen tree', () =>
   expect(result.manifest.screens['screen-home']).toEqual({
     id: 'screen-home',
     name: 'Dashboard',
-    title: undefined,
     description: 'Updated metadata',
     root: { id: 'root', type: 'Box' },
   });

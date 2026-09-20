@@ -3,7 +3,12 @@ import { expect, test } from 'bun:test';
 import { applyAuthoringMutation } from './applyAuthoringMutation';
 
 test('sets and unsets authored values immutably', () => {
-  const current = {
+  const current: {
+    readonly id: string;
+    readonly name: string;
+    readonly title?: string;
+    readonly nested: { readonly note: string };
+  } = {
     id: 'screen-home',
     name: 'Home',
     title: 'Welcome',

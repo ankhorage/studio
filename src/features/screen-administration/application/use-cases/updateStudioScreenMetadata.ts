@@ -7,18 +7,25 @@ export function updateStudioScreenMetadata<TManifest extends ScreenMetadataManif
   manifest: TManifest,
   screenId: string,
   metadata: ScreenMetadataSpec,
-): { readonly ok: true; readonly manifest: TManifest } | { readonly ok: false; readonly manifest: TManifest } {
+):
+  | { readonly ok: true; readonly manifest: TManifest }
+  | { readonly ok: false; readonly manifest: TManifest } {
   if (metadata.id !== screenId) return { ok: false, manifest };
 
   const screen = Object.entries(manifest.screens).find(([key]) => key === screenId)?.[1];
-  if (!screen || screen.id !== screenId) return { ok: false, manifest };
+  if (screen?.id !== screenId) return { ok: false, manifest };
 
+  const {
+    title: _currentTitle,
+    description: _currentDescription,
+    ...screenWithoutOptionalMetadata
+  } = screen;
   const nextScreen = {
-    ...screen,
+    ...screenWithoutOptionalMetadata,
     id: metadata.id,
     name: metadata.name,
-    title: metadata.title,
-    description: metadata.description,
+    ...(metadata.title === undefined ? {} : { title: metadata.title }),
+    ...(metadata.description === undefined ? {} : { description: metadata.description }),
   };
   const screens: AppManifest['screens'] = Object.fromEntries(
     Object.entries(manifest.screens).map(([key, value]) => [

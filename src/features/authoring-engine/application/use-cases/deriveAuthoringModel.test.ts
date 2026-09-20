@@ -1,6 +1,6 @@
 import { expect, test } from 'bun:test';
 
-import type { AuthoringStructure } from '../../../types/authoring-engine';
+import type { AuthoringStructure } from '../../../../types/authoring-engine';
 import { deriveAuthoringModel } from './deriveAuthoringModel';
 
 test('derives scalar and optional fields from one neutral object structure', () => {

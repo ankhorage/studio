@@ -1,10 +1,8 @@
-import { expect, test } from 'bun:test';
 import { readFileSync } from 'node:fs';
 
-const source = readFileSync(
-  new URL('./ScreenDetailAdminPage.tsx', import.meta.url),
-  'utf8',
-);
+import { expect, test } from 'bun:test';
+
+const source = readFileSync(new URL('./ScreenDetailAdminPage.tsx', import.meta.url), 'utf8');
 
 test('keeps route detail behavior while delegating screen metadata authoring to the central engine', () => {
   expect(source).toContain('deriveStudioScreenNavigationModel');

@@ -16,6 +16,7 @@ import {
   type StudioAuthSettings,
   type StudioAuthSettingsMutation,
 } from '../authSettings';
+import { updateStudioScreenMetadata } from '../features/screen-administration/application/use-cases/updateStudioScreenMetadata';
 import {
   createNodeFromCatalogEntry,
   findNodeById,
@@ -30,8 +31,6 @@ import {
   type StudioScreenId,
   type ThemeUpdates,
 } from '../index';
-import { updateStudioScreenMetadata } from '../features/screen-administration/application/use-cases/updateStudioScreenMetadata';
-
 import {
   addStudioManifestScreen,
   deleteStudioManifestNode,

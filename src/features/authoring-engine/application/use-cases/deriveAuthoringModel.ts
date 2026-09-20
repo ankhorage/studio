@@ -7,7 +7,7 @@ import type {
   AuthoringPrimitive,
   AuthoringScalarType,
   AuthoringStructure,
-} from '../../../types/authoring-engine';
+} from '../../../../types/authoring-engine';
 
 /*** Derive one UI-neutral authoring model from neutral structure semantics and a runtime value. */
 export function deriveAuthoringModel(args: {
@@ -186,7 +186,8 @@ function unsupportedValue(
 /*** Convert a source property name to a default human-readable field label. */
 function humanizeFieldName(name: string): string {
   const spaced = name.replace(/([a-z0-9])([A-Z])/gu, '$1 $2').replaceAll(/[-_]+/gu, ' ');
-  return spaced.length === 0 ? name : spaced[0]!.toUpperCase() + spaced.slice(1);
+  const firstCharacter = spaced.at(0);
+  return firstCharacter ? firstCharacter.toUpperCase() + spaced.slice(1) : name;
 }
 
 /*** Format one authoring path for diagnostics without leaking implementation details. */

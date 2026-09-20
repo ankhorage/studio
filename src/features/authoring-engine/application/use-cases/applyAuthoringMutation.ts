@@ -3,7 +3,7 @@ import { isRecord } from '@ankhorage/utility/object';
 import type {
   AuthoringMutation,
   AuthoringMutationResult,
-} from '../../../types/authoring-engine';
+} from '../../../../types/authoring-engine';
 
 /*** Apply one path-safe immutable authoring mutation without guessing through missing/non-object state. */
 export function applyAuthoringMutation<T>(
@@ -65,10 +65,10 @@ function replaceRecordEntry(
 }
 
 /*** Return one explicit mutation rejection at the requested authoring path. */
-function rejectedMutation<T>(
+function rejectedMutation(
   mutation: AuthoringMutation,
   message: string,
-): AuthoringMutationResult<T> {
+): AuthoringMutationRejection {
   return {
     ok: false,
     diagnostic: {
@@ -80,12 +80,13 @@ function rejectedMutation<T>(
 }
 
 type RecordUpdateResult =
-  | { readonly ok: true; readonly value: Record<string, unknown> }
-  | {
-      readonly ok: false;
-      readonly diagnostic: {
-        readonly code: 'mutation-rejected';
-        readonly message: string;
-        readonly path: readonly string[];
-      };
-    };
+  { readonly ok: true; readonly value: Record<string, unknown> } | AuthoringMutationRejection;
+
+interface AuthoringMutationRejection {
+  readonly ok: false;
+  readonly diagnostic: {
+    readonly code: 'mutation-rejected';
+    readonly message: string;
+    readonly path: readonly string[];
+  };
+}

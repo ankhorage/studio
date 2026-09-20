@@ -4,10 +4,7 @@ export type AuthoringPrimitive = boolean | number | string | null;
 
 export interface AuthoringDiagnostic {
   readonly code:
-    | 'invalid-value'
-    | 'mutation-rejected'
-    | 'unresolved-reference'
-    | 'unsupported-structure';
+    'invalid-value' | 'mutation-rejected' | 'unresolved-reference' | 'unsupported-structure';
   readonly message: string;
   readonly path: readonly string[];
 }
@@ -20,7 +17,7 @@ export interface AuthoringPresentationPolicy {
   readonly fields?: Readonly<Record<string, AuthoringPresentationPolicy>>;
 }
 
-export interface AuthoringStructureField {
+interface AuthoringStructureField {
   readonly name: string;
   readonly optional: boolean;
   readonly structure: AuthoringStructure;
@@ -45,7 +42,7 @@ export type AuthoringStructure =
       readonly diagnostic: AuthoringDiagnostic;
     };
 
-export interface AuthoringNodeBase {
+interface AuthoringNodeBase {
   readonly path: readonly string[];
   readonly label: string;
   readonly description?: string;
@@ -66,21 +63,18 @@ export interface AuthoringChoiceNode extends AuthoringNodeBase {
   readonly value: AuthoringPrimitive | undefined;
 }
 
-export interface AuthoringObjectNode extends AuthoringNodeBase {
+interface AuthoringObjectNode extends AuthoringNodeBase {
   readonly kind: 'object';
   readonly fields: readonly AuthoringNode[];
 }
 
-export interface AuthoringUnsupportedNode extends AuthoringNodeBase {
+interface AuthoringUnsupportedNode extends AuthoringNodeBase {
   readonly kind: 'unsupported';
   readonly diagnostic: AuthoringDiagnostic;
 }
 
 export type AuthoringNode =
-  | AuthoringChoiceNode
-  | AuthoringObjectNode
-  | AuthoringScalarNode
-  | AuthoringUnsupportedNode;
+  AuthoringChoiceNode | AuthoringObjectNode | AuthoringScalarNode | AuthoringUnsupportedNode;
 
 export type AuthoringStructureResolution =
   | {
