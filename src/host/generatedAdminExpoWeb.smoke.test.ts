@@ -224,7 +224,7 @@ function createScrollableRuntimeScreenRoot(): UiNode {
         children: [
           {
             id: 'desktop-pointer-parent',
-            type: 'Box',
+            type: 'View',
             props: {
               p: 'm',
               testID: 'desktop-pointer-parent',
@@ -263,7 +263,7 @@ function createScrollableRuntimeScreenRoot(): UiNode {
           },
           {
             id: 'native-layout-fixture',
-            type: 'Box',
+            type: 'View',
             props: {
               testID: 'native-layout-fixture',
               style: { gap: 12 },

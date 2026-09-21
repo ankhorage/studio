@@ -52,7 +52,7 @@ export function createAdminSmokeBaseManifest(): AppManifest {
             },
             {
               id: `${ID_PREFIX}-products-search-field`,
-              type: 'FormField',
+              type: 'Field',
               props: {
                 label: 'Search products',
                 description: 'Search the local smoke fixture.',
@@ -60,7 +60,7 @@ export function createAdminSmokeBaseManifest(): AppManifest {
             },
             {
               id: `${ID_PREFIX}-products-search-input`,
-              type: 'Input',
+              type: 'TextInput',
               props: {
                 placeholder: 'Search product name, brand, or barcode...',
                 autoCapitalize: 'none',
