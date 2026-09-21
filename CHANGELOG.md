@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 3.3.2
+
+### Patch Changes
+
+- bbcea1c: Update Ankhorage dependencies: `@ankhorage/zora`.
+
 ## 3.3.1
 
 ### Patch Changes
