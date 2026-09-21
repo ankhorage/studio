@@ -49,7 +49,7 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
 
   await moduleManager.syncProjectRuntime(created.id);
   expect(await readFile(path.join(created.path, 'src/app/ankh/_layout.tsx'), 'utf8')).toContain(
-    'AnkhAdminShell',
+    'WorkspaceNavigator',
   );
   expect(await readFile(path.join(created.path, 'src/app/ankh/deploy.tsx'), 'utf8')).toContain(
     'routeId="deploy"',

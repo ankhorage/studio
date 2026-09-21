@@ -8,9 +8,7 @@ import {
   createStudioPropertiesRoutePath,
   createStudioScreenRoutePath,
   createStudioThemeRecipeRoutePath,
-  isStudioAdminRouteActive,
   isStudioAdminRouteAvailable,
-  openStudioAdminRoute,
   resolveStudioAdminRouteId,
   resolveStudioAdminRoutePath,
   resolveStudioBindingsNodeId,
@@ -98,9 +96,6 @@ describe('studioAdminRouteModel', () => {
         themeRecipeName: 'Button / primary',
       }),
     ).toBe(componentRecipe);
-    expect(
-      isStudioAdminRouteActive({ currentRouteId: 'theme-spacing', candidateRouteId: 'theme' }),
-    ).toBe(true);
     expect(resolveStudioAdminRouteId('/ankh/bindings/node-1')).toBe('bindings');
     expect(resolveStudioAdminRouteId('/ankh/properties/node-1')).toBe('properties');
     expect(resolveStudioAdminRoutePath('/ankh/bindings/node-1')).toBe('/ankh/bindings/node-1');
@@ -209,13 +204,7 @@ describe('studioAdminRouteModel', () => {
     });
   });
 
-  test('tracks hierarchy and contextual availability', () => {
-    expect(
-      isStudioAdminRouteActive({
-        currentRouteId: 'auth-providers',
-        candidateRouteId: 'auth',
-      }),
-    ).toBe(true);
+  test('tracks contextual availability', () => {
     expect(isStudioAdminRouteAvailable('module-detail', { selectedNodeId: null })).toBe(false);
     expect(
       isStudioAdminRouteAvailable('module-detail', {
@@ -223,18 +212,6 @@ describe('studioAdminRouteModel', () => {
         moduleId: 'vendor/module',
       }),
     ).toBe(true);
-    expect(
-      isStudioAdminRouteActive({
-        currentRouteId: 'module-detail',
-        candidateRouteId: 'modules',
-      }),
-    ).toBe(true);
-    expect(
-      isStudioAdminRouteActive({
-        currentRouteId: 'auth-providers',
-        candidateRouteId: 'apis',
-      }),
-    ).toBe(false);
     expect(isStudioAdminRouteAvailable('bindings', { selectedNodeId: null })).toBe(false);
     expect(isStudioAdminRouteAvailable('bindings', { selectedNodeId: 'node-1' })).toBe(true);
     expect(isStudioAdminRouteAvailable('properties', { selectedNodeId: null })).toBe(false);
@@ -246,45 +223,6 @@ describe('studioAdminRouteModel', () => {
         screenId: 'screen-1',
       }),
     ).toBe(true);
-    expect(
-      isStudioAdminRouteActive({
-        currentRouteId: 'screen-detail',
-        candidateRouteId: 'screens',
-      }),
-    ).toBe(true);
-  });
-
-  test('opens admin routes through canonical path helpers', () => {
-    const panelIds: (string | null)[] = [];
-    const routes: string[] = [];
-    expect(
-      openStudioAdminRoute({
-        next: 'screens',
-        setActivePanelId: (panelId) => panelIds.push(panelId),
-        pushRoute: (routePath) => routes.push(routePath),
-      }),
-    ).toBe(true);
-
-    expect(
-      openStudioAdminRoute({
-        next: 'bindings',
-        selectedNodeId: null,
-        setActivePanelId: (panelId) => panelIds.push(panelId),
-        pushRoute: (routePath) => routes.push(routePath),
-      }),
-    ).toBe(false);
-
-    expect(
-      openStudioAdminRoute({
-        next: 'screen-detail',
-        screenId: 'screen 1',
-        setActivePanelId: (panelId) => panelIds.push(panelId),
-        pushRoute: (routePath) => routes.push(routePath),
-      }),
-    ).toBe(true);
-
-    expect(panelIds).toEqual([null, null]);
-    expect(routes).toEqual(['/ankh/screens', '/ankh/screens/screen%201']);
   });
 
   test('preserves search and hash when the runtime location matches the pathname', () => {

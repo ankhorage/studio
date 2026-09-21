@@ -3,12 +3,7 @@ import {
   decodeSinglePathSegmentAfterPrefix,
 } from '@ankhorage/utility/url';
 
-import type {
-  StudioAdminRouteId,
-  StudioAdminRoutePath,
-  StudioAdminStaticRoutePath,
-  StudioPanelId,
-} from './index';
+import type { StudioAdminRouteId, StudioAdminRoutePath, StudioAdminStaticRoutePath } from './index';
 
 export interface StudioAdminRouteDefinition {
   readonly id: StudioAdminRouteId;
@@ -72,6 +67,7 @@ export const STUDIO_ADMIN_ROUTE_REGISTRY: readonly StudioAdminRouteDefinition[] 
     order: 11,
     parentId: 'screens',
     contextual: true,
+    showInNavigation: false,
     description: 'Canonical screen metadata and resolved route context.',
   },
   {
@@ -124,6 +120,7 @@ export const STUDIO_ADMIN_ROUTE_REGISTRY: readonly StudioAdminRouteDefinition[] 
     order: 16,
     parentId: 'modules',
     contextual: true,
+    showInNavigation: false,
     description: 'Module lifecycle status and package-owned administration.',
   },
   {
@@ -511,27 +508,6 @@ export function resolveStudioAdminActiveRouteId(pathname: string): StudioAdminRo
 }
 
 /***
- * Return whether a candidate Studio admin route is the current route or an ancestor of it.
- * @todo Keep Studio route-hierarchy policy in the `routes/` domain; its generic ancestry traversal can reuse the existing tree Utility primitives if useful.
- */
-export function isStudioAdminRouteActive(args: {
-  currentRouteId: StudioAdminRouteId;
-  candidateRouteId: StudioAdminRouteId;
-}): boolean {
-  if (args.currentRouteId === args.candidateRouteId) {
-    return true;
-  }
-
-  let route = getStudioAdminRouteDefinition(args.currentRouteId);
-  while (route.parentId) {
-    if (route.parentId === args.candidateRouteId) return true;
-    route = getStudioAdminRouteDefinition(route.parentId);
-  }
-
-  return false;
-}
-
-/***
  * Project pathname + persisted admin-route state into the render state consumed by the Studio shell.
  * @todo Move this render-state route policy into the `routes/` application domain.
  */
@@ -554,33 +530,6 @@ export function createStudioAdminRouteRenderState(args: {
     shouldRenderAppContent: routeAdminId === null,
     shouldRenderAdminShell: routeAdminId !== null,
   };
-}
-
-/***
- * Open a Studio admin route by resolving its contextual path, closing the active panel, and delegating navigation.
- * @todo Keep this route-opening use case in the `routes/` application domain rather than root `src/`.
- */
-export function openStudioAdminRoute(args: {
-  next: StudioAdminRouteId;
-  selectedNodeId?: string | null;
-  screenId?: string | null;
-  moduleId?: string | null;
-  themeRecipeName?: string | null;
-  setActivePanelId: (panelId: StudioPanelId | null) => void;
-  pushRoute: (routePath: StudioAdminRoutePath) => void;
-}): boolean {
-  const routePath = createStudioAdminRoutePath({
-    routeId: args.next,
-    selectedNodeId: args.selectedNodeId ?? null,
-    screenId: args.screenId ?? null,
-    moduleId: args.moduleId ?? null,
-    themeRecipeName: args.themeRecipeName ?? null,
-  });
-  if (!routePath) return false;
-
-  args.setActivePanelId(null);
-  args.pushRoute(routePath);
-  return true;
 }
 
 /***

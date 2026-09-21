@@ -220,9 +220,11 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('useGlobalSearchParams');
     expect(rootLayout).toContain('resolveStudioLastNonAdminLocation');
     expect(rootLayout).toContain('!isStudioAdminPath(appPathname) &&');
-    expect(adminLayout).toContain('if (!__DEV__)');
-    expect(adminLayout).toContain('<Redirect href="/" />');
-    expect(adminLayout).toContain('<AnkhAdminShell />');
+    expect(adminLayout).toContain("from '@ankhorage/navigator/workspace'");
+    expect(adminLayout).toContain(
+      '<WorkspaceAccessGate><WorkspaceContent /></WorkspaceAccessGate>',
+    );
+    expect(adminLayout).not.toContain('AnkhAdminShell');
     expect(adminPage).toContain('if (!__DEV__)');
     expect(adminPage).toContain('<Redirect href="/" />');
     expect(adminPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
