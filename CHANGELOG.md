@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 3.3.1
+
+### Patch Changes
+
+- 8e53d6c: Update Ankhorage dependencies: `@ankhorage/zora-game`, `@ankhorage/zora-tabletop`, `@ankhorage/zora`.
+
 ## 3.3.0
 
 ### Minor Changes
