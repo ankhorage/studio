@@ -2,6 +2,7 @@ import {
   decodeFirstPathSegmentAfterPrefix,
   decodeSinglePathSegmentAfterPrefix,
 } from '@ankhorage/utility/url';
+import type { IoniconsIconName } from '@react-native-vector-icons/ionicons/static';
 
 import type { StudioAdminRouteId, StudioAdminRoutePath, StudioAdminStaticRoutePath } from './index';
 
@@ -16,7 +17,7 @@ export interface StudioAdminRouteDefinition {
     | '/ankh/bindings/:nodeId'
     | '/ankh/properties/:nodeId';
   readonly label: string;
-  readonly icon: string;
+  readonly icon: IoniconsIconName;
   readonly order: number;
   readonly parentId?: StudioAdminRouteId;
   readonly description?: string;

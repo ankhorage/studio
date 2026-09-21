@@ -17,6 +17,7 @@ test('projects every canonical route once with its Studio-owned hierarchy', () =
   expect(routes.find((route) => route.id === 'api-catalog')).toMatchObject({
     parentId: 'apis',
     href: '/ankh/apis/catalog',
+    icon: { name: 'albums-outline', provider: 'Ionicons' },
   });
   expect(routes.find((route) => route.id === 'theme-colors')).toMatchObject({
     parentId: 'theme',

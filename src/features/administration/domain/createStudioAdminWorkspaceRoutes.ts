@@ -15,6 +15,7 @@ export function createStudioAdminWorkspaceRoutes(context: {
   return STUDIO_ADMIN_ROUTE_REGISTRY.map((route) => ({
     id: route.id,
     label: route.label,
+    icon: { name: route.icon, provider: 'Ionicons' },
     description: route.description,
     parentId: route.parentId,
     visible: route.showInNavigation !== false,
