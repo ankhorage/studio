@@ -118,6 +118,7 @@ function createAdminSmokeManifest(): AppManifest {
 
   return {
     ...nutritionManifest,
+    deploy: { targets: { web: { enabled: true } } },
     metadata: {
       ...nutritionManifest.metadata,
       name: 'Generated Admin Web Smoke',
@@ -1686,6 +1687,10 @@ async function installGeneratedProjectDependencies(
   }
   generatedPackage.dependencies['@ankhorage/studio'] =
     `file:${await stageLocalStudioPackage(workspaceRoot)}`;
+  const navigatorTarball = readEnvString('ANKH_STUDIO_NAVIGATOR_TARBALL');
+  if (navigatorTarball) {
+    generatedPackage.dependencies['@ankhorage/navigator'] = `file:${navigatorTarball}`;
+  }
   await writeFile(packagePath, `${JSON.stringify(generatedPackage, null, 2)}\n`, 'utf8');
 
   const install = Bun.spawn(['bun', 'install', '--ignore-scripts'], {
@@ -1742,7 +1747,7 @@ async function writeSmokeRuntimeExtensions(projectRoot: string): Promise<void> {
     path.join(generatedRoot, 'SmokeStudioComponents.tsx'),
     `import { useStudio } from '@ankhorage/studio';
 import { useStudioUnsupportedNodeMeasurement } from '@ankhorage/studio/runtime';
-import { Box, Text } from '@ankhorage/zora';
+import { Text } from '@ankhorage/zora';
 import { usePathname, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -1953,7 +1958,7 @@ export function SmokeStudioProbe() {
   }, [studio.selectedNodeId]);
 
   return (
-    <Box gap="s" testID="studio-smoke-probe">
+    <View style={{ gap: 8 }} testID="studio-smoke-probe">
       <Text testID="studio-smoke-state">
         {\`mode=\${studio.previewMode ? 'preview' : 'edit'};selection=\${studio.selectedNodeId ?? 'none'};changes=\${selectionChangeCount}\`}
       </Text>
@@ -1985,7 +1990,7 @@ export function SmokeStudioProbe() {
           {layoutSnapshot === 'not-captured' ? layoutSnapshot : 'captured'}
         </NativeText>
       </View>
-    </Box>
+    </View>
   );
 }
 `,
@@ -2019,6 +2024,7 @@ async function writeSmokeMetroConfig(projectRoot: string): Promise<void> {
   await writeFile(
     path.join(projectRoot, 'metro.config.js'),
     `const path = require('node:path');
+const fs = require('node:fs');
 const { getDefaultConfig } = require('expo/metro-config');
 
 const config = getDefaultConfig(__dirname);
@@ -2026,11 +2032,11 @@ config.resolver.unstable_enableSymlinks = true;
 config.resolver.nodeModulesPaths = [
   path.resolve(__dirname, 'node_modules'),
   path.resolve(__dirname, '../../node_modules'),
-];
+].filter(fs.existsSync);
 config.watchFolders = [
   path.resolve(__dirname, '../../node_modules'),
   ${JSON.stringify(repositoryRoot)},
-];
+].filter(fs.existsSync);
 
 module.exports = config;
 `,
