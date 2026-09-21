@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v3.2.2",
+      "value": "v3.3.0",
       "color": "cb3837"
     },
     {
@@ -914,6 +914,15 @@
       ]
     },
     {
+      "path": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "src/types/authoring-engine.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
       "isEntrypoint": false,
       "dependencies": [
@@ -940,6 +949,26 @@
       ],
       "exports": [
         "resolveContractsAuthoringStructure"
+      ]
+    },
+    {
+      "path": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts",
+        "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "src/ui/admin/pages/themeRecipeAuthoringModel.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/types/authoring-engine.ts"
+      ],
+      "exports": [
+        "resolveZoraThemeRecipeAuthoring"
       ]
     },
     {
@@ -6400,9 +6429,12 @@
       "path": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts",
+        "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "src/types/authoring-engine.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/themeRecipeAuthoringModel.ts",
-        "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
         "src/ui/admin/pages/themeRecipeTokenOptions.ts",
         "src/ui/admin/pages/useActiveThemeAdmin.ts"
       ],
@@ -6435,16 +6467,6 @@
       ],
       "exports": [
         "ThemeRecipeCatalog"
-      ]
-    },
-    {
-      "path": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/adminPagePrimitives.tsx"
-      ],
-      "exports": [
-        "ThemeRecipeFieldEditor"
       ]
     },
     {
@@ -14414,6 +14436,33 @@
       }
     },
     {
+      "name": "booleanModel",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
+        "line": 96,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderControls",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
+        "line": 109,
+        "column": 1
+      }
+    },
+    {
+      "name": "loadEditor",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
+        "line": 125,
+        "column": 1
+      }
+    },
+    {
       "name": "AuthoringEditor",
       "description": "Render one neutral authoring model with ZORA controls without owning product-specific schema.",
       "sourceLocation": {
@@ -14423,11 +14472,20 @@
       }
     },
     {
+      "name": "AuthoringControl",
+      "description": "Choose the ZORA control for one neutral structural node.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "line": 43,
+        "column": 1
+      }
+    },
+    {
       "name": "ChoiceEditor",
       "description": "Render a supported finite string choice while keeping unsupported choice primitives explicit.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 60,
+        "line": 85,
         "column": 1
       }
     },
@@ -14436,7 +14494,7 @@
       "description": "Render one scalar authoring node and translate ZORA changes to neutral mutations.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 91,
+        "line": 117,
         "column": 1
       }
     },
@@ -14445,7 +14503,7 @@
       "description": "Convert text input to a scalar set/unset mutation without coercing invalid numeric values.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 135,
+        "line": 162,
         "column": 1
       }
     },
@@ -14454,7 +14512,7 @@
       "description": "Format one authored primitive for read-only presentation.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 158,
+        "line": 185,
         "column": 1
       }
     },
@@ -14491,6 +14549,24 @@
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
         "line": 131,
+        "column": 1
+      }
+    },
+    {
+      "name": "cardMetadata",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
+        "line": 119,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveZoraThemeRecipeAuthoring",
+      "description": "Adapt released ZORA recipe metadata and runtime token choices into neutral structure and inheritance policy.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts",
+        "line": 9,
         "column": 1
       }
     },
@@ -14553,7 +14629,7 @@
       "description": "Read and validate one scalar runtime value against its portable structural type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 105,
+        "line": 108,
         "column": 1
       }
     },
@@ -14562,7 +14638,7 @@
       "description": "Decide whether one unknown runtime value satisfies a scalar descriptor type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 126,
+        "line": 129,
         "column": 1
       }
     },
@@ -14571,7 +14647,7 @@
       "description": "Read one finite-choice value without coercing values outside the descriptor options.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 145,
+        "line": 148,
         "column": 1
       }
     },
@@ -14580,7 +14656,7 @@
       "description": "Convert an invalid runtime value to an explicit unsupported authoring node.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 166,
+        "line": 169,
         "column": 1
       }
     },
@@ -14589,7 +14665,7 @@
       "description": "Convert a source property name to a default human-readable field label.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 187,
+        "line": 190,
         "column": 1
       }
     },
@@ -14598,7 +14674,7 @@
       "description": "Format one authoring path for diagnostics without leaking implementation details.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 194,
+        "line": 197,
         "column": 1
       }
     },
@@ -29205,7 +29281,7 @@
       "description": "Render one ZORA component/pattern theme recipe and persist field overrides into the canonical active Studio theme.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
-        "line": 13,
+        "line": 14,
         "column": 1
       }
     },
@@ -29214,7 +29290,7 @@
       "description": "Apply one recipe field override or restore inheritance by removing it from the authored theme.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
-        "line": 36,
+        "line": 41,
         "column": 9
       }
     },
@@ -29223,7 +29299,7 @@
       "description": "Render the theme-recipe fallback for missing active themes or invalid recipe metadata.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
-        "line": 80,
+        "line": 74,
         "column": 1
       }
     },
@@ -29278,42 +29354,6 @@
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeRecipeCatalog.tsx",
         "line": 51,
-        "column": 1
-      }
-    },
-    {
-      "name": "ThemeRecipeFieldEditor",
-      "description": "Render inherited and explicit override choices for one metadata-described ZORA theme recipe field.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
-        "line": 10,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveFieldOptions",
-      "description": "Resolve boolean, explicit-choice, or token metadata into selectable theme recipe override options.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
-        "line": 45,
-        "column": 1
-      }
-    },
-    {
-      "name": "formatInheritedLabel",
-      "description": "Format the inherited recipe field option and include its owner default when one exists.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
-        "line": 60,
-        "column": 1
-      }
-    },
-    {
-      "name": "Choice",
-      "description": "Render one selectable theme recipe override option.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
-        "line": 66,
         "column": 1
       }
     },
@@ -35047,12 +35087,27 @@
       },
       {
         "fromPath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
-        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "toPath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
         "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
-        "toPath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
+        "toPath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
         "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
       },
       {
@@ -35079,11 +35134,6 @@
         "fromPath": "src/ui/admin/pages/ThemeRecipeCatalog.tsx",
         "toPath": "src/studioAdminRouteModel.ts",
         "sourcePath": "src/ui/admin/pages/ThemeRecipeCatalog.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
-        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
-        "sourcePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts",
@@ -35196,6 +35246,16 @@
         "sourcePath": "src/ui/admin/pages/useActiveThemeAdmin.ts"
       },
       {
+        "fromPath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
+        "toPath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
         "fromPath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
         "toPath": "src/types/authoring-engine.ts",
         "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
@@ -35209,6 +35269,26 @@
         "fromPath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
         "toPath": "src/types/authoring-engine.ts",
         "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
+        "toPath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
+        "toPath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
+        "toPath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts"
       },
       {
         "fromPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.test.ts",
@@ -67870,15 +67950,9 @@
         "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
       },
       {
-        "fromSymbol": "updateField",
-        "toSymbol": "updateTheme",
-        "callExpression": "updateTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "updateField",
-        "toSymbol": "updateThemeRecipeField",
-        "callExpression": "updateThemeRecipeField",
+        "fromSymbol": "ThemeRecipeAdminPage",
+        "toSymbol": "resolveZoraThemeRecipeAuthoring",
+        "callExpression": "resolveZoraThemeRecipeAuthoring",
         "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
       },
       {
@@ -67888,9 +67962,21 @@
         "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
       },
       {
-        "fromSymbol": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
-        "toSymbol": "updateField",
-        "callExpression": "updateField",
+        "fromSymbol": "ThemeRecipeAdminPage",
+        "toSymbol": "deriveAuthoringModel",
+        "callExpression": "deriveAuthoringModel",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "updateField",
+        "toSymbol": "updateTheme",
+        "callExpression": "updateTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "updateField",
+        "toSymbol": "updateThemeRecipeField",
+        "callExpression": "updateThemeRecipeField",
         "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
       },
       {
@@ -67988,30 +68074,6 @@
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
         "sourcePath": "src/ui/admin/pages/ThemeRecipeCatalog.tsx"
-      },
-      {
-        "fromSymbol": "ThemeRecipeFieldEditor",
-        "toSymbol": "resolveFieldOptions",
-        "callExpression": "resolveFieldOptions",
-        "sourcePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx"
-      },
-      {
-        "fromSymbol": "ThemeRecipeFieldEditor",
-        "toSymbol": "formatInheritedLabel",
-        "callExpression": "formatInheritedLabel",
-        "sourcePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
-        "toSymbol": "onChange",
-        "callExpression": "props.onChange",
-        "sourcePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx"
-      },
-      {
-        "fromSymbol": "Choice",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx"
       },
       {
         "fromSymbol": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts",
@@ -68386,7 +68448,91 @@
         "sourcePath": "src/ui/admin/pages/useActiveThemeAdmin.ts"
       },
       {
+        "fromSymbol": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
+        "toSymbol": "loadEditor",
+        "callExpression": "loadEditor",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
+        "toSymbol": "renderControls",
+        "callExpression": "renderControls",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
+        "toSymbol": "AuthoringEditor",
+        "callExpression": "editor.AuthoringEditor",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
+        "toSymbol": "booleanModel",
+        "callExpression": "booleanModel",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
+        "toSymbol": "deriveAuthoringModel",
+        "callExpression": "deriveAuthoringModel",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
+        "fromSymbol": "booleanModel",
+        "toSymbol": "deriveAuthoringModel",
+        "callExpression": "deriveAuthoringModel",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
+        "fromSymbol": "renderControls",
+        "toSymbol": "isValidElement",
+        "callExpression": "isValidElement",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
+        "fromSymbol": "renderControls",
+        "toSymbol": "renderControls",
+        "callExpression": "renderControls",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
+        "fromSymbol": "loadEditor",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
+        "fromSymbol": "loadEditor",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
         "fromSymbol": "AuthoringEditor",
+        "toSymbol": "isValidElement",
+        "callExpression": "isValidElement",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "toSymbol": "onMutation",
+        "callExpression": "onMutation",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "AuthoringControl",
         "toSymbol": "formatAuthoringValue",
         "callExpression": "formatAuthoringValue",
         "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
@@ -68456,6 +68602,48 @@
         "toSymbol": "resolveDescriptor",
         "callExpression": "resolveDescriptor",
         "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
+        "toSymbol": "deriveAuthoringModel",
+        "callExpression": "deriveAuthoringModel",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
+        "toSymbol": "resolveZoraThemeRecipeAuthoring",
+        "callExpression": "resolveZoraThemeRecipeAuthoring",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
+        "toSymbol": "cardMetadata",
+        "callExpression": "cardMetadata",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
+        "toSymbol": "updateThemeRecipeField",
+        "callExpression": "updateThemeRecipeField",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts",
+        "toSymbol": "resolveTokens",
+        "callExpression": "resolveTokens",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts"
       },
       {
         "fromSymbol": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.test.ts",

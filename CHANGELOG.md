@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 3.3.0
+
+### Minor Changes
+
+- 5a7198a: Render theme recipes through the shared Authoring Model and preserve inherited defaults and reset semantics.
+
 ## 3.2.2
 
 ### Patch Changes
