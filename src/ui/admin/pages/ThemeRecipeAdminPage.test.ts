@@ -18,11 +18,13 @@ test('consumes the canonical ZORA recipe registry at the UI boundary', () => {
   expect(page).not.toContain("recipeName === 'Panel'");
 });
 
-test('renders controls from metadata field kinds and supports inherited reset', () => {
-  const field = readSibling('ThemeRecipeFieldEditor.tsx');
+test('delegates recipe controls to the central authoring engine and retains theme persistence', () => {
+  const page = readSibling('ThemeRecipeAdminPage.tsx');
 
-  expect(field).toContain("meta.type === 'boolean'");
-  expect(field).toContain("meta.type === 'choice'");
-  expect(field).toContain('tokenOptions');
-  expect(field).toContain('onChange(undefined)');
+  expect(page).toContain('resolveZoraThemeRecipeAuthoring(meta');
+  expect(page).toContain('deriveAuthoringModel(');
+  expect(page).toContain('<AuthoringEditor model={model} onMutation={updateField} />');
+  expect(page).toContain('updateThemeRecipeField(');
+  expect(page).not.toContain('ThemeRecipeFieldEditor');
+  expect(page).not.toContain('Object.entries(meta.fields).map');
 });

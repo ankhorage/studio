@@ -26,8 +26,8 @@ The Theme authoring path follows the standalone package boundaries:
   canonical manifest mutations
 ```
 
-Studio consumes released `@ankhorage/contracts@7.2.0`, `@ankhorage/surface@2.2.0` through ZORA,
-and `@ankhorage/zora@2.12.0`. Recipe field definitions, defaults, options, kinds, and token-family
+Studio consumes released Contracts and ZORA public APIs, with Surface resolved through ZORA.
+Recipe field definitions, defaults, options, kinds, and token-family
 relationships are never copied into Studio.
 
 ## Routes
@@ -78,19 +78,23 @@ into the manifest.
 
 ## Component and pattern recipes
 
-Studio reads `ZORA_THEME_RECIPE_META` at the UI integration boundary. For every published recipe it
-renders fields generically from the metadata field kind:
+Studio adapts `ZORA_THEME_RECIPE_META` and runtime token choices into the central Authoring Model.
+The shared `AuthoringEditor` renders every published recipe from the metadata field kind:
 
 ```text
-choice  -> ZORA metadata options
-boolean -> On / Off
- token  -> currently resolved keys from the declared runtime token family
+choice  -> finite choice -> ZORA Select
+boolean -> boolean scalar -> ZORA Switch
+token   -> finite choice of resolved keys from the declared runtime token family -> ZORA Select
 ```
 
 Typography token fields use the same key space as ZORA runtime validation: typography sizes,
 weights, and headings. Other token fields use the resolved runtime keys for their declared family.
 
-Only selected override values are persisted under `ThemeConfig.recipes`. Choosing Inherited removes
+The model keeps the owner default separate from an authored value, including explicit `false`.
+Both narrow and wide layouts consume the same model and standard ZORA controls. Invalid overrides
+produce an explicit diagnostic and retain the inheritance reset action.
+
+Only selected override values are persisted under `ThemeConfig.recipes`. Choosing Use inherited removes
 the field override. Unknown persisted fields are preserved by Studio mutations and remain subject to
 ZORA's owner policy at runtime; Studio does not guess or normalize unknown recipe metadata.
 

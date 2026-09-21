@@ -14,6 +14,7 @@ export interface AuthoringPresentationPolicy {
   readonly description?: string;
   readonly readOnly?: boolean;
   readonly multiline?: boolean;
+  readonly inheritance?: { readonly value?: AuthoringPrimitive };
   readonly fields?: Readonly<Record<string, AuthoringPresentationPolicy>>;
 }
 
@@ -48,6 +49,10 @@ interface AuthoringNodeBase {
   readonly description?: string;
   readonly optional: boolean;
   readonly readOnly: boolean;
+  readonly inheritance?: {
+    readonly value?: AuthoringPrimitive;
+    readonly overridden: boolean;
+  };
 }
 
 export interface AuthoringScalarNode extends AuthoringNodeBase {

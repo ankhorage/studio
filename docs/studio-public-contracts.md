@@ -24,6 +24,13 @@ Preview both use that navigator, the generated Runtime registry, and the same ap
 Generic module administration consumes optional package-owned contributions and persists through
 the Orchestrator lifecycle. Studio does not expose a parallel module configuration model.
 
+Theme recipe administration adapts the released ZORA recipe metadata and active runtime token
+choices into the same neutral Authoring Model used for screen metadata. ZORA remains the owner of
+field kinds, options, labels, help and defaults. Inherited defaults are presentation state, not
+authored overrides: resetting a field removes it through the existing theme update/autosave
+boundary. Invalid overrides remain explicit diagnostics and can be reset without dropping unknown
+sibling fields. This metadata adapter does not introduce another generated StructureDescriptor root.
+
 ## Deliberately not owned here
 
 The public contract layer does not own:
