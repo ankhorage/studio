@@ -3,6 +3,7 @@ import { isRecord } from '@ankhorage/utility/object';
 import type {
   AuthoringDiagnostic,
   AuthoringNode,
+  type AuthoringOrderedListItem,
   AuthoringPresentationPolicy,
   AuthoringPrimitive,
   AuthoringScalarType,
@@ -91,7 +92,7 @@ function deriveNode(args: {
         ? {
             ...base,
             kind: 'ordered-list',
-            values: value.values,
+            item: value.item,
             items: value.items,
           }
         : unsupportedValue(base, value.diagnostic);
@@ -241,53 +242,73 @@ function readSetValue(
   return { ok: true, values, selected };
 }
 
-/*** Validate one ordered finite primitive list while preserving authored order and duplicates. */
+/*** Validate one ordered primitive list while preserving authored order and duplicates. */
 function readOrderedListValue(
   item: AuthoringStructure,
   value: unknown,
   optional: boolean,
 ): OrderedListReadResult {
-  if (item.kind !== 'choice') {
+  if (item.kind === 'choice') {
+    if (value === undefined && optional) {
+      return { ok: true, item: { kind: 'choice', values: item.values }, items: [] };
+    }
+    if (!Array.isArray(value)) {
+      return orderedListInvalidValue('Expected ordered-list array value.');
+    }
+
+    const hasInvalidItem = value.some(
+      (candidate) => !item.values.some((allowed) => Object.is(allowed, candidate)),
+    );
+    if (hasInvalidItem) {
+      return orderedListInvalidValue(
+        'Ordered-list item is not one of the finite descriptor choices.',
+      );
+    }
+
     return {
-      ok: false,
-      diagnostic: {
-        code: 'unsupported-structure',
-        message: 'Ordered-list authoring requires finite primitive item choices.',
-        path: [],
-      },
+      ok: true,
+      item: { kind: 'choice', values: item.values },
+      items: value as readonly AuthoringPrimitive[],
     };
   }
 
-  if (value === undefined && optional) return { ok: true, values: item.values, items: [] };
-  if (!Array.isArray(value)) {
-    return {
-      ok: false,
-      diagnostic: {
-        code: 'invalid-value',
-        message: 'Expected ordered-list array value.',
-        path: [],
-      },
-    };
-  }
+  if (item.kind === 'scalar' && item.scalarType === 'string') {
+    if (value === undefined && optional) {
+      return { ok: true, item: { kind: 'scalar', scalarType: 'string' }, items: [] };
+    }
+    if (!Array.isArray(value)) {
+      return orderedListInvalidValue('Expected ordered-list array value.');
+    }
+    if (!value.every((candidate) => typeof candidate === 'string')) {
+      return orderedListInvalidValue('Ordered-list item must be a string.');
+    }
 
-  const hasInvalidItem = value.some(
-    (candidate) => !item.values.some((allowed) => Object.is(allowed, candidate)),
-  );
-  if (hasInvalidItem) {
     return {
-      ok: false,
-      diagnostic: {
-        code: 'invalid-value',
-        message: 'Ordered-list item is not one of the finite descriptor choices.',
-        path: [],
-      },
+      ok: true,
+      item: { kind: 'scalar', scalarType: 'string' },
+      items: value,
     };
   }
 
   return {
-    ok: true,
-    values: item.values,
-    items: value as readonly AuthoringPrimitive[],
+    ok: false,
+    diagnostic: {
+      code: 'unsupported-structure',
+      message: 'Ordered-list authoring supports finite primitive choices or scalar string items.',
+      path: [],
+    },
+  };
+}
+
+/*** Create an invalid-value result for malformed ordered-list runtime data. */
+function orderedListInvalidValue(message: string): OrderedListReadResult {
+  return {
+    ok: false,
+    diagnostic: {
+      code: 'invalid-value',
+      message,
+      path: [],
+    },
   };
 }
 
@@ -339,7 +360,7 @@ type SetReadResult =
 type OrderedListReadResult =
   | {
       readonly ok: true;
-      readonly values: readonly AuthoringPrimitive[];
+      readonly item: AuthoringOrderedListItem;
       readonly items: readonly AuthoringPrimitive[];
     }
   | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
