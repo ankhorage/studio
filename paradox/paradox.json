@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.0.2",
+      "value": "v5.1.0",
       "color": "cb3837"
     },
     {
@@ -785,6 +785,7 @@
         "src/core/studioManifestDraftModel.ts",
         "src/core/studioManifestPersistenceModel.ts",
         "src/features/screen-administration/application/use-cases/updateStudioScreenMetadata.ts",
+        "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.ts",
         "src/index.ts",
         "src/manifestState.ts",
         "src/manifestSync.ts",
@@ -1589,6 +1590,23 @@
       "exports": [
         "ScreenMetadataManifest",
         "updateStudioScreenMetadata"
+      ]
+    },
+    {
+      "path": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "ScreenRequirementsManifest",
+        "updateStudioScreenRequirements"
       ]
     },
     {
@@ -5459,6 +5477,7 @@
         "AuthoringPrimitive",
         "AuthoringScalarNode",
         "AuthoringScalarType",
+        "AuthoringSetNode",
         "AuthoringStructure",
         "AuthoringStructureResolution",
         "AuthoringValue"
@@ -6828,7 +6847,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 455,
+        "line": 460,
         "column": 14
       },
       "exportPaths": [
@@ -6848,7 +6867,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 367,
+        "line": 368,
         "column": 1
       },
       "exportPaths": [
@@ -7000,7 +7019,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1436,
+        "line": 1441,
         "column": 1
       },
       "exportPaths": [
@@ -7038,7 +7057,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 754,
+        "line": 759,
         "column": 1
       },
       "exportPaths": [
@@ -7074,7 +7093,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 606,
+        "line": 611,
         "column": 14
       },
       "exportPaths": [
@@ -7236,7 +7255,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1349,
+        "line": 1354,
         "column": 1
       },
       "exportPaths": [
@@ -7551,7 +7570,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 628,
+        "line": 633,
         "column": 14
       },
       "exportPaths": [
@@ -7633,7 +7652,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 597,
+        "line": 602,
         "column": 14
       },
       "exportPaths": [
@@ -7667,7 +7686,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1259,
+        "line": 1264,
         "column": 1
       },
       "exportPaths": [
@@ -7701,7 +7720,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 345,
+        "line": 346,
         "column": 1
       },
       "exportPaths": [
@@ -7796,7 +7815,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 327,
+        "line": 328,
         "column": 1
       },
       "exportPaths": [
@@ -7841,7 +7860,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 304,
+        "line": 305,
         "column": 1
       },
       "exportPaths": [
@@ -7861,7 +7880,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 355,
+        "line": 356,
         "column": 1
       },
       "exportPaths": [
@@ -7881,7 +7900,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 333,
+        "line": 334,
         "column": 1
       },
       "exportPaths": [
@@ -7970,7 +7989,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 301,
+        "line": 302,
         "column": 1
       },
       "exportPaths": [
@@ -7990,7 +8009,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 302,
+        "line": 303,
         "column": 1
       },
       "exportPaths": [
@@ -8010,7 +8029,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 350,
+        "line": 351,
         "column": 1
       },
       "exportPaths": [
@@ -8106,7 +8125,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1036,
+        "line": 1041,
         "column": 1
       },
       "exportPaths": [
@@ -8143,7 +8162,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 971,
+        "line": 976,
         "column": 1
       },
       "exportPaths": [
@@ -8195,7 +8214,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 978,
+        "line": 983,
         "column": 1
       },
       "exportPaths": [
@@ -8230,7 +8249,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 312,
+        "line": 313,
         "column": 1
       },
       "exportPaths": [
@@ -8288,7 +8307,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 320,
+        "line": 321,
         "column": 1
       },
       "exportPaths": [
@@ -8337,7 +8356,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 307,
+        "line": 308,
         "column": 1
       },
       "exportPaths": [
@@ -8412,7 +8431,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1184,
+        "line": 1189,
         "column": 1
       },
       "exportPaths": [
@@ -8449,7 +8468,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1063,
+        "line": 1068,
         "column": 1
       },
       "exportPaths": [
@@ -8501,7 +8520,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1070,
+        "line": 1075,
         "column": 1
       },
       "exportPaths": [
@@ -8536,7 +8555,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 262,
+        "line": 263,
         "column": 1
       },
       "exportPaths": [
@@ -8587,7 +8606,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 269,
+        "line": 270,
         "column": 1
       },
       "exportPaths": [
@@ -8607,7 +8626,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 282,
+        "line": 283,
         "column": 1
       },
       "exportPaths": [
@@ -8644,7 +8663,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 260,
+        "line": 261,
         "column": 1
       },
       "exportPaths": [
@@ -8664,7 +8683,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 294,
+        "line": 295,
         "column": 1
       },
       "exportPaths": [
@@ -8684,7 +8703,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 287,
+        "line": 288,
         "column": 1
       },
       "exportPaths": [
@@ -9241,7 +9260,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 665,
+        "line": 670,
         "column": 14
       },
       "exportPaths": [
@@ -9421,7 +9440,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 926,
+        "line": 931,
         "column": 1
       },
       "exportPaths": [
@@ -9458,7 +9477,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1484,
+        "line": 1489,
         "column": 1
       },
       "exportPaths": [
@@ -9495,7 +9514,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 861,
+        "line": 866,
         "column": 1
       },
       "exportPaths": [
@@ -9533,7 +9552,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1112,
+        "line": 1117,
         "column": 1
       },
       "exportPaths": [
@@ -9700,7 +9719,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1222,
+        "line": 1227,
         "column": 14
       },
       "exportPaths": [
@@ -9745,7 +9764,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 102,
+        "line": 103,
         "column": 14
       },
       "exportPaths": [
@@ -9765,7 +9784,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 94,
+        "line": 95,
         "column": 14
       },
       "exportPaths": [
@@ -9785,7 +9804,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 136,
+        "line": 137,
         "column": 14
       },
       "exportPaths": [
@@ -9805,7 +9824,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 359,
+        "line": 360,
         "column": 1
       },
       "exportPaths": [
@@ -9849,7 +9868,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 357,
+        "line": 358,
         "column": 1
       },
       "exportPaths": [
@@ -9869,7 +9888,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 365,
+        "line": 366,
         "column": 1
       },
       "exportPaths": [
@@ -9889,7 +9908,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 180,
+        "line": 181,
         "column": 1
       },
       "exportPaths": [
@@ -9909,7 +9928,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 226,
+        "line": 227,
         "column": 1
       },
       "exportPaths": [
@@ -9929,7 +9948,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 206,
+        "line": 207,
         "column": 1
       },
       "exportPaths": [
@@ -10379,7 +10398,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 391,
+        "line": 392,
         "column": 1
       },
       "exportPaths": [
@@ -10399,7 +10418,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 375,
+        "line": 376,
         "column": 1
       },
       "exportPaths": [
@@ -10434,7 +10453,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 380,
+        "line": 381,
         "column": 1
       },
       "exportPaths": [
@@ -10485,7 +10504,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 387,
+        "line": 388,
         "column": 1
       },
       "exportPaths": [
@@ -10505,7 +10524,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 406,
+        "line": 407,
         "column": 1
       },
       "exportPaths": [
@@ -10872,6 +10891,13 @@
           "description": null
         },
         {
+          "name": "updateScreenRequirements",
+          "kind": "property",
+          "type": "(id: StudioScreenId, requirements: ScreenRequirements | undefined) => boolean",
+          "required": true,
+          "description": null
+        },
+        {
           "name": "updateTheme",
           "kind": "property",
           "type": "(id: string, updates: ThemeUpdates) => void",
@@ -10897,7 +10923,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 399,
+        "line": 400,
         "column": 1
       },
       "exportPaths": [
@@ -10917,7 +10943,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 389,
+        "line": 390,
         "column": 1
       },
       "exportPaths": [
@@ -10957,7 +10983,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 235,
+        "line": 236,
         "column": 1
       },
       "exportPaths": [
@@ -11424,7 +11450,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 175,
+        "line": 176,
         "column": 1
       },
       "exportPaths": [
@@ -11630,7 +11656,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 173,
+        "line": 174,
         "column": 1
       },
       "exportPaths": [
@@ -11650,7 +11676,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 96,
+        "line": 97,
         "column": 1
       },
       "exportPaths": [
@@ -11692,7 +11718,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 179,
+        "line": 180,
         "column": 1
       },
       "exportPaths": [
@@ -11712,7 +11738,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 171,
+        "line": 172,
         "column": 1
       },
       "exportPaths": [
@@ -11823,7 +11849,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 169,
+        "line": 170,
         "column": 1
       },
       "exportPaths": [
@@ -11921,7 +11947,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 178,
+        "line": 179,
         "column": 1
       },
       "exportPaths": [
@@ -11941,7 +11967,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 174,
+        "line": 175,
         "column": 1
       },
       "exportPaths": [
@@ -11961,7 +11987,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 242,
+        "line": 243,
         "column": 1
       },
       "exportPaths": [
@@ -12019,7 +12045,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 172,
+        "line": 173,
         "column": 1
       },
       "exportPaths": [
@@ -12039,7 +12065,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 250,
+        "line": 251,
         "column": 1
       },
       "exportPaths": [
@@ -12322,7 +12348,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 237,
+        "line": 238,
         "column": 1
       },
       "exportPaths": [
@@ -12342,7 +12368,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 547,
+        "line": 552,
         "column": 14
       },
       "exportPaths": [
@@ -12362,7 +12388,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 637,
+        "line": 642,
         "column": 14
       },
       "exportPaths": [
@@ -12500,7 +12526,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1282,
+        "line": 1287,
         "column": 1
       },
       "exportPaths": [
@@ -12544,7 +12570,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 770,
+        "line": 775,
         "column": 1
       },
       "exportPaths": [
@@ -13932,7 +13958,7 @@
       "description": "Provide a no-op action for context capabilities that Studio does not currently implement.",
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 93,
+        "line": 95,
         "column": 7
       }
     },
@@ -13941,7 +13967,7 @@
       "description": "Own Studio authoring state, manifest mutations, media actions, selection, navigation, and persistence for one project.",
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 97,
+        "line": 99,
         "column": 14
       }
     },
@@ -13950,7 +13976,7 @@
       "description": "Coordinate initial manifest hydration, debounced persistence, explicit flushes, and save-state reporting for StudioProvider.\n@todo Move manifest persistence orchestration out of StudioProvider into the dedicated persistence responsibility.",
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 577,
+        "line": 594,
         "column": 1
       }
     },
@@ -13959,7 +13985,7 @@
       "description": "Fetch and parse the persisted Studio manifest for one project.\n@todo Group project-manifest HTTP access in a dedicated manifest host client instead of StudioProvider.",
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 701,
+        "line": 718,
         "column": 1
       }
     },
@@ -13968,7 +13994,7 @@
       "description": "Persist the complete Studio manifest for one project through the host API.\n@todo Group project-manifest HTTP access in a dedicated manifest host client instead of StudioProvider.",
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 714,
+        "line": 731,
         "column": 1
       }
     },
@@ -13977,7 +14003,7 @@
       "description": "Parse a persistence response body as JSON and convert invalid bodies into an explicit request error.\n@todo Keep response parsing beside the dedicated project-manifest host client.",
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 731,
+        "line": 748,
         "column": 1
       }
     },
@@ -13986,7 +14012,7 @@
       "description": "Convert an unsuccessful persistence response payload and HTTP status into an Error.\n@todo Keep persistence response error policy beside the dedicated project-manifest host client.",
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 743,
+        "line": 760,
         "column": 1
       }
     },
@@ -13995,7 +14021,7 @@
       "description": "Convert an unknown persistence failure into the message shown by Studio save-state UI.",
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 751,
+        "line": 768,
         "column": 1
       }
     },
@@ -14265,7 +14291,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 181,
+        "line": 223,
         "column": 1
       }
     },
@@ -14274,7 +14300,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 194,
+        "line": 236,
         "column": 1
       }
     },
@@ -14283,7 +14309,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 210,
+        "line": 252,
         "column": 1
       }
     },
@@ -14292,7 +14318,7 @@
       "description": "Render one neutral authoring model with ZORA controls without owning product-specific schema.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 24,
+        "line": 25,
         "column": 1
       }
     },
@@ -14301,7 +14327,7 @@
       "description": "Choose the ZORA control for one neutral structural node.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 59,
+        "line": 60,
         "column": 1
       }
     },
@@ -14310,7 +14336,16 @@
       "description": "Render one finite primitive choice and translate its control value back to the owner value.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 115,
+        "line": 120,
+        "column": 1
+      }
+    },
+    {
+      "name": "SetEditor",
+      "description": "Render finite unordered string membership with one switch per owner-provided member.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "line": 157,
         "column": 1
       }
     },
@@ -14319,7 +14354,7 @@
       "description": "Render one scalar authoring node and translate ZORA changes to neutral mutations.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 152,
+        "line": 198,
         "column": 1
       }
     },
@@ -14328,7 +14363,7 @@
       "description": "Convert text input to a scalar set/unset mutation without coercing invalid numeric values.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 197,
+        "line": 243,
         "column": 1
       }
     },
@@ -14337,16 +14372,16 @@
       "description": "Encode a primitive choice into a stable Select value without losing its runtime type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 220,
+        "line": 266,
         "column": 1
       }
     },
     {
-      "name": "formatAuthoringValue",
-      "description": "Format one authored primitive for read-only presentation.",
+      "name": "formatAuthoringNodeValue",
+      "description": "Format one supported authored node for read-only presentation.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 225,
+        "line": 271,
         "column": 1
       }
     },
@@ -14373,7 +14408,7 @@
       "description": "Resolve one local descriptor reference and reject unsupported external/cyclic references explicitly.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
-        "line": 79,
+        "line": 84,
         "column": 1
       }
     },
@@ -14382,7 +14417,7 @@
       "description": "Preserve an unsupported descriptor kind as an explicit authoring diagnostic.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
-        "line": 131,
+        "line": 136,
         "column": 1
       }
     },
@@ -14499,7 +14534,7 @@
       "description": "Read and validate one scalar runtime value against its portable structural type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 109,
+        "line": 120,
         "column": 1
       }
     },
@@ -14508,7 +14543,7 @@
       "description": "Decide whether one unknown runtime value satisfies a scalar descriptor type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 130,
+        "line": 141,
         "column": 1
       }
     },
@@ -14517,7 +14552,16 @@
       "description": "Read one finite-choice value without coercing values outside the descriptor options.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 149,
+        "line": 160,
+        "column": 1
+      }
+    },
+    {
+      "name": "readSetValue",
+      "description": "Validate canonical unordered string membership against finite owner-provided choices.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "line": 181,
         "column": 1
       }
     },
@@ -14526,7 +14570,7 @@
       "description": "Convert an invalid runtime value to an explicit unsupported authoring node.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 170,
+        "line": 234,
         "column": 1
       }
     },
@@ -14535,7 +14579,7 @@
       "description": "Convert a source property name to a default human-readable field label.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 191,
+        "line": 255,
         "column": 1
       }
     },
@@ -14544,7 +14588,7 @@
       "description": "Format one authoring path for diagnostics without leaking implementation details.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 198,
+        "line": 262,
         "column": 1
       }
     },
@@ -16291,6 +16335,33 @@
       "sourceLocation": {
         "filePath": "src/features/screen-administration/application/use-cases/updateStudioScreenMetadata.ts",
         "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.test.ts",
+        "line": 70,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateStudioScreenRequirements",
+      "description": "Replace one screen's explicit requirements while preserving identity, metadata, UI, and loaders.",
+      "sourceLocation": {
+        "filePath": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeScreenRequirements",
+      "description": "Prune empty requirement families and omit the screen requirements object when no membership remains.",
+      "sourceLocation": {
+        "filePath": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.ts",
+        "line": 41,
         "column": 1
       }
     },
@@ -23445,7 +23516,7 @@
       "description": "Generate a compact time/random identifier with an optional lowercase prefix.\n@utility @ankhorage/utility/id\n@todo Move the Studio-facing wrapper out of `src/index.ts`; the reusable identifier primitive belongs in Utility.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 597,
+        "line": 602,
         "column": 14
       }
     },
@@ -23454,7 +23525,7 @@
       "description": "Deep-clone a UiNode tree while assigning fresh identifiers and shallow-cloning node props.\n@utility @ankhorage/utility/tree\n@todo `cloneTreeWithNewIds` currently allocates child ids before the root; retain this public pre-order callback contract until Utility supports configurable traversal order.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 606,
+        "line": 611,
         "column": 14
       }
     },
@@ -23463,7 +23534,7 @@
       "description": "Find the first node with a matching id in a depth-first tree traversal.\n@utility @ankhorage/utility/tree\n@todo Move the UiNode wrapper out of `src/index.ts`; parameterize id and child accessors for Utility.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 628,
+        "line": 633,
         "column": 14
       }
     },
@@ -23472,7 +23543,7 @@
       "description": "Immutably update one UiNode by id while preserving Studio's alias/style versus props patch semantics.\n@utility @ankhorage/utility/tree\n@todo Keep Studio-specific patch projection in the canvas/properties owner and extract the generic immutable tree-update primitive to Utility.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 637,
+        "line": 642,
         "column": 14
       }
     },
@@ -23481,7 +23552,7 @@
       "description": "Immutably remove a node by id from a UiNode tree and preserve unchanged branches by reference.\n@utility @ankhorage/utility/tree\n@todo Move the UiNode wrapper out of `src/index.ts` and parameterize tree accessors for Utility.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 665,
+        "line": 670,
         "column": 14
       }
     },
@@ -23490,7 +23561,7 @@
       "description": "Find a node together with its parent and sibling index in a depth-first traversal.\n@utility @ankhorage/utility/tree",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 679,
+        "line": 684,
         "column": 1
       }
     },
@@ -23499,7 +23570,7 @@
       "description": "Return whether a node tree contains a descendant with the requested id.\n@utility @ankhorage/utility/tree",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 687,
+        "line": 692,
         "column": 1
       }
     },
@@ -23508,7 +23579,7 @@
       "description": "Immutably remove one node from a tree and return both the next tree and removed node for move operations.\n@utility @ankhorage/utility/tree",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 695,
+        "line": 700,
         "column": 1
       }
     },
@@ -23517,7 +23588,7 @@
       "description": "Return whether Studio component metadata permits one child type under a parent type.\n@todo Move this component-placement policy from `src/index.ts` into the `canvas/` or insert-authoring domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 754,
+        "line": 759,
         "column": 1
       }
     },
@@ -23526,7 +23597,7 @@
       "description": "Validate one resolved Studio placement against parent existence, child policy, index bounds and sibling-reference invariants.\n@todo Move placement validation from the public entrypoint into the `canvas/` domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 770,
+        "line": 775,
         "column": 1
       }
     },
@@ -23535,7 +23606,7 @@
       "description": "Resolve a requested inside/before/after insertion target to a validated Studio placement.\n@todo Move insertion-placement policy from `src/index.ts` into the `canvas/`/insert domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 861,
+        "line": 866,
         "column": 1
       }
     },
@@ -23544,7 +23615,7 @@
       "description": "Resolve the preferred insertion placement by trying the selected node, its sibling position, then the screen root.\n@todo Move Studio default insertion policy from `src/index.ts` into the insert/canvas domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 926,
+        "line": 931,
         "column": 1
       }
     },
@@ -23553,7 +23624,7 @@
       "description": "Immutably insert a child at a requested parent/index anywhere in a tree and report whether insertion occurred.\n@utility @ankhorage/utility/tree",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 987,
+        "line": 992,
         "column": 1
       }
     },
@@ -23562,7 +23633,7 @@
       "description": "Create and insert one Studio node after validating its requested placement.\n@todo Move Studio insertion orchestration from `src/index.ts` into the insert/canvas domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1036,
+        "line": 1041,
         "column": 1
       }
     },
@@ -23571,7 +23642,7 @@
       "description": "Adjust a target placement for removal-induced index shifts and reject no-op/self-reference moves.\n@todo Keep this placement-specific policy in the canvas domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1079,
+        "line": 1084,
         "column": 1
       }
     },
@@ -23580,7 +23651,7 @@
       "description": "Validate and resolve a requested Studio node move after accounting for source removal and descendant/no-op invariants.\n@todo Move node-move policy from `src/index.ts` into the canvas domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1112,
+        "line": 1117,
         "column": 1
       }
     },
@@ -23589,7 +23660,7 @@
       "description": "Execute a validated Studio node move as immutable removal followed by insertion.\n@todo Move node-move orchestration from `src/index.ts` into the canvas domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1184,
+        "line": 1189,
         "column": 1
       }
     },
@@ -23598,7 +23669,7 @@
       "description": "Resolve Studio's display label for an insert-catalog category, falling back to the raw category id.\n@todo Move insert-catalog presentation metadata out of `src/index.ts` into the insert domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1259,
+        "line": 1264,
         "column": 1
       }
     },
@@ -23607,7 +23678,7 @@
       "description": "Resolve a category's preferred sort position and place unknown categories after the configured list.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1264,
+        "line": 1269,
         "column": 1
       }
     },
@@ -23616,7 +23687,7 @@
       "description": "Convert an insert-recipe validation issue to the Studio-facing disabled reason text.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1270,
+        "line": 1275,
         "column": 1
       }
     },
@@ -23625,7 +23696,7 @@
       "description": "Validate an insert recipe recursively against Studio component metadata and allowed-child constraints.\n@todo Move recipe validation from `src/index.ts` into the insert/templates domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1282,
+        "line": 1287,
         "column": 1
       }
     },
@@ -23634,7 +23705,7 @@
       "description": "Visit one recipe node, validating metadata and child compatibility while retaining the recipe path.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1287,
+        "line": 1292,
         "column": 9
       }
     },
@@ -23643,7 +23714,7 @@
       "description": "Materialize a Studio insert-recipe tree into UiNodes using component blueprint defaults and an injected id generator.\n@todo Move recipe-node creation from `src/index.ts` into the insert/templates domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1324,
+        "line": 1329,
         "column": 1
       }
     },
@@ -23652,7 +23723,7 @@
       "description": "Build one recipe node and recursively materialize its children.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1330,
+        "line": 1335,
         "column": 9
       }
     },
@@ -23661,7 +23732,7 @@
       "description": "Materialize one enabled component or recipe catalog entry into a fresh UiNode tree.\n@todo Move insert-catalog node creation from `src/index.ts` into the insert domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1349,
+        "line": 1354,
         "column": 1
       }
     },
@@ -23670,7 +23741,7 @@
       "description": "Project one Studio component metadata entry into its insert-catalog entry and direct-node availability state.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1370,
+        "line": 1375,
         "column": 1
       }
     },
@@ -23679,7 +23750,7 @@
       "description": "Project one Studio recipe into an enabled/disabled insert-catalog entry after recipe validation.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1394,
+        "line": 1399,
         "column": 1
       }
     },
@@ -23688,7 +23759,7 @@
       "description": "Build and deterministically sort Studio's component/recipe insert catalog from component metadata and recipes.\n@todo Move insert-catalog construction from `src/index.ts` into the insert domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1436,
+        "line": 1441,
         "column": 1
       }
     },
@@ -23697,7 +23768,7 @@
       "description": "Resolve the default validated placement for one insert-catalog entry.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1464,
+        "line": 1469,
         "column": 1
       }
     },
@@ -23706,7 +23777,7 @@
       "description": "Resolve enabled/disabled insert-catalog state against the active screen and selected-node placement context.\n@todo Move context-sensitive insert catalog projection from `src/index.ts` into the insert/canvas application domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1484,
+        "line": 1489,
         "column": 1
       }
     },
@@ -23715,7 +23786,7 @@
       "description": "Return whether a value is a non-array record whose values are all strings or numbers.\n@utility @ankhorage/utility/object",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1538,
+        "line": 1543,
         "column": 1
       }
     },
@@ -31017,6 +31088,11 @@
       },
       {
         "fromPath": "src/core/StudioProvider.ts",
+        "toPath": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.ts",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromPath": "src/core/StudioProvider.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/core/StudioProvider.ts"
       },
@@ -35319,6 +35395,11 @@
         "fromPath": "src/features/screen-administration/application/use-cases/updateStudioScreenMetadata.test.ts",
         "toPath": "src/features/screen-administration/application/use-cases/updateStudioScreenMetadata.ts",
         "sourcePath": "src/features/screen-administration/application/use-cases/updateStudioScreenMetadata.test.ts"
+      },
+      {
+        "fromPath": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.test.ts",
+        "toPath": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.ts",
+        "sourcePath": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.test.ts"
       },
       {
         "fromPath": "src/host/layout/templates/auth/adapter.test.ts",
@@ -44548,6 +44629,12 @@
         "fromSymbol": "src/core/StudioProvider.ts",
         "toSymbol": "updateStudioScreenMetadata",
         "callExpression": "updateStudioScreenMetadata",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "updateStudioScreenRequirements",
+        "callExpression": "updateStudioScreenRequirements",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
@@ -68288,8 +68375,8 @@
       },
       {
         "fromSymbol": "AuthoringControl",
-        "toSymbol": "formatAuthoringValue",
-        "callExpression": "formatAuthoringValue",
+        "toSymbol": "formatAuthoringNodeValue",
+        "callExpression": "formatAuthoringNodeValue",
         "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
       },
       {
@@ -68348,6 +68435,12 @@
       },
       {
         "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
+        "toSymbol": "resolveDescriptor",
+        "callExpression": "resolveDescriptor",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts"
+      },
+      {
+        "fromSymbol": "resolveDescriptor",
         "toSymbol": "resolveDescriptor",
         "callExpression": "resolveDescriptor",
         "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts"
@@ -68558,6 +68651,12 @@
       },
       {
         "fromSymbol": "deriveNode",
+        "toSymbol": "readSetValue",
+        "callExpression": "readSetValue",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "deriveNode",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
@@ -68584,6 +68683,12 @@
         "fromSymbol": "readScalarValue",
         "toSymbol": "isScalarTypeValue",
         "callExpression": "isScalarTypeValue",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "readSetValue",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
         "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
       },
       {
@@ -70061,6 +70166,36 @@
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "src/features/screen-administration/application/use-cases/updateStudioScreenMetadata.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.test.ts",
+        "toSymbol": "updateStudioScreenRequirements",
+        "callExpression": "updateStudioScreenRequirements",
+        "sourcePath": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.test.ts"
+      },
+      {
+        "fromSymbol": "updateStudioScreenRequirements",
+        "toSymbol": "normalizeScreenRequirements",
+        "callExpression": "normalizeScreenRequirements",
+        "sourcePath": "src/features/screen-administration/application/use-cases/updateStudioScreenRequirements.ts"
       },
       {
         "fromSymbol": "src/host/layout/templates/auth/adapter.test.ts",
@@ -72097,6 +72232,11 @@
       {
         "fromSymbol": "StudioContextValue",
         "toType": "ScreenMetadataSpec",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "ScreenRequirements",
         "sourcePath": "src/index.ts"
       },
       {

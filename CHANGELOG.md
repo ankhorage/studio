@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.1.0
+
+### Minor Changes
+
+- 94563c6: Add finite set-membership semantics to the central Authoring Engine for descriptor-driven screen requirements.
+
 ## 5.0.2
 
 ### Patch Changes
