@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.2.0
+
+### Minor Changes
+
+- 8ac7ea4: Render the /ankh/auth/routes flow fields through the central descriptor-driven Authoring Engine.
+
 ## 5.1.2
 
 ### Patch Changes
