@@ -183,7 +183,10 @@ function readSetValue(
   value: unknown,
   optional: boolean,
 ): SetReadResult {
-  if (member.kind !== 'choice' || !member.values.every((candidate) => typeof candidate === 'string')) {
+  if (
+    member.kind !== 'choice' ||
+    !member.values.every((candidate) => typeof candidate === 'string')
+  ) {
     return {
       ok: false,
       diagnostic: {
@@ -194,7 +197,7 @@ function readSetValue(
     };
   }
 
-  const values = member.values as readonly string[];
+  const values = member.values;
   if (value === undefined && optional) return { ok: true, values, selected: [] };
   if (!isRecord(value)) {
     return {
@@ -208,7 +211,9 @@ function readSetValue(
   }
 
   const entries = Object.entries(value);
-  const invalid = entries.find(([key, memberValue]) => memberValue !== true || !values.includes(key));
+  const invalid = entries.find(
+    ([key, memberValue]) => memberValue !== true || !values.includes(key),
+  );
   if (invalid) {
     return {
       ok: false,
