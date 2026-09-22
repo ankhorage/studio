@@ -53,7 +53,6 @@ import {
   rebaseAuthDraftOntoCanonicalCredentialRefs,
 } from './adminAuthSessionModel';
 
-const SIGN_IN_IDENTIFIERS = ['email', 'phone', 'username'] as const;
 const PROFILE_FIELDS = [
   'email',
   'phone',
@@ -67,6 +66,10 @@ const PROFILE_FIELDS = [
 const AUTH_FLOW_AUTHORING_STRUCTURE = resolveContractsAuthoringStructure(
   STRUCTURE_DESCRIPTOR,
   'auth-flow',
+);
+const AUTH_SIGN_IN_AUTHORING_STRUCTURE = resolveContractsAuthoringStructure(
+  STRUCTURE_DESCRIPTOR,
+  'auth-sign-in',
 );
 
 export interface AuthAdminPageProps {
@@ -294,28 +297,25 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
 
       {showGeneral ? (
         <Card title="Email and password">
-          <Text weight="semiBold">Sign-in identifiers</Text>
-          <View style={styles.choiceRow}>
-            {SIGN_IN_IDENTIFIERS.map((identifier) => {
-              const selected = draft.signIn.identifiers.includes(identifier);
-              return (
-                <Choice
-                  key={identifier}
-                  label={identifier}
-                  selected={selected}
-                  onPress={() =>
-                    setDraft((current) => {
-                      const identifiers = selected
-                        ? current.signIn.identifiers.filter((value) => value !== identifier)
-                        : [...current.signIn.identifiers, identifier];
-                      if (identifiers.length === 0) return current;
-                      return { ...current, signIn: { identifiers } };
-                    })
-                  }
-                />
-              );
+          <AuthoringEditor
+            model={deriveAuthoringModel({
+              structure: AUTH_SIGN_IN_AUTHORING_STRUCTURE.ok
+                ? AUTH_SIGN_IN_AUTHORING_STRUCTURE.structure
+                : {
+                    kind: 'unsupported',
+                    sourceKind: 'auth-sign-in',
+                    diagnostic: AUTH_SIGN_IN_AUTHORING_STRUCTURE.diagnostic,
+                  },
+              value: draft.signIn,
+              label: 'Sign-in',
             })}
-          </View>
+            onMutation={(mutation) =>
+              setDraft((current) => {
+                const result = applyAuthoringMutation(current.signIn, mutation);
+                return result.ok ? { ...current, signIn: result.value } : current;
+              })
+            }
+          />
 
           <SwitchSetting
             title="Public sign-up enabled"

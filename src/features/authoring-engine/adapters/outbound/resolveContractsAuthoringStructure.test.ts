@@ -49,6 +49,27 @@ test('resolves the released auth flow root for descriptor-driven route authoring
   ]);
 });
 
+test('resolves the released auth sign-in ordered identifier structure', () => {
+  const result = resolveContractsAuthoringStructure(STRUCTURE_DESCRIPTOR, 'auth-sign-in');
+
+  expect(result).toEqual({
+    ok: true,
+    structure: {
+      kind: 'object',
+      fields: [
+        {
+          name: 'identifiers',
+          optional: false,
+          structure: {
+            kind: 'ordered-list',
+            item: { kind: 'choice', values: ['email', 'phone', 'username'] },
+          },
+        },
+      ],
+    },
+  });
+});
+
 test('preserves canonical set semantics from Contracts descriptors', () => {
   const document = {
     protocolVersion: 1,

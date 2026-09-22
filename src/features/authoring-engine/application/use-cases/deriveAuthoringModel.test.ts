@@ -84,6 +84,37 @@ test('derives finite string set membership without imposing order on persisted m
   });
 });
 
+test('derives ordered finite choices without sorting or deduplicating authored items', () => {
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'ordered-list',
+      item: { kind: 'choice', values: ['email', 'phone', 'username'] },
+    },
+    value: ['username', 'email', 'username'],
+  });
+
+  expect(model).toMatchObject({
+    kind: 'ordered-list',
+    values: ['email', 'phone', 'username'],
+    items: ['username', 'email', 'username'],
+  });
+});
+
+test('rejects ordered-list values outside the owner choices', () => {
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'ordered-list',
+      item: { kind: 'choice', values: ['email', 'phone'] },
+    },
+    value: ['email', 'username'],
+  });
+
+  expect(model).toMatchObject({
+    kind: 'unsupported',
+    diagnostic: { code: 'invalid-value' },
+  });
+});
+
 test('rejects malformed or unknown set members instead of silently dropping them', () => {
   for (const value of [{ camera: false }, { unknown: true }]) {
     const model = deriveAuthoringModel({

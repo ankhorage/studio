@@ -6,6 +6,7 @@ import type {
   AuthoringChoiceNode,
   AuthoringMutation,
   AuthoringNode,
+  AuthoringOrderedListNode,
   AuthoringScalarNode,
   AuthoringSetNode,
 } from '../../../../types/authoring-engine';
@@ -113,6 +114,10 @@ function AuthoringControl({ model, onMutation, renderCustomControl }: AuthoringE
     return <SetEditor model={model} onMutation={onMutation} />;
   }
 
+  if (model.kind === 'ordered-list') {
+    return <OrderedListEditor model={model} onMutation={onMutation} />;
+  }
+
   return <ScalarEditor model={model} onMutation={onMutation} />;
 }
 
@@ -194,6 +199,100 @@ function SetEditor(props: {
   );
 }
 
+/*** Render an ordered finite primitive list with append, remove, and positional controls. */
+function OrderedListEditor(props: {
+  readonly model: AuthoringOrderedListNode;
+  readonly onMutation: (mutation: AuthoringMutation) => void;
+}) {
+  const { model } = props;
+
+  return (
+    <Field label={model.label} description={model.description} required={!model.optional}>
+      <View style={styles.membership}>
+        {model.items.map((item, index) => (
+          <View key={`${encodeChoiceValue(item)}:${index}`} style={styles.orderedListRow}>
+            <Text>{String(item)}</Text>
+            <Button
+              variant="outline"
+              disabled={index === 0}
+              onPress={() =>
+                props.onMutation({
+                  kind: 'set',
+                  path: model.path,
+                  value: moveOrderedListItem(model.items, index, index - 1),
+                })
+              }
+            >
+              Up
+            </Button>
+            <Button
+              variant="outline"
+              disabled={index === model.items.length - 1}
+              onPress={() =>
+                props.onMutation({
+                  kind: 'set',
+                  path: model.path,
+                  value: moveOrderedListItem(model.items, index, index + 1),
+                })
+              }
+            >
+              Down
+            </Button>
+            <Button
+              variant="outline"
+              onPress={() => {
+                const items = model.items.filter((_, candidateIndex) => candidateIndex !== index);
+                if (model.optional && items.length === 0) {
+                  props.onMutation({ kind: 'unset', path: model.path });
+                  return;
+                }
+                props.onMutation({ kind: 'set', path: model.path, value: items });
+              }}
+            >
+              Remove
+            </Button>
+          </View>
+        ))}
+        <View style={styles.orderedListAdd}>
+          {model.values.map((value) => (
+            <Button
+              key={encodeChoiceValue(value)}
+              variant="outline"
+              onPress={() =>
+                props.onMutation({
+                  kind: 'set',
+                  path: model.path,
+                  value: [...model.items, value],
+                })
+              }
+            >
+              {`Add ${String(value)}`}
+            </Button>
+          ))}
+        </View>
+      </View>
+    </Field>
+  );
+}
+
+/*** Move one ordered-list item immutably while preserving every other authored item. */
+function moveOrderedListItem(
+  items: readonly (string | number | boolean | null)[],
+  fromIndex: number,
+  toIndex: number,
+): readonly (string | number | boolean | null)[] {
+  if (fromIndex === toIndex) return items;
+  const moved = items.at(fromIndex);
+  const displaced = items.at(toIndex);
+  if (moved === undefined || displaced === undefined || toIndex < 0 || toIndex >= items.length)
+    return items;
+  return items.map((item, index) => {
+    if (index === fromIndex) return displaced;
+    if (index === toIndex) return moved;
+    return item;
+  });
+}
+
 /*** Render one scalar authoring node and translate ZORA changes to neutral mutations. */
 function ScalarEditor(props: {
   readonly model: AuthoringScalarNode;
@@ -269,10 +368,12 @@ function encodeChoiceValue(value: string | number | boolean | null): string {
 
 /*** Format one supported authored node for read-only presentation. */
 function formatAuthoringNodeValue(
-  model: AuthoringChoiceNode | AuthoringScalarNode | AuthoringSetNode,
+  model: AuthoringChoiceNode | AuthoringOrderedListNode | AuthoringScalarNode | AuthoringSetNode,
 ): string {
   if (model.kind === 'set')
     return model.selected.length > 0 ? model.selected.join(', ') : 'Not set';
+  if (model.kind === 'ordered-list')
+    return model.items.length > 0 ? model.items.map(String).join(', ') : 'Not set';
   if (model.value === undefined) return 'Not set';
   if (model.value === null) return 'null';
   return String(model.value);
@@ -288,6 +389,17 @@ const styles = StyleSheet.create({
   membershipRow: {
     alignItems: 'center',
     flexDirection: 'row',
+    gap: 8,
+  },
+  orderedListRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  orderedListAdd: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
   },
 });

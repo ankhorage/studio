@@ -85,6 +85,17 @@ function deriveNode(args: {
           }
         : unsupportedValue(base, value.diagnostic);
     }
+    case 'ordered-list': {
+      const value = readOrderedListValue(args.structure.item, args.value, args.optional);
+      return value.ok
+        ? {
+            ...base,
+            kind: 'ordered-list',
+            values: value.values,
+            items: value.items,
+          }
+        : unsupportedValue(base, value.diagnostic);
+    }
     case 'object': {
       if (args.value !== undefined && !isRecord(args.value)) {
         return unsupportedValue(base, {
@@ -230,6 +241,56 @@ function readSetValue(
   return { ok: true, values, selected };
 }
 
+/*** Validate one ordered finite primitive list while preserving authored order and duplicates. */
+function readOrderedListValue(
+  item: AuthoringStructure,
+  value: unknown,
+  optional: boolean,
+): OrderedListReadResult {
+  if (item.kind !== 'choice') {
+    return {
+      ok: false,
+      diagnostic: {
+        code: 'unsupported-structure',
+        message: 'Ordered-list authoring requires finite primitive item choices.',
+        path: [],
+      },
+    };
+  }
+
+  if (value === undefined && optional) return { ok: true, values: item.values, items: [] };
+  if (!Array.isArray(value)) {
+    return {
+      ok: false,
+      diagnostic: {
+        code: 'invalid-value',
+        message: 'Expected ordered-list array value.',
+        path: [],
+      },
+    };
+  }
+
+  const hasInvalidItem = value.some(
+    (candidate) => !item.values.some((allowed) => Object.is(allowed, candidate)),
+  );
+  if (hasInvalidItem) {
+    return {
+      ok: false,
+      diagnostic: {
+        code: 'invalid-value',
+        message: 'Ordered-list item is not one of the finite descriptor choices.',
+        path: [],
+      },
+    };
+  }
+
+  return {
+    ok: true,
+    values: item.values,
+    items: value as readonly AuthoringPrimitive[],
+  };
+}
+
 /*** Convert an invalid runtime value to an explicit unsupported authoring node. */
 function unsupportedValue(
   base: {
@@ -272,5 +333,13 @@ type SetReadResult =
       readonly ok: true;
       readonly values: readonly string[];
       readonly selected: readonly string[];
+    }
+  | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
+
+type OrderedListReadResult =
+  | {
+      readonly ok: true;
+      readonly values: readonly AuthoringPrimitive[];
+      readonly items: readonly AuthoringPrimitive[];
     }
   | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
