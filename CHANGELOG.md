@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.4.0
+
+### Minor Changes
+
+- 99d306f: Support ordered scalar-string lists in the central Authoring Engine so owner-defined open string collections can use the shared editor.
+
 ## 5.3.2
 
 ### Patch Changes

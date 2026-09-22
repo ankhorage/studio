@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.3.2",
+      "value": "v5.4.0",
       "color": "cb3837"
     },
     {
@@ -5474,6 +5474,7 @@
         "AuthoringMutation",
         "AuthoringMutationResult",
         "AuthoringNode",
+        "AuthoringOrderedListItem",
         "AuthoringOrderedListNode",
         "AuthoringPresentationPolicy",
         "AuthoringPrimitive",
@@ -14297,7 +14298,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 279,
+        "line": 328,
         "column": 1
       }
     },
@@ -14306,7 +14307,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 292,
+        "line": 341,
         "column": 1
       }
     },
@@ -14315,7 +14316,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 308,
+        "line": 357,
         "column": 1
       }
     },
@@ -14357,7 +14358,7 @@
     },
     {
       "name": "OrderedListEditor",
-      "description": "Render an ordered finite primitive list with append, remove, and positional controls.",
+      "description": "Render an ordered primitive list with editing, append, remove, and positional controls.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
         "line": 203,
@@ -14369,7 +14370,7 @@
       "description": "Move one ordered-list item immutably while preserving every other authored item.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 279,
+        "line": 312,
         "column": 1
       }
     },
@@ -14378,7 +14379,7 @@
       "description": "Render one scalar authoring node and translate ZORA changes to neutral mutations.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 297,
+        "line": 330,
         "column": 1
       }
     },
@@ -14387,7 +14388,7 @@
       "description": "Convert text input to a scalar set/unset mutation without coercing invalid numeric values.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 342,
+        "line": 375,
         "column": 1
       }
     },
@@ -14396,7 +14397,7 @@
       "description": "Encode a primitive choice into a stable Select value without losing its runtime type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 365,
+        "line": 398,
         "column": 1
       }
     },
@@ -14405,7 +14406,7 @@
       "description": "Format one supported authored node for read-only presentation.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 370,
+        "line": 403,
         "column": 1
       }
     },
@@ -14540,7 +14541,7 @@
       "description": "Derive one UI-neutral authoring model from neutral structure semantics and a runtime value.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 13,
+        "line": 14,
         "column": 1
       }
     },
@@ -14549,7 +14550,7 @@
       "description": "Recursively derive one authoring node while retaining path, optionality, and inherited policy.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 31,
+        "line": 32,
         "column": 1
       }
     },
@@ -14558,7 +14559,7 @@
       "description": "Read and validate one scalar runtime value against its portable structural type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 131,
+        "line": 132,
         "column": 1
       }
     },
@@ -14567,7 +14568,7 @@
       "description": "Decide whether one unknown runtime value satisfies a scalar descriptor type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 152,
+        "line": 153,
         "column": 1
       }
     },
@@ -14576,7 +14577,7 @@
       "description": "Read one finite-choice value without coercing values outside the descriptor options.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 171,
+        "line": 172,
         "column": 1
       }
     },
@@ -14585,16 +14586,25 @@
       "description": "Validate canonical unordered string membership against finite owner-provided choices.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 192,
+        "line": 193,
         "column": 1
       }
     },
     {
       "name": "readOrderedListValue",
-      "description": "Validate one ordered finite primitive list while preserving authored order and duplicates.",
+      "description": "Validate one ordered primitive list while preserving authored order and duplicates.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 245,
+        "line": 246,
+        "column": 1
+      }
+    },
+    {
+      "name": "orderedListInvalidValue",
+      "description": "Create an invalid-value result for malformed ordered-list runtime data.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "line": 304,
         "column": 1
       }
     },
@@ -14603,7 +14613,7 @@
       "description": "Convert an invalid runtime value to an explicit unsupported authoring node.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 295,
+        "line": 316,
         "column": 1
       }
     },
@@ -14612,7 +14622,7 @@
       "description": "Convert a source property name to a default human-readable field label.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 316,
+        "line": 337,
         "column": 1
       }
     },
@@ -14621,7 +14631,7 @@
       "description": "Format one authoring path for diagnostics without leaking implementation details.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 323,
+        "line": 344,
         "column": 1
       }
     },
@@ -68769,6 +68779,12 @@
         "fromSymbol": "readSetValue",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "readOrderedListValue",
+        "toSymbol": "orderedListInvalidValue",
+        "callExpression": "orderedListInvalidValue",
         "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
       },
       {
