@@ -5,8 +5,7 @@ export type AuthoringScalarType = 'boolean' | 'integer' | 'null' | 'number' | 's
 export type AuthoringPrimitive = boolean | number | string | null;
 
 export type AuthoringValue =
-  | AuthoringPrimitive
-  | readonly AuthoringValue[]
+  AuthoringPrimitive | readonly AuthoringValue[]
   | { readonly [key: string]: AuthoringValue };
 
 export interface AuthoringDiagnostic {
