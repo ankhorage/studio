@@ -67,8 +67,7 @@ test('derives grouped instance fields and owner defaults without exposing theme 
     authoring.groups.flatMap((group) => group.structure.fields.map((field) => field.name)),
   ).toEqual(['text', 'level']);
 
-  const content = authoring.groups[0];
-  const semantics = authoring.groups[1];
+  const [content, semantics] = authoring.groups;
   if (!content || !semantics) throw new Error('Expected grouped Heading authoring.');
 
   expect(
@@ -105,7 +104,7 @@ test('preserves media kinds as an owner-backed editor hint over portable referen
     props: { source: { mediaId: 'hero' } },
   };
   const authoring = resolveInstancePropertyAuthoring(node, registry);
-  const group = authoring.groups[0];
+  const [group] = authoring.groups;
   if (!group) throw new Error('Expected Image authoring.');
 
   const model = deriveAuthoringModel({ ...group, value: node.props ?? {}, label: group.category });
@@ -123,7 +122,7 @@ test('preserves media kinds as an owner-backed editor hint over portable referen
 test('keeps unsupported owner types explicit instead of guessing an editor', () => {
   const node: UiNode = { id: 'list', type: 'List', props: { items: [] } };
   const authoring = resolveInstancePropertyAuthoring(node, registry);
-  const group = authoring.groups[0];
+  const [group] = authoring.groups;
   if (!group) throw new Error('Expected List authoring.');
 
   const model = deriveAuthoringModel({ ...group, value: node.props ?? {}, label: group.category });
