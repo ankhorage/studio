@@ -225,7 +225,8 @@ function readSetValue(
     };
   }
 
-  const selected = values.filter((candidate) => value[candidate] === true);
+  const selectedKeys = new Set(entries.map(([key]) => key));
+  const selected = values.filter((candidate) => selectedKeys.has(candidate));
   return { ok: true, values, selected };
 }
 

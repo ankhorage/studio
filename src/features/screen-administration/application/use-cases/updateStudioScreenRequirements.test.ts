@@ -49,10 +49,14 @@ test('rejects missing or mismatched stable screen registry identity', () => {
     manifest,
   });
 
+  const screen = manifest.screens['screen-home'];
+  expect(screen).toBeDefined();
+  if (!screen) throw new Error('Expected screen fixture.');
+
   const mismatched = {
     screens: {
       'screen-home': {
-        ...manifest.screens['screen-home']!,
+        ...screen,
         id: 'different-screen',
       },
     },
