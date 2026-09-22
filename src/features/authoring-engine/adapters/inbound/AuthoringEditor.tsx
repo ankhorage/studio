@@ -21,11 +21,7 @@ export interface AuthoringEditorProps {
 }
 
 /*** Render one neutral authoring model with ZORA controls without owning product-specific schema. */
-export function AuthoringEditor({
-  model,
-  onMutation,
-  renderCustomControl,
-}: AuthoringEditorProps) {
+export function AuthoringEditor({ model, onMutation, renderCustomControl }: AuthoringEditorProps) {
   const { inheritance } = model;
   if (!inheritance || !model.optional || model.readOnly) {
     return (
@@ -60,14 +56,8 @@ export function AuthoringEditor({
 }
 
 /*** Choose the ZORA control for one neutral structural node. */
-function AuthoringControl({
-  model,
-  onMutation,
-  renderCustomControl,
-}: AuthoringEditorProps) {
-  const customControl = model.editor
-    ? renderCustomControl?.({ model, onMutation })
-    : undefined;
+function AuthoringControl({ model, onMutation, renderCustomControl }: AuthoringEditorProps) {
+  const customControl = model.editor ? renderCustomControl?.({ model, onMutation }) : undefined;
   if (customControl !== undefined && !model.readOnly) {
     return (
       <Field label={model.label} description={model.description} required={!model.optional}>
