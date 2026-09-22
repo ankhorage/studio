@@ -1,6 +1,11 @@
+import type { MediaAssetKind } from '@ankhorage/contracts';
+
 export type AuthoringScalarType = 'boolean' | 'integer' | 'null' | 'number' | 'string';
 
 export type AuthoringPrimitive = boolean | number | string | null;
+
+export type AuthoringValue =
+  AuthoringPrimitive | readonly AuthoringValue[] | { readonly [key: string]: AuthoringValue };
 
 export interface AuthoringDiagnostic {
   readonly code:
@@ -9,12 +14,18 @@ export interface AuthoringDiagnostic {
   readonly path: readonly string[];
 }
 
+interface AuthoringEditorHint {
+  readonly kind: string;
+  readonly mediaKinds?: readonly MediaAssetKind[];
+}
+
 export interface AuthoringPresentationPolicy {
   readonly label?: string;
   readonly description?: string;
   readonly readOnly?: boolean;
   readonly multiline?: boolean;
   readonly inheritance?: { readonly value?: AuthoringPrimitive };
+  readonly editor?: AuthoringEditorHint;
   readonly fields?: Readonly<Record<string, AuthoringPresentationPolicy>>;
 }
 
@@ -49,6 +60,7 @@ interface AuthoringNodeBase {
   readonly description?: string;
   readonly optional: boolean;
   readonly readOnly: boolean;
+  readonly editor?: AuthoringEditorHint;
   readonly inheritance?: {
     readonly value?: AuthoringPrimitive;
     readonly overridden: boolean;
@@ -95,7 +107,7 @@ export type AuthoringMutation =
   | {
       readonly kind: 'set';
       readonly path: readonly string[];
-      readonly value: AuthoringPrimitive;
+      readonly value: AuthoringValue;
     }
   | {
       readonly kind: 'unset';

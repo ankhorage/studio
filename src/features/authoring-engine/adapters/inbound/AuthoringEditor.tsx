@@ -1,5 +1,5 @@
 import { Button, Field, Select, Switch, Text, TextInput } from '@ankhorage/zora';
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import type {
@@ -9,21 +9,37 @@ import type {
   AuthoringScalarNode,
 } from '../../../../types/authoring-engine';
 
-export interface AuthoringEditorProps {
+export interface AuthoringCustomControlProps {
   readonly model: AuthoringNode;
   readonly onMutation: (mutation: AuthoringMutation) => void;
 }
 
+export interface AuthoringEditorProps {
+  readonly model: AuthoringNode;
+  readonly onMutation: (mutation: AuthoringMutation) => void;
+  readonly renderCustomControl?: (props: AuthoringCustomControlProps) => ReactNode | undefined;
+}
+
 /*** Render one neutral authoring model with ZORA controls without owning product-specific schema. */
-export function AuthoringEditor({ model, onMutation }: AuthoringEditorProps) {
+export function AuthoringEditor({ model, onMutation, renderCustomControl }: AuthoringEditorProps) {
   const { inheritance } = model;
   if (!inheritance || !model.optional || model.readOnly) {
-    return <AuthoringControl model={model} onMutation={onMutation} />;
+    return (
+      <AuthoringControl
+        model={model}
+        onMutation={onMutation}
+        renderCustomControl={renderCustomControl}
+      />
+    );
   }
 
   return (
     <View style={styles.fields}>
-      <AuthoringControl model={model} onMutation={onMutation} />
+      <AuthoringControl
+        model={model}
+        onMutation={onMutation}
+        renderCustomControl={renderCustomControl}
+      />
       <Text color="neutral" emphasis="muted" variant="caption">
         {inheritance.overridden ? 'Override' : 'Inherited'}
         {inheritance.value === undefined ? '' : ` (default: ${String(inheritance.value)})`}
@@ -40,12 +56,26 @@ export function AuthoringEditor({ model, onMutation }: AuthoringEditorProps) {
 }
 
 /*** Choose the ZORA control for one neutral structural node. */
-function AuthoringControl({ model, onMutation }: AuthoringEditorProps) {
+function AuthoringControl({ model, onMutation, renderCustomControl }: AuthoringEditorProps) {
+  const customControl = model.editor ? renderCustomControl?.({ model, onMutation }) : undefined;
+  if (customControl !== undefined && !model.readOnly) {
+    return (
+      <Field label={model.label} description={model.description} required={!model.optional}>
+        {customControl}
+      </Field>
+    );
+  }
+
   if (model.kind === 'object') {
     return (
       <View style={styles.fields}>
         {model.fields.map((field) => (
-          <AuthoringEditor key={field.path.join('.')} model={field} onMutation={onMutation} />
+          <AuthoringEditor
+            key={field.path.join('.')}
+            model={field}
+            onMutation={onMutation}
+            renderCustomControl={renderCustomControl}
+          />
         ))}
       </View>
     );
@@ -81,33 +111,38 @@ function AuthoringControl({ model, onMutation }: AuthoringEditorProps) {
   return <ScalarEditor model={model} onMutation={onMutation} />;
 }
 
-/*** Render a supported finite string choice while keeping unsupported choice primitives explicit. */
+/*** Render one finite primitive choice and translate its control value back to the owner value. */
 function ChoiceEditor(props: {
   readonly model: AuthoringChoiceNode;
   readonly onMutation: (mutation: AuthoringMutation) => void;
 }) {
   const { model } = props;
-  if (!model.values.every((value) => typeof value === 'string')) {
-    return (
-      <Field label={model.label}>
-        <Text color="neutral" emphasis="muted" variant="caption">
-          Non-string finite choices are not supported by this presentation adapter yet.
-        </Text>
-      </Field>
-    );
-  }
-
-  const { values } = model;
-  const options = values.map((value) => ({ label: value, value }));
+  const stringOnly = model.values.every((value) => typeof value === 'string');
+  const options = model.values.map((value) => ({
+    label: String(value),
+    value: stringOnly ? String(value) : encodeChoiceValue(value),
+  }));
   const effective = model.value === undefined ? model.inheritance?.value : model.value;
-  const current = typeof effective === 'string' ? effective : undefined;
+  const current =
+    effective === undefined
+      ? undefined
+      : stringOnly
+        ? String(effective)
+        : encodeChoiceValue(effective);
 
   return (
     <Field label={model.label} description={model.description} required={!model.optional}>
       <Select
         options={options}
         value={current}
-        onValueChange={(value) => props.onMutation({ kind: 'set', path: model.path, value })}
+        onValueChange={(controlValue) => {
+          const value = stringOnly
+            ? model.values.find((candidate) => candidate === controlValue)
+            : model.values.find((candidate) => encodeChoiceValue(candidate) === controlValue);
+          if (value !== undefined) {
+            props.onMutation({ kind: 'set', path: model.path, value });
+          }
+        }}
       />
     </Field>
   );
@@ -179,6 +214,11 @@ function handleScalarTextChange(
     Number.isFinite(numericValue) &&
     (model.scalarType !== 'integer' || Number.isInteger(numericValue));
   if (valid) onMutation({ kind: 'set', path: model.path, value: numericValue });
+}
+
+/*** Encode a primitive choice into a stable Select value without losing its runtime type. */
+function encodeChoiceValue(value: string | number | boolean | null): string {
+  return `${typeof value}:${JSON.stringify(value)}`;
 }
 
 /*** Format one authored primitive for read-only presentation. */

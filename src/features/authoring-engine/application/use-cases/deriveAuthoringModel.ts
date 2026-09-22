@@ -44,6 +44,7 @@ function deriveNode(args: {
     ...(args.policy?.description ? { description: args.policy.description } : {}),
     optional: args.optional,
     readOnly,
+    ...(args.policy?.editor ? { editor: args.policy.editor } : {}),
     ...(args.policy?.inheritance
       ? { inheritance: { ...args.policy.inheritance, overridden: args.value !== undefined } }
       : {}),

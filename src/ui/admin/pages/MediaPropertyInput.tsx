@@ -1,4 +1,4 @@
-import type { AppManifest } from '@ankhorage/contracts';
+import type { AppManifest, MediaAssetKind, MediaAssetReference } from '@ankhorage/contracts';
 import { Button, Select, Text } from '@ankhorage/zora';
 import { useRouter } from 'expo-router';
 import React from 'react';
@@ -9,21 +9,18 @@ import {
   listStudioMediaAssets,
   readStudioMediaAssetReference,
 } from '../../../mediaAuthoringModel';
-import type {
-  StudioInstancePropertyField,
-  StudioInstancePropertyValue,
-} from '../../../propertiesAuthoringModel';
 
-/*** Render a media-asset selector for one media-backed Studio instance property and surface missing references. */
+/*** Render a media-asset selector for one owner-described authoring field and surface missing references. */
 export function MediaPropertyInput(props: {
-  readonly field: StudioInstancePropertyField;
+  readonly value: unknown;
+  readonly mediaKinds?: readonly MediaAssetKind[];
   readonly manifest: AppManifest;
-  readonly onChange: (value: StudioInstancePropertyValue | undefined) => void;
+  readonly onChange: (value: MediaAssetReference | undefined) => void;
 }) {
-  const { field, manifest, onChange } = props;
+  const { value, mediaKinds, manifest, onChange } = props;
   const router = useRouter();
-  const assets = listStudioMediaAssets(manifest, field.mediaKinds);
-  const reference = readStudioMediaAssetReference(field.value);
+  const assets = listStudioMediaAssets(manifest, mediaKinds);
+  const reference = readStudioMediaAssetReference(value);
   const options = [
     { value: '', label: 'None' },
     ...assets.map((asset) => ({ value: asset.id, label: `${asset.name} · ${asset.kind}` })),

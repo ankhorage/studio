@@ -1,22 +1,26 @@
 import type { UiNode } from '@ankhorage/contracts';
 import { Card, Text } from '@ankhorage/zora';
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
 
 import { useStudio } from '../../../core/StudioContext';
+import {
+  type AuthoringCustomControlProps,
+  AuthoringEditor,
+} from '../../../features/authoring-engine/adapters/inbound/AuthoringEditor';
+import { resolveInstancePropertyAuthoring } from '../../../features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring';
+import { deriveAuthoringModel } from '../../../features/authoring-engine/application/use-cases/deriveAuthoringModel';
 import { findNodeInManifest, findScreenIdForNode } from '../../../manifestState';
+import { readStudioMediaAssetReference } from '../../../mediaAuthoringModel';
 import {
   createStudioInstancePropertyPatch,
-  resolveStudioInstancePropertyGroups,
-  type StudioInstancePropertyField,
   type StudioInstancePropertyValue,
 } from '../../../propertiesAuthoringModel';
-import { AdminHeader, AdminScroll, Field, Input, KeyValue } from '../adminPagePrimitives';
+import type { AuthoringMutation, AuthoringValue } from '../../../types/authoring-engine';
+import { AdminHeader, AdminScroll, KeyValue } from '../adminPagePrimitives';
 import { MediaPropertyInput } from './MediaPropertyInput';
 
 /***
- * Resolve the requested manifest node, synchronize Studio selection context, and render its per-instance property editors.
- * @todo Keep this React page as the properties inbound UI edge while node/property resolution and mutation policy remain in the properties application/domain layer.
+ * Resolve the requested manifest node, synchronize Studio selection context, and render its per-instance property authoring.
  */
 export function PropertiesAdminPage({ nodeId }: { readonly nodeId: string | null }) {
   const studio = useStudio();
@@ -43,37 +47,71 @@ export function PropertiesAdminPage({ nodeId }: { readonly nodeId: string | null
   );
 }
 
-/*** Render metadata and grouped instance-property editors for one resolved manifest node. */
+/*** Render identity plus owner-derived instance-property groups through the central Authoring Editor. */
 function ResolvedProperties({ node }: { readonly node: UiNode }) {
   const studio = useStudio();
-  const componentMeta = new Map(Object.entries(studio.bindableComponentMeta)).get(node.type);
-  const groups = resolveStudioInstancePropertyGroups(node, studio.bindableComponentMeta);
-  /*** Apply one instance-property value by deriving the canonical node patch and dispatching it through Studio. */
-  const updateProperty = (propertyName: string, value: StudioInstancePropertyValue | undefined) => {
+  const authoring = resolveInstancePropertyAuthoring(node, studio.bindableComponentMeta);
+
+  /*** Apply one neutral field mutation through Studio's canonical node update and autosave boundary. */
+  const applyMutation = (mutation: AuthoringMutation) => {
+    const [propertyName] = mutation.path;
+    if (!propertyName || mutation.path.length !== 1) return;
+    const value =
+      mutation.kind === 'unset' ? undefined : resolveInstancePropertyValue(mutation.value);
+    if (mutation.kind === 'set' && value === undefined) return;
     studio.updateNode(node.id, createStudioInstancePropertyPatch(node, propertyName, value));
+  };
+
+  /*** Render owner-requested media authoring without moving media policy into the neutral engine. */
+  const renderCustomControl = ({ model, onMutation }: AuthoringCustomControlProps) => {
+    const [propertyName] = model.path;
+    if (
+      model.editor?.kind !== 'media' ||
+      !studio.manifest ||
+      !propertyName ||
+      model.path.length !== 1
+    ) {
+      return undefined;
+    }
+
+    return (
+      <MediaPropertyInput
+        value={node.props?.[propertyName]}
+        mediaKinds={model.editor.mediaKinds}
+        manifest={studio.manifest}
+        onChange={(reference) =>
+          onMutation(
+            reference
+              ? { kind: 'set', path: model.path, value: { mediaId: reference.mediaId } }
+              : { kind: 'unset', path: model.path },
+          )
+        }
+      />
+    );
   };
 
   return (
     <>
-      <Card title={componentMeta?.name ?? node.type}>
+      <Card title={authoring.componentName}>
         <KeyValue label="Node ID" value={node.id} />
         <KeyValue label="Type" value={node.type} />
         {node.alias ? <KeyValue label="Alias" value={node.alias} /> : null}
       </Card>
-      {groups.map((group) => (
+      {authoring.groups.map((group) => (
         <Card key={group.category} title={group.category}>
-          <View style={styles.fieldStack}>
-            {group.fields.map((field) => (
-              <InstancePropertyEditor
-                key={field.name}
-                field={field}
-                onChange={(value) => updateProperty(field.name, value)}
-              />
-            ))}
-          </View>
+          <AuthoringEditor
+            model={deriveAuthoringModel({
+              structure: group.structure,
+              policy: group.policy,
+              value: node.props ?? {},
+              label: group.category,
+            })}
+            onMutation={applyMutation}
+            renderCustomControl={renderCustomControl}
+          />
         </Card>
       ))}
-      {groups.length === 0 ? <NoInstanceProperties /> : null}
+      {authoring.groups.length === 0 ? <NoInstanceProperties /> : null}
       <Text color="neutral" emphasis="muted" variant="bodySmall">
         Visual design properties are theme-owned and intentionally unavailable as per-instance
         overrides.
@@ -82,133 +120,13 @@ function ResolvedProperties({ node }: { readonly node: UiNode }) {
   );
 }
 
-/*** Select the dedicated editor component for one Studio instance-property field. */
-function InstancePropertyEditor(props: {
-  readonly field: StudioInstancePropertyField;
-  readonly onChange: (value: StudioInstancePropertyValue | undefined) => void;
-}) {
-  const { field, onChange } = props;
-  const studio = useStudio();
-
-  return (
-    <Field label={field.label}>
-      {field.editor === 'text' ? (
-        <Input value={toInputText(field.value)} onChangeText={onChange} />
-      ) : null}
-      {field.editor === 'number' ? <NumberPropertyInput field={field} onChange={onChange} /> : null}
-      {field.editor === 'boolean' ? (
-        <BooleanPropertyInput field={field} onChange={onChange} />
-      ) : null}
-      {field.editor === 'choice' ? <ChoicePropertyInput field={field} onChange={onChange} /> : null}
-      {field.editor === 'media' && studio.manifest ? (
-        <MediaPropertyInput field={field} manifest={studio.manifest} onChange={onChange} />
-      ) : null}
-      {field.editor === 'unsupported' ? (
-        <Text color="neutral" emphasis="muted" variant="bodySmall">
-          This instance property requires a dedicated editor that is not available yet.
-        </Text>
-      ) : null}
-    </Field>
-  );
-}
-
-/*** Maintain a textual numeric draft, validate it on commit, and emit number/undefined values to the property mutation boundary. */
-function NumberPropertyInput(props: {
-  readonly field: StudioInstancePropertyField;
-  readonly onChange: (value: number | undefined) => void;
-}) {
-  const { field, onChange } = props;
-  const [draft, setDraft] = React.useState(toInputText(field.value));
-  const [error, setError] = React.useState<string | null>(null);
-
-  React.useEffect(() => {
-    setDraft(toInputText(field.value));
-    setError(null);
-  }, [field.name, field.value]);
-
-  /*** Normalize the numeric text draft, clear empty values, or emit a finite parsed number. */
-  const commit = () => {
-    const normalized = draft.trim();
-    if (!normalized) {
-      setError(null);
-      onChange(undefined);
-      return;
-    }
-
-    const value = Number(normalized);
-    if (!Number.isFinite(value)) {
-      setError('Enter a valid number.');
-      return;
-    }
-
-    setError(null);
-    onChange(value);
-  };
-
-  return (
-    <>
-      <Input
-        value={draft}
-        keyboardType="numeric"
-        onChangeText={setDraft}
-        onBlur={commit}
-        onSubmitEditing={commit}
-      />
-      {error ? (
-        <Text color="danger" variant="bodySmall">
-          {error}
-        </Text>
-      ) : null}
-    </>
-  );
-}
-
-/*** Render a boolean property as a switch-like pressable and emit its inverse value on activation. */
-function BooleanPropertyInput(props: {
-  readonly field: StudioInstancePropertyField;
-  readonly onChange: (value: boolean) => void;
-}) {
-  const { field, onChange } = props;
-  const checked = field.value === true;
-
-  return (
-    <Pressable
-      accessibilityRole="switch"
-      accessibilityState={{ checked }}
-      onPress={() => onChange(!checked)}
-      style={[styles.toggle, checked ? styles.choiceSelected : null]}
-    >
-      <Text weight="semiBold">{checked ? 'On' : 'Off'}</Text>
-    </Pressable>
-  );
-}
-
-/*** Render a property field's finite option set as radio-like pressable choices. */
-function ChoicePropertyInput(props: {
-  readonly field: StudioInstancePropertyField;
-  readonly onChange: (value: string | number) => void;
-}) {
-  const { field, onChange } = props;
-  const studio = useStudio();
-
-  return (
-    <View style={styles.choiceRow}>
-      {field.options.map((option) => {
-        const selected = field.value === option;
-        return (
-          <Pressable
-            key={`${field.name}:${String(option)}`}
-            accessibilityRole="radio"
-            accessibilityState={{ checked: selected }}
-            onPress={() => onChange(option)}
-            style={[styles.choice, selected ? styles.choiceSelected : null]}
-          >
-            <Text weight={selected ? 'semiBold' : 'regular'}>{String(option)}</Text>
-          </Pressable>
-        );
-      })}
-    </View>
-  );
+/*** Accept only canonical instance-property values emitted by supported generic or media editors. */
+function resolveInstancePropertyValue(
+  value: AuthoringValue,
+): StudioInstancePropertyValue | undefined {
+  if (typeof value === 'string' || typeof value === 'boolean') return value;
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  return readStudioMediaAssetReference(value) ?? undefined;
 }
 
 /*** Render the properties-page fallback when the requested node cannot be resolved. */
@@ -232,44 +150,3 @@ function NoInstanceProperties() {
     </Card>
   );
 }
-
-/***
- * Convert string/number values to editable input text and normalize all other values to an empty string.
- * @utility @ankhorage/utility/string
- */
-function toInputText(value: unknown): string {
-  return typeof value === 'string' || typeof value === 'number' ? String(value) : '';
-}
-
-const styles = StyleSheet.create({
-  fieldStack: {
-    gap: 14,
-  },
-  choiceRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  choice: {
-    minHeight: 40,
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: 'transparent',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-  choiceSelected: {
-    borderColor: '#4f46e5',
-  },
-  toggle: {
-    minHeight: 44,
-    alignSelf: 'flex-start',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: 'transparent',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-});
