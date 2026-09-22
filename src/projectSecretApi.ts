@@ -277,8 +277,8 @@ async function requestJson(
   init?: RequestInit,
   allowStructuredFailure = false,
 ): Promise<unknown> {
-  const { API_BASE } = await import('./core/constants');
-  const response = await fetch(`${API_BASE}${path}`, init);
+  const { studioApiBase } = await import('./utils/studioApiBase');
+  const response = await fetch(`${studioApiBase}${path}`, init);
   const value = await readJson(response);
 
   if (!response.ok && !allowStructuredFailure) {

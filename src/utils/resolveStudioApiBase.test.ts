@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 
-import { resolveStudioApiBase } from './apiBase';
+import { resolveStudioApiBase } from './resolveStudioApiBase';
 
 describe('resolveStudioApiBase', () => {
   it('uses Android device loopback for the default local Studio API', () => {

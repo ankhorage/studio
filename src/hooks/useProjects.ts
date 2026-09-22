@@ -2,11 +2,11 @@ import type { AppCategory, AppManifest, ThemeConfig } from '@ankhorage/contracts
 import { useCallback, useEffect, useState } from 'react';
 
 import { isAppCategory, isColorHarmony } from '../contractGuards';
-import { API_BASE } from '../core/constants';
 import type {
   ProjectCreationValidationFailure,
   StudioProjectSummary,
 } from '../projectWorkspaceContracts';
+import { studioApiBase } from '../utils/studioApiBase';
 
 export interface CreateProjectResponse {
   success: boolean;
@@ -112,7 +112,7 @@ function parseProjectList(value: unknown): StudioProjectSummary[] {
 }
 
 async function requestProjects(): Promise<StudioProjectSummary[]> {
-  const response = await fetch(`${API_BASE}/projects`);
+  const response = await fetch(`${studioApiBase}/projects`);
   if (!response.ok) throw new Error('Failed to fetch projects');
   return parseProjectList(await readJson(response));
 }
@@ -213,7 +213,7 @@ async function requestProjectAction<T>(
   options: RequestInit,
   parse: (value: unknown) => T,
 ): Promise<T> {
-  const response = await fetch(`${API_BASE}${path}`, options);
+  const response = await fetch(`${studioApiBase}${path}`, options);
   if (!response.ok) {
     const failure = await readError(response);
     const message =
@@ -228,7 +228,7 @@ async function requestProjectAction<T>(
 }
 
 async function requestCreateProject(input: CreateProjectInput): Promise<CreateProjectResponse> {
-  const response = await fetch(`${API_BASE}/projects`, {
+  const response = await fetch(`${studioApiBase}/projects`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input),
@@ -290,7 +290,7 @@ export function useProjects() {
   }, []);
 
   const deleteProject = useCallback(async (projectId: string) => {
-    const response = await fetch(`${API_BASE}/projects/${encodeURIComponent(projectId)}`, {
+    const response = await fetch(`${studioApiBase}/projects/${encodeURIComponent(projectId)}`, {
       method: 'DELETE',
     });
     if (!response.ok) throw new Error(`Project deletion failed with ${response.status}`);

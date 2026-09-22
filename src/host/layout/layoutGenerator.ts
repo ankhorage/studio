@@ -13,6 +13,7 @@ import {
   getStudioAdminRouteDefinition,
   STUDIO_ADMIN_ROUTE_REGISTRY,
 } from '../../studioAdminRouteModel';
+import type { GeneratedFile } from '../../types/project-generation';
 import type { LayoutMutation } from '../modules/layout';
 import {
   type AuthGeneratedFilePlan,
@@ -42,11 +43,6 @@ import {
   type RootNavigationContent,
 } from './templates';
 import { routeNameToHref } from './templates/utils/routes';
-
-export interface GeneratedFile {
-  path: string;
-  content: string;
-}
 
 export interface GeneratedAppFileGenerationOptions {
   includeStudio?: boolean;

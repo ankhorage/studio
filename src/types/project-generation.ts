@@ -12,3 +12,8 @@ export interface ProjectRuntimeProjectionEvidence {
   readonly appliedSignature?: string;
   readonly failedSignature?: string;
 }
+
+export interface GeneratedFile {
+  readonly path: string;
+  readonly content: string;
+}

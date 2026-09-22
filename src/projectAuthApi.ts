@@ -56,8 +56,8 @@ export function parseProjectAuthHealthResponse(value: unknown): ProjectAuthHealt
  * @utility @ankhorage/utility/http
  */
 async function requestJson(path: string, init?: RequestInit): Promise<unknown> {
-  const { API_BASE } = await import('./core/constants');
-  const response = await fetch(`${API_BASE}${path}`, init);
+  const { studioApiBase } = await import('./utils/studioApiBase');
+  const response = await fetch(`${studioApiBase}${path}`, init);
   const value = await readJson(response);
   if (!response.ok) throw parseHttpError(value, response.status);
   return value;

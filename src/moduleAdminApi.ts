@@ -230,8 +230,8 @@ function parseOperationResult(value: unknown): StudioModuleOperationResult {
  * @utility @ankhorage/utility/http
  */
 async function requestJson(path: string, init?: RequestInit): Promise<unknown> {
-  const { API_BASE } = await import('./core/constants');
-  const response = await fetch(`${API_BASE}${path}`, init);
+  const { studioApiBase } = await import('./utils/studioApiBase');
+  const response = await fetch(`${studioApiBase}${path}`, init);
   let value: unknown;
   try {
     value = await response.json();

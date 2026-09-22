@@ -1,6 +1,5 @@
 import type { DataContractValue, DataSourceDiagnostic } from '@ankhorage/contracts/data';
 
-import { API_BASE } from './core/constants';
 import type {
   ExternalApiConnectRequest,
   ExternalApiConnectResult,
@@ -12,6 +11,7 @@ import type {
   ManualRestApiRequest,
   ManualRestApiSettingsRequest,
 } from './externalApiAuthoringContracts';
+import { studioApiBase } from './utils/studioApiBase';
 
 /***
  * Represent an unsuccessful or invalid External API host response with its HTTP status.
@@ -88,7 +88,7 @@ async function requestResult<TResult>(
   parse: (value: unknown) => TResult,
 ): Promise<TResult> {
   const response = await fetch(
-    `${API_BASE}/projects/${encodeURIComponent(projectId)}/apis/${action}`,
+    `${studioApiBase}/projects/${encodeURIComponent(projectId)}/apis/${action}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
