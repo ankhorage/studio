@@ -282,10 +282,12 @@ function moveOrderedListItem(
   toIndex: number,
 ): readonly (string | number | boolean | null)[] {
   if (fromIndex === toIndex) return items;
-  const moved = items[fromIndex];
-  if (moved === undefined || toIndex < 0 || toIndex >= items.length) return items;
+  const moved = items.at(fromIndex);
+  const displaced = items.at(toIndex);
+  if (moved === undefined || displaced === undefined || toIndex < 0 || toIndex >= items.length)
+    return items;
   return items.map((item, index) => {
-    if (index === fromIndex) return items[toIndex] ?? item;
+    if (index === fromIndex) return displaced;
     if (index === toIndex) return moved;
     return item;
   });
@@ -366,11 +368,7 @@ function encodeChoiceValue(value: string | number | boolean | null): string {
 
 /*** Format one supported authored node for read-only presentation. */
 function formatAuthoringNodeValue(
-  model:
-    | AuthoringChoiceNode
-    | AuthoringOrderedListNode
-    | AuthoringScalarNode
-    | AuthoringSetNode,
+  model: AuthoringChoiceNode | AuthoringOrderedListNode | AuthoringScalarNode | AuthoringSetNode,
 ): string {
   if (model.kind === 'set')
     return model.selected.length > 0 ? model.selected.join(', ') : 'Not set';
