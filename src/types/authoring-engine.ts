@@ -101,8 +101,8 @@ export interface AuthoringSetNode extends AuthoringNodeBase {
 
 export interface AuthoringOrderedListNode extends AuthoringNodeBase {
   readonly kind: 'ordered-list';
-  readonly choices: readonly AuthoringPrimitive[];
-  readonly items: readonly AuthoringPrimitive[];
+  readonly choices: readonly string[];
+  readonly items: readonly string[];
   readonly defined: boolean;
 }
 
