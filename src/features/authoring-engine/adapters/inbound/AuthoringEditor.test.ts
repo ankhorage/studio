@@ -128,6 +128,48 @@ test('preserves numeric finite-choice identity instead of coercing owner values 
   expect(mutations).toEqual([{ kind: 'set', path: ['level'], value: 3 }]);
 });
 
+test('renders finite set membership and emits canonical unordered membership', () => {
+  const mutations: AuthoringMutation[] = [];
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'object',
+      fields: [
+        {
+          name: 'permissions',
+          optional: true,
+          structure: {
+            kind: 'set',
+            member: { kind: 'choice', values: ['camera', 'microphone'] },
+          },
+        },
+      ],
+    },
+    value: { permissions: { camera: true } },
+  });
+  const controls = renderControls(
+    editor.AuthoringEditor({
+      model,
+      onMutation: (mutation) => mutations.push(mutation),
+    }),
+  );
+  const switches = controls.filter((control) => control.type === 'Switch');
+  expect(switches.map((control) => control.props.checked)).toEqual([true, false]);
+
+  const addMicrophone = switches[1]?.props.onCheckedChange;
+  if (typeof addMicrophone !== 'function') throw new Error('Missing membership change handler.');
+  Reflect.apply(addMicrophone, undefined, [true]);
+  expect(mutations.at(-1)).toEqual({
+    kind: 'set',
+    path: ['permissions'],
+    value: { camera: true, microphone: true },
+  });
+
+  const removeCamera = switches[0]?.props.onCheckedChange;
+  if (typeof removeCamera !== 'function') throw new Error('Missing membership removal handler.');
+  Reflect.apply(removeCamera, undefined, [false]);
+  expect(mutations.at(-1)).toEqual({ kind: 'unset', path: ['permissions'] });
+});
+
 test('delegates owner-requested custom controls while retaining the central Field wrapper', () => {
   const mutations: AuthoringMutation[] = [];
   const model = deriveAuthoringModel({
