@@ -99,9 +99,19 @@ export interface AuthoringSetNode extends AuthoringNodeBase {
   readonly selected: readonly string[];
 }
 
+export type AuthoringOrderedListItem =
+  | {
+      readonly kind: 'choice';
+      readonly values: readonly AuthoringPrimitive[];
+    }
+  | {
+      readonly kind: 'scalar';
+      readonly scalarType: 'string';
+    };
+
 export interface AuthoringOrderedListNode extends AuthoringNodeBase {
   readonly kind: 'ordered-list';
-  readonly values: readonly AuthoringPrimitive[];
+  readonly item: AuthoringOrderedListItem;
   readonly items: readonly AuthoringPrimitive[];
 }
 

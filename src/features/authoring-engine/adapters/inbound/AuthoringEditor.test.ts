@@ -226,6 +226,55 @@ test('renders ordered primitive choices and emits reorder, remove, and append mu
   });
 });
 
+test('edits and appends open ordered string items without a finite choice catalog', () => {
+  const mutations: AuthoringMutation[] = [];
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'object',
+      fields: [
+        {
+          name: 'fields',
+          optional: false,
+          structure: {
+            kind: 'ordered-list',
+            item: { kind: 'scalar', scalarType: 'string' },
+          },
+        },
+      ],
+    },
+    value: { fields: ['email', 'customField'] },
+  });
+  const controls = renderControls(
+    editor.AuthoringEditor({
+      model,
+      onMutation: (mutation) => mutations.push(mutation),
+    }),
+  );
+
+  const inputs = controls.filter((control) => control.type === 'TextInput');
+  expect(inputs.map((control) => control.props.value)).toEqual(['email', 'customField']);
+
+  const editSecond = inputs[1]?.props.onChangeText;
+  if (typeof editSecond !== 'function') throw new Error('Missing ordered string edit handler.');
+  Reflect.apply(editSecond, undefined, ['displayName']);
+  expect(mutations.at(-1)).toEqual({
+    kind: 'set',
+    path: ['fields'],
+    value: ['email', 'displayName'],
+  });
+
+  const addItem = controls.find(
+    (control) => control.type === 'Button' && control.props.children === 'Add item',
+  )?.props.onPress;
+  if (typeof addItem !== 'function') throw new Error('Missing ordered string append handler.');
+  Reflect.apply(addItem, undefined, []);
+  expect(mutations.at(-1)).toEqual({
+    kind: 'set',
+    path: ['fields'],
+    value: ['email', 'customField', ''],
+  });
+});
+
 test('delegates owner-requested custom controls while retaining the central Field wrapper', () => {
   const mutations: AuthoringMutation[] = [];
   const model = deriveAuthoringModel({
