@@ -248,12 +248,15 @@ function readOrderedListValue(
   value: unknown,
   optional: boolean,
 ): OrderedListReadResult {
-  if (item.kind !== 'choice') {
+  if (
+    item.kind !== 'choice' ||
+    !item.values.every((candidate) => typeof candidate === 'string')
+  ) {
     return {
       ok: false,
       diagnostic: {
         code: 'unsupported-structure',
-        message: 'Ordered-list authoring currently requires finite primitive item choices.',
+        message: 'Ordered-list authoring currently requires finite string item choices.',
         path: [],
       },
     };
@@ -290,7 +293,7 @@ function readOrderedListValue(
   return {
     ok: true,
     choices: item.values,
-    items: value as readonly AuthoringPrimitive[],
+    items: value as readonly string[],
     defined: true,
   };
 }
@@ -343,8 +346,8 @@ type SetReadResult =
 type OrderedListReadResult =
   | {
       readonly ok: true;
-      readonly choices: readonly AuthoringPrimitive[];
-      readonly items: readonly AuthoringPrimitive[];
+      readonly choices: readonly string[];
+      readonly items: readonly string[];
       readonly defined: boolean;
     }
   | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
