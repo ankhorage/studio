@@ -31,6 +31,12 @@ authored overrides: resetting a field removes it through the existing theme upda
 boundary. Invalid overrides remain explicit diagnostics and can be reset without dropping unknown
 sibling fields. This metadata adapter does not introduce another generated StructureDescriptor root.
 
+Instance Properties use the same Authoring Model and ZORA Authoring Editor. The injected component
+owner metadata remains authoritative for `authoring.authority === 'instance'`, field categories,
+labels, choices, defaults, and media kinds. Media selection is an explicit editor extension over the
+portable media-reference structure; it does not add a Studio-owned component schema. All resulting
+changes still flow through the canonical node update and manifest autosave boundary.
+
 ## Deliberately not owned here
 
 The public contract layer does not own:
