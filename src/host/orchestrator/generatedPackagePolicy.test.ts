@@ -26,8 +26,13 @@ test('derives generated dependency ranges from owner package metadata', async ()
     targets: WEB_TARGETS,
   });
 
+  const selfConsumerStudioRange = selfConsumerPackage.dependencies?.['@ankhorage/studio'];
+  if (!selfConsumerStudioRange) {
+    throw new Error('Studio self-consumer is missing its published Studio dependency range.');
+  }
+
   expect(packageJson.packageManager).toBe(policy.packageManager);
-  expect(policy.dependencies.studio).toBe(selfConsumerPackage.dependencies?.['@ankhorage/studio']);
+  expect(policy.dependencies.studio).toBe(selfConsumerStudioRange);
   expect(packageJson.dependencies).toMatchObject({
     '@ankhorage/contracts': policy.dependencies.contracts,
     '@ankhorage/data-sources': policy.dependencies.dataSources,
