@@ -101,6 +101,7 @@ function createInfraLifecycle(): StudioProjectInfraLifecycle {
       }),
     outputsAsync: () => Promise.resolve({ environment: 'local', outputs: [] }),
     downAsync: () => Promise.resolve({ environment: 'local', ledger }),
+    hasOwnedResourcesAsync: () => Promise.resolve(false),
     destroyAsync: () => Promise.resolve({ environment: 'local', ledger: null }),
   };
 }
