@@ -62,6 +62,17 @@ test('APM apply lock blocks an independent Studio writer on the same project roo
   }
 });
 
+test('Studio writer releases safely when the mutation deletes its project root', async () => {
+  const rootPath = await createProjectRootAsync();
+
+  const result = await runWithStudioProjectWriterLockAsync(rootPath, 'project-delete', async () => {
+    await rm(rootPath, { recursive: true, force: true });
+    return 42;
+  });
+
+  expect(result).toBe(42);
+});
+
 test('nested Studio mutations are re-entrant only inside the owning async operation', async () => {
   const rootPath = await createProjectRootAsync();
 
