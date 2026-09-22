@@ -262,16 +262,6 @@
       <small>2 functions</small>
     </button>
   </li><li>
-    <button class="nav-button" type="button" data-target="src/core/apiBase.ts">
-      src/core/apiBase.ts
-      <small>1 function</small>
-    </button>
-  </li><li>
-    <button class="nav-button" type="button" data-target="src/core/constants.ts">
-      src/core/constants.ts
-      <small>1 function</small>
-    </button>
-  </li><li>
     <button class="nav-button" type="button" data-target="src/core/mediaAuthoringHostClient.ts">
       src/core/mediaAuthoringHostClient.ts
       <small>3 functions</small>
@@ -1059,6 +1049,11 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/host/orchestrator/createHostModuleOrchestrator.ts">
       src/host/orchestrator/createHostModuleOrchestrator.ts
+      <small>1 function</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/host/orchestrator/createProjectCreationTestSource.ts">
+      src/host/orchestrator/createProjectCreationTestSource.ts
       <small>1 function</small>
     </button>
   </li><li>
@@ -2212,6 +2207,11 @@
       <small>1 function</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/utils/resolveStudioApiBase.ts">
+      src/utils/resolveStudioApiBase.ts
+      <small>1 function</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/workspacePlatform.ts">
       src/workspacePlatform.ts
       <small>3 functions</small>
@@ -2233,7 +2233,7 @@
       <div class="summary">
         <div><strong>146</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>583</strong><span class="muted">modules</span></div>
+        <div><strong>585</strong><span class="muted">modules</span></div>
         <div><strong>2</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -2529,25 +2529,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>isAppCategory</code>, <code>isAppManifest</code>, <code>isColorHarmony</code></p>
-  </article><article class="item" data-search="src/core/apiBase.test.ts src/core/apiBase.ts">
-    <h3>src/core/apiBase.test.ts</h3>
-    <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/core/apiBase.ts</code></p>
-    <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/core/apiBase.ts resolveStudioApiBase">
-    <h3>src/core/apiBase.ts</h3>
-    <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
-    <p><strong>Exports:</strong> <code>resolveStudioApiBase</code></p>
-  </article><article class="item" data-search="src/core/constants.ts src/core/apiBase.ts API_BASE">
-    <h3>src/core/constants.ts</h3>
-    <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/core/apiBase.ts</code></p>
-    <p><strong>Exports:</strong> <code>API_BASE</code></p>
-  </article><article class="item" data-search="src/core/mediaAuthoringHostClient.ts src/core/constants.ts src/core/mediaRemovalCoordinator.ts src/mediaPickerAuthoring.ts cleanupStudioMediaSource ingestStudioMediaSelection">
+  </article><article class="item" data-search="src/core/mediaAuthoringHostClient.ts src/core/mediaRemovalCoordinator.ts src/mediaPickerAuthoring.ts src/utils/studioApiBase.ts cleanupStudioMediaSource ingestStudioMediaSelection">
     <h3>src/core/mediaAuthoringHostClient.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/core/constants.ts</code>, <code>src/core/mediaRemovalCoordinator.ts</code>, <code>src/mediaPickerAuthoring.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/core/mediaRemovalCoordinator.ts</code>, <code>src/mediaPickerAuthoring.ts</code>, <code>src/utils/studioApiBase.ts</code></p>
     <p><strong>Exports:</strong> <code>cleanupStudioMediaSource</code>, <code>ingestStudioMediaSelection</code></p>
   </article><article class="item" data-search="src/core/mediaRemovalCoordinator.test.ts src/core/mediaRemovalCoordinator.ts">
     <h3>src/core/mediaRemovalCoordinator.test.ts</h3>
@@ -2594,10 +2579,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/core/StudioProvider.ts src/authSettings.ts src/core/constants.ts src/core/mediaAuthoringHostClient.ts src/core/mediaRemovalCoordinator.ts src/core/StudioContext.ts src/core/studioManifestDraftModel.ts src/core/studioManifestPersistenceModel.ts src/features/screen-administration/application/use-cases/updateStudioScreenMetadata.ts src/index.ts src/manifestState.ts src/manifestSync.ts src/mediaAuthoringModel.ts src/mediaPickerAuthoring.ts src/routeUtils.ts src/studioSelectionModel.ts src/ui/admin/AuthAdminSession.tsx StudioProvider StudioProviderProps">
+  </article><article class="item" data-search="src/core/StudioProvider.ts src/authSettings.ts src/core/mediaAuthoringHostClient.ts src/core/mediaRemovalCoordinator.ts src/core/StudioContext.ts src/core/studioManifestDraftModel.ts src/core/studioManifestPersistenceModel.ts src/features/screen-administration/application/use-cases/updateStudioScreenMetadata.ts src/index.ts src/manifestState.ts src/manifestSync.ts src/mediaAuthoringModel.ts src/mediaPickerAuthoring.ts src/routeUtils.ts src/studioSelectionModel.ts src/ui/admin/AuthAdminSession.tsx src/utils/studioApiBase.ts StudioProvider StudioProviderProps">
     <h3>src/core/StudioProvider.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/authSettings.ts</code>, <code>src/core/constants.ts</code>, <code>src/core/mediaAuthoringHostClient.ts</code>, <code>src/core/mediaRemovalCoordinator.ts</code>, <code>src/core/StudioContext.ts</code>, <code>src/core/studioManifestDraftModel.ts</code>, <code>src/core/studioManifestPersistenceModel.ts</code>, <code>src/features/screen-administration/application/use-cases/updateStudioScreenMetadata.ts</code>, <code>src/index.ts</code>, <code>src/manifestState.ts</code>, <code>src/manifestSync.ts</code>, <code>src/mediaAuthoringModel.ts</code>, <code>src/mediaPickerAuthoring.ts</code>, <code>src/routeUtils.ts</code>, <code>src/studioSelectionModel.ts</code>, <code>src/ui/admin/AuthAdminSession.tsx</code></p>
+    <p><strong>Dependencies:</strong> <code>src/authSettings.ts</code>, <code>src/core/mediaAuthoringHostClient.ts</code>, <code>src/core/mediaRemovalCoordinator.ts</code>, <code>src/core/StudioContext.ts</code>, <code>src/core/studioManifestDraftModel.ts</code>, <code>src/core/studioManifestPersistenceModel.ts</code>, <code>src/features/screen-administration/application/use-cases/updateStudioScreenMetadata.ts</code>, <code>src/index.ts</code>, <code>src/manifestState.ts</code>, <code>src/manifestSync.ts</code>, <code>src/mediaAuthoringModel.ts</code>, <code>src/mediaPickerAuthoring.ts</code>, <code>src/routeUtils.ts</code>, <code>src/studioSelectionModel.ts</code>, <code>src/ui/admin/AuthAdminSession.tsx</code>, <code>src/utils/studioApiBase.ts</code></p>
     <p><strong>Exports:</strong> <code>StudioProvider</code>, <code>StudioProviderProps</code></p>
   </article><article class="item" data-search="src/createProjectDeployRequest.ts src/projectDeployRequest.ts createProjectDeployRequest">
     <h3>src/createProjectDeployRequest.ts</h3>
@@ -2614,10 +2599,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/deriveExternalApiIdFromUrl.ts</code>, <code>src/removeExternalApi.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/externalApiApi.ts src/core/constants.ts src/externalApiAuthoringContracts.ts connectExternalApi createManualRestApi removeExternalApiConnection testExternalApiOperation updateManualRestApi">
+  </article><article class="item" data-search="src/externalApiApi.ts src/externalApiAuthoringContracts.ts src/utils/studioApiBase.ts connectExternalApi createManualRestApi removeExternalApiConnection testExternalApiOperation updateManualRestApi">
     <h3>src/externalApiApi.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/core/constants.ts</code>, <code>src/externalApiAuthoringContracts.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/externalApiAuthoringContracts.ts</code>, <code>src/utils/studioApiBase.ts</code></p>
     <p><strong>Exports:</strong> <code>connectExternalApi</code>, <code>createManualRestApi</code>, <code>removeExternalApiConnection</code>, <code>testExternalApiOperation</code>, <code>updateManualRestApi</code></p>
   </article><article class="item" data-search="src/externalApiAuthoring.public.test.ts src/externalApiAuthoring/index.ts">
     <h3>src/externalApiAuthoring.public.test.ts</h3>
@@ -2874,10 +2859,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/project-updates/adapters/outbound/readPendingModuleLifecycleStateAsync.ts</code>, <code>src/features/project-updates/adapters/outbound/readStudioManifestDigestAsync.ts</code>, <code>src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts</code>, <code>src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts</code>, <code>src/features/project-updates/domain/pendingModulePlanStep.ts</code></p>
     <p><strong>Exports:</strong> <code>createStudioProjectUpdateApplyOwnerStepPort</code></p>
-  </article><article class="item" data-search="src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts src/core/constants.ts src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts src/features/project-updates/application/ProjectUpdateDashboardService.ts createStudioProjectUpdateDashboardService">
+  </article><article class="item" data-search="src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts src/features/project-updates/application/ProjectUpdateDashboardService.ts src/utils/studioApiBase.ts createStudioProjectUpdateDashboardService">
     <h3>src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/core/constants.ts</code>, <code>src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts</code>, <code>src/features/project-updates/application/ProjectUpdateDashboardService.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts</code>, <code>src/features/project-updates/application/ProjectUpdateDashboardService.ts</code>, <code>src/utils/studioApiBase.ts</code></p>
     <p><strong>Exports:</strong> <code>createStudioProjectUpdateDashboardService</code></p>
   </article><article class="item" data-search="src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts src/features/project-updates/adapters/outbound/inspectPendingModuleLifecycleEvidenceAsync.ts createStudioProjectUpdateExtensionEvidencePort">
     <h3>src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts</h3>
@@ -3004,15 +2989,15 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>createNativeSelectionSamplingCoordinator</code>, <code>NativeSelectionFrameScheduler</code>, <code>NativeSelectionSamplingCoordinator</code></p>
-  </article><article class="item" data-search="src/hooks/useProjects.ts src/contractGuards.ts src/core/constants.ts src/projectWorkspaceContracts.ts ConnectProjectRepositoryResponse CreateProjectInput CreateProjectResponse LaunchProjectResponse ProjectCreationError UpProjectInfrastructureResponse useProjects">
+  </article><article class="item" data-search="src/hooks/useProjects.ts src/contractGuards.ts src/projectWorkspaceContracts.ts src/utils/studioApiBase.ts ConnectProjectRepositoryResponse CreateProjectInput CreateProjectResponse LaunchProjectResponse ProjectCreationError UpProjectInfrastructureResponse useProjects">
     <h3>src/hooks/useProjects.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/contractGuards.ts</code>, <code>src/core/constants.ts</code>, <code>src/projectWorkspaceContracts.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/contractGuards.ts</code>, <code>src/projectWorkspaceContracts.ts</code>, <code>src/utils/studioApiBase.ts</code></p>
     <p><strong>Exports:</strong> <code>ConnectProjectRepositoryResponse</code>, <code>CreateProjectInput</code>, <code>CreateProjectResponse</code>, <code>LaunchProjectResponse</code>, <code>ProjectCreationError</code>, <code>UpProjectInfrastructureResponse</code>, <code>useProjects</code></p>
-  </article><article class="item" data-search="src/hooks/useTemplateCatalog.ts src/contractGuards.ts src/core/constants.ts src/templateCatalogContracts.ts useTemplateCatalog">
+  </article><article class="item" data-search="src/hooks/useTemplateCatalog.ts src/contractGuards.ts src/templateCatalogContracts.ts src/utils/studioApiBase.ts useTemplateCatalog">
     <h3>src/hooks/useTemplateCatalog.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/contractGuards.ts</code>, <code>src/core/constants.ts</code>, <code>src/templateCatalogContracts.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/contractGuards.ts</code>, <code>src/templateCatalogContracts.ts</code>, <code>src/utils/studioApiBase.ts</code></p>
     <p><strong>Exports:</strong> <code>useTemplateCatalog</code></p>
   </article><article class="item" data-search="src/host/apis/createProjectEndpointCredentialResolver.ts src/host/secrets/projectSecretService.ts createProjectEndpointCredentialResolver">
     <h3>src/host/apis/createProjectEndpointCredentialResolver.ts</h3>
@@ -3304,20 +3289,20 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/host/layout/layoutGenerator.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/host/layout/layoutGenerator.ts src/host/layout/auth/resolveAuthLayoutPlan.ts src/host/layout/generatedImportComposer.ts src/host/layout/navigator/createNavigatorGenerationBindings.ts src/host/layout/navigator/generateNavigatorLayoutFiles.ts src/host/layout/templates/index.ts src/host/layout/templates/utils/routes.ts src/host/modules/layout.ts src/index.ts src/studioAdminRouteModel.ts GeneratedAppFileGenerationOptions GeneratedAppFileGenerator GeneratedFile">
+  </article><article class="item" data-search="src/host/layout/layoutGenerator.ts src/host/layout/auth/resolveAuthLayoutPlan.ts src/host/layout/generatedImportComposer.ts src/host/layout/navigator/createNavigatorGenerationBindings.ts src/host/layout/navigator/generateNavigatorLayoutFiles.ts src/host/layout/templates/index.ts src/host/layout/templates/utils/routes.ts src/host/modules/layout.ts src/index.ts src/studioAdminRouteModel.ts src/types/project-generation.ts GeneratedAppFileGenerationOptions GeneratedAppFileGenerator">
     <h3>src/host/layout/layoutGenerator.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/host/layout/auth/resolveAuthLayoutPlan.ts</code>, <code>src/host/layout/generatedImportComposer.ts</code>, <code>src/host/layout/navigator/createNavigatorGenerationBindings.ts</code>, <code>src/host/layout/navigator/generateNavigatorLayoutFiles.ts</code>, <code>src/host/layout/templates/index.ts</code>, <code>src/host/layout/templates/utils/routes.ts</code>, <code>src/host/modules/layout.ts</code>, <code>src/index.ts</code>, <code>src/studioAdminRouteModel.ts</code></p>
-    <p><strong>Exports:</strong> <code>GeneratedAppFileGenerationOptions</code>, <code>GeneratedAppFileGenerator</code>, <code>GeneratedFile</code></p>
+    <p><strong>Dependencies:</strong> <code>src/host/layout/auth/resolveAuthLayoutPlan.ts</code>, <code>src/host/layout/generatedImportComposer.ts</code>, <code>src/host/layout/navigator/createNavigatorGenerationBindings.ts</code>, <code>src/host/layout/navigator/generateNavigatorLayoutFiles.ts</code>, <code>src/host/layout/templates/index.ts</code>, <code>src/host/layout/templates/utils/routes.ts</code>, <code>src/host/modules/layout.ts</code>, <code>src/index.ts</code>, <code>src/studioAdminRouteModel.ts</code>, <code>src/types/project-generation.ts</code></p>
+    <p><strong>Exports:</strong> <code>GeneratedAppFileGenerationOptions</code>, <code>GeneratedAppFileGenerator</code></p>
   </article><article class="item" data-search="src/host/layout/navigator/createNavigatorGenerationBindings.test.ts src/host/layout/navigator/createNavigatorGenerationBindings.ts">
     <h3>src/host/layout/navigator/createNavigatorGenerationBindings.test.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/host/layout/navigator/createNavigatorGenerationBindings.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/host/layout/navigator/createNavigatorGenerationBindings.ts src/host/layout/layoutGenerator.ts src/host/layout/utils/escapeStringLiteral.ts createNavigatorGenerationBindings">
+  </article><article class="item" data-search="src/host/layout/navigator/createNavigatorGenerationBindings.ts src/host/layout/utils/escapeStringLiteral.ts src/types/project-generation.ts createNavigatorGenerationBindings">
     <h3>src/host/layout/navigator/createNavigatorGenerationBindings.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/host/layout/layoutGenerator.ts</code>, <code>src/host/layout/utils/escapeStringLiteral.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/host/layout/utils/escapeStringLiteral.ts</code>, <code>src/types/project-generation.ts</code></p>
     <p><strong>Exports:</strong> <code>createNavigatorGenerationBindings</code></p>
   </article><article class="item" data-search="src/host/layout/navigator/generateNavigatorLayoutFiles.test.ts src/host/layout/navigator/generateNavigatorLayoutFiles.ts">
     <h3>src/host/layout/navigator/generateNavigatorLayoutFiles.test.ts</h3>
@@ -3579,6 +3564,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/host/modules/catalog.ts</code></p>
     <p><strong>Exports:</strong> <code>createHostModuleOrchestrator</code></p>
+  </article><article class="item" data-search="src/host/orchestrator/createProjectCreationTestSource.ts src/host/orchestrator/projectCreationSource.ts createProjectCreationTestSource">
+    <h3>src/host/orchestrator/createProjectCreationTestSource.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/host/orchestrator/projectCreationSource.ts</code></p>
+    <p><strong>Exports:</strong> <code>createProjectCreationTestSource</code></p>
   </article><article class="item" data-search="src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts src/host/orchestrator/createHostModuleOrchestrator.ts createStudioPendingModuleLifecyclePort">
     <h3>src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts</h3>
     <p class="muted">Referenced module</p>
@@ -3619,15 +3609,15 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/project-updates/composition/createStudioProjectWriterProxy.ts</code>, <code>src/host/modules/adminRuntime.ts</code>, <code>src/host/modules/catalog.ts</code>, <code>src/host/modules/runtime/LocalFsTargetAdapter.ts</code>, <code>src/host/orchestrator/createHostModuleOrchestrator.ts</code>, <code>src/host/orchestrator/projectManager.ts</code>, <code>src/host/orchestrator/resolveMutations.ts</code>, <code>src/manifestState.ts</code>, <code>src/moduleAdminContracts.ts</code></p>
     <p><strong>Exports:</strong> <code>HostModuleState</code>, <code>ModuleManager</code></p>
-  </article><article class="item" data-search="src/host/orchestrator/projectCreationAssets.test.ts src/host/orchestrator/projectManager.ts src/host/smoke/createSmokeProjectSource.ts src/host/templates/index.ts">
+  </article><article class="item" data-search="src/host/orchestrator/projectCreationAssets.test.ts src/host/orchestrator/createProjectCreationTestSource.ts src/host/orchestrator/projectManager.ts src/host/templates/index.ts">
     <h3>src/host/orchestrator/projectCreationAssets.test.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/host/orchestrator/projectManager.ts</code>, <code>src/host/smoke/createSmokeProjectSource.ts</code>, <code>src/host/templates/index.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/host/orchestrator/createProjectCreationTestSource.ts</code>, <code>src/host/orchestrator/projectManager.ts</code>, <code>src/host/templates/index.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/host/orchestrator/projectCreationSafety.test.ts src/host/orchestrator/projectManager.ts src/host/smoke/createSmokeProjectSource.ts src/projectIdentity.ts">
+  </article><article class="item" data-search="src/host/orchestrator/projectCreationSafety.test.ts src/host/orchestrator/createProjectCreationTestSource.ts src/host/orchestrator/projectManager.ts src/projectIdentity.ts">
     <h3>src/host/orchestrator/projectCreationSafety.test.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/host/orchestrator/projectManager.ts</code>, <code>src/host/smoke/createSmokeProjectSource.ts</code>, <code>src/projectIdentity.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/host/orchestrator/createProjectCreationTestSource.ts</code>, <code>src/host/orchestrator/projectManager.ts</code>, <code>src/projectIdentity.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="src/host/orchestrator/projectCreationSource.ts ProjectCreationAsset ProjectCreationSource">
     <h3>src/host/orchestrator/projectCreationSource.ts</h3>
@@ -4474,11 +4464,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/selection/adapters/nativeElementMeasurement.ts</code>, <code>src/runtime/runtimeNodeMeasurement.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/runtime/runtimeNodeMeasurement.ts src/features/selection/adapters/nativeElementMeasurement.ts ActiveResizeTargetCoordinator createActiveResizeTargetCoordinator createNativeRuntimeNodeMeasurement createRuntimeNodeMeasurementRegistry createSelectedIndicatorViewProps getActiveRuntimeNodeMeasurements hasActiveRuntimeNodeMeasurements MeasuredRect measureRuntimeNodeIndicators ResizeTargetObserver RuntimeNodeIndicatorRect RuntimeNodeMeasurement runtimeNodeMeasurementChangeAffectsActiveIndicators RuntimeNodeMeasurementRegistry RuntimeNodeMeasurements shouldRenderSelectedNodeChrome unionMeasuredRects">
+  </article><article class="item" data-search="src/runtime/runtimeNodeMeasurement.ts src/features/selection/adapters/nativeElementMeasurement.ts src/types/runtime-node-measurement.ts ActiveResizeTargetCoordinator createActiveResizeTargetCoordinator createNativeRuntimeNodeMeasurement createRuntimeNodeMeasurementRegistry createSelectedIndicatorViewProps getActiveRuntimeNodeMeasurements hasActiveRuntimeNodeMeasurements measureRuntimeNodeIndicators ResizeTargetObserver RuntimeNodeMeasurement runtimeNodeMeasurementChangeAffectsActiveIndicators RuntimeNodeMeasurementRegistry RuntimeNodeMeasurements shouldRenderSelectedNodeChrome unionMeasuredRects">
     <h3>src/runtime/runtimeNodeMeasurement.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/features/selection/adapters/nativeElementMeasurement.ts</code></p>
-    <p><strong>Exports:</strong> <code>ActiveResizeTargetCoordinator</code>, <code>createActiveResizeTargetCoordinator</code>, <code>createNativeRuntimeNodeMeasurement</code>, <code>createRuntimeNodeMeasurementRegistry</code>, <code>createSelectedIndicatorViewProps</code>, <code>getActiveRuntimeNodeMeasurements</code>, <code>hasActiveRuntimeNodeMeasurements</code>, <code>MeasuredRect</code>, <code>measureRuntimeNodeIndicators</code>, <code>ResizeTargetObserver</code>, <code>RuntimeNodeIndicatorRect</code>, <code>RuntimeNodeMeasurement</code>, <code>runtimeNodeMeasurementChangeAffectsActiveIndicators</code>, <code>RuntimeNodeMeasurementRegistry</code>, <code>RuntimeNodeMeasurements</code>, <code>shouldRenderSelectedNodeChrome</code>, <code>unionMeasuredRects</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/selection/adapters/nativeElementMeasurement.ts</code>, <code>src/types/runtime-node-measurement.ts</code></p>
+    <p><strong>Exports:</strong> <code>ActiveResizeTargetCoordinator</code>, <code>createActiveResizeTargetCoordinator</code>, <code>createNativeRuntimeNodeMeasurement</code>, <code>createRuntimeNodeMeasurementRegistry</code>, <code>createSelectedIndicatorViewProps</code>, <code>getActiveRuntimeNodeMeasurements</code>, <code>hasActiveRuntimeNodeMeasurements</code>, <code>measureRuntimeNodeIndicators</code>, <code>ResizeTargetObserver</code>, <code>RuntimeNodeMeasurement</code>, <code>runtimeNodeMeasurementChangeAffectsActiveIndicators</code>, <code>RuntimeNodeMeasurementRegistry</code>, <code>RuntimeNodeMeasurements</code>, <code>shouldRenderSelectedNodeChrome</code>, <code>unionMeasuredRects</code></p>
   </article><article class="item" data-search="src/runtime/runtimeSurface.test.ts">
     <h3>src/runtime/runtimeSurface.test.ts</h3>
     <p class="muted">Referenced module</p>
@@ -4494,10 +4484,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/runtime/stationarySelection.ts src/canvasDragModel.ts src/features/selection/adapters/nativeElementMeasurement.ts src/features/selection/application/nativeSelectionSamplingCoordinator.ts src/index.ts src/runtime/indicatorRefreshCoordinator.ts src/runtime/indicatorSettleCoordinator.ts src/runtime/runtimeNodeMeasurement.ts src/runtime/stationarySelectionCoordinator.ts src/runtime/stationarySelectionInputState.ts src/ui/canvas/StudioCanvasDndOverlay.tsx createStudioStationarySelectionWrapNode StationaryTapSelector StudioCanvasInteractionAdapter useStudioUnsupportedNodeMeasurement">
+  </article><article class="item" data-search="src/runtime/stationarySelection.ts src/canvasDragModel.ts src/features/selection/adapters/nativeElementMeasurement.ts src/features/selection/application/nativeSelectionSamplingCoordinator.ts src/index.ts src/runtime/indicatorRefreshCoordinator.ts src/runtime/indicatorSettleCoordinator.ts src/runtime/runtimeNodeMeasurement.ts src/runtime/stationarySelectionCoordinator.ts src/runtime/stationarySelectionInputState.ts src/types/runtime-node-measurement.ts src/ui/canvas/StudioCanvasDndOverlay.tsx createStudioStationarySelectionWrapNode StationaryTapSelector StudioCanvasInteractionAdapter useStudioUnsupportedNodeMeasurement">
     <h3>src/runtime/stationarySelection.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/canvasDragModel.ts</code>, <code>src/features/selection/adapters/nativeElementMeasurement.ts</code>, <code>src/features/selection/application/nativeSelectionSamplingCoordinator.ts</code>, <code>src/index.ts</code>, <code>src/runtime/indicatorRefreshCoordinator.ts</code>, <code>src/runtime/indicatorSettleCoordinator.ts</code>, <code>src/runtime/runtimeNodeMeasurement.ts</code>, <code>src/runtime/stationarySelectionCoordinator.ts</code>, <code>src/runtime/stationarySelectionInputState.ts</code>, <code>src/ui/canvas/StudioCanvasDndOverlay.tsx</code></p>
+    <p><strong>Dependencies:</strong> <code>src/canvasDragModel.ts</code>, <code>src/features/selection/adapters/nativeElementMeasurement.ts</code>, <code>src/features/selection/application/nativeSelectionSamplingCoordinator.ts</code>, <code>src/index.ts</code>, <code>src/runtime/indicatorRefreshCoordinator.ts</code>, <code>src/runtime/indicatorSettleCoordinator.ts</code>, <code>src/runtime/runtimeNodeMeasurement.ts</code>, <code>src/runtime/stationarySelectionCoordinator.ts</code>, <code>src/runtime/stationarySelectionInputState.ts</code>, <code>src/types/runtime-node-measurement.ts</code>, <code>src/ui/canvas/StudioCanvasDndOverlay.tsx</code></p>
     <p><strong>Exports:</strong> <code>createStudioStationarySelectionWrapNode</code>, <code>StationaryTapSelector</code>, <code>StudioCanvasInteractionAdapter</code>, <code>useStudioUnsupportedNodeMeasurement</code></p>
   </article><article class="item" data-search="src/runtime/stationarySelectionCoordinator.test.ts src/runtime/stationarySelectionCoordinator.ts">
     <h3>src/runtime/stationarySelectionCoordinator.test.ts</h3>
@@ -4599,11 +4589,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>AuthoringChoiceNode</code>, <code>AuthoringDiagnostic</code>, <code>AuthoringMutation</code>, <code>AuthoringMutationResult</code>, <code>AuthoringNode</code>, <code>AuthoringPresentationPolicy</code>, <code>AuthoringPrimitive</code>, <code>AuthoringScalarNode</code>, <code>AuthoringScalarType</code>, <code>AuthoringStructure</code>, <code>AuthoringStructureResolution</code>, <code>AuthoringValue</code></p>
-  </article><article class="item" data-search="src/types/project-generation.ts ProjectRuntimeProjectionEvidence StudioRuntimeProjectionReason StudioRuntimeProjectionState StudioRuntimeProjectionStatus">
+  </article><article class="item" data-search="src/types/project-generation.ts GeneratedFile ProjectRuntimeProjectionEvidence StudioRuntimeProjectionReason StudioRuntimeProjectionState StudioRuntimeProjectionStatus">
     <h3>src/types/project-generation.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
-    <p><strong>Exports:</strong> <code>ProjectRuntimeProjectionEvidence</code>, <code>StudioRuntimeProjectionReason</code>, <code>StudioRuntimeProjectionState</code>, <code>StudioRuntimeProjectionStatus</code></p>
+    <p><strong>Exports:</strong> <code>GeneratedFile</code>, <code>ProjectRuntimeProjectionEvidence</code>, <code>StudioRuntimeProjectionReason</code>, <code>StudioRuntimeProjectionState</code>, <code>StudioRuntimeProjectionStatus</code></p>
   </article><article class="item" data-search="src/types/project-update-dashboard.ts ProjectUpdateDashboardEvent ProjectUpdateDashboardState ProjectUpdatePermissionId">
     <h3>src/types/project-update-dashboard.ts</h3>
     <p class="muted">Referenced module</p>
@@ -4614,6 +4604,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>GeneratedPackageManifest</code>, <code>GeneratedPackagePolicy</code>, <code>ProjectUpdateServiceOptions</code></p>
+  </article><article class="item" data-search="src/types/runtime-node-measurement.ts MeasuredRect RuntimeNodeIndicatorRect">
+    <h3>src/types/runtime-node-measurement.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>MeasuredRect</code>, <code>RuntimeNodeIndicatorRect</code></p>
   </article><article class="item" data-search="src/ui/admin/adminPagePrimitives.tsx AdminHeader adminPageStyles AdminScroll Field Input KeyValue Metric">
     <h3>src/ui/admin/adminPagePrimitives.tsx</h3>
     <p class="muted">Referenced module</p>
@@ -5084,10 +5079,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code>, <code>src/index.ts</code>, <code>src/ui/admin/pages/adminThemeModel.ts</code></p>
     <p><strong>Exports:</strong> <code>useActiveThemeAdmin</code></p>
-  </article><article class="item" data-search="src/ui/AnkhStudio.ts src/core/constants.ts src/core/StudioContext.ts src/runtime/studioMediaResolver.ts AnkhStudio AnkhStudioProps">
+  </article><article class="item" data-search="src/ui/AnkhStudio.ts src/core/StudioContext.ts src/runtime/studioMediaResolver.ts src/utils/studioApiBase.ts AnkhStudio AnkhStudioProps">
     <h3>src/ui/AnkhStudio.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/core/constants.ts</code>, <code>src/core/StudioContext.ts</code>, <code>src/runtime/studioMediaResolver.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code>, <code>src/runtime/studioMediaResolver.ts</code>, <code>src/utils/studioApiBase.ts</code></p>
     <p><strong>Exports:</strong> <code>AnkhStudio</code>, <code>AnkhStudioProps</code></p>
   </article><article class="item" data-search="src/ui/canvas/canvasDndInteraction.test.ts src/canvasDropZones.ts src/ui/canvas/canvasDndInteraction.ts">
     <h3>src/ui/canvas/canvasDndInteraction.test.ts</h3>
@@ -5104,10 +5099,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/ui/canvas/StudioCanvasDndOverlay.tsx src/canvasDragModel.ts src/canvasDropZones.ts src/index.ts src/insertModalModel.ts src/runtime/runtimeNodeMeasurement.ts src/ui/canvas/canvasDndInteraction.ts StudioCanvasDndOverlay StudioCanvasDndOverlayProps">
+  </article><article class="item" data-search="src/ui/canvas/StudioCanvasDndOverlay.tsx src/canvasDragModel.ts src/canvasDropZones.ts src/index.ts src/insertModalModel.ts src/types/runtime-node-measurement.ts src/ui/canvas/canvasDndInteraction.ts StudioCanvasDndOverlay StudioCanvasDndOverlayProps">
     <h3>src/ui/canvas/StudioCanvasDndOverlay.tsx</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/canvasDragModel.ts</code>, <code>src/canvasDropZones.ts</code>, <code>src/index.ts</code>, <code>src/insertModalModel.ts</code>, <code>src/runtime/runtimeNodeMeasurement.ts</code>, <code>src/ui/canvas/canvasDndInteraction.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/canvasDragModel.ts</code>, <code>src/canvasDropZones.ts</code>, <code>src/index.ts</code>, <code>src/insertModalModel.ts</code>, <code>src/types/runtime-node-measurement.ts</code>, <code>src/ui/canvas/canvasDndInteraction.ts</code></p>
     <p><strong>Exports:</strong> <code>StudioCanvasDndOverlay</code>, <code>StudioCanvasDndOverlayProps</code></p>
   </article><article class="item" data-search="src/ui/createStudioAppBarActions.ts src/ui/studioAppBarModel.ts createStudioAppBarActions">
     <h3>src/ui/createStudioAppBarActions.ts</h3>
@@ -5144,6 +5139,21 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>ExternalApiUpsertResult</code>, <code>upsertExternalApi</code></p>
+  </article><article class="item" data-search="src/utils/resolveStudioApiBase.test.ts src/utils/resolveStudioApiBase.ts">
+    <h3>src/utils/resolveStudioApiBase.test.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/utils/resolveStudioApiBase.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
+  </article><article class="item" data-search="src/utils/resolveStudioApiBase.ts resolveStudioApiBase">
+    <h3>src/utils/resolveStudioApiBase.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>resolveStudioApiBase</code></p>
+  </article><article class="item" data-search="src/utils/studioApiBase.ts src/utils/resolveStudioApiBase.ts studioApiBase">
+    <h3>src/utils/studioApiBase.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/utils/resolveStudioApiBase.ts</code></p>
+    <p><strong>Exports:</strong> <code>studioApiBase</code></p>
   </article><article class="item" data-search="src/utils/treeUtils.ts src/index.ts cloneWithNewIds findNodeById removeNodeFromTree updateNodeInTree">
     <h3>src/utils/treeUtils.ts</h3>
     <p class="muted">Referenced module</p>
@@ -9278,19 +9288,11 @@
   module_src_contractGuards_test_ts --&gt; module_src_contractGuards_ts
   module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_contractGuards_ts
-  module_src_core_apiBase_test_ts[&quot;src/core/apiBase.test.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_core_apiBase_test_ts
-  module_src_core_apiBase_test_ts --&gt; module_src_core_apiBase_ts
-  module_src_core_apiBase_ts[&quot;src/core/apiBase.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_core_apiBase_ts
-  module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_core_constants_ts
-  module_src_core_constants_ts --&gt; module_src_core_apiBase_ts
   module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_core_mediaAuthoringHostClient_ts
-  module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_core_constants_ts
   module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_core_mediaRemovalCoordinator_ts
   module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_mediaPickerAuthoring_ts
+  module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_core_mediaRemovalCoordinator_test_ts[&quot;src/core/mediaRemovalCoordinator.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_core_mediaRemovalCoordinator_test_ts
   module_src_core_mediaRemovalCoordinator_test_ts --&gt; module_src_core_mediaRemovalCoordinator_ts
@@ -9326,7 +9328,6 @@
   module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_core_StudioProvider_ts
   module_src_core_StudioProvider_ts --&gt; module_src_authSettings_ts
-  module_src_core_StudioProvider_ts --&gt; module_src_core_constants_ts
   module_src_core_StudioProvider_ts --&gt; module_src_core_mediaAuthoringHostClient_ts
   module_src_core_StudioProvider_ts --&gt; module_src_core_mediaRemovalCoordinator_ts
   module_src_core_StudioProvider_ts --&gt; module_src_core_StudioContext_ts
@@ -9341,6 +9342,7 @@
   module_src_core_StudioProvider_ts --&gt; module_src_routeUtils_ts
   module_src_core_StudioProvider_ts --&gt; module_src_studioSelectionModel_ts
   module_src_core_StudioProvider_ts --&gt; module_src_ui_admin_AuthAdminSession_tsx
+  module_src_core_StudioProvider_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_createProjectDeployRequest_ts[&quot;src/createProjectDeployRequest.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_createProjectDeployRequest_ts
   module_src_createProjectDeployRequest_ts --&gt; module_src_projectDeployRequest_ts
@@ -9353,8 +9355,8 @@
   module_src_externalApiAdministration_test_ts --&gt; module_src_removeExternalApi_ts
   module_src_externalApiApi_ts[&quot;src/externalApiApi.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_externalApiApi_ts
-  module_src_externalApiApi_ts --&gt; module_src_core_constants_ts
   module_src_externalApiApi_ts --&gt; module_src_externalApiAuthoringContracts_ts
+  module_src_externalApiApi_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_externalApiAuthoring_public_test_ts[&quot;src/externalApiAuthoring.public.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_externalApiAuthoring_public_test_ts
   module_src_externalApiAuthoring_public_test_ts --&gt; module_src_externalApiAuthoring_index_ts
@@ -9541,9 +9543,9 @@
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts --&gt; module_src_features_project_updates_domain_pendingModulePlanStep_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts
-  module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_core_constants_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_features_project_updates_adapters_outbound_createProjectUpdateHostHttpAdapter_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_features_project_updates_application_ProjectUpdateDashboardService_ts
+  module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts --&gt; module_src_features_project_updates_adapters_outbound_inspectPendingModuleLifecycleEvidenceAsync_ts
@@ -9635,13 +9637,13 @@
   module_src_hooks_useProjects_ts[&quot;src/hooks/useProjects.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_hooks_useProjects_ts
   module_src_hooks_useProjects_ts --&gt; module_src_contractGuards_ts
-  module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
   module_src_hooks_useProjects_ts --&gt; module_src_projectWorkspaceContracts_ts
+  module_src_hooks_useProjects_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_hooks_useTemplateCatalog_ts[&quot;src/hooks/useTemplateCatalog.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_hooks_useTemplateCatalog_ts
   module_src_hooks_useTemplateCatalog_ts --&gt; module_src_contractGuards_ts
-  module_src_hooks_useTemplateCatalog_ts --&gt; module_src_core_constants_ts
   module_src_hooks_useTemplateCatalog_ts --&gt; module_src_templateCatalogContracts_ts
+  module_src_hooks_useTemplateCatalog_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_host_apis_createProjectEndpointCredentialResolver_ts[&quot;src/host/apis/createProjectEndpointCredentialResolver.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_apis_createProjectEndpointCredentialResolver_ts
   module_src_host_apis_createProjectEndpointCredentialResolver_ts --&gt; module_src_host_secrets_projectSecretService_ts
@@ -9906,13 +9908,14 @@
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_modules_layout_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_index_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_studioAdminRouteModel_ts
+  module_src_host_layout_layoutGenerator_ts --&gt; module_src_types_project_generation_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_test_ts[&quot;src/host/layout/navigator/createNavigatorGenerationBindings.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_navigator_createNavigatorGenerationBindings_test_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_test_ts --&gt; module_src_host_layout_navigator_createNavigatorGenerationBindings_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_ts[&quot;src/host/layout/navigator/createNavigatorGenerationBindings.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_navigator_createNavigatorGenerationBindings_ts
-  module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --&gt; module_src_host_layout_layoutGenerator_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --&gt; module_src_types_project_generation_ts
   module_src_host_layout_navigator_generateNavigatorLayoutFiles_test_ts[&quot;src/host/layout/navigator/generateNavigatorLayoutFiles.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_navigator_generateNavigatorLayoutFiles_test_ts
   module_src_host_layout_navigator_generateNavigatorLayoutFiles_test_ts --&gt; module_src_host_layout_navigator_generateNavigatorLayoutFiles_ts
@@ -10078,6 +10081,9 @@
   module_src_host_orchestrator_createHostModuleOrchestrator_ts[&quot;src/host/orchestrator/createHostModuleOrchestrator.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_createHostModuleOrchestrator_ts
   module_src_host_orchestrator_createHostModuleOrchestrator_ts --&gt; module_src_host_modules_catalog_ts
+  module_src_host_orchestrator_createProjectCreationTestSource_ts[&quot;src/host/orchestrator/createProjectCreationTestSource.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
+  module_src_host_orchestrator_createProjectCreationTestSource_ts --&gt; module_src_host_orchestrator_projectCreationSource_ts
   module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts[&quot;src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts
   module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts --&gt; module_src_features_project_updates_application_StudioPendingModuleLifecyclePort_ts
@@ -10116,13 +10122,13 @@
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_moduleAdminContracts_ts
   module_src_host_orchestrator_projectCreationAssets_test_ts[&quot;src/host/orchestrator/projectCreationAssets.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectCreationAssets_test_ts
+  module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
-  module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_templates_index_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectCreationSafety_test_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
-  module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_projectIdentity_ts
   module_src_host_orchestrator_projectCreationSource_ts[&quot;src/host/orchestrator/projectCreationSource.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectCreationSource_ts
@@ -10726,6 +10732,7 @@
   module_src_runtime_runtimeNodeMeasurement_ts[&quot;src/runtime/runtimeNodeMeasurement.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_runtimeNodeMeasurement_ts --&gt; module_src_features_selection_adapters_nativeElementMeasurement_ts
+  module_src_runtime_runtimeNodeMeasurement_ts --&gt; module_src_types_runtime_node_measurement_ts
   module_src_runtime_runtimeSurface_test_ts[&quot;src/runtime/runtimeSurface.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_runtimeSurface_test_ts
   module_src_runtime_stationarySelection_public_test_ts[&quot;src/runtime/stationarySelection.public.test.ts&quot;]
@@ -10744,6 +10751,7 @@
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_stationarySelectionInputState_ts
+  module_src_runtime_stationarySelection_ts --&gt; module_src_types_runtime_node_measurement_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_ui_canvas_StudioCanvasDndOverlay_tsx
   module_src_runtime_stationarySelectionCoordinator_test_ts[&quot;src/runtime/stationarySelectionCoordinator.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_stationarySelectionCoordinator_test_ts
@@ -10802,6 +10810,8 @@
   package__ankhorage_studio -.-&gt; module_src_types_project_update_dashboard_ts
   module_src_types_project_updates_ts[&quot;src/types/project-updates.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_types_project_updates_ts
+  module_src_types_runtime_node_measurement_ts[&quot;src/types/runtime-node-measurement.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_types_runtime_node_measurement_ts
   module_src_ui_admin_adminPagePrimitives_tsx[&quot;src/ui/admin/adminPagePrimitives.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_AnkhAdminPage_test_ts[&quot;src/ui/admin/AnkhAdminPage.test.ts&quot;]
@@ -11257,9 +11267,9 @@
   module_src_ui_admin_pages_useActiveThemeAdmin_ts --&gt; module_src_ui_admin_pages_adminThemeModel_ts
   module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_AnkhStudio_ts
-  module_src_ui_AnkhStudio_ts --&gt; module_src_core_constants_ts
   module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
   module_src_ui_AnkhStudio_ts --&gt; module_src_runtime_studioMediaResolver_ts
+  module_src_ui_AnkhStudio_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_ui_canvas_canvasDndInteraction_test_ts[&quot;src/ui/canvas/canvasDndInteraction.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_canvas_canvasDndInteraction_test_ts
   module_src_ui_canvas_canvasDndInteraction_test_ts --&gt; module_src_canvasDropZones_ts
@@ -11277,7 +11287,7 @@
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_canvasDropZones_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_index_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_insertModalModel_ts
-  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_runtime_runtimeNodeMeasurement_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_types_runtime_node_measurement_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_ui_canvas_canvasDndInteraction_ts
   module_src_ui_createStudioAppBarActions_ts[&quot;src/ui/createStudioAppBarActions.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_createStudioAppBarActions_ts
@@ -11306,6 +11316,14 @@
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_ui_StudioInsertDialog_tsx
   module_src_upsertExternalApi_ts[&quot;src/upsertExternalApi.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_upsertExternalApi_ts
+  module_src_utils_resolveStudioApiBase_test_ts[&quot;src/utils/resolveStudioApiBase.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_utils_resolveStudioApiBase_test_ts
+  module_src_utils_resolveStudioApiBase_test_ts --&gt; module_src_utils_resolveStudioApiBase_ts
+  module_src_utils_resolveStudioApiBase_ts[&quot;src/utils/resolveStudioApiBase.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_utils_resolveStudioApiBase_ts
+  module_src_utils_studioApiBase_ts[&quot;src/utils/studioApiBase.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_utils_studioApiBase_ts
+  module_src_utils_studioApiBase_ts --&gt; module_src_utils_resolveStudioApiBase_ts
   module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_utils_treeUtils_ts
   module_src_utils_treeUtils_ts --&gt; module_src_index_ts
@@ -11513,19 +11531,11 @@
   module_src_contractGuards_test_ts --&gt; module_src_contractGuards_ts
   module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_contractGuards_ts
-  module_src_core_apiBase_test_ts[&quot;src/core/apiBase.test.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_core_apiBase_test_ts
-  module_src_core_apiBase_test_ts --&gt; module_src_core_apiBase_ts
-  module_src_core_apiBase_ts[&quot;src/core/apiBase.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_core_apiBase_ts
-  module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_core_constants_ts
-  module_src_core_constants_ts --&gt; module_src_core_apiBase_ts
   module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_core_mediaAuthoringHostClient_ts
-  module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_core_constants_ts
   module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_core_mediaRemovalCoordinator_ts
   module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_mediaPickerAuthoring_ts
+  module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_core_mediaRemovalCoordinator_test_ts[&quot;src/core/mediaRemovalCoordinator.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_core_mediaRemovalCoordinator_test_ts
   module_src_core_mediaRemovalCoordinator_test_ts --&gt; module_src_core_mediaRemovalCoordinator_ts
@@ -11561,7 +11571,6 @@
   module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_core_StudioProvider_ts
   module_src_core_StudioProvider_ts --&gt; module_src_authSettings_ts
-  module_src_core_StudioProvider_ts --&gt; module_src_core_constants_ts
   module_src_core_StudioProvider_ts --&gt; module_src_core_mediaAuthoringHostClient_ts
   module_src_core_StudioProvider_ts --&gt; module_src_core_mediaRemovalCoordinator_ts
   module_src_core_StudioProvider_ts --&gt; module_src_core_StudioContext_ts
@@ -11576,6 +11585,7 @@
   module_src_core_StudioProvider_ts --&gt; module_src_routeUtils_ts
   module_src_core_StudioProvider_ts --&gt; module_src_studioSelectionModel_ts
   module_src_core_StudioProvider_ts --&gt; module_src_ui_admin_AuthAdminSession_tsx
+  module_src_core_StudioProvider_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_createProjectDeployRequest_ts[&quot;src/createProjectDeployRequest.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_createProjectDeployRequest_ts
   module_src_createProjectDeployRequest_ts --&gt; module_src_projectDeployRequest_ts
@@ -11588,8 +11598,8 @@
   module_src_externalApiAdministration_test_ts --&gt; module_src_removeExternalApi_ts
   module_src_externalApiApi_ts[&quot;src/externalApiApi.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_externalApiApi_ts
-  module_src_externalApiApi_ts --&gt; module_src_core_constants_ts
   module_src_externalApiApi_ts --&gt; module_src_externalApiAuthoringContracts_ts
+  module_src_externalApiApi_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_externalApiAuthoring_public_test_ts[&quot;src/externalApiAuthoring.public.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_externalApiAuthoring_public_test_ts
   module_src_externalApiAuthoring_public_test_ts --&gt; module_src_externalApiAuthoring_index_ts
@@ -11776,9 +11786,9 @@
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts --&gt; module_src_features_project_updates_domain_pendingModulePlanStep_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts
-  module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_core_constants_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_features_project_updates_adapters_outbound_createProjectUpdateHostHttpAdapter_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_features_project_updates_application_ProjectUpdateDashboardService_ts
+  module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts[&quot;src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts --&gt; module_src_features_project_updates_adapters_outbound_inspectPendingModuleLifecycleEvidenceAsync_ts
@@ -11870,13 +11880,13 @@
   module_src_hooks_useProjects_ts[&quot;src/hooks/useProjects.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_hooks_useProjects_ts
   module_src_hooks_useProjects_ts --&gt; module_src_contractGuards_ts
-  module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
   module_src_hooks_useProjects_ts --&gt; module_src_projectWorkspaceContracts_ts
+  module_src_hooks_useProjects_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_hooks_useTemplateCatalog_ts[&quot;src/hooks/useTemplateCatalog.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_hooks_useTemplateCatalog_ts
   module_src_hooks_useTemplateCatalog_ts --&gt; module_src_contractGuards_ts
-  module_src_hooks_useTemplateCatalog_ts --&gt; module_src_core_constants_ts
   module_src_hooks_useTemplateCatalog_ts --&gt; module_src_templateCatalogContracts_ts
+  module_src_hooks_useTemplateCatalog_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_host_apis_createProjectEndpointCredentialResolver_ts[&quot;src/host/apis/createProjectEndpointCredentialResolver.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_apis_createProjectEndpointCredentialResolver_ts
   module_src_host_apis_createProjectEndpointCredentialResolver_ts --&gt; module_src_host_secrets_projectSecretService_ts
@@ -12141,13 +12151,14 @@
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_modules_layout_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_index_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_studioAdminRouteModel_ts
+  module_src_host_layout_layoutGenerator_ts --&gt; module_src_types_project_generation_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_test_ts[&quot;src/host/layout/navigator/createNavigatorGenerationBindings.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_navigator_createNavigatorGenerationBindings_test_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_test_ts --&gt; module_src_host_layout_navigator_createNavigatorGenerationBindings_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_ts[&quot;src/host/layout/navigator/createNavigatorGenerationBindings.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_navigator_createNavigatorGenerationBindings_ts
-  module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --&gt; module_src_host_layout_layoutGenerator_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --&gt; module_src_types_project_generation_ts
   module_src_host_layout_navigator_generateNavigatorLayoutFiles_test_ts[&quot;src/host/layout/navigator/generateNavigatorLayoutFiles.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_navigator_generateNavigatorLayoutFiles_test_ts
   module_src_host_layout_navigator_generateNavigatorLayoutFiles_test_ts --&gt; module_src_host_layout_navigator_generateNavigatorLayoutFiles_ts
@@ -12313,6 +12324,9 @@
   module_src_host_orchestrator_createHostModuleOrchestrator_ts[&quot;src/host/orchestrator/createHostModuleOrchestrator.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_createHostModuleOrchestrator_ts
   module_src_host_orchestrator_createHostModuleOrchestrator_ts --&gt; module_src_host_modules_catalog_ts
+  module_src_host_orchestrator_createProjectCreationTestSource_ts[&quot;src/host/orchestrator/createProjectCreationTestSource.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
+  module_src_host_orchestrator_createProjectCreationTestSource_ts --&gt; module_src_host_orchestrator_projectCreationSource_ts
   module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts[&quot;src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts
   module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts --&gt; module_src_features_project_updates_application_StudioPendingModuleLifecyclePort_ts
@@ -12351,13 +12365,13 @@
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_moduleAdminContracts_ts
   module_src_host_orchestrator_projectCreationAssets_test_ts[&quot;src/host/orchestrator/projectCreationAssets.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectCreationAssets_test_ts
+  module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
-  module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_templates_index_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectCreationSafety_test_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
-  module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_projectIdentity_ts
   module_src_host_orchestrator_projectCreationSource_ts[&quot;src/host/orchestrator/projectCreationSource.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectCreationSource_ts
@@ -12961,6 +12975,7 @@
   module_src_runtime_runtimeNodeMeasurement_ts[&quot;src/runtime/runtimeNodeMeasurement.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_runtimeNodeMeasurement_ts --&gt; module_src_features_selection_adapters_nativeElementMeasurement_ts
+  module_src_runtime_runtimeNodeMeasurement_ts --&gt; module_src_types_runtime_node_measurement_ts
   module_src_runtime_runtimeSurface_test_ts[&quot;src/runtime/runtimeSurface.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_runtimeSurface_test_ts
   module_src_runtime_stationarySelection_public_test_ts[&quot;src/runtime/stationarySelection.public.test.ts&quot;]
@@ -12979,6 +12994,7 @@
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_stationarySelectionInputState_ts
+  module_src_runtime_stationarySelection_ts --&gt; module_src_types_runtime_node_measurement_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_ui_canvas_StudioCanvasDndOverlay_tsx
   module_src_runtime_stationarySelectionCoordinator_test_ts[&quot;src/runtime/stationarySelectionCoordinator.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_stationarySelectionCoordinator_test_ts
@@ -13037,6 +13053,8 @@
   package__ankhorage_studio -.-&gt; module_src_types_project_update_dashboard_ts
   module_src_types_project_updates_ts[&quot;src/types/project-updates.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_types_project_updates_ts
+  module_src_types_runtime_node_measurement_ts[&quot;src/types/runtime-node-measurement.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_types_runtime_node_measurement_ts
   module_src_ui_admin_adminPagePrimitives_tsx[&quot;src/ui/admin/adminPagePrimitives.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_AnkhAdminPage_test_ts[&quot;src/ui/admin/AnkhAdminPage.test.ts&quot;]
@@ -13492,9 +13510,9 @@
   module_src_ui_admin_pages_useActiveThemeAdmin_ts --&gt; module_src_ui_admin_pages_adminThemeModel_ts
   module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_AnkhStudio_ts
-  module_src_ui_AnkhStudio_ts --&gt; module_src_core_constants_ts
   module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
   module_src_ui_AnkhStudio_ts --&gt; module_src_runtime_studioMediaResolver_ts
+  module_src_ui_AnkhStudio_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_ui_canvas_canvasDndInteraction_test_ts[&quot;src/ui/canvas/canvasDndInteraction.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_canvas_canvasDndInteraction_test_ts
   module_src_ui_canvas_canvasDndInteraction_test_ts --&gt; module_src_canvasDropZones_ts
@@ -13512,7 +13530,7 @@
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_canvasDropZones_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_index_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_insertModalModel_ts
-  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_runtime_runtimeNodeMeasurement_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_types_runtime_node_measurement_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_ui_canvas_canvasDndInteraction_ts
   module_src_ui_createStudioAppBarActions_ts[&quot;src/ui/createStudioAppBarActions.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_createStudioAppBarActions_ts
@@ -13541,6 +13559,14 @@
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_ui_StudioInsertDialog_tsx
   module_src_upsertExternalApi_ts[&quot;src/upsertExternalApi.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_upsertExternalApi_ts
+  module_src_utils_resolveStudioApiBase_test_ts[&quot;src/utils/resolveStudioApiBase.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_utils_resolveStudioApiBase_test_ts
+  module_src_utils_resolveStudioApiBase_test_ts --&gt; module_src_utils_resolveStudioApiBase_ts
+  module_src_utils_resolveStudioApiBase_ts[&quot;src/utils/resolveStudioApiBase.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_utils_resolveStudioApiBase_ts
+  module_src_utils_studioApiBase_ts[&quot;src/utils/studioApiBase.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_utils_studioApiBase_ts
+  module_src_utils_studioApiBase_ts --&gt; module_src_utils_resolveStudioApiBase_ts
   module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_utils_treeUtils_ts
   module_src_utils_treeUtils_ts --&gt; module_src_index_ts
@@ -13615,9 +13641,6 @@
   module_src_constants_ts[&quot;src/constants.ts&quot;]
   module_src_contractGuards_test_ts[&quot;src/contractGuards.test.ts&quot;]
   module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
-  module_src_core_apiBase_test_ts[&quot;src/core/apiBase.test.ts&quot;]
-  module_src_core_apiBase_ts[&quot;src/core/apiBase.ts&quot;]
-  module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
   module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
   module_src_core_mediaRemovalCoordinator_test_ts[&quot;src/core/mediaRemovalCoordinator.test.ts&quot;]
   module_src_core_mediaRemovalCoordinator_ts[&quot;src/core/mediaRemovalCoordinator.ts&quot;]
@@ -13825,6 +13848,7 @@
   module_src_host_orchestrator_androidRunTemplate_test_ts[&quot;src/host/orchestrator/androidRunTemplate.test.ts&quot;]
   module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
   module_src_host_orchestrator_createHostModuleOrchestrator_ts[&quot;src/host/orchestrator/createHostModuleOrchestrator.ts&quot;]
+  module_src_host_orchestrator_createProjectCreationTestSource_ts[&quot;src/host/orchestrator/createProjectCreationTestSource.ts&quot;]
   module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts[&quot;src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
@@ -14032,6 +14056,7 @@
   module_src_types_project_generation_ts[&quot;src/types/project-generation.ts&quot;]
   module_src_types_project_update_dashboard_ts[&quot;src/types/project-update-dashboard.ts&quot;]
   module_src_types_project_updates_ts[&quot;src/types/project-updates.ts&quot;]
+  module_src_types_runtime_node_measurement_ts[&quot;src/types/runtime-node-measurement.ts&quot;]
   module_src_ui_admin_adminPagePrimitives_tsx[&quot;src/ui/admin/adminPagePrimitives.tsx&quot;]
   module_src_ui_admin_AnkhAdminPage_test_ts[&quot;src/ui/admin/AnkhAdminPage.test.ts&quot;]
   module_src_ui_admin_AnkhAdminPage_tsx[&quot;src/ui/admin/AnkhAdminPage.tsx&quot;]
@@ -14138,6 +14163,9 @@
   module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
   module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
   module_src_upsertExternalApi_ts[&quot;src/upsertExternalApi.ts&quot;]
+  module_src_utils_resolveStudioApiBase_test_ts[&quot;src/utils/resolveStudioApiBase.test.ts&quot;]
+  module_src_utils_resolveStudioApiBase_ts[&quot;src/utils/resolveStudioApiBase.ts&quot;]
+  module_src_utils_studioApiBase_ts[&quot;src/utils/studioApiBase.ts&quot;]
   module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
   module_src_workspacePlatform_test_ts[&quot;src/workspacePlatform.test.ts&quot;]
   module_src_workspacePlatform_ts[&quot;src/workspacePlatform.ts&quot;]
@@ -14217,11 +14245,9 @@
   module_src_cli_index_test_ts --&gt; module_src_cli_index_ts
   module_src_cli_index_ts --&gt; module_src_host_templates_index_ts
   module_src_contractGuards_test_ts --&gt; module_src_contractGuards_ts
-  module_src_core_apiBase_test_ts --&gt; module_src_core_apiBase_ts
-  module_src_core_constants_ts --&gt; module_src_core_apiBase_ts
-  module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_core_constants_ts
   module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_core_mediaRemovalCoordinator_ts
   module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_mediaPickerAuthoring_ts
+  module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_core_mediaRemovalCoordinator_test_ts --&gt; module_src_core_mediaRemovalCoordinator_ts
   module_src_core_mediaRemovalCoordinator_ts --&gt; module_src_mediaAuthoringModel_ts
   module_src_core_StudioContext_ts --&gt; module_src_index_ts
@@ -14237,7 +14263,6 @@
   module_src_core_studioManifestPersistenceModel_ts --&gt; module_src_index_ts
   module_src_core_studioManifestPersistenceModel_ts --&gt; module_src_manifestSync_ts
   module_src_core_StudioProvider_ts --&gt; module_src_authSettings_ts
-  module_src_core_StudioProvider_ts --&gt; module_src_core_constants_ts
   module_src_core_StudioProvider_ts --&gt; module_src_core_mediaAuthoringHostClient_ts
   module_src_core_StudioProvider_ts --&gt; module_src_core_mediaRemovalCoordinator_ts
   module_src_core_StudioProvider_ts --&gt; module_src_core_StudioContext_ts
@@ -14252,12 +14277,13 @@
   module_src_core_StudioProvider_ts --&gt; module_src_routeUtils_ts
   module_src_core_StudioProvider_ts --&gt; module_src_studioSelectionModel_ts
   module_src_core_StudioProvider_ts --&gt; module_src_ui_admin_AuthAdminSession_tsx
+  module_src_core_StudioProvider_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_createProjectDeployRequest_ts --&gt; module_src_projectDeployRequest_ts
   module_src_deriveExternalApiIdFromUrl_ts --&gt; module_src_normalizeExternalApiId_ts
   module_src_externalApiAdministration_test_ts --&gt; module_src_deriveExternalApiIdFromUrl_ts
   module_src_externalApiAdministration_test_ts --&gt; module_src_removeExternalApi_ts
-  module_src_externalApiApi_ts --&gt; module_src_core_constants_ts
   module_src_externalApiApi_ts --&gt; module_src_externalApiAuthoringContracts_ts
+  module_src_externalApiApi_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_externalApiAuthoring_public_test_ts --&gt; module_src_externalApiAuthoring_index_ts
   module_src_features_administration_adapters_inbound_useStudioAdminWorkspace_ts --&gt; module_src_core_StudioContext_ts
   module_src_features_administration_adapters_inbound_useStudioAdminWorkspace_ts --&gt; module_src_features_administration_domain_createStudioAdminWorkspaceRoutes_ts
@@ -14340,9 +14366,9 @@
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts --&gt; module_src_features_project_updates_adapters_outbound_resolveCurrentStudioApmArtifactAsync_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts --&gt; module_src_features_project_updates_application_StudioPendingModuleLifecyclePort_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts --&gt; module_src_features_project_updates_domain_pendingModulePlanStep_ts
-  module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_core_constants_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_features_project_updates_adapters_outbound_createProjectUpdateHostHttpAdapter_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_features_project_updates_application_ProjectUpdateDashboardService_ts
+  module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts --&gt; module_src_features_project_updates_adapters_outbound_inspectPendingModuleLifecycleEvidenceAsync_ts
   module_src_features_project_updates_composition_createStudioProjectUpdatePorts_test_ts --&gt; module_src_features_project_updates_adapters_outbound_readPendingModuleLifecycleStateAsync_ts
   module_src_features_project_updates_composition_createStudioProjectUpdatePorts_test_ts --&gt; module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts
@@ -14382,11 +14408,11 @@
   module_src_features_selection_adapters_nativeElementMeasurement_test_ts --&gt; module_src_features_selection_adapters_nativeElementMeasurement_ts
   module_src_features_selection_application_nativeSelectionSamplingCoordinator_test_ts --&gt; module_src_features_selection_application_nativeSelectionSamplingCoordinator_ts
   module_src_hooks_useProjects_ts --&gt; module_src_contractGuards_ts
-  module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
   module_src_hooks_useProjects_ts --&gt; module_src_projectWorkspaceContracts_ts
+  module_src_hooks_useProjects_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_hooks_useTemplateCatalog_ts --&gt; module_src_contractGuards_ts
-  module_src_hooks_useTemplateCatalog_ts --&gt; module_src_core_constants_ts
   module_src_hooks_useTemplateCatalog_ts --&gt; module_src_templateCatalogContracts_ts
+  module_src_hooks_useTemplateCatalog_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_host_apis_createProjectEndpointCredentialResolver_ts --&gt; module_src_host_secrets_projectSecretService_ts
   module_src_host_apis_createTrustedEndpointTestFetch_ts --&gt; module_src_host_apis_requestTrustedExternalApi_ts
   module_src_host_apis_createTrustedExternalApiFetch_ts --&gt; module_src_host_apis_requestTrustedExternalApi_ts
@@ -14533,9 +14559,10 @@
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_modules_layout_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_index_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_studioAdminRouteModel_ts
+  module_src_host_layout_layoutGenerator_ts --&gt; module_src_types_project_generation_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_test_ts --&gt; module_src_host_layout_navigator_createNavigatorGenerationBindings_ts
-  module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --&gt; module_src_host_layout_layoutGenerator_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --&gt; module_src_types_project_generation_ts
   module_src_host_layout_navigator_generateNavigatorLayoutFiles_test_ts --&gt; module_src_host_layout_navigator_generateNavigatorLayoutFiles_ts
   module_src_host_layout_templates_auth_adapter_test_ts --&gt; module_src_host_layout_templates_auth_adapter_ts
   module_src_host_layout_templates_auth_callback_test_ts --&gt; module_src_host_layout_templates_auth_callback_ts
@@ -14597,6 +14624,7 @@
   module_src_host_orchestrator_appTargetGeneration_test_ts --&gt; module_src_host_orchestrator_projectTargets_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_createHostModuleOrchestrator_ts --&gt; module_src_host_modules_catalog_ts
+  module_src_host_orchestrator_createProjectCreationTestSource_ts --&gt; module_src_host_orchestrator_projectCreationSource_ts
   module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts --&gt; module_src_features_project_updates_application_StudioPendingModuleLifecyclePort_ts
   module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts --&gt; module_src_host_orchestrator_createHostModuleOrchestrator_ts
   module_src_host_orchestrator_generatedAppFiles_test_ts --&gt; module_src_host_orchestrator_generatedAppFiles_ts
@@ -14617,11 +14645,11 @@
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_orchestrator_resolveMutations_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_manifestState_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_moduleAdminContracts_ts
+  module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
-  module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_templates_index_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
-  module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_projectIdentity_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_features_infrastructure_application_use_cases_initializeProjectLocalInfraNetworking_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
@@ -14886,6 +14914,7 @@
   module_src_runtime_runtimeNodeMeasurement_test_ts --&gt; module_src_features_selection_adapters_nativeElementMeasurement_ts
   module_src_runtime_runtimeNodeMeasurement_test_ts --&gt; module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_runtimeNodeMeasurement_ts --&gt; module_src_features_selection_adapters_nativeElementMeasurement_ts
+  module_src_runtime_runtimeNodeMeasurement_ts --&gt; module_src_types_runtime_node_measurement_ts
   module_src_runtime_stationarySelection_public_test_ts --&gt; module_src_runtime_index_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_canvasDragModel_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_features_selection_adapters_nativeElementMeasurement_ts
@@ -14896,6 +14925,7 @@
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_stationarySelectionInputState_ts
+  module_src_runtime_stationarySelection_ts --&gt; module_src_types_runtime_node_measurement_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_ui_canvas_StudioCanvasDndOverlay_tsx
   module_src_runtime_stationarySelectionCoordinator_test_ts --&gt; module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelectionInputState_test_ts --&gt; module_src_runtime_stationarySelectionInputState_ts
@@ -15173,9 +15203,9 @@
   module_src_ui_admin_pages_useActiveThemeAdmin_ts --&gt; module_src_core_StudioContext_ts
   module_src_ui_admin_pages_useActiveThemeAdmin_ts --&gt; module_src_index_ts
   module_src_ui_admin_pages_useActiveThemeAdmin_ts --&gt; module_src_ui_admin_pages_adminThemeModel_ts
-  module_src_ui_AnkhStudio_ts --&gt; module_src_core_constants_ts
   module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
   module_src_ui_AnkhStudio_ts --&gt; module_src_runtime_studioMediaResolver_ts
+  module_src_ui_AnkhStudio_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_ui_canvas_canvasDndInteraction_test_ts --&gt; module_src_canvasDropZones_ts
   module_src_ui_canvas_canvasDndInteraction_test_ts --&gt; module_src_ui_canvas_canvasDndInteraction_ts
   module_src_ui_canvas_canvasDndInteraction_ts --&gt; module_src_canvasDragModel_ts
@@ -15185,7 +15215,7 @@
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_canvasDropZones_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_index_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_insertModalModel_ts
-  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_runtime_runtimeNodeMeasurement_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_types_runtime_node_measurement_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_ui_canvas_canvasDndInteraction_ts
   module_src_ui_createStudioAppBarActions_ts --&gt; module_src_ui_studioAppBarModel_ts
   module_src_ui_StudioInsertDialog_tsx --&gt; module_src_index_ts
@@ -15200,6 +15230,8 @@
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_ui_studioAppBarModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_ui_StudioDeleteDialog_tsx
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_ui_StudioInsertDialog_tsx
+  module_src_utils_resolveStudioApiBase_test_ts --&gt; module_src_utils_resolveStudioApiBase_ts
+  module_src_utils_studioApiBase_ts --&gt; module_src_utils_resolveStudioApiBase_ts
   module_src_utils_treeUtils_ts --&gt; module_src_index_ts
   module_src_workspacePlatform_test_ts --&gt; module_src_workspacePlatform_ts
   module_src_workspaceSearch_ts --&gt; module_src_projectWorkspaceContracts_ts
@@ -15264,9 +15296,6 @@
   module_src_constants_ts[&quot;src/constants.ts&quot;]
   module_src_contractGuards_test_ts[&quot;src/contractGuards.test.ts&quot;]
   module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
-  module_src_core_apiBase_test_ts[&quot;src/core/apiBase.test.ts&quot;]
-  module_src_core_apiBase_ts[&quot;src/core/apiBase.ts&quot;]
-  module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
   module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
   module_src_core_mediaRemovalCoordinator_test_ts[&quot;src/core/mediaRemovalCoordinator.test.ts&quot;]
   module_src_core_mediaRemovalCoordinator_ts[&quot;src/core/mediaRemovalCoordinator.ts&quot;]
@@ -15474,6 +15503,7 @@
   module_src_host_orchestrator_androidRunTemplate_test_ts[&quot;src/host/orchestrator/androidRunTemplate.test.ts&quot;]
   module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
   module_src_host_orchestrator_createHostModuleOrchestrator_ts[&quot;src/host/orchestrator/createHostModuleOrchestrator.ts&quot;]
+  module_src_host_orchestrator_createProjectCreationTestSource_ts[&quot;src/host/orchestrator/createProjectCreationTestSource.ts&quot;]
   module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts[&quot;src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
@@ -15681,6 +15711,7 @@
   module_src_types_project_generation_ts[&quot;src/types/project-generation.ts&quot;]
   module_src_types_project_update_dashboard_ts[&quot;src/types/project-update-dashboard.ts&quot;]
   module_src_types_project_updates_ts[&quot;src/types/project-updates.ts&quot;]
+  module_src_types_runtime_node_measurement_ts[&quot;src/types/runtime-node-measurement.ts&quot;]
   module_src_ui_admin_adminPagePrimitives_tsx[&quot;src/ui/admin/adminPagePrimitives.tsx&quot;]
   module_src_ui_admin_AnkhAdminPage_test_ts[&quot;src/ui/admin/AnkhAdminPage.test.ts&quot;]
   module_src_ui_admin_AnkhAdminPage_tsx[&quot;src/ui/admin/AnkhAdminPage.tsx&quot;]
@@ -15787,6 +15818,9 @@
   module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
   module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
   module_src_upsertExternalApi_ts[&quot;src/upsertExternalApi.ts&quot;]
+  module_src_utils_resolveStudioApiBase_test_ts[&quot;src/utils/resolveStudioApiBase.test.ts&quot;]
+  module_src_utils_resolveStudioApiBase_ts[&quot;src/utils/resolveStudioApiBase.ts&quot;]
+  module_src_utils_studioApiBase_ts[&quot;src/utils/studioApiBase.ts&quot;]
   module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
   module_src_workspacePlatform_test_ts[&quot;src/workspacePlatform.test.ts&quot;]
   module_src_workspacePlatform_ts[&quot;src/workspacePlatform.ts&quot;]
@@ -15866,11 +15900,9 @@
   module_src_cli_index_test_ts --&gt; module_src_cli_index_ts
   module_src_cli_index_ts --&gt; module_src_host_templates_index_ts
   module_src_contractGuards_test_ts --&gt; module_src_contractGuards_ts
-  module_src_core_apiBase_test_ts --&gt; module_src_core_apiBase_ts
-  module_src_core_constants_ts --&gt; module_src_core_apiBase_ts
-  module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_core_constants_ts
   module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_core_mediaRemovalCoordinator_ts
   module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_mediaPickerAuthoring_ts
+  module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_core_mediaRemovalCoordinator_test_ts --&gt; module_src_core_mediaRemovalCoordinator_ts
   module_src_core_mediaRemovalCoordinator_ts --&gt; module_src_mediaAuthoringModel_ts
   module_src_core_StudioContext_ts --&gt; module_src_index_ts
@@ -15886,7 +15918,6 @@
   module_src_core_studioManifestPersistenceModel_ts --&gt; module_src_index_ts
   module_src_core_studioManifestPersistenceModel_ts --&gt; module_src_manifestSync_ts
   module_src_core_StudioProvider_ts --&gt; module_src_authSettings_ts
-  module_src_core_StudioProvider_ts --&gt; module_src_core_constants_ts
   module_src_core_StudioProvider_ts --&gt; module_src_core_mediaAuthoringHostClient_ts
   module_src_core_StudioProvider_ts --&gt; module_src_core_mediaRemovalCoordinator_ts
   module_src_core_StudioProvider_ts --&gt; module_src_core_StudioContext_ts
@@ -15901,12 +15932,13 @@
   module_src_core_StudioProvider_ts --&gt; module_src_routeUtils_ts
   module_src_core_StudioProvider_ts --&gt; module_src_studioSelectionModel_ts
   module_src_core_StudioProvider_ts --&gt; module_src_ui_admin_AuthAdminSession_tsx
+  module_src_core_StudioProvider_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_createProjectDeployRequest_ts --&gt; module_src_projectDeployRequest_ts
   module_src_deriveExternalApiIdFromUrl_ts --&gt; module_src_normalizeExternalApiId_ts
   module_src_externalApiAdministration_test_ts --&gt; module_src_deriveExternalApiIdFromUrl_ts
   module_src_externalApiAdministration_test_ts --&gt; module_src_removeExternalApi_ts
-  module_src_externalApiApi_ts --&gt; module_src_core_constants_ts
   module_src_externalApiApi_ts --&gt; module_src_externalApiAuthoringContracts_ts
+  module_src_externalApiApi_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_externalApiAuthoring_public_test_ts --&gt; module_src_externalApiAuthoring_index_ts
   module_src_features_administration_adapters_inbound_useStudioAdminWorkspace_ts --&gt; module_src_core_StudioContext_ts
   module_src_features_administration_adapters_inbound_useStudioAdminWorkspace_ts --&gt; module_src_features_administration_domain_createStudioAdminWorkspaceRoutes_ts
@@ -15989,9 +16021,9 @@
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts --&gt; module_src_features_project_updates_adapters_outbound_resolveCurrentStudioApmArtifactAsync_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts --&gt; module_src_features_project_updates_application_StudioPendingModuleLifecyclePort_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts --&gt; module_src_features_project_updates_domain_pendingModulePlanStep_ts
-  module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_core_constants_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_features_project_updates_adapters_outbound_createProjectUpdateHostHttpAdapter_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_features_project_updates_application_ProjectUpdateDashboardService_ts
+  module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts --&gt; module_src_features_project_updates_adapters_outbound_inspectPendingModuleLifecycleEvidenceAsync_ts
   module_src_features_project_updates_composition_createStudioProjectUpdatePorts_test_ts --&gt; module_src_features_project_updates_adapters_outbound_readPendingModuleLifecycleStateAsync_ts
   module_src_features_project_updates_composition_createStudioProjectUpdatePorts_test_ts --&gt; module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts
@@ -16031,11 +16063,11 @@
   module_src_features_selection_adapters_nativeElementMeasurement_test_ts --&gt; module_src_features_selection_adapters_nativeElementMeasurement_ts
   module_src_features_selection_application_nativeSelectionSamplingCoordinator_test_ts --&gt; module_src_features_selection_application_nativeSelectionSamplingCoordinator_ts
   module_src_hooks_useProjects_ts --&gt; module_src_contractGuards_ts
-  module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
   module_src_hooks_useProjects_ts --&gt; module_src_projectWorkspaceContracts_ts
+  module_src_hooks_useProjects_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_hooks_useTemplateCatalog_ts --&gt; module_src_contractGuards_ts
-  module_src_hooks_useTemplateCatalog_ts --&gt; module_src_core_constants_ts
   module_src_hooks_useTemplateCatalog_ts --&gt; module_src_templateCatalogContracts_ts
+  module_src_hooks_useTemplateCatalog_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_host_apis_createProjectEndpointCredentialResolver_ts --&gt; module_src_host_secrets_projectSecretService_ts
   module_src_host_apis_createTrustedEndpointTestFetch_ts --&gt; module_src_host_apis_requestTrustedExternalApi_ts
   module_src_host_apis_createTrustedExternalApiFetch_ts --&gt; module_src_host_apis_requestTrustedExternalApi_ts
@@ -16182,9 +16214,10 @@
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_modules_layout_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_index_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_studioAdminRouteModel_ts
+  module_src_host_layout_layoutGenerator_ts --&gt; module_src_types_project_generation_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_test_ts --&gt; module_src_host_layout_navigator_createNavigatorGenerationBindings_ts
-  module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --&gt; module_src_host_layout_layoutGenerator_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --&gt; module_src_types_project_generation_ts
   module_src_host_layout_navigator_generateNavigatorLayoutFiles_test_ts --&gt; module_src_host_layout_navigator_generateNavigatorLayoutFiles_ts
   module_src_host_layout_templates_auth_adapter_test_ts --&gt; module_src_host_layout_templates_auth_adapter_ts
   module_src_host_layout_templates_auth_callback_test_ts --&gt; module_src_host_layout_templates_auth_callback_ts
@@ -16246,6 +16279,7 @@
   module_src_host_orchestrator_appTargetGeneration_test_ts --&gt; module_src_host_orchestrator_projectTargets_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_createHostModuleOrchestrator_ts --&gt; module_src_host_modules_catalog_ts
+  module_src_host_orchestrator_createProjectCreationTestSource_ts --&gt; module_src_host_orchestrator_projectCreationSource_ts
   module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts --&gt; module_src_features_project_updates_application_StudioPendingModuleLifecyclePort_ts
   module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts --&gt; module_src_host_orchestrator_createHostModuleOrchestrator_ts
   module_src_host_orchestrator_generatedAppFiles_test_ts --&gt; module_src_host_orchestrator_generatedAppFiles_ts
@@ -16266,11 +16300,11 @@
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_orchestrator_resolveMutations_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_manifestState_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_moduleAdminContracts_ts
+  module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
-  module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_orchestrator_projectCreationAssets_test_ts --&gt; module_src_host_templates_index_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
-  module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_projectIdentity_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_features_infrastructure_application_use_cases_initializeProjectLocalInfraNetworking_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
@@ -16535,6 +16569,7 @@
   module_src_runtime_runtimeNodeMeasurement_test_ts --&gt; module_src_features_selection_adapters_nativeElementMeasurement_ts
   module_src_runtime_runtimeNodeMeasurement_test_ts --&gt; module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_runtimeNodeMeasurement_ts --&gt; module_src_features_selection_adapters_nativeElementMeasurement_ts
+  module_src_runtime_runtimeNodeMeasurement_ts --&gt; module_src_types_runtime_node_measurement_ts
   module_src_runtime_stationarySelection_public_test_ts --&gt; module_src_runtime_index_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_canvasDragModel_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_features_selection_adapters_nativeElementMeasurement_ts
@@ -16545,6 +16580,7 @@
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_stationarySelectionInputState_ts
+  module_src_runtime_stationarySelection_ts --&gt; module_src_types_runtime_node_measurement_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_ui_canvas_StudioCanvasDndOverlay_tsx
   module_src_runtime_stationarySelectionCoordinator_test_ts --&gt; module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelectionInputState_test_ts --&gt; module_src_runtime_stationarySelectionInputState_ts
@@ -16822,9 +16858,9 @@
   module_src_ui_admin_pages_useActiveThemeAdmin_ts --&gt; module_src_core_StudioContext_ts
   module_src_ui_admin_pages_useActiveThemeAdmin_ts --&gt; module_src_index_ts
   module_src_ui_admin_pages_useActiveThemeAdmin_ts --&gt; module_src_ui_admin_pages_adminThemeModel_ts
-  module_src_ui_AnkhStudio_ts --&gt; module_src_core_constants_ts
   module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
   module_src_ui_AnkhStudio_ts --&gt; module_src_runtime_studioMediaResolver_ts
+  module_src_ui_AnkhStudio_ts --&gt; module_src_utils_studioApiBase_ts
   module_src_ui_canvas_canvasDndInteraction_test_ts --&gt; module_src_canvasDropZones_ts
   module_src_ui_canvas_canvasDndInteraction_test_ts --&gt; module_src_ui_canvas_canvasDndInteraction_ts
   module_src_ui_canvas_canvasDndInteraction_ts --&gt; module_src_canvasDragModel_ts
@@ -16834,7 +16870,7 @@
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_canvasDropZones_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_index_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_insertModalModel_ts
-  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_runtime_runtimeNodeMeasurement_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_types_runtime_node_measurement_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --&gt; module_src_ui_canvas_canvasDndInteraction_ts
   module_src_ui_createStudioAppBarActions_ts --&gt; module_src_ui_studioAppBarModel_ts
   module_src_ui_StudioInsertDialog_tsx --&gt; module_src_index_ts
@@ -16849,6 +16885,8 @@
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_ui_studioAppBarModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_ui_StudioDeleteDialog_tsx
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_ui_StudioInsertDialog_tsx
+  module_src_utils_resolveStudioApiBase_test_ts --&gt; module_src_utils_resolveStudioApiBase_ts
+  module_src_utils_studioApiBase_ts --&gt; module_src_utils_resolveStudioApiBase_ts
   module_src_utils_treeUtils_ts --&gt; module_src_index_ts
   module_src_workspacePlatform_test_ts --&gt; module_src_workspacePlatform_ts
   module_src_workspaceSearch_ts --&gt; module_src_projectWorkspaceContracts_ts
@@ -16915,9 +16953,6 @@
   module_src_constants_ts[&quot;src/constants.ts&quot;]
   module_src_contractGuards_test_ts[&quot;src/contractGuards.test.ts&quot;]
   module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
-  module_src_core_apiBase_test_ts[&quot;src/core/apiBase.test.ts&quot;]
-  module_src_core_apiBase_ts[&quot;src/core/apiBase.ts&quot;]
-  module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
   module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
   module_src_core_mediaRemovalCoordinator_test_ts[&quot;src/core/mediaRemovalCoordinator.test.ts&quot;]
   module_src_core_mediaRemovalCoordinator_ts[&quot;src/core/mediaRemovalCoordinator.ts&quot;]
@@ -17125,6 +17160,7 @@
   module_src_host_orchestrator_androidRunTemplate_test_ts[&quot;src/host/orchestrator/androidRunTemplate.test.ts&quot;]
   module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
   module_src_host_orchestrator_createHostModuleOrchestrator_ts[&quot;src/host/orchestrator/createHostModuleOrchestrator.ts&quot;]
+  module_src_host_orchestrator_createProjectCreationTestSource_ts[&quot;src/host/orchestrator/createProjectCreationTestSource.ts&quot;]
   module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts[&quot;src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
@@ -17332,6 +17368,7 @@
   module_src_types_project_generation_ts[&quot;src/types/project-generation.ts&quot;]
   module_src_types_project_update_dashboard_ts[&quot;src/types/project-update-dashboard.ts&quot;]
   module_src_types_project_updates_ts[&quot;src/types/project-updates.ts&quot;]
+  module_src_types_runtime_node_measurement_ts[&quot;src/types/runtime-node-measurement.ts&quot;]
   module_src_ui_admin_adminPagePrimitives_tsx[&quot;src/ui/admin/adminPagePrimitives.tsx&quot;]
   module_src_ui_admin_AnkhAdminPage_test_ts[&quot;src/ui/admin/AnkhAdminPage.test.ts&quot;]
   module_src_ui_admin_AnkhAdminPage_tsx[&quot;src/ui/admin/AnkhAdminPage.tsx&quot;]
@@ -17438,6 +17475,9 @@
   module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
   module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
   module_src_upsertExternalApi_ts[&quot;src/upsertExternalApi.ts&quot;]
+  module_src_utils_resolveStudioApiBase_test_ts[&quot;src/utils/resolveStudioApiBase.test.ts&quot;]
+  module_src_utils_resolveStudioApiBase_ts[&quot;src/utils/resolveStudioApiBase.ts&quot;]
+  module_src_utils_studioApiBase_ts[&quot;src/utils/studioApiBase.ts&quot;]
   module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
   module_src_workspacePlatform_test_ts[&quot;src/workspacePlatform.test.ts&quot;]
   module_src_workspacePlatform_ts[&quot;src/workspacePlatform.ts&quot;]
@@ -17895,9 +17935,6 @@
   module_src_constants_ts[&quot;src/constants.ts&quot;]
   module_src_contractGuards_test_ts[&quot;src/contractGuards.test.ts&quot;]
   module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
-  module_src_core_apiBase_test_ts[&quot;src/core/apiBase.test.ts&quot;]
-  module_src_core_apiBase_ts[&quot;src/core/apiBase.ts&quot;]
-  module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
   module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
   module_src_core_mediaRemovalCoordinator_test_ts[&quot;src/core/mediaRemovalCoordinator.test.ts&quot;]
   module_src_core_mediaRemovalCoordinator_ts[&quot;src/core/mediaRemovalCoordinator.ts&quot;]
@@ -18105,6 +18142,7 @@
   module_src_host_orchestrator_androidRunTemplate_test_ts[&quot;src/host/orchestrator/androidRunTemplate.test.ts&quot;]
   module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
   module_src_host_orchestrator_createHostModuleOrchestrator_ts[&quot;src/host/orchestrator/createHostModuleOrchestrator.ts&quot;]
+  module_src_host_orchestrator_createProjectCreationTestSource_ts[&quot;src/host/orchestrator/createProjectCreationTestSource.ts&quot;]
   module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts[&quot;src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
@@ -18312,6 +18350,7 @@
   module_src_types_project_generation_ts[&quot;src/types/project-generation.ts&quot;]
   module_src_types_project_update_dashboard_ts[&quot;src/types/project-update-dashboard.ts&quot;]
   module_src_types_project_updates_ts[&quot;src/types/project-updates.ts&quot;]
+  module_src_types_runtime_node_measurement_ts[&quot;src/types/runtime-node-measurement.ts&quot;]
   module_src_ui_admin_adminPagePrimitives_tsx[&quot;src/ui/admin/adminPagePrimitives.tsx&quot;]
   module_src_ui_admin_AnkhAdminPage_test_ts[&quot;src/ui/admin/AnkhAdminPage.test.ts&quot;]
   module_src_ui_admin_AnkhAdminPage_tsx[&quot;src/ui/admin/AnkhAdminPage.tsx&quot;]
@@ -18418,6 +18457,9 @@
   module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
   module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
   module_src_upsertExternalApi_ts[&quot;src/upsertExternalApi.ts&quot;]
+  module_src_utils_resolveStudioApiBase_test_ts[&quot;src/utils/resolveStudioApiBase.test.ts&quot;]
+  module_src_utils_resolveStudioApiBase_ts[&quot;src/utils/resolveStudioApiBase.ts&quot;]
+  module_src_utils_studioApiBase_ts[&quot;src/utils/studioApiBase.ts&quot;]
   module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
   module_src_workspacePlatform_test_ts[&quot;src/workspacePlatform.test.ts&quot;]
   module_src_workspacePlatform_ts[&quot;src/workspacePlatform.ts&quot;]
@@ -20418,26 +20460,6 @@
 @todo Move this reusable domain guard to @ankhorage/color-theory beside COLOR_HARMONIES.</p>
   </article>
     </section>
-  </section><section id="view-src-core-apibase-ts" class="view" data-view="src/core/apiBase.ts" hidden>
-    <section class="panel">
-      <h2>src/core/apiBase.ts</h2>
-      <article class="item" data-search="resolveStudioApiBase src/core/apiBase.ts Resolve the Studio host API base URL for explicit configuration, Android, Expo LAN hosts, or localhost.&#10;@todo Keep platform/API-edge resolution out of core; review whether this belongs in platform or app composition after the audit.">
-    <h3>resolveStudioApiBase</h3>
-    <p class="muted"><code>src/core/apiBase.ts:8:1</code></p>
-    <p>Resolve the Studio host API base URL for explicit configuration, Android, Expo LAN hosts, or localhost.
-@todo Keep platform/API-edge resolution out of core; review whether this belongs in platform or app composition after the audit.</p>
-  </article>
-    </section>
-  </section><section id="view-src-core-constants-ts" class="view" data-view="src/core/constants.ts" hidden>
-    <section class="panel">
-      <h2>src/core/constants.ts</h2>
-      <article class="item" data-search="getApiBase src/core/constants.ts Resolve the Studio API base URL from explicit environment, Expo host, and platform inputs.&#10;@todo Move Expo/React Native environment composition out of core into the package&#39;s platform/app edge.">
-    <h3>getApiBase</h3>
-    <p class="muted"><code>src/core/constants.ts:12:7</code></p>
-    <p>Resolve the Studio API base URL from explicit environment, Expo host, and platform inputs.
-@todo Move Expo/React Native environment composition out of core into the package&#39;s platform/app edge.</p>
-  </article>
-    </section>
   </section><section id="view-src-core-mediaauthoringhostclient-ts" class="view" data-view="src/core/mediaAuthoringHostClient.ts" hidden>
     <section class="panel">
       <h2>src/core/mediaAuthoringHostClient.ts</h2>
@@ -20571,22 +20593,22 @@
 @todo Group project-manifest HTTP access in a dedicated manifest host client instead of StudioProvider.</p>
   </article><article class="item" data-search="persistProjectManifest src/core/StudioProvider.ts Persist the complete Studio manifest for one project through the host API.&#10;@todo Group project-manifest HTTP access in a dedicated manifest host client instead of StudioProvider.">
     <h3>persistProjectManifest</h3>
-    <p class="muted"><code>src/core/StudioProvider.ts:712:1</code></p>
+    <p class="muted"><code>src/core/StudioProvider.ts:714:1</code></p>
     <p>Persist the complete Studio manifest for one project through the host API.
 @todo Group project-manifest HTTP access in a dedicated manifest host client instead of StudioProvider.</p>
   </article><article class="item" data-search="readPersistenceJson src/core/StudioProvider.ts Parse a persistence response body as JSON and convert invalid bodies into an explicit request error.&#10;@todo Keep response parsing beside the dedicated project-manifest host client.">
     <h3>readPersistenceJson</h3>
-    <p class="muted"><code>src/core/StudioProvider.ts:726:1</code></p>
+    <p class="muted"><code>src/core/StudioProvider.ts:731:1</code></p>
     <p>Parse a persistence response body as JSON and convert invalid bodies into an explicit request error.
 @todo Keep response parsing beside the dedicated project-manifest host client.</p>
   </article><article class="item" data-search="createPersistenceError src/core/StudioProvider.ts Convert an unsuccessful persistence response payload and HTTP status into an Error.&#10;@todo Keep persistence response error policy beside the dedicated project-manifest host client.">
     <h3>createPersistenceError</h3>
-    <p class="muted"><code>src/core/StudioProvider.ts:738:1</code></p>
+    <p class="muted"><code>src/core/StudioProvider.ts:743:1</code></p>
     <p>Convert an unsuccessful persistence response payload and HTTP status into an Error.
 @todo Keep persistence response error policy beside the dedicated project-manifest host client.</p>
   </article><article class="item" data-search="toPersistenceMessage src/core/StudioProvider.ts Convert an unknown persistence failure into the message shown by Studio save-state UI.">
     <h3>toPersistenceMessage</h3>
-    <p class="muted"><code>src/core/StudioProvider.ts:746:1</code></p>
+    <p class="muted"><code>src/core/StudioProvider.ts:751:1</code></p>
     <p>Convert an unknown persistence failure into the message shown by Studio save-state UI.</p>
   </article>
     </section>
@@ -23454,40 +23476,40 @@ the currently running Studio contracts.</p>
       <h2>src/host/layout/layoutGenerator.ts</h2>
       <article class="item" data-search="getPackageOwnedRuntimeImports src/host/layout/layoutGenerator.ts Build the generated root-layout imports that bridge Runtime, Expo Runtime and optional Studio authoring ownership.">
     <h3>getPackageOwnedRuntimeImports</h3>
-    <p class="muted"><code>src/host/layout/layoutGenerator.ts:59:1</code></p>
+    <p class="muted"><code>src/host/layout/layoutGenerator.ts:55:1</code></p>
     <p>Build the generated root-layout imports that bridge Runtime, Expo Runtime and optional Studio authoring ownership.</p>
   </article><article class="item" data-search="getGeneratedRuntimeRegistryDeclarations src/host/layout/layoutGenerator.ts Build generated runtime registry declarations for standalone apps or Studio-enabled authoring apps.">
     <h3>getGeneratedRuntimeRegistryDeclarations</h3>
-    <p class="muted"><code>src/host/layout/layoutGenerator.ts:87:1</code></p>
+    <p class="muted"><code>src/host/layout/layoutGenerator.ts:83:1</code></p>
     <p>Build generated runtime registry declarations for standalone apps or Studio-enabled authoring apps.</p>
   </article><article class="item" data-search="mergeRuntimeModuleDeclarations src/host/layout/layoutGenerator.ts Trim, discard empty and join generated module-level declaration blocks with a blank line.&#10;@utility @ankhorage/utility/string">
     <h3>mergeRuntimeModuleDeclarations</h3>
-    <p class="muted"><code>src/host/layout/layoutGenerator.ts:131:1</code></p>
+    <p class="muted"><code>src/host/layout/layoutGenerator.ts:127:1</code></p>
     <p>Trim, discard empty and join generated module-level declaration blocks with a blank line.
 @utility @ankhorage/utility/string</p>
   </article><article class="item" data-search="addStudioAdminRouteFiles src/host/layout/layoutGenerator.ts ">
     <h3>addStudioAdminRouteFiles</h3>
-    <p class="muted"><code>src/host/layout/layoutGenerator.ts:167:11</code></p>
+    <p class="muted"><code>src/host/layout/layoutGenerator.ts:163:11</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="walk src/host/layout/layoutGenerator.ts ">
     <h3>walk</h3>
-    <p class="muted"><code>src/host/layout/layoutGenerator.ts:190:11</code></p>
+    <p class="muted"><code>src/host/layout/layoutGenerator.ts:186:11</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="createStudioAdminRouteGeneratedFiles src/host/layout/layoutGenerator.ts Generate the complete Studio Admin route file set from the canonical Admin route registry.">
     <h3>createStudioAdminRouteGeneratedFiles</h3>
-    <p class="muted"><code>src/host/layout/layoutGenerator.ts:603:1</code></p>
+    <p class="muted"><code>src/host/layout/layoutGenerator.ts:599:1</code></p>
     <p>Generate the complete Studio Admin route file set from the canonical Admin route registry.</p>
   </article><article class="item" data-search="resolveStudioAdminRouteFilePath src/host/layout/layoutGenerator.ts Resolve a canonical Studio Admin route definition to its generated Expo Router file path, preserving parent routes as index modules and dynamic parameters as bracket segments.">
     <h3>resolveStudioAdminRouteFilePath</h3>
-    <p class="muted"><code>src/host/layout/layoutGenerator.ts:613:1</code></p>
+    <p class="muted"><code>src/host/layout/layoutGenerator.ts:609:1</code></p>
     <p>Resolve a canonical Studio Admin route definition to its generated Expo Router file path, preserving parent routes as index modules and dynamic parameters as bracket segments.</p>
   </article><article class="item" data-search="getStudioAdminRouteTsx src/host/layout/layoutGenerator.ts Generate one Studio Admin Expo Router module that development-gates and renders the requested Admin route.">
     <h3>getStudioAdminRouteTsx</h3>
-    <p class="muted"><code>src/host/layout/layoutGenerator.ts:634:1</code></p>
+    <p class="muted"><code>src/host/layout/layoutGenerator.ts:630:1</code></p>
     <p>Generate one Studio Admin Expo Router module that development-gates and renders the requested Admin route.</p>
   </article><article class="item" data-search="normalizeRel src/host/layout/layoutGenerator.ts Normalize a relative filesystem path to forward-slash separators for generated project files.&#10;@utility @ankhorage/utility/path">
     <h3>normalizeRel</h3>
-    <p class="muted"><code>src/host/layout/layoutGenerator.ts:652:1</code></p>
+    <p class="muted"><code>src/host/layout/layoutGenerator.ts:648:1</code></p>
     <p>Normalize a relative filesystem path to forward-slash separators for generated project files.
 @utility @ankhorage/utility/path</p>
   </article>
@@ -24091,6 +24113,15 @@ the currently running Studio contracts.</p>
     <p>Create the canonical Orchestrator instance for Studio&#39;s published host module registry.</p>
   </article>
     </section>
+  </section><section id="view-src-host-orchestrator-createprojectcreationtestsource-ts" class="view" data-view="src/host/orchestrator/createProjectCreationTestSource.ts" hidden>
+    <section class="panel">
+      <h2>src/host/orchestrator/createProjectCreationTestSource.ts</h2>
+      <article class="item" data-search="createProjectCreationTestSource src/host/orchestrator/createProjectCreationTestSource.ts Create the minimal project source shared by ProjectManager unit tests without depending on smoke fixtures.">
+    <h3>createProjectCreationTestSource</h3>
+    <p class="muted"><code>src/host/orchestrator/createProjectCreationTestSource.ts:7:1</code></p>
+    <p>Create the minimal project source shared by ProjectManager unit tests without depending on smoke fixtures.</p>
+  </article>
+    </section>
   </section><section id="view-src-host-orchestrator-createstudiopendingmodulelifecycleport-ts" class="view" data-view="src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts" hidden>
     <section class="panel">
       <h2>src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts</h2>
@@ -24255,7 +24286,7 @@ the currently running Studio contracts.</p>
       <h2>src/host/orchestrator/projectCreationSafety.test.ts</h2>
       <article class="item" data-search="catchError src/host/orchestrator/projectCreationSafety.test.ts ">
     <h3>catchError</h3>
-    <p class="muted"><code>src/host/orchestrator/projectCreationSafety.test.ts:50:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectCreationSafety.test.ts:52:1</code></p>
     <p class="empty">No description available.</p>
   </article>
     </section>
@@ -27794,50 +27825,50 @@ ScreenRequirements/contracts capability rather than generic Utility.</p>
       <h2>src/runtime/runtimeNodeMeasurement.ts</h2>
       <article class="item" data-search="runtimeNodeMeasurementChangeAffectsActiveIndicators src/runtime/runtimeNodeMeasurement.ts Decide whether one runtime-node measurement change can affect currently visible Studio indicators.">
     <h3>runtimeNodeMeasurementChangeAffectsActiveIndicators</h3>
-    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:57:1</code></p>
+    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:46:1</code></p>
     <p>Decide whether one runtime-node measurement change can affect currently visible Studio indicators.</p>
   </article><article class="item" data-search="shouldRenderSelectedNodeChrome src/runtime/runtimeNodeMeasurement.ts Decide whether Studio should render selected-node chrome for the active platform/edit state.">
     <h3>shouldRenderSelectedNodeChrome</h3>
-    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:73:1</code></p>
+    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:62:1</code></p>
     <p>Decide whether Studio should render selected-node chrome for the active platform/edit state.</p>
   </article><article class="item" data-search="unionMeasuredRects src/runtime/runtimeNodeMeasurement.ts Compute the smallest axis-aligned rectangle containing all supplied rectangles, or null for an empty collection.&#10;@utility @ankhorage/utility/geometry">
     <h3>unionMeasuredRects</h3>
-    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:85:1</code></p>
+    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:74:1</code></p>
     <p>Compute the smallest axis-aligned rectangle containing all supplied rectangles, or null for an empty collection.
 @utility @ankhorage/utility/geometry</p>
   </article><article class="item" data-search="createNativeRuntimeNodeMeasurement src/runtime/runtimeNodeMeasurement.ts Adapt a native measurable view into Studio&#39;s runtime-node measurement contract.">
     <h3>createNativeRuntimeNodeMeasurement</h3>
-    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:104:1</code></p>
+    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:93:1</code></p>
     <p>Adapt a native measurable view into Studio&#39;s runtime-node measurement contract.</p>
   </article><article class="item" data-search="createRuntimeNodeMeasurementRegistry src/runtime/runtimeNodeMeasurement.ts Create a keyed multi-value registry with idempotent unregister callbacks and optional change notifications.&#10;@utility @ankhorage/utility/registry">
     <h3>createRuntimeNodeMeasurementRegistry</h3>
-    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:120:1</code></p>
+    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:109:1</code></p>
     <p>Create a keyed multi-value registry with idempotent unregister callbacks and optional change notifications.
 @utility @ankhorage/utility/registry</p>
   </article><article class="item" data-search="selectPreferredRuntimeNodeMeasurements src/runtime/runtimeNodeMeasurement.ts Prefer authored-root measurements when present, otherwise keep every runtime measurement for the node.">
     <h3>selectPreferredRuntimeNodeMeasurements</h3>
-    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:157:1</code></p>
+    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:146:1</code></p>
     <p>Prefer authored-root measurements when present, otherwise keep every runtime measurement for the node.</p>
   </article><article class="item" data-search="getActiveRuntimeNodeMeasurements src/runtime/runtimeNodeMeasurement.ts Select runtime-node measurements whose geometry is currently relevant to Studio edit indicators.">
     <h3>getActiveRuntimeNodeMeasurements</h3>
-    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:167:1</code></p>
+    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:156:1</code></p>
     <p>Select runtime-node measurements whose geometry is currently relevant to Studio edit indicators.</p>
   </article><article class="item" data-search="hasActiveRuntimeNodeMeasurements src/runtime/runtimeNodeMeasurement.ts Return whether Studio currently has at least one active runtime-node measurement.">
     <h3>hasActiveRuntimeNodeMeasurements</h3>
-    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:187:1</code></p>
+    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:176:1</code></p>
     <p>Return whether Studio currently has at least one active runtime-node measurement.</p>
   </article><article class="item" data-search="measureRuntimeNodeIndicators src/runtime/runtimeNodeMeasurement.ts Measure active runtime nodes and project their window geometry into canvas-relative indicator rectangles.">
     <h3>measureRuntimeNodeIndicators</h3>
-    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:200:1</code></p>
+    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:189:1</code></p>
     <p>Measure active runtime nodes and project their window geometry into canvas-relative indicator rectangles.</p>
   </article><article class="item" data-search="createActiveResizeTargetCoordinator src/runtime/runtimeNodeMeasurement.ts Synchronize an observer with the union of resize targets exposed by active measurements plus additional targets.&#10;@utility @ankhorage/utility/observer">
     <h3>createActiveResizeTargetCoordinator</h3>
-    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:285:1</code></p>
+    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:274:1</code></p>
     <p>Synchronize an observer with the union of resize targets exposed by active measurements plus additional targets.
 @utility @ankhorage/utility/observer</p>
   </article><article class="item" data-search="createSelectedIndicatorViewProps src/runtime/runtimeNodeMeasurement.ts Create the React-Native-style absolute overlay props used to render Studio selected-node chrome around a measured rectangle.">
     <h3>createSelectedIndicatorViewProps</h3>
-    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:332:1</code></p>
+    <p class="muted"><code>src/runtime/runtimeNodeMeasurement.ts:321:1</code></p>
     <p>Create the React-Native-style absolute overlay props used to render Studio selected-node chrome around a measured rectangle.</p>
   </article>
     </section>
@@ -27846,96 +27877,96 @@ ScreenRequirements/contracts capability rather than generic Utility.</p>
       <h2>src/runtime/stationarySelection.ts</h2>
       <article class="item" data-search="isWebElementLike src/runtime/stationarySelection.ts Detect a DOM-like element that exposes child traversal and bounding-rectangle measurement.&#10;@utility @ankhorage/utility/web">
     <h3>isWebElementLike</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:96:1</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:95:1</code></p>
     <p>Detect a DOM-like element that exposes child traversal and bounding-rectangle measurement.
 @utility @ankhorage/utility/web</p>
   </article><article class="item" data-search="getWebResizeTarget src/runtime/stationarySelection.ts Resolve an unknown React-Native view value to a DOM resize target only on the web platform.&#10;@utility @ankhorage/utility/react-native/web">
     <h3>getWebResizeTarget</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:110:1</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:109:1</code></p>
     <p>Resolve an unknown React-Native view value to a DOM resize target only on the web platform.
 @utility @ankhorage/utility/react-native/web</p>
   </article><article class="item" data-search="getWebDescendantResizeTargets src/runtime/stationarySelection.ts Recursively collect every descendant DOM resize target from a DOM-like value when running on web.&#10;@utility @ankhorage/utility/web">
     <h3>getWebDescendantResizeTargets</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:118:1</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:117:1</code></p>
     <p>Recursively collect every descendant DOM resize target from a DOM-like value when running on web.
 @utility @ankhorage/utility/web</p>
   </article><article class="item" data-search="toMeasuredRect src/runtime/stationarySelection.ts Convert a left/top/width/height rectangle into the package&#39;s x/y measured-rectangle shape.&#10;@utility @ankhorage/utility/geometry">
     <h3>toMeasuredRect</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:133:1</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:132:1</code></p>
     <p>Convert a left/top/width/height rectangle into the package&#39;s x/y measured-rectangle shape.
 @utility @ankhorage/utility/geometry</p>
   </article><article class="item" data-search="measureRenderedBoxes src/runtime/stationarySelection.ts Measure a DOM-like element, falling through zero-area wrappers to the rendered descendant boxes they contain.&#10;@utility @ankhorage/utility/web">
     <h3>measureRenderedBoxes</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:146:1</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:145:1</code></p>
     <p>Measure a DOM-like element, falling through zero-area wrappers to the rendered descendant boxes they contain.
 @utility @ankhorage/utility/web</p>
   </article><article class="item" data-search="measureRootView src/runtime/stationarySelection.ts Measure a React-Native view in window coordinates across web and native, returning null for a missing view.&#10;@utility @ankhorage/utility/react-native/measurement">
     <h3>measureRootView</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:159:1</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:158:1</code></p>
     <p>Measure a React-Native view in window coordinates across web and native, returning null for a missing view.
 @utility @ankhorage/utility/react-native/measurement</p>
   </article><article class="item" data-search="measureRuntimeNodeWebView src/runtime/stationarySelection.ts Measure the rendered descendant boxes of a web view and return their union rectangle.&#10;@utility @ankhorage/utility/web">
     <h3>measureRuntimeNodeWebView</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:175:1</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:174:1</code></p>
     <p>Measure the rendered descendant boxes of a web view and return their union rectangle.
 @utility @ankhorage/utility/web</p>
   </article><article class="item" data-search="measureAuthoredWebView src/runtime/stationarySelection.ts Measure one authored web view directly and treat zero-area geometry as absent.&#10;@utility @ankhorage/utility/web">
     <h3>measureAuthoredWebView</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:193:1</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:192:1</code></p>
     <p>Measure one authored web view directly and treat zero-area geometry as absent.
 @utility @ankhorage/utility/web</p>
   </article><article class="item" data-search="areIndicatorRectsEqual src/runtime/stationarySelection.ts Compare ordered indicator-rectangle collections by identity flags and sub-pixel geometry tolerance.&#10;@utility @ankhorage/utility/geometry">
     <h3>areIndicatorRectsEqual</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:206:1</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:205:1</code></p>
     <p>Compare ordered indicator-rectangle collections by identity flags and sub-pixel geometry tolerance.
 @utility @ankhorage/utility/geometry</p>
   </article><article class="item" data-search="useStudioUnsupportedNodeMeasurement src/runtime/stationarySelection.ts Expose the measurement ref/layout callbacks used by Studio-rendered unsupported nodes.&#10;@todo Move this Studio React measurement hook to the selection/canvas app edge; it composes reusable measurement primitives but is not generic runtime behavior.">
     <h3>useStudioUnsupportedNodeMeasurement</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:234:1</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:233:1</code></p>
     <p>Expose the measurement ref/layout callbacks used by Studio-rendered unsupported nodes.
 @todo Move this Studio React measurement hook to the selection/canvas app edge; it composes reusable measurement primitives but is not generic runtime behavior.</p>
   </article><article class="item" data-search="StudioNodeTouchRecorder src/runtime/stationarySelection.ts Wrap one rendered Studio runtime node so pointer/touch interactions and geometry can be recorded for stationary selection and unsupported-node indicators.&#10;@todo Keep this React-Native gesture/measurement adapter at the Studio selection/canvas app edge instead of generic `runtime/` ownership.">
     <h3>StudioNodeTouchRecorder</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:273:1</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:272:1</code></p>
     <p>Wrap one rendered Studio runtime node so pointer/touch interactions and geometry can be recorded for stationary selection and unsupported-node indicators.
 @todo Keep this React-Native gesture/measurement adapter at the Studio selection/canvas app edge instead of generic `runtime/` ownership.</p>
   </article><article class="item" data-search="recordInteraction src/runtime/stationarySelection.ts Record one normalized pointer/touch interaction for this node when selection recording is enabled.">
     <h3>recordInteraction</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:284:3</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:283:3</code></p>
     <p>Record one normalized pointer/touch interaction for this node when selection recording is enabled.</p>
   </article><article class="item" data-search="handlePointerDown src/runtime/stationarySelection.ts Normalize a React-Native pointer-down event into the stationary-selection pointer input contract.">
     <h3>handlePointerDown</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:293:3</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:292:3</code></p>
     <p>Normalize a React-Native pointer-down event into the stationary-selection pointer input contract.</p>
   </article><article class="item" data-search="handleTouchStart src/runtime/stationarySelection.ts Normalize a React-Native touch-start event into the stationary-selection touch input contract.">
     <h3>handleTouchStart</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:305:3</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:304:3</code></p>
     <p>Normalize a React-Native touch-start event into the stationary-selection touch input contract.</p>
   </article><article class="item" data-search="handleInteractionCompletion src/runtime/stationarySelection.ts Complete the currently pending pointer/touch interaction when the platform signals end or cancellation.">
     <h3>handleInteractionCompletion</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:315:3</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:314:3</code></p>
     <p>Complete the currently pending pointer/touch interaction when the platform signals end or cancellation.</p>
   </article><article class="item" data-search="handleLayout src/runtime/stationarySelection.ts Request fresh indicator geometry after this recorder&#39;s layout changes.">
     <h3>handleLayout</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:320:3</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:319:3</code></p>
     <p>Request fresh indicator geometry after this recorder&#39;s layout changes.</p>
   </article><article class="item" data-search="createStudioStationarySelectionWrapNode src/runtime/stationarySelection.ts Create Studio&#39;s runtime-node wrapper that records stationary selection and unsupported-node measurement around eligible rendered nodes.&#10;@todo Move this Studio/ZORA selection wrapper to the selection/canvas app edge; it is package integration rather than generic runtime policy.">
     <h3>createStudioStationarySelectionWrapNode</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:414:1</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:413:1</code></p>
     <p>Create Studio&#39;s runtime-node wrapper that records stationary selection and unsupported-node measurement around eligible rendered nodes.
 @todo Move this Studio/ZORA selection wrapper to the selection/canvas app edge; it is package integration rather than generic runtime policy.</p>
   </article><article class="item" data-search="StationaryTapSelector src/runtime/stationarySelection.ts Coordinate Studio stationary tap selection, drag interaction, node measurement, indicator refresh, and selected/unsupported chrome rendering.&#10;@todo Split this large React composition into the Studio selection/canvas app edge; the reusable coordinators and measurement primitives should remain independent owners.">
     <h3>StationaryTapSelector</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:462:1</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:461:1</code></p>
     <p>Coordinate Studio stationary tap selection, drag interaction, node measurement, indicator refresh, and selected/unsupported chrome rendering.
 @todo Split this large React composition into the Studio selection/canvas app edge; the reusable coordinators and measurement primitives should remain independent owners.</p>
   </article><article class="item" data-search="handleScroll src/runtime/stationarySelection.ts Request updated indicator geometry after any captured web scroll.">
     <h3>handleScroll</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:870:11</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:869:11</code></p>
     <p>Request updated indicator geometry after any captured web scroll.</p>
   </article><article class="item" data-search="handleResize src/runtime/stationarySelection.ts Request updated indicator geometry after a web viewport resize.">
     <h3>handleResize</h3>
-    <p class="muted"><code>src/runtime/stationarySelection.ts:872:11</code></p>
+    <p class="muted"><code>src/runtime/stationarySelection.ts:871:11</code></p>
     <p>Request updated indicator geometry after a web viewport resize.</p>
   </article>
     </section>
@@ -29940,6 +29971,15 @@ ScreenRequirements/contracts capability rather than generic Utility.</p>
     <h3>upsertExternalApi</h3>
     <p class="muted"><code>src/upsertExternalApi.ts:16:1</code></p>
     <p>Add or replace one canonical API by stable identity while reporting whether it was newly created.</p>
+  </article>
+    </section>
+  </section><section id="view-src-utils-resolvestudioapibase-ts" class="view" data-view="src/utils/resolveStudioApiBase.ts" hidden>
+    <section class="panel">
+      <h2>src/utils/resolveStudioApiBase.ts</h2>
+      <article class="item" data-search="resolveStudioApiBase src/utils/resolveStudioApiBase.ts Resolve the Studio host API base URL for explicit configuration, Android, Expo LAN hosts, or localhost.">
+    <h3>resolveStudioApiBase</h3>
+    <p class="muted"><code>src/utils/resolveStudioApiBase.ts:5:1</code></p>
+    <p>Resolve the Studio host API base URL for explicit configuration, Android, Expo LAN hosts, or localhost.</p>
   </article>
     </section>
   </section><section id="view-src-workspaceplatform-ts" class="view" data-view="src/workspacePlatform.ts" hidden>

@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.0.1",
+      "value": "v5.0.2",
       "color": "cb3837"
     },
     {
@@ -663,38 +663,12 @@
       ]
     },
     {
-      "path": "src/core/apiBase.test.ts",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/core/apiBase.ts"
-      ],
-      "exports": []
-    },
-    {
-      "path": "src/core/apiBase.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": [
-        "resolveStudioApiBase"
-      ]
-    },
-    {
-      "path": "src/core/constants.ts",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/core/apiBase.ts"
-      ],
-      "exports": [
-        "API_BASE"
-      ]
-    },
-    {
       "path": "src/core/mediaAuthoringHostClient.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/core/constants.ts",
         "src/core/mediaRemovalCoordinator.ts",
-        "src/mediaPickerAuthoring.ts"
+        "src/mediaPickerAuthoring.ts",
+        "src/utils/studioApiBase.ts"
       ],
       "exports": [
         "cleanupStudioMediaSource",
@@ -805,7 +779,6 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/authSettings.ts",
-        "src/core/constants.ts",
         "src/core/mediaAuthoringHostClient.ts",
         "src/core/mediaRemovalCoordinator.ts",
         "src/core/StudioContext.ts",
@@ -819,7 +792,8 @@
         "src/mediaPickerAuthoring.ts",
         "src/routeUtils.ts",
         "src/studioSelectionModel.ts",
-        "src/ui/admin/AuthAdminSession.tsx"
+        "src/ui/admin/AuthAdminSession.tsx",
+        "src/utils/studioApiBase.ts"
       ],
       "exports": [
         "StudioProvider",
@@ -859,8 +833,8 @@
       "path": "src/externalApiApi.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/core/constants.ts",
-        "src/externalApiAuthoringContracts.ts"
+        "src/externalApiAuthoringContracts.ts",
+        "src/utils/studioApiBase.ts"
       ],
       "exports": [
         "connectExternalApi",
@@ -1401,9 +1375,9 @@
       "path": "src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/core/constants.ts",
         "src/features/project-updates/adapters/outbound/createProjectUpdateHostHttpAdapter.ts",
-        "src/features/project-updates/application/ProjectUpdateDashboardService.ts"
+        "src/features/project-updates/application/ProjectUpdateDashboardService.ts",
+        "src/utils/studioApiBase.ts"
       ],
       "exports": [
         "createStudioProjectUpdateDashboardService"
@@ -1670,8 +1644,8 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/contractGuards.ts",
-        "src/core/constants.ts",
-        "src/projectWorkspaceContracts.ts"
+        "src/projectWorkspaceContracts.ts",
+        "src/utils/studioApiBase.ts"
       ],
       "exports": [
         "ConnectProjectRepositoryResponse",
@@ -1688,8 +1662,8 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/contractGuards.ts",
-        "src/core/constants.ts",
-        "src/templateCatalogContracts.ts"
+        "src/templateCatalogContracts.ts",
+        "src/utils/studioApiBase.ts"
       ],
       "exports": [
         "useTemplateCatalog"
@@ -2374,12 +2348,12 @@
         "src/host/layout/templates/utils/routes.ts",
         "src/host/modules/layout.ts",
         "src/index.ts",
-        "src/studioAdminRouteModel.ts"
+        "src/studioAdminRouteModel.ts",
+        "src/types/project-generation.ts"
       ],
       "exports": [
         "GeneratedAppFileGenerationOptions",
-        "GeneratedAppFileGenerator",
-        "GeneratedFile"
+        "GeneratedAppFileGenerator"
       ]
     },
     {
@@ -2394,8 +2368,8 @@
       "path": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/host/layout/layoutGenerator.ts",
-        "src/host/layout/utils/escapeStringLiteral.ts"
+        "src/host/layout/utils/escapeStringLiteral.ts",
+        "src/types/project-generation.ts"
       ],
       "exports": [
         "createNavigatorGenerationBindings"
@@ -2919,6 +2893,16 @@
       ]
     },
     {
+      "path": "src/host/orchestrator/createProjectCreationTestSource.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/projectCreationSource.ts"
+      ],
+      "exports": [
+        "createProjectCreationTestSource"
+      ]
+    },
+    {
       "path": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -3008,8 +2992,8 @@
       "path": "src/host/orchestrator/projectCreationAssets.test.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/host/orchestrator/createProjectCreationTestSource.ts",
         "src/host/orchestrator/projectManager.ts",
-        "src/host/smoke/createSmokeProjectSource.ts",
         "src/host/templates/index.ts"
       ],
       "exports": []
@@ -3018,8 +3002,8 @@
       "path": "src/host/orchestrator/projectCreationSafety.test.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/host/orchestrator/createProjectCreationTestSource.ts",
         "src/host/orchestrator/projectManager.ts",
-        "src/host/smoke/createSmokeProjectSource.ts",
         "src/projectIdentity.ts"
       ],
       "exports": []
@@ -5194,7 +5178,8 @@
       "path": "src/runtime/runtimeNodeMeasurement.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/features/selection/adapters/nativeElementMeasurement.ts"
+        "src/features/selection/adapters/nativeElementMeasurement.ts",
+        "src/types/runtime-node-measurement.ts"
       ],
       "exports": [
         "ActiveResizeTargetCoordinator",
@@ -5204,10 +5189,8 @@
         "createSelectedIndicatorViewProps",
         "getActiveRuntimeNodeMeasurements",
         "hasActiveRuntimeNodeMeasurements",
-        "MeasuredRect",
         "measureRuntimeNodeIndicators",
         "ResizeTargetObserver",
-        "RuntimeNodeIndicatorRect",
         "RuntimeNodeMeasurement",
         "runtimeNodeMeasurementChangeAffectsActiveIndicators",
         "RuntimeNodeMeasurementRegistry",
@@ -5249,6 +5232,7 @@
         "src/runtime/runtimeNodeMeasurement.ts",
         "src/runtime/stationarySelectionCoordinator.ts",
         "src/runtime/stationarySelectionInputState.ts",
+        "src/types/runtime-node-measurement.ts",
         "src/ui/canvas/StudioCanvasDndOverlay.tsx"
       ],
       "exports": [
@@ -5485,6 +5469,7 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": [
+        "GeneratedFile",
         "ProjectRuntimeProjectionEvidence",
         "StudioRuntimeProjectionReason",
         "StudioRuntimeProjectionState",
@@ -5509,6 +5494,15 @@
         "GeneratedPackageManifest",
         "GeneratedPackagePolicy",
         "ProjectUpdateServiceOptions"
+      ]
+    },
+    {
+      "path": "src/types/runtime-node-measurement.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "MeasuredRect",
+        "RuntimeNodeIndicatorRect"
       ]
     },
     {
@@ -6614,9 +6608,9 @@
       "path": "src/ui/AnkhStudio.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/core/constants.ts",
         "src/core/StudioContext.ts",
-        "src/runtime/studioMediaResolver.ts"
+        "src/runtime/studioMediaResolver.ts",
+        "src/utils/studioApiBase.ts"
       ],
       "exports": [
         "AnkhStudio",
@@ -6664,7 +6658,7 @@
         "src/canvasDropZones.ts",
         "src/index.ts",
         "src/insertModalModel.ts",
-        "src/runtime/runtimeNodeMeasurement.ts",
+        "src/types/runtime-node-measurement.ts",
         "src/ui/canvas/canvasDndInteraction.ts"
       ],
       "exports": [
@@ -6749,6 +6743,32 @@
       "exports": [
         "ExternalApiUpsertResult",
         "upsertExternalApi"
+      ]
+    },
+    {
+      "path": "src/utils/resolveStudioApiBase.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/utils/resolveStudioApiBase.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/utils/resolveStudioApiBase.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "resolveStudioApiBase"
+      ]
+    },
+    {
+      "path": "src/utils/studioApiBase.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/utils/resolveStudioApiBase.ts"
+      ],
+      "exports": [
+        "studioApiBase"
       ]
     },
     {
@@ -13755,24 +13775,6 @@
       }
     },
     {
-      "name": "resolveStudioApiBase",
-      "description": "Resolve the Studio host API base URL for explicit configuration, Android, Expo LAN hosts, or localhost.\n@todo Keep platform/API-edge resolution out of core; review whether this belongs in platform or app composition after the audit.",
-      "sourceLocation": {
-        "filePath": "src/core/apiBase.ts",
-        "line": 8,
-        "column": 1
-      }
-    },
-    {
-      "name": "getApiBase",
-      "description": "Resolve the Studio API base URL from explicit environment, Expo host, and platform inputs.\n@todo Move Expo/React Native environment composition out of core into the package's platform/app edge.",
-      "sourceLocation": {
-        "filePath": "src/core/constants.ts",
-        "line": 12,
-        "column": 7
-      }
-    },
-    {
       "name": "ingestStudioMediaSelection",
       "description": "Send a picked media payload to the Studio host and return the persisted media asset.\n@todo Move this concrete HTTP adapter out of core and colocate it with the media capability's package-edge adapter. Replace the inline fetch/JSON transport with the shared HTTP utility once extracted.",
       "sourceLocation": {
@@ -13966,7 +13968,7 @@
       "description": "Persist the complete Studio manifest for one project through the host API.\n@todo Group project-manifest HTTP access in a dedicated manifest host client instead of StudioProvider.",
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 712,
+        "line": 714,
         "column": 1
       }
     },
@@ -13975,7 +13977,7 @@
       "description": "Parse a persistence response body as JSON and convert invalid bodies into an explicit request error.\n@todo Keep response parsing beside the dedicated project-manifest host client.",
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 726,
+        "line": 731,
         "column": 1
       }
     },
@@ -13984,7 +13986,7 @@
       "description": "Convert an unsuccessful persistence response payload and HTTP status into an Error.\n@todo Keep persistence response error policy beside the dedicated project-manifest host client.",
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 738,
+        "line": 743,
         "column": 1
       }
     },
@@ -13993,7 +13995,7 @@
       "description": "Convert an unknown persistence failure into the message shown by Studio save-state UI.",
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 746,
+        "line": 751,
         "column": 1
       }
     },
@@ -19051,7 +19053,7 @@
       "description": "Build the generated root-layout imports that bridge Runtime, Expo Runtime and optional Studio authoring ownership.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 59,
+        "line": 55,
         "column": 1
       }
     },
@@ -19060,7 +19062,7 @@
       "description": "Build generated runtime registry declarations for standalone apps or Studio-enabled authoring apps.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 87,
+        "line": 83,
         "column": 1
       }
     },
@@ -19069,7 +19071,7 @@
       "description": "Trim, discard empty and join generated module-level declaration blocks with a blank line.\n@utility @ankhorage/utility/string",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 131,
+        "line": 127,
         "column": 1
       }
     },
@@ -19078,7 +19080,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 167,
+        "line": 163,
         "column": 11
       }
     },
@@ -19087,7 +19089,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 190,
+        "line": 186,
         "column": 11
       }
     },
@@ -19096,7 +19098,7 @@
       "description": "Generate the complete Studio Admin route file set from the canonical Admin route registry.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 603,
+        "line": 599,
         "column": 1
       }
     },
@@ -19105,7 +19107,7 @@
       "description": "Resolve a canonical Studio Admin route definition to its generated Expo Router file path, preserving parent routes as index modules and dynamic parameters as bracket segments.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 613,
+        "line": 609,
         "column": 1
       }
     },
@@ -19114,7 +19116,7 @@
       "description": "Generate one Studio Admin Expo Router module that development-gates and renders the requested Admin route.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 634,
+        "line": 630,
         "column": 1
       }
     },
@@ -19123,7 +19125,7 @@
       "description": "Normalize a relative filesystem path to forward-slash separators for generated project files.\n@utility @ankhorage/utility/path",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 652,
+        "line": 648,
         "column": 1
       }
     },
@@ -19992,6 +19994,15 @@
       }
     },
     {
+      "name": "createProjectCreationTestSource",
+      "description": "Create the minimal project source shared by ProjectManager unit tests without depending on smoke fixtures.",
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/createProjectCreationTestSource.ts",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
       "name": "createStudioPendingModuleLifecyclePort",
       "description": "Adapt Studio's canonical host Orchestrator registry to the project-update lifecycle port.",
       "sourceLocation": {
@@ -20248,7 +20259,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectCreationSafety.test.ts",
-        "line": 50,
+        "line": 52,
         "column": 1
       }
     },
@@ -26098,7 +26109,7 @@
       "description": "Decide whether one runtime-node measurement change can affect currently visible Studio indicators.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 57,
+        "line": 46,
         "column": 1
       }
     },
@@ -26107,7 +26118,7 @@
       "description": "Decide whether Studio should render selected-node chrome for the active platform/edit state.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 73,
+        "line": 62,
         "column": 1
       }
     },
@@ -26116,7 +26127,7 @@
       "description": "Compute the smallest axis-aligned rectangle containing all supplied rectangles, or null for an empty collection.\n@utility @ankhorage/utility/geometry",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 85,
+        "line": 74,
         "column": 1
       }
     },
@@ -26125,7 +26136,7 @@
       "description": "Adapt a native measurable view into Studio's runtime-node measurement contract.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 104,
+        "line": 93,
         "column": 1
       }
     },
@@ -26134,7 +26145,7 @@
       "description": "Create a keyed multi-value registry with idempotent unregister callbacks and optional change notifications.\n@utility @ankhorage/utility/registry",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 120,
+        "line": 109,
         "column": 1
       }
     },
@@ -26143,7 +26154,7 @@
       "description": "Prefer authored-root measurements when present, otherwise keep every runtime measurement for the node.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 157,
+        "line": 146,
         "column": 1
       }
     },
@@ -26152,7 +26163,7 @@
       "description": "Select runtime-node measurements whose geometry is currently relevant to Studio edit indicators.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 167,
+        "line": 156,
         "column": 1
       }
     },
@@ -26161,7 +26172,7 @@
       "description": "Return whether Studio currently has at least one active runtime-node measurement.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 187,
+        "line": 176,
         "column": 1
       }
     },
@@ -26170,7 +26181,7 @@
       "description": "Measure active runtime nodes and project their window geometry into canvas-relative indicator rectangles.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 200,
+        "line": 189,
         "column": 1
       }
     },
@@ -26179,7 +26190,7 @@
       "description": "Synchronize an observer with the union of resize targets exposed by active measurements plus additional targets.\n@utility @ankhorage/utility/observer",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 285,
+        "line": 274,
         "column": 1
       }
     },
@@ -26188,7 +26199,7 @@
       "description": "Create the React-Native-style absolute overlay props used to render Studio selected-node chrome around a measured rectangle.",
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 332,
+        "line": 321,
         "column": 1
       }
     },
@@ -26197,7 +26208,7 @@
       "description": "Detect a DOM-like element that exposes child traversal and bounding-rectangle measurement.\n@utility @ankhorage/utility/web",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 96,
+        "line": 95,
         "column": 1
       }
     },
@@ -26206,7 +26217,7 @@
       "description": "Resolve an unknown React-Native view value to a DOM resize target only on the web platform.\n@utility @ankhorage/utility/react-native/web",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 110,
+        "line": 109,
         "column": 1
       }
     },
@@ -26215,7 +26226,7 @@
       "description": "Recursively collect every descendant DOM resize target from a DOM-like value when running on web.\n@utility @ankhorage/utility/web",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 118,
+        "line": 117,
         "column": 1
       }
     },
@@ -26224,7 +26235,7 @@
       "description": "Convert a left/top/width/height rectangle into the package's x/y measured-rectangle shape.\n@utility @ankhorage/utility/geometry",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 133,
+        "line": 132,
         "column": 1
       }
     },
@@ -26233,7 +26244,7 @@
       "description": "Measure a DOM-like element, falling through zero-area wrappers to the rendered descendant boxes they contain.\n@utility @ankhorage/utility/web",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 146,
+        "line": 145,
         "column": 1
       }
     },
@@ -26242,7 +26253,7 @@
       "description": "Measure a React-Native view in window coordinates across web and native, returning null for a missing view.\n@utility @ankhorage/utility/react-native/measurement",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 159,
+        "line": 158,
         "column": 1
       }
     },
@@ -26251,7 +26262,7 @@
       "description": "Measure the rendered descendant boxes of a web view and return their union rectangle.\n@utility @ankhorage/utility/web",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 175,
+        "line": 174,
         "column": 1
       }
     },
@@ -26260,7 +26271,7 @@
       "description": "Measure one authored web view directly and treat zero-area geometry as absent.\n@utility @ankhorage/utility/web",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 193,
+        "line": 192,
         "column": 1
       }
     },
@@ -26269,7 +26280,7 @@
       "description": "Compare ordered indicator-rectangle collections by identity flags and sub-pixel geometry tolerance.\n@utility @ankhorage/utility/geometry",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 206,
+        "line": 205,
         "column": 1
       }
     },
@@ -26278,7 +26289,7 @@
       "description": "Expose the measurement ref/layout callbacks used by Studio-rendered unsupported nodes.\n@todo Move this Studio React measurement hook to the selection/canvas app edge; it composes reusable measurement primitives but is not generic runtime behavior.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 234,
+        "line": 233,
         "column": 1
       }
     },
@@ -26287,7 +26298,7 @@
       "description": "Wrap one rendered Studio runtime node so pointer/touch interactions and geometry can be recorded for stationary selection and unsupported-node indicators.\n@todo Keep this React-Native gesture/measurement adapter at the Studio selection/canvas app edge instead of generic `runtime/` ownership.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 273,
+        "line": 272,
         "column": 1
       }
     },
@@ -26296,7 +26307,7 @@
       "description": "Record one normalized pointer/touch interaction for this node when selection recording is enabled.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 284,
+        "line": 283,
         "column": 3
       }
     },
@@ -26305,7 +26316,7 @@
       "description": "Normalize a React-Native pointer-down event into the stationary-selection pointer input contract.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 293,
+        "line": 292,
         "column": 3
       }
     },
@@ -26314,7 +26325,7 @@
       "description": "Normalize a React-Native touch-start event into the stationary-selection touch input contract.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 305,
+        "line": 304,
         "column": 3
       }
     },
@@ -26323,7 +26334,7 @@
       "description": "Complete the currently pending pointer/touch interaction when the platform signals end or cancellation.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 315,
+        "line": 314,
         "column": 3
       }
     },
@@ -26332,7 +26343,7 @@
       "description": "Request fresh indicator geometry after this recorder's layout changes.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 320,
+        "line": 319,
         "column": 3
       }
     },
@@ -26341,7 +26352,7 @@
       "description": "Create Studio's runtime-node wrapper that records stationary selection and unsupported-node measurement around eligible rendered nodes.\n@todo Move this Studio/ZORA selection wrapper to the selection/canvas app edge; it is package integration rather than generic runtime policy.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 414,
+        "line": 413,
         "column": 1
       }
     },
@@ -26350,7 +26361,7 @@
       "description": "Coordinate Studio stationary tap selection, drag interaction, node measurement, indicator refresh, and selected/unsupported chrome rendering.\n@todo Split this large React composition into the Studio selection/canvas app edge; the reusable coordinators and measurement primitives should remain independent owners.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 462,
+        "line": 461,
         "column": 1
       }
     },
@@ -26359,7 +26370,7 @@
       "description": "Request updated indicator geometry after any captured web scroll.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 870,
+        "line": 869,
         "column": 11
       }
     },
@@ -26368,7 +26379,7 @@
       "description": "Request updated indicator geometry after a web viewport resize.",
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 872,
+        "line": 871,
         "column": 11
       }
     },
@@ -29577,6 +29588,15 @@
       }
     },
     {
+      "name": "resolveStudioApiBase",
+      "description": "Resolve the Studio host API base URL for explicit configuration, Android, Expo LAN hosts, or localhost.",
+      "sourceLocation": {
+        "filePath": "src/utils/resolveStudioApiBase.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
       "name": "createDeleteConfirmation",
       "description": "Create a confirmation action that uses browser confirm when available and an injected alert otherwise.\n@utility @ankhorage/utility/interaction",
       "sourceLocation": {
@@ -30232,12 +30252,12 @@
       },
       {
         "fromPath": "src/externalApiApi.ts",
-        "toPath": "src/core/constants.ts",
+        "toPath": "src/externalApiAuthoringContracts.ts",
         "sourcePath": "src/externalApiApi.ts"
       },
       {
         "fromPath": "src/externalApiApi.ts",
-        "toPath": "src/externalApiAuthoringContracts.ts",
+        "toPath": "src/utils/studioApiBase.ts",
         "sourcePath": "src/externalApiApi.ts"
       },
       {
@@ -30901,23 +30921,13 @@
         "sourcePath": "src/cli/index.ts"
       },
       {
-        "fromPath": "src/core/apiBase.test.ts",
-        "toPath": "src/core/apiBase.ts",
-        "sourcePath": "src/core/apiBase.test.ts"
-      },
-      {
-        "fromPath": "src/core/constants.ts",
-        "toPath": "src/core/apiBase.ts",
-        "sourcePath": "src/core/constants.ts"
-      },
-      {
         "fromPath": "src/core/mediaAuthoringHostClient.ts",
         "toPath": "src/mediaPickerAuthoring.ts",
         "sourcePath": "src/core/mediaAuthoringHostClient.ts"
       },
       {
         "fromPath": "src/core/mediaAuthoringHostClient.ts",
-        "toPath": "src/core/constants.ts",
+        "toPath": "src/utils/studioApiBase.ts",
         "sourcePath": "src/core/mediaAuthoringHostClient.ts"
       },
       {
@@ -31047,7 +31057,7 @@
       },
       {
         "fromPath": "src/core/StudioProvider.ts",
-        "toPath": "src/core/constants.ts",
+        "toPath": "src/utils/studioApiBase.ts",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
@@ -31097,12 +31107,12 @@
       },
       {
         "fromPath": "src/hooks/useProjects.ts",
-        "toPath": "src/core/constants.ts",
+        "toPath": "src/projectWorkspaceContracts.ts",
         "sourcePath": "src/hooks/useProjects.ts"
       },
       {
         "fromPath": "src/hooks/useProjects.ts",
-        "toPath": "src/projectWorkspaceContracts.ts",
+        "toPath": "src/utils/studioApiBase.ts",
         "sourcePath": "src/hooks/useProjects.ts"
       },
       {
@@ -31112,12 +31122,12 @@
       },
       {
         "fromPath": "src/hooks/useTemplateCatalog.ts",
-        "toPath": "src/core/constants.ts",
+        "toPath": "src/templateCatalogContracts.ts",
         "sourcePath": "src/hooks/useTemplateCatalog.ts"
       },
       {
         "fromPath": "src/hooks/useTemplateCatalog.ts",
-        "toPath": "src/templateCatalogContracts.ts",
+        "toPath": "src/utils/studioApiBase.ts",
         "sourcePath": "src/hooks/useTemplateCatalog.ts"
       },
       {
@@ -31556,6 +31566,11 @@
         "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
       },
       {
+        "fromPath": "src/runtime/runtimeNodeMeasurement.ts",
+        "toPath": "src/types/runtime-node-measurement.ts",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
         "fromPath": "src/runtime/stationarySelection.public.test.ts",
         "toPath": "src/runtime/index.ts",
         "sourcePath": "src/runtime/stationarySelection.public.test.ts"
@@ -31578,6 +31593,11 @@
       {
         "fromPath": "src/runtime/stationarySelection.ts",
         "toPath": "src/index.ts",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.ts",
+        "toPath": "src/types/runtime-node-measurement.ts",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -31632,17 +31652,17 @@
       },
       {
         "fromPath": "src/ui/AnkhStudio.ts",
-        "toPath": "src/core/constants.ts",
-        "sourcePath": "src/ui/AnkhStudio.ts"
-      },
-      {
-        "fromPath": "src/ui/AnkhStudio.ts",
         "toPath": "src/core/StudioContext.ts",
         "sourcePath": "src/ui/AnkhStudio.ts"
       },
       {
         "fromPath": "src/ui/AnkhStudio.ts",
         "toPath": "src/runtime/studioMediaResolver.ts",
+        "sourcePath": "src/ui/AnkhStudio.ts"
+      },
+      {
+        "fromPath": "src/ui/AnkhStudio.ts",
+        "toPath": "src/utils/studioApiBase.ts",
         "sourcePath": "src/ui/AnkhStudio.ts"
       },
       {
@@ -31709,6 +31729,16 @@
         "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
         "toPath": "src/ui/StudioInsertDialog.tsx",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromPath": "src/utils/resolveStudioApiBase.test.ts",
+        "toPath": "src/utils/resolveStudioApiBase.ts",
+        "sourcePath": "src/utils/resolveStudioApiBase.test.ts"
+      },
+      {
+        "fromPath": "src/utils/studioApiBase.ts",
+        "toPath": "src/utils/resolveStudioApiBase.ts",
+        "sourcePath": "src/utils/studioApiBase.ts"
       },
       {
         "fromPath": "src/utils/treeUtils.ts",
@@ -32282,6 +32312,11 @@
       },
       {
         "fromPath": "src/host/layout/layoutGenerator.ts",
+        "toPath": "src/types/project-generation.ts",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromPath": "src/host/layout/layoutGenerator.ts",
         "toPath": "src/host/modules/layout.ts",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
@@ -32441,6 +32476,11 @@
         "sourcePath": "src/host/orchestrator/createHostModuleOrchestrator.ts"
       },
       {
+        "fromPath": "src/host/orchestrator/createProjectCreationTestSource.ts",
+        "toPath": "src/host/orchestrator/projectCreationSource.ts",
+        "sourcePath": "src/host/orchestrator/createProjectCreationTestSource.ts"
+      },
+      {
         "fromPath": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts",
         "toPath": "src/features/project-updates/application/StudioPendingModuleLifecyclePort.ts",
         "sourcePath": "src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts"
@@ -32542,12 +32582,12 @@
       },
       {
         "fromPath": "src/host/orchestrator/projectCreationAssets.test.ts",
-        "toPath": "src/host/smoke/createSmokeProjectSource.ts",
+        "toPath": "src/host/templates/index.ts",
         "sourcePath": "src/host/orchestrator/projectCreationAssets.test.ts"
       },
       {
         "fromPath": "src/host/orchestrator/projectCreationAssets.test.ts",
-        "toPath": "src/host/templates/index.ts",
+        "toPath": "src/host/orchestrator/createProjectCreationTestSource.ts",
         "sourcePath": "src/host/orchestrator/projectCreationAssets.test.ts"
       },
       {
@@ -32562,7 +32602,7 @@
       },
       {
         "fromPath": "src/host/orchestrator/projectCreationSafety.test.ts",
-        "toPath": "src/host/smoke/createSmokeProjectSource.ts",
+        "toPath": "src/host/orchestrator/createProjectCreationTestSource.ts",
         "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
       },
       {
@@ -33582,7 +33622,7 @@
       },
       {
         "fromPath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
-        "toPath": "src/runtime/runtimeNodeMeasurement.ts",
+        "toPath": "src/types/runtime-node-measurement.ts",
         "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
       },
       {
@@ -33742,7 +33782,7 @@
       },
       {
         "fromPath": "src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts",
-        "toPath": "src/core/constants.ts",
+        "toPath": "src/utils/studioApiBase.ts",
         "sourcePath": "src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts"
       },
       {
@@ -33937,7 +33977,7 @@
       },
       {
         "fromPath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "toPath": "src/host/layout/layoutGenerator.ts",
+        "toPath": "src/types/project-generation.ts",
         "sourcePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts"
       },
       {
@@ -43947,54 +43987,6 @@
         "sourcePath": "src/cli/index.ts"
       },
       {
-        "fromSymbol": "src/core/apiBase.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/core/apiBase.test.ts"
-      },
-      {
-        "fromSymbol": "src/core/apiBase.test.ts",
-        "toSymbol": "it",
-        "callExpression": "it",
-        "sourcePath": "src/core/apiBase.test.ts"
-      },
-      {
-        "fromSymbol": "src/core/apiBase.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/core/apiBase.test.ts"
-      },
-      {
-        "fromSymbol": "src/core/apiBase.test.ts",
-        "toSymbol": "resolveStudioApiBase",
-        "callExpression": "resolveStudioApiBase",
-        "sourcePath": "src/core/apiBase.test.ts"
-      },
-      {
-        "fromSymbol": "getApiBase",
-        "toSymbol": "resolveStudioApiBase",
-        "callExpression": "resolveStudioApiBase",
-        "sourcePath": "src/core/constants.ts"
-      },
-      {
-        "fromSymbol": "getApiBase",
-        "toSymbol": "readEnvString",
-        "callExpression": "readEnvString",
-        "sourcePath": "src/core/constants.ts"
-      },
-      {
-        "fromSymbol": "getApiBase",
-        "toSymbol": "readExpoHostUri",
-        "callExpression": "readExpoHostUri",
-        "sourcePath": "src/core/constants.ts"
-      },
-      {
-        "fromSymbol": "src/core/constants.ts",
-        "toSymbol": "getApiBase",
-        "callExpression": "getApiBase",
-        "sourcePath": "src/core/constants.ts"
-      },
-      {
         "fromSymbol": "ingestStudioMediaSelection",
         "toSymbol": "createIngestQuery",
         "callExpression": "createIngestQuery",
@@ -49743,6 +49735,48 @@
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
+        "fromSymbol": "src/utils/resolveStudioApiBase.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/utils/resolveStudioApiBase.test.ts"
+      },
+      {
+        "fromSymbol": "src/utils/resolveStudioApiBase.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/utils/resolveStudioApiBase.test.ts"
+      },
+      {
+        "fromSymbol": "src/utils/resolveStudioApiBase.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/utils/resolveStudioApiBase.test.ts"
+      },
+      {
+        "fromSymbol": "src/utils/resolveStudioApiBase.test.ts",
+        "toSymbol": "resolveStudioApiBase",
+        "callExpression": "resolveStudioApiBase",
+        "sourcePath": "src/utils/resolveStudioApiBase.test.ts"
+      },
+      {
+        "fromSymbol": "src/utils/studioApiBase.ts",
+        "toSymbol": "resolveStudioApiBase",
+        "callExpression": "resolveStudioApiBase",
+        "sourcePath": "src/utils/studioApiBase.ts"
+      },
+      {
+        "fromSymbol": "src/utils/studioApiBase.ts",
+        "toSymbol": "readEnvString",
+        "callExpression": "readEnvString",
+        "sourcePath": "src/utils/studioApiBase.ts"
+      },
+      {
+        "fromSymbol": "src/utils/studioApiBase.ts",
+        "toSymbol": "readExpoHostUri",
+        "callExpression": "readExpoHostUri",
+        "sourcePath": "src/utils/studioApiBase.ts"
+      },
+      {
         "fromSymbol": "src/app/workspace/createProjectFormState.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -53469,6 +53503,12 @@
         "sourcePath": "src/host/orchestrator/createHostModuleOrchestrator.ts"
       },
       {
+        "fromSymbol": "createProjectCreationTestSource",
+        "toSymbol": "composeCategoryAppManifest",
+        "callExpression": "composeCategoryAppManifest",
+        "sourcePath": "src/host/orchestrator/createProjectCreationTestSource.ts"
+      },
+      {
         "fromSymbol": "resolveOrchestrator",
         "toSymbol": "createHostModuleOrchestrator",
         "callExpression": "createHostModuleOrchestrator",
@@ -54538,8 +54578,8 @@
       },
       {
         "fromSymbol": "src/host/orchestrator/projectCreationAssets.test.ts",
-        "toSymbol": "createSmokeProjectSource",
-        "callExpression": "createSmokeProjectSource",
+        "toSymbol": "createProjectCreationTestSource",
+        "callExpression": "createProjectCreationTestSource",
         "sourcePath": "src/host/orchestrator/projectCreationAssets.test.ts"
       },
       {
@@ -54634,8 +54674,8 @@
       },
       {
         "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
-        "toSymbol": "createSmokeProjectSource",
-        "callExpression": "createSmokeProjectSource",
+        "toSymbol": "createProjectCreationTestSource",
+        "callExpression": "createProjectCreationTestSource",
         "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
       },
       {

@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.0.2
+
+### Patch Changes
+
+- 413ffc1: Remove cyclic source-package dependencies by moving shared generation and runtime measurement types to neutral type owners, isolating ProjectManager test fixtures from smoke support, and relocating Studio API-base resolution out of core.
+
 ## 5.0.1
 
 ### Patch Changes

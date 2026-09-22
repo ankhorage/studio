@@ -190,19 +190,11 @@ graph TD
   module_src_contractGuards_test_ts --> module_src_contractGuards_ts
   module_src_contractGuards_ts["src/contractGuards.ts"]
   package__ankhorage_studio -.-> module_src_contractGuards_ts
-  module_src_core_apiBase_test_ts["src/core/apiBase.test.ts"]
-  package__ankhorage_studio -.-> module_src_core_apiBase_test_ts
-  module_src_core_apiBase_test_ts --> module_src_core_apiBase_ts
-  module_src_core_apiBase_ts["src/core/apiBase.ts"]
-  package__ankhorage_studio -.-> module_src_core_apiBase_ts
-  module_src_core_constants_ts["src/core/constants.ts"]
-  package__ankhorage_studio -.-> module_src_core_constants_ts
-  module_src_core_constants_ts --> module_src_core_apiBase_ts
   module_src_core_mediaAuthoringHostClient_ts["src/core/mediaAuthoringHostClient.ts"]
   package__ankhorage_studio -.-> module_src_core_mediaAuthoringHostClient_ts
-  module_src_core_mediaAuthoringHostClient_ts --> module_src_core_constants_ts
   module_src_core_mediaAuthoringHostClient_ts --> module_src_core_mediaRemovalCoordinator_ts
   module_src_core_mediaAuthoringHostClient_ts --> module_src_mediaPickerAuthoring_ts
+  module_src_core_mediaAuthoringHostClient_ts --> module_src_utils_studioApiBase_ts
   module_src_core_mediaRemovalCoordinator_test_ts["src/core/mediaRemovalCoordinator.test.ts"]
   package__ankhorage_studio -.-> module_src_core_mediaRemovalCoordinator_test_ts
   module_src_core_mediaRemovalCoordinator_test_ts --> module_src_core_mediaRemovalCoordinator_ts
@@ -238,7 +230,6 @@ graph TD
   module_src_core_StudioProvider_ts["src/core/StudioProvider.ts"]
   package__ankhorage_studio -.-> module_src_core_StudioProvider_ts
   module_src_core_StudioProvider_ts --> module_src_authSettings_ts
-  module_src_core_StudioProvider_ts --> module_src_core_constants_ts
   module_src_core_StudioProvider_ts --> module_src_core_mediaAuthoringHostClient_ts
   module_src_core_StudioProvider_ts --> module_src_core_mediaRemovalCoordinator_ts
   module_src_core_StudioProvider_ts --> module_src_core_StudioContext_ts
@@ -253,6 +244,7 @@ graph TD
   module_src_core_StudioProvider_ts --> module_src_routeUtils_ts
   module_src_core_StudioProvider_ts --> module_src_studioSelectionModel_ts
   module_src_core_StudioProvider_ts --> module_src_ui_admin_AuthAdminSession_tsx
+  module_src_core_StudioProvider_ts --> module_src_utils_studioApiBase_ts
   module_src_createProjectDeployRequest_ts["src/createProjectDeployRequest.ts"]
   package__ankhorage_studio -.-> module_src_createProjectDeployRequest_ts
   module_src_createProjectDeployRequest_ts --> module_src_projectDeployRequest_ts
@@ -265,8 +257,8 @@ graph TD
   module_src_externalApiAdministration_test_ts --> module_src_removeExternalApi_ts
   module_src_externalApiApi_ts["src/externalApiApi.ts"]
   package__ankhorage_studio -.-> module_src_externalApiApi_ts
-  module_src_externalApiApi_ts --> module_src_core_constants_ts
   module_src_externalApiApi_ts --> module_src_externalApiAuthoringContracts_ts
+  module_src_externalApiApi_ts --> module_src_utils_studioApiBase_ts
   module_src_externalApiAuthoring_public_test_ts["src/externalApiAuthoring.public.test.ts"]
   package__ankhorage_studio -.-> module_src_externalApiAuthoring_public_test_ts
   module_src_externalApiAuthoring_public_test_ts --> module_src_externalApiAuthoring_index_ts
@@ -453,9 +445,9 @@ graph TD
   module_src_features_project_updates_composition_createStudioProjectUpdateApplyOwnerStepPort_ts --> module_src_features_project_updates_domain_pendingModulePlanStep_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts["src/features/project-updates/composition/createStudioProjectUpdateDashboardService.ts"]
   package__ankhorage_studio -.-> module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts
-  module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --> module_src_core_constants_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --> module_src_features_project_updates_adapters_outbound_createProjectUpdateHostHttpAdapter_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --> module_src_features_project_updates_application_ProjectUpdateDashboardService_ts
+  module_src_features_project_updates_composition_createStudioProjectUpdateDashboardService_ts --> module_src_utils_studioApiBase_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts["src/features/project-updates/composition/createStudioProjectUpdateExtensionEvidencePort.ts"]
   package__ankhorage_studio -.-> module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts
   module_src_features_project_updates_composition_createStudioProjectUpdateExtensionEvidencePort_ts --> module_src_features_project_updates_adapters_outbound_inspectPendingModuleLifecycleEvidenceAsync_ts
@@ -547,13 +539,13 @@ graph TD
   module_src_hooks_useProjects_ts["src/hooks/useProjects.ts"]
   package__ankhorage_studio -.-> module_src_hooks_useProjects_ts
   module_src_hooks_useProjects_ts --> module_src_contractGuards_ts
-  module_src_hooks_useProjects_ts --> module_src_core_constants_ts
   module_src_hooks_useProjects_ts --> module_src_projectWorkspaceContracts_ts
+  module_src_hooks_useProjects_ts --> module_src_utils_studioApiBase_ts
   module_src_hooks_useTemplateCatalog_ts["src/hooks/useTemplateCatalog.ts"]
   package__ankhorage_studio -.-> module_src_hooks_useTemplateCatalog_ts
   module_src_hooks_useTemplateCatalog_ts --> module_src_contractGuards_ts
-  module_src_hooks_useTemplateCatalog_ts --> module_src_core_constants_ts
   module_src_hooks_useTemplateCatalog_ts --> module_src_templateCatalogContracts_ts
+  module_src_hooks_useTemplateCatalog_ts --> module_src_utils_studioApiBase_ts
   module_src_host_apis_createProjectEndpointCredentialResolver_ts["src/host/apis/createProjectEndpointCredentialResolver.ts"]
   package__ankhorage_studio -.-> module_src_host_apis_createProjectEndpointCredentialResolver_ts
   module_src_host_apis_createProjectEndpointCredentialResolver_ts --> module_src_host_secrets_projectSecretService_ts
@@ -818,13 +810,14 @@ graph TD
   module_src_host_layout_layoutGenerator_ts --> module_src_host_modules_layout_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_index_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_studioAdminRouteModel_ts
+  module_src_host_layout_layoutGenerator_ts --> module_src_types_project_generation_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_test_ts["src/host/layout/navigator/createNavigatorGenerationBindings.test.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_navigator_createNavigatorGenerationBindings_test_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_test_ts --> module_src_host_layout_navigator_createNavigatorGenerationBindings_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_ts["src/host/layout/navigator/createNavigatorGenerationBindings.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_navigator_createNavigatorGenerationBindings_ts
-  module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --> module_src_host_layout_layoutGenerator_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --> module_src_types_project_generation_ts
   module_src_host_layout_navigator_generateNavigatorLayoutFiles_test_ts["src/host/layout/navigator/generateNavigatorLayoutFiles.test.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_navigator_generateNavigatorLayoutFiles_test_ts
   module_src_host_layout_navigator_generateNavigatorLayoutFiles_test_ts --> module_src_host_layout_navigator_generateNavigatorLayoutFiles_ts
@@ -990,6 +983,9 @@ graph TD
   module_src_host_orchestrator_createHostModuleOrchestrator_ts["src/host/orchestrator/createHostModuleOrchestrator.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_createHostModuleOrchestrator_ts
   module_src_host_orchestrator_createHostModuleOrchestrator_ts --> module_src_host_modules_catalog_ts
+  module_src_host_orchestrator_createProjectCreationTestSource_ts["src/host/orchestrator/createProjectCreationTestSource.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_createProjectCreationTestSource_ts
+  module_src_host_orchestrator_createProjectCreationTestSource_ts --> module_src_host_orchestrator_projectCreationSource_ts
   module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts["src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts
   module_src_host_orchestrator_createStudioPendingModuleLifecyclePort_ts --> module_src_features_project_updates_application_StudioPendingModuleLifecyclePort_ts
@@ -1028,13 +1024,13 @@ graph TD
   module_src_host_orchestrator_moduleManager_ts --> module_src_moduleAdminContracts_ts
   module_src_host_orchestrator_projectCreationAssets_test_ts["src/host/orchestrator/projectCreationAssets.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectCreationAssets_test_ts
+  module_src_host_orchestrator_projectCreationAssets_test_ts --> module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectCreationAssets_test_ts --> module_src_host_orchestrator_projectManager_ts
-  module_src_host_orchestrator_projectCreationAssets_test_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_orchestrator_projectCreationAssets_test_ts --> module_src_host_templates_index_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts["src/host/orchestrator/projectCreationSafety.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectCreationSafety_test_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_orchestrator_projectManager_ts
-  module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_smoke_createSmokeProjectSource_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_projectIdentity_ts
   module_src_host_orchestrator_projectCreationSource_ts["src/host/orchestrator/projectCreationSource.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectCreationSource_ts
@@ -1638,6 +1634,7 @@ graph TD
   module_src_runtime_runtimeNodeMeasurement_ts["src/runtime/runtimeNodeMeasurement.ts"]
   package__ankhorage_studio -.-> module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_runtimeNodeMeasurement_ts --> module_src_features_selection_adapters_nativeElementMeasurement_ts
+  module_src_runtime_runtimeNodeMeasurement_ts --> module_src_types_runtime_node_measurement_ts
   module_src_runtime_runtimeSurface_test_ts["src/runtime/runtimeSurface.test.ts"]
   package__ankhorage_studio -.-> module_src_runtime_runtimeSurface_test_ts
   module_src_runtime_stationarySelection_public_test_ts["src/runtime/stationarySelection.public.test.ts"]
@@ -1656,6 +1653,7 @@ graph TD
   module_src_runtime_stationarySelection_ts --> module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionInputState_ts
+  module_src_runtime_stationarySelection_ts --> module_src_types_runtime_node_measurement_ts
   module_src_runtime_stationarySelection_ts --> module_src_ui_canvas_StudioCanvasDndOverlay_tsx
   module_src_runtime_stationarySelectionCoordinator_test_ts["src/runtime/stationarySelectionCoordinator.test.ts"]
   package__ankhorage_studio -.-> module_src_runtime_stationarySelectionCoordinator_test_ts
@@ -1714,6 +1712,8 @@ graph TD
   package__ankhorage_studio -.-> module_src_types_project_update_dashboard_ts
   module_src_types_project_updates_ts["src/types/project-updates.ts"]
   package__ankhorage_studio -.-> module_src_types_project_updates_ts
+  module_src_types_runtime_node_measurement_ts["src/types/runtime-node-measurement.ts"]
+  package__ankhorage_studio -.-> module_src_types_runtime_node_measurement_ts
   module_src_ui_admin_adminPagePrimitives_tsx["src/ui/admin/adminPagePrimitives.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_AnkhAdminPage_test_ts["src/ui/admin/AnkhAdminPage.test.ts"]
@@ -2169,9 +2169,9 @@ graph TD
   module_src_ui_admin_pages_useActiveThemeAdmin_ts --> module_src_ui_admin_pages_adminThemeModel_ts
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
   package__ankhorage_studio -.-> module_src_ui_AnkhStudio_ts
-  module_src_ui_AnkhStudio_ts --> module_src_core_constants_ts
   module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts
   module_src_ui_AnkhStudio_ts --> module_src_runtime_studioMediaResolver_ts
+  module_src_ui_AnkhStudio_ts --> module_src_utils_studioApiBase_ts
   module_src_ui_canvas_canvasDndInteraction_test_ts["src/ui/canvas/canvasDndInteraction.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_canvas_canvasDndInteraction_test_ts
   module_src_ui_canvas_canvasDndInteraction_test_ts --> module_src_canvasDropZones_ts
@@ -2189,7 +2189,7 @@ graph TD
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_canvasDropZones_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_index_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_insertModalModel_ts
-  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_runtime_runtimeNodeMeasurement_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_types_runtime_node_measurement_ts
   module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_ui_canvas_canvasDndInteraction_ts
   module_src_ui_createStudioAppBarActions_ts["src/ui/createStudioAppBarActions.ts"]
   package__ankhorage_studio -.-> module_src_ui_createStudioAppBarActions_ts
@@ -2218,6 +2218,14 @@ graph TD
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_StudioInsertDialog_tsx
   module_src_upsertExternalApi_ts["src/upsertExternalApi.ts"]
   package__ankhorage_studio -.-> module_src_upsertExternalApi_ts
+  module_src_utils_resolveStudioApiBase_test_ts["src/utils/resolveStudioApiBase.test.ts"]
+  package__ankhorage_studio -.-> module_src_utils_resolveStudioApiBase_test_ts
+  module_src_utils_resolveStudioApiBase_test_ts --> module_src_utils_resolveStudioApiBase_ts
+  module_src_utils_resolveStudioApiBase_ts["src/utils/resolveStudioApiBase.ts"]
+  package__ankhorage_studio -.-> module_src_utils_resolveStudioApiBase_ts
+  module_src_utils_studioApiBase_ts["src/utils/studioApiBase.ts"]
+  package__ankhorage_studio -.-> module_src_utils_studioApiBase_ts
+  module_src_utils_studioApiBase_ts --> module_src_utils_resolveStudioApiBase_ts
   module_src_utils_treeUtils_ts["src/utils/treeUtils.ts"]
   package__ankhorage_studio -.-> module_src_utils_treeUtils_ts
   module_src_utils_treeUtils_ts --> module_src_index_ts
