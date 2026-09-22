@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.5.3
+
+### Patch Changes
+
+- 44277d3: Update Ankhorage dependencies: `@ankhorage/zora`.
+
 ## 5.5.2
 
 ### Patch Changes
