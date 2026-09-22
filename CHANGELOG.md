@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.5.5
+
+### Patch Changes
+
+- da85f35: Keep Studio-enabled generated apps on the verified published Studio self-consumer range while source releases are still propagating, and add permanent Close social-template Web boot acceptance.
+
 ## 5.5.4
 
 ### Patch Changes

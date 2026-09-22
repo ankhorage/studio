@@ -8,6 +8,7 @@ graph LR
   module_scripts_expo57_generated_capability_acceptance_ts["scripts/expo57-generated-capability-acceptance.ts"]
   module_scripts_expo57_generated_navigation_acceptance_ts["scripts/expo57-generated-navigation-acceptance.ts"]
   module_scripts_expo57_native_capability_evidence_ts["scripts/expo57-native-capability-evidence.ts"]
+  module_scripts_expo57_social_template_web_acceptance_ts["scripts/expo57-social-template-web-acceptance.ts"]
   module_scripts_expo57_studio_standalone_acceptance_ts["scripts/expo57-studio-standalone-acceptance.ts"]
   module_scripts_packed_studio_host_acceptance_ts["scripts/packed-studio-host-acceptance.ts"]
   module_scripts_published_studio_existing_app_acceptance_ts["scripts/published-studio-existing-app-acceptance.ts"]
@@ -365,6 +366,7 @@ graph LR
   module_src_host_smoke_runExpo57StudioStandaloneDevelopmentWebSmokeAsync_ts["src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"]
   module_src_host_smoke_runExpo57StudioStandaloneStaticWebSmokeAsync_ts["src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"]
   module_src_host_smoke_runPackedStudioHostAcceptance_ts["src/host/smoke/runPackedStudioHostAcceptance.ts"]
+  module_src_host_smoke_runSocialTemplateWebAcceptanceAsync_ts["src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"]
   module_src_host_studioInfra_e2e_test_ts["src/host/studioInfra.e2e.test.ts"]
   module_src_host_studioWorkspaceExpoWeb_smoke_test_ts["src/host/studioWorkspaceExpoWeb.smoke.test.ts"]
   module_src_host_templates_catalog_test_ts["src/host/templates/catalog.test.ts"]
@@ -594,6 +596,7 @@ graph LR
   module_scripts_expo57_native_capability_evidence_ts --> module_src_host_smoke_nativeCapabilityEvidence_constants_ts
   module_scripts_expo57_native_capability_evidence_ts --> module_src_host_smoke_nativeCapabilityEvidence_createNativeEvidenceServer_ts
   module_scripts_expo57_native_capability_evidence_ts --> module_src_host_smoke_nativeCapabilityEvidence_prepareNativeCapabilityEvidenceAsync_ts
+  module_scripts_expo57_social_template_web_acceptance_ts --> module_src_host_smoke_runSocialTemplateWebAcceptanceAsync_ts
   module_scripts_expo57_studio_standalone_acceptance_ts --> module_src_host_smoke_runExpo57StudioStandaloneAcceptance_ts
   module_scripts_packed_studio_host_acceptance_ts --> module_src_host_smoke_runPackedStudioHostAcceptance_ts
   module_src_ankhAdmin_public_test_ts --> module_src_root_ts
@@ -1250,6 +1253,14 @@ graph LR
   module_src_host_smoke_runExpo57StudioStandaloneStaticWebSmokeAsync_ts --> module_src_host_smoke_createStaticExportServer_ts
   module_src_host_smoke_runExpo57StudioStandaloneStaticWebSmokeAsync_ts --> module_src_host_smoke_reserveTcpPortAsync_ts
   module_src_host_smoke_runPackedStudioHostAcceptance_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
+  module_src_host_smoke_runSocialTemplateWebAcceptanceAsync_ts --> module_src_host_http_server_ts
+  module_src_host_smoke_runSocialTemplateWebAcceptanceAsync_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_runSocialTemplateWebAcceptanceAsync_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
+  module_src_host_smoke_runSocialTemplateWebAcceptanceAsync_ts --> module_src_host_smoke_ChromeNavigationSession_ts
+  module_src_host_smoke_runSocialTemplateWebAcceptanceAsync_ts --> module_src_host_smoke_reserveTcpPortAsync_ts
+  module_src_host_smoke_runSocialTemplateWebAcceptanceAsync_ts --> module_src_host_smoke_resolveAppOwnedExpoCliAsync_ts
+  module_src_host_smoke_runSocialTemplateWebAcceptanceAsync_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
+  module_src_host_smoke_runSocialTemplateWebAcceptanceAsync_ts --> module_src_host_templates_index_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_templates_catalog_test_ts --> module_src_host_templates_index_ts
   module_src_host_templates_index_ts --> module_src_host_orchestrator_projectCreationSource_ts

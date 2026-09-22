@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.5.4",
+      "value": "v5.5.5",
       "color": "cb3837"
     },
     {
@@ -143,6 +143,14 @@
         "src/host/smoke/nativeCapabilityEvidence/constants.ts",
         "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
         "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "scripts/expo57-social-template-web-acceptance.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
       ],
       "exports": []
     },
@@ -3976,6 +3984,23 @@
       ],
       "exports": [
         "runPackedStudioHostAcceptance"
+      ]
+    },
+    {
+      "path": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/http/server.ts",
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/smoke/assertNoBrowserErrors.ts",
+        "src/host/smoke/ChromeNavigationSession.ts",
+        "src/host/smoke/reserveTcpPortAsync.ts",
+        "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
+        "src/host/smoke/runAcceptanceCommandAsync.ts",
+        "src/host/templates/index.ts"
+      ],
+      "exports": [
+        "runSocialTemplateWebAcceptanceAsync"
       ]
     },
     {
@@ -15279,7 +15304,7 @@
       "description": "Read and validate owner package metadata used as generated-app dependency floors.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 21,
+        "line": 25,
         "column": 1
       }
     },
@@ -15288,7 +15313,7 @@
       "description": "Build generated package policy from validated owner package sections.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 44,
+        "line": 49,
         "column": 1
       }
     },
@@ -15297,7 +15322,16 @@
       "description": "Read generated runtime dependency ranges from Studio's dependency contract.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 68,
+        "line": 74,
+        "column": 1
+      }
+    },
+    {
+      "name": "readGeneratedStudioDependencyRange",
+      "description": "Resolve the Studio range generated apps may install: source checkouts follow the verified\nself-consumer baseline, while published package artifacts use their own exact release line.",
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
+        "line": 97,
         "column": 1
       }
     },
@@ -15306,7 +15340,7 @@
       "description": "Read every installed ZORA extension range from Studio's own dependency contract.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 88,
+        "line": 108,
         "column": 1
       }
     },
@@ -15315,7 +15349,7 @@
       "description": "Read generated native peer ranges from Studio's peer dependency contract.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 100,
+        "line": 120,
         "column": 1
       }
     },
@@ -15324,7 +15358,7 @@
       "description": "Parse one owner package manifest as a validated object.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 124,
+        "line": 144,
         "column": 1
       }
     },
@@ -15333,7 +15367,7 @@
       "description": "Read and validate Studio's exact package version.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 134,
+        "line": 154,
         "column": 1
       }
     },
@@ -15342,7 +15376,7 @@
       "description": "Read and validate Studio's exact Bun package-manager pin.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 143,
+        "line": 163,
         "column": 1
       }
     },
@@ -15351,7 +15385,7 @@
       "description": "Read one required package-manifest dependency section.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 152,
+        "line": 172,
         "column": 1
       }
     },
@@ -15360,7 +15394,7 @@
       "description": "Read one required non-empty string property from package metadata.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 165,
+        "line": 185,
         "column": 1
       }
     },
@@ -23222,6 +23256,60 @@
       }
     },
     {
+      "name": "runSocialTemplateWebAcceptanceAsync",
+      "description": "Generate the released Close social template through Studio and prove its Studio-enabled Expo Web app boots and renders the root social screen.",
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "createWorkspaceAsync",
+      "description": "Create the isolated temporary Studio workspace used by the Close generated-app acceptance.",
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "line": 85,
+        "column": 1
+      }
+    },
+    {
+      "name": "installGeneratedProjectAsync",
+      "description": "Create and verify the generated app's own frozen Bun dependency graph before launching Expo.",
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "line": 103,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForExpoHttpAsync",
+      "description": "Wait for Expo Web to become reachable and fail immediately with process diagnostics if Metro exits.",
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "line": 122,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectProcessOutput",
+      "description": "Collect UTF-8 stdout and stderr from the generated app's Expo process for startup diagnostics.",
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "line": 149,
+        "column": 1
+      }
+    },
+    {
+      "name": "stopProcess",
+      "description": "Stop the detached generated-app process group without leaving Metro descendants behind.",
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "line": 158,
+        "column": 1
+      }
+    },
+    {
       "name": "createLedger",
       "description": null,
       "sourceLocation": {
@@ -30147,6 +30235,11 @@
         "sourcePath": "scripts/expo57-native-capability-evidence.ts"
       },
       {
+        "fromPath": "scripts/expo57-social-template-web-acceptance.ts",
+        "toPath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "sourcePath": "scripts/expo57-social-template-web-acceptance.ts"
+      },
+      {
         "fromPath": "scripts/expo57-studio-standalone-acceptance.ts",
         "toPath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
         "sourcePath": "scripts/expo57-studio-standalone-acceptance.ts"
@@ -33512,6 +33605,46 @@
         "sourcePath": "src/host/smoke/runPackedStudioHostAcceptance.ts"
       },
       {
+        "fromPath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "toPath": "src/host/http/server.ts",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "toPath": "src/host/templates/index.ts",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "toPath": "src/host/smoke/assertNoBrowserErrors.ts",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "toPath": "src/host/smoke/ChromeNavigationSession.ts",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "toPath": "src/host/smoke/reserveTcpPortAsync.ts",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "toPath": "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts",
+        "toPath": "src/host/smoke/runAcceptanceCommandAsync.ts",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
         "fromPath": "src/host/templates/catalog.test.ts",
         "toPath": "src/host/templates/index.ts",
         "sourcePath": "src/host/templates/catalog.test.ts"
@@ -36071,6 +36204,12 @@
         "toSymbol": "resolve",
         "callExpression": "resolve",
         "sourcePath": "scripts/expo57-native-capability-evidence.ts"
+      },
+      {
+        "fromSymbol": "scripts/expo57-social-template-web-acceptance.ts",
+        "toSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "callExpression": "runSocialTemplateWebAcceptanceAsync",
+        "sourcePath": "scripts/expo57-social-template-web-acceptance.ts"
       },
       {
         "fromSymbol": "scripts/expo57-studio-standalone-acceptance.ts",
@@ -61015,6 +61154,144 @@
         "sourcePath": "src/host/smoke/runPackedStudioHostAcceptance.ts"
       },
       {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "createWorkspaceAsync",
+        "callExpression": "createWorkspaceAsync",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "getProjectTemplateSource",
+        "callExpression": "getProjectTemplateSource",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "createProject",
+        "callExpression": "manager.createProject",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "installGeneratedProjectAsync",
+        "callExpression": "installGeneratedProjectAsync",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "reserveTcpPortAsync",
+        "callExpression": "reserveTcpPortAsync",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "startStudioHostServer",
+        "callExpression": "startStudioHostServer",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "resolveAppOwnedExpoCliAsync",
+        "callExpression": "resolveAppOwnedExpoCliAsync",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "collectProcessOutput",
+        "callExpression": "collectProcessOutput",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "waitForExpoHttpAsync",
+        "callExpression": "waitForExpoHttpAsync",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "createAsync",
+        "callExpression": "ChromeNavigationSession.createAsync",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "navigateAsync",
+        "callExpression": "chrome.navigateAsync",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "waitForLocationAsync",
+        "callExpression": "chrome.waitForLocationAsync",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "waitForBodyTextAsync",
+        "callExpression": "chrome.waitForBodyTextAsync",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "assertNoBrowserErrors",
+        "callExpression": "assertNoBrowserErrors",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "close",
+        "callExpression": "chrome?.close",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "stopProcess",
+        "callExpression": "stopProcess",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runSocialTemplateWebAcceptanceAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "installGeneratedProjectAsync",
+        "toSymbol": "runAcceptanceCommandAsync",
+        "callExpression": "runAcceptanceCommandAsync",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "installGeneratedProjectAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/runSocialTemplateWebAcceptanceAsync.ts"
+      },
+      {
         "fromSymbol": "src/host/templates/catalog.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -69788,6 +70065,12 @@
       },
       {
         "fromSymbol": "readGeneratedPackagePolicy",
+        "toSymbol": "readGeneratedStudioDependencyRange",
+        "callExpression": "readGeneratedStudioDependencyRange",
+        "sourcePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts"
+      },
+      {
+        "fromSymbol": "readGeneratedPackagePolicy",
         "toSymbol": "readStudioPackageManager",
         "callExpression": "readStudioPackageManager",
         "sourcePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts"
@@ -69820,6 +70103,30 @@
         "fromSymbol": "readGeneratedRuntimeDependencies",
         "toSymbol": "readGeneratedZoraExtensionDependencies",
         "callExpression": "readGeneratedZoraExtensionDependencies",
+        "sourcePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts"
+      },
+      {
+        "fromSymbol": "readGeneratedStudioDependencyRange",
+        "toSymbol": "existsSync",
+        "callExpression": "existsSync",
+        "sourcePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts"
+      },
+      {
+        "fromSymbol": "readGeneratedStudioDependencyRange",
+        "toSymbol": "readPackageManifest",
+        "callExpression": "readPackageManifest",
+        "sourcePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts"
+      },
+      {
+        "fromSymbol": "readGeneratedStudioDependencyRange",
+        "toSymbol": "readRequiredSection",
+        "callExpression": "readRequiredSection",
+        "sourcePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts"
+      },
+      {
+        "fromSymbol": "readGeneratedStudioDependencyRange",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
         "sourcePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts"
       },
       {
