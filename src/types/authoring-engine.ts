@@ -14,7 +14,7 @@ export interface AuthoringDiagnostic {
   readonly path: readonly string[];
 }
 
-export interface AuthoringEditorHint {
+interface AuthoringEditorHint {
   readonly kind: string;
   readonly mediaKinds?: readonly MediaAssetKind[];
 }
