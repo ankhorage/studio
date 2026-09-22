@@ -41,6 +41,7 @@ export interface StudioProjectInfraLifecycle {
   readonly statusAsync: (request: StudioProjectInfraRequest) => Promise<InfraStatus>;
   readonly outputsAsync: (request: StudioProjectInfraRequest) => Promise<InfraOutputsResult>;
   readonly downAsync: (request: StudioProjectInfraRequest) => Promise<InfraDownResult>;
+  readonly hasOwnedResourcesAsync: (request: StudioProjectInfraRequest) => Promise<boolean>;
   readonly destroyAsync: (request: StudioProjectInfraDestroyRequest) => Promise<InfraDestroyResult>;
 }
 
@@ -59,6 +60,11 @@ export function createStudioProjectInfraLifecycle(
       requireInfraSuccess(await lifecycle.outputsAsync(toInfraRequest(request))),
     downAsync: async (request) =>
       requireInfraSuccess(await lifecycle.downAsync(toInfraRequest(request))),
+    hasOwnedResourcesAsync: async (request) => {
+      const environment = request.environment ?? 'local';
+      const state = await readStoredInfraStateAsync(request.projectPath, environment);
+      return (state?.ledger.resources.length ?? 0) > 0;
+    },
     destroyAsync: async (request) => {
       const environment = request.environment ?? 'local';
       const state = await readStoredInfraStateAsync(request.projectPath, environment);
