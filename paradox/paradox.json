@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.2.1",
+      "value": "v5.3.0",
       "color": "cb3837"
     },
     {
@@ -5474,6 +5474,7 @@
         "AuthoringMutation",
         "AuthoringMutationResult",
         "AuthoringNode",
+        "AuthoringOrderedListNode",
         "AuthoringPresentationPolicy",
         "AuthoringPrimitive",
         "AuthoringScalarNode",
@@ -14296,7 +14297,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 223,
+        "line": 279,
         "column": 1
       }
     },
@@ -14305,7 +14306,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 236,
+        "line": 292,
         "column": 1
       }
     },
@@ -14314,7 +14315,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 252,
+        "line": 308,
         "column": 1
       }
     },
@@ -14323,7 +14324,7 @@
       "description": "Render one neutral authoring model with ZORA controls without owning product-specific schema.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 25,
+        "line": 26,
         "column": 1
       }
     },
@@ -14332,7 +14333,7 @@
       "description": "Choose the ZORA control for one neutral structural node.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 60,
+        "line": 61,
         "column": 1
       }
     },
@@ -14341,7 +14342,7 @@
       "description": "Render one finite primitive choice and translate its control value back to the owner value.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 120,
+        "line": 125,
         "column": 1
       }
     },
@@ -14350,7 +14351,25 @@
       "description": "Render finite unordered string membership with one switch per owner-provided member.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 157,
+        "line": 162,
+        "column": 1
+      }
+    },
+    {
+      "name": "OrderedListEditor",
+      "description": "Render an ordered finite primitive list with append, remove, and positional controls.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "line": 203,
+        "column": 1
+      }
+    },
+    {
+      "name": "moveOrderedListItem",
+      "description": "Move one ordered-list item immutably while preserving every other authored item.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "line": 279,
         "column": 1
       }
     },
@@ -14359,7 +14378,7 @@
       "description": "Render one scalar authoring node and translate ZORA changes to neutral mutations.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 198,
+        "line": 297,
         "column": 1
       }
     },
@@ -14368,7 +14387,7 @@
       "description": "Convert text input to a scalar set/unset mutation without coercing invalid numeric values.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 243,
+        "line": 342,
         "column": 1
       }
     },
@@ -14377,7 +14396,7 @@
       "description": "Encode a primitive choice into a stable Select value without losing its runtime type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 266,
+        "line": 365,
         "column": 1
       }
     },
@@ -14386,7 +14405,7 @@
       "description": "Format one supported authored node for read-only presentation.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 271,
+        "line": 370,
         "column": 1
       }
     },
@@ -14413,7 +14432,7 @@
       "description": "Resolve one local descriptor reference and reject unsupported external/cyclic references explicitly.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
-        "line": 84,
+        "line": 89,
         "column": 1
       }
     },
@@ -14422,7 +14441,7 @@
       "description": "Preserve an unsupported descriptor kind as an explicit authoring diagnostic.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
-        "line": 136,
+        "line": 141,
         "column": 1
       }
     },
@@ -14539,7 +14558,7 @@
       "description": "Read and validate one scalar runtime value against its portable structural type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 120,
+        "line": 131,
         "column": 1
       }
     },
@@ -14548,7 +14567,7 @@
       "description": "Decide whether one unknown runtime value satisfies a scalar descriptor type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 141,
+        "line": 152,
         "column": 1
       }
     },
@@ -14557,7 +14576,7 @@
       "description": "Read one finite-choice value without coercing values outside the descriptor options.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 160,
+        "line": 171,
         "column": 1
       }
     },
@@ -14566,7 +14585,16 @@
       "description": "Validate canonical unordered string membership against finite owner-provided choices.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 181,
+        "line": 192,
+        "column": 1
+      }
+    },
+    {
+      "name": "readOrderedListValue",
+      "description": "Validate one ordered finite primitive list while preserving authored order and duplicates.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "line": 245,
         "column": 1
       }
     },
@@ -14575,7 +14603,7 @@
       "description": "Convert an invalid runtime value to an explicit unsupported authoring node.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 234,
+        "line": 295,
         "column": 1
       }
     },
@@ -14584,7 +14612,7 @@
       "description": "Convert a source property name to a default human-readable field label.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 255,
+        "line": 316,
         "column": 1
       }
     },
@@ -14593,7 +14621,7 @@
       "description": "Format one authoring path for diagnostics without leaking implementation details.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 262,
+        "line": 323,
         "column": 1
       }
     },
@@ -27382,7 +27410,7 @@
       "description": "Render and coordinate Studio authentication authoring, OAuth credential setup, health, routes, and profile configuration.\n@todo This page currently owns substantial auth application orchestration and generic UI primitives; move auth persistence/provider transaction policy into `auth/` and use canonical ZORA form/action patterns.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 85,
+        "line": 88,
         "column": 1
       }
     },
@@ -65888,18 +65916,6 @@
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
-        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "toSymbol": "omitSignUp",
-        "callExpression": "omitSignUp",
-        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "toSymbol": "splitList",
-        "callExpression": "splitList",
-        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
-      },
-      {
         "fromSymbol": "AuthAdminPage",
         "toSymbol": "deriveAuthoringModel",
         "callExpression": "deriveAuthoringModel",
@@ -65909,6 +65925,18 @@
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "applyAuthoringMutation",
         "callExpression": "applyAuthoringMutation",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "omitSignUp",
+        "callExpression": "omitSignUp",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "splitList",
+        "callExpression": "splitList",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
@@ -68439,6 +68467,12 @@
       },
       {
         "fromSymbol": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "toSymbol": "moveOrderedListItem",
+        "callExpression": "moveOrderedListItem",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
         "toSymbol": "handleScalarTextChange",
         "callExpression": "handleScalarTextChange",
         "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
@@ -68693,6 +68727,12 @@
         "fromSymbol": "deriveNode",
         "toSymbol": "readSetValue",
         "callExpression": "readSetValue",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "deriveNode",
+        "toSymbol": "readOrderedListValue",
+        "callExpression": "readOrderedListValue",
         "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
       },
       {

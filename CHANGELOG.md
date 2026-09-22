@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.3.0
+
+### Minor Changes
+
+- a51c34c: Add generic ordered-list authoring and derive /ankh/auth sign-in identifiers from the canonical Contracts structure descriptor.
+
 ## 5.2.1
 
 ### Patch Changes
