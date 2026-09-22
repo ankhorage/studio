@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { isAppCategory, isColorHarmony } from '../contractGuards';
-import { API_BASE } from '../core/constants';
+import { studioApiBase } from '../utils/studioApiBase';
 import type { TemplateCatalog, TemplateCatalogCategory } from '../templateCatalogContracts';
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -43,7 +43,7 @@ function parseTemplateCatalog(value: unknown): TemplateCatalog {
 }
 
 async function requestTemplateCatalog(): Promise<TemplateCatalog> {
-  const response = await fetch(`${API_BASE}/templates`);
+  const response = await fetch(`${studioApiBase}/templates`);
   if (!response.ok) {
     throw new Error('Failed to fetch template catalog');
   }

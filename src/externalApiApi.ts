@@ -1,6 +1,6 @@
 import type { DataContractValue, DataSourceDiagnostic } from '@ankhorage/contracts/data';
 
-import { API_BASE } from './core/constants';
+import { studioApiBase } from './utils/studioApiBase';
 import type {
   ExternalApiConnectRequest,
   ExternalApiConnectResult,
@@ -88,7 +88,7 @@ async function requestResult<TResult>(
   parse: (value: unknown) => TResult,
 ): Promise<TResult> {
   const response = await fetch(
-    `${API_BASE}/projects/${encodeURIComponent(projectId)}/apis/${action}`,
+    `${studioApiBase}/projects/${encodeURIComponent(projectId)}/apis/${action}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

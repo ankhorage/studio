@@ -10,7 +10,7 @@ import {
 import React, { useMemo } from 'react';
 import { Text } from 'react-native';
 
-import { API_BASE } from '../core/constants';
+import { studioApiBase } from '../utils/studioApiBase';
 import { useStudio } from '../core/StudioContext';
 import { createStudioMediaAssetResolver } from '../runtime/studioMediaResolver';
 
@@ -26,7 +26,7 @@ export const AnkhStudio = ({ children, bundledMediaRegistry = {} }: AnkhStudioPr
   const resolveMediaAsset = useMemo<RuntimeMediaAssetResolver>(() => {
     const bundledResolver = createExpoBundledMediaResolver(bundledMediaRegistry);
     const storageResolver = createStudioMediaAssetResolver({
-      apiBase: API_BASE,
+      apiBase: studioApiBase,
       projectId: studio.projectId,
     });
     return async (args) => bundledResolver(args) ?? (await storageResolver(args));

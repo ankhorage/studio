@@ -17,7 +17,7 @@ import {
 import { resolveCanvasDropZones, type CanvasDropZoneResolution } from '../../canvasDropZones';
 import { findNodeById, type NodePlacement, type StudioComponentMetaRegistry } from '../../index';
 import { resolveNodeLabel } from '../../insertModalModel';
-import type { RuntimeNodeIndicatorRect } from '../../runtime/runtimeNodeMeasurement';
+import type { RuntimeNodeIndicatorRect } from '../../types/runtime-node-measurement';
 import {
   activateCanvasDrag,
   completeCanvasDropAfterAdapter,

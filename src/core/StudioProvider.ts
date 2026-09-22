@@ -64,7 +64,7 @@ import {
   resolveStudioSelectionParentNodeId,
 } from '../studioSelectionModel';
 import { AuthAdminSessionProvider } from '../ui/admin/AuthAdminSession';
-import { API_BASE } from './constants';
+import { studioApiBase } from '../utils/studioApiBase';
 import { cleanupStudioMediaSource, ingestStudioMediaSelection } from './mediaAuthoringHostClient';
 import { commitStudioMediaRemoval } from './mediaRemovalCoordinator';
 import { StudioContext } from './StudioContext';
@@ -699,7 +699,7 @@ function useStudioManifestPersistence(args: {
  * @todo Group project-manifest HTTP access in a dedicated manifest host client instead of StudioProvider.
  */
 async function requestProjectManifest(projectId: string): Promise<StudioManifest> {
-  const response = await fetch(`${API_BASE}/projects/${encodeURIComponent(projectId)}/manifest`);
+  const response = await fetch(`${studioApiBase}/projects/${encodeURIComponent(projectId)}/manifest`);
   const value = await readPersistenceJson(response);
   if (!response.ok) throw createPersistenceError(value, response.status);
   return value as StudioManifest;
@@ -710,7 +710,7 @@ async function requestProjectManifest(projectId: string): Promise<StudioManifest
  * @todo Group project-manifest HTTP access in a dedicated manifest host client instead of StudioProvider.
  */
 async function persistProjectManifest(projectId: string, manifest: StudioManifest): Promise<void> {
-  const response = await fetch(`${API_BASE}/projects/${encodeURIComponent(projectId)}/manifest`, {
+  const response = await fetch(`${studioApiBase}/projects/${encodeURIComponent(projectId)}/manifest`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(manifest),

@@ -6,7 +6,7 @@ import type {
   StudioMediaIngestTarget,
   StudioMediaPickerSelection,
 } from '../mediaPickerAuthoring';
-import { API_BASE } from './constants';
+import { studioApiBase } from '../utils/studioApiBase';
 import type { StudioMediaSourceCleanupResult } from './mediaRemovalCoordinator';
 
 interface IngestStudioMediaSelectionArgs {
@@ -26,7 +26,7 @@ export async function ingestStudioMediaSelection(
   const query = createIngestQuery(args.assetId, args.selection);
   const endpoint = args.target === 'bundled' ? 'bundle' : 'ingest';
   const response = await fetch(
-    `${API_BASE}/projects/${encodeURIComponent(args.projectId)}/media/${endpoint}?${query}`,
+    `${studioApiBase}/projects/${encodeURIComponent(args.projectId)}/media/${endpoint}?${query}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/octet-stream' },
@@ -50,7 +50,7 @@ export async function cleanupStudioMediaSource(
 ): Promise<StudioMediaSourceCleanupResult> {
   if (source.kind === 'url') return { ok: true, cleanup: 'none' };
   const response = await fetch(
-    `${API_BASE}/projects/${encodeURIComponent(projectId)}/media/cleanup`,
+    `${studioApiBase}/projects/${encodeURIComponent(projectId)}/media/cleanup`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

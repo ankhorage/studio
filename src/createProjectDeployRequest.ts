@@ -9,7 +9,7 @@ import type { ProjectDeployRequest } from './projectDeployRequest';
 export function createProjectDeployRequest(): ProjectDeployRequest {
   /*** Prefix a request path with the resolved API base and forward the fetch init unchanged. */
   return async (path, init) => {
-    const { API_BASE } = await import('./core/constants');
-    return createBaseUrlFetch(API_BASE)(path, init);
+    const { studioApiBase } = await import('./utils/studioApiBase');
+    return createBaseUrlFetch(studioApiBase)(path, init);
   };
 }

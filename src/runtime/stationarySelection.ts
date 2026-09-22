@@ -21,6 +21,7 @@ import {
   type NativeSelectionSamplingCoordinator,
 } from '../features/selection/application/nativeSelectionSamplingCoordinator.js';
 import type { NodePlacement, StudioComponentMetaRegistry } from '../index.js';
+import type { MeasuredRect, RuntimeNodeIndicatorRect } from '../types/runtime-node-measurement.js';
 import { StudioCanvasDndOverlay } from '../ui/canvas/StudioCanvasDndOverlay.js';
 import {
   createIndicatorRefreshCoordinator,
@@ -37,9 +38,7 @@ import {
   createSelectedIndicatorViewProps,
   getActiveRuntimeNodeMeasurements,
   hasActiveRuntimeNodeMeasurements,
-  type MeasuredRect,
   measureRuntimeNodeIndicators,
-  type RuntimeNodeIndicatorRect,
   type RuntimeNodeMeasurement,
   runtimeNodeMeasurementChangeAffectsActiveIndicators,
   shouldRenderSelectedNodeChrome,
