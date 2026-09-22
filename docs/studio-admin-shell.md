@@ -8,10 +8,11 @@ Canonical routes:
 - `/ankh`
 - `/ankh/screens`
 - `/ankh/screens/<screen-id>`
+- `/ankh/media`
 - `/ankh/modules`
 - `/ankh/modules/<module-id>`
 - `/ankh/apis`
-- `/ankh/apis/data-sources`
+- `/ankh/apis/catalog`
 - `/ankh/apis/operations`
 - `/ankh/auth`
 - `/ankh/auth/providers`
@@ -20,6 +21,14 @@ Canonical routes:
 - `/ankh/secrets`
 - `/ankh/deploy`
 - `/ankh/theme`
+- `/ankh/theme/colors`
+- `/ankh/theme/typography`
+- `/ankh/theme/spacing`
+- `/ankh/theme/radii`
+- `/ankh/theme/shadows`
+- `/ankh/theme/components/<recipe-name>`
+- `/ankh/theme/patterns/<recipe-name>`
+- `/ankh/bindings/<node-id>`
 - `/ankh/properties/<node-id>`
 
 `@ankhorage/studio/studioAdminRouteModel` owns the canonical registry for route IDs, paths,
@@ -28,7 +37,12 @@ construction/decoding. `createStudioScreenRoutePath` and `resolveStudioScreenId`
 stable `ScreenSpec.id` values; the static `/ankh/screens` route is never treated as a detail route.
 The equivalent module helpers encode and decode stable Orchestrator module IDs without creating
 module-specific top-level routes.
-Generated pages and navigation consume this registry instead of assembling admin paths directly.
+Generated pages and the one Navigator workspace projection consume this registry instead of
+assembling admin paths directly. Studio owns authoring context, destination availability, route
+decoding, and the latest non-admin application location. `@ankhorage/navigator` owns responsive
+navigation presentation, active ancestor highlighting, route transitions, compact menu state, and
+the generated `/ankh/_layout.tsx`. This development topology is separate from the application's
+production `AppManifest.navigator`.
 
 Screens administration at `/ankh/screens` consumes the package-neutral manifest screen/navigation
 model. It represents unrouted and multiply referenced screens honestly, shows navigator
@@ -49,10 +63,12 @@ to choose an arbitrary detail screen. ADM 8 does not provide route-key or path r
 The normal app bar exposes Administration and Preview actions while Studio is active on an app
 route. Preview becomes an emphasized Edit action while active, and contextual Properties,
 Bindings, Insert, Delete, parent-selection, and dialog affordances are withheld until Edit resumes.
-Inside `/ankh`, the admin shell provides a desktop sidebar and a compact drawer; administration is
-never presented as app Preview content. `Back to app` returns to the latest non-admin app location
-remembered by the current Studio session, and navigation within `/ankh` does not overwrite that
-location.
+Inside `/ankh`, Navigator provides a persistent medium/expanded sidebar and compact navigation;
+administration is never presented as app Preview content. `Back to app` returns to the latest
+non-admin app location remembered by the current Studio session, and navigation within `/ankh`
+does not overwrite that location. The generated root auth guard remains in place for auth-enabled
+apps, while the Studio admin access gate keeps the subtree development-only for every generated
+shell.
 
 Auth and Secrets render as page content inside the admin shell. Auth configuration writes flow
 through `StudioProvider` as the single canonical manifest writer, while OAuth credential payloads

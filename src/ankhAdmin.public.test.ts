@@ -1,18 +1,21 @@
 import { expect, test } from 'bun:test';
 
-import type { AnkhAdminPage, AnkhAdminShell } from './root';
+import type { AnkhAdminPage, StudioAdminAccessGate, useStudioAdminWorkspace } from './root';
 
-type AdminShellExport = typeof AnkhAdminShell;
 type AdminPageExport = typeof AnkhAdminPage;
+type WorkspaceExport = typeof useStudioAdminWorkspace;
+type AccessGateExport = typeof StudioAdminAccessGate;
 
-test('exports generated-app admin composition components', () => {
+test('exports generated-app admin page and Navigator integration bindings', () => {
   const exportsAreTyped: {
-    readonly shell: AdminShellExport | null;
     readonly page: AdminPageExport | null;
+    readonly workspace: WorkspaceExport | null;
+    readonly accessGate: AccessGateExport | null;
   } = {
-    shell: null,
     page: null,
+    workspace: null,
+    accessGate: null,
   };
 
-  expect(exportsAreTyped).toEqual({ shell: null, page: null });
+  expect(exportsAreTyped).toEqual({ page: null, workspace: null, accessGate: null });
 });

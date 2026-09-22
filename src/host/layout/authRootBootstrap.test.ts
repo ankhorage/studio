@@ -181,7 +181,7 @@ describe('generated auth root bootstrap', () => {
   });
 
   test.each(['integrated', 'none'] as const)(
-    'keeps %s auth on the public app topology and fails Studio administration closed',
+    'keeps %s auth on the public app topology and mounts the development-only Navigator workspace',
     (scope) => {
       const files = generateScopeFiles(scope);
       const paths = files.map((file) => file.path);
@@ -194,7 +194,8 @@ describe('generated auth root bootstrap', () => {
       expect(paths).not.toContain('src/auth/navigation.ts');
       expect(rootLayout).not.toContain('useGeneratedAuthNavigation');
       expect(rootLayout).not.toContain('GeneratedAuthNavigationState');
-      expect(adminLayout).toContain('return <Redirect href="/" />;');
+      expect(adminLayout).toContain("from '@ankhorage/navigator/workspace'");
+      expect(adminLayout).toContain('WorkspaceAccessGate');
       expect(adminLayout).not.toContain('AnkhAdminShell');
     },
   );

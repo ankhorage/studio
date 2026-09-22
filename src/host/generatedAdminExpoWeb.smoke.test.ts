@@ -118,6 +118,7 @@ function createAdminSmokeManifest(): AppManifest {
 
   return {
     ...nutritionManifest,
+    deploy: { targets: { web: { enabled: true } } },
     metadata: {
       ...nutritionManifest.metadata,
       name: 'Generated Admin Web Smoke',
@@ -223,7 +224,7 @@ function createScrollableRuntimeScreenRoot(): UiNode {
         children: [
           {
             id: 'desktop-pointer-parent',
-            type: 'Box',
+            type: 'View',
             props: {
               p: 'm',
               testID: 'desktop-pointer-parent',
@@ -262,7 +263,7 @@ function createScrollableRuntimeScreenRoot(): UiNode {
           },
           {
             id: 'native-layout-fixture',
-            type: 'Box',
+            type: 'View',
             props: {
               testID: 'native-layout-fixture',
               style: { gap: 12 },
@@ -850,6 +851,7 @@ adminWebSmokeTest(
         );
         expect(missingDetail).toContain('missing or was deleted');
         expect(page.errors).toEqual([]);
+        await verifyWorkspaceReturnToApp(page, expoOutput);
       } finally {
         page.close();
       }
@@ -1042,6 +1044,53 @@ async function verifyNestedNutritionSelection(
     await page.readAppBarActionGeometry(['Administration', 'Preview']),
     ['Administration', 'Preview'],
   );
+}
+
+/*** Preserve the last app route while navigating through multiple administration destinations. */
+async function verifyWorkspaceReturnToApp(
+  page: ChromePage,
+  expoOutput: readonly string[],
+): Promise<void> {
+  await page.navigateStudio('/scan', expoOutput);
+  await waitForBodyText(page, (text) => text.includes('Scan product'), HTTP_TIMEOUT_MS);
+  await page.clickAppBarAction('Administration');
+  await waitForBodyText(page, (text) => text.includes('Project overview'), HTTP_TIMEOUT_MS);
+  await page.navigateStudio('/ankh/screens/dashboard', expoOutput);
+  await waitForBodyText(
+    page,
+    (text) => text.includes('Stable screen ID') && text.includes('dashboard'),
+    HTTP_TIMEOUT_MS,
+  );
+  await page.navigateStudio('/ankh/theme/colors', expoOutput);
+  await waitForBodyText(
+    page,
+    (text) => text.includes('Edit the canonical color source'),
+    HTTP_TIMEOUT_MS,
+  );
+
+  const clicked = await page.evaluate<boolean>(`(() => {
+    const action = [...document.querySelectorAll('[role="button"]')].find(
+      (element) => element.textContent?.trim() === 'Back to app',
+    );
+    if (!(action instanceof HTMLElement)) return false;
+    action.click();
+    return true;
+  })()`);
+  if (!clicked) {
+    throw new Error(
+      `Workspace exit was not available.\n${await page.readStudioNavigationDiagnostics(expoOutput)}`,
+    );
+  }
+  await waitForBodyText(
+    page,
+    (text) =>
+      text.includes('Scan product') && text.includes('Local generated-admin smoke fixture.'),
+    HTTP_TIMEOUT_MS,
+  );
+  expect(await page.evaluate<string>('location.pathname')).toBe('/scan');
+  expectAppBarActionsHorizontal(await page.readAppBarActionGeometry(['Administration']), [
+    'Administration',
+  ]);
 }
 
 interface BrowserRect {
@@ -1686,6 +1735,10 @@ async function installGeneratedProjectDependencies(
   }
   generatedPackage.dependencies['@ankhorage/studio'] =
     `file:${await stageLocalStudioPackage(workspaceRoot)}`;
+  const navigatorTarball = readEnvString('ANKH_STUDIO_NAVIGATOR_TARBALL');
+  if (navigatorTarball) {
+    generatedPackage.dependencies['@ankhorage/navigator'] = `file:${navigatorTarball}`;
+  }
   await writeFile(packagePath, `${JSON.stringify(generatedPackage, null, 2)}\n`, 'utf8');
 
   const install = Bun.spawn(['bun', 'install', '--ignore-scripts'], {
@@ -1742,7 +1795,7 @@ async function writeSmokeRuntimeExtensions(projectRoot: string): Promise<void> {
     path.join(generatedRoot, 'SmokeStudioComponents.tsx'),
     `import { useStudio } from '@ankhorage/studio';
 import { useStudioUnsupportedNodeMeasurement } from '@ankhorage/studio/runtime';
-import { Box, Text } from '@ankhorage/zora';
+import { Text } from '@ankhorage/zora';
 import { usePathname, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -1953,7 +2006,7 @@ export function SmokeStudioProbe() {
   }, [studio.selectedNodeId]);
 
   return (
-    <Box gap="s" testID="studio-smoke-probe">
+    <View style={{ gap: 8 }} testID="studio-smoke-probe">
       <Text testID="studio-smoke-state">
         {\`mode=\${studio.previewMode ? 'preview' : 'edit'};selection=\${studio.selectedNodeId ?? 'none'};changes=\${selectionChangeCount}\`}
       </Text>
@@ -1985,7 +2038,7 @@ export function SmokeStudioProbe() {
           {layoutSnapshot === 'not-captured' ? layoutSnapshot : 'captured'}
         </NativeText>
       </View>
-    </Box>
+    </View>
   );
 }
 `,
@@ -2019,6 +2072,7 @@ async function writeSmokeMetroConfig(projectRoot: string): Promise<void> {
   await writeFile(
     path.join(projectRoot, 'metro.config.js'),
     `const path = require('node:path');
+const fs = require('node:fs');
 const { getDefaultConfig } = require('expo/metro-config');
 
 const config = getDefaultConfig(__dirname);
@@ -2026,11 +2080,11 @@ config.resolver.unstable_enableSymlinks = true;
 config.resolver.nodeModulesPaths = [
   path.resolve(__dirname, 'node_modules'),
   path.resolve(__dirname, '../../node_modules'),
-];
+].filter(fs.existsSync);
 config.watchFolders = [
   path.resolve(__dirname, '../../node_modules'),
   ${JSON.stringify(repositoryRoot)},
-];
+].filter(fs.existsSync);
 
 module.exports = config;
 `,

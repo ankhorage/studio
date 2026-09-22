@@ -5,6 +5,7 @@ import {
   resolveExpoRuntimeLayoutIntegration,
   resolveExpoRuntimeNativeSchemeMap,
 } from '@ankhorage/expo-runtime/planning';
+import { generateWorkspaceLayout } from '@ankhorage/navigator';
 import path from 'path';
 
 import type { StudioAdminRouteId } from '../../index';
@@ -165,11 +166,22 @@ export class GeneratedAppFileGenerator {
 
     const addStudioAdminRouteFiles = () => {
       if (!includeStudio) return;
+      const adminLayout = generateWorkspaceLayout({
+        rootDirectory: 'src/app/ankh',
+        useWorkspace: {
+          module: '@ankhorage/studio',
+          exportName: 'useStudioAdminWorkspace',
+        },
+        accessGate: {
+          module: '@ankhorage/studio',
+          exportName: 'StudioAdminAccessGate',
+        },
+      });
 
       files.push(
         {
-          path: normalizeRel(path.join(appRootRel, 'ankh', '_layout.tsx')),
-          content: getStudioAdminLayoutTsx(authLayoutPlan.enabled),
+          path: adminLayout.path,
+          content: adminLayout.contents,
         },
         ...createStudioAdminRouteGeneratedFiles(appRootRel),
       );
@@ -583,32 +595,6 @@ export class GeneratedAppFileGenerator {
         throw new Error(`Unsupported generated auth file kind: ${filePlan.kind}`);
     }
   }
-}
-
-/***
- * Generate the Studio Admin route-group layout, redirecting when generated global auth is unavailable and guarding production builds from the development Admin shell.
- */
-function getStudioAdminLayoutTsx(hasGeneratedGlobalAuth: boolean): string {
-  if (!hasGeneratedGlobalAuth) {
-    return `import { Redirect } from 'expo-router';
-
-export default function AnkhLayout() {
-  return <Redirect href="/" />;
-}
-`;
-  }
-
-  return `import { AnkhAdminShell } from '@ankhorage/studio';
-import { Redirect } from 'expo-router';
-
-export default function AnkhLayout() {
-  if (!__DEV__) {
-    return <Redirect href="/" />;
-  }
-
-  return <AnkhAdminShell />;
-}
-`;
 }
 
 /***
