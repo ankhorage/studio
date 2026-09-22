@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.5.0
+
+### Minor Changes
+
+- 9721be5: Derive auth sign-up fields and policy from the released Contracts structure instead of Studio-owned form interpretation.
+
 ## 5.4.0
 
 ### Minor Changes

@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.4.0",
+      "value": "v5.5.0",
       "color": "cb3837"
     },
     {
@@ -27420,7 +27420,7 @@
       "description": "Render and coordinate Studio authentication authoring, OAuth credential setup, health, routes, and profile configuration.\n@todo This page currently owns substantial auth application orchestration and generic UI primitives; move auth persistence/provider transaction policy into `auth/` and use canonical ZORA form/action patterns.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 88,
+        "line": 92,
         "column": 1
       }
     },
@@ -27429,7 +27429,7 @@
       "description": "Render recovery controls for one OAuth credential secret that was stored but not linked into the manifest.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 627,
+        "line": 593,
         "column": 1
       }
     },
@@ -27438,7 +27438,7 @@
       "description": "Render one Supabase OAuth provider's setup requirements, credentials, health state, and enablement controls.\n@todo Provider setup/credential completeness and transaction policy belongs in the auth application domain; this component should render a prepared view model.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 656,
+        "line": 622,
         "column": 1
       }
     },
@@ -27447,7 +27447,7 @@
       "description": "Toggle a provider only when its required credentials are complete, upserting the provider draft when permitted.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 707,
+        "line": 673,
         "column": 9
       }
     },
@@ -27456,7 +27456,7 @@
       "description": "Validate a complete credential replacement, store it through the secret API, and persist its manifest reference under a keyed transaction lock.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 734,
+        "line": 700,
         "column": 9
       }
     },
@@ -27465,7 +27465,7 @@
       "description": "Immutably insert or replace an array item selected by its `id` key.\n@utility @ankhorage/utility/array",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 870,
+        "line": 836,
         "column": 1
       }
     },
@@ -27474,7 +27474,7 @@
       "description": "Return an immutable object copy without its `signUp` property; parameterized key omission is reusable.\n@utility @ankhorage/utility/object",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 885,
+        "line": 851,
         "column": 1
       }
     },
@@ -27483,7 +27483,7 @@
       "description": "Return an immutable object copy without its `profile` property; parameterized key omission is reusable.\n@utility @ankhorage/utility/object",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 894,
+        "line": 860,
         "column": 1
       }
     },
@@ -27492,7 +27492,7 @@
       "description": "Create Studio's default editable authentication settings shell.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 900,
+        "line": 866,
         "column": 1
       }
     },
@@ -27501,7 +27501,7 @@
       "description": "Create Studio's default OAuth settings shell.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 911,
+        "line": 877,
         "column": 1
       }
     },
@@ -27510,16 +27510,7 @@
       "description": "Create the minimal fallback manifest needed to initialize auth authoring before a canonical manifest is available.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 920,
-        "column": 1
-      }
-    },
-    {
-      "name": "splitList",
-      "description": "Split a comma-delimited string into trimmed, non-empty, insertion-order-deduplicated values.\n@utility @ankhorage/utility/string",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 959,
+        "line": 886,
         "column": 1
       }
     },
@@ -27528,7 +27519,7 @@
       "description": "Normalize auth API/general failures to a user-display message with a caller-specific fallback.\n@utility @ankhorage/utility/error",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 974,
+        "line": 925,
         "column": 1
       }
     },
@@ -27537,7 +27528,7 @@
       "description": "Convert an auth write-conflict reason into the administration message appropriate to the blocked operation.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 980,
+        "line": 931,
         "column": 1
       }
     },
@@ -27546,7 +27537,7 @@
       "description": "Render project auth health, provider field completeness, callback metadata, and diagnostics.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 999,
+        "line": 950,
         "column": 1
       }
     },
@@ -27555,7 +27546,7 @@
       "description": "Format the aggregate auth health status for display.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1062,
+        "line": 1013,
         "column": 1
       }
     },
@@ -27564,7 +27555,7 @@
       "description": "Format one OAuth provider health status for display.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1070,
+        "line": 1021,
         "column": 1
       }
     },
@@ -27573,7 +27564,7 @@
       "description": "Map aggregate auth health status to the semantic text color used by the admin UI.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1079,
+        "line": 1030,
         "column": 1
       }
     },
@@ -27582,7 +27573,7 @@
       "description": "Map auth diagnostic severity to the semantic text color used by the admin UI.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1087,
+        "line": 1038,
         "column": 1
       }
     },
@@ -27591,7 +27582,7 @@
       "description": "Render a themed generic card shell used throughout this auth page.\n@todo Replace with the canonical ZORA Card instead of owning a duplicate local primitive.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1097,
+        "line": 1048,
         "column": 1
       }
     },
@@ -27600,7 +27591,7 @@
       "description": "Render a labeled generic field shell used by auth forms.\n@todo Replace with the canonical ZORA FormField pattern.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1116,
+        "line": 1067,
         "column": 1
       }
     },
@@ -27609,7 +27600,7 @@
       "description": "Render a theme-aware generic React Native text input.\n@todo Replace with canonical ZORA Input rather than duplicating design-system input ownership in Studio.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1131,
+        "line": 1082,
         "column": 1
       }
     },
@@ -27618,7 +27609,7 @@
       "description": "Render a generic title/description/switch setting row.\n@todo Replace with canonical ZORA SwitchField where its contract fits.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1154,
+        "line": 1105,
         "column": 1
       }
     },
@@ -27627,7 +27618,7 @@
       "description": "Render one selectable pill-like option used by auth/profile configuration.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1174,
+        "line": 1125,
         "column": 1
       }
     },
@@ -27636,7 +27627,7 @@
       "description": "Render a generic label/value row used in auth administration.\n@todo Reuse the shared admin/ZORA key-value pattern rather than a second local implementation.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1202,
+        "line": 1153,
         "column": 1
       }
     },
@@ -27645,7 +27636,7 @@
       "description": "Render the auth page's primary loading/action button.\n@todo Replace with canonical ZORA Button.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1217,
+        "line": 1168,
         "column": 1
       }
     },
@@ -27654,7 +27645,7 @@
       "description": "Render the auth page's secondary action button.\n@todo Replace with canonical ZORA Button.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1244,
+        "line": 1195,
         "column": 1
       }
     },
@@ -27663,7 +27654,7 @@
       "description": "Render a simple informational auth-admin message.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1257,
+        "line": 1208,
         "column": 1
       }
     },
@@ -65941,12 +65932,6 @@
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "omitSignUp",
         "callExpression": "omitSignUp",
-        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "toSymbol": "splitList",
-        "callExpression": "splitList",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
