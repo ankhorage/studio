@@ -74,6 +74,17 @@ function deriveNode(args: {
           }
         : unsupportedValue(base, value.diagnostic);
     }
+    case 'set': {
+      const value = readSetValue(args.structure.member, args.value, args.optional);
+      return value.ok
+        ? {
+            ...base,
+            kind: 'set',
+            values: value.values,
+            selected: value.selected,
+          }
+        : unsupportedValue(base, value.diagnostic);
+    }
     case 'object': {
       if (args.value !== undefined && !isRecord(args.value)) {
         return unsupportedValue(base, {
@@ -166,6 +177,53 @@ function readChoiceValue(
   };
 }
 
+/*** Validate canonical unordered string membership against finite owner-provided choices. */
+function readSetValue(
+  member: AuthoringStructure,
+  value: unknown,
+  optional: boolean,
+): SetReadResult {
+  if (member.kind !== 'choice' || !member.values.every((candidate) => typeof candidate === 'string')) {
+    return {
+      ok: false,
+      diagnostic: {
+        code: 'unsupported-structure',
+        message: 'Set authoring requires finite string member choices.',
+        path: [],
+      },
+    };
+  }
+
+  const values = member.values as readonly string[];
+  if (value === undefined && optional) return { ok: true, values, selected: [] };
+  if (!isRecord(value)) {
+    return {
+      ok: false,
+      diagnostic: {
+        code: 'invalid-value',
+        message: 'Expected serializable set membership object.',
+        path: [],
+      },
+    };
+  }
+
+  const entries = Object.entries(value);
+  const invalid = entries.find(([key, memberValue]) => memberValue !== true || !values.includes(key));
+  if (invalid) {
+    return {
+      ok: false,
+      diagnostic: {
+        code: 'invalid-value',
+        message: `Invalid set member "${invalid[0]}".`,
+        path: [],
+      },
+    };
+  }
+
+  const selected = values.filter((candidate) => value[candidate] === true);
+  return { ok: true, values, selected };
+}
+
 /*** Convert an invalid runtime value to an explicit unsupported authoring node. */
 function unsupportedValue(
   base: {
@@ -201,4 +259,12 @@ function formatPath(path: readonly string[]): string {
 
 type ScalarReadResult =
   | { readonly ok: true; readonly value: AuthoringPrimitive | undefined }
+  | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
+
+type SetReadResult =
+  | {
+      readonly ok: true;
+      readonly values: readonly string[];
+      readonly selected: readonly string[];
+    }
   | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
