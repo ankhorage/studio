@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 4.0.1
+
+### Patch Changes
+
+- 3a7886e: Update Ankhorage dependencies: `@ankhorage/navigator`.
+
 ## 4.0.0
 
 ### Major Changes
