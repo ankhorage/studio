@@ -53,6 +53,10 @@ export type AuthoringStructure =
       readonly member: AuthoringStructure;
     }
   | {
+      readonly kind: 'ordered-list';
+      readonly item: AuthoringStructure;
+    }
+  | {
       readonly kind: 'unsupported';
       readonly sourceKind: string;
       readonly diagnostic: AuthoringDiagnostic;
@@ -95,6 +99,13 @@ export interface AuthoringSetNode extends AuthoringNodeBase {
   readonly selected: readonly string[];
 }
 
+export interface AuthoringOrderedListNode extends AuthoringNodeBase {
+  readonly kind: 'ordered-list';
+  readonly choices: readonly AuthoringPrimitive[];
+  readonly items: readonly AuthoringPrimitive[];
+  readonly defined: boolean;
+}
+
 interface AuthoringUnsupportedNode extends AuthoringNodeBase {
   readonly kind: 'unsupported';
   readonly diagnostic: AuthoringDiagnostic;
@@ -103,6 +114,7 @@ interface AuthoringUnsupportedNode extends AuthoringNodeBase {
 export type AuthoringNode =
   | AuthoringChoiceNode
   | AuthoringObjectNode
+  | AuthoringOrderedListNode
   | AuthoringScalarNode
   | AuthoringSetNode
   | AuthoringUnsupportedNode;
