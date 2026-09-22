@@ -180,7 +180,9 @@ function SetEditor(props: {
                 props.onMutation({
                   kind: 'set',
                   path: model.path,
-                  value: Object.fromEntries(selected.map((candidate) => [candidate, true] as const)),
+                  value: Object.fromEntries(
+                    selected.map((candidate) => [candidate, true] as const),
+                  ),
                 });
               }}
             />
@@ -269,7 +271,8 @@ function encodeChoiceValue(value: string | number | boolean | null): string {
 function formatAuthoringNodeValue(
   model: AuthoringChoiceNode | AuthoringScalarNode | AuthoringSetNode,
 ): string {
-  if (model.kind === 'set') return model.selected.length > 0 ? model.selected.join(', ') : 'Not set';
+  if (model.kind === 'set')
+    return model.selected.length > 0 ? model.selected.join(', ') : 'Not set';
   if (model.value === undefined) return 'Not set';
   if (model.value === null) return 'null';
   return String(model.value);
