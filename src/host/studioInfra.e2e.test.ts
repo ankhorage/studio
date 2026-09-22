@@ -52,6 +52,7 @@ infraE2eTest(
         calls.push(`down:${request.projectId}`);
         return Promise.resolve({ environment: 'local', ledger });
       },
+      hasOwnedResourcesAsync: () => Promise.resolve(false),
       destroyAsync: (request) => {
         calls.push(`destroy:${request.projectId}:${request.deletePersistentResources}`);
         return Promise.resolve({ environment: 'local', ledger: null });

@@ -29,6 +29,27 @@ test('deleteProject destroys generated Infra before project file removal', async
   await expectRejects(() => readFile(path.join(rootPath, 'apps', 'demo', 'package.json'), 'utf8'));
 });
 
+test('deleteProject removes a project without Infra teardown when no owned resources exist', async () => {
+  const rootPath = await createWorkspace();
+  await createProject(rootPath, 'demo');
+  let destroyCalled = false;
+  const manager = new ProjectManager(rootPath, {
+    infraLifecycle: createInfraLifecycle({
+      hasOwnedResourcesAsync: () => Promise.resolve(false),
+      destroyAsync: () => {
+        destroyCalled = true;
+        return Promise.resolve({ environment: 'local', ledger: null });
+      },
+    }),
+  });
+
+  const result = await manager.deleteProject('demo');
+
+  expect(result).toEqual({ success: true, infraDestroyed: false, projectFilesDeleted: true });
+  expect(destroyCalled).toBe(false);
+  await expectRejects(() => readFile(path.join(rootPath, 'apps', 'demo', 'package.json'), 'utf8'));
+});
+
 test('deleteProject fails clearly and preserves files when Infra destroy fails', async () => {
   const rootPath = await createWorkspace();
   await createProject(rootPath, 'demo');
@@ -94,6 +115,7 @@ function createInfraLifecycle(
       }),
     outputsAsync: () => Promise.resolve({ environment: 'local', outputs: [] }),
     downAsync: () => Promise.resolve({ environment: 'local', ledger }),
+    hasOwnedResourcesAsync: () => Promise.resolve(true),
     destroyAsync: () => Promise.resolve({ environment: 'local', ledger: null }),
     ...overrides,
   };
