@@ -1,6 +1,7 @@
 import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { createMinimalProjectSource } from '../orchestrator/createMinimalProjectSource';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { assertExpo57GeneratedCapabilityContractAsync } from './assertExpo57GeneratedCapabilityContractAsync';
 import { assertExpo57GeneratedCapabilityNativePrebuildAsync } from './assertExpo57GeneratedCapabilityNativePrebuildAsync';
@@ -8,7 +9,6 @@ import { assertExpo57GeneratedCapabilityOwnerGraphAsync } from './assertExpo57Ge
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
 import { createExpo57CapabilityFixtureManifest } from './createExpo57CapabilityFixtureManifest';
-import { createMinimalProjectSource } from '../orchestrator/createMinimalProjectSource';
 import { createStaticExportServer } from './createStaticExportServer';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
 import { reserveTcpPortAsync } from './reserveTcpPortAsync';

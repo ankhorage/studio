@@ -29,7 +29,9 @@ test('project creation rejects duplicate and reserved IDs before mutation', asyn
   expect(await stat(path.join(created.path, 'eas.json'))).toBeDefined();
   expect(await stat(path.join(created.path, 'metro.config.js'))).toBeDefined();
 
-  const duplicateError = await catchError(manager.createProject('Foo', createMinimalProjectSource()));
+  const duplicateError = await catchError(
+    manager.createProject('Foo', createMinimalProjectSource()),
+  );
   expect(duplicateError).toBeInstanceOf(ProjectCreationValidationError);
 
   const manifest = JSON.parse(

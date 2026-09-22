@@ -3,7 +3,9 @@
  * @todo Move concrete runtime-sync HTTP access behind the owning runtime/application edge instead of a direct src/ API file.
  */
 export async function syncProjectRuntime(projectId: string, apiBase?: string): Promise<void> {
-  const resolvedApiBase = apiBase ?? (await import('./features/host-connection/adapters/outbound/studioApiBase')).API_BASE;
+  const resolvedApiBase =
+    apiBase ??
+    (await import('./features/host-connection/adapters/outbound/studioApiBase')).API_BASE;
   const encodedProjectId = encodeURIComponent(projectId);
   const response = await fetch(`${resolvedApiBase}/projects/${encodedProjectId}/runtime/sync`, {
     method: 'POST',

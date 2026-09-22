@@ -9,8 +9,8 @@ import type { AppManifest } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
-import { ProjectManager } from './orchestrator/projectManager';
 import { createMinimalProjectSource } from './orchestrator/createMinimalProjectSource';
+import { ProjectManager } from './orchestrator/projectManager';
 
 const execFile = promisify(execFileCallback);
 const PROJECT_NAME = 'Generated Auth Runtime';

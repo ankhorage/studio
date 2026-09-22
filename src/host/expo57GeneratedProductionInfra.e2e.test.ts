@@ -3,8 +3,8 @@ import path from 'node:path';
 
 import { expect, test } from 'bun:test';
 
-import { ProjectManager } from './orchestrator/projectManager';
 import { createMinimalProjectSource } from './orchestrator/createMinimalProjectSource';
+import { ProjectManager } from './orchestrator/projectManager';
 
 const COMMAND_TIMEOUT_MS = 1_800_000;
 const productionInfraTest = process.env.ANKH_STUDIO_EXPO57_INFRA_E2E === '1' ? test : test.skip;

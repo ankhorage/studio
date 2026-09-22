@@ -10,8 +10,8 @@ import {
 import React, { useMemo } from 'react';
 import { Text } from 'react-native';
 
-import { API_BASE } from '../features/host-connection/adapters/outbound/studioApiBase';
 import { useStudio } from '../core/StudioContext';
+import { API_BASE } from '../features/host-connection/adapters/outbound/studioApiBase';
 import { createStudioMediaAssetResolver } from '../runtime/studioMediaResolver';
 
 export interface AnkhStudioProps {

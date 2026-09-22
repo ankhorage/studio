@@ -4,12 +4,12 @@ import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/
 import path from 'node:path';
 
 import { startStudioHostServer } from '../http/server';
+import { createMinimalProjectSource } from '../orchestrator/createMinimalProjectSource';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { assertInstalledRegistryPackageAsync } from './assertInstalledRegistryPackageAsync';
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
 import { createExpo57NavigationFixtureManifest } from './createExpo57NavigationFixtureManifest';
-import { createMinimalProjectSource } from '../orchestrator/createMinimalProjectSource';
 import { createStaticExportServer } from './createStaticExportServer';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
 import { reserveTcpPortAsync } from './reserveTcpPortAsync';
@@ -322,9 +322,12 @@ async function createProjectAsync(
     readonly rootNavigator?: 'drawer' | 'tabs';
   },
 ): Promise<NavigationProject> {
-  const created = await manager.createProject(options.name, createMinimalProjectSource(), undefined, {
-    includeStudio: options.includeStudio,
-  });
+  const created = await manager.createProject(
+    options.name,
+    createMinimalProjectSource(),
+    undefined,
+    { includeStudio: options.includeStudio },
+  );
   const baseManifest = await manager.getProjectManifest(created.id);
   const manifest = createExpo57NavigationFixtureManifest(baseManifest, {
     auth: options.auth,

@@ -1,12 +1,12 @@
 import type { MediaAsset, MediaAssetSource } from '@ankhorage/contracts';
 import { setOptionalQueryParam } from '@ankhorage/utility/url';
 
+import { API_BASE } from '../features/host-connection/adapters/outbound/studioApiBase';
 import type {
   StudioMediaIngestResult,
   StudioMediaIngestTarget,
   StudioMediaPickerSelection,
 } from '../mediaPickerAuthoring';
-import { API_BASE } from '../features/host-connection/adapters/outbound/studioApiBase';
 import type { StudioMediaSourceCleanupResult } from './mediaRemovalCoordinator';
 
 interface IngestStudioMediaSelectionArgs {

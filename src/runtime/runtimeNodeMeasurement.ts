@@ -3,10 +3,7 @@ import {
   measureNativeElement,
   type NativeElementLike,
 } from '../features/selection/adapters/nativeElementMeasurement.js';
-import type {
-  MeasuredRect,
-  RuntimeNodeIndicatorRect,
-} from '../types/runtime-node-measurement.js';
+import type { MeasuredRect, RuntimeNodeIndicatorRect } from '../types/runtime-node-measurement.js';
 
 type RuntimeNodeMeasurementSource = 'authored-root' | 'runtime-recorder';
 

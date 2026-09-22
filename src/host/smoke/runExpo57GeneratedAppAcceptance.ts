@@ -4,9 +4,9 @@ import path from 'node:path';
 
 import type { AppManifest, ScreenSpec } from '@ankhorage/contracts';
 
+import { createMinimalProjectSource } from '../orchestrator/createMinimalProjectSource';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { assertReactNativeOwnerGraphAsync } from './assertReactNativeOwnerGraphAsync';
-import { createMinimalProjectSource } from '../orchestrator/createMinimalProjectSource';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
