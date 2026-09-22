@@ -14,6 +14,12 @@ export interface CreateProjectResponse {
   path: string;
 }
 
+export interface DeleteProjectResponse {
+  success: boolean;
+  infraDestroyed: boolean;
+  projectFilesDeleted: boolean;
+}
+
 export interface ConnectProjectRepositoryResponse {
   status: 'already-connected' | 'connected';
   repository: {
@@ -115,6 +121,24 @@ async function requestProjects(): Promise<StudioProjectSummary[]> {
   const response = await fetch(`${studioApiBase}/projects`);
   if (!response.ok) throw new Error('Failed to fetch projects');
   return parseProjectList(await readJson(response));
+}
+
+/*** Parse one successful project-delete response from the Studio host. */
+function parseDeleteProjectResponse(value: unknown): DeleteProjectResponse {
+  if (
+    !isRecord(value) ||
+    value.success !== true ||
+    typeof value.infraDestroyed !== 'boolean' ||
+    value.projectFilesDeleted !== true
+  ) {
+    throw new Error('Delete project response was invalid');
+  }
+
+  return {
+    success: true,
+    infraDestroyed: value.infraDestroyed,
+    projectFilesDeleted: true,
+  };
 }
 
 function parseCreateProjectResponse(value: unknown): CreateProjectResponse {
@@ -289,11 +313,12 @@ export function useProjects() {
     return await requestCreateProject(input);
   }, []);
 
-  const deleteProject = useCallback(async (projectId: string) => {
-    const response = await fetch(`${studioApiBase}/projects/${encodeURIComponent(projectId)}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) throw new Error(`Project deletion failed with ${response.status}`);
+  const deleteProject = useCallback(async (projectId: string): Promise<DeleteProjectResponse> => {
+    return await requestProjectAction(
+      `/projects/${encodeURIComponent(projectId)}`,
+      { method: 'DELETE' },
+      parseDeleteProjectResponse,
+    );
   }, []);
 
   const connectProjectRepository = useCallback(
