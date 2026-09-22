@@ -175,9 +175,7 @@ test('delegates owner-requested custom controls while retaining the central Fiel
   const click = custom?.props.onClick;
   if (typeof click !== 'function') throw new Error('Missing custom editor handler.');
   Reflect.apply(click, undefined, []);
-  expect(mutations).toEqual([
-    { kind: 'set', path: ['source'], value: { mediaId: 'replacement' } },
-  ]);
+  expect(mutations).toEqual([{ kind: 'set', path: ['source'], value: { mediaId: 'replacement' } }]);
 });
 
 function booleanModel(value: unknown, readOnly = false): AuthoringNode {
