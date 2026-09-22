@@ -3,11 +3,10 @@ import { readEnvString } from '@ankhorage/utility/node/env';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
-import { resolveStudioApiBase } from './apiBase';
+import { resolveStudioApiBase } from './resolveStudioApiBase';
 
 /***
  * Resolve the Studio API base URL from explicit environment, Expo host, and platform inputs.
- * @todo Move Expo/React Native environment composition out of core into the package's platform/app edge.
  */
 const getApiBase = (): string => {
   return resolveStudioApiBase({

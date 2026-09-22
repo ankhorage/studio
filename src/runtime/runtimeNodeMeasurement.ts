@@ -3,18 +3,10 @@ import {
   measureNativeElement,
   type NativeElementLike,
 } from '../features/selection/adapters/nativeElementMeasurement.js';
-
-export interface MeasuredRect {
-  readonly x: number;
-  readonly y: number;
-  readonly width: number;
-  readonly height: number;
-}
-
-export interface RuntimeNodeIndicatorRect extends MeasuredRect {
-  readonly nodeId: string;
-  readonly showUnsupportedIndicator: boolean;
-}
+import type {
+  MeasuredRect,
+  RuntimeNodeIndicatorRect,
+} from '../types/runtime-node-measurement.js';
 
 type RuntimeNodeMeasurementSource = 'authored-root' | 'runtime-recorder';
 

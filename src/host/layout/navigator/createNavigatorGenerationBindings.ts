@@ -4,7 +4,7 @@ import type {
   NavigatorScreenModule,
 } from '@ankhorage/contracts/navigator';
 
-import type { GeneratedFile } from '../layoutGenerator';
+import type { GeneratedFile } from '../../../types/generated-files';
 import { escapeStringLiteral } from '../utils/escapeStringLiteral';
 
 const GUARD_BINDINGS_MODULE = '@/generated/navigatorGuardBindings';

@@ -1,4 +1,4 @@
-import { API_BASE } from '../../../core/constants';
+import { API_BASE } from '../../host-connection/adapters/outbound/studioApiBase';
 import { createProjectUpdateHostHttpAdapter } from '../adapters/outbound/createProjectUpdateHostHttpAdapter';
 import { ProjectUpdateDashboardService } from '../application/ProjectUpdateDashboardService';
 

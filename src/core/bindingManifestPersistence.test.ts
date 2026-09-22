@@ -1,9 +1,9 @@
 import type { ComponentDataBindingRegistry } from '@ankhorage/contracts';
 import { describe, expect, test } from 'bun:test';
 
-import { updateStudioManifestDraftDataBindings } from './core/studioManifestDraftModel';
-import type { StudioManifest } from './index';
-import { createStudioManifestSignature } from './manifestSync';
+import { updateStudioManifestDraftDataBindings } from './studioManifestDraftModel';
+import type { StudioManifest } from '../index';
+import { createStudioManifestSignature } from '../manifestSync';
 
 function createManifest(): StudioManifest {
   return {

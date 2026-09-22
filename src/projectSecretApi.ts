@@ -277,7 +277,7 @@ async function requestJson(
   init?: RequestInit,
   allowStructuredFailure = false,
 ): Promise<unknown> {
-  const { API_BASE } = await import('./core/constants');
+  const { API_BASE } = await import('./features/host-connection/adapters/outbound/studioApiBase');
   const response = await fetch(`${API_BASE}${path}`, init);
   const value = await readJson(response);
 

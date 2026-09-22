@@ -1,6 +1,6 @@
 import type { DataContractValue, DataSourceDiagnostic } from '@ankhorage/contracts/data';
 
-import { API_BASE } from './core/constants';
+import { API_BASE } from './features/host-connection/adapters/outbound/studioApiBase';
 import type {
   ExternalApiConnectRequest,
   ExternalApiConnectResult,

@@ -4,7 +4,7 @@ import path from 'node:path';
 import { expect, test } from 'bun:test';
 
 import { ProjectManager } from './orchestrator/projectManager';
-import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';
+import { createMinimalProjectSource } from './orchestrator/createMinimalProjectSource';
 
 const COMMAND_TIMEOUT_MS = 1_800_000;
 const productionInfraTest = process.env.ANKH_STUDIO_EXPO57_INFRA_E2E === '1' ? test : test.skip;
@@ -29,7 +29,7 @@ productionInfraTest(
       );
       const created = await manager.createProject(
         'Expo 57 Production Infra',
-        createSmokeProjectSource(),
+        createMinimalProjectSource(),
         undefined,
         { includeStudio: false },
       );

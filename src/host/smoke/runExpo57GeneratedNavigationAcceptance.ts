@@ -9,7 +9,7 @@ import { assertInstalledRegistryPackageAsync } from './assertInstalledRegistryPa
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
 import { createExpo57NavigationFixtureManifest } from './createExpo57NavigationFixtureManifest';
-import { createSmokeProjectSource } from './createSmokeProjectSource';
+import { createMinimalProjectSource } from '../orchestrator/createMinimalProjectSource';
 import { createStaticExportServer } from './createStaticExportServer';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
 import { reserveTcpPortAsync } from './reserveTcpPortAsync';
@@ -322,7 +322,7 @@ async function createProjectAsync(
     readonly rootNavigator?: 'drawer' | 'tabs';
   },
 ): Promise<NavigationProject> {
-  const created = await manager.createProject(options.name, createSmokeProjectSource(), undefined, {
+  const created = await manager.createProject(options.name, createMinimalProjectSource(), undefined, {
     includeStudio: options.includeStudio,
   });
   const baseManifest = await manager.getProjectManifest(created.id);

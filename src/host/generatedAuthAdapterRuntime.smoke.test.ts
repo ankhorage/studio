@@ -10,7 +10,7 @@ import { expect, test } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
-import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';
+import { createMinimalProjectSource } from './orchestrator/createMinimalProjectSource';
 
 const execFile = promisify(execFileCallback);
 const PROJECT_NAME = 'Generated Auth Runtime';
@@ -146,7 +146,7 @@ async function createGeneratedProject(): Promise<{ workspaceRoot: string; projec
   const moduleManager = new ModuleManager(workspaceRoot);
   const created = await projectManager.createProject(
     PROJECT_NAME,
-    createSmokeProjectSource(),
+    createMinimalProjectSource(),
     undefined,
     { includeStudio: false },
   );

@@ -4,7 +4,7 @@ import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig';
 import { createAuth5NativeOAuthSmokeManifest } from './createAuth5NativeOAuthSmokeManifest';
-import { createSmokeProjectSource } from './createSmokeProjectSource';
+import { createMinimalProjectSource } from '../orchestrator/createMinimalProjectSource';
 import { prepareAuth5NativeOAuthSmokeWorkspace } from './prepareAuth5NativeOAuthSmokeWorkspace';
 
 export interface Auth5NativeOAuthSmokeFixture {
@@ -26,7 +26,7 @@ export async function createAuth5NativeOAuthSmokeFixture(
   const moduleManager = new ModuleManager(workspaceRoot);
   const created = await projectManager.createProject(
     AUTH5_NATIVE_OAUTH_SMOKE.projectName,
-    createSmokeProjectSource(),
+    createMinimalProjectSource(),
     undefined,
     { includeStudio: false },
   );

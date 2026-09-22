@@ -9,6 +9,7 @@ import { generateWorkspaceLayout } from '@ankhorage/navigator';
 import path from 'path';
 
 import type { StudioAdminRouteId } from '../../index';
+import type { GeneratedFile } from '../../types/generated-files';
 import {
   getStudioAdminRouteDefinition,
   STUDIO_ADMIN_ROUTE_REGISTRY,
@@ -42,11 +43,6 @@ import {
   type RootNavigationContent,
 } from './templates';
 import { routeNameToHref } from './templates/utils/routes';
-
-export interface GeneratedFile {
-  path: string;
-  content: string;
-}
 
 export interface GeneratedAppFileGenerationOptions {
   includeStudio?: boolean;

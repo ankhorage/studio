@@ -2,7 +2,7 @@ import type { AppCategory, AppManifest, ThemeConfig } from '@ankhorage/contracts
 import { useCallback, useEffect, useState } from 'react';
 
 import { isAppCategory, isColorHarmony } from '../contractGuards';
-import { API_BASE } from '../core/constants';
+import { API_BASE } from '../features/host-connection/adapters/outbound/studioApiBase';
 import type {
   ProjectCreationValidationFailure,
   StudioProjectSummary,

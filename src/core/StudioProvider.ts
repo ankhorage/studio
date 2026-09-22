@@ -64,7 +64,7 @@ import {
   resolveStudioSelectionParentNodeId,
 } from '../studioSelectionModel';
 import { AuthAdminSessionProvider } from '../ui/admin/AuthAdminSession';
-import { API_BASE } from './constants';
+import { API_BASE } from '../features/host-connection/adapters/outbound/studioApiBase';
 import { cleanupStudioMediaSource, ingestStudioMediaSelection } from './mediaAuthoringHostClient';
 import { commitStudioMediaRemoval } from './mediaRemovalCoordinator';
 import { StudioContext } from './StudioContext';

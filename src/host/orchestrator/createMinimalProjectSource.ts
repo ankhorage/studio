@@ -1,13 +1,10 @@
 import type { AppCategory } from '@ankhorage/contracts';
 import { composeCategoryAppManifest } from '@ankhorage/templates';
 
-import type { ProjectCreationSource } from '../orchestrator/projectCreationSource';
+import type { ProjectCreationSource } from './projectCreationSource';
 
-/***
- * Create one minimal project source for host/smoke scenarios that do not exercise template catalog content.
- * @todo Move this acceptance-fixture builder from production src/host/smoke to test/smoke.
- */
-export function createSmokeProjectSource(
+/*** Create one minimal deterministic project source for host acceptance scenarios that do not exercise template catalog content. */
+export function createMinimalProjectSource(
   category: AppCategory = 'developer_tools',
 ): ProjectCreationSource {
   const { manifest } = composeCategoryAppManifest({
