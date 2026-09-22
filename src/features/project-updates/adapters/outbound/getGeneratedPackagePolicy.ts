@@ -58,10 +58,7 @@ function createGeneratedPackagePolicy(input: {
   return {
     ownerVersion: input.ownerVersion,
     packageManager: input.packageManager,
-    dependencies: readGeneratedRuntimeDependencies(
-      input.dependencies,
-      input.studioDependencyRange,
-    ),
+    dependencies: readGeneratedRuntimeDependencies(input.dependencies, input.studioDependencyRange),
     devDependencies: {
       ankh: readRequiredString(input.devDependencies, '@ankhorage/ankh', 'Studio'),
       devtools: readRequiredString(input.devDependencies, '@ankhorage/devtools', 'Studio'),
@@ -103,11 +100,7 @@ function readGeneratedStudioDependencyRange(ownerVersion: string): string {
     STUDIO_SELF_CONSUMER_PACKAGE_JSON_URL,
     'Studio self-consumer',
   );
-  const dependencies = readRequiredSection(
-    selfConsumer,
-    'dependencies',
-    'Studio self-consumer',
-  );
+  const dependencies = readRequiredSection(selfConsumer, 'dependencies', 'Studio self-consumer');
   return readRequiredString(dependencies, '@ankhorage/studio', 'Studio self-consumer');
 }
 
