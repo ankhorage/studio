@@ -201,7 +201,8 @@
     "test:apm": "bun test src/features/project-updates/adapters/inbound/studioUpdateExtension.test.ts",
     "check-types": "tsc --noEmit -p tsconfig.json",
     "test:apm:consumer": "node scripts/apm-owner-consumer.ts",
-    "test:e2e:fresh-template-infra": "ANKH_STUDIO_FRESH_TEMPLATE_INFRA_E2E=1 bun test src/host/freshTemplateInfra.e2e.test.ts"
+    "test:e2e:fresh-template-infra": "ANKH_STUDIO_FRESH_TEMPLATE_INFRA_E2E=1 bun test src/host/freshTemplateInfra.e2e.test.ts",
+    "test:acceptance:expo57-social-template-web": "bun scripts/expo57-social-template-web-acceptance.ts"
   },
   "keywords": [
     "ankhorage",
