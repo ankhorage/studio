@@ -4,8 +4,8 @@ import React from 'react';
 
 import { useStudio } from '../../../core/StudioContext';
 import {
-  AuthoringEditor,
   type AuthoringCustomControlProps,
+  AuthoringEditor,
 } from '../../../features/authoring-engine/adapters/inbound/AuthoringEditor';
 import { resolveInstancePropertyAuthoring } from '../../../features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring';
 import { deriveAuthoringModel } from '../../../features/authoring-engine/application/use-cases/deriveAuthoringModel';
