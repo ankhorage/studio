@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 3.3.3
+
+### Patch Changes
+
+- dab3bd0: Update Ankhorage dependencies: `@ankhorage/templates`, `@ankhorage/zora-game`, `@ankhorage/zora-tabletop`, `@ankhorage/zora`.
+
 ## 3.3.2
 
 ### Patch Changes
