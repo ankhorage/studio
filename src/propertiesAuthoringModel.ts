@@ -1,8 +1,4 @@
-import type {
-  MediaAssetKind,
-  MediaAssetReference,
-  UiNode,
-} from '@ankhorage/contracts';
+import type { MediaAssetKind, MediaAssetReference, UiNode } from '@ankhorage/contracts';
 import { withoutOwnProperty, withOwnProperty } from '@ankhorage/utility/object';
 
 export interface StudioAuthoringPropSchema {
