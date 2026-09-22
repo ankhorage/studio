@@ -197,7 +197,7 @@ function readSetValue(
     };
   }
 
-  const values = member.values;
+  const { values } = member;
   if (value === undefined && optional) return { ok: true, values, selected: [] };
   if (!isRecord(value)) {
     return {
