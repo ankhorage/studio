@@ -8,6 +8,7 @@ import type {
   AuthOAuthSetupCallbackRequirement,
   AuthOAuthSetupFieldRequirement,
 } from '@ankhorage/contracts/auth';
+import { STRUCTURE_DESCRIPTOR } from '@ankhorage/contracts/structure';
 import {
   getSupabaseOAuthProviderDefinition,
   SUPABASE_OAUTH_PROVIDER_IDS,
@@ -28,6 +29,10 @@ import {
 
 import { readStudioAuthSettings, type StudioAuthSettings } from '../../../authSettings';
 import { useStudio } from '../../../core/StudioContext';
+import { AuthoringEditor } from '../../../features/authoring-engine/adapters/inbound/AuthoringEditor';
+import { resolveContractsAuthoringStructure } from '../../../features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure';
+import { applyAuthoringMutation } from '../../../features/authoring-engine/application/use-cases/applyAuthoringMutation';
+import { deriveAuthoringModel } from '../../../features/authoring-engine/application/use-cases/deriveAuthoringModel';
 import type { StudioAdminRouteId } from '../../../index';
 import type { ProjectAuthHealth } from '../../../projectAuthHealth';
 import { getProjectAuthHealth, ProjectAuthApiError } from '../../../projectAuthApi';
@@ -58,6 +63,11 @@ const PROFILE_FIELDS = [
   'displayName',
   'avatarUrl',
 ] as const;
+
+const AUTH_FLOW_AUTHORING_STRUCTURE = resolveContractsAuthoringStructure(
+  STRUCTURE_DESCRIPTOR,
+  'auth-flow',
+);
 
 export interface AuthAdminPageProps {
   readonly projectId: string;
@@ -392,35 +402,24 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
 
       {showRoutes ? (
         <Card title="Routes">
-          <RouteField
-            label="Sign-in route"
-            value={draft.flow.signInRoute}
-            onChange={(signInRoute) => updateFlow(setDraft, { signInRoute })}
-          />
-          <RouteField
-            label="Sign-up route"
-            value={draft.flow.signUpRoute ?? ''}
-            onChange={(signUpRoute) => updateFlow(setDraft, { signUpRoute })}
-          />
-          <RouteField
-            label="Sign-out route"
-            value={draft.flow.signOutRoute ?? ''}
-            onChange={(signOutRoute) => updateFlow(setDraft, { signOutRoute })}
-          />
-          <RouteField
-            label="Post-sign-in route"
-            value={draft.flow.postSignInRoute}
-            onChange={(postSignInRoute) => updateFlow(setDraft, { postSignInRoute })}
-          />
-          <RouteField
-            label="Unauthorized route"
-            value={draft.flow.unauthorizedRoute ?? ''}
-            onChange={(unauthorizedRoute) => updateFlow(setDraft, { unauthorizedRoute })}
-          />
-          <RouteField
-            label="Forgot-password route"
-            value={draft.flow.forgotPasswordRoute ?? ''}
-            onChange={(forgotPasswordRoute) => updateFlow(setDraft, { forgotPasswordRoute })}
+          <AuthoringEditor
+            model={deriveAuthoringModel({
+              structure: AUTH_FLOW_AUTHORING_STRUCTURE.ok
+                ? AUTH_FLOW_AUTHORING_STRUCTURE.structure
+                : {
+                    kind: 'unsupported',
+                    sourceKind: 'auth-flow',
+                    diagnostic: AUTH_FLOW_AUTHORING_STRUCTURE.diagnostic,
+                  },
+              value: draft.flow,
+              label: 'Routes',
+            })}
+            onMutation={(mutation) =>
+              setDraft((current) => {
+                const result = applyAuthoringMutation(current.flow, mutation);
+                return result.ok ? { ...current, flow: result.value } : current;
+              })
+            }
           />
           <Field label="OAuth callback route">
             <Input
@@ -879,14 +878,6 @@ function upsertProvider(
   );
 }
 
-/*** Merge a partial auth-flow patch into the current React auth draft. */
-function updateFlow(
-  setDraft: React.Dispatch<React.SetStateAction<StudioAuthSettings>>,
-  patch: Partial<StudioAuthSettings['flow']>,
-) {
-  setDraft((current) => ({ ...current, flow: { ...current.flow, ...patch } }));
-}
-
 /***
  * Return an immutable object copy without its `signUp` property; parameterized key omission is reusable.
  * @utility @ankhorage/utility/object
@@ -1130,19 +1121,6 @@ function Field(props: { readonly label: string; readonly children: React.ReactNo
       </Text>
       {props.children}
     </View>
-  );
-}
-
-/*** Render one route text field using the auth page's local field/input primitives. */
-function RouteField(props: {
-  readonly label: string;
-  readonly value: string;
-  readonly onChange: (value: string) => void;
-}) {
-  return (
-    <Field label={props.label}>
-      <Input value={props.value} autoCapitalize="none" onChangeText={props.onChange} />
-    </Field>
   );
 }
 
