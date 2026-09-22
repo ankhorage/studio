@@ -239,13 +239,13 @@
     "@ankhorage/utility": "^1.5.0",
     "@ankhorage/zora": "^21.0.13",
     "@ankhorage/zora-chess": "^0.2.2",
-    "@ankhorage/zora-tabletop": "^0.1.40",
+    "@ankhorage/zora-tabletop": "^0.1.41",
     "@fastify/cors": "^11.3.0",
     "expo-document-picker": "~57.0.2",
     "expo-file-system": "~57.0.7",
     "expo-image-picker": "~57.0.18",
     "fastify": "^5.12.5",
-    "@ankhorage/zora-game": "^0.8.41"
+    "@ankhorage/zora-game": "^0.8.42"
   },
   "peerDependencies": {
     "@react-native-vector-icons/fontawesome": "^13.1.3",
