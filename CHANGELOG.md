@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.0.1
+
+### Patch Changes
+
+- 3c26454: Update Ankhorage dependencies: `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/expo-runtime`, `@ankhorage/minikube`, `@ankhorage/repository`, `@ankhorage/runtime`, `@ankhorage/supabase-auth`, `@ankhorage/supabase-storage`, `@ankhorage/zora`.
+
 ## 5.0.0
 
 ### Major Changes
