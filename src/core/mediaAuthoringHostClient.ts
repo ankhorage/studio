@@ -6,7 +6,7 @@ import type {
   StudioMediaIngestTarget,
   StudioMediaPickerSelection,
 } from '../mediaPickerAuthoring';
-import { API_BASE } from './constants';
+import { API_BASE } from '../features/host-connection/adapters/outbound/studioApiBase';
 import type { StudioMediaSourceCleanupResult } from './mediaRemovalCoordinator';
 
 interface IngestStudioMediaSelectionArgs {
