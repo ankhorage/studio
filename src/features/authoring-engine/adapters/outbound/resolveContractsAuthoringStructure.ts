@@ -73,6 +73,11 @@ function resolveDescriptor(
         kind: 'set',
         member: resolveDescriptor(descriptor.member, document, visited, [...path, '*']),
       };
+    case 'ordered-list':
+      return {
+        kind: 'ordered-list',
+        item: resolveDescriptor(descriptor.item, document, visited, [...path, '*']),
+      };
     case 'ref':
       return resolveReference(descriptor, document, visited, path);
     default:
