@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v3.3.3",
+      "value": "v4.0.0",
       "color": "cb3837"
     },
     {
@@ -911,6 +911,45 @@
         "ExternalApiRemoveRequest",
         "ManualRestApiRequest",
         "ManualRestApiSettingsRequest"
+      ]
+    },
+    {
+      "path": "src/features/administration/adapters/inbound/StudioAdminAccessGate.tsx",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "StudioAdminAccessGate"
+      ]
+    },
+    {
+      "path": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/core/StudioContext.ts",
+        "src/features/administration/domain/createStudioAdminWorkspaceRoutes.ts",
+        "src/studioAdminRouteModel.ts"
+      ],
+      "exports": [
+        "useStudioAdminWorkspace"
+      ]
+    },
+    {
+      "path": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/administration/domain/createStudioAdminWorkspaceRoutes.ts",
+        "src/studioAdminRouteModel.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/studioAdminRouteModel.ts"
+      ],
+      "exports": [
+        "createStudioAdminWorkspaceRoutes"
       ]
     },
     {
@@ -4787,7 +4826,6 @@
         "ActionDefinition",
         "analyzeProjectAuthHealth",
         "AnkhAdminPage",
-        "AnkhAdminShell",
         "AnkhStudio",
         "appendStudioEventBinding",
         "assertMetadataOnlyResponse",
@@ -4878,6 +4916,7 @@
         "StudioActionPayloadField",
         "StudioActionPayloadPrimitive",
         "StudioActionPayloadSchema",
+        "StudioAdminAccessGate",
         "StudioAdminRouteId",
         "StudioAdminRoutePath",
         "StudioAdminStaticRoutePath",
@@ -4947,6 +4986,7 @@
         "upsertStudioMediaAsset",
         "upsertStudioPropBinding",
         "useStudio",
+        "useStudioAdminWorkspace",
         "useStudioAppBarAugmentation",
         "validateInsertRecipe",
         "validateNodePlacement",
@@ -5339,9 +5379,7 @@
         "createStudioThemeRecipeRoutePath",
         "getStudioAdminRouteDefinition",
         "isStudioAdminPath",
-        "isStudioAdminRouteActive",
         "isStudioAdminRouteAvailable",
-        "openStudioAdminRoute",
         "resolveStudioAdminActiveRouteId",
         "resolveStudioAdminRouteId",
         "resolveStudioAdminRoutePath",
@@ -5512,25 +5550,6 @@
       "exports": [
         "AnkhAdminPage",
         "AnkhAdminPageProps"
-      ]
-    },
-    {
-      "path": "src/ui/admin/AnkhAdminShell.test.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": []
-    },
-    {
-      "path": "src/ui/admin/AnkhAdminShell.tsx",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/core/StudioContext.ts",
-        "src/index.ts",
-        "src/studioAdminRouteModel.ts"
-      ],
-      "exports": [
-        "AnkhAdminShell",
-        "AnkhAdminShellProps"
       ]
     },
     {
@@ -14436,6 +14455,33 @@
       }
     },
     {
+      "name": "StudioAdminAccessGate",
+      "description": "Restrict the generated authoring workspace to development builds.",
+      "sourceLocation": {
+        "filePath": "src/features/administration/adapters/inbound/StudioAdminAccessGate.tsx",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "useStudioAdminWorkspace",
+      "description": "Bind Studio-owned authoring context and route semantics to Navigator's workspace runtime.",
+      "sourceLocation": {
+        "filePath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioAdminWorkspaceRoutes",
+      "description": "Project the canonical Studio admin routes into Navigator destinations for the current context.",
+      "sourceLocation": {
+        "filePath": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.ts",
+        "line": 10,
+        "column": 1
+      }
+    },
+    {
       "name": "booleanModel",
       "description": null,
       "sourceLocation": {
@@ -17248,7 +17294,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 207,
+        "line": 208,
         "column": 1
       }
     },
@@ -17257,7 +17303,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 451,
+        "line": 452,
         "column": 9
       }
     },
@@ -17266,7 +17312,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 868,
+        "line": 870,
+        "column": 1
+      }
+    },
+    {
+      "name": "verifyWorkspaceReturnToApp",
+      "description": "Preserve the last app route while navigating through multiple administration destinations.",
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1050,
         "column": 1
       }
     },
@@ -17275,7 +17330,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1106,
+        "line": 1155,
         "column": 1
       }
     },
@@ -17284,7 +17339,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1334,
+        "line": 1383,
         "column": 1
       }
     },
@@ -17293,7 +17348,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1361,
+        "line": 1410,
         "column": 1
       }
     },
@@ -17302,7 +17357,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1380,
+        "line": 1429,
         "column": 1
       }
     },
@@ -17311,7 +17366,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1400,
+        "line": 1449,
         "column": 1
       }
     },
@@ -17320,7 +17375,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1419,
+        "line": 1468,
         "column": 1
       }
     },
@@ -17329,7 +17384,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1440,
+        "line": 1489,
         "column": 1
       }
     },
@@ -17338,7 +17393,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1444,
+        "line": 1493,
         "column": 1
       }
     },
@@ -17347,7 +17402,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1464,
+        "line": 1513,
         "column": 1
       }
     },
@@ -17356,7 +17411,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1485,
+        "line": 1534,
         "column": 1
       }
     },
@@ -17365,7 +17420,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1507,
+        "line": 1556,
         "column": 1
       }
     },
@@ -17374,7 +17429,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1546,
+        "line": 1595,
         "column": 1
       }
     },
@@ -17383,7 +17438,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1560,
+        "line": 1609,
         "column": 1
       }
     },
@@ -17392,7 +17447,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1589,
+        "line": 1638,
         "column": 1
       }
     },
@@ -17401,7 +17456,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1596,
+        "line": 1645,
         "column": 1
       }
     },
@@ -17410,7 +17465,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1603,
+        "line": 1652,
         "column": 1
       }
     },
@@ -17419,7 +17474,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1612,
+        "line": 1661,
         "column": 1
       }
     },
@@ -17428,7 +17483,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1637,
+        "line": 1686,
         "column": 1
       }
     },
@@ -17437,7 +17492,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1644,
+        "line": 1693,
         "column": 1
       }
     },
@@ -17446,7 +17501,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1676,
+        "line": 1725,
         "column": 1
       }
     },
@@ -17455,7 +17510,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1710,
+        "line": 1763,
         "column": 1
       }
     },
@@ -17464,7 +17519,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1739,
+        "line": 1792,
         "column": 1
       }
     },
@@ -17473,7 +17528,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2017,
+        "line": 2070,
         "column": 1
       }
     },
@@ -17482,7 +17537,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2040,
+        "line": 2094,
         "column": 1
       }
     },
@@ -17491,7 +17546,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2057,
+        "line": 2111,
         "column": 1
       }
     },
@@ -17500,7 +17555,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2073,
+        "line": 2127,
         "column": 1
       }
     },
@@ -17509,7 +17564,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2095,
+        "line": 2149,
         "column": 1
       }
     },
@@ -17518,7 +17573,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2124,
+        "line": 2178,
         "column": 1
       }
     },
@@ -17527,7 +17582,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2187,
+        "line": 2241,
         "column": 1
       }
     },
@@ -17536,7 +17591,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2251,
+        "line": 2305,
         "column": 1
       }
     },
@@ -17545,7 +17600,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2284,
+        "line": 2338,
         "column": 1
       }
     },
@@ -17554,7 +17609,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2298,
+        "line": 2352,
         "column": 1
       }
     },
@@ -17563,7 +17618,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2307,
+        "line": 2361,
         "column": 1
       }
     },
@@ -17572,7 +17627,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2323,
+        "line": 2377,
         "column": 1
       }
     },
@@ -17581,7 +17636,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2330,
+        "line": 2384,
         "column": 1
       }
     },
@@ -17590,7 +17645,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2336,
+        "line": 2390,
         "column": 1
       }
     },
@@ -17599,7 +17654,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2349,
+        "line": 2403,
         "column": 1
       }
     },
@@ -17608,7 +17663,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2366,
+        "line": 2420,
         "column": 1
       }
     },
@@ -17617,7 +17672,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2383,
+        "line": 2437,
         "column": 1
       }
     },
@@ -17626,7 +17681,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2389,
+        "line": 2443,
         "column": 1
       }
     },
@@ -17635,7 +17690,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2395,
+        "line": 2449,
         "column": 1
       }
     },
@@ -17644,7 +17699,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2411,
+        "line": 2465,
         "column": 1
       }
     },
@@ -17653,7 +17708,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2967,
+        "line": 3021,
         "column": 1
       }
     },
@@ -17662,7 +17717,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2982,
+        "line": 3036,
         "column": 1
       }
     },
@@ -17671,7 +17726,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2986,
+        "line": 3040,
         "column": 1
       }
     },
@@ -17680,7 +17735,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2995,
+        "line": 3049,
         "column": 1
       }
     },
@@ -17689,7 +17744,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 3006,
+        "line": 3060,
         "column": 1
       }
     },
@@ -19174,7 +19229,7 @@
       "description": "Build the generated root-layout imports that bridge Runtime, Expo Runtime and optional Studio authoring ownership.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 58,
+        "line": 59,
         "column": 1
       }
     },
@@ -19183,7 +19238,7 @@
       "description": "Build generated runtime registry declarations for standalone apps or Studio-enabled authoring apps.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 86,
+        "line": 87,
         "column": 1
       }
     },
@@ -19192,7 +19247,7 @@
       "description": "Trim, discard empty and join generated module-level declaration blocks with a blank line.\n@utility @ankhorage/utility/string",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 130,
+        "line": 131,
         "column": 1
       }
     },
@@ -19201,7 +19256,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 166,
+        "line": 167,
         "column": 11
       }
     },
@@ -19210,17 +19265,8 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 178,
+        "line": 190,
         "column": 11
-      }
-    },
-    {
-      "name": "getStudioAdminLayoutTsx",
-      "description": "Generate the Studio Admin route-group layout, redirecting when generated global auth is unavailable and guarding production builds from the development Admin shell.",
-      "sourceLocation": {
-        "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 591,
-        "column": 1
       }
     },
     {
@@ -19228,7 +19274,7 @@
       "description": "Generate the complete Studio Admin route file set from the canonical Admin route registry.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 617,
+        "line": 603,
         "column": 1
       }
     },
@@ -19237,7 +19283,7 @@
       "description": "Resolve a canonical Studio Admin route definition to its generated Expo Router file path, preserving parent routes as index modules and dynamic parameters as bracket segments.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 627,
+        "line": 613,
         "column": 1
       }
     },
@@ -19246,7 +19292,7 @@
       "description": "Generate one Studio Admin Expo Router module that development-gates and renders the requested Admin route.",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 648,
+        "line": 634,
         "column": 1
       }
     },
@@ -19255,7 +19301,7 @@
       "description": "Normalize a relative filesystem path to forward-slash separators for generated project files.\n@utility @ankhorage/utility/path",
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 666,
+        "line": 652,
         "column": 1
       }
     },
@@ -26068,7 +26114,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/root.test.ts",
-        "line": 205,
+        "line": 207,
         "column": 1
       }
     },
@@ -26635,7 +26681,7 @@
       "description": "Resolve a Studio admin-route definition by id and fail when the registry is inconsistent.\n@todo Move the admin-route registry and lookup policy from root `src/` into the `routes/` domain.",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 286,
+        "line": 284,
         "column": 1
       }
     },
@@ -26644,7 +26690,7 @@
       "description": "Resolve a pathname to the matching Studio admin-route id, including contextual detail routes.\n@todo Move Studio admin route matching from root `src/` into the `routes/` domain.",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 301,
+        "line": 299,
         "column": 1
       }
     },
@@ -26653,7 +26699,7 @@
       "description": "Canonicalize a recognized Studio admin pathname to its typed route path.\n@todo Move Studio admin route canonicalization into the `routes/` domain.",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 344,
+        "line": 342,
         "column": 1
       }
     },
@@ -26662,7 +26708,7 @@
       "description": "Resolve the contextual node id from a Studio bindings pathname.",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 376,
+        "line": 374,
         "column": 1
       }
     },
@@ -26671,7 +26717,7 @@
       "description": "Resolve the screen id from a Studio screen-detail pathname.",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 381,
+        "line": 379,
         "column": 1
       }
     },
@@ -26680,7 +26726,7 @@
       "description": "Build a Studio screen-detail pathname from an arbitrary screen id.\n@utility @ankhorage/utility/url",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 389,
+        "line": 387,
         "column": 1
       }
     },
@@ -26689,7 +26735,7 @@
       "description": "Resolve the module id from a Studio module-detail pathname.",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 394,
+        "line": 392,
         "column": 1
       }
     },
@@ -26698,7 +26744,7 @@
       "description": "Build a Studio module-detail pathname from an arbitrary module id.\n@utility @ankhorage/utility/url",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 402,
+        "line": 400,
         "column": 1
       }
     },
@@ -26707,7 +26753,7 @@
       "description": "Resolve a component/pattern theme recipe name from its Studio contextual pathname.",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 407,
+        "line": 405,
         "column": 1
       }
     },
@@ -26716,7 +26762,7 @@
       "description": "Build a Studio component/pattern recipe pathname by URL-encoding the recipe name.\n@utility @ankhorage/utility/url",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 421,
+        "line": 419,
         "column": 1
       }
     },
@@ -26725,7 +26771,7 @@
       "description": "Build a Studio bindings pathname from an arbitrary node id.\n@utility @ankhorage/utility/url",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 435,
+        "line": 433,
         "column": 1
       }
     },
@@ -26734,7 +26780,7 @@
       "description": "Resolve the contextual node id from a Studio properties pathname.",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 440,
+        "line": 438,
         "column": 1
       }
     },
@@ -26743,7 +26789,7 @@
       "description": "Build a Studio properties pathname from an arbitrary node id.\n@utility @ankhorage/utility/url",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 448,
+        "line": 446,
         "column": 1
       }
     },
@@ -26752,7 +26798,7 @@
       "description": "Build the concrete Studio admin route path for a static or contextual admin-route id.\n@todo Move route-construction policy from root `src/` into the `routes/` domain; contextual segment encoding can compose the shared URL primitive.",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 456,
+        "line": 454,
         "column": 1
       }
     },
@@ -26761,7 +26807,7 @@
       "description": "Return whether a contextual Studio admin route has the context needed to open it.\n@todo Keep this availability policy with the Studio `routes/` domain.",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 491,
+        "line": 489,
         "column": 1
       }
     },
@@ -26770,16 +26816,7 @@
       "description": "Resolve the active Studio admin route id, falling back to overview for non-admin/unknown paths.",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 509,
-        "column": 1
-      }
-    },
-    {
-      "name": "isStudioAdminRouteActive",
-      "description": "Return whether a candidate Studio admin route is the current route or an ancestor of it.\n@todo Keep Studio route-hierarchy policy in the `routes/` domain; its generic ancestry traversal can reuse the existing tree Utility primitives if useful.",
-      "sourceLocation": {
-        "filePath": "src/studioAdminRouteModel.ts",
-        "line": 517,
+        "line": 507,
         "column": 1
       }
     },
@@ -26788,16 +26825,7 @@
       "description": "Project pathname + persisted admin-route state into the render state consumed by the Studio shell.\n@todo Move this render-state route policy into the `routes/` application domain.",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 538,
-        "column": 1
-      }
-    },
-    {
-      "name": "openStudioAdminRoute",
-      "description": "Open a Studio admin route by resolving its contextual path, closing the active panel, and delegating navigation.\n@todo Keep this route-opening use case in the `routes/` application domain rather than root `src/`.",
-      "sourceLocation": {
-        "filePath": "src/studioAdminRouteModel.ts",
-        "line": 563,
+        "line": 515,
         "column": 1
       }
     },
@@ -26806,7 +26834,7 @@
       "description": "Return whether a pathname is at or below the Studio admin path prefix.\n@utility @ankhorage/utility/url",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 590,
+        "line": 540,
         "column": 1
       }
     },
@@ -26815,7 +26843,7 @@
       "description": "Preserve the current browser search/hash suffix when a requested pathname equals `location.pathname`.\n@utility @ankhorage/utility/web",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 598,
+        "line": 548,
         "column": 1
       }
     },
@@ -26824,7 +26852,7 @@
       "description": "Resolve the last navigable non-admin location while excluding Studio admin paths.\n@todo Keep this Studio navigation-history policy in the `routes/` application domain; browser location reconstruction can use the shared Web utility.",
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 612,
+        "line": 562,
         "column": 1
       }
     },
@@ -26978,42 +27006,6 @@
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminPage.tsx",
         "line": 111,
-        "column": 1
-      }
-    },
-    {
-      "name": "AnkhAdminShell",
-      "description": "Compose the Studio administration app bar, responsive navigation dialog/sidebar, and routed page content.\n@todo Keep this as package-wide admin UI composition until Navigator owns the complete admin topology.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 30,
-        "column": 1
-      }
-    },
-    {
-      "name": "openRoute",
-      "description": "Open one available Studio admin route, synchronize route selection state, and close compact navigation.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 44,
-        "column": 9
-      }
-    },
-    {
-      "name": "goBackToApp",
-      "description": "Return from administration to the most recently recorded non-admin application location.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 59,
-        "column": 9
-      }
-    },
-    {
-      "name": "AdminNavigation",
-      "description": "Render navigation entries from the Studio admin-route registry using current availability and hierarchy state.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 124,
         "column": 1
       }
     },
@@ -30887,6 +30879,16 @@
       },
       {
         "fromPath": "src/root.ts",
+        "toPath": "src/features/administration/adapters/inbound/StudioAdminAccessGate.tsx",
+        "sourcePath": "src/root.ts"
+      },
+      {
+        "fromPath": "src/root.ts",
+        "toPath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts",
+        "sourcePath": "src/root.ts"
+      },
+      {
+        "fromPath": "src/root.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/root.ts"
       },
@@ -30908,11 +30910,6 @@
       {
         "fromPath": "src/root.ts",
         "toPath": "src/ui/admin/AnkhAdminPage.tsx",
-        "sourcePath": "src/root.ts"
-      },
-      {
-        "fromPath": "src/root.ts",
-        "toPath": "src/ui/admin/AnkhAdminShell.tsx",
         "sourcePath": "src/root.ts"
       },
       {
@@ -33766,21 +33763,6 @@
         "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
       },
       {
-        "fromPath": "src/ui/admin/AnkhAdminShell.tsx",
-        "toPath": "src/core/StudioContext.ts",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/AnkhAdminShell.tsx",
-        "toPath": "src/index.ts",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/AnkhAdminShell.tsx",
-        "toPath": "src/studioAdminRouteModel.ts",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
         "fromPath": "src/ui/admin/AuthAdminSession.tsx",
         "toPath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
         "sourcePath": "src/ui/admin/AuthAdminSession.tsx"
@@ -33864,6 +33846,21 @@
         "fromPath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
         "toPath": "src/ui/canvas/canvasDndInteraction.ts",
         "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromPath": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.test.ts",
+        "toPath": "src/studioAdminRouteModel.ts",
+        "sourcePath": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.test.ts"
+      },
+      {
+        "fromPath": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.test.ts",
+        "toPath": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.ts",
+        "sourcePath": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.test.ts"
+      },
+      {
+        "fromPath": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.ts",
+        "toPath": "src/studioAdminRouteModel.ts",
+        "sourcePath": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.ts"
       },
       {
         "fromPath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
@@ -35244,6 +35241,21 @@
         "fromPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
         "toPath": "src/ui/admin/pages/adminThemeModel.ts",
         "sourcePath": "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      },
+      {
+        "fromPath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts"
+      },
+      {
+        "fromPath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts",
+        "toPath": "src/studioAdminRouteModel.ts",
+        "sourcePath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts"
+      },
+      {
+        "fromPath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts",
+        "toPath": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.ts",
+        "sourcePath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts"
       },
       {
         "fromPath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
@@ -42943,12 +42955,6 @@
       },
       {
         "fromSymbol": "src/studioAdminRouteModel.test.ts",
-        "toSymbol": "isStudioAdminRouteActive",
-        "callExpression": "isStudioAdminRouteActive",
-        "sourcePath": "src/studioAdminRouteModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/studioAdminRouteModel.test.ts",
         "toSymbol": "createStudioModuleRoutePath",
         "callExpression": "createStudioModuleRoutePath",
         "sourcePath": "src/studioAdminRouteModel.test.ts"
@@ -43005,12 +43011,6 @@
         "fromSymbol": "src/studioAdminRouteModel.test.ts",
         "toSymbol": "isStudioAdminRouteAvailable",
         "callExpression": "isStudioAdminRouteAvailable",
-        "sourcePath": "src/studioAdminRouteModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/studioAdminRouteModel.test.ts",
-        "toSymbol": "openStudioAdminRoute",
-        "callExpression": "openStudioAdminRoute",
         "sourcePath": "src/studioAdminRouteModel.test.ts"
       },
       {
@@ -43200,12 +43200,6 @@
         "sourcePath": "src/studioAdminRouteModel.ts"
       },
       {
-        "fromSymbol": "isStudioAdminRouteActive",
-        "toSymbol": "getStudioAdminRouteDefinition",
-        "callExpression": "getStudioAdminRouteDefinition",
-        "sourcePath": "src/studioAdminRouteModel.ts"
-      },
-      {
         "fromSymbol": "createStudioAdminRouteRenderState",
         "toSymbol": "resolveStudioAdminRouteId",
         "callExpression": "resolveStudioAdminRouteId",
@@ -43239,24 +43233,6 @@
         "fromSymbol": "createStudioAdminRouteRenderState",
         "toSymbol": "resolveStudioPropertiesNodeId",
         "callExpression": "resolveStudioPropertiesNodeId",
-        "sourcePath": "src/studioAdminRouteModel.ts"
-      },
-      {
-        "fromSymbol": "openStudioAdminRoute",
-        "toSymbol": "createStudioAdminRoutePath",
-        "callExpression": "createStudioAdminRoutePath",
-        "sourcePath": "src/studioAdminRouteModel.ts"
-      },
-      {
-        "fromSymbol": "openStudioAdminRoute",
-        "toSymbol": "setActivePanelId",
-        "callExpression": "args.setActivePanelId",
-        "sourcePath": "src/studioAdminRouteModel.ts"
-      },
-      {
-        "fromSymbol": "openStudioAdminRoute",
-        "toSymbol": "pushRoute",
-        "callExpression": "args.pushRoute",
         "sourcePath": "src/studioAdminRouteModel.ts"
       },
       {
@@ -45817,6 +45793,12 @@
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "verifyWorkspaceReturnToApp",
+        "callExpression": "verifyWorkspaceReturnToApp",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "close",
         "callExpression": "page.close",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -45987,6 +45969,54 @@
         "fromSymbol": "verifyNestedNutritionSelection",
         "toSymbol": "readRuntimeNodeCenter",
         "callExpression": "page.readRuntimeNodeCenter",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyWorkspaceReturnToApp",
+        "toSymbol": "navigateStudio",
+        "callExpression": "page.navigateStudio",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyWorkspaceReturnToApp",
+        "toSymbol": "waitForBodyText",
+        "callExpression": "waitForBodyText",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyWorkspaceReturnToApp",
+        "toSymbol": "clickAppBarAction",
+        "callExpression": "page.clickAppBarAction",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyWorkspaceReturnToApp",
+        "toSymbol": "evaluate",
+        "callExpression": "page.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyWorkspaceReturnToApp",
+        "toSymbol": "readStudioNavigationDiagnostics",
+        "callExpression": "page.readStudioNavigationDiagnostics",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyWorkspaceReturnToApp",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyWorkspaceReturnToApp",
+        "toSymbol": "expectAppBarActionsHorizontal",
+        "callExpression": "expectAppBarActionsHorizontal",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyWorkspaceReturnToApp",
+        "toSymbol": "readAppBarActionGeometry",
+        "callExpression": "page.readAppBarActionGeometry",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -46323,6 +46353,12 @@
         "fromSymbol": "installGeneratedProjectDependencies",
         "toSymbol": "stageLocalStudioPackage",
         "callExpression": "stageLocalStudioPackage",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "installGeneratedProjectDependencies",
+        "toSymbol": "readEnvString",
+        "callExpression": "readEnvString",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -52627,14 +52663,8 @@
       },
       {
         "fromSymbol": "addStudioAdminRouteFiles",
-        "toSymbol": "normalizeRel",
-        "callExpression": "normalizeRel",
-        "sourcePath": "src/host/layout/layoutGenerator.ts"
-      },
-      {
-        "fromSymbol": "addStudioAdminRouteFiles",
-        "toSymbol": "getStudioAdminLayoutTsx",
-        "callExpression": "getStudioAdminLayoutTsx",
+        "toSymbol": "generateWorkspaceLayout",
+        "callExpression": "generateWorkspaceLayout",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
@@ -61320,138 +61350,6 @@
         "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
       },
       {
-        "fromSymbol": "src/ui/admin/AnkhAdminShell.test.ts",
-        "toSymbol": "readFileSync",
-        "callExpression": "readFileSync",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/admin/AnkhAdminShell.test.ts",
-        "toSymbol": "fileURLToPath",
-        "callExpression": "fileURLToPath",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/admin/AnkhAdminShell.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/admin/AnkhAdminShell.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.test.ts"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "useStudio",
-        "callExpression": "useStudio",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "usePathname",
-        "callExpression": "usePathname",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "useRouter",
-        "callExpression": "useRouter",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "useWindowDimensions",
-        "callExpression": "useWindowDimensions",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "useState",
-        "callExpression": "useState",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "resolveStudioAdminActiveRouteId",
-        "callExpression": "resolveStudioAdminActiveRouteId",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "resolveStudioScreenId",
-        "callExpression": "resolveStudioScreenId",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "resolveStudioModuleId",
-        "callExpression": "resolveStudioModuleId",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "getStudioAdminRouteDefinition",
-        "callExpression": "getStudioAdminRouteDefinition",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "openRoute",
-        "toSymbol": "createStudioAdminRoutePath",
-        "callExpression": "createStudioAdminRoutePath",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "openRoute",
-        "toSymbol": "setActiveAdminRouteId",
-        "callExpression": "studio.setActiveAdminRouteId",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "openRoute",
-        "toSymbol": "setDrawerOpen",
-        "callExpression": "setDrawerOpen",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/AnkhAdminShell.tsx",
-        "toSymbol": "setDrawerOpen",
-        "callExpression": "setDrawerOpen",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "AdminNavigation",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/AnkhAdminShell.tsx",
-        "toSymbol": "isStudioAdminRouteAvailable",
-        "callExpression": "isStudioAdminRouteAvailable",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/AnkhAdminShell.tsx",
-        "toSymbol": "isStudioAdminRouteActive",
-        "callExpression": "isStudioAdminRouteActive",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/AnkhAdminShell.tsx",
-        "toSymbol": "onRoutePress",
-        "callExpression": "props.onRoutePress",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
         "fromSymbol": "src/ui/admin/AuthAdminSession.tsx",
         "toSymbol": "createContext",
         "callExpression": "createContext",
@@ -61828,6 +61726,36 @@
         "toSymbol": "resetDrag",
         "callExpression": "resetDrag",
         "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.test.ts",
+        "toSymbol": "createStudioAdminWorkspaceRoutes",
+        "callExpression": "createStudioAdminWorkspaceRoutes",
+        "sourcePath": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.ts",
+        "toSymbol": "isStudioAdminRouteAvailable",
+        "callExpression": "isStudioAdminRouteAvailable",
+        "sourcePath": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.ts",
+        "toSymbol": "createStudioAdminRoutePath",
+        "callExpression": "createStudioAdminRoutePath",
+        "sourcePath": "src/features/administration/domain/createStudioAdminWorkspaceRoutes.ts"
       },
       {
         "fromSymbol": "createStudioProjectInfraLifecycle",
@@ -68446,6 +68374,48 @@
         "toSymbol": "updateTheme",
         "callExpression": "studio.updateTheme",
         "sourcePath": "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      },
+      {
+        "fromSymbol": "useStudioAdminWorkspace",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts"
+      },
+      {
+        "fromSymbol": "useStudioAdminWorkspace",
+        "toSymbol": "usePathname",
+        "callExpression": "usePathname",
+        "sourcePath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts"
+      },
+      {
+        "fromSymbol": "useStudioAdminWorkspace",
+        "toSymbol": "createStudioAdminWorkspaceRoutes",
+        "callExpression": "createStudioAdminWorkspaceRoutes",
+        "sourcePath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts"
+      },
+      {
+        "fromSymbol": "useStudioAdminWorkspace",
+        "toSymbol": "resolveStudioScreenId",
+        "callExpression": "resolveStudioScreenId",
+        "sourcePath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts"
+      },
+      {
+        "fromSymbol": "useStudioAdminWorkspace",
+        "toSymbol": "resolveStudioModuleId",
+        "callExpression": "resolveStudioModuleId",
+        "sourcePath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts"
+      },
+      {
+        "fromSymbol": "useStudioAdminWorkspace",
+        "toSymbol": "resolveStudioAdminActiveRouteId",
+        "callExpression": "resolveStudioAdminActiveRouteId",
+        "sourcePath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts"
+      },
+      {
+        "fromSymbol": "onNavigate",
+        "toSymbol": "setActiveAdminRouteId",
+        "callExpression": "studio.setActiveAdminRouteId",
+        "sourcePath": "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts"
       },
       {
         "fromSymbol": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",

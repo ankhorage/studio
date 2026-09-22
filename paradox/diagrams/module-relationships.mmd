@@ -76,6 +76,10 @@ graph LR
   module_src_externalApiAuthoring_public_test_ts["src/externalApiAuthoring.public.test.ts"]
   module_src_externalApiAuthoring_index_ts["src/externalApiAuthoring/index.ts"]
   module_src_externalApiAuthoringContracts_ts["src/externalApiAuthoringContracts.ts"]
+  module_src_features_administration_adapters_inbound_StudioAdminAccessGate_tsx["src/features/administration/adapters/inbound/StudioAdminAccessGate.tsx"]
+  module_src_features_administration_adapters_inbound_useStudioAdminWorkspace_ts["src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts"]
+  module_src_features_administration_domain_createStudioAdminWorkspaceRoutes_test_ts["src/features/administration/domain/createStudioAdminWorkspaceRoutes.test.ts"]
+  module_src_features_administration_domain_createStudioAdminWorkspaceRoutes_ts["src/features/administration/domain/createStudioAdminWorkspaceRoutes.ts"]
   module_src_features_authoring_engine_adapters_inbound_AuthoringEditor_test_ts["src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts"]
   module_src_features_authoring_engine_adapters_inbound_AuthoringEditor_tsx["src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"]
   module_src_features_authoring_engine_adapters_outbound_resolveContractsAuthoringStructure_test_ts["src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.test.ts"]
@@ -469,8 +473,6 @@ graph LR
   module_src_ui_admin_adminPagePrimitives_tsx["src/ui/admin/adminPagePrimitives.tsx"]
   module_src_ui_admin_AnkhAdminPage_test_ts["src/ui/admin/AnkhAdminPage.test.ts"]
   module_src_ui_admin_AnkhAdminPage_tsx["src/ui/admin/AnkhAdminPage.tsx"]
-  module_src_ui_admin_AnkhAdminShell_test_ts["src/ui/admin/AnkhAdminShell.test.ts"]
-  module_src_ui_admin_AnkhAdminShell_tsx["src/ui/admin/AnkhAdminShell.tsx"]
   module_src_ui_admin_AuthAdminSession_tsx["src/ui/admin/AuthAdminSession.tsx"]
   module_src_ui_admin_ModuleAdminViewBoundary_tsx["src/ui/admin/ModuleAdminViewBoundary.tsx"]
   module_src_ui_admin_ModuleAdminViewHost_tsx["src/ui/admin/ModuleAdminViewHost.tsx"]
@@ -695,6 +697,12 @@ graph LR
   module_src_externalApiApi_ts --> module_src_core_constants_ts
   module_src_externalApiApi_ts --> module_src_externalApiAuthoringContracts_ts
   module_src_externalApiAuthoring_public_test_ts --> module_src_externalApiAuthoring_index_ts
+  module_src_features_administration_adapters_inbound_useStudioAdminWorkspace_ts --> module_src_core_StudioContext_ts
+  module_src_features_administration_adapters_inbound_useStudioAdminWorkspace_ts --> module_src_features_administration_domain_createStudioAdminWorkspaceRoutes_ts
+  module_src_features_administration_adapters_inbound_useStudioAdminWorkspace_ts --> module_src_studioAdminRouteModel_ts
+  module_src_features_administration_domain_createStudioAdminWorkspaceRoutes_test_ts --> module_src_features_administration_domain_createStudioAdminWorkspaceRoutes_ts
+  module_src_features_administration_domain_createStudioAdminWorkspaceRoutes_test_ts --> module_src_studioAdminRouteModel_ts
+  module_src_features_administration_domain_createStudioAdminWorkspaceRoutes_ts --> module_src_studioAdminRouteModel_ts
   module_src_features_authoring_engine_adapters_inbound_AuthoringEditor_test_ts --> module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
   module_src_features_authoring_engine_adapters_inbound_AuthoringEditor_test_ts --> module_src_types_authoring_engine_ts
   module_src_features_authoring_engine_adapters_inbound_AuthoringEditor_tsx --> module_src_types_authoring_engine_ts
@@ -1352,9 +1360,6 @@ graph LR
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ThemeNumericTokensAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx
-  module_src_ui_admin_AnkhAdminShell_tsx --> module_src_core_StudioContext_ts
-  module_src_ui_admin_AnkhAdminShell_tsx --> module_src_index_ts
-  module_src_ui_admin_AnkhAdminShell_tsx --> module_src_studioAdminRouteModel_ts
   module_src_ui_admin_AuthAdminSession_tsx --> module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_AuthAdminSession_tsx --> module_src_ui_admin_pages_adminAuthSessionModel_ts
   module_src_ui_admin_ModuleAdminViewHost_tsx --> module_src_core_StudioContext_ts

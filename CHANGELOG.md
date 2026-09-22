@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 4.0.0
+
+### Major Changes
+
+- 6ecb42f: Move generated Studio administration navigation to Navigator-owned workspace presentation and layout generation while retaining the canonical Studio route registry and authoring context.
+
 ## 3.3.3
 
 ### Patch Changes
