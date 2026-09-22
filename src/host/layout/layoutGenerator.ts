@@ -195,7 +195,7 @@ export class GeneratedAppFileGenerator {
           return;
         }
 
-        const fileName = `${path.basename(nextRel)}.tsx`;
+        const fileName = `${route.path === '/' ? 'index' : path.basename(nextRel)}.tsx`;
         const dirRel = path.dirname(nextRel);
         const targetDirRel = dirRel === '.' ? '' : dirRel;
         const targetPath = normalizeRel(path.join(appRootRel, targetDirRel, fileName));
