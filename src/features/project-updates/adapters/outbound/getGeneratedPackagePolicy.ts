@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
@@ -12,6 +12,10 @@ export function getGeneratedPackagePolicy(): GeneratedPackagePolicy {
 
 const REQUIRE = createRequire(import.meta.url);
 const STUDIO_PACKAGE_JSON_URL = new URL('../../../../../package.json', import.meta.url);
+const STUDIO_SELF_CONSUMER_PACKAGE_JSON_URL = new URL(
+  '../../../../../apps/studio/package.json',
+  import.meta.url,
+);
 const COLOR_THEORY_PACKAGE_JSON_PATH = REQUIRE.resolve('@ankhorage/color-theory/package.json');
 const SEMVER_PATTERN = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u;
 const BUN_PACKAGE_MANAGER_PATTERN = /^bun@\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u;
@@ -36,6 +40,7 @@ function readGeneratedPackagePolicy(): GeneratedPackagePolicy {
     peerDependencies,
     typesCulori: readRequiredString(colorTheoryDevDependencies, '@types/culori', 'Color Theory'),
     ownerVersion,
+    studioDependencyRange: readGeneratedStudioDependencyRange(ownerVersion),
     packageManager: readStudioPackageManager(studio),
   });
 }
@@ -47,12 +52,13 @@ function createGeneratedPackagePolicy(input: {
   readonly peerDependencies: Readonly<Record<string, unknown>>;
   readonly typesCulori: string;
   readonly ownerVersion: string;
+  readonly studioDependencyRange: string;
   readonly packageManager: string;
 }): GeneratedPackagePolicy {
   return {
     ownerVersion: input.ownerVersion,
     packageManager: input.packageManager,
-    dependencies: readGeneratedRuntimeDependencies(input.dependencies, input.ownerVersion),
+    dependencies: readGeneratedRuntimeDependencies(input.dependencies, input.studioDependencyRange),
     devDependencies: {
       ankh: readRequiredString(input.devDependencies, '@ankhorage/ankh', 'Studio'),
       devtools: readRequiredString(input.devDependencies, '@ankhorage/devtools', 'Studio'),
@@ -67,7 +73,7 @@ function createGeneratedPackagePolicy(input: {
 /*** Read generated runtime dependency ranges from Studio's dependency contract. */
 function readGeneratedRuntimeDependencies(
   dependencies: Readonly<Record<string, unknown>>,
-  version: string,
+  studioDependencyRange: string,
 ): GeneratedPackagePolicy['dependencies'] {
   return {
     contracts: readRequiredString(dependencies, '@ankhorage/contracts', 'Studio'),
@@ -75,13 +81,27 @@ function readGeneratedRuntimeDependencies(
     expoRuntime: readRequiredString(dependencies, '@ankhorage/expo-runtime', 'Studio'),
     navigator: readRequiredString(dependencies, '@ankhorage/navigator', 'Studio'),
     runtime: readRequiredString(dependencies, '@ankhorage/runtime', 'Studio'),
-    studio: `^${version}`,
+    studio: studioDependencyRange,
     utility: readRequiredString(dependencies, '@ankhorage/utility', 'Studio'),
     supabaseAuth: readRequiredString(dependencies, '@ankhorage/supabase-auth', 'Studio'),
     supabaseStorage: readRequiredString(dependencies, '@ankhorage/supabase-storage', 'Studio'),
     zora: readRequiredString(dependencies, '@ankhorage/zora', 'Studio'),
     zoraExtensions: readGeneratedZoraExtensionDependencies(dependencies),
   };
+}
+
+/***
+ * Resolve the Studio range generated apps may install: source checkouts follow the verified
+ * self-consumer baseline, while published package artifacts use their own exact release line.
+ */
+function readGeneratedStudioDependencyRange(ownerVersion: string): string {
+  if (!existsSync(STUDIO_SELF_CONSUMER_PACKAGE_JSON_URL)) return `^${ownerVersion}`;
+  const selfConsumer = readPackageManifest(
+    STUDIO_SELF_CONSUMER_PACKAGE_JSON_URL,
+    'Studio self-consumer',
+  );
+  const dependencies = readRequiredSection(selfConsumer, 'dependencies', 'Studio self-consumer');
+  return readRequiredString(dependencies, '@ankhorage/studio', 'Studio self-consumer');
 }
 
 /*** Read every installed ZORA extension range from Studio's own dependency contract. */

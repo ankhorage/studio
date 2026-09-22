@@ -247,6 +247,37 @@ describe('GeneratedAppFileGenerator', () => {
     expect(reactImports[0]?.match(/\buseEffect\b/gu)?.length).toBe(1);
   });
 
+  test('generates an index screen when an authored nested route owns the public root path', () => {
+    const manifest = createOAuthManifest();
+    const { auth } = manifest.infra.environments.local;
+    if (!auth?.flow) throw new Error('Test manifest is missing auth flow configuration.');
+    auth.flow.postSignInRoute = '/';
+    manifest.navigator = {
+      type: 'stack',
+      initialRouteName: '(tabs)',
+      routes: [
+        {
+          name: '(tabs)',
+          navigator: {
+            type: 'tabs',
+            implementation: 'headless',
+            presentation: 'bottom',
+            initialRouteName: 'friends',
+            routes: [{ name: 'friends', path: '/', screenId: 'index' }],
+          },
+        },
+      ],
+    };
+
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', manifest, [], {
+      includeStudio: true,
+    });
+    const paths = files.map((file) => file.path);
+
+    expect(paths).toContain('src/app/(app)/(tabs)/index.tsx');
+    expect(paths).not.toContain('src/app/(app)/(tabs)/friends.tsx');
+  });
+
   test('generates canonical ZORA registry ownership for the running app runtime path', () => {
     const manifest = createManifest();
     const indexScreen = manifest.screens.index;

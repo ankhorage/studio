@@ -13,6 +13,11 @@ test('derives generated dependency ranges from owner package metadata', async ()
   ).json()) as {
     readonly dependencies?: Readonly<Record<string, string>>;
   };
+  const selfConsumerPackage = (await Bun.file(
+    new URL('../../../apps/studio/package.json', import.meta.url),
+  ).json()) as {
+    readonly dependencies?: Readonly<Record<string, string>>;
+  };
   const packageJson = getPackageJson({
     name: 'fixture',
     includeStudio: true,
@@ -21,7 +26,13 @@ test('derives generated dependency ranges from owner package metadata', async ()
     targets: WEB_TARGETS,
   });
 
+  const selfConsumerStudioRange = selfConsumerPackage.dependencies?.['@ankhorage/studio'];
+  if (!selfConsumerStudioRange) {
+    throw new Error('Studio self-consumer is missing its published Studio dependency range.');
+  }
+
   expect(packageJson.packageManager).toBe(policy.packageManager);
+  expect(policy.dependencies.studio).toBe(selfConsumerStudioRange);
   expect(packageJson.dependencies).toMatchObject({
     '@ankhorage/contracts': policy.dependencies.contracts,
     '@ankhorage/data-sources': policy.dependencies.dataSources,

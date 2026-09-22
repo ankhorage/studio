@@ -46,6 +46,9 @@ jobs:
       - name: Validate packed Studio host artifact
         run: bun run test:acceptance:packed-studio-host
 
+      - name: Validate generated Close social template Web
+        run: bun run test:acceptance:expo57-social-template-web
+
   studio-standalone:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
