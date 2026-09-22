@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.0.0
+
+### Major Changes
+
+- d6f2420: Route instance Properties through the central owner-driven Authoring Engine and remove the superseded public field/group authoring model.
+
 ## 4.0.1
 
 ### Patch Changes

@@ -3,7 +3,7 @@
 
 # @ankhorage/studio
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v4.0.1](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v5.0.0](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
 
 Studio authoring package for Ankhorage apps
 
@@ -49,7 +49,6 @@ Manage Studio development and projects through the Ankh CLI.
 - [removeStudioPropBinding sequence](././paradox/diagrams/sequences/remove-studio-prop-binding.mmd)
 - [resolveDefaultInsertPlacement sequence](././paradox/diagrams/sequences/resolve-default-insert-placement.mmd)
 - [resolveInsertPlacement sequence](././paradox/diagrams/sequences/resolve-insert-placement.mmd)
-- [resolveStudioInstancePropertyGroups sequence](././paradox/diagrams/sequences/resolve-studio-instance-property-groups.mmd)
 - [resolveStudioSchemaValueMeta sequence](././paradox/diagrams/sequences/resolve-studio-schema-value-meta.mmd)
 - [updateNodeInTree sequence](././paradox/diagrams/sequences/update-node-in-tree.mmd)
 - [upsertStudioMediaAsset sequence](././paradox/diagrams/sequences/upsert-studio-media-asset.mmd)

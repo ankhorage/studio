@@ -84,6 +84,8 @@ graph LR
   module_src_features_authoring_engine_adapters_inbound_AuthoringEditor_tsx["src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"]
   module_src_features_authoring_engine_adapters_outbound_resolveContractsAuthoringStructure_test_ts["src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.test.ts"]
   module_src_features_authoring_engine_adapters_outbound_resolveContractsAuthoringStructure_ts["src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts"]
+  module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_test_ts["src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.test.ts"]
+  module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts["src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.ts"]
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts["src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"]
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_ts["src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts"]
   module_src_features_authoring_engine_application_use_cases_applyAuthoringMutation_test_ts["src/features/authoring-engine/application/use-cases/applyAuthoringMutation.test.ts"]
@@ -785,14 +787,6 @@ graph LR
   export_resolveStudioBindableProps["resolveStudioBindableProps"]
   module_src_bindingMetadataModel_ts --> export_resolveStudioBindableProps
   export_resolveStudioBindableProps -.-> export_StudioBindablePropOption
-  export_resolveStudioInstancePropertyFields["resolveStudioInstancePropertyFields"]
-  module_src_propertiesAuthoringModel_ts --> export_resolveStudioInstancePropertyFields
-  export_resolveStudioInstancePropertyFields -.-> export_StudioAuthoringComponentMeta
-  export_resolveStudioInstancePropertyFields -.-> export_StudioInstancePropertyField
-  export_resolveStudioInstancePropertyGroups["resolveStudioInstancePropertyGroups"]
-  module_src_propertiesAuthoringModel_ts --> export_resolveStudioInstancePropertyGroups
-  export_resolveStudioInstancePropertyGroups -.-> export_StudioAuthoringComponentMeta
-  export_resolveStudioInstancePropertyGroups -.-> export_StudioInstancePropertyGroup
   export_resolveStudioSchemaValueMeta["resolveStudioSchemaValueMeta"]
   module_src_bindingSchemaModel_ts --> export_resolveStudioSchemaValueMeta
   export_STUDIO_INSERT_RECIPES["STUDIO_INSERT_RECIPES"]
@@ -867,14 +861,6 @@ graph LR
   module_src_index_ts --> export_StudioEvent
   export_StudioIdGenerator["StudioIdGenerator"]
   module_src_index_ts --> export_StudioIdGenerator
-  export_StudioInstancePropertyEditorKind["StudioInstancePropertyEditorKind"]
-  module_src_propertiesAuthoringModel_ts --> export_StudioInstancePropertyEditorKind
-  export_StudioInstancePropertyField["StudioInstancePropertyField"]
-  module_src_propertiesAuthoringModel_ts --> export_StudioInstancePropertyField
-  export_StudioInstancePropertyField -.-> export_StudioInstancePropertyEditorKind
-  export_StudioInstancePropertyGroup["StudioInstancePropertyGroup"]
-  module_src_propertiesAuthoringModel_ts --> export_StudioInstancePropertyGroup
-  export_StudioInstancePropertyGroup -.-> export_StudioInstancePropertyField
   export_StudioInstancePropertyValue["StudioInstancePropertyValue"]
   module_src_propertiesAuthoringModel_ts --> export_StudioInstancePropertyValue
   export_StudioManifest["StudioManifest"]

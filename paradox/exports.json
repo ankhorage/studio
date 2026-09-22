@@ -8,7 +8,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 457,
+      "line": 455,
       "column": 14
     },
     "exportPaths": [
@@ -28,7 +28,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 369,
+      "line": 367,
       "column": 1
     },
     "exportPaths": [
@@ -180,7 +180,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1438,
+      "line": 1436,
       "column": 1
     },
     "exportPaths": [
@@ -218,7 +218,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 756,
+      "line": 754,
       "column": 1
     },
     "exportPaths": [
@@ -254,7 +254,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 608,
+      "line": 606,
       "column": 14
     },
     "exportPaths": [
@@ -416,7 +416,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1351,
+      "line": 1349,
       "column": 1
     },
     "exportPaths": [
@@ -502,7 +502,7 @@
     "modulePath": "src/propertiesAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/propertiesAuthoringModel.ts",
-      "line": 105,
+      "line": 31,
       "column": 1
     },
     "exportPaths": [
@@ -731,7 +731,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 630,
+      "line": 628,
       "column": 14
     },
     "exportPaths": [
@@ -813,7 +813,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 599,
+      "line": 597,
       "column": 14
     },
     "exportPaths": [
@@ -847,7 +847,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1261,
+      "line": 1259,
       "column": 1
     },
     "exportPaths": [
@@ -881,7 +881,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 347,
+      "line": 345,
       "column": 1
     },
     "exportPaths": [
@@ -976,7 +976,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 329,
+      "line": 327,
       "column": 1
     },
     "exportPaths": [
@@ -1021,7 +1021,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 306,
+      "line": 304,
       "column": 1
     },
     "exportPaths": [
@@ -1041,7 +1041,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 357,
+      "line": 355,
       "column": 1
     },
     "exportPaths": [
@@ -1061,7 +1061,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 335,
+      "line": 333,
       "column": 1
     },
     "exportPaths": [
@@ -1150,7 +1150,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 303,
+      "line": 301,
       "column": 1
     },
     "exportPaths": [
@@ -1170,7 +1170,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 304,
+      "line": 302,
       "column": 1
     },
     "exportPaths": [
@@ -1190,7 +1190,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 352,
+      "line": 350,
       "column": 1
     },
     "exportPaths": [
@@ -1286,7 +1286,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1038,
+      "line": 1036,
       "column": 1
     },
     "exportPaths": [
@@ -1323,7 +1323,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 973,
+      "line": 971,
       "column": 1
     },
     "exportPaths": [
@@ -1375,7 +1375,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 980,
+      "line": 978,
       "column": 1
     },
     "exportPaths": [
@@ -1410,7 +1410,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 314,
+      "line": 312,
       "column": 1
     },
     "exportPaths": [
@@ -1468,7 +1468,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 322,
+      "line": 320,
       "column": 1
     },
     "exportPaths": [
@@ -1517,7 +1517,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 309,
+      "line": 307,
       "column": 1
     },
     "exportPaths": [
@@ -1592,7 +1592,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1186,
+      "line": 1184,
       "column": 1
     },
     "exportPaths": [
@@ -1629,7 +1629,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1065,
+      "line": 1063,
       "column": 1
     },
     "exportPaths": [
@@ -1681,7 +1681,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1072,
+      "line": 1070,
       "column": 1
     },
     "exportPaths": [
@@ -1716,7 +1716,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 264,
+      "line": 262,
       "column": 1
     },
     "exportPaths": [
@@ -1767,7 +1767,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 271,
+      "line": 269,
       "column": 1
     },
     "exportPaths": [
@@ -1787,7 +1787,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 284,
+      "line": 282,
       "column": 1
     },
     "exportPaths": [
@@ -1824,7 +1824,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 262,
+      "line": 260,
       "column": 1
     },
     "exportPaths": [
@@ -1844,7 +1844,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 296,
+      "line": 294,
       "column": 1
     },
     "exportPaths": [
@@ -1864,7 +1864,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 289,
+      "line": 287,
       "column": 1
     },
     "exportPaths": [
@@ -2421,7 +2421,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 667,
+      "line": 665,
       "column": 14
     },
     "exportPaths": [
@@ -2601,7 +2601,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 928,
+      "line": 926,
       "column": 1
     },
     "exportPaths": [
@@ -2638,7 +2638,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1486,
+      "line": 1484,
       "column": 1
     },
     "exportPaths": [
@@ -2675,7 +2675,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 863,
+      "line": 861,
       "column": 1
     },
     "exportPaths": [
@@ -2713,7 +2713,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1114,
+      "line": 1112,
       "column": 1
     },
     "exportPaths": [
@@ -2826,92 +2826,6 @@
     "structuredRows": []
   },
   {
-    "name": "resolveStudioInstancePropertyFields",
-    "description": "Resolve instance-authorable property fields for a Studio node from component metadata and current props.\n@todo Move instance-property authoring behavior under src/properties/.",
-    "isReadme": false,
-    "examples": [],
-    "kind": "function",
-    "modulePath": "src/propertiesAuthoringModel.ts",
-    "sourceLocation": {
-      "filePath": "src/propertiesAuthoringModel.ts",
-      "line": 52,
-      "column": 1
-    },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioAuthoringComponentMeta",
-      "StudioInstancePropertyField"
-    ],
-    "signatures": [
-      {
-        "label": "(node: UiNode, registry: Readonly<Record<string, StudioAuthoringComponentMeta | undefined>>) => readonly StudioInstancePropertyField[]",
-        "parameters": [
-          {
-            "name": "node",
-            "type": "UiNode",
-            "required": true,
-            "description": null
-          },
-          {
-            "name": "registry",
-            "type": "Readonly<Record<string, StudioAuthoringComponentMeta | undefined>>",
-            "required": true,
-            "description": null
-          }
-        ],
-        "returnType": "readonly StudioInstancePropertyField[]",
-        "returnDescription": null
-      }
-    ],
-    "members": [],
-    "structuredRows": []
-  },
-  {
-    "name": "resolveStudioInstancePropertyGroups",
-    "description": "Group resolved Studio instance-property fields by their authoring category.\n@todo Move instance-property grouping under src/properties/.",
-    "isReadme": false,
-    "examples": [],
-    "kind": "function",
-    "modulePath": "src/propertiesAuthoringModel.ts",
-    "sourceLocation": {
-      "filePath": "src/propertiesAuthoringModel.ts",
-      "line": 86,
-      "column": 1
-    },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioAuthoringComponentMeta",
-      "StudioInstancePropertyGroup"
-    ],
-    "signatures": [
-      {
-        "label": "(node: UiNode, registry: Readonly<Record<string, StudioAuthoringComponentMeta | undefined>>) => readonly StudioInstancePropertyGroup[]",
-        "parameters": [
-          {
-            "name": "node",
-            "type": "UiNode",
-            "required": true,
-            "description": null
-          },
-          {
-            "name": "registry",
-            "type": "Readonly<Record<string, StudioAuthoringComponentMeta | undefined>>",
-            "required": true,
-            "description": null
-          }
-        ],
-        "returnType": "readonly StudioInstancePropertyGroup[]",
-        "returnDescription": null
-      }
-    ],
-    "members": [],
-    "structuredRows": []
-  },
-  {
     "name": "resolveStudioSchemaValueMeta",
     "description": "Resolve a contracts data schema into the bindable value metadata used by Studio authoring.\n@todo Move binding schema interpretation under src/bindings/.",
     "isReadme": false,
@@ -2966,7 +2880,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1224,
+      "line": 1222,
       "column": 14
     },
     "exportPaths": [
@@ -3071,7 +2985,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 361,
+      "line": 359,
       "column": 1
     },
     "exportPaths": [
@@ -3115,7 +3029,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 359,
+      "line": 357,
       "column": 1
     },
     "exportPaths": [
@@ -3135,7 +3049,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 367,
+      "line": 365,
       "column": 1
     },
     "exportPaths": [
@@ -3155,7 +3069,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 182,
+      "line": 180,
       "column": 1
     },
     "exportPaths": [
@@ -3175,7 +3089,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 228,
+      "line": 226,
       "column": 1
     },
     "exportPaths": [
@@ -3195,7 +3109,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 208,
+      "line": 206,
       "column": 1
     },
     "exportPaths": [
@@ -3645,7 +3559,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 393,
+      "line": 391,
       "column": 1
     },
     "exportPaths": [
@@ -3665,7 +3579,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 377,
+      "line": 375,
       "column": 1
     },
     "exportPaths": [
@@ -3700,7 +3614,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 382,
+      "line": 380,
       "column": 1
     },
     "exportPaths": [
@@ -3751,7 +3665,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 389,
+      "line": 387,
       "column": 1
     },
     "exportPaths": [
@@ -3771,7 +3685,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 408,
+      "line": 406,
       "column": 1
     },
     "exportPaths": [
@@ -4163,7 +4077,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 401,
+      "line": 399,
       "column": 1
     },
     "exportPaths": [
@@ -4183,7 +4097,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 391,
+      "line": 389,
       "column": 1
     },
     "exportPaths": [
@@ -4195,7 +4109,7 @@
     "structuredRows": []
   },
   {
-    "name": "StudioInstancePropertyEditorKind",
+    "name": "StudioInstancePropertyValue",
     "description": null,
     "isReadme": false,
     "examples": [],
@@ -4215,156 +4129,6 @@
     "structuredRows": []
   },
   {
-    "name": "StudioInstancePropertyField",
-    "description": null,
-    "isReadme": false,
-    "examples": [],
-    "kind": "type",
-    "modulePath": "src/propertiesAuthoringModel.ts",
-    "sourceLocation": {
-      "filePath": "src/propertiesAuthoringModel.ts",
-      "line": 28,
-      "column": 1
-    },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioInstancePropertyEditorKind"
-    ],
-    "signatures": [],
-    "members": [
-      {
-        "name": "category",
-        "kind": "property",
-        "type": "string",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "defaultValue",
-        "kind": "property",
-        "type": "unknown",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "editor",
-        "kind": "property",
-        "type": "StudioInstancePropertyEditorKind",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "isExplicit",
-        "kind": "property",
-        "type": "boolean",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "label",
-        "kind": "property",
-        "type": "string",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "mediaKinds",
-        "kind": "property",
-        "type": "readonly (\"file\" | \"image\" | \"audio\" | \"video\" | \"font\")[] | undefined",
-        "required": false,
-        "description": null
-      },
-      {
-        "name": "name",
-        "kind": "property",
-        "type": "string",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "options",
-        "kind": "property",
-        "type": "readonly (string | number)[]",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "schemaType",
-        "kind": "property",
-        "type": "string",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "value",
-        "kind": "property",
-        "type": "unknown",
-        "required": true,
-        "description": null
-      }
-    ],
-    "structuredRows": []
-  },
-  {
-    "name": "StudioInstancePropertyGroup",
-    "description": null,
-    "isReadme": false,
-    "examples": [],
-    "kind": "type",
-    "modulePath": "src/propertiesAuthoringModel.ts",
-    "sourceLocation": {
-      "filePath": "src/propertiesAuthoringModel.ts",
-      "line": 41,
-      "column": 1
-    },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "StudioInstancePropertyField"
-    ],
-    "signatures": [],
-    "members": [
-      {
-        "name": "category",
-        "kind": "property",
-        "type": "string",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "fields",
-        "kind": "property",
-        "type": "readonly StudioInstancePropertyField[]",
-        "required": true,
-        "description": null
-      }
-    ],
-    "structuredRows": []
-  },
-  {
-    "name": "StudioInstancePropertyValue",
-    "description": null,
-    "isReadme": false,
-    "examples": [],
-    "kind": "unknown",
-    "modulePath": "src/propertiesAuthoringModel.ts",
-    "sourceLocation": {
-      "filePath": "src/propertiesAuthoringModel.ts",
-      "line": 46,
-      "column": 1
-    },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [],
-    "signatures": [],
-    "members": [],
-    "structuredRows": []
-  },
-  {
     "name": "StudioManifest",
     "description": null,
     "isReadme": false,
@@ -4373,7 +4137,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 237,
+      "line": 235,
       "column": 1
     },
     "exportPaths": [
@@ -4840,7 +4604,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 177,
+      "line": 175,
       "column": 1
     },
     "exportPaths": [
@@ -5046,7 +4810,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 175,
+      "line": 173,
       "column": 1
     },
     "exportPaths": [
@@ -5108,7 +4872,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 181,
+      "line": 179,
       "column": 1
     },
     "exportPaths": [
@@ -5128,7 +4892,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 173,
+      "line": 171,
       "column": 1
     },
     "exportPaths": [
@@ -5239,7 +5003,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 171,
+      "line": 169,
       "column": 1
     },
     "exportPaths": [
@@ -5337,7 +5101,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 180,
+      "line": 178,
       "column": 1
     },
     "exportPaths": [
@@ -5357,7 +5121,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 176,
+      "line": 174,
       "column": 1
     },
     "exportPaths": [
@@ -5377,7 +5141,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 244,
+      "line": 242,
       "column": 1
     },
     "exportPaths": [
@@ -5435,7 +5199,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 174,
+      "line": 172,
       "column": 1
     },
     "exportPaths": [
@@ -5455,7 +5219,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 252,
+      "line": 250,
       "column": 1
     },
     "exportPaths": [
@@ -5738,7 +5502,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 239,
+      "line": 237,
       "column": 1
     },
     "exportPaths": [
@@ -5758,7 +5522,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 549,
+      "line": 547,
       "column": 14
     },
     "exportPaths": [
@@ -5778,7 +5542,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 639,
+      "line": 637,
       "column": 14
     },
     "exportPaths": [
@@ -5916,7 +5680,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1284,
+      "line": 1282,
       "column": 1
     },
     "exportPaths": [
@@ -5960,7 +5724,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 772,
+      "line": 770,
       "column": 1
     },
     "exportPaths": [
