@@ -95,8 +95,39 @@ test('derives ordered finite choices without sorting or deduplicating authored i
 
   expect(model).toMatchObject({
     kind: 'ordered-list',
-    values: ['email', 'phone', 'username'],
+    item: { kind: 'choice', values: ['email', 'phone', 'username'] },
     items: ['username', 'email', 'username'],
+  });
+});
+
+test('derives ordered scalar string items without imposing a finite owner catalog', () => {
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'ordered-list',
+      item: { kind: 'scalar', scalarType: 'string' },
+    },
+    value: ['email', 'custom-profile-id', 'email'],
+  });
+
+  expect(model).toMatchObject({
+    kind: 'ordered-list',
+    item: { kind: 'scalar', scalarType: 'string' },
+    items: ['email', 'custom-profile-id', 'email'],
+  });
+});
+
+test('rejects non-string runtime items for ordered scalar string lists', () => {
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'ordered-list',
+      item: { kind: 'scalar', scalarType: 'string' },
+    },
+    value: ['email', 42],
+  });
+
+  expect(model).toMatchObject({
+    kind: 'unsupported',
+    diagnostic: { code: 'invalid-value' },
   });
 });
 
