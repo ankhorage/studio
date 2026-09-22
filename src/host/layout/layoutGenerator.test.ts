@@ -249,7 +249,7 @@ describe('GeneratedAppFileGenerator', () => {
 
   test('generates an index screen when an authored nested route owns the public root path', () => {
     const manifest = createOAuthManifest();
-    const auth = manifest.infra.environments.local.auth;
+    const { auth } = manifest.infra.environments.local;
     if (!auth) throw new Error('Test manifest is missing auth configuration.');
     auth.flow.postSignInRoute = '/';
     manifest.navigator = {
