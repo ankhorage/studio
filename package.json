@@ -245,7 +245,7 @@
     "expo-file-system": "~57.0.7",
     "expo-image-picker": "~57.0.18",
     "fastify": "^5.12.5",
-    "@ankhorage/zora-game": "^0.8.34"
+    "@ankhorage/zora-game": "^0.8.35"
   },
   "peerDependencies": {
     "@react-native-vector-icons/fontawesome": "^13.1.3",

@@ -30,7 +30,7 @@
         "@ankhorage/utility": "^1.4.0",
         "@ankhorage/zora": "^21.0.6",
         "@ankhorage/zora-chess": "^0.2.2",
-        "@ankhorage/zora-game": "^0.8.34",
+        "@ankhorage/zora-game": "^0.8.35",
         "@ankhorage/zora-tabletop": "^0.1.35",
         "@fastify/cors": "^11.3.0",
         "expo-document-picker": "~57.0.2",
@@ -142,7 +142,7 @@
 
     "@ankhorage/zora-chess": ["@ankhorage/zora-chess@0.2.2", "", { "dependencies": { "chess.js": "^1.4.0" }, "peerDependencies": { "@ankhorage/zora": ">=4.2.2", "react": ">=18.2.0", "react-native": ">=0.72.0" } }, "sha512-ZcL6Qk4KE5+tChW5bSr6kSAKv6H0FL3ab87TltPgSxBDe5HT+v7uA3wSvkS7WUL3MRx+8RUFmakKWLgwJl1/RA=="],
 
-    "@ankhorage/zora-game": ["@ankhorage/zora-game@0.8.34", "", { "dependencies": { "@ankhorage/game": "^0.1.2", "@ankhorage/runtime": "^3.0.15" }, "peerDependencies": { "@ankhorage/zora": ">=21.0.5", "react": "19.2.3", "react-native": "0.86.x" } }, "sha512-WReEpkymk6k3urDMKHv9VNkR95IBiOWCw5ATKLYUtBTe5nqtwDSlgQPE2oL0/ZhHqqLMCg671HieHFBHH74ylg=="],
+    "@ankhorage/zora-game": ["@ankhorage/zora-game@0.8.35", "", { "dependencies": { "@ankhorage/game": "^0.1.2", "@ankhorage/runtime": "^3.0.15" }, "peerDependencies": { "@ankhorage/zora": ">=21.0.6", "react": "19.2.3", "react-native": "0.86.x" } }, "sha512-Evff2o7jgJGjMhFzSh038yIw68sLOUeor6+suU2PUPcUKkldo9xXUf4HYRXvGXFzzih5jxBXitLC7RuFg2s+tg=="],
 
     "@ankhorage/zora-tabletop": ["@ankhorage/zora-tabletop@0.1.35", "", { "peerDependencies": { "@ankhorage/zora": ">=21.0.6", "react": ">=18.2.0", "react-native": ">=0.72.0" } }, "sha512-CMKcKtHxYjT8wyoFMbKtXCqFIi+MSH/F6EpddXvgOSGF2OywFM0nV3My7Kf3pevltm/a6r0nios2Y8hVBmISAQ=="],
 
