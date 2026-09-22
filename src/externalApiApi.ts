@@ -1,6 +1,5 @@
 import type { DataContractValue, DataSourceDiagnostic } from '@ankhorage/contracts/data';
 
-import { API_BASE } from './core/constants';
 import type {
   ExternalApiConnectRequest,
   ExternalApiConnectResult,
@@ -12,6 +11,7 @@ import type {
   ManualRestApiRequest,
   ManualRestApiSettingsRequest,
 } from './externalApiAuthoringContracts';
+import { API_BASE } from './features/host-connection/adapters/outbound/studioApiBase';
 
 /***
  * Represent an unsuccessful or invalid External API host response with its HTTP status.

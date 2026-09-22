@@ -5,8 +5,8 @@ import path from 'node:path';
 import type { AppManifest } from '@ankhorage/contracts';
 import { afterEach, expect, test } from 'bun:test';
 
-import { createSmokeProjectSource } from '../smoke/createSmokeProjectSource';
 import { getProjectTemplateSource } from '../templates';
+import { createMinimalProjectSource } from './createMinimalProjectSource';
 import { ProjectManager } from './projectManager';
 
 const roots: string[] = [];
@@ -17,7 +17,7 @@ afterEach(async () => {
 
 test('materializes project creation assets and persists their bundled media sources', async () => {
   const workspaceRoot = await createWorkspaceRoot();
-  const base = createSmokeProjectSource();
+  const base = createMinimalProjectSource();
   const manifest: AppManifest = {
     ...base.manifest,
     media: {

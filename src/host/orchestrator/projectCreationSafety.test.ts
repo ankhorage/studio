@@ -5,7 +5,7 @@ import path from 'node:path';
 import { expect, test } from 'bun:test';
 
 import { ProjectCreationValidationError } from '../../projectIdentity';
-import { createSmokeProjectSource } from '../smoke/createSmokeProjectSource';
+import { createMinimalProjectSource } from './createMinimalProjectSource';
 import { ProjectManager } from './projectManager';
 
 test('project creation rejects duplicate and reserved IDs before mutation', async () => {
@@ -23,13 +23,15 @@ test('project creation rejects duplicate and reserved IDs before mutation', asyn
       reconciledProjectPaths.push(projectPath);
     },
   });
-  const created = await manager.createProject('Foo', createSmokeProjectSource());
+  const created = await manager.createProject('Foo', createMinimalProjectSource());
   expect(created.id).toBe('foo');
   expect(reconciledProjectPaths).toEqual([created.path]);
   expect(await stat(path.join(created.path, 'eas.json'))).toBeDefined();
   expect(await stat(path.join(created.path, 'metro.config.js'))).toBeDefined();
 
-  const duplicateError = await catchError(manager.createProject('Foo', createSmokeProjectSource()));
+  const duplicateError = await catchError(
+    manager.createProject('Foo', createMinimalProjectSource()),
+  );
   expect(duplicateError).toBeInstanceOf(ProjectCreationValidationError);
 
   const manifest = JSON.parse(
@@ -41,7 +43,7 @@ test('project creation rejects duplicate and reserved IDs before mutation', asyn
   expect(reconciledProjectPaths).toEqual([created.path, created.path]);
 
   const reservedError = await catchError(
-    manager.createProject('Studio', createSmokeProjectSource()),
+    manager.createProject('Studio', createMinimalProjectSource()),
   );
   expect(reservedError).toBeInstanceOf(ProjectCreationValidationError);
   expect(await stat(path.join(workspaceRoot, 'apps', 'studio'))).toBeDefined();

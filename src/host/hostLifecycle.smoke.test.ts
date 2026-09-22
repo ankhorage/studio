@@ -6,9 +6,9 @@ import type { InfraLedger } from '@ankhorage/contracts/infra';
 import { expect, test } from 'bun:test';
 
 import type { StudioProjectInfraLifecycle } from '../features/infrastructure/composition/createStudioProjectInfraLifecycle';
+import { createMinimalProjectSource } from './orchestrator/createMinimalProjectSource';
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
-import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';
 
 async function collectSourceFiles(root: string): Promise<string[]> {
   const entries = await readdir(root, { withFileTypes: true });
@@ -35,7 +35,10 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
     infraLifecycle: createInfraLifecycle(),
   });
   const moduleManager = new ModuleManager(workspaceRoot);
-  const created = await projectManager.createProject('Host Smoke App', createSmokeProjectSource());
+  const created = await projectManager.createProject(
+    'Host Smoke App',
+    createMinimalProjectSource(),
+  );
   expect(created.success).toBe(true);
   const generationStateSource = await readFile(
     path.join(created.path, '.ankh/generation-state.json'),

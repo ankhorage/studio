@@ -1,6 +1,7 @@
 import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { createMinimalProjectSource } from '../orchestrator/createMinimalProjectSource';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { assertExpo57GeneratedCapabilityContractAsync } from './assertExpo57GeneratedCapabilityContractAsync';
 import { assertExpo57GeneratedCapabilityNativePrebuildAsync } from './assertExpo57GeneratedCapabilityNativePrebuildAsync';
@@ -8,7 +9,6 @@ import { assertExpo57GeneratedCapabilityOwnerGraphAsync } from './assertExpo57Ge
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
 import { createExpo57CapabilityFixtureManifest } from './createExpo57CapabilityFixtureManifest';
-import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { createStaticExportServer } from './createStaticExportServer';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
 import { reserveTcpPortAsync } from './reserveTcpPortAsync';
@@ -32,7 +32,7 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
     const manager = new ProjectManager(workspaceRoot);
     const created = await manager.createProject(
       'Expo 57 Generated Capability Acceptance',
-      createSmokeProjectSource(),
+      createMinimalProjectSource(),
       undefined,
       { includeStudio: false },
     );

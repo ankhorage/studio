@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { isAppCategory, isColorHarmony } from '../contractGuards';
-import { API_BASE } from '../core/constants';
+import { API_BASE } from '../features/host-connection/adapters/outbound/studioApiBase';
 import type { TemplateCatalog, TemplateCatalogCategory } from '../templateCatalogContracts';
 
 function isRecord(value: unknown): value is Record<string, unknown> {

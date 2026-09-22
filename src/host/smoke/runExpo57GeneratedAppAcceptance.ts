@@ -4,9 +4,9 @@ import path from 'node:path';
 
 import type { AppManifest, ScreenSpec } from '@ankhorage/contracts';
 
+import { createMinimalProjectSource } from '../orchestrator/createMinimalProjectSource';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { assertReactNativeOwnerGraphAsync } from './assertReactNativeOwnerGraphAsync';
-import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
@@ -104,7 +104,7 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
   const projectManager = new ProjectManager(workspaceRoot);
   const created = await projectManager.createProject(
     'Expo 57 Generated App Acceptance',
-    createSmokeProjectSource(),
+    createMinimalProjectSource(),
     undefined,
     { includeStudio: false },
   );

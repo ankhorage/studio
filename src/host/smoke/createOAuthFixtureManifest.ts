@@ -1,7 +1,7 @@
 import type { AppCategory, AppManifest } from '@ankhorage/contracts';
 import { type OAuthFixtureId, resolveOAuthFixture } from '@ankhorage/templates';
 
-import { createSmokeProjectSource } from './createSmokeProjectSource';
+import { createMinimalProjectSource } from '../orchestrator/createMinimalProjectSource';
 
 interface OAuthFixtureManifestOverrides {
   readonly metadata?: Partial<AppManifest['metadata']>;
@@ -16,7 +16,7 @@ export function createOAuthFixtureManifest(args: {
   readonly fixture: OAuthFixtureId;
   readonly overrides?: OAuthFixtureManifestOverrides;
 }): AppManifest {
-  const base = createSmokeProjectSource(args.category).manifest;
+  const base = createMinimalProjectSource(args.category).manifest;
   const fixture = resolveOAuthFixture(args.fixture);
   return {
     ...base,
