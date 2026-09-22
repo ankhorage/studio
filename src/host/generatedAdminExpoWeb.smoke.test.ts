@@ -851,6 +851,7 @@ adminWebSmokeTest(
         );
         expect(missingDetail).toContain('missing or was deleted');
         expect(page.errors).toEqual([]);
+        await verifyWorkspaceReturnToApp(page, expoOutput);
       } finally {
         page.close();
       }
@@ -1043,6 +1044,53 @@ async function verifyNestedNutritionSelection(
     await page.readAppBarActionGeometry(['Administration', 'Preview']),
     ['Administration', 'Preview'],
   );
+}
+
+/*** Preserve the last app route while navigating through multiple administration destinations. */
+async function verifyWorkspaceReturnToApp(
+  page: ChromePage,
+  expoOutput: readonly string[],
+): Promise<void> {
+  await page.navigateStudio('/scan', expoOutput);
+  await waitForBodyText(page, (text) => text.includes('Scan product'), HTTP_TIMEOUT_MS);
+  await page.clickAppBarAction('Administration');
+  await waitForBodyText(page, (text) => text.includes('Project overview'), HTTP_TIMEOUT_MS);
+  await page.navigateStudio('/ankh/screens/dashboard', expoOutput);
+  await waitForBodyText(
+    page,
+    (text) => text.includes('Stable screen ID') && text.includes('dashboard'),
+    HTTP_TIMEOUT_MS,
+  );
+  await page.navigateStudio('/ankh/theme/colors', expoOutput);
+  await waitForBodyText(
+    page,
+    (text) => text.includes('Edit the canonical color source'),
+    HTTP_TIMEOUT_MS,
+  );
+
+  const clicked = await page.evaluate<boolean>(`(() => {
+    const action = [...document.querySelectorAll('[role="button"]')].find(
+      (element) => element.textContent?.trim() === 'Back to app',
+    );
+    if (!(action instanceof HTMLElement)) return false;
+    action.click();
+    return true;
+  })()`);
+  if (!clicked) {
+    throw new Error(
+      `Workspace exit was not available.\n${await page.readStudioNavigationDiagnostics(expoOutput)}`,
+    );
+  }
+  await waitForBodyText(
+    page,
+    (text) =>
+      text.includes('Scan product') && text.includes('Local generated-admin smoke fixture.'),
+    HTTP_TIMEOUT_MS,
+  );
+  expect(await page.evaluate<string>('location.pathname')).toBe('/scan');
+  expectAppBarActionsHorizontal(await page.readAppBarActionGeometry(['Administration']), [
+    'Administration',
+  ]);
 }
 
 interface BrowserRect {
