@@ -170,6 +170,66 @@ test('renders finite set membership and emits canonical unordered membership', (
   expect(mutations.at(-1)).toEqual({ kind: 'unset', path: ['permissions'] });
 });
 
+test('renders ordered primitive choices and emits reorder, remove, and append mutations', () => {
+  const mutations: AuthoringMutation[] = [];
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'object',
+      fields: [
+        {
+          name: 'identifiers',
+          optional: false,
+          structure: {
+            kind: 'ordered-list',
+            item: { kind: 'choice', values: ['email', 'phone', 'username'] },
+          },
+        },
+      ],
+    },
+    value: { identifiers: ['username', 'email'] },
+  });
+  const controls = renderControls(
+    editor.AuthoringEditor({
+      model,
+      onMutation: (mutation) => mutations.push(mutation),
+    }),
+  );
+  const buttons = controls.filter((control) => control.type === 'Button');
+
+  const firstDown = buttons.find(
+    (control) => control.props.children === 'Down' && control.props.disabled === false,
+  )?.props.onPress;
+  if (typeof firstDown !== 'function') throw new Error('Missing ordered-list down handler.');
+  Reflect.apply(firstDown, undefined, []);
+  expect(mutations.at(-1)).toEqual({
+    kind: 'set',
+    path: ['identifiers'],
+    value: ['email', 'username'],
+  });
+
+  const firstRemove = buttons.find(
+    (control) => control.props.children === 'Remove',
+  )?.props.onPress;
+  if (typeof firstRemove !== 'function') throw new Error('Missing ordered-list remove handler.');
+  Reflect.apply(firstRemove, undefined, []);
+  expect(mutations.at(-1)).toEqual({
+    kind: 'set',
+    path: ['identifiers'],
+    value: ['email'],
+  });
+
+  const addPhone = buttons.find(
+    (control) => control.props.children === 'Add phone',
+  )?.props.onPress;
+  if (typeof addPhone !== 'function') throw new Error('Missing ordered-list append handler.');
+  Reflect.apply(addPhone, undefined, []);
+  expect(mutations.at(-1)).toEqual({
+    kind: 'set',
+    path: ['identifiers'],
+    value: ['username', 'email', 'phone'],
+  });
+});
+
 test('delegates owner-requested custom controls while retaining the central Field wrapper', () => {
   const mutations: AuthoringMutation[] = [];
   const model = deriveAuthoringModel({
