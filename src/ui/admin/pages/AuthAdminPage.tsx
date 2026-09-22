@@ -71,6 +71,10 @@ const AUTH_SIGN_IN_AUTHORING_STRUCTURE = resolveContractsAuthoringStructure(
   STRUCTURE_DESCRIPTOR,
   'auth-sign-in',
 );
+const AUTH_SIGN_UP_AUTHORING_STRUCTURE = resolveContractsAuthoringStructure(
+  STRUCTURE_DESCRIPTOR,
+  'auth-sign-up',
+);
 
 export interface AuthAdminPageProps {
   readonly projectId: string;
@@ -338,64 +342,26 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
           />
 
           {draft.signUp ? (
-            <>
-              <Field label="Required sign-up fields (comma-separated)">
-                <Input
-                  value={draft.signUp.requiredFields.join(', ')}
-                  autoCapitalize="none"
-                  onChangeText={(value) =>
-                    setDraft((current) =>
-                      current.signUp
-                        ? {
-                            ...current,
-                            signUp: {
-                              ...current.signUp,
-                              requiredFields: splitList(value),
-                            },
-                          }
-                        : current,
-                    )
-                  }
-                />
-              </Field>
-              <Field label="Optional sign-up fields (comma-separated)">
-                <Input
-                  value={(draft.signUp.optionalFields ?? []).join(', ')}
-                  autoCapitalize="none"
-                  onChangeText={(value) =>
-                    setDraft((current) =>
-                      current.signUp
-                        ? {
-                            ...current,
-                            signUp: {
-                              ...current.signUp,
-                              optionalFields: splitList(value),
-                            },
-                          }
-                        : current,
-                    )
-                  }
-                />
-              </Field>
-              <SwitchSetting
-                title="Email confirmation required"
-                description="Uses the canonical requireVerification sign-up policy."
-                value={draft.signUp.signUpPolicy === 'requireVerification'}
-                onValueChange={(required) =>
-                  setDraft((current) =>
-                    current.signUp
-                      ? {
-                          ...current,
-                          signUp: {
-                            ...current.signUp,
-                            signUpPolicy: required ? 'requireVerification' : 'autoSignIn',
-                          },
-                        }
-                      : current,
-                  )
-                }
-              />
-            </>
+            <AuthoringEditor
+              model={deriveAuthoringModel({
+                structure: AUTH_SIGN_UP_AUTHORING_STRUCTURE.ok
+                  ? AUTH_SIGN_UP_AUTHORING_STRUCTURE.structure
+                  : {
+                      kind: 'unsupported',
+                      sourceKind: 'auth-sign-up',
+                      diagnostic: AUTH_SIGN_UP_AUTHORING_STRUCTURE.diagnostic,
+                    },
+                value: draft.signUp,
+                label: 'Sign-up',
+              })}
+              onMutation={(mutation) =>
+                setDraft((current) => {
+                  if (!current.signUp) return current;
+                  const result = applyAuthoringMutation(current.signUp, mutation);
+                  return result.ok ? { ...current, signUp: result.value } : current;
+                })
+              }
+            />
           ) : null}
         </Card>
       ) : null}
@@ -950,21 +916,6 @@ function createFallbackManifest(): AppManifest {
     },
     activeThemeId: 'default',
   };
-}
-
-/***
- * Split a comma-delimited string into trimmed, non-empty, insertion-order-deduplicated values.
- * @utility @ankhorage/utility/string
- */
-function splitList(value: string): string[] {
-  return [
-    ...new Set(
-      value
-        .split(',')
-        .map((entry) => entry.trim())
-        .filter(Boolean),
-    ),
-  ];
 }
 
 /***
