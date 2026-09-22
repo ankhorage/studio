@@ -207,9 +207,7 @@ test('renders ordered primitive choices and emits reorder, remove, and append mu
     value: ['email', 'username'],
   });
 
-  const firstRemove = buttons.find(
-    (control) => control.props.children === 'Remove',
-  )?.props.onPress;
+  const firstRemove = buttons.find((control) => control.props.children === 'Remove')?.props.onPress;
   if (typeof firstRemove !== 'function') throw new Error('Missing ordered-list remove handler.');
   Reflect.apply(firstRemove, undefined, []);
   expect(mutations.at(-1)).toEqual({
@@ -218,9 +216,7 @@ test('renders ordered primitive choices and emits reorder, remove, and append mu
     value: ['email'],
   });
 
-  const addPhone = buttons.find(
-    (control) => control.props.children === 'Add phone',
-  )?.props.onPress;
+  const addPhone = buttons.find((control) => control.props.children === 'Add phone')?.props.onPress;
   if (typeof addPhone !== 'function') throw new Error('Missing ordered-list append handler.');
   Reflect.apply(addPhone, undefined, []);
   expect(mutations.at(-1)).toEqual({
