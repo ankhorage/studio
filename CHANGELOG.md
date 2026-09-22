@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.2.1
+
+### Patch Changes
+
+- 820a62d: Fix dashboard project deletion by skipping infrastructure teardown when no owned resources exist and preserving actionable host diagnostics when teardown fails.
+
 ## 5.2.0
 
 ### Minor Changes

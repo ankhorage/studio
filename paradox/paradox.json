@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.2.0",
+      "value": "v5.2.1",
       "color": "cb3837"
     },
     {
@@ -1669,6 +1669,7 @@
         "ConnectProjectRepositoryResponse",
         "CreateProjectInput",
         "CreateProjectResponse",
+        "DeleteProjectResponse",
         "LaunchProjectResponse",
         "ProjectCreationError",
         "UpProjectInfrastructureResponse",
@@ -14646,7 +14647,7 @@
       "description": "Compose Studio's project infrastructure boundary on top of the provider-neutral Infra lifecycle.",
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 48,
+        "line": 49,
         "column": 1
       }
     },
@@ -14655,7 +14656,7 @@
       "description": "Compose Infra's project lifecycle with Studio's bundled adapter packages and project-scoped credentials.",
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 82,
+        "line": 88,
         "column": 1
       }
     },
@@ -14664,7 +14665,7 @@
       "description": "Convert a Studio project request into Infra's explicit environment lifecycle request.",
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 99,
+        "line": 105,
         "column": 1
       }
     },
@@ -14673,7 +14674,7 @@
       "description": "Extract explicit persistent resource confirmations from one stored Infra ownership ledger.",
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 112,
+        "line": 118,
         "column": 1
       }
     },
@@ -14682,7 +14683,7 @@
       "description": "Convert provider-neutral Infra diagnostics into one stable Studio operation failure.",
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 119,
+        "line": 125,
         "column": 1
       }
     },
@@ -14691,7 +14692,7 @@
       "description": "Format safe Infra diagnostics without exposing privileged values.",
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 126,
+        "line": 132,
         "column": 1
       }
     },
@@ -16185,7 +16186,7 @@
       "description": "Create one isolated existing project root for writer-lock behavior tests.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
-        "line": 106,
+        "line": 117,
         "column": 1
       }
     },
@@ -16194,7 +16195,7 @@
       "description": "Assert one project-writer operation rejects with the expected stable message fragment.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts",
-        "line": 111,
+        "line": 122,
         "column": 1
       }
     },
@@ -16491,7 +16492,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 56,
+        "line": 62,
         "column": 1
       }
     },
@@ -16500,7 +16501,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 60,
+        "line": 66,
         "column": 1
       }
     },
@@ -16509,7 +16510,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 64,
+        "line": 70,
         "column": 1
       }
     },
@@ -16518,7 +16519,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 74,
+        "line": 80,
         "column": 1
       }
     },
@@ -16527,7 +16528,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 78,
+        "line": 84,
         "column": 1
       }
     },
@@ -16536,7 +16537,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 94,
+        "line": 100,
         "column": 1
       }
     },
@@ -16545,7 +16546,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 98,
+        "line": 104,
         "column": 1
       }
     },
@@ -16554,7 +16555,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 106,
+        "line": 112,
         "column": 1
       }
     },
@@ -16563,7 +16564,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 114,
+        "line": 120,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseDeleteProjectResponse",
+      "description": "Parse one successful project-delete response from the Studio host.",
+      "sourceLocation": {
+        "filePath": "src/hooks/useProjects.ts",
+        "line": 127,
         "column": 1
       }
     },
@@ -16572,7 +16582,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 120,
+        "line": 144,
         "column": 1
       }
     },
@@ -16581,7 +16591,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 137,
+        "line": 161,
         "column": 1
       }
     },
@@ -16590,7 +16600,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 158,
+        "line": 182,
         "column": 1
       }
     },
@@ -16599,7 +16609,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 184,
+        "line": 208,
         "column": 1
       }
     },
@@ -16608,7 +16618,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 197,
+        "line": 221,
         "column": 1
       }
     },
@@ -16617,7 +16627,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 211,
+        "line": 235,
         "column": 1
       }
     },
@@ -16626,7 +16636,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 230,
+        "line": 254,
         "column": 1
       }
     },
@@ -16635,7 +16645,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 244,
+        "line": 268,
         "column": 1
       }
     },
@@ -20343,7 +20353,7 @@
       "description": "Require canonical deploy targets before project generation/synchronization.\n@todo Move deploy-target validation to the deploy/projects domain boundary rather than host/orchestrator.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 472,
+        "line": 479,
         "column": 1
       }
     },
@@ -20352,7 +20362,7 @@
       "description": "Report whether a filesystem path is accessible.\n@utility @ankhorage/utility/node/fs",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 486,
+        "line": 493,
         "column": 1
       }
     },
@@ -20361,7 +20371,7 @@
       "description": "Resolve the generated auth-provider mode from the manifest's global auth infrastructure ownership.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 496,
+        "line": 503,
         "column": 1
       }
     },
@@ -20370,7 +20380,7 @@
       "description": "Resolve the generated storage-provider mode when automatic storage should follow Supabase-owned auth/database infrastructure.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 505,
+        "line": 512,
         "column": 1
       }
     },
@@ -20406,7 +20416,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManagerDeletion.test.ts",
-        "line": 72,
+        "line": 93,
         "column": 1
       }
     },
@@ -20415,7 +20425,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManagerDeletion.test.ts",
-        "line": 102,
+        "line": 124,
         "column": 1
       }
     },
@@ -20424,7 +20434,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManagerDeletion.test.ts",
-        "line": 112,
+        "line": 134,
         "column": 1
       }
     },
@@ -20433,7 +20443,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManagerDeletion.test.ts",
-        "line": 125,
+        "line": 147,
         "column": 1
       }
     },
@@ -20442,7 +20452,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManagerDeletion.test.ts",
-        "line": 165,
+        "line": 187,
         "column": 1
       }
     },
@@ -23178,7 +23188,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 91,
+        "line": 92,
         "column": 1
       }
     },
@@ -23187,7 +23197,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 103,
+        "line": 104,
         "column": 1
       }
     },
@@ -44878,6 +44888,12 @@
         "sourcePath": "src/hooks/useProjects.ts"
       },
       {
+        "fromSymbol": "parseDeleteProjectResponse",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/hooks/useProjects.ts"
+      },
+      {
         "fromSymbol": "parseCreateProjectResponse",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
@@ -54857,6 +54873,12 @@
       },
       {
         "fromSymbol": "deleteProject",
+        "toSymbol": "hasOwnedResourcesAsync",
+        "callExpression": "this.dependencies.infraLifecycle.hasOwnedResourcesAsync",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "deleteProject",
         "toSymbol": "destroyAsync",
         "callExpression": "this.dependencies.infraLifecycle.destroyAsync",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
@@ -61723,6 +61745,12 @@
         "fromSymbol": "downAsync",
         "toSymbol": "toInfraRequest",
         "callExpression": "toInfraRequest",
+        "sourcePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts"
+      },
+      {
+        "fromSymbol": "hasOwnedResourcesAsync",
+        "toSymbol": "readStoredInfraStateAsync",
+        "callExpression": "readStoredInfraStateAsync",
         "sourcePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts"
       },
       {

@@ -629,7 +629,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/hooks/useProjects.ts">
       src/hooks/useProjects.ts
-      <small>17 functions</small>
+      <small>18 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/hooks/useTemplateCatalog.ts">
@@ -3009,11 +3009,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>createNativeSelectionSamplingCoordinator</code>, <code>NativeSelectionFrameScheduler</code>, <code>NativeSelectionSamplingCoordinator</code></p>
-  </article><article class="item" data-search="src/hooks/useProjects.ts src/contractGuards.ts src/projectWorkspaceContracts.ts src/utils/studioApiBase.ts ConnectProjectRepositoryResponse CreateProjectInput CreateProjectResponse LaunchProjectResponse ProjectCreationError UpProjectInfrastructureResponse useProjects">
+  </article><article class="item" data-search="src/hooks/useProjects.ts src/contractGuards.ts src/projectWorkspaceContracts.ts src/utils/studioApiBase.ts ConnectProjectRepositoryResponse CreateProjectInput CreateProjectResponse DeleteProjectResponse LaunchProjectResponse ProjectCreationError UpProjectInfrastructureResponse useProjects">
     <h3>src/hooks/useProjects.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/contractGuards.ts</code>, <code>src/projectWorkspaceContracts.ts</code>, <code>src/utils/studioApiBase.ts</code></p>
-    <p><strong>Exports:</strong> <code>ConnectProjectRepositoryResponse</code>, <code>CreateProjectInput</code>, <code>CreateProjectResponse</code>, <code>LaunchProjectResponse</code>, <code>ProjectCreationError</code>, <code>UpProjectInfrastructureResponse</code>, <code>useProjects</code></p>
+    <p><strong>Exports:</strong> <code>ConnectProjectRepositoryResponse</code>, <code>CreateProjectInput</code>, <code>CreateProjectResponse</code>, <code>DeleteProjectResponse</code>, <code>LaunchProjectResponse</code>, <code>ProjectCreationError</code>, <code>UpProjectInfrastructureResponse</code>, <code>useProjects</code></p>
   </article><article class="item" data-search="src/hooks/useTemplateCatalog.ts src/contractGuards.ts src/templateCatalogContracts.ts src/utils/studioApiBase.ts useTemplateCatalog">
     <h3>src/hooks/useTemplateCatalog.ts</h3>
     <p class="muted">Referenced module</p>
@@ -21056,27 +21056,27 @@
       <h2>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts</h2>
       <article class="item" data-search="createStudioProjectInfraLifecycle src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts Compose Studio&#39;s project infrastructure boundary on top of the provider-neutral Infra lifecycle.">
     <h3>createStudioProjectInfraLifecycle</h3>
-    <p class="muted"><code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:48:1</code></p>
+    <p class="muted"><code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:49:1</code></p>
     <p>Compose Studio&#39;s project infrastructure boundary on top of the provider-neutral Infra lifecycle.</p>
   </article><article class="item" data-search="createDefaultStudioProjectInfraLifecycle src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts Compose Infra&#39;s project lifecycle with Studio&#39;s bundled adapter packages and project-scoped credentials.">
     <h3>createDefaultStudioProjectInfraLifecycle</h3>
-    <p class="muted"><code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:82:1</code></p>
+    <p class="muted"><code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:88:1</code></p>
     <p>Compose Infra&#39;s project lifecycle with Studio&#39;s bundled adapter packages and project-scoped credentials.</p>
   </article><article class="item" data-search="toInfraRequest src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts Convert a Studio project request into Infra&#39;s explicit environment lifecycle request.">
     <h3>toInfraRequest</h3>
-    <p class="muted"><code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:99:1</code></p>
+    <p class="muted"><code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:105:1</code></p>
     <p>Convert a Studio project request into Infra&#39;s explicit environment lifecycle request.</p>
   </article><article class="item" data-search="persistentResourceIdentities src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts Extract explicit persistent resource confirmations from one stored Infra ownership ledger.">
     <h3>persistentResourceIdentities</h3>
-    <p class="muted"><code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:112:1</code></p>
+    <p class="muted"><code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:118:1</code></p>
     <p>Extract explicit persistent resource confirmations from one stored Infra ownership ledger.</p>
   </article><article class="item" data-search="requireInfraSuccess src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts Convert provider-neutral Infra diagnostics into one stable Studio operation failure.">
     <h3>requireInfraSuccess</h3>
-    <p class="muted"><code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:119:1</code></p>
+    <p class="muted"><code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:125:1</code></p>
     <p>Convert provider-neutral Infra diagnostics into one stable Studio operation failure.</p>
   </article><article class="item" data-search="formatInfraDiagnostics src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts Format safe Infra diagnostics without exposing privileged values.">
     <h3>formatInfraDiagnostics</h3>
-    <p class="muted"><code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:126:1</code></p>
+    <p class="muted"><code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts:132:1</code></p>
     <p>Format safe Infra diagnostics without exposing privileged values.</p>
   </article>
     </section>
@@ -21900,11 +21900,11 @@
       <h2>src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts</h2>
       <article class="item" data-search="createProjectRootAsync src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts Create one isolated existing project root for writer-lock behavior tests.">
     <h3>createProjectRootAsync</h3>
-    <p class="muted"><code>src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts:106:1</code></p>
+    <p class="muted"><code>src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts:117:1</code></p>
     <p>Create one isolated existing project root for writer-lock behavior tests.</p>
   </article><article class="item" data-search="expectRejectedMessageAsync src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts Assert one project-writer operation rejects with the expected stable message fragment.">
     <h3>expectRejectedMessageAsync</h3>
-    <p class="muted"><code>src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts:111:1</code></p>
+    <p class="muted"><code>src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.test.ts:122:1</code></p>
     <p>Assert one project-writer operation rejects with the expected stable message fragment.</p>
   </article>
     </section>
@@ -22121,71 +22121,75 @@
       <h2>src/hooks/useProjects.ts</h2>
       <article class="item" data-search="isRecord src/hooks/useProjects.ts ">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:56:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:62:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="isThemeModeConfig src/hooks/useProjects.ts ">
     <h3>isThemeModeConfig</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:60:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:66:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="isThemeConfig src/hooks/useProjects.ts ">
     <h3>isThemeConfig</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:64:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:70:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="isActiveThemeMode src/hooks/useProjects.ts ">
     <h3>isActiveThemeMode</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:74:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:80:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="isProject src/hooks/useProjects.ts ">
     <h3>isProject</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:78:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:84:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="readJson src/hooks/useProjects.ts ">
     <h3>readJson</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:94:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:100:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="readError src/hooks/useProjects.ts ">
     <h3>readError</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:98:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:104:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="parseProjectList src/hooks/useProjects.ts ">
     <h3>parseProjectList</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:106:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:112:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="requestProjects src/hooks/useProjects.ts ">
     <h3>requestProjects</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:114:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:120:1</code></p>
     <p class="empty">No description available.</p>
+  </article><article class="item" data-search="parseDeleteProjectResponse src/hooks/useProjects.ts Parse one successful project-delete response from the Studio host.">
+    <h3>parseDeleteProjectResponse</h3>
+    <p class="muted"><code>src/hooks/useProjects.ts:127:1</code></p>
+    <p>Parse one successful project-delete response from the Studio host.</p>
   </article><article class="item" data-search="parseCreateProjectResponse src/hooks/useProjects.ts ">
     <h3>parseCreateProjectResponse</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:120:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:144:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="parseProjectCreationFailure src/hooks/useProjects.ts ">
     <h3>parseProjectCreationFailure</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:137:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:161:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="parseConnectProjectRepositoryResponse src/hooks/useProjects.ts ">
     <h3>parseConnectProjectRepositoryResponse</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:158:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:182:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="parseUpProjectInfrastructureResponse src/hooks/useProjects.ts ">
     <h3>parseUpProjectInfrastructureResponse</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:184:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:208:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="parseLaunchProjectResponse src/hooks/useProjects.ts ">
     <h3>parseLaunchProjectResponse</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:197:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:221:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="requestProjectAction src/hooks/useProjects.ts ">
     <h3>requestProjectAction</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:211:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:235:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="requestCreateProject src/hooks/useProjects.ts ">
     <h3>requestCreateProject</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:230:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:254:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="useProjects src/hooks/useProjects.ts ">
     <h3>useProjects</h3>
-    <p class="muted"><code>src/hooks/useProjects.ts:244:1</code></p>
+    <p class="muted"><code>src/hooks/useProjects.ts:268:1</code></p>
     <p class="empty">No description available.</p>
   </article>
     </section>
@@ -24391,21 +24395,21 @@ the currently running Studio contracts.</p>
       <h2>src/host/orchestrator/projectManager.ts</h2>
       <article class="item" data-search="requireProjectDeployTargets src/host/orchestrator/projectManager.ts Require canonical deploy targets before project generation/synchronization.&#10;@todo Move deploy-target validation to the deploy/projects domain boundary rather than host/orchestrator.">
     <h3>requireProjectDeployTargets</h3>
-    <p class="muted"><code>src/host/orchestrator/projectManager.ts:472:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectManager.ts:479:1</code></p>
     <p>Require canonical deploy targets before project generation/synchronization.
 @todo Move deploy-target validation to the deploy/projects domain boundary rather than host/orchestrator.</p>
   </article><article class="item" data-search="exists src/host/orchestrator/projectManager.ts Report whether a filesystem path is accessible.&#10;@utility @ankhorage/utility/node/fs">
     <h3>exists</h3>
-    <p class="muted"><code>src/host/orchestrator/projectManager.ts:486:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectManager.ts:493:1</code></p>
     <p>Report whether a filesystem path is accessible.
 @utility @ankhorage/utility/node/fs</p>
   </article><article class="item" data-search="resolveGeneratedAuthProvider src/host/orchestrator/projectManager.ts Resolve the generated auth-provider mode from the manifest&#39;s global auth infrastructure ownership.">
     <h3>resolveGeneratedAuthProvider</h3>
-    <p class="muted"><code>src/host/orchestrator/projectManager.ts:496:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectManager.ts:503:1</code></p>
     <p>Resolve the generated auth-provider mode from the manifest&#39;s global auth infrastructure ownership.</p>
   </article><article class="item" data-search="resolveGeneratedStorageProvider src/host/orchestrator/projectManager.ts Resolve the generated storage-provider mode when automatic storage should follow Supabase-owned auth/database infrastructure.">
     <h3>resolveGeneratedStorageProvider</h3>
-    <p class="muted"><code>src/host/orchestrator/projectManager.ts:505:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectManager.ts:512:1</code></p>
     <p>Resolve the generated storage-provider mode when automatic storage should follow Supabase-owned auth/database infrastructure.</p>
   </article>
     </section>
@@ -24431,23 +24435,23 @@ the currently running Studio contracts.</p>
       <h2>src/host/orchestrator/projectManagerDeletion.test.ts</h2>
       <article class="item" data-search="createInfraLifecycle src/host/orchestrator/projectManagerDeletion.test.ts ">
     <h3>createInfraLifecycle</h3>
-    <p class="muted"><code>src/host/orchestrator/projectManagerDeletion.test.ts:72:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectManagerDeletion.test.ts:93:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="createWorkspace src/host/orchestrator/projectManagerDeletion.test.ts ">
     <h3>createWorkspace</h3>
-    <p class="muted"><code>src/host/orchestrator/projectManagerDeletion.test.ts:102:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectManagerDeletion.test.ts:124:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="createProject src/host/orchestrator/projectManagerDeletion.test.ts ">
     <h3>createProject</h3>
-    <p class="muted"><code>src/host/orchestrator/projectManagerDeletion.test.ts:112:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectManagerDeletion.test.ts:134:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="createManifest src/host/orchestrator/projectManagerDeletion.test.ts ">
     <h3>createManifest</h3>
-    <p class="muted"><code>src/host/orchestrator/projectManagerDeletion.test.ts:125:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectManagerDeletion.test.ts:147:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="expectRejects src/host/orchestrator/projectManagerDeletion.test.ts ">
     <h3>expectRejects</h3>
-    <p class="muted"><code>src/host/orchestrator/projectManagerDeletion.test.ts:165:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectManagerDeletion.test.ts:187:1</code></p>
     <p class="empty">No description available.</p>
   </article>
     </section>
@@ -26133,11 +26137,11 @@ Read the current project manifest, retrying the same owner once when the first r
       <h2>src/host/studioInfra.e2e.test.ts</h2>
       <article class="item" data-search="createLedger src/host/studioInfra.e2e.test.ts ">
     <h3>createLedger</h3>
-    <p class="muted"><code>src/host/studioInfra.e2e.test.ts:91:1</code></p>
+    <p class="muted"><code>src/host/studioInfra.e2e.test.ts:92:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="createManifest src/host/studioInfra.e2e.test.ts ">
     <h3>createManifest</h3>
-    <p class="muted"><code>src/host/studioInfra.e2e.test.ts:103:1</code></p>
+    <p class="muted"><code>src/host/studioInfra.e2e.test.ts:104:1</code></p>
     <p class="empty">No description available.</p>
   </article>
     </section>
