@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.5.2
+
+### Patch Changes
+
+- 5f8733d: Update Ankhorage dependencies: `@ankhorage/zora-game`.
+
 ## 5.5.1
 
 ### Patch Changes
