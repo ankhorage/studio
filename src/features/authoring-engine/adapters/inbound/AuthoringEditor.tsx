@@ -199,7 +199,7 @@ function SetEditor(props: {
   );
 }
 
-/*** Render an ordered finite primitive list with append, remove, and positional controls. */
+/*** Render an ordered primitive list with editing, append, remove, and positional controls. */
 function OrderedListEditor(props: {
   readonly model: AuthoringOrderedListNode;
   readonly onMutation: (mutation: AuthoringMutation) => void;
@@ -211,7 +211,25 @@ function OrderedListEditor(props: {
       <View style={styles.membership}>
         {model.items.map((item, index) => (
           <View key={`${encodeChoiceValue(item)}:${index}`} style={styles.orderedListRow}>
-            <Text>{String(item)}</Text>
+            {model.item.kind === 'choice' ? (
+              <Text>{String(item)}</Text>
+            ) : (
+              <View style={styles.orderedListInput}>
+                <TextInput
+                  value={typeof item === 'string' ? item : ''}
+                  autoCapitalize="none"
+                  onChangeText={(value) =>
+                    props.onMutation({
+                      kind: 'set',
+                      path: model.path,
+                      value: model.items.map((candidate, candidateIndex) =>
+                        candidateIndex === index ? value : candidate,
+                      ),
+                    })
+                  }
+                />
+              </View>
+            )}
             <Button
               variant="outline"
               disabled={index === 0}
@@ -254,21 +272,36 @@ function OrderedListEditor(props: {
           </View>
         ))}
         <View style={styles.orderedListAdd}>
-          {model.values.map((value) => (
+          {model.item.kind === 'choice' ? (
+            model.item.values.map((value) => (
+              <Button
+                key={encodeChoiceValue(value)}
+                variant="outline"
+                onPress={() =>
+                  props.onMutation({
+                    kind: 'set',
+                    path: model.path,
+                    value: [...model.items, value],
+                  })
+                }
+              >
+                {`Add ${String(value)}`}
+              </Button>
+            ))
+          ) : (
             <Button
-              key={encodeChoiceValue(value)}
               variant="outline"
               onPress={() =>
                 props.onMutation({
                   kind: 'set',
                   path: model.path,
-                  value: [...model.items, value],
+                  value: [...model.items, ''],
                 })
               }
             >
-              {`Add ${String(value)}`}
+              Add item
             </Button>
-          ))}
+          )}
         </View>
       </View>
     </Field>
@@ -401,5 +434,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8,
+  },
+  orderedListInput: {
+    flex: 1,
+    minWidth: 160,
   },
 });
