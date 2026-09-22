@@ -270,10 +270,10 @@ function readOrderedListValue(
     };
   }
 
-  const invalid = value.find(
+  const hasInvalidItem = value.some(
     (candidate) => !item.values.some((allowed) => Object.is(allowed, candidate)),
   );
-  if (invalid !== undefined) {
+  if (hasInvalidItem) {
     return {
       ok: false,
       diagnostic: {
