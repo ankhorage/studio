@@ -27,9 +27,7 @@ test('derives generated dependency ranges from owner package metadata', async ()
   });
 
   expect(packageJson.packageManager).toBe(policy.packageManager);
-  expect(policy.dependencies.studio).toBe(
-    selfConsumerPackage.dependencies?.['@ankhorage/studio'],
-  );
+  expect(policy.dependencies.studio).toBe(selfConsumerPackage.dependencies?.['@ankhorage/studio']);
   expect(packageJson.dependencies).toMatchObject({
     '@ankhorage/contracts': policy.dependencies.contracts,
     '@ankhorage/data-sources': policy.dependencies.dataSources,
