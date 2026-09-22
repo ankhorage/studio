@@ -68,6 +68,11 @@ function resolveDescriptor(
             structure: resolveDescriptor(field.value, document, visited, [...path, name]),
           })),
       };
+    case 'set':
+      return {
+        kind: 'set',
+        member: resolveDescriptor(descriptor.member, document, visited, [...path, '*']),
+      };
     case 'ref':
       return resolveReference(descriptor, document, visited, path);
     default:

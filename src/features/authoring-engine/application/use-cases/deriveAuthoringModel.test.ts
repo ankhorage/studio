@@ -68,6 +68,39 @@ test('derives scalar and optional fields from one neutral object structure', () 
   ]);
 });
 
+test('derives finite string set membership without imposing order on persisted membership', () => {
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'set',
+      member: { kind: 'choice', values: ['camera', 'microphone', 'notifications'] },
+    },
+    value: { notifications: true, camera: true },
+  });
+
+  expect(model).toMatchObject({
+    kind: 'set',
+    values: ['camera', 'microphone', 'notifications'],
+    selected: ['camera', 'notifications'],
+  });
+});
+
+test('rejects malformed or unknown set members instead of silently dropping them', () => {
+  for (const value of [{ camera: false }, { unknown: true }]) {
+    const model = deriveAuthoringModel({
+      structure: {
+        kind: 'set',
+        member: { kind: 'choice', values: ['camera', 'microphone'] },
+      },
+      value,
+    });
+
+    expect(model).toMatchObject({
+      kind: 'unsupported',
+      diagnostic: { code: 'invalid-value' },
+    });
+  }
+});
+
 test('reports invalid runtime values instead of coercing them', () => {
   const model = deriveAuthoringModel({
     structure: { kind: 'scalar', scalarType: 'boolean' },

@@ -22,6 +22,8 @@ test('uses canonical manifestState mutations for provider authoring state', () =
   expect(source).toContain('deleteStudioManifestNode');
   expect(source).toContain('addStudioManifestScreen');
   expect(source).toContain('deleteStudioManifestScreen');
+  expect(source).toContain('updateStudioScreenRequirements');
+  expect(source).toContain('updateScreenRequirements,');
   expect(source).toContain('hasCanonicalStudioScreenRegistryIdentity');
   expect(source).toContain('moveStudioManifestRoute');
   expect(source).toContain('setStudioManifestRoutePrimaryNavigationVisibility');

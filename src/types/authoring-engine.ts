@@ -49,6 +49,10 @@ export type AuthoringStructure =
       readonly fields: readonly AuthoringStructureField[];
     }
   | {
+      readonly kind: 'set';
+      readonly member: AuthoringStructure;
+    }
+  | {
       readonly kind: 'unsupported';
       readonly sourceKind: string;
       readonly diagnostic: AuthoringDiagnostic;
@@ -85,13 +89,23 @@ interface AuthoringObjectNode extends AuthoringNodeBase {
   readonly fields: readonly AuthoringNode[];
 }
 
+export interface AuthoringSetNode extends AuthoringNodeBase {
+  readonly kind: 'set';
+  readonly values: readonly string[];
+  readonly selected: readonly string[];
+}
+
 interface AuthoringUnsupportedNode extends AuthoringNodeBase {
   readonly kind: 'unsupported';
   readonly diagnostic: AuthoringDiagnostic;
 }
 
 export type AuthoringNode =
-  AuthoringChoiceNode | AuthoringObjectNode | AuthoringScalarNode | AuthoringUnsupportedNode;
+  | AuthoringChoiceNode
+  | AuthoringObjectNode
+  | AuthoringScalarNode
+  | AuthoringSetNode
+  | AuthoringUnsupportedNode;
 
 export type AuthoringStructureResolution =
   | {

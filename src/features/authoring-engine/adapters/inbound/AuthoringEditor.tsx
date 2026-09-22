@@ -7,6 +7,7 @@ import type {
   AuthoringMutation,
   AuthoringNode,
   AuthoringScalarNode,
+  AuthoringSetNode,
 } from '../../../../types/authoring-engine';
 
 export interface AuthoringCustomControlProps {
@@ -99,13 +100,17 @@ function AuthoringControl({ model, onMutation, renderCustomControl }: AuthoringE
         readOnly
         required={!model.optional}
       >
-        <Text>{formatAuthoringValue(model.value)}</Text>
+        <Text>{formatAuthoringNodeValue(model)}</Text>
       </Field>
     );
   }
 
   if (model.kind === 'choice') {
     return <ChoiceEditor model={model} onMutation={onMutation} />;
+  }
+
+  if (model.kind === 'set') {
+    return <SetEditor model={model} onMutation={onMutation} />;
   }
 
   return <ScalarEditor model={model} onMutation={onMutation} />;
@@ -144,6 +149,47 @@ function ChoiceEditor(props: {
           }
         }}
       />
+    </Field>
+  );
+}
+
+/*** Render finite unordered string membership with one switch per owner-provided member. */
+function SetEditor(props: {
+  readonly model: AuthoringSetNode;
+  readonly onMutation: (mutation: AuthoringMutation) => void;
+}) {
+  const { model } = props;
+
+  return (
+    <Field label={model.label} description={model.description} required={!model.optional}>
+      <View style={styles.membership}>
+        {model.values.map((member) => (
+          <View key={member} style={styles.membershipRow}>
+            <Switch
+              checked={model.selected.includes(member)}
+              onCheckedChange={(checked) => {
+                const selected = checked
+                  ? model.values.filter(
+                      (candidate) => candidate === member || model.selected.includes(candidate),
+                    )
+                  : model.selected.filter((candidate) => candidate !== member);
+                if (model.optional && selected.length === 0) {
+                  props.onMutation({ kind: 'unset', path: model.path });
+                  return;
+                }
+                props.onMutation({
+                  kind: 'set',
+                  path: model.path,
+                  value: Object.fromEntries(
+                    selected.map((candidate) => [candidate, true] as const),
+                  ),
+                });
+              }}
+            />
+            <Text>{member}</Text>
+          </View>
+        ))}
+      </View>
     </Field>
   );
 }
@@ -221,15 +267,27 @@ function encodeChoiceValue(value: string | number | boolean | null): string {
   return `${typeof value}:${JSON.stringify(value)}`;
 }
 
-/*** Format one authored primitive for read-only presentation. */
-function formatAuthoringValue(value: AuthoringScalarNode['value']) {
-  if (value === undefined) return 'Not set';
-  if (value === null) return 'null';
-  return String(value);
+/*** Format one supported authored node for read-only presentation. */
+function formatAuthoringNodeValue(
+  model: AuthoringChoiceNode | AuthoringScalarNode | AuthoringSetNode,
+): string {
+  if (model.kind === 'set')
+    return model.selected.length > 0 ? model.selected.join(', ') : 'Not set';
+  if (model.value === undefined) return 'Not set';
+  if (model.value === null) return 'null';
+  return String(model.value);
 }
 
 const styles = StyleSheet.create({
   fields: {
     gap: 12,
+  },
+  membership: {
+    gap: 8,
+  },
+  membershipRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 8,
   },
 });

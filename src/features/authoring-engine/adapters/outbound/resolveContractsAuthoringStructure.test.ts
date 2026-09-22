@@ -1,4 +1,7 @@
-import { STRUCTURE_DESCRIPTOR } from '@ankhorage/contracts/structure';
+import {
+  STRUCTURE_DESCRIPTOR,
+  type StructureDescriptorDocument,
+} from '@ankhorage/contracts/structure';
 import { expect, test } from 'bun:test';
 
 import { resolveContractsAuthoringStructure } from './resolveContractsAuthoringStructure';
@@ -21,6 +24,49 @@ test('resolves the released screen metadata root without a Studio-local schema',
     { name: 'name', optional: false, kind: 'scalar' },
     { name: 'title', optional: true, kind: 'scalar' },
   ]);
+});
+
+test('preserves canonical set semantics from Contracts descriptors', () => {
+  const document = {
+    protocolVersion: 1,
+    packageName: '@example/owner',
+    packageVersion: '1.0.0',
+    roots: { requirements: 'Requirements' },
+    descriptors: {
+      Requirements: {
+        id: 'Requirements',
+        descriptor: {
+          kind: 'object',
+          fields: {
+            permissions: {
+              optional: true,
+              value: {
+                kind: 'set',
+                member: { kind: 'enum', values: ['camera', 'microphone'] },
+              },
+            },
+          },
+        },
+      },
+    },
+  } as const satisfies StructureDescriptorDocument;
+
+  expect(resolveContractsAuthoringStructure(document, 'requirements')).toEqual({
+    ok: true,
+    structure: {
+      kind: 'object',
+      fields: [
+        {
+          name: 'permissions',
+          optional: true,
+          structure: {
+            kind: 'set',
+            member: { kind: 'choice', values: ['camera', 'microphone'] },
+          },
+        },
+      ],
+    },
+  });
 });
 
 test('reports missing roots rather than guessing an editor', () => {
