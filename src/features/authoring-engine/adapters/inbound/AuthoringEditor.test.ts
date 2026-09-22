@@ -1,9 +1,10 @@
+import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 import { expect, test } from 'bun:test';
-import type { ReactNode } from 'react';
-import { isValidElement } from 'react';
+import { createElement, isValidElement, type ReactNode } from 'react';
 
 import type { AuthoringMutation, AuthoringNode } from '../../../../types/authoring-engine';
 import { deriveAuthoringModel } from '../../application/use-cases/deriveAuthoringModel';
+import type { AuthoringEditorProps } from './AuthoringEditor';
 
 // Bundle only this adapter against inert control contracts; no global module mocks or native runtime.
 const editor = await loadEditor();
@@ -59,7 +60,7 @@ test('keeps invalid overrides resettable and read-only fields immutable', () => 
   }
 });
 
-test('shows an inherited finite choice and emits the selected owner value', () => {
+test('shows an inherited finite string choice and emits the selected owner value', () => {
   const mutations: AuthoringMutation[] = [];
   const model = deriveAuthoringModel({
     structure: {
@@ -93,6 +94,92 @@ test('shows an inherited finite choice and emits the selected owner value', () =
   expect(mutations).toEqual([{ kind: 'set', path: ['tone'], value: 'subtle' }]);
 });
 
+test('preserves numeric finite-choice identity instead of coercing owner values to strings', () => {
+  const mutations: AuthoringMutation[] = [];
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'object',
+      fields: [
+        {
+          name: 'level',
+          optional: true,
+          structure: { kind: 'choice', values: [1, 2, 3] },
+        },
+      ],
+    },
+    value: { level: 2 },
+  });
+  const controls = renderControls(
+    editor.AuthoringEditor({
+      model,
+      onMutation: (mutation) => mutations.push(mutation),
+    }),
+  );
+  const select = controls.find((control) => control.type === 'Select');
+  expect(select?.props.value).toBe('number:2');
+  expect(select?.props.options).toEqual([
+    { label: '1', value: 'number:1' },
+    { label: '2', value: 'number:2' },
+    { label: '3', value: 'number:3' },
+  ]);
+  const change = select?.props.onValueChange;
+  if (typeof change !== 'function') throw new Error('Missing numeric choice handler.');
+  Reflect.apply(change, undefined, ['number:3']);
+  expect(mutations).toEqual([{ kind: 'set', path: ['level'], value: 3 }]);
+});
+
+test('delegates owner-requested custom controls while retaining the central Field wrapper', () => {
+  const mutations: AuthoringMutation[] = [];
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'object',
+      fields: [
+        {
+          name: 'source',
+          optional: true,
+          structure: {
+            kind: 'object',
+            fields: [
+              {
+                name: 'mediaId',
+                optional: true,
+                structure: { kind: 'scalar', scalarType: 'string' },
+              },
+            ],
+          },
+        },
+      ],
+    },
+    value: { source: { mediaId: 'hero' } },
+    policy: {
+      fields: {
+        source: { label: 'Source', editor: { kind: 'media', mediaKinds: ['image'] } },
+      },
+    },
+  });
+  const controls = renderControls(
+    editor.AuthoringEditor({
+      model,
+      onMutation: (mutation) => mutations.push(mutation),
+      renderCustomControl: ({ model: field, onMutation }) =>
+        field.editor?.kind === 'media'
+          ? createElement('span', {
+              onClick: () =>
+                onMutation({ kind: 'set', path: field.path, value: { mediaId: 'replacement' } }),
+            })
+          : undefined,
+    }),
+  );
+  expect(controls.some((control) => control.type === 'Field')).toBe(true);
+  const custom = controls.find((control) => control.type === 'span');
+  const click = custom?.props.onClick;
+  if (typeof click !== 'function') throw new Error('Missing custom editor handler.');
+  Reflect.apply(click, undefined, []);
+  expect(mutations).toEqual([
+    { kind: 'set', path: ['source'], value: { mediaId: 'replacement' } },
+  ]);
+});
+
 function booleanModel(value: unknown, readOnly = false): AuthoringNode {
   return deriveAuthoringModel({
     structure: {
@@ -123,10 +210,7 @@ function renderControls(node: unknown): readonly {
 }
 
 async function loadEditor(): Promise<{
-  AuthoringEditor: (props: {
-    model: AuthoringNode;
-    onMutation: (mutation: AuthoringMutation) => void;
-  }) => ReactNode;
+  AuthoringEditor: (props: AuthoringEditorProps) => ReactNode;
 }> {
   const build = await Bun.build({
     entrypoints: [new URL('./AuthoringEditor.tsx', import.meta.url).pathname],
@@ -164,4 +248,3 @@ async function loadEditor(): Promise<{
     },
   };
 }
-import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
