@@ -1,3 +1,4 @@
+/*** Shared geometry contracts between runtime measurement and Studio canvas rendering. */
 export interface MeasuredRect {
   readonly x: number;
   readonly y: number;
