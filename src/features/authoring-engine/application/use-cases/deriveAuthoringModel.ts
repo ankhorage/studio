@@ -3,7 +3,7 @@ import { isRecord } from '@ankhorage/utility/object';
 import type {
   AuthoringDiagnostic,
   AuthoringNode,
-  type AuthoringOrderedListItem,
+  AuthoringOrderedListItem,
   AuthoringPresentationPolicy,
   AuthoringPrimitive,
   AuthoringScalarType,
