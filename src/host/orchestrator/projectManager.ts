@@ -92,13 +92,20 @@ export class ProjectManager {
     if (await exists(projectPath)) {
       if (projectId !== 'studio') {
         const manifest = await this.store.readManifest(projectId);
-        await this.dependencies.infraLifecycle.destroyAsync({
+        const hasOwnedResources = await this.dependencies.infraLifecycle.hasOwnedResourcesAsync({
           projectId,
           projectPath,
           manifest,
-          deletePersistentResources: true,
         });
-        infraDestroyed = true;
+        if (hasOwnedResources) {
+          await this.dependencies.infraLifecycle.destroyAsync({
+            projectId,
+            projectPath,
+            manifest,
+            deletePersistentResources: true,
+          });
+          infraDestroyed = true;
+        }
       }
     }
 
