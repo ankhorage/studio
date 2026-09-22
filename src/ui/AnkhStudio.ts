@@ -10,9 +10,9 @@ import {
 import React, { useMemo } from 'react';
 import { Text } from 'react-native';
 
-import { studioApiBase } from '../utils/studioApiBase';
 import { useStudio } from '../core/StudioContext';
 import { createStudioMediaAssetResolver } from '../runtime/studioMediaResolver';
+import { studioApiBase } from '../utils/studioApiBase';
 
 export interface AnkhStudioProps {
   children: React.ReactNode;

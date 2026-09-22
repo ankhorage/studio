@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { isAppCategory, isColorHarmony } from '../contractGuards';
-import { studioApiBase } from '../utils/studioApiBase';
 import type { TemplateCatalog, TemplateCatalogCategory } from '../templateCatalogContracts';
+import { studioApiBase } from '../utils/studioApiBase';
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;

@@ -9,11 +9,11 @@ import { generateWorkspaceLayout } from '@ankhorage/navigator';
 import path from 'path';
 
 import type { StudioAdminRouteId } from '../../index';
-import type { GeneratedFile } from '../../types/project-generation';
 import {
   getStudioAdminRouteDefinition,
   STUDIO_ADMIN_ROUTE_REGISTRY,
 } from '../../studioAdminRouteModel';
+import type { GeneratedFile } from '../../types/project-generation';
 import type { LayoutMutation } from '../modules/layout';
 import {
   type AuthGeneratedFilePlan,

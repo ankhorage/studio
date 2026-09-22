@@ -5,8 +5,8 @@ import path from 'node:path';
 import type { AppManifest } from '@ankhorage/contracts';
 import { afterEach, expect, test } from 'bun:test';
 
-import { createProjectCreationTestSource } from './createProjectCreationTestSource';
 import { getProjectTemplateSource } from '../templates';
+import { createProjectCreationTestSource } from './createProjectCreationTestSource';
 import { ProjectManager } from './projectManager';
 
 const roots: string[] = [];

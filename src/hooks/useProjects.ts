@@ -2,11 +2,11 @@ import type { AppCategory, AppManifest, ThemeConfig } from '@ankhorage/contracts
 import { useCallback, useEffect, useState } from 'react';
 
 import { isAppCategory, isColorHarmony } from '../contractGuards';
-import { studioApiBase } from '../utils/studioApiBase';
 import type {
   ProjectCreationValidationFailure,
   StudioProjectSummary,
 } from '../projectWorkspaceContracts';
+import { studioApiBase } from '../utils/studioApiBase';
 
 export interface CreateProjectResponse {
   success: boolean;
