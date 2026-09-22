@@ -7,7 +7,7 @@
       "dependencies": {
         "@ankhorage/apm": "^0.8.10",
         "@ankhorage/color-theory": "^0.3.1",
-        "@ankhorage/contracts": "^22.5.0",
+        "@ankhorage/contracts": "^22.6.0",
         "@ankhorage/data-sources": "^2.0.13",
         "@ankhorage/deploy": "^0.12.9",
         "@ankhorage/expo-runtime": "^4.0.5",
@@ -69,7 +69,7 @@
     },
   },
   "overrides": {
-    "@ankhorage/contracts": "^22.5.0",
+    "@ankhorage/contracts": "^22.6.0",
   },
   "packages": {
     "@ankhorage/ankh": ["@ankhorage/ankh@0.10.4", "", { "dependencies": { "@ankhorage/contracts": "^22.0.1", "yaml": "^2.8.1" }, "bin": { "ankh": "dist/bin.js" } }, "sha512-Eaj0B8MFQl82MzprHRssYV0fXMdEUsDh1mOXLslF7wZfXvavX+ih21B1vAOKvCwkX9nxIauxovlMTWgt4Okw2Q=="],
@@ -78,7 +78,7 @@
 
     "@ankhorage/color-theory": ["@ankhorage/color-theory@0.3.1", "", { "dependencies": { "culori": "^4.0.2" } }, "sha512-PqGeC16IkWzTA3Qig3T1p6CE6oN6JC1fv83cJ8SdohY5vlNE1YqJAZsLkzCy59ylJOwgPITA98TRH3jIVnlGBw=="],
 
-    "@ankhorage/contracts": ["@ankhorage/contracts@22.5.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.3.1", "@ankhorage/utility": "^1.4.0" } }, "sha512-wpi5vT36Ei8y4qpe/UfBINwjqAGwcHB+nAYxLyvYomKNzPAOZH4u8FAQNaHbpKIvTLBL+7sCjloHnnT23aKffA=="],
+    "@ankhorage/contracts": ["@ankhorage/contracts@22.6.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.3.1", "@ankhorage/utility": "^1.5.0" } }, "sha512-IDx8YjY32t//HA9gMc9bsW6fYbqb8jcbx0nnbEeqI+/eTy2colpfg8qg3dag79lkXA+ycAiIIqMFKqCT9nEYLw=="],
 
     "@ankhorage/data-sources": ["@ankhorage/data-sources@2.0.13", "", { "dependencies": { "@ankhorage/contracts": "^22.5.0" } }, "sha512-qmhqvpF90Imd6BT1RixPv+5RXKJfAujsXCmHIuDE2vu2aq2aFILLUdEQmMOF4Kh140Ui8cyqUJIg0x/1PN2Z5g=="],
 
@@ -1975,6 +1975,8 @@
     "zod": ["zod@4.6.1", "", {}, "sha512-341aRWQsve0rvronKNTqZpjmzdbUDlFuzHaI/XLg/Ej82qffDJRRfBTCuv7+9q/rMjB6LSLyEBnW4InJeMtt/Q=="],
 
     "zod-validation-error": ["zod-validation-error@4.0.2", "", { "peerDependencies": { "zod": "^3.25.0 || ^4.0.0" } }, "sha512-Q6/nZLe6jxuU80qb/4uJ4t5v2VEZ44lzQjPDhYJNztRQ4wyWc6VF3D3Kb/fAuPetZQnhS3hnajCf9CsWesghLQ=="],
+
+    "@ankhorage/contracts/@ankhorage/utility": ["@ankhorage/utility@1.5.0", "", {}, "sha512-tbLeGeE9w1umSgcrP5klGxawb6WB1lO8w3QvAxgdhWV4vTDS+qbWu6CEwvS8ao83ZR0duYn+oszcTmv6If5PRQ=="],
 
     "@ankhorage/deploy-provider-app-store-connect/@ankhorage/utility": ["@ankhorage/utility@0.8.0", "", {}, "sha512-0ywzdqu1pO+n9yNhbJE5+JD4CeUQ1GEvMGbh8pccr8ieLFlYgTKMFWxH3XUk0Mw6P2ngelQU+PHC+kjJ/xL8Uw=="],
 

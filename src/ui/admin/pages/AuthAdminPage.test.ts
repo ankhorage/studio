@@ -64,3 +64,14 @@ test('auth provider enablement uses credential completeness instead of status or
   expect(source).toContain('requiredFields.every');
   expect(source).not.toContain("props.providerHealth?.status === 'configured'");
 });
+
+test('auth sign-up authoring is derived from the canonical Contracts structure', () => {
+  expect(source).toContain("'auth-sign-up'");
+  expect(source).toContain('AUTH_SIGN_UP_AUTHORING_STRUCTURE');
+  expect(source).toContain('value: draft.signUp');
+  expect(source).toContain('applyAuthoringMutation(current.signUp, mutation)');
+  expect(source).not.toContain('Required sign-up fields (comma-separated)');
+  expect(source).not.toContain('Optional sign-up fields (comma-separated)');
+  expect(source).not.toContain('Email confirmation required');
+  expect(source).not.toContain('function splitList');
+});
