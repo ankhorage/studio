@@ -1,8 +1,4 @@
-import type {
-  AppManifest,
-  MediaAssetKind,
-  MediaAssetReference,
-} from '@ankhorage/contracts';
+import type { AppManifest, MediaAssetKind, MediaAssetReference } from '@ankhorage/contracts';
 import { Button, Select, Text } from '@ankhorage/zora';
 import { useRouter } from 'expo-router';
 import React from 'react';
