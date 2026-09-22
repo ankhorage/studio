@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.5.1
+
+### Patch Changes
+
+- 7083919: Update Ankhorage dependencies: `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/expo-runtime`, `@ankhorage/minikube`, `@ankhorage/navigator`, `@ankhorage/repository`, `@ankhorage/runtime`, `@ankhorage/supabase-auth`, `@ankhorage/supabase-storage`, `@ankhorage/utility`, `@ankhorage/zora-game`, `@ankhorage/zora-tabletop`, `@ankhorage/zora`.
+
 ## 5.5.0
 
 ### Minor Changes
