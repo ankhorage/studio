@@ -26,6 +26,29 @@ test('resolves the released screen metadata root without a Studio-local schema',
   ]);
 });
 
+test('resolves the released auth flow root for descriptor-driven route authoring', () => {
+  const result = resolveContractsAuthoringStructure(STRUCTURE_DESCRIPTOR, 'auth-flow');
+
+  expect(result.ok).toBe(true);
+  if (!result.ok || result.structure.kind !== 'object') return;
+
+  expect(
+    result.structure.fields.map((field) => ({
+      name: field.name,
+      optional: field.optional,
+      kind: field.structure.kind,
+    })),
+  ).toEqual([
+    { name: 'forgotPasswordRoute', optional: true, kind: 'scalar' },
+    { name: 'otpRoute', optional: true, kind: 'scalar' },
+    { name: 'postSignInRoute', optional: false, kind: 'scalar' },
+    { name: 'signInRoute', optional: false, kind: 'scalar' },
+    { name: 'signOutRoute', optional: true, kind: 'scalar' },
+    { name: 'signUpRoute', optional: true, kind: 'scalar' },
+    { name: 'unauthorizedRoute', optional: true, kind: 'scalar' },
+  ]);
+});
+
 test('preserves canonical set semantics from Contracts descriptors', () => {
   const document = {
     protocolVersion: 1,
