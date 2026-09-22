@@ -70,6 +70,43 @@ test('resolves the released auth sign-in ordered identifier structure', () => {
   });
 });
 
+test('resolves the released auth sign-up open ordered field structure', () => {
+  const result = resolveContractsAuthoringStructure(STRUCTURE_DESCRIPTOR, 'auth-sign-up');
+
+  expect(result).toEqual({
+    ok: true,
+    structure: {
+      kind: 'object',
+      fields: [
+        {
+          name: 'optionalFields',
+          optional: true,
+          structure: {
+            kind: 'ordered-list',
+            item: { kind: 'scalar', scalarType: 'string' },
+          },
+        },
+        {
+          name: 'requiredFields',
+          optional: false,
+          structure: {
+            kind: 'ordered-list',
+            item: { kind: 'scalar', scalarType: 'string' },
+          },
+        },
+        {
+          name: 'signUpPolicy',
+          optional: true,
+          structure: {
+            kind: 'choice',
+            values: ['autoSignIn', 'requireVerification'],
+          },
+        },
+      ],
+    },
+  });
+});
+
 test('preserves canonical set semantics from Contracts descriptors', () => {
   const document = {
     protocolVersion: 1,
