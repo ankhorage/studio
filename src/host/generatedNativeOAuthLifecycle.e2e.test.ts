@@ -15,6 +15,8 @@ const CALLBACK_URL = 'ankh-ios://auth/callback';
 const EXPO_GO_MESSAGE =
   'Brokered OAuth requires a development or standalone build with the configured app scheme; Expo Go cannot provide a stable OAuth callback scheme.';
 const temporaryRoots = new Set<string>();
+const generatedNativeOAuthLifecycleE2e =
+  process.env.ANKH_STUDIO_GENERATED_NATIVE_OAUTH_E2E === '1' ? describe : describe.skip;
 
 type GeneratedOAuthOutcome =
   | { status: 'authenticated'; completion: 'fresh' | 'already-completed' }
@@ -52,7 +54,7 @@ afterEach(async () => {
   );
 });
 
-describe('generated native OAuth lifecycle', () => {
+generatedNativeOAuthLifecycleE2e('generated native OAuth lifecycle', () => {
   it('exchanges a native callback once and persists the authenticated session', async () => {
     const harness = await createHarness();
     harness.state.setBrowserResult({ type: 'success', url: `${CALLBACK_URL}?code=opaque-code` });

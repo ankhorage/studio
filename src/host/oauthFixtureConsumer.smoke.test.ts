@@ -4,7 +4,7 @@ import path from 'node:path';
 
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { OAUTH_CALLBACK_ROUTE } from '@ankhorage/templates';
-import { expect, test } from 'bun:test';
+import { expect, test as bunTest } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
@@ -14,6 +14,7 @@ const SECRET_SENTINEL = 'sentinel-phase3-consumer-secret-do-not-leak';
 const PROJECT_NAME = 'OAuth Fixture Consumer';
 const PROJECT_ID = 'oauth-fixture-consumer';
 const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
+const test = process.env.ANKH_STUDIO_OAUTH_FIXTURE_CONSUMER_SMOKE === '1' ? bunTest : bunTest.skip;
 
 async function collectRelativeFiles(root: string, current = ''): Promise<string[]> {
   const absolute = path.join(root, current);

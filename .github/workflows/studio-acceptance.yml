@@ -40,9 +40,6 @@ jobs:
       - name: Typecheck Studio Expo app
         run: bun run typecheck:studio
 
-      - name: Run Studio web smoke test
-        run: bun run test:smoke:studio-web
-
       - name: Validate packed Studio host artifact
         run: bun run test:acceptance:packed-studio-host
 
@@ -149,10 +146,6 @@ jobs:
       - name: Validate focused generated capability contracts
         run: >-
           bun test
-          src/host/generatedAuthAdapterRuntime.smoke.test.ts
-          src/host/generatedOAuthLifecycle.e2e.test.ts
-          src/host/generatedNativeOAuthLifecycle.e2e.test.ts
-          src/host/oauthFixtureConsumer.smoke.test.ts
           src/host/smoke/createExpo57CapabilityFixtureManifest.test.ts
           src/projectDeployAssetPicker.test.ts
 

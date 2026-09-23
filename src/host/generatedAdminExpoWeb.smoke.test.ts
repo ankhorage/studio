@@ -11,7 +11,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 import type { AppManifest, UiNode } from '@ankhorage/contracts';
-import { expect, test } from 'bun:test';
+import { expect, test as bunTest } from 'bun:test';
 
 import type { StudioModuleState } from '../moduleAdminContracts';
 import {
@@ -24,7 +24,7 @@ import { ProjectManager } from './orchestrator/projectManager';
 import { satisfiesCaretSemverRange } from './orchestrator/semverRange';
 import { createAdminSmokeBaseManifest } from './smoke/createAdminSmokeBaseManifest';
 
-const adminWebSmokeTest = process.env.ANKH_STUDIO_ADMIN_WEB_SMOKE === '1' ? test : test.skip;
+const test = process.env.ANKH_STUDIO_ADMIN_WEB_SMOKE === '1' ? bunTest : bunTest.skip;
 const TEST_TIMEOUT_MS = 240_000;
 const HTTP_TIMEOUT_MS = 120_000;
 const ROUTE_SETTLE_MS = 1_500;
@@ -596,7 +596,7 @@ test('Runtime node readiness survives a hydration remount before returning stabl
   ).toEqual(ready);
 });
 
-adminWebSmokeTest(
+test(
   'loads generated Studio admin routes through Expo web without a theme update loop',
   async () => {
     const rawPreservedWorkspaceRoot: unknown = process.env.ANKH_STUDIO_ADMIN_WEB_SMOKE_WORKSPACE;

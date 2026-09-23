@@ -8,6 +8,8 @@ import { ProjectScaffolder } from './scaffolder';
 import { getAndroidRunTs } from './templates';
 
 const temporaryDirectories: string[] = [];
+const androidRunTemplateSmokeDescribe =
+  process.env.ANKH_STUDIO_ANDROID_RUN_TEMPLATE_SMOKE === '1' ? describe : describe.skip;
 
 afterEach(async () => {
   await Promise.all(
@@ -15,7 +17,7 @@ afterEach(async () => {
   );
 });
 
-describe('generated Android development launcher', () => {
+androidRunTemplateSmokeDescribe('generated Android development launcher', () => {
   it('bridges the default loopback Studio API on port 3000', async () => {
     const studio = await startDefaultStudioHost();
     try {

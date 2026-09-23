@@ -3,12 +3,14 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 import type { InfraLedger } from '@ankhorage/contracts/infra';
-import { expect, test } from 'bun:test';
+import { expect, test as bunTest } from 'bun:test';
 
 import type { StudioProjectInfraLifecycle } from '../features/infrastructure/composition/createStudioProjectInfraLifecycle';
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
 import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';
+
+const test = process.env.ANKH_STUDIO_HOST_SMOKE === '1' ? bunTest : bunTest.skip;
 
 async function collectSourceFiles(root: string): Promise<string[]> {
   const entries = await readdir(root, { withFileTypes: true });

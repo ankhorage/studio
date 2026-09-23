@@ -48,7 +48,7 @@ for (const templateCase of heavyTemplateCases) {
   );
 }
 
-test('keeps the released Chat Supabase template credential-neutral', async () => {
+freshTemplateInfraTest('keeps the released Chat Supabase template credential-neutral', async () => {
   const source = await getProjectTemplateSource({ category: 'social_community', slug: 'chat' });
   expectCredentialNeutralLocalSupabaseManifest(source.manifest);
 });

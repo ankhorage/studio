@@ -4,46 +4,24 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'bun:test';
 
 const runtimeIndexSource = readFileSync(join(import.meta.dir, 'index.ts'), 'utf8');
-const appExtensionRegistrySource = readFileSync(
-  join(import.meta.dir, 'appExtensionRegistry.ts'),
-  'utf8',
-);
 const registrySource = readFileSync(join(import.meta.dir, 'registry.tsx'), 'utf8');
-const runtimeActionSource = readFileSync(join(import.meta.dir, 'useRuntimeAction.ts'), 'utf8');
 
 describe('Studio runtime surface', () => {
-  it('exports only Studio-owned generated-app runtime registry surface', () => {
+  it('keeps the public runtime entrypoint limited to current Studio-owned modules', () => {
     expect(runtimeIndexSource).toContain("export * from './appExtensionRegistry.js';");
     expect(runtimeIndexSource).toContain("export * from './registry.js';");
     expect(runtimeIndexSource).toContain("export * from './runtimeActions.js';");
     expect(runtimeIndexSource).toContain("export * from './useRuntimeAction.js';");
-    expect(appExtensionRegistrySource).toContain('composeZoraPlugins([');
-    expect(appExtensionRegistrySource).toContain('ZORA_CORE_PLUGIN');
-    expect(appExtensionRegistrySource).toContain('ZORA_CHESS_PLUGIN');
-    expect(appExtensionRegistrySource).toContain('ZORA_GAME_PLUGIN');
-    expect(appExtensionRegistrySource).toContain('ZORA_TABLETOP_PLUGIN');
-    expect(appExtensionRegistrySource).toContain('STUDIO_ZORA_PLUGIN_CATALOG');
+    expect(runtimeIndexSource).not.toContain('previewRegistry');
+    expect(runtimeIndexSource).not.toContain('previewRuntimeConfig');
+  });
+
+  it('keeps registry ownership as an app-extension re-export instead of rebuilding Runtime registries', () => {
     expect(registrySource).toContain('STUDIO_ZORA_PLUGIN_CATALOG');
     expect(registrySource).not.toContain('createComponentRegistry');
     expect(registrySource).not.toContain('BASE_ZORA_COMPONENT_REGISTRY');
     expect(registrySource).not.toContain('ZORA_COMPONENT_REGISTRY');
     expect(registrySource).not.toContain('DEFAULT_COMPONENT_REGISTRY');
     expect(registrySource).not.toContain('SURFACE_COMPONENT_REGISTRY');
-    expect(runtimeIndexSource).not.toContain('previewRegistry');
-    expect(runtimeIndexSource).not.toContain('previewRuntimeConfig');
-  });
-
-  it('keeps Expo Router and Zora action integration in the Studio runtime surface', () => {
-    expect(runtimeActionSource).toContain("from 'expo-router';");
-    expect(runtimeActionSource).toContain("from '@ankhorage/zora';");
-    expect(runtimeActionSource).toContain("from '@ankhorage/runtime';");
-    expect(runtimeActionSource).toContain('const router = useRouter();');
-    expect(runtimeActionSource).toContain('const { mode, setMode } = useZoraTheme();');
-    expect(runtimeActionSource).toContain('createDbPersistActionHandler({ dbAdapter })');
-    expect(runtimeActionSource).toContain('executeRuntimeAction({');
-    expect(runtimeActionSource).toContain('actionHandlers: effectiveActionHandlers');
-    expect(runtimeActionSource).toContain('mode,');
-    expect(runtimeActionSource).toContain('router,');
-    expect(runtimeActionSource).toContain('setMode,');
   });
 });

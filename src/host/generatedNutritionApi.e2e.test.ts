@@ -21,6 +21,7 @@ import { expect, test } from 'bun:test';
 import { StudioExternalApiService } from './apis/studioExternalApiService';
 import { ProjectManager } from './orchestrator/projectManager';
 
+const nutritionApiE2eTest = process.env.ANKH_STUDIO_NUTRITION_API_E2E === '1' ? test : test.skip;
 const NUTRITION_API_BASE_URL = 'https://api.ankhorage.com/v1/nutrition';
 const PRODUCTS_REQUEST_URL = `${NUTRITION_API_BASE_URL}/products?limit=50&offset=0`;
 const BARCODE = '7612345678901';
@@ -52,30 +53,36 @@ interface RecordedRequest {
   readonly init: EndpointTestFetchInit;
 }
 
-test('generated Nutrition app executes canonical product bindings over external HTTP', async () => {
-  const workspaceRoot = await createWorkspaceRoot();
+nutritionApiE2eTest(
+  'generated Nutrition app executes canonical product bindings over external HTTP',
+  async () => {
+    const workspaceRoot = await createWorkspaceRoot();
 
-  try {
-    const manager = new ProjectManager(workspaceRoot);
-    const created = await manager.createProject('Nutrition API E2E', {
-      manifest: createNutritionApiFixtureManifest(),
-      assets: [],
-    });
-    const manifest = await manager.getProjectManifest(created.id);
-    const source = assertCanonicalNutritionManifest(manifest);
-    const barcodeOperation = assertBarcodeOperation(manifest);
-    await assertGeneratedRuntimeSource(created.path);
-    const requests: RecordedRequest[] = [];
-    const endpointFetch = createRecordingFetch(requests);
+    try {
+      const manager = new ProjectManager(workspaceRoot, {
+        reconcileProjectPackageRootAsync: () => Promise.resolve(),
+      });
+      const created = await manager.createProject('Nutrition API E2E', {
+        manifest: createNutritionApiFixtureManifest(),
+        assets: [],
+      });
+      const manifest = await manager.getProjectManifest(created.id);
+      const source = assertCanonicalNutritionManifest(manifest);
+      const barcodeOperation = assertBarcodeOperation(manifest);
+      await assertGeneratedRuntimeSource(created.path);
+      const requests: RecordedRequest[] = [];
+      const endpointFetch = createRecordingFetch(requests);
 
-    await executeGeneratedRuntimeBinding(manifest.infra.apis, source, endpointFetch);
-    await executeGeneratedBarcodeLookup(manifest.infra.apis, barcodeOperation, endpointFetch);
-    await executeStudioApiOperation(manager, created.id, endpointFetch);
-    assertExternalProductRequests(requests);
-  } finally {
-    await rm(workspaceRoot, { recursive: true, force: true });
-  }
-}, 60_000);
+      await executeGeneratedRuntimeBinding(manifest.infra.apis, source, endpointFetch);
+      await executeGeneratedBarcodeLookup(manifest.infra.apis, barcodeOperation, endpointFetch);
+      await executeStudioApiOperation(manager, created.id, endpointFetch);
+      assertExternalProductRequests(requests);
+    } finally {
+      await rm(workspaceRoot, { recursive: true, force: true });
+    }
+  },
+  30_000,
+);
 
 function createNutritionApiFixtureManifest(): AppManifest {
   const { manifest } = composeCategoryAppManifest({

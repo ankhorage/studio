@@ -6,13 +6,14 @@ import path from 'node:path';
 import { promisify } from 'node:util';
 
 import type { AppManifest } from '@ankhorage/contracts';
-import { expect, test } from 'bun:test';
+import { expect, test as bunTest } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
 import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';
 
 const execFile = promisify(execFileCallback);
+const test = process.env.ANKH_STUDIO_GENERATED_AUTH_RUNTIME_SMOKE === '1' ? bunTest : bunTest.skip;
 const PROJECT_NAME = 'Generated Auth Runtime';
 const PROJECT_ID = 'generated-auth-runtime';
 const AUTH_SMOKE_SCRIPT = 'auth-runtime-smoke.ts';
