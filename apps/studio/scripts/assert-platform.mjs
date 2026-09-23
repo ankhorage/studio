@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
+import { SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const packageJson = JSON.parse(await readFile(path.join(projectRoot, 'package.json'), 'utf8'));
@@ -10,15 +11,18 @@ const tsconfig = await readFile(path.join(projectRoot, 'tsconfig.json'), 'utf8')
 
 assertEqual(packageJson.main, `${EXPO_PLATFORM.navigation.expoRouter.name}/entry`, 'Router entry');
 assertEqual(packageJson.engines?.node, EXPO_PLATFORM.tooling.node.version, 'Node engine');
-if (!/^bun@\d+\.\d+\.\d+$/u.test(packageJson.packageManager ?? '')) {
-  fail(
-    `Bun toolchain is ${String(packageJson.packageManager)}; expected a pinned bun@x.y.z version.`,
-  );
+const packageManager = packageJson.packageManager;
+if (
+  typeof packageManager !== 'string' ||
+  !packageManager.startsWith('bun@') ||
+  !SEMVER_PATTERNS.exact.test(packageManager.slice('bun@'.length))
+) {
+  fail(`Bun toolchain is ${String(packageManager)}; expected a pinned bun@x.y.z version.`);
 }
-if (!/^\^\d+\.\d+\.\d+$/u.test(packageJson.dependencies?.['@ankhorage/studio'] ?? '')) {
+if (!SEMVER_PATTERNS.caret.test(packageJson.dependencies?.['@ankhorage/studio'] ?? '')) {
   fail('Studio release range must be a pinned caret range.');
 }
-if (!/^\^\d+\.\d+\.\d+$/u.test(packageJson.dependencies?.['@ankhorage/expo-runtime'] ?? '')) {
+if (!SEMVER_PATTERNS.caret.test(packageJson.dependencies?.['@ankhorage/expo-runtime'] ?? '')) {
   fail('Expo Runtime release range must be a pinned caret range.');
 }
 
@@ -36,7 +40,10 @@ for (const [name, version] of Object.entries({
   ...packageJson.devDependencies,
 })) {
   if (typeof version !== 'string') fail(`${name} has a non-string dependency range.`);
-  if (version === 'latest' || /^(?:file|link|workspace):/u.test(version)) {
+  if (
+    version === 'latest' ||
+    ['file:', 'link:', 'workspace:'].some((prefix) => version.startsWith(prefix))
+  ) {
     fail(`${name} uses forbidden standalone dependency range ${version}.`);
   }
 }
