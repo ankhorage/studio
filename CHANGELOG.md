@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.8.1
+
+### Patch Changes
+
+- e6f318d: Project binding compatibility metadata from the canonical DataSchema authoring adapter so Bindings no longer maintains a second structural schema interpreter.
+
 ## 5.8.0
 
 ### Minor Changes

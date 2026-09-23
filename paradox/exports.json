@@ -138,7 +138,7 @@
     "modulePath": "src/bindingSchemaModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingSchemaModel.ts",
-      "line": 55,
+      "line": 61,
       "column": 1
     },
     "exportPaths": [
@@ -374,7 +374,7 @@
     "modulePath": "src/bindingSchemaModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingSchemaModel.ts",
-      "line": 41,
+      "line": 47,
       "column": 1
     },
     "exportPaths": [
@@ -2827,14 +2827,14 @@
   },
   {
     "name": "resolveStudioSchemaValueMeta",
-    "description": "Resolve a contracts data schema into the bindable value metadata used by Studio authoring.\n@todo Move binding schema interpretation under src/bindings/.",
+    "description": "Project canonical DataSchema authoring semantics into the bindable metadata used by compatibility policy.\n@todo Move binding schema projection under src/bindings/.",
     "isReadme": false,
     "examples": [],
     "kind": "function",
     "modulePath": "src/bindingSchemaModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingSchemaModel.ts",
-      "line": 18,
+      "line": 20,
       "column": 1
     },
     "exportPaths": [

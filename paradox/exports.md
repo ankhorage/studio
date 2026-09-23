@@ -44,7 +44,7 @@ Append an event binding to one Studio node/event pair without replacing earlier 
 
 Kind: `function`
 Module: `src/bindingSchemaModel.ts`
-Source: `src/bindingSchemaModel.ts:55:1`
+Source: `src/bindingSchemaModel.ts:61:1`
 
 Assess whether an actual bindable value shape can satisfy an expected Studio binding shape.
 @todo Keep binding compatibility policy under src/bindings/.
@@ -138,7 +138,7 @@ Collect every Studio node-property usage of one media asset across all manifest 
 
 Kind: `function`
 Module: `src/bindingSchemaModel.ts`
-Source: `src/bindingSchemaModel.ts:41:1`
+Source: `src/bindingSchemaModel.ts:47:1`
 
 Collect response-path options from a schema for Studio binding authoring.
 @todo Move response-path authoring under src/bindings/.
@@ -960,10 +960,10 @@ Convert a component's bindable prop metadata record into labeled authoring optio
 
 Kind: `function`
 Module: `src/bindingSchemaModel.ts`
-Source: `src/bindingSchemaModel.ts:18:1`
+Source: `src/bindingSchemaModel.ts:20:1`
 
-Resolve a contracts data schema into the bindable value metadata used by Studio authoring.
-@todo Move binding schema interpretation under src/bindings/.
+Project canonical DataSchema authoring semantics into the bindable metadata used by compatibility policy.
+@todo Move binding schema projection under src/bindings/.
 
 ### Signatures
 

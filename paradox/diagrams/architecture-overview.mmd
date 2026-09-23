@@ -153,9 +153,14 @@ graph TD
   module_src_bindingOperationModel_ts --> module_src_bindingAuthoringContracts_ts
   module_src_bindingOperationModel_ts --> module_src_bindingSchemaModel_ts
   module_src_bindingOperationModel_ts --> module_src_features_authoring_engine_adapters_outbound_resolveDataSchemaAuthoringStructure_ts
+  module_src_bindingSchemaModel_test_ts["src/bindingSchemaModel.test.ts"]
+  package__ankhorage_studio -.-> module_src_bindingSchemaModel_test_ts
+  module_src_bindingSchemaModel_test_ts --> module_src_bindingSchemaModel_ts
   module_src_bindingSchemaModel_ts["src/bindingSchemaModel.ts"]
   package__ankhorage_studio -.-> module_src_bindingSchemaModel_ts
   module_src_bindingSchemaModel_ts --> module_src_bindingAuthoringContracts_ts
+  module_src_bindingSchemaModel_ts --> module_src_features_authoring_engine_adapters_outbound_resolveDataSchemaAuthoringStructure_ts
+  module_src_bindingSchemaModel_ts --> module_src_types_authoring_engine_ts
   module_src_canExecuteProjectDeployRelease_test_ts["src/canExecuteProjectDeployRelease.test.ts"]
   package__ankhorage_studio -.-> module_src_canExecuteProjectDeployRelease_test_ts
   module_src_canExecuteProjectDeployRelease_test_ts --> module_src_canExecuteProjectDeployRelease_ts

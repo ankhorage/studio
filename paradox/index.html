@@ -219,7 +219,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/bindingSchemaModel.ts">
       src/bindingSchemaModel.ts
-      <small>8 functions</small>
+      <small>9 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/canExecuteProjectDeployRelease.test.ts">
@@ -2263,7 +2263,7 @@
       <div class="summary">
         <div><strong>146</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>594</strong><span class="muted">modules</span></div>
+        <div><strong>595</strong><span class="muted">modules</span></div>
         <div><strong>2</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -2499,10 +2499,15 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/bindingAuthoringContracts.ts</code>, <code>src/bindingSchemaModel.ts</code>, <code>src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts</code></p>
     <p><strong>Exports:</strong> <code>collectStudioBindingOperationOptions</code>, <code>createStudioActionInputFields</code>, <code>findStudioBindingOperationOption</code></p>
-  </article><article class="item" data-search="src/bindingSchemaModel.ts src/bindingAuthoringContracts.ts assessStudioBindingCompatibility collectStudioResponsePaths resolveStudioSchemaValueMeta">
+  </article><article class="item" data-search="src/bindingSchemaModel.test.ts src/bindingSchemaModel.ts">
+    <h3>src/bindingSchemaModel.test.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/bindingSchemaModel.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
+  </article><article class="item" data-search="src/bindingSchemaModel.ts src/bindingAuthoringContracts.ts src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts src/types/authoring-engine.ts assessStudioBindingCompatibility collectStudioResponsePaths resolveStudioSchemaValueMeta">
     <h3>src/bindingSchemaModel.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/bindingAuthoringContracts.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/bindingAuthoringContracts.ts</code>, <code>src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts</code>, <code>src/types/authoring-engine.ts</code></p>
     <p><strong>Exports:</strong> <code>assessStudioBindingCompatibility</code>, <code>collectStudioResponsePaths</code>, <code>resolveStudioSchemaValueMeta</code></p>
   </article><article class="item" data-search="src/canExecuteProjectDeployRelease.test.ts src/canExecuteProjectDeployRelease.ts src/projectDeployReleaseInspectionResult.ts">
     <h3>src/canExecuteProjectDeployRelease.test.ts</h3>
@@ -5811,7 +5816,7 @@
               <h3>src/bindingSchemaModel.ts</h3>
               <article class="item" id="symbol-assessstudiobindingcompatibility" data-search="assessStudioBindingCompatibility function src/bindingSchemaModel.ts Assess whether an actual bindable value shape can satisfy an expected Studio binding shape.&#10;@todo Keep binding compatibility policy under src/bindings/. StudioBindingCompatibility (expected: UiBindableValueMeta, actual: UiBindableValueMeta) =&gt; StudioBindingCompatibility">
     <h4>assessStudioBindingCompatibility</h4>
-    <p class="muted">function • <code>src/bindingSchemaModel.ts:55:1</code></p>
+    <p class="muted">function • <code>src/bindingSchemaModel.ts:61:1</code></p>
     <p>Assess whether an actual bindable value shape can satisfy an expected Studio binding shape.
 @todo Keep binding compatibility policy under src/bindings/.</p>
     <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
@@ -5840,7 +5845,7 @@
     
   </article><article class="item" id="symbol-collectstudioresponsepaths" data-search="collectStudioResponsePaths function src/bindingSchemaModel.ts Collect response-path options from a schema for Studio binding authoring.&#10;@todo Move response-path authoring under src/bindings/. StudioBindingResponsePathOption (schema: DataSchema | undefined, schemas: Readonly&lt;Record&lt;string, DataSchema&gt;&gt; | undefined) =&gt; readonly StudioBindingResponsePathOption[]">
     <h4>collectStudioResponsePaths</h4>
-    <p class="muted">function • <code>src/bindingSchemaModel.ts:41:1</code></p>
+    <p class="muted">function • <code>src/bindingSchemaModel.ts:47:1</code></p>
     <p>Collect response-path options from a schema for Studio binding authoring.
 @todo Move response-path authoring under src/bindings/.</p>
     <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
@@ -5867,11 +5872,11 @@
         <p><strong>Returns:</strong> <code>readonly StudioBindingResponsePathOption[]</code></p>
       </div>
     
-  </article><article class="item" id="symbol-resolvestudioschemavaluemeta" data-search="resolveStudioSchemaValueMeta function src/bindingSchemaModel.ts Resolve a contracts data schema into the bindable value metadata used by Studio authoring.&#10;@todo Move binding schema interpretation under src/bindings/. (schema: DataSchema | undefined, schemas: Readonly&lt;Record&lt;string, DataSchema&gt;&gt; | undefined, seen?: ReadonlySet&lt;string&gt;) =&gt; UiBindableValueMeta">
+  </article><article class="item" id="symbol-resolvestudioschemavaluemeta" data-search="resolveStudioSchemaValueMeta function src/bindingSchemaModel.ts Project canonical DataSchema authoring semantics into the bindable metadata used by compatibility policy.&#10;@todo Move binding schema projection under src/bindings/. (schema: DataSchema | undefined, schemas: Readonly&lt;Record&lt;string, DataSchema&gt;&gt; | undefined, seen?: ReadonlySet&lt;string&gt;) =&gt; UiBindableValueMeta">
     <h4>resolveStudioSchemaValueMeta</h4>
-    <p class="muted">function • <code>src/bindingSchemaModel.ts:18:1</code></p>
-    <p>Resolve a contracts data schema into the bindable value metadata used by Studio authoring.
-@todo Move binding schema interpretation under src/bindings/.</p>
+    <p class="muted">function • <code>src/bindingSchemaModel.ts:20:1</code></p>
+    <p>Project canonical DataSchema authoring semantics into the bindable metadata used by compatibility policy.
+@todo Move binding schema projection under src/bindings/.</p>
     <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
     <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
     <div>
@@ -9338,9 +9343,14 @@
   module_src_bindingOperationModel_ts --&gt; module_src_bindingAuthoringContracts_ts
   module_src_bindingOperationModel_ts --&gt; module_src_bindingSchemaModel_ts
   module_src_bindingOperationModel_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveDataSchemaAuthoringStructure_ts
+  module_src_bindingSchemaModel_test_ts[&quot;src/bindingSchemaModel.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_bindingSchemaModel_test_ts
+  module_src_bindingSchemaModel_test_ts --&gt; module_src_bindingSchemaModel_ts
   module_src_bindingSchemaModel_ts[&quot;src/bindingSchemaModel.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_bindingSchemaModel_ts
   module_src_bindingSchemaModel_ts --&gt; module_src_bindingAuthoringContracts_ts
+  module_src_bindingSchemaModel_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveDataSchemaAuthoringStructure_ts
+  module_src_bindingSchemaModel_ts --&gt; module_src_types_authoring_engine_ts
   module_src_canExecuteProjectDeployRelease_test_ts[&quot;src/canExecuteProjectDeployRelease.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_canExecuteProjectDeployRelease_test_ts
   module_src_canExecuteProjectDeployRelease_test_ts --&gt; module_src_canExecuteProjectDeployRelease_ts
@@ -11636,9 +11646,14 @@
   module_src_bindingOperationModel_ts --&gt; module_src_bindingAuthoringContracts_ts
   module_src_bindingOperationModel_ts --&gt; module_src_bindingSchemaModel_ts
   module_src_bindingOperationModel_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveDataSchemaAuthoringStructure_ts
+  module_src_bindingSchemaModel_test_ts[&quot;src/bindingSchemaModel.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_bindingSchemaModel_test_ts
+  module_src_bindingSchemaModel_test_ts --&gt; module_src_bindingSchemaModel_ts
   module_src_bindingSchemaModel_ts[&quot;src/bindingSchemaModel.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_bindingSchemaModel_ts
   module_src_bindingSchemaModel_ts --&gt; module_src_bindingAuthoringContracts_ts
+  module_src_bindingSchemaModel_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveDataSchemaAuthoringStructure_ts
+  module_src_bindingSchemaModel_ts --&gt; module_src_types_authoring_engine_ts
   module_src_canExecuteProjectDeployRelease_test_ts[&quot;src/canExecuteProjectDeployRelease.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_canExecuteProjectDeployRelease_test_ts
   module_src_canExecuteProjectDeployRelease_test_ts --&gt; module_src_canExecuteProjectDeployRelease_ts
@@ -13826,6 +13841,7 @@
   module_src_bindingMutationAcceptance_test_ts[&quot;src/bindingMutationAcceptance.test.ts&quot;]
   module_src_bindingMutationModel_ts[&quot;src/bindingMutationModel.ts&quot;]
   module_src_bindingOperationModel_ts[&quot;src/bindingOperationModel.ts&quot;]
+  module_src_bindingSchemaModel_test_ts[&quot;src/bindingSchemaModel.test.ts&quot;]
   module_src_bindingSchemaModel_ts[&quot;src/bindingSchemaModel.ts&quot;]
   module_src_canExecuteProjectDeployRelease_test_ts[&quot;src/canExecuteProjectDeployRelease.test.ts&quot;]
   module_src_canExecuteProjectDeployRelease_ts[&quot;src/canExecuteProjectDeployRelease.ts&quot;]
@@ -14438,7 +14454,10 @@
   module_src_bindingOperationModel_ts --&gt; module_src_bindingAuthoringContracts_ts
   module_src_bindingOperationModel_ts --&gt; module_src_bindingSchemaModel_ts
   module_src_bindingOperationModel_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveDataSchemaAuthoringStructure_ts
+  module_src_bindingSchemaModel_test_ts --&gt; module_src_bindingSchemaModel_ts
   module_src_bindingSchemaModel_ts --&gt; module_src_bindingAuthoringContracts_ts
+  module_src_bindingSchemaModel_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveDataSchemaAuthoringStructure_ts
+  module_src_bindingSchemaModel_ts --&gt; module_src_types_authoring_engine_ts
   module_src_canExecuteProjectDeployRelease_test_ts --&gt; module_src_canExecuteProjectDeployRelease_ts
   module_src_canExecuteProjectDeployRelease_test_ts --&gt; module_src_projectDeployReleaseInspectionResult_ts
   module_src_canExecuteProjectDeployRelease_ts --&gt; module_src_projectDeployReleaseInspectionResult_ts
@@ -15527,6 +15546,7 @@
   module_src_bindingMutationAcceptance_test_ts[&quot;src/bindingMutationAcceptance.test.ts&quot;]
   module_src_bindingMutationModel_ts[&quot;src/bindingMutationModel.ts&quot;]
   module_src_bindingOperationModel_ts[&quot;src/bindingOperationModel.ts&quot;]
+  module_src_bindingSchemaModel_test_ts[&quot;src/bindingSchemaModel.test.ts&quot;]
   module_src_bindingSchemaModel_ts[&quot;src/bindingSchemaModel.ts&quot;]
   module_src_canExecuteProjectDeployRelease_test_ts[&quot;src/canExecuteProjectDeployRelease.test.ts&quot;]
   module_src_canExecuteProjectDeployRelease_ts[&quot;src/canExecuteProjectDeployRelease.ts&quot;]
@@ -16139,7 +16159,10 @@
   module_src_bindingOperationModel_ts --&gt; module_src_bindingAuthoringContracts_ts
   module_src_bindingOperationModel_ts --&gt; module_src_bindingSchemaModel_ts
   module_src_bindingOperationModel_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveDataSchemaAuthoringStructure_ts
+  module_src_bindingSchemaModel_test_ts --&gt; module_src_bindingSchemaModel_ts
   module_src_bindingSchemaModel_ts --&gt; module_src_bindingAuthoringContracts_ts
+  module_src_bindingSchemaModel_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveDataSchemaAuthoringStructure_ts
+  module_src_bindingSchemaModel_ts --&gt; module_src_types_authoring_engine_ts
   module_src_canExecuteProjectDeployRelease_test_ts --&gt; module_src_canExecuteProjectDeployRelease_ts
   module_src_canExecuteProjectDeployRelease_test_ts --&gt; module_src_projectDeployReleaseInspectionResult_ts
   module_src_canExecuteProjectDeployRelease_ts --&gt; module_src_projectDeployReleaseInspectionResult_ts
@@ -17230,6 +17253,7 @@
   module_src_bindingMutationAcceptance_test_ts[&quot;src/bindingMutationAcceptance.test.ts&quot;]
   module_src_bindingMutationModel_ts[&quot;src/bindingMutationModel.ts&quot;]
   module_src_bindingOperationModel_ts[&quot;src/bindingOperationModel.ts&quot;]
+  module_src_bindingSchemaModel_test_ts[&quot;src/bindingSchemaModel.test.ts&quot;]
   module_src_bindingSchemaModel_ts[&quot;src/bindingSchemaModel.ts&quot;]
   module_src_canExecuteProjectDeployRelease_test_ts[&quot;src/canExecuteProjectDeployRelease.test.ts&quot;]
   module_src_canExecuteProjectDeployRelease_ts[&quot;src/canExecuteProjectDeployRelease.ts&quot;]
@@ -18221,6 +18245,7 @@
   module_src_bindingMutationAcceptance_test_ts[&quot;src/bindingMutationAcceptance.test.ts&quot;]
   module_src_bindingMutationModel_ts[&quot;src/bindingMutationModel.ts&quot;]
   module_src_bindingOperationModel_ts[&quot;src/bindingOperationModel.ts&quot;]
+  module_src_bindingSchemaModel_test_ts[&quot;src/bindingSchemaModel.test.ts&quot;]
   module_src_bindingSchemaModel_ts[&quot;src/bindingSchemaModel.ts&quot;]
   module_src_canExecuteProjectDeployRelease_test_ts[&quot;src/canExecuteProjectDeployRelease.test.ts&quot;]
   module_src_canExecuteProjectDeployRelease_ts[&quot;src/canExecuteProjectDeployRelease.ts&quot;]
@@ -19314,74 +19339,6 @@
   participant_collectNodeUsages--&gt;&gt;participant_collectStudioMediaAssetUsages: return
 </pre>
     </details>
-  </article><article class="item" data-search="collectStudioResponsePaths sequence diagrams/sequences/collect-studio-response-paths.mmd">
-    <h3>collectStudioResponsePaths sequence</h3>
-    <p class="muted"><code>diagrams/sequences/collect-studio-response-paths.mmd</code></p>
-    <div class="mermaid">sequenceDiagram
-  participant participant_collectNestedPaths as collectNestedPaths
-  participant participant_collectStudioResponsePaths as collectStudioResponsePaths
-  participant participant_resolveSchemaFields as resolveSchemaFields
-  participant participant_resolveSchemaReference as resolveSchemaReference
-  participant participant_resolveSchemaType as resolveSchemaType
-  participant participant_resolveSingleSchemaType as resolveSingleSchemaType
-  participant participant_resolveStudioSchemaValueMeta as resolveStudioSchemaValueMeta
-  participant_collectStudioResponsePaths-&gt;&gt;participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveSchemaReference: resolveSchemaReference()
-  participant_resolveSchemaReference--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveSchemaType: resolveSchemaType()
-  participant_resolveSchemaType-&gt;&gt;participant_resolveSingleSchemaType: resolveSingleSchemaType()
-  participant_resolveSingleSchemaType--&gt;&gt;participant_resolveSchemaType: return
-  participant_resolveSchemaType--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveSchemaFields: resolveSchemaFields()
-  participant_resolveSchemaFields--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
-  participant_resolveStudioSchemaValueMeta--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-  participant_resolveStudioSchemaValueMeta--&gt;&gt;participant_collectStudioResponsePaths: return
-  participant_collectStudioResponsePaths-&gt;&gt;participant_collectNestedPaths: collectNestedPaths()
-  participant_collectNestedPaths-&gt;&gt;participant_resolveSchemaReference: resolveSchemaReference()
-  participant_resolveSchemaReference--&gt;&gt;participant_collectNestedPaths: return
-  participant_collectNestedPaths-&gt;&gt;participant_resolveSchemaType: resolveSchemaType()
-  participant_resolveSchemaType--&gt;&gt;participant_collectNestedPaths: return
-  participant_collectNestedPaths-&gt;&gt;participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
-  participant_resolveStudioSchemaValueMeta--&gt;&gt;participant_collectNestedPaths: return
-  participant_collectNestedPaths-&gt;&gt;participant_collectNestedPaths: collectNestedPaths()
-  participant_collectNestedPaths--&gt;&gt;participant_collectNestedPaths: return
-  participant_collectNestedPaths--&gt;&gt;participant_collectStudioResponsePaths: return
-</div>
-    <details>
-      <summary>View Mermaid source</summary>
-      <pre>sequenceDiagram
-  participant participant_collectNestedPaths as collectNestedPaths
-  participant participant_collectStudioResponsePaths as collectStudioResponsePaths
-  participant participant_resolveSchemaFields as resolveSchemaFields
-  participant participant_resolveSchemaReference as resolveSchemaReference
-  participant participant_resolveSchemaType as resolveSchemaType
-  participant participant_resolveSingleSchemaType as resolveSingleSchemaType
-  participant participant_resolveStudioSchemaValueMeta as resolveStudioSchemaValueMeta
-  participant_collectStudioResponsePaths-&gt;&gt;participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveSchemaReference: resolveSchemaReference()
-  participant_resolveSchemaReference--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveSchemaType: resolveSchemaType()
-  participant_resolveSchemaType-&gt;&gt;participant_resolveSingleSchemaType: resolveSingleSchemaType()
-  participant_resolveSingleSchemaType--&gt;&gt;participant_resolveSchemaType: return
-  participant_resolveSchemaType--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveSchemaFields: resolveSchemaFields()
-  participant_resolveSchemaFields--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
-  participant_resolveStudioSchemaValueMeta--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-  participant_resolveStudioSchemaValueMeta--&gt;&gt;participant_collectStudioResponsePaths: return
-  participant_collectStudioResponsePaths-&gt;&gt;participant_collectNestedPaths: collectNestedPaths()
-  participant_collectNestedPaths-&gt;&gt;participant_resolveSchemaReference: resolveSchemaReference()
-  participant_resolveSchemaReference--&gt;&gt;participant_collectNestedPaths: return
-  participant_collectNestedPaths-&gt;&gt;participant_resolveSchemaType: resolveSchemaType()
-  participant_resolveSchemaType--&gt;&gt;participant_collectNestedPaths: return
-  participant_collectNestedPaths-&gt;&gt;participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
-  participant_resolveStudioSchemaValueMeta--&gt;&gt;participant_collectNestedPaths: return
-  participant_collectNestedPaths-&gt;&gt;participant_collectNestedPaths: collectNestedPaths()
-  participant_collectNestedPaths--&gt;&gt;participant_collectNestedPaths: return
-  participant_collectNestedPaths--&gt;&gt;participant_collectStudioResponsePaths: return
-</pre>
-    </details>
   </article><article class="item" data-search="createNodeFromCatalogEntry sequence diagrams/sequences/create-node-from-catalog-entry.mmd">
     <h3>createNodeFromCatalogEntry sequence</h3>
     <p class="muted"><code>diagrams/sequences/create-node-from-catalog-entry.mmd</code></p>
@@ -19830,46 +19787,6 @@
   participant_validateNodePlacement-&gt;&gt;participant_canAcceptChild: canAcceptChild()
   participant_canAcceptChild--&gt;&gt;participant_validateNodePlacement: return
   participant_validateNodePlacement--&gt;&gt;participant_resolveInsertPlacement: return
-</pre>
-    </details>
-  </article><article class="item" data-search="resolveStudioSchemaValueMeta sequence diagrams/sequences/resolve-studio-schema-value-meta.mmd">
-    <h3>resolveStudioSchemaValueMeta sequence</h3>
-    <p class="muted"><code>diagrams/sequences/resolve-studio-schema-value-meta.mmd</code></p>
-    <div class="mermaid">sequenceDiagram
-  participant participant_resolveSchemaFields as resolveSchemaFields
-  participant participant_resolveSchemaReference as resolveSchemaReference
-  participant participant_resolveSchemaType as resolveSchemaType
-  participant participant_resolveSingleSchemaType as resolveSingleSchemaType
-  participant participant_resolveStudioSchemaValueMeta as resolveStudioSchemaValueMeta
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveSchemaReference: resolveSchemaReference()
-  participant_resolveSchemaReference--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveSchemaType: resolveSchemaType()
-  participant_resolveSchemaType-&gt;&gt;participant_resolveSingleSchemaType: resolveSingleSchemaType()
-  participant_resolveSingleSchemaType--&gt;&gt;participant_resolveSchemaType: return
-  participant_resolveSchemaType--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveSchemaFields: resolveSchemaFields()
-  participant_resolveSchemaFields--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
-  participant_resolveStudioSchemaValueMeta--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-</div>
-    <details>
-      <summary>View Mermaid source</summary>
-      <pre>sequenceDiagram
-  participant participant_resolveSchemaFields as resolveSchemaFields
-  participant participant_resolveSchemaReference as resolveSchemaReference
-  participant participant_resolveSchemaType as resolveSchemaType
-  participant participant_resolveSingleSchemaType as resolveSingleSchemaType
-  participant participant_resolveStudioSchemaValueMeta as resolveStudioSchemaValueMeta
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveSchemaReference: resolveSchemaReference()
-  participant_resolveSchemaReference--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveSchemaType: resolveSchemaType()
-  participant_resolveSchemaType-&gt;&gt;participant_resolveSingleSchemaType: resolveSingleSchemaType()
-  participant_resolveSingleSchemaType--&gt;&gt;participant_resolveSchemaType: return
-  participant_resolveSchemaType--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveSchemaFields: resolveSchemaFields()
-  participant_resolveSchemaFields--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
-  participant_resolveStudioSchemaValueMeta-&gt;&gt;participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
-  participant_resolveStudioSchemaValueMeta--&gt;&gt;participant_resolveStudioSchemaValueMeta: return
 </pre>
     </details>
   </article><article class="item" data-search="updateNodeInTree sequence diagrams/sequences/update-node-in-tree.mmd">
@@ -20565,43 +20482,45 @@
   </section><section id="view-src-bindingschemamodel-ts" class="view" data-view="src/bindingSchemaModel.ts" hidden>
     <section class="panel">
       <h2>src/bindingSchemaModel.ts</h2>
-      <article class="item" data-search="resolveStudioSchemaValueMeta src/bindingSchemaModel.ts Resolve a contracts data schema into the bindable value metadata used by Studio authoring.&#10;@todo Move binding schema interpretation under src/bindings/.">
+      <article class="item" data-search="resolveStudioSchemaValueMeta src/bindingSchemaModel.ts Project canonical DataSchema authoring semantics into the bindable metadata used by compatibility policy.&#10;@todo Move binding schema projection under src/bindings/.">
     <h3>resolveStudioSchemaValueMeta</h3>
-    <p class="muted"><code>src/bindingSchemaModel.ts:18:1</code></p>
-    <p>Resolve a contracts data schema into the bindable value metadata used by Studio authoring.
-@todo Move binding schema interpretation under src/bindings/.</p>
+    <p class="muted"><code>src/bindingSchemaModel.ts:20:1</code></p>
+    <p>Project canonical DataSchema authoring semantics into the bindable metadata used by compatibility policy.
+@todo Move binding schema projection under src/bindings/.</p>
   </article><article class="item" data-search="collectStudioResponsePaths src/bindingSchemaModel.ts Collect response-path options from a schema for Studio binding authoring.&#10;@todo Move response-path authoring under src/bindings/.">
     <h3>collectStudioResponsePaths</h3>
-    <p class="muted"><code>src/bindingSchemaModel.ts:41:1</code></p>
+    <p class="muted"><code>src/bindingSchemaModel.ts:47:1</code></p>
     <p>Collect response-path options from a schema for Studio binding authoring.
 @todo Move response-path authoring under src/bindings/.</p>
   </article><article class="item" data-search="assessStudioBindingCompatibility src/bindingSchemaModel.ts Assess whether an actual bindable value shape can satisfy an expected Studio binding shape.&#10;@todo Keep binding compatibility policy under src/bindings/.">
     <h3>assessStudioBindingCompatibility</h3>
-    <p class="muted"><code>src/bindingSchemaModel.ts:55:1</code></p>
+    <p class="muted"><code>src/bindingSchemaModel.ts:61:1</code></p>
     <p>Assess whether an actual bindable value shape can satisfy an expected Studio binding shape.
 @todo Keep binding compatibility policy under src/bindings/.</p>
   </article><article class="item" data-search="collectNestedPaths src/bindingSchemaModel.ts Recursively append object properties and representative first-array-item response paths with resolved binding metadata.">
     <h3>collectNestedPaths</h3>
-    <p class="muted"><code>src/bindingSchemaModel.ts:71:1</code></p>
+    <p class="muted"><code>src/bindingSchemaModel.ts:77:1</code></p>
     <p>Recursively append object properties and representative first-array-item response paths with resolved binding metadata.</p>
-  </article><article class="item" data-search="resolveSchemaFields src/bindingSchemaModel.ts Project schema properties into the field metadata expected by Studio bindings.&#10;@todo Keep bindable field projection under src/bindings/.">
+  </article><article class="item" data-search="resolveSchemaFields src/bindingSchemaModel.ts Project resolved object fields into the metadata used by binding compatibility diagnostics.">
     <h3>resolveSchemaFields</h3>
-    <p class="muted"><code>src/bindingSchemaModel.ts:108:1</code></p>
-    <p>Project schema properties into the field metadata expected by Studio bindings.
-@todo Keep bindable field projection under src/bindings/.</p>
-  </article><article class="item" data-search="resolveSchemaType src/bindingSchemaModel.ts Normalize a schema&#39;s format, primitive type, and structural hints into one effective value type.&#10;@utility @ankhorage/utility/schema">
-    <h3>resolveSchemaType</h3>
-    <p class="muted"><code>src/bindingSchemaModel.ts:124:1</code></p>
-    <p>Normalize a schema&#39;s format, primitive type, and structural hints into one effective value type.
-@utility @ankhorage/utility/schema</p>
+    <p class="muted"><code>src/bindingSchemaModel.ts:113:1</code></p>
+    <p>Project resolved object fields into the metadata used by binding compatibility diagnostics.</p>
+  </article><article class="item" data-search="resolveBindableType src/bindingSchemaModel.ts Project neutral authoring structure into the older bindable-shape vocabulary without reinterpreting DataSchema shape.">
+    <h3>resolveBindableType</h3>
+    <p class="muted"><code>src/bindingSchemaModel.ts:126:1</code></p>
+    <p>Project neutral authoring structure into the older bindable-shape vocabulary without reinterpreting DataSchema shape.</p>
+  </article><article class="item" data-search="resolveChoiceType src/bindingSchemaModel.ts Resolve a homogeneous finite primitive choice into the compatibility type it represents.">
+    <h3>resolveChoiceType</h3>
+    <p class="muted"><code>src/bindingSchemaModel.ts:157:1</code></p>
+    <p>Resolve a homogeneous finite primitive choice into the compatibility type it represents.</p>
   </article><article class="item" data-search="isObjectLike src/bindingSchemaModel.ts Test whether a bindable value type represents an object-shaped value.&#10;@todo Keep this bindable-type semantic predicate under src/bindings/.">
     <h3>isObjectLike</h3>
-    <p class="muted"><code>src/bindingSchemaModel.ts:151:1</code></p>
+    <p class="muted"><code>src/bindingSchemaModel.ts:172:1</code></p>
     <p>Test whether a bindable value type represents an object-shaped value.
 @todo Keep this bindable-type semantic predicate under src/bindings/.</p>
   </article><article class="item" data-search="isImageAssetShape src/bindingSchemaModel.ts Detect the object-field shape Studio accepts as an image-asset-compatible binding value.&#10;@todo Keep image-asset binding compatibility under src/bindings/.">
     <h3>isImageAssetShape</h3>
-    <p class="muted"><code>src/bindingSchemaModel.ts:159:1</code></p>
+    <p class="muted"><code>src/bindingSchemaModel.ts:180:1</code></p>
     <p>Detect the object-field shape Studio accepts as an image-asset-compatible binding value.
 @todo Keep image-asset binding compatibility under src/bindings/.</p>
   </article>

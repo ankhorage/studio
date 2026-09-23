@@ -43,6 +43,7 @@ graph LR
   module_src_bindingMutationAcceptance_test_ts["src/bindingMutationAcceptance.test.ts"]
   module_src_bindingMutationModel_ts["src/bindingMutationModel.ts"]
   module_src_bindingOperationModel_ts["src/bindingOperationModel.ts"]
+  module_src_bindingSchemaModel_test_ts["src/bindingSchemaModel.test.ts"]
   module_src_bindingSchemaModel_ts["src/bindingSchemaModel.ts"]
   module_src_canExecuteProjectDeployRelease_test_ts["src/canExecuteProjectDeployRelease.test.ts"]
   module_src_canExecuteProjectDeployRelease_ts["src/canExecuteProjectDeployRelease.ts"]
@@ -655,7 +656,10 @@ graph LR
   module_src_bindingOperationModel_ts --> module_src_bindingAuthoringContracts_ts
   module_src_bindingOperationModel_ts --> module_src_bindingSchemaModel_ts
   module_src_bindingOperationModel_ts --> module_src_features_authoring_engine_adapters_outbound_resolveDataSchemaAuthoringStructure_ts
+  module_src_bindingSchemaModel_test_ts --> module_src_bindingSchemaModel_ts
   module_src_bindingSchemaModel_ts --> module_src_bindingAuthoringContracts_ts
+  module_src_bindingSchemaModel_ts --> module_src_features_authoring_engine_adapters_outbound_resolveDataSchemaAuthoringStructure_ts
+  module_src_bindingSchemaModel_ts --> module_src_types_authoring_engine_ts
   module_src_canExecuteProjectDeployRelease_test_ts --> module_src_canExecuteProjectDeployRelease_ts
   module_src_canExecuteProjectDeployRelease_test_ts --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_canExecuteProjectDeployRelease_ts --> module_src_projectDeployReleaseInspectionResult_ts

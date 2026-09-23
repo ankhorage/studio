@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.8.0",
+      "value": "v5.8.1",
       "color": "cb3837"
     },
     {
@@ -538,10 +538,20 @@
       ]
     },
     {
+      "path": "src/bindingSchemaModel.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/bindingSchemaModel.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "src/bindingSchemaModel.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/bindingAuthoringContracts.ts"
+        "src/bindingAuthoringContracts.ts",
+        "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts",
+        "src/types/authoring-engine.ts"
       ],
       "exports": [
         "assessStudioBindingCompatibility",
@@ -7070,7 +7080,7 @@
       "modulePath": "src/bindingSchemaModel.ts",
       "sourceLocation": {
         "filePath": "src/bindingSchemaModel.ts",
-        "line": 55,
+        "line": 61,
         "column": 1
       },
       "exportPaths": [
@@ -7306,7 +7316,7 @@
       "modulePath": "src/bindingSchemaModel.ts",
       "sourceLocation": {
         "filePath": "src/bindingSchemaModel.ts",
-        "line": 41,
+        "line": 47,
         "column": 1
       },
       "exportPaths": [
@@ -9759,14 +9769,14 @@
     },
     {
       "name": "resolveStudioSchemaValueMeta",
-      "description": "Resolve a contracts data schema into the bindable value metadata used by Studio authoring.\n@todo Move binding schema interpretation under src/bindings/.",
+      "description": "Project canonical DataSchema authoring semantics into the bindable metadata used by compatibility policy.\n@todo Move binding schema projection under src/bindings/.",
       "isReadme": false,
       "examples": [],
       "kind": "function",
       "modulePath": "src/bindingSchemaModel.ts",
       "sourceLocation": {
         "filePath": "src/bindingSchemaModel.ts",
-        "line": 18,
+        "line": 20,
         "column": 1
       },
       "exportPaths": [
@@ -13587,10 +13597,10 @@
     },
     {
       "name": "resolveStudioSchemaValueMeta",
-      "description": "Resolve a contracts data schema into the bindable value metadata used by Studio authoring.\n@todo Move binding schema interpretation under src/bindings/.",
+      "description": "Project canonical DataSchema authoring semantics into the bindable metadata used by compatibility policy.\n@todo Move binding schema projection under src/bindings/.",
       "sourceLocation": {
         "filePath": "src/bindingSchemaModel.ts",
-        "line": 18,
+        "line": 20,
         "column": 1
       }
     },
@@ -13599,7 +13609,7 @@
       "description": "Collect response-path options from a schema for Studio binding authoring.\n@todo Move response-path authoring under src/bindings/.",
       "sourceLocation": {
         "filePath": "src/bindingSchemaModel.ts",
-        "line": 41,
+        "line": 47,
         "column": 1
       }
     },
@@ -13608,7 +13618,7 @@
       "description": "Assess whether an actual bindable value shape can satisfy an expected Studio binding shape.\n@todo Keep binding compatibility policy under src/bindings/.",
       "sourceLocation": {
         "filePath": "src/bindingSchemaModel.ts",
-        "line": 55,
+        "line": 61,
         "column": 1
       }
     },
@@ -13617,25 +13627,34 @@
       "description": "Recursively append object properties and representative first-array-item response paths with resolved binding metadata.",
       "sourceLocation": {
         "filePath": "src/bindingSchemaModel.ts",
-        "line": 71,
+        "line": 77,
         "column": 1
       }
     },
     {
       "name": "resolveSchemaFields",
-      "description": "Project schema properties into the field metadata expected by Studio bindings.\n@todo Keep bindable field projection under src/bindings/.",
+      "description": "Project resolved object fields into the metadata used by binding compatibility diagnostics.",
       "sourceLocation": {
         "filePath": "src/bindingSchemaModel.ts",
-        "line": 108,
+        "line": 113,
         "column": 1
       }
     },
     {
-      "name": "resolveSchemaType",
-      "description": "Normalize a schema's format, primitive type, and structural hints into one effective value type.\n@utility @ankhorage/utility/schema",
+      "name": "resolveBindableType",
+      "description": "Project neutral authoring structure into the older bindable-shape vocabulary without reinterpreting DataSchema shape.",
       "sourceLocation": {
         "filePath": "src/bindingSchemaModel.ts",
-        "line": 124,
+        "line": 126,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveChoiceType",
+      "description": "Resolve a homogeneous finite primitive choice into the compatibility type it represents.",
+      "sourceLocation": {
+        "filePath": "src/bindingSchemaModel.ts",
+        "line": 157,
         "column": 1
       }
     },
@@ -13644,7 +13663,7 @@
       "description": "Test whether a bindable value type represents an object-shaped value.\n@todo Keep this bindable-type semantic predicate under src/bindings/.",
       "sourceLocation": {
         "filePath": "src/bindingSchemaModel.ts",
-        "line": 151,
+        "line": 172,
         "column": 1
       }
     },
@@ -13653,7 +13672,7 @@
       "description": "Detect the object-field shape Studio accepts as an image-asset-compatible binding value.\n@todo Keep image-asset binding compatibility under src/bindings/.",
       "sourceLocation": {
         "filePath": "src/bindingSchemaModel.ts",
-        "line": 159,
+        "line": 180,
         "column": 1
       }
     },
@@ -30307,7 +30326,7 @@
       "name": "resolveStudioSchemaValueMeta",
       "sourcePath": "src/bindingSchemaModel.ts",
       "symbolName": "resolveStudioSchemaValueMeta",
-      "description": "Resolve a contracts data schema into the bindable value metadata used by Studio authoring.\n@todo Move binding schema interpretation under src/bindings/.",
+      "description": "Project canonical DataSchema authoring semantics into the bindable metadata used by compatibility policy.\n@todo Move binding schema projection under src/bindings/.",
       "isReadme": false
     },
     {
@@ -30527,8 +30546,23 @@
         "sourcePath": "src/bindingOperationModel.ts"
       },
       {
+        "fromPath": "src/bindingSchemaModel.test.ts",
+        "toPath": "src/bindingSchemaModel.ts",
+        "sourcePath": "src/bindingSchemaModel.test.ts"
+      },
+      {
         "fromPath": "src/bindingSchemaModel.ts",
         "toPath": "src/bindingAuthoringContracts.ts",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromPath": "src/bindingSchemaModel.ts",
+        "toPath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromPath": "src/bindingSchemaModel.ts",
+        "toPath": "src/types/authoring-engine.ts",
         "sourcePath": "src/bindingSchemaModel.ts"
       },
       {
@@ -38601,6 +38635,36 @@
         "sourcePath": "src/bindingOperationModel.ts"
       },
       {
+        "fromSymbol": "src/bindingSchemaModel.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/bindingSchemaModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingSchemaModel.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/bindingSchemaModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingSchemaModel.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/bindingSchemaModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingSchemaModel.test.ts",
+        "toSymbol": "resolveStudioSchemaValueMeta",
+        "callExpression": "resolveStudioSchemaValueMeta",
+        "sourcePath": "src/bindingSchemaModel.test.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSchemaValueMeta",
+        "toSymbol": "resolveDataSchemaAuthoringStructure",
+        "callExpression": "resolveDataSchemaAuthoringStructure",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
         "fromSymbol": "resolveStudioSchemaValueMeta",
         "toSymbol": "resolveSchemaReference",
         "callExpression": "resolveSchemaReference",
@@ -38608,8 +38672,8 @@
       },
       {
         "fromSymbol": "resolveStudioSchemaValueMeta",
-        "toSymbol": "resolveSchemaType",
-        "callExpression": "resolveSchemaType",
+        "toSymbol": "resolveBindableType",
+        "callExpression": "resolveBindableType",
         "sourcePath": "src/bindingSchemaModel.ts"
       },
       {
@@ -38656,12 +38720,6 @@
       },
       {
         "fromSymbol": "collectNestedPaths",
-        "toSymbol": "resolveSchemaType",
-        "callExpression": "resolveSchemaType",
-        "sourcePath": "src/bindingSchemaModel.ts"
-      },
-      {
-        "fromSymbol": "collectNestedPaths",
         "toSymbol": "resolveStudioSchemaValueMeta",
         "callExpression": "resolveStudioSchemaValueMeta",
         "sourcePath": "src/bindingSchemaModel.ts"
@@ -38679,9 +38737,9 @@
         "sourcePath": "src/bindingSchemaModel.ts"
       },
       {
-        "fromSymbol": "resolveSchemaType",
-        "toSymbol": "resolveSingleSchemaType",
-        "callExpression": "resolveSingleSchemaType",
+        "fromSymbol": "resolveBindableType",
+        "toSymbol": "resolveChoiceType",
+        "callExpression": "resolveChoiceType",
         "sourcePath": "src/bindingSchemaModel.ts"
       },
       {
