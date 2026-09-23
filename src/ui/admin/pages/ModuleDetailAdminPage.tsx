@@ -1,9 +1,14 @@
-import { Button, ButtonGroup, Card, TextInput, Text } from '@ankhorage/zora';
+import { isRecord } from '@ankhorage/utility/object';
+import { Button, ButtonGroup, Card, Text } from '@ankhorage/zora';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import { useStudio } from '../../../core/StudioContext';
+import { AuthoringEditor } from '../../../features/authoring-engine/adapters/inbound/AuthoringEditor';
+import { resolveModuleAdminAuthoring } from '../../../features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring';
+import { applyAuthoringMutation } from '../../../features/authoring-engine/application/use-cases/applyAuthoringMutation';
+import { deriveAuthoringModel } from '../../../features/authoring-engine/application/use-cases/deriveAuthoringModel';
 import type { StudioModuleState } from '../../../moduleAdminContracts';
 import {
   getProjectModule,
@@ -12,12 +17,8 @@ import {
   uninstallProjectModule,
   updateProjectModuleConfig,
 } from '../../../moduleAdminApi';
-import {
-  createStudioModuleAdminDraft,
-  parseStudioModuleAdminDraft,
-  type StudioModuleAdminDraft,
-} from '../../../moduleAdminModel';
-import { AdminHeader, AdminScroll, Field, KeyValue } from '../adminPagePrimitives';
+import type { AuthoringMutation } from '../../../types/authoring-engine';
+import { AdminHeader, AdminScroll, KeyValue } from '../adminPagePrimitives';
 import { ModuleAdminViewHost } from '../ModuleAdminViewHost';
 import { getStudioModuleAdminView } from '../moduleAdminViewRegistry';
 
@@ -26,20 +27,16 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
   const studio = useStudio();
   const router = useRouter();
   const [module, setModule] = useState<StudioModuleState | null>(null);
-  const [draft, setDraft] = useState<StudioModuleAdminDraft>({});
+  const [draft, setDraft] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [unknown, setUnknown] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  /*** Store a freshly loaded module and derive its editable fallback admin draft. */
+  /*** Store a freshly loaded module and keep its owner-normalized config as the authoring draft. */
   const applyLoadedModule = useCallback((loaded: StudioModuleState) => {
     setModule(loaded);
-    setDraft(
-      loaded.admin
-        ? createStudioModuleAdminDraft({ contribution: loaded.admin, config: loaded.config })
-        : {},
-    );
+    setDraft(loaded.config);
   }, []);
 
   /*** Reload the selected module lifecycle/admin state and classify an unknown module id. */
@@ -93,16 +90,25 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
     [applyLoadedModule, moduleId, studio],
   );
 
-  /*** Parse and persist the module's metadata-driven configuration draft through the Orchestrator lifecycle. */
+  /*** Apply one central authoring mutation to the module-owned configuration draft. */
+  const applyConfigMutation = useCallback(
+    (mutation: AuthoringMutation) => {
+      const result = applyAuthoringMutation(draft, mutation);
+      if (!result.ok) {
+        setMessage(result.diagnostic.message);
+        return;
+      }
+      setDraft(result.value);
+      setMessage(null);
+    },
+    [draft],
+  );
+
+  /*** Persist the neutral authoring draft through the existing Orchestrator module config lifecycle. */
   const saveConfig = useCallback(async () => {
     if (!moduleId || !module?.admin) return;
-    const parsed = parseStudioModuleAdminDraft({
-      contribution: module.admin,
-      currentConfig: module.config,
-      draft,
-    });
-    if (!parsed.ok) {
-      setMessage(parsed.message);
+    if (!isRecord(draft)) {
+      setMessage('Module configuration must be an object before it can be saved.');
       return;
     }
 
@@ -112,7 +118,7 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
       const result = await updateProjectModuleConfig({
         projectId: studio.projectId,
         moduleId,
-        config: parsed.config,
+        config: draft,
       });
       if (result.module) applyLoadedModule(result.module);
       setMessage('Module configuration saved through the Orchestrator lifecycle.');
@@ -148,6 +154,10 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
   }
 
   const adminView = getStudioModuleAdminView(module.id);
+  const fallbackAuthoring = module.admin ? resolveModuleAdminAuthoring(module.admin) : null;
+  const fallbackModel = fallbackAuthoring
+    ? deriveAuthoringModel({ ...fallbackAuthoring, value: draft })
+    : null;
 
   return (
     <AdminScroll>
@@ -226,29 +236,9 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
         </Card>
       ) : (
         <Card title={module.admin.title} description={module.admin.description}>
-          {module.admin.fields.map((field) => (
-            <Field key={field.key} label={`${field.label}${field.required ? ' *' : ''}`}>
-              <TextInput
-                accessibilityLabel={field.label}
-                value={draft[field.key] ?? ''}
-                multiline={field.control !== 'text' && field.control !== 'string-list'}
-                autoCapitalize="none"
-                onChangeText={(value) =>
-                  setDraft((current) => ({ ...current, [field.key]: value }))
-                }
-              />
-              {field.control === 'string-list' ? (
-                <Text color="neutral" emphasis="muted" variant="caption">
-                  Comma-separated values
-                </Text>
-              ) : null}
-              {field.control !== 'text' && field.control !== 'string-list' ? (
-                <Text color="neutral" emphasis="muted" variant="caption">
-                  JSON value
-                </Text>
-              ) : null}
-            </Field>
-          ))}
+          {fallbackModel ? (
+            <AuthoringEditor model={fallbackModel} onMutation={applyConfigMutation} />
+          ) : null}
           <Button loading={busy} onPress={() => void saveConfig()}>
             Save configuration
           </Button>
