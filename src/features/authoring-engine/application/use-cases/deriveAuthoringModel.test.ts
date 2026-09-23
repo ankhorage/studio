@@ -3,6 +3,24 @@ import { expect, test } from 'bun:test';
 import type { AuthoringStructure } from '../../../../types/authoring-engine';
 import { deriveAuthoringModel } from './deriveAuthoringModel';
 
+test('derives a selected owner substructure at its canonical base path', () => {
+  const model = deriveAuthoringModel({
+    structure: { kind: 'scalar', scalarType: 'string' },
+    value: undefined,
+    path: ['tokens', 'weights', 'body'],
+    optional: true,
+    policy: { inheritance: { value: '400' } },
+  });
+
+  expect(model).toMatchObject({
+    kind: 'scalar',
+    path: ['tokens', 'weights', 'body'],
+    optional: true,
+    value: undefined,
+    inheritance: { value: '400', overridden: false },
+  });
+});
+
 test('derives scalar and optional fields from one neutral object structure', () => {
   const model = deriveAuthoringModel({
     structure: SCREEN_METADATA_STRUCTURE,
@@ -161,6 +179,90 @@ test('rejects malformed or unknown set members instead of silently dropping them
       diagnostic: { code: 'invalid-value' },
     });
   }
+});
+
+test('derives value-map entries by key identity with recursively authored values', () => {
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'value-map',
+      key: { kind: 'scalar', scalarType: 'string' },
+      value: {
+        kind: 'object',
+        fields: [
+          { name: 'size', optional: false, structure: { kind: 'scalar', scalarType: 'number' } },
+        ],
+      },
+    },
+    value: { hero: { size: 32 }, body: { size: 16 } },
+  });
+
+  expect(model).toMatchObject({
+    kind: 'value-map',
+    key: { kind: 'scalar', scalarType: 'string' },
+    entries: [
+      { key: 'body', value: { kind: 'object', path: ['body'] } },
+      { key: 'hero', value: { kind: 'object', path: ['hero'] } },
+    ],
+  });
+});
+
+test('merges inherited value-map keys without materializing them as authored state', () => {
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'value-map',
+      key: { kind: 'scalar', scalarType: 'string' },
+      value: { kind: 'scalar', scalarType: 'number' },
+    },
+    value: { m: 20 },
+    policy: {
+      fields: {
+        s: { inheritance: { value: 8 } },
+        m: { inheritance: { value: 16 } },
+      },
+    },
+  });
+
+  expect(model).toMatchObject({
+    kind: 'value-map',
+    entries: [
+      {
+        key: 'm',
+        authored: true,
+        value: {
+          kind: 'scalar',
+          value: 20,
+          optional: true,
+          inheritance: { value: 16, overridden: true },
+        },
+      },
+      {
+        key: 's',
+        authored: false,
+        value: {
+          kind: 'scalar',
+          value: undefined,
+          optional: true,
+          inheritance: { value: 8, overridden: false },
+        },
+      },
+    ],
+  });
+});
+
+test('rejects non-object runtime values for value maps', () => {
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'value-map',
+      key: { kind: 'scalar', scalarType: 'string' },
+      value: { kind: 'scalar', scalarType: 'number' },
+    },
+    value: ['not-a-map'],
+  });
+
+  expect(model).toMatchObject({
+    kind: 'unsupported',
+    diagnostic: { code: 'invalid-value' },
+  });
 });
 
 test('reports invalid runtime values instead of coercing them', () => {

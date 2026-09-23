@@ -9,7 +9,9 @@ import type {
   AuthoringOrderedListNode,
   AuthoringScalarNode,
   AuthoringSetNode,
+  AuthoringValueMapNode,
 } from '../../../../types/authoring-engine';
+import { createInitialAuthoringValue } from '../../application/use-cases/createInitialAuthoringValue';
 
 export interface AuthoringCustomControlProps {
   readonly model: AuthoringNode;
@@ -116,6 +118,16 @@ function AuthoringControl({ model, onMutation, renderCustomControl }: AuthoringE
 
   if (model.kind === 'ordered-list') {
     return <OrderedListEditor model={model} onMutation={onMutation} />;
+  }
+
+  if (model.kind === 'value-map') {
+    return (
+      <ValueMapEditor
+        model={model}
+        onMutation={onMutation}
+        renderCustomControl={renderCustomControl}
+      />
+    );
   }
 
   return <ScalarEditor model={model} onMutation={onMutation} />;
@@ -308,6 +320,101 @@ function OrderedListEditor(props: {
   );
 }
 
+/*** Render keyed map entries with recursive values, atomic rename, removal, and structural insertion. */
+function ValueMapEditor(props: {
+  readonly model: AuthoringValueMapNode;
+  readonly onMutation: (mutation: AuthoringMutation) => void;
+  readonly renderCustomControl?: AuthoringEditorProps['renderCustomControl'];
+}) {
+  const { model } = props;
+  const newKey = resolveNextValueMapKey(model);
+  const initialValue = createInitialAuthoringValue(model.valueStructure);
+
+  return (
+    <Field label={model.label} description={model.description} required={!model.optional}>
+      <View style={styles.membership}>
+        {model.entries.map((entry) => (
+          <View key={entry.key} style={styles.valueMapRow}>
+            <View style={styles.valueMapKey}>
+              <TextInput
+                defaultValue={entry.key}
+                editable={entry.authored}
+                autoCapitalize="none"
+                onEndEditing={(event) => {
+                  if (!entry.authored) return;
+                  const toKey = event.nativeEvent.text;
+                  if (
+                    toKey === entry.key ||
+                    model.entries.some((candidate) => candidate.key === toKey)
+                  ) {
+                    return;
+                  }
+                  props.onMutation({
+                    kind: 'rename-key',
+                    path: model.path,
+                    fromKey: entry.key,
+                    toKey,
+                  });
+                }}
+              />
+            </View>
+            <View style={styles.valueMapValue}>
+              <AuthoringEditor
+                model={entry.value}
+                onMutation={props.onMutation}
+                renderCustomControl={props.renderCustomControl}
+              />
+            </View>
+            {entry.authored ? (
+              <Button
+                variant="outline"
+                onPress={() => {
+                  const authoredCount = model.entries.filter((candidate) => candidate.authored).length;
+                  if (model.optional && authoredCount === 1) {
+                    props.onMutation({ kind: 'unset', path: model.path });
+                    return;
+                  }
+                  props.onMutation({ kind: 'unset', path: [...model.path, entry.key] });
+                }}
+              >
+                Remove
+              </Button>
+            ) : null}
+          </View>
+        ))}
+        {newKey !== undefined && initialValue !== undefined ? (
+          <Button
+            variant="outline"
+            onPress={() =>
+              props.onMutation({
+                kind: 'set',
+                path: [...model.path, newKey],
+                value: initialValue,
+              })
+            }
+          >
+            Add entry
+          </Button>
+        ) : null}
+      </View>
+    </Field>
+  );
+}
+
+/*** Choose a deterministic unused map key without assigning ordering semantics to persisted values. */
+function resolveNextValueMapKey(model: AuthoringValueMapNode): string | undefined {
+  const used = new Set(model.entries.map((entry) => entry.key));
+  if (model.key.kind === 'choice')
+    return model.key.values.find((candidate) => !used.has(candidate));
+  return resolveOpenValueMapKey(used);
+}
+
+/*** Recursively find the first unused generic key for an open scalar-string value map. */
+function resolveOpenValueMapKey(used: ReadonlySet<string>, index = 1): string {
+  const candidate = index === 1 ? 'newKey' : `newKey${index}`;
+  return used.has(candidate) ? resolveOpenValueMapKey(used, index + 1) : candidate;
+}
+
 /*** Move one ordered-list item immutably while preserving every other authored item. */
 function moveOrderedListItem(
   items: readonly (string | number | boolean | null)[],
@@ -401,8 +508,17 @@ function encodeChoiceValue(value: string | number | boolean | null): string {
 
 /*** Format one supported authored node for read-only presentation. */
 function formatAuthoringNodeValue(
-  model: AuthoringChoiceNode | AuthoringOrderedListNode | AuthoringScalarNode | AuthoringSetNode,
+  model:
+    | AuthoringChoiceNode
+    | AuthoringOrderedListNode
+    | AuthoringScalarNode
+    | AuthoringSetNode
+    | AuthoringValueMapNode,
 ): string {
+  if (model.kind === 'value-map')
+    return model.entries.length > 0
+      ? model.entries.map((entry) => entry.key).join(', ')
+      : 'Not set';
   if (model.kind === 'set')
     return model.selected.length > 0 ? model.selected.join(', ') : 'Not set';
   if (model.kind === 'ordered-list')
@@ -438,5 +554,18 @@ const styles = StyleSheet.create({
   orderedListInput: {
     flex: 1,
     minWidth: 160,
+  },
+  valueMapRow: {
+    alignItems: 'flex-end',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  valueMapKey: {
+    minWidth: 140,
+  },
+  valueMapValue: {
+    flex: 1,
+    minWidth: 180,
   },
 });

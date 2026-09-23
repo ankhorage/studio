@@ -8,6 +8,7 @@ import type {
   AuthoringPrimitive,
   AuthoringScalarType,
   AuthoringStructure,
+  AuthoringValueMapKey,
 } from '../../../../types/authoring-engine';
 
 /*** Derive one UI-neutral authoring model from neutral structure semantics and a runtime value. */
@@ -16,14 +17,16 @@ export function deriveAuthoringModel(args: {
   readonly value: unknown;
   readonly policy?: AuthoringPresentationPolicy;
   readonly label?: string;
+  readonly path?: readonly string[];
+  readonly optional?: boolean;
 }): AuthoringNode {
   return deriveNode({
     structure: args.structure,
     value: args.value,
     policy: args.policy,
-    path: [],
+    path: args.path ?? [],
     label: args.label ?? args.policy?.label ?? 'Value',
-    optional: false,
+    optional: args.optional ?? false,
     inheritedReadOnly: false,
   });
 }
@@ -97,6 +100,36 @@ function deriveNode(args: {
           }
         : unsupportedValue(base, value.diagnostic);
     }
+    case 'value-map': {
+      const valueStructure = args.structure.value;
+      const value = readValueMapValue(args.structure.key, args.value, args.optional);
+      return value.ok
+        ? {
+            ...base,
+            kind: 'value-map',
+            key: value.key,
+            valueStructure,
+            entries: mergeValueMapEntries(value.entries, args.policy?.fields, value.key).map(
+              ([key, entryValue, authored]) => {
+                const entryPolicy = resolvePresentationFieldPolicy(args.policy?.fields, key);
+                return {
+                  key,
+                  authored,
+                  value: deriveNode({
+                    structure: valueStructure,
+                    value: entryValue,
+                    policy: entryPolicy,
+                    path: [...args.path, key],
+                    label: 'Value',
+                    optional: entryPolicy?.inheritance !== undefined,
+                    inheritedReadOnly: readOnly,
+                  }),
+                };
+              },
+            ),
+          }
+        : unsupportedValue(base, value.diagnostic);
+    }
     case 'object': {
       if (args.value !== undefined && !isRecord(args.value)) {
         return unsupportedValue(base, {
@@ -126,6 +159,14 @@ function deriveNode(args: {
     case 'unsupported':
       return unsupportedValue(base, args.structure.diagnostic);
   }
+}
+
+/*** Resolve one presentation field policy without arbitrary dynamic object indexing. */
+function resolvePresentationFieldPolicy(
+  fields: Readonly<Record<string, AuthoringPresentationPolicy>> | undefined,
+  key: string,
+): AuthoringPresentationPolicy | undefined {
+  return Object.entries(fields ?? {}).find(([fieldName]) => fieldName === key)?.[1];
 }
 
 /*** Read and validate one scalar runtime value against its portable structural type. */
@@ -240,6 +281,87 @@ function readSetValue(
   const selectedKeys = new Set(entries.map(([key]) => key));
   const selected = values.filter((candidate) => selectedKeys.has(candidate));
   return { ok: true, values, selected };
+}
+
+/*** Validate keyed value-map state while keeping key identity distinct from collection order. */
+function readValueMapValue(
+  keyStructure: AuthoringStructure,
+  value: unknown,
+  optional: boolean,
+): ValueMapReadResult {
+  const key = resolveValueMapKey(keyStructure);
+  if (!key.ok) return key;
+
+  if (value === undefined && optional) return { ok: true, key: key.key, entries: [] };
+  if (!isRecord(value)) {
+    return {
+      ok: false,
+      diagnostic: {
+        code: 'invalid-value',
+        message: 'Expected value-map object.',
+        path: [],
+      },
+    };
+  }
+
+  const entries = Object.entries(value).sort(([left], [right]) => left.localeCompare(right));
+  const invalid = entries.find(([candidate]) => !isValueMapKeyAllowed(key.key, candidate));
+  if (invalid) {
+    return {
+      ok: false,
+      diagnostic: {
+        code: 'invalid-value',
+        message: `Invalid value-map key "${invalid[0]}".`,
+        path: [],
+      },
+    };
+  }
+
+  return { ok: true, key: key.key, entries };
+}
+
+/*** Merge authored entries with presentation-only inherited keys without materializing defaults. */
+function mergeValueMapEntries(
+  authoredEntries: readonly (readonly [string, unknown])[],
+  fields: Readonly<Record<string, AuthoringPresentationPolicy>> | undefined,
+  key: AuthoringValueMapKey,
+): readonly (readonly [string, unknown, boolean])[] {
+  const authoredKeys = new Set(authoredEntries.map(([entryKey]) => entryKey));
+  const inheritedKeys = Object.keys(fields ?? {}).filter(
+    (candidate) => !authoredKeys.has(candidate) && isValueMapKeyAllowed(key, candidate),
+  );
+  return [
+    ...authoredEntries.map(([entryKey, value]) => [entryKey, value, true] as const),
+    ...inheritedKeys.map((entryKey) => [entryKey, undefined, false] as const),
+  ].sort(([left], [right]) => left.localeCompare(right));
+}
+
+/*** Resolve the currently supported portable value-map key semantics. */
+function resolveValueMapKey(structure: AuthoringStructure): ValueMapKeyResult {
+  if (structure.kind === 'scalar' && structure.scalarType === 'string') {
+    return { ok: true, key: { kind: 'scalar', scalarType: 'string' } };
+  }
+  if (structure.kind === 'choice') {
+    const values = structure.values.filter(
+      (candidate): candidate is string => typeof candidate === 'string',
+    );
+    if (values.length === structure.values.length) {
+      return { ok: true, key: { kind: 'choice', values } };
+    }
+  }
+  return {
+    ok: false,
+    diagnostic: {
+      code: 'unsupported-structure',
+      message: 'Value-map authoring requires scalar-string or finite-string-choice keys.',
+      path: [],
+    },
+  };
+}
+
+/*** Check one authored object key against the resolved value-map key contract. */
+function isValueMapKeyAllowed(key: AuthoringValueMapKey, candidate: string): boolean {
+  return key.kind === 'scalar' || key.values.includes(candidate);
 }
 
 /*** Validate one ordered primitive list while preserving authored order and duplicates. */
@@ -362,5 +484,17 @@ type OrderedListReadResult =
       readonly ok: true;
       readonly item: AuthoringOrderedListItem;
       readonly items: readonly AuthoringPrimitive[];
+    }
+  | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
+
+type ValueMapKeyResult =
+  | { readonly ok: true; readonly key: AuthoringValueMapKey }
+  | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
+
+type ValueMapReadResult =
+  | {
+      readonly ok: true;
+      readonly key: AuthoringValueMapKey;
+      readonly entries: readonly (readonly [string, unknown])[];
     }
   | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };

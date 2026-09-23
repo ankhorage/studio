@@ -78,6 +78,12 @@ function resolveDescriptor(
         kind: 'ordered-list',
         item: resolveDescriptor(descriptor.item, document, visited, [...path, '*']),
       };
+    case 'value-map':
+      return {
+        kind: 'value-map',
+        key: resolveDescriptor(descriptor.key, document, visited, [...path, '<key>']),
+        value: resolveDescriptor(descriptor.value, document, visited, [...path, '*']),
+      };
     case 'ref':
       return resolveReference(descriptor, document, visited, path);
     default:

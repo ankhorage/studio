@@ -39,6 +39,7 @@ export function ThemeRecipeAdminPage(props: {
   const model = deriveAuthoringModel({ ...authoring, value: overrides });
   /*** Apply one recipe field override or restore inheritance by removing it from the authored theme. */
   const updateField = (mutation: AuthoringMutation) => {
+    if (mutation.kind === 'rename-key') return;
     const [fieldName] = mutation.path;
     const value = mutation.kind === 'unset' ? undefined : mutation.value;
     if (!fieldName || mutation.path.length !== 1) return;
