@@ -34,7 +34,7 @@ const objectField: StudioBindingInputFieldOption = {
 
 describe('binding editor DataSchema drafts', () => {
   test('initializes typed literal values from neutral authoring semantics', () => {
-    expect(createStudioEventInputDrafts([objectField], {} as never)).toEqual({
+    expect(createStudioEventInputDrafts([objectField], [])).toEqual({
       payload: {
         kind: 'literal',
         value: { count: 0 },
