@@ -11,8 +11,6 @@ import {
 import { ACTION_REGISTRY } from '../../../../index';
 import { Field } from '../../adminPagePrimitives';
 import { bindingAdminStyles } from './bindingAdminStyles';
-import { BindingLiteralAuthoringEditor } from './BindingLiteralAuthoringEditor';
-import { createBindingLiteralDefaultValue } from './createBindingLiteralDefaultValue';
 import {
   createStudioEventBinding,
   createStudioEventInputDrafts,
@@ -23,6 +21,8 @@ import {
   type StudioEventInputDraft,
   type StudioEventInputSourceKind,
 } from './bindingEditorModel';
+import { BindingLiteralAuthoringEditor } from './BindingLiteralAuthoringEditor';
+import { createBindingLiteralDefaultValue } from './createBindingLiteralDefaultValue';
 
 const TARGET_OPTIONS = [
   { value: 'action', label: 'Action' },
@@ -139,12 +139,11 @@ function EventInputDrafts(props: {
   return (
     <View style={bindingAdminStyles.stack}>
       {props.fields.map((field) => {
-        const draft =
-          props.drafts[field.name] ?? {
-            kind: 'literal' as const,
-            value: createBindingLiteralDefaultValue(field),
-            included: field.required,
-          };
+        const draft = props.drafts[field.name] ?? {
+          kind: 'literal' as const,
+          value: createBindingLiteralDefaultValue(field),
+          included: field.required,
+        };
         return (
           <View key={field.name} style={bindingAdminStyles.row}>
             <View style={bindingAdminStyles.grow}>
