@@ -28772,124 +28772,124 @@ ScreenRequirements/contracts capability rather than generic Utility.</p>
       <h2>src/ui/admin/pages/AuthAdminPage.tsx</h2>
       <article class="item" data-search="AuthAdminPage src/ui/admin/pages/AuthAdminPage.tsx Render and coordinate Studio authentication authoring, OAuth credential setup, health, routes, and profile configuration.&#10;@todo This page currently owns substantial auth application orchestration and generic UI primitives; move auth persistence/provider transaction policy into `auth/` and use canonical ZORA form/action patterns.">
     <h3>AuthAdminPage</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:92:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:86:1</code></p>
     <p>Render and coordinate Studio authentication authoring, OAuth credential setup, health, routes, and profile configuration.
 @todo This page currently owns substantial auth application orchestration and generic UI primitives; move auth persistence/provider transaction policy into `auth/` and use canonical ZORA form/action patterns.</p>
   </article><article class="item" data-search="PendingCredentialLinkCard src/ui/admin/pages/AuthAdminPage.tsx Render recovery controls for one OAuth credential secret that was stored but not linked into the manifest.">
     <h3>PendingCredentialLinkCard</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:593:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:524:1</code></p>
     <p>Render recovery controls for one OAuth credential secret that was stored but not linked into the manifest.</p>
   </article><article class="item" data-search="OAuthProviderSetting src/ui/admin/pages/AuthAdminPage.tsx Render one Supabase OAuth provider&#39;s setup requirements, credentials, health state, and enablement controls.&#10;@todo Provider setup/credential completeness and transaction policy belongs in the auth application domain; this component should render a prepared view model.">
     <h3>OAuthProviderSetting</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:622:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:553:1</code></p>
     <p>Render one Supabase OAuth provider&#39;s setup requirements, credentials, health state, and enablement controls.
 @todo Provider setup/credential completeness and transaction policy belongs in the auth application domain; this component should render a prepared view model.</p>
   </article><article class="item" data-search="setEnabled src/ui/admin/pages/AuthAdminPage.tsx Toggle a provider only when its required credentials are complete, upserting the provider draft when permitted.">
     <h3>setEnabled</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:673:9</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:604:9</code></p>
     <p>Toggle a provider only when its required credentials are complete, upserting the provider draft when permitted.</p>
   </article><article class="item" data-search="saveCredentials src/ui/admin/pages/AuthAdminPage.tsx Validate a complete credential replacement, store it through the secret API, and persist its manifest reference under a keyed transaction lock.">
     <h3>saveCredentials</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:700:9</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:631:9</code></p>
     <p>Validate a complete credential replacement, store it through the secret API, and persist its manifest reference under a keyed transaction lock.</p>
   </article><article class="item" data-search="upsertProvider src/ui/admin/pages/AuthAdminPage.tsx Immutably insert or replace an array item selected by its `id` key.&#10;@utility @ankhorage/utility/array">
     <h3>upsertProvider</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:836:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:767:1</code></p>
     <p>Immutably insert or replace an array item selected by its `id` key.
 @utility @ankhorage/utility/array</p>
   </article><article class="item" data-search="omitSignUp src/ui/admin/pages/AuthAdminPage.tsx Return an immutable object copy without its `signUp` property; parameterized key omission is reusable.&#10;@utility @ankhorage/utility/object">
     <h3>omitSignUp</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:851:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:782:1</code></p>
     <p>Return an immutable object copy without its `signUp` property; parameterized key omission is reusable.
 @utility @ankhorage/utility/object</p>
   </article><article class="item" data-search="omitProfile src/ui/admin/pages/AuthAdminPage.tsx Return an immutable object copy without its `profile` property; parameterized key omission is reusable.&#10;@utility @ankhorage/utility/object">
     <h3>omitProfile</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:860:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:791:1</code></p>
     <p>Return an immutable object copy without its `profile` property; parameterized key omission is reusable.
 @utility @ankhorage/utility/object</p>
   </article><article class="item" data-search="createDefaultSettings src/ui/admin/pages/AuthAdminPage.tsx Create Studio&#39;s default editable authentication settings shell.">
     <h3>createDefaultSettings</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:866:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:797:1</code></p>
     <p>Create Studio&#39;s default editable authentication settings shell.</p>
   </article><article class="item" data-search="createDefaultOAuth src/ui/admin/pages/AuthAdminPage.tsx Create Studio&#39;s default OAuth settings shell.">
     <h3>createDefaultOAuth</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:877:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:808:1</code></p>
     <p>Create Studio&#39;s default OAuth settings shell.</p>
   </article><article class="item" data-search="createFallbackManifest src/ui/admin/pages/AuthAdminPage.tsx Create the minimal fallback manifest needed to initialize auth authoring before a canonical manifest is available.">
     <h3>createFallbackManifest</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:886:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:817:1</code></p>
     <p>Create the minimal fallback manifest needed to initialize auth authoring before a canonical manifest is available.</p>
   </article><article class="item" data-search="toMessage src/ui/admin/pages/AuthAdminPage.tsx Normalize auth API/general failures to a user-display message with a caller-specific fallback.&#10;@utility @ankhorage/utility/error">
     <h3>toMessage</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:925:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:856:1</code></p>
     <p>Normalize auth API/general failures to a user-display message with a caller-specific fallback.
 @utility @ankhorage/utility/error</p>
   </article><article class="item" data-search="formatAuthAdminWriteBusyReason src/ui/admin/pages/AuthAdminPage.tsx Convert an auth write-conflict reason into the administration message appropriate to the blocked operation.">
     <h3>formatAuthAdminWriteBusyReason</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:931:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:862:1</code></p>
     <p>Convert an auth write-conflict reason into the administration message appropriate to the blocked operation.</p>
   </article><article class="item" data-search="AuthHealthCard src/ui/admin/pages/AuthAdminPage.tsx Render project auth health, provider field completeness, callback metadata, and diagnostics.">
     <h3>AuthHealthCard</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:950:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:881:1</code></p>
     <p>Render project auth health, provider field completeness, callback metadata, and diagnostics.</p>
   </article><article class="item" data-search="formatHealthStatus src/ui/admin/pages/AuthAdminPage.tsx Format the aggregate auth health status for display.">
     <h3>formatHealthStatus</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1013:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:944:1</code></p>
     <p>Format the aggregate auth health status for display.</p>
   </article><article class="item" data-search="formatProviderHealthStatus src/ui/admin/pages/AuthAdminPage.tsx Format one OAuth provider health status for display.">
     <h3>formatProviderHealthStatus</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1021:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:952:1</code></p>
     <p>Format one OAuth provider health status for display.</p>
   </article><article class="item" data-search="healthStatusColor src/ui/admin/pages/AuthAdminPage.tsx Map aggregate auth health status to the semantic text color used by the admin UI.">
     <h3>healthStatusColor</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1030:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:961:1</code></p>
     <p>Map aggregate auth health status to the semantic text color used by the admin UI.</p>
   </article><article class="item" data-search="diagnosticSeverityColor src/ui/admin/pages/AuthAdminPage.tsx Map auth diagnostic severity to the semantic text color used by the admin UI.">
     <h3>diagnosticSeverityColor</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1038:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:969:1</code></p>
     <p>Map auth diagnostic severity to the semantic text color used by the admin UI.</p>
   </article><article class="item" data-search="Card src/ui/admin/pages/AuthAdminPage.tsx Render a themed generic card shell used throughout this auth page.&#10;@todo Replace with the canonical ZORA Card instead of owning a duplicate local primitive.">
     <h3>Card</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1048:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:979:1</code></p>
     <p>Render a themed generic card shell used throughout this auth page.
 @todo Replace with the canonical ZORA Card instead of owning a duplicate local primitive.</p>
   </article><article class="item" data-search="Field src/ui/admin/pages/AuthAdminPage.tsx Render a labeled generic field shell used by auth forms.&#10;@todo Replace with the canonical ZORA FormField pattern.">
     <h3>Field</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1067:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:998:1</code></p>
     <p>Render a labeled generic field shell used by auth forms.
 @todo Replace with the canonical ZORA FormField pattern.</p>
   </article><article class="item" data-search="Input src/ui/admin/pages/AuthAdminPage.tsx Render a theme-aware generic React Native text input.&#10;@todo Replace with canonical ZORA Input rather than duplicating design-system input ownership in Studio.">
     <h3>Input</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1082:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1013:1</code></p>
     <p>Render a theme-aware generic React Native text input.
 @todo Replace with canonical ZORA Input rather than duplicating design-system input ownership in Studio.</p>
   </article><article class="item" data-search="SwitchSetting src/ui/admin/pages/AuthAdminPage.tsx Render a generic title/description/switch setting row.&#10;@todo Replace with canonical ZORA SwitchField where its contract fits.">
     <h3>SwitchSetting</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1105:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1036:1</code></p>
     <p>Render a generic title/description/switch setting row.
 @todo Replace with canonical ZORA SwitchField where its contract fits.</p>
   </article><article class="item" data-search="Choice src/ui/admin/pages/AuthAdminPage.tsx Render one selectable pill-like option used by auth/profile configuration.">
     <h3>Choice</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1125:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1056:1</code></p>
     <p>Render one selectable pill-like option used by auth/profile configuration.</p>
   </article><article class="item" data-search="KeyValue src/ui/admin/pages/AuthAdminPage.tsx Render a generic label/value row used in auth administration.&#10;@todo Reuse the shared admin/ZORA key-value pattern rather than a second local implementation.">
     <h3>KeyValue</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1153:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1084:1</code></p>
     <p>Render a generic label/value row used in auth administration.
 @todo Reuse the shared admin/ZORA key-value pattern rather than a second local implementation.</p>
   </article><article class="item" data-search="PrimaryButton src/ui/admin/pages/AuthAdminPage.tsx Render the auth page&#39;s primary loading/action button.&#10;@todo Replace with canonical ZORA Button.">
     <h3>PrimaryButton</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1168:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1099:1</code></p>
     <p>Render the auth page&#39;s primary loading/action button.
 @todo Replace with canonical ZORA Button.</p>
   </article><article class="item" data-search="SecondaryButton src/ui/admin/pages/AuthAdminPage.tsx Render the auth page&#39;s secondary action button.&#10;@todo Replace with canonical ZORA Button.">
     <h3>SecondaryButton</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1195:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1126:1</code></p>
     <p>Render the auth page&#39;s secondary action button.
 @todo Replace with canonical ZORA Button.</p>
   </article><article class="item" data-search="Message src/ui/admin/pages/AuthAdminPage.tsx Render a simple informational auth-admin message.">
     <h3>Message</h3>
-    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1208:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1139:1</code></p>
     <p>Render a simple informational auth-admin message.</p>
   </article>
     </section>

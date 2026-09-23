@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.6.0
+
+### Minor Changes
+
+- d276537: Derive auth profile table, fields, primary key, and strategies from the released Contracts structure instead of Studio-owned form interpretation.
+
 ## 5.5.7
 
 ### Patch Changes
