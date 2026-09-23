@@ -12,7 +12,7 @@ Studio does not maintain a second endpoint registry, event schema registry, or b
 
 The editor exposes properties from the composed ZORA core/plugin metadata catalog injected by the application runtime. Authored bindings persist in `manifest.dataBindings` and support the canonical literal, state, context, and operation-result sources.
 
-Operation-result bindings enumerate normalized `manifest.dataSources` uniformly, so external and generated APIs use the same authoring path. Response paths are derived from canonical operation response schemas and compared against ZORA bindable value metadata. Array responses expose their representative first item at path `0` and recursively expose paths below it, matching Runtime's numeric data-path behavior.
+Operation-result bindings enumerate normalized `manifest.dataSources` uniformly, so external and generated APIs use the same authoring path. Response paths are derived from canonical operation response schemas and compared against ZORA bindable value metadata. That compatibility metadata is projected from the same neutral DataSchema authoring structure, while date-format and response-path traversal remain binding-specific policy. Array responses expose their representative first item at path `0` and recursively expose paths below it, matching Runtime's numeric data-path behavior.
 
 ## Event/action bindings
 
