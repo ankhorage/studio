@@ -110,12 +110,14 @@ When a running generated app requires removal to be deferred, the page keeps the
 visible and offers explicit finalization after the app has been reloaded.
 
 Studio owns only generic contribution registration, transport, routing, and hosting. Serializable
-`config-schema` contributions remain a generic fallback. Modules may additionally expose an optional
-package-owned React/ZORA administration view; Studio gives that view only an opaque
-`execute(operation, input)` transport, caller-supplied component metadata, and a generic project
-refresh callback. Operation names, payload validation, result semantics, domain state, and domain UI
-remain owned by the module package. Rich views never create parallel top-level routes or bypass the
-canonical module lifecycle/config boundary.
+`config-schema` contributions remain a generic fallback, but their scalar and ordered-list semantics
+are adapted into the central neutral Authoring Model and rendered by the shared ZORA Authoring
+Editor. Unknown control semantics fail explicitly instead of falling back to a second JSON/form
+interpreter. Modules may additionally expose an optional package-owned React/ZORA administration
+view; Studio gives that view only an opaque `execute(operation, input)` transport, caller-supplied
+component metadata, and a generic project refresh callback. Operation names, payload validation,
+result semantics, domain state, and domain UI remain owned by the module package. Rich views never
+create parallel top-level routes or bypass the canonical module lifecycle/config boundary.
 
 Standalone module packages own config normalization, generated paths/files, layout contribution,
 cleanup behavior, and their optional administration implementation. Manifest `infra.modules` is the deterministic lifecycle registry. Each module entry owns its serializable `config`; Studio does not maintain a parallel configuration store.
