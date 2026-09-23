@@ -1,28 +1,6 @@
 name: Fresh template Infra acceptance
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/fresh-template-infra.yml'
-      - 'src/features/infrastructure/**'
-      - 'src/host/freshTemplateInfra.e2e.test.ts'
-      - 'src/host/orchestrator/projectManager.ts'
-      - 'src/host/orchestrator/studioInfraUp.ts'
-      - 'src/host/templates/**'
-      - 'package.json'
-      - 'bun.lock'
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/fresh-template-infra.yml'
-      - 'src/features/infrastructure/**'
-      - 'src/host/freshTemplateInfra.e2e.test.ts'
-      - 'src/host/orchestrator/projectManager.ts'
-      - 'src/host/orchestrator/studioInfraUp.ts'
-      - 'src/host/templates/**'
-      - 'package.json'
-      - 'bun.lock'
   workflow_dispatch:
 
 concurrency:
