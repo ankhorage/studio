@@ -338,7 +338,7 @@ function ValueMapEditor(props: {
             <View style={styles.valueMapKey}>
               <TextInput
                 defaultValue={entry.key}
-                editable={entry.authored}
+                readOnly={!entry.authored}
                 autoCapitalize="none"
                 onEndEditing={(event) => {
                   if (!entry.authored) return;
