@@ -53,19 +53,13 @@ import {
   rebaseAuthDraftOntoCanonicalCredentialRefs,
 } from './adminAuthSessionModel';
 
-const PROFILE_FIELDS = [
-  'email',
-  'phone',
-  'username',
-  'firstName',
-  'lastName',
-  'displayName',
-  'avatarUrl',
-] as const;
-
 const AUTH_FLOW_AUTHORING_STRUCTURE = resolveContractsAuthoringStructure(
   STRUCTURE_DESCRIPTOR,
   'auth-flow',
+);
+const AUTH_PROFILE_AUTHORING_STRUCTURE = resolveContractsAuthoringStructure(
+  STRUCTURE_DESCRIPTOR,
+  'auth-profile',
 );
 const AUTH_SIGN_IN_AUTHORING_STRUCTURE = resolveContractsAuthoringStructure(
   STRUCTURE_DESCRIPTOR,
@@ -489,89 +483,26 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
           />
 
           {draft.profile ? (
-            <>
-              <Field label="Profile table">
-                <Input
-                  value={draft.profile.table ?? 'profiles'}
-                  autoCapitalize="none"
-                  onChangeText={(table) =>
-                    setDraft((current) =>
-                      current.profile
-                        ? { ...current, profile: { ...current.profile, table } }
-                        : current,
-                    )
-                  }
-                />
-              </Field>
-              <Text weight="semiBold">Profile fields</Text>
-              <View style={styles.choiceRow}>
-                {PROFILE_FIELDS.map((field) => {
-                  const selected = draft.profile?.fields.includes(field) ?? false;
-                  return (
-                    <Choice
-                      key={field}
-                      label={field}
-                      selected={selected}
-                      onPress={() =>
-                        setDraft((current) => {
-                          if (!current.profile) return current;
-                          const fields = selected
-                            ? current.profile.fields.filter((value) => value !== field)
-                            : [...current.profile.fields, field];
-                          return {
-                            ...current,
-                            profile: { ...current.profile, fields },
-                          };
-                        })
-                      }
-                    />
-                  );
-                })}
-              </View>
-              <KeyValue label="Primary key" value="authUserId" />
-              <Field label="Create strategy">
-                <View style={styles.choiceRow}>
-                  {(['trigger', 'api', 'app'] as const).map((strategy) => (
-                    <Choice
-                      key={strategy}
-                      label={strategy}
-                      selected={draft.profile?.createStrategy === strategy}
-                      onPress={() =>
-                        setDraft((current) =>
-                          current.profile
-                            ? {
-                                ...current,
-                                profile: { ...current.profile, createStrategy: strategy },
-                              }
-                            : current,
-                        )
-                      }
-                    />
-                  ))}
-                </View>
-              </Field>
-              <Field label="Update strategy">
-                <View style={styles.choiceRow}>
-                  {(['api', 'app'] as const).map((strategy) => (
-                    <Choice
-                      key={strategy}
-                      label={strategy}
-                      selected={draft.profile?.updateStrategy === strategy}
-                      onPress={() =>
-                        setDraft((current) =>
-                          current.profile
-                            ? {
-                                ...current,
-                                profile: { ...current.profile, updateStrategy: strategy },
-                              }
-                            : current,
-                        )
-                      }
-                    />
-                  ))}
-                </View>
-              </Field>
-            </>
+            <AuthoringEditor
+              model={deriveAuthoringModel({
+                structure: AUTH_PROFILE_AUTHORING_STRUCTURE.ok
+                  ? AUTH_PROFILE_AUTHORING_STRUCTURE.structure
+                  : {
+                      kind: 'unsupported',
+                      sourceKind: 'auth-profile',
+                      diagnostic: AUTH_PROFILE_AUTHORING_STRUCTURE.diagnostic,
+                    },
+                value: draft.profile,
+                label: 'Profile',
+              })}
+              onMutation={(mutation) =>
+                setDraft((current) => {
+                  if (!current.profile) return current;
+                  const result = applyAuthoringMutation(current.profile, mutation);
+                  return result.ok ? { ...current, profile: result.value } : current;
+                })
+              }
+            />
           ) : null}
         </Card>
       ) : null}
