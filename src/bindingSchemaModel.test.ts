@@ -49,14 +49,11 @@ describe('resolveStudioSchemaValueMeta', () => {
       resolveStudioSchemaValueMeta({ type: 'array', items: { type: 'string' } }, undefined),
     ).toEqual({ type: 'array', itemType: 'string' });
     expect(
-      resolveStudioSchemaValueMeta(
-        { oneOf: [{ type: 'string' }, { type: 'number' }] },
-        undefined,
-      ),
+      resolveStudioSchemaValueMeta({ oneOf: [{ type: 'string' }, { type: 'number' }] }, undefined),
     ).toEqual({ type: 'unknown' });
-    expect(
-      resolveStudioSchemaValueMeta({ type: 'string', nullable: true }, undefined),
-    ).toEqual({ type: 'unknown' });
+    expect(resolveStudioSchemaValueMeta({ type: 'string', nullable: true }, undefined)).toEqual({
+      type: 'unknown',
+    });
   });
 });
 
