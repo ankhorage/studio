@@ -14,6 +14,7 @@ import type {
   StudioBindingOperationOption,
 } from './bindingAuthoringContracts';
 import { collectStudioResponsePaths, resolveStudioSchemaValueMeta } from './bindingSchemaModel';
+import { resolveDataSchemaAuthoringStructure } from './features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure';
 
 /***
  * Collect and alphabetically sort the API operations available for Studio binding authoring.
@@ -75,10 +76,12 @@ function collectOperationInputFields(
 ): readonly StudioBindingInputFieldOption[] {
   const fields = new Map<string, StudioBindingInputFieldOption>();
   for (const parameter of operation.request?.parameters ?? []) {
+    const schema = resolveSlotSchema(api, parameter);
     fields.set(parameter.name, {
       name: parameter.name,
       label: parameter.description ?? parameter.name,
-      value: resolveStudioSchemaValueMeta(resolveSlotSchema(api, parameter), api.schemas),
+      value: resolveStudioSchemaValueMeta(schema, api.schemas),
+      authoring: resolveDataSchemaAuthoringStructure(schema, api.schemas),
       required: parameter.required ?? false,
     });
   }
@@ -90,6 +93,7 @@ function collectOperationInputFields(
       name,
       label: schema.title ?? name,
       value: resolveStudioSchemaValueMeta(schema, api.schemas),
+      authoring: resolveDataSchemaAuthoringStructure(schema, api.schemas),
       required: requestSchema?.required?.includes(name) ?? false,
     });
   }

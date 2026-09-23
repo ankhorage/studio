@@ -8,6 +8,12 @@ const propertyCardSource = await Bun.file(
 const eventCardSource = await Bun.file(
   path.join(import.meta.dir, 'bindings/EventBindingsCard.tsx'),
 ).text();
+const eventComposerSource = await Bun.file(
+  path.join(import.meta.dir, 'bindings/EventBindingComposer.tsx'),
+).text();
+const literalAuthoringSource = await Bun.file(
+  path.join(import.meta.dir, 'bindings/BindingLiteralAuthoringEditor.tsx'),
+).text();
 
 test('passes the composed bindable component metadata into both binding cards', () => {
   expect(pageSource.match(/componentMeta={studio\.bindableComponentMeta}/g)).toHaveLength(2);
@@ -15,4 +21,12 @@ test('passes the composed bindable component metadata into both binding cards', 
   expect(eventCardSource).toContain('props.componentMeta');
   expect(propertyCardSource).not.toContain('ZORA_BINDABLE_COMPONENT_META');
   expect(eventCardSource).not.toContain('ZORA_BINDABLE_COMPONENT_META');
+});
+
+test('routes DataSchema-backed operation literals through the shared Authoring Engine', () => {
+  expect(eventComposerSource).toContain('field.authoring ?');
+  expect(eventComposerSource).toContain('<BindingLiteralAuthoringEditor');
+  expect(literalAuthoringSource).toContain('deriveAuthoringModel');
+  expect(literalAuthoringSource).toContain('<AuthoringEditor');
+  expect(literalAuthoringSource).toContain('applyAuthoringMutation');
 });

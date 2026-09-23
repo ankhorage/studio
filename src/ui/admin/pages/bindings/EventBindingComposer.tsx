@@ -16,9 +16,13 @@ import {
   createStudioEventInputDrafts,
   createStudioOperationKey,
   findStudioOperationByKey,
+  formatStudioBindingLiteral,
+  parseStudioBindingLiteral,
   type StudioEventInputDraft,
   type StudioEventInputSourceKind,
 } from './bindingEditorModel';
+import { BindingLiteralAuthoringEditor } from './BindingLiteralAuthoringEditor';
+import { createBindingLiteralDefaultValue } from './createBindingLiteralDefaultValue';
 
 const TARGET_OPTIONS = [
   { value: 'action', label: 'Action' },
@@ -135,7 +139,11 @@ function EventInputDrafts(props: {
   return (
     <View style={bindingAdminStyles.stack}>
       {props.fields.map((field) => {
-        const draft = props.drafts[field.name] ?? { kind: 'literal' as const, value: '' };
+        const draft = props.drafts[field.name] ?? {
+          kind: 'literal' as const,
+          value: createBindingLiteralDefaultValue(field),
+          included: field.required,
+        };
         return (
           <View key={field.name} style={bindingAdminStyles.row}>
             <View style={bindingAdminStyles.grow}>
@@ -146,21 +154,78 @@ function EventInputDrafts(props: {
                   value={draft.kind}
                   options={INPUT_SOURCE_OPTIONS}
                   onValueChange={(kind: StudioEventInputSourceKind) =>
-                    props.onChange({ ...props.drafts, [field.name]: { ...draft, kind } })
+                    props.onChange({
+                      ...props.drafts,
+                      [field.name]:
+                        kind === 'event'
+                          ? {
+                              kind,
+                              value: props.eventFields.includes(field.name) ? field.name : '',
+                            }
+                          : {
+                              kind,
+                              value: createBindingLiteralDefaultValue(field),
+                              included: true,
+                            },
+                    })
                   }
                 />
               </Field>
             </View>
             <View style={bindingAdminStyles.grow}>
-              <Field label={draft.kind === 'event' ? 'Payload path' : 'Literal value'}>
-                <TextInput
+              {draft.kind === 'event' ? (
+                <Field label="Payload path">
+                  <TextInput
+                    value={draft.value}
+                    placeholder="values.name"
+                    onChangeText={(value) =>
+                      props.onChange({
+                        ...props.drafts,
+                        [field.name]: { kind: 'event', value },
+                      })
+                    }
+                  />
+                </Field>
+              ) : field.authoring ? (
+                <BindingLiteralAuthoringEditor
+                  label="Literal value"
+                  required={field.required}
+                  structure={field.authoring}
                   value={draft.value}
-                  placeholder={draft.kind === 'event' ? 'values.name' : undefined}
-                  onChangeText={(value) =>
-                    props.onChange({ ...props.drafts, [field.name]: { ...draft, value } })
+                  onChange={(value) =>
+                    props.onChange({
+                      ...props.drafts,
+                      [field.name]: {
+                        kind: 'literal',
+                        value,
+                        included: value !== undefined,
+                      },
+                    })
                   }
                 />
-              </Field>
+              ) : (
+                <Field label="Literal value">
+                  <TextInput
+                    value={
+                      !draft.included && !field.required
+                        ? ''
+                        : draft.value === undefined
+                          ? ''
+                          : formatStudioBindingLiteral(draft.value)
+                    }
+                    onChangeText={(value) =>
+                      props.onChange({
+                        ...props.drafts,
+                        [field.name]: {
+                          kind: 'literal',
+                          value: parseStudioBindingLiteral(value, field.value),
+                          included: field.required || value !== '',
+                        },
+                      })
+                    }
+                  />
+                </Field>
+              )}
             </View>
           </View>
         );
