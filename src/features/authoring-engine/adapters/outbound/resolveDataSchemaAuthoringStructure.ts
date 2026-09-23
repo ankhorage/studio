@@ -15,7 +15,7 @@ export function resolveDataSchemaAuthoringStructure(
   path: readonly string[] = [],
 ): AuthoringStructure {
   const resolved = resolveSchemaReference(schema, schemas, seen);
-  if (!resolved) {
+  if (!resolved || resolved.ref) {
     return unsupportedDataSchema(
       'unresolved-ref',
       'Data schema reference could not be resolved.',
