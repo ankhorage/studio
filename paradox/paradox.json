@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.10.0",
+      "value": "v5.10.1",
       "color": "cb3837"
     },
     {
@@ -577,15 +577,6 @@
       "exports": [
         "canExecuteProjectDeployRelease"
       ]
-    },
-    {
-      "path": "src/canvasDragModel.public.test.ts",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/canvasDragModel.ts",
-        "src/canvasDropZones.ts"
-      ],
-      "exports": []
     },
     {
       "path": "src/canvasDragModel.test.ts",
@@ -3009,7 +3000,7 @@
       "exports": []
     },
     {
-      "path": "src/host/orchestrator/androidRunTemplate.test.ts",
+      "path": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
       "isEntrypoint": false,
       "dependencies": [
         "src/host/orchestrator/scaffolder.ts",
@@ -4362,15 +4353,6 @@
       ]
     },
     {
-      "path": "src/insertModalModel.public.test.ts",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/index.ts",
-        "src/insertModalModel.ts"
-      ],
-      "exports": []
-    },
-    {
       "path": "src/insertModalModel.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -4397,7 +4379,6 @@
       "path": "src/manifestState.public.test.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/index.ts",
         "src/manifestState.ts"
       ],
       "exports": []
@@ -18160,7 +18141,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 52,
+        "line": 53,
         "column": 1
       }
     },
@@ -18169,7 +18150,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 56,
+        "line": 57,
         "column": 1
       }
     },
@@ -18178,7 +18159,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 65,
+        "line": 66,
         "column": 1
       }
     },
@@ -18187,7 +18168,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 71,
+        "line": 72,
         "column": 1
       }
     },
@@ -18196,7 +18177,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 133,
+        "line": 134,
         "column": 1
       }
     },
@@ -18205,7 +18186,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 165,
+        "line": 166,
         "column": 1
       }
     },
@@ -18214,7 +18195,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 201,
+        "line": 202,
         "column": 1
       }
     },
@@ -18223,7 +18204,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 221,
+        "line": 222,
         "column": 1
       }
     },
@@ -18232,7 +18213,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 301,
+        "line": 302,
         "column": 1
       }
     },
@@ -18241,7 +18222,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 324,
+        "line": 325,
         "column": 1
       }
     },
@@ -18250,7 +18231,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts",
-        "line": 139,
+        "line": 141,
         "column": 1
       }
     },
@@ -18259,7 +18240,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts",
-        "line": 154,
+        "line": 156,
         "column": 1
       }
     },
@@ -18268,7 +18249,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts",
-        "line": 172,
+        "line": 174,
         "column": 1
       }
     },
@@ -18277,7 +18258,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts",
-        "line": 202,
+        "line": 204,
         "column": 1
       }
     },
@@ -18286,7 +18267,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts",
-        "line": 226,
+        "line": 228,
         "column": 1
       }
     },
@@ -18295,7 +18276,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts",
-        "line": 239,
+        "line": 241,
         "column": 1
       }
     },
@@ -18304,7 +18285,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts",
-        "line": 243,
+        "line": 245,
         "column": 1
       }
     },
@@ -18313,7 +18294,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts",
-        "line": 258,
+        "line": 260,
         "column": 1
       }
     },
@@ -18322,7 +18303,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts",
-        "line": 285,
+        "line": 287,
         "column": 1
       }
     },
@@ -18331,7 +18312,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts",
-        "line": 289,
+        "line": 291,
         "column": 1
       }
     },
@@ -18340,7 +18321,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 80,
+        "line": 87,
         "column": 1
       }
     },
@@ -18349,7 +18330,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 221,
+        "line": 228,
         "column": 1
       }
     },
@@ -18358,7 +18339,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 231,
+        "line": 238,
         "column": 1
       }
     },
@@ -18367,7 +18348,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 261,
+        "line": 268,
         "column": 1
       }
     },
@@ -18376,7 +18357,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 284,
+        "line": 291,
         "column": 1
       }
     },
@@ -18385,7 +18366,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 293,
+        "line": 300,
         "column": 1
       }
     },
@@ -18394,7 +18375,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 308,
+        "line": 315,
         "column": 1
       }
     },
@@ -18403,7 +18384,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 331,
+        "line": 338,
         "column": 1
       }
     },
@@ -18412,7 +18393,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 345,
+        "line": 352,
         "column": 1
       }
     },
@@ -18421,7 +18402,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 357,
+        "line": 364,
         "column": 1
       }
     },
@@ -18430,7 +18411,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 371,
+        "line": 378,
         "column": 1
       }
     },
@@ -18439,7 +18420,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 93,
+        "line": 95,
         "column": 1
       }
     },
@@ -18448,7 +18429,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 107,
+        "line": 109,
         "column": 1
       }
     },
@@ -18457,7 +18438,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 127,
+        "line": 129,
         "column": 1
       }
     },
@@ -18466,7 +18447,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 179,
+        "line": 181,
         "column": 1
       }
     },
@@ -18475,7 +18456,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 229,
+        "line": 231,
         "column": 1
       }
     },
@@ -18484,7 +18465,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 265,
+        "line": 267,
         "column": 1
       }
     },
@@ -18493,7 +18474,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 297,
+        "line": 299,
         "column": 1
       }
     },
@@ -18502,7 +18483,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 375,
+        "line": 377,
         "column": 1
       }
     },
@@ -18511,7 +18492,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 399,
+        "line": 401,
         "column": 1
       }
     },
@@ -18520,7 +18501,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 409,
+        "line": 411,
         "column": 1
       }
     },
@@ -18529,7 +18510,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 413,
+        "line": 415,
         "column": 1
       }
     },
@@ -18538,7 +18519,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 425,
+        "line": 427,
         "column": 1
       }
     },
@@ -18547,7 +18528,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 452,
+        "line": 454,
         "column": 1
       }
     },
@@ -18556,7 +18537,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 476,
+        "line": 478,
         "column": 1
       }
     },
@@ -18565,7 +18546,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 485,
+        "line": 487,
         "column": 1
       }
     },
@@ -18574,7 +18555,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 500,
+        "line": 502,
         "column": 1
       }
     },
@@ -18583,7 +18564,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 508,
+        "line": 510,
         "column": 1
       }
     },
@@ -18592,7 +18573,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 512,
+        "line": 514,
         "column": 1
       }
     },
@@ -18601,7 +18582,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/hostLifecycle.smoke.test.ts",
-        "line": 13,
+        "line": 15,
         "column": 1
       }
     },
@@ -18610,7 +18591,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/hostLifecycle.smoke.test.ts",
-        "line": 81,
+        "line": 83,
         "column": 1
       }
     },
@@ -20428,7 +20409,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/oauthFixtureConsumer.smoke.test.ts",
-        "line": 18,
+        "line": 19,
         "column": 1
       }
     },
@@ -20437,7 +20418,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/oauthFixtureConsumer.smoke.test.ts",
-        "line": 33,
+        "line": 34,
         "column": 1
       }
     },
@@ -20445,8 +20426,8 @@
       "name": "createHarness",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "line": 665,
+        "filePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "line": 667,
         "column": 1
       }
     },
@@ -20454,8 +20435,8 @@
       "name": "writeBasicAdb",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "line": 721,
+        "filePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "line": 723,
         "column": 1
       }
     },
@@ -20463,8 +20444,8 @@
       "name": "writeFailingAdb",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "line": 778,
+        "filePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "line": 780,
         "column": 1
       }
     },
@@ -20472,8 +20453,8 @@
       "name": "writeMultipleDeviceAdb",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "line": 817,
+        "filePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "line": 819,
         "column": 1
       }
     },
@@ -20481,8 +20462,8 @@
       "name": "writeExecutable",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "line": 888,
+        "filePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "line": 890,
         "column": 1
       }
     },
@@ -20490,8 +20471,8 @@
       "name": "createTransportReplacementHarness",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "line": 897,
+        "filePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "line": 899,
         "column": 1
       }
     },
@@ -20499,8 +20480,8 @@
       "name": "writeStatefulAdb",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "line": 926,
+        "filePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "line": 928,
         "column": 1
       }
     },
@@ -20508,8 +20489,8 @@
       "name": "writeReplacementExpo",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "line": 996,
+        "filePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "line": 998,
         "column": 1
       }
     },
@@ -20517,8 +20498,8 @@
       "name": "runHarness",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "line": 1041,
+        "filePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "line": 1043,
         "column": 1
       }
     },
@@ -20526,8 +20507,8 @@
       "name": "startDefaultStudioHost",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "line": 1066,
+        "filePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "line": 1068,
         "column": 1
       }
     },
@@ -20535,8 +20516,8 @@
       "name": "readRecordedReverseMappings",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "line": 1080,
+        "filePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "line": 1082,
         "column": 1
       }
     },
@@ -20544,8 +20525,8 @@
       "name": "reserveUnavailablePort",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "line": 1090,
+        "filePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "line": 1092,
         "column": 1
       }
     },
@@ -20553,8 +20534,8 @@
       "name": "exists",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "line": 1098,
+        "filePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "line": 1100,
         "column": 1
       }
     },
@@ -20562,8 +20543,8 @@
       "name": "isProcessAlive",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "line": 1108,
+        "filePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "line": 1110,
         "column": 1
       }
     },
@@ -22075,7 +22056,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.smoke.test.ts",
-        "line": 90,
+        "line": 92,
         "column": 1
       }
     },
@@ -22084,7 +22065,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.smoke.test.ts",
-        "line": 94,
+        "line": 96,
         "column": 1
       }
     },
@@ -24405,15 +24386,6 @@
       "name": "createManifest",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/manifestState.public.test.ts",
-        "line": 60,
-        "column": 1
-      }
-    },
-    {
-      "name": "createManifest",
-      "description": null,
-      "sourceLocation": {
         "filePath": "src/manifestState.test.ts",
         "line": 41,
         "column": 1
@@ -26530,16 +26502,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/root.test.ts",
-        "line": 207,
-        "column": 1
-      }
-    },
-    {
-      "name": "buildRoutes",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/routeUtils.public.test.ts",
-        "line": 24,
+        "line": 188,
         "column": 1
       }
     },
@@ -30623,16 +30586,6 @@
         "sourcePath": "src/canExecuteProjectDeployRelease.ts"
       },
       {
-        "fromPath": "src/canvasDragModel.public.test.ts",
-        "toPath": "src/canvasDragModel.ts",
-        "sourcePath": "src/canvasDragModel.public.test.ts"
-      },
-      {
-        "fromPath": "src/canvasDragModel.public.test.ts",
-        "toPath": "src/canvasDropZones.ts",
-        "sourcePath": "src/canvasDragModel.public.test.ts"
-      },
-      {
         "fromPath": "src/canvasDragModel.test.ts",
         "toPath": "src/canvasDragModel.ts",
         "sourcePath": "src/canvasDragModel.test.ts"
@@ -30773,16 +30726,6 @@
         "sourcePath": "src/index.ts"
       },
       {
-        "fromPath": "src/insertModalModel.public.test.ts",
-        "toPath": "src/index.ts",
-        "sourcePath": "src/insertModalModel.public.test.ts"
-      },
-      {
-        "fromPath": "src/insertModalModel.public.test.ts",
-        "toPath": "src/insertModalModel.ts",
-        "sourcePath": "src/insertModalModel.public.test.ts"
-      },
-      {
         "fromPath": "src/insertModalModel.test.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/insertModalModel.test.ts"
@@ -30796,11 +30739,6 @@
         "fromPath": "src/insertModalModel.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/insertModalModel.ts"
-      },
-      {
-        "fromPath": "src/manifestState.public.test.ts",
-        "toPath": "src/index.ts",
-        "sourcePath": "src/manifestState.public.test.ts"
       },
       {
         "fromPath": "src/manifestState.public.test.ts",
@@ -32883,14 +32821,14 @@
         "sourcePath": "src/host/modules/catalog.ts"
       },
       {
-        "fromPath": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromPath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toPath": "src/host/orchestrator/scaffolder.ts",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromPath": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromPath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toPath": "src/host/orchestrator/templates.ts",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromPath": "src/host/orchestrator/appTargetGeneration.test.ts",
@@ -38870,54 +38808,6 @@
         "sourcePath": "src/canExecuteProjectDeployRelease.test.ts"
       },
       {
-        "fromSymbol": "src/canvasDragModel.public.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/canvasDragModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/canvasDragModel.public.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/canvasDragModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/canvasDragModel.public.test.ts",
-        "toSymbol": "createStudioCanvasDragPayload",
-        "callExpression": "createStudioCanvasDragPayload",
-        "sourcePath": "src/canvasDragModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/canvasDragModel.public.test.ts",
-        "toSymbol": "isValidCanvasDropZone",
-        "callExpression": "isValidCanvasDropZone",
-        "sourcePath": "src/canvasDragModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/canvasDragModel.public.test.ts",
-        "toSymbol": "resolveCanvasDropZoneSlots",
-        "callExpression": "resolveCanvasDropZoneSlots",
-        "sourcePath": "src/canvasDragModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/canvasDragModel.public.test.ts",
-        "toSymbol": "resolveCanvasDragSession",
-        "callExpression": "resolveCanvasDragSession",
-        "sourcePath": "src/canvasDragModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/canvasDragModel.public.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/canvasDragModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/canvasDragModel.public.test.ts",
-        "toSymbol": "isStudioCanvasDragPayload",
-        "callExpression": "isStudioCanvasDragPayload",
-        "sourcePath": "src/canvasDragModel.public.test.ts"
-      },
-      {
         "fromSymbol": "src/canvasDragModel.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -39728,48 +39618,6 @@
         "sourcePath": "src/index.ts"
       },
       {
-        "fromSymbol": "src/insertModalModel.public.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/insertModalModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/insertModalModel.public.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/insertModalModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/insertModalModel.public.test.ts",
-        "toSymbol": "groupInsertEntries",
-        "callExpression": "groupInsertEntries",
-        "sourcePath": "src/insertModalModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/insertModalModel.public.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/insertModalModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/insertModalModel.public.test.ts",
-        "toSymbol": "filterInsertCatalogEntries",
-        "callExpression": "filterInsertCatalogEntries",
-        "sourcePath": "src/insertModalModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/insertModalModel.public.test.ts",
-        "toSymbol": "resolveNodeLabel",
-        "callExpression": "resolveNodeLabel",
-        "sourcePath": "src/insertModalModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/insertModalModel.public.test.ts",
-        "toSymbol": "getPlacementHint",
-        "callExpression": "getPlacementHint",
-        "sourcePath": "src/insertModalModel.public.test.ts"
-      },
-      {
         "fromSymbol": "src/insertModalModel.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -39842,18 +39690,6 @@
         "sourcePath": "src/insertModalModel.ts"
       },
       {
-        "fromSymbol": "createManifest",
-        "toSymbol": "createDefaultThemeConfig",
-        "callExpression": "createDefaultThemeConfig",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
         "fromSymbol": "src/manifestState.public.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -39863,180 +39699,6 @@
         "fromSymbol": "src/manifestState.public.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "generateManifestStateId",
-        "callExpression": "generateManifestStateId",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "createDefaultThemeConfig",
-        "callExpression": "createDefaultThemeConfig",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "collectScreenRouteEntries",
-        "callExpression": "collectScreenRouteEntries",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "groupScreenRouteEntries",
-        "callExpression": "groupScreenRouteEntries",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "insertRouteAtParentPath",
-        "callExpression": "insertRouteAtParentPath",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "updateNavigatorAtPath",
-        "callExpression": "updateNavigatorAtPath",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "pathToKey",
-        "callExpression": "pathToKey",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "isRouteGroupSegment",
-        "callExpression": "isRouteGroupSegment",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "getPrimaryNavigatorPath",
-        "callExpression": "getPrimaryNavigatorPath",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "findParentPathForScreenId",
-        "callExpression": "findParentPathForScreenId",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "findRoutesAtParentPath",
-        "callExpression": "findRoutesAtParentPath",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "findNavigatorAtPath",
-        "callExpression": "findNavigatorAtPath",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "resolveInitialScreenId",
-        "callExpression": "resolveInitialScreenId",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "createManifest",
-        "callExpression": "createManifest",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "removeScreenIdFromRoutes",
-        "callExpression": "removeScreenIdFromRoutes",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "makeUniqueSiblingRouteName",
-        "callExpression": "makeUniqueSiblingRouteName",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "toCanonicalRoutePattern",
-        "callExpression": "toCanonicalRoutePattern",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "makeUniqueRouteNameForParent",
-        "callExpression": "makeUniqueRouteNameForParent",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "updateStudioManifestDataBindings",
-        "callExpression": "updateStudioManifestDataBindings",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "updateStudioManifestDataSources",
-        "callExpression": "updateStudioManifestDataSources",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "setStudioManifestActiveThemeId",
-        "callExpression": "setStudioManifestActiveThemeId",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "setStudioManifestActiveThemeMode",
-        "callExpression": "setStudioManifestActiveThemeMode",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "deleteStudioManifestTheme",
-        "callExpression": "deleteStudioManifestTheme",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "deriveStudioScreenNavigationModel",
-        "callExpression": "deriveStudioScreenNavigationModel",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "setStudioManifestRoutePrimaryNavigationVisibility",
-        "callExpression": "setStudioManifestRoutePrimaryNavigationVisibility",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "moveStudioManifestRoute",
-        "callExpression": "moveStudioManifestRoute",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "findNodeInManifest",
-        "callExpression": "findNodeInManifest",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "hasCanonicalStudioScreenRegistryIdentity",
-        "callExpression": "hasCanonicalStudioScreenRegistryIdentity",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "resolveStudioScreenAppPath",
-        "callExpression": "resolveStudioScreenAppPath",
         "sourcePath": "src/manifestState.public.test.ts"
       },
       {
@@ -43071,122 +42733,14 @@
       },
       {
         "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
         "sourcePath": "src/routeUtils.public.test.ts"
       },
       {
         "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "buildRoutes",
-        "callExpression": "buildRoutes",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "collectScreenRouteEntries",
-        "callExpression": "collectScreenRouteEntries",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "groupScreenRouteEntries",
-        "callExpression": "groupScreenRouteEntries",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "pathToKey",
-        "callExpression": "pathToKey",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "isRouteGroupSegment",
-        "callExpression": "isRouteGroupSegment",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "listScreenIdsInRouteOrder",
-        "callExpression": "listScreenIdsInRouteOrder",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "findParentPathForScreenId",
-        "callExpression": "findParentPathForScreenId",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "findRoutesAtParentPath",
-        "callExpression": "findRoutesAtParentPath",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "getPrimaryNavigatorPath",
-        "callExpression": "getPrimaryNavigatorPath",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "findNavigatorAtPath",
-        "callExpression": "findNavigatorAtPath",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "updateNavigatorAtPath",
-        "callExpression": "updateNavigatorAtPath",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "insertRouteAtParentPath",
-        "callExpression": "insertRouteAtParentPath",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "removeScreenIdFromRoutes",
-        "callExpression": "removeScreenIdFromRoutes",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "makeUniqueSiblingRouteName",
-        "callExpression": "makeUniqueSiblingRouteName",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "toCanonicalRoutePattern",
-        "callExpression": "toCanonicalRoutePattern",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "resolveScreenIdForPathname",
-        "callExpression": "resolveScreenIdForPathname",
-        "sourcePath": "src/routeUtils.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/routeUtils.public.test.ts",
-        "toSymbol": "makeUniqueRouteNameForParent",
-        "callExpression": "makeUniqueRouteNameForParent",
         "sourcePath": "src/routeUtils.public.test.ts"
       },
       {
@@ -45777,12 +45331,6 @@
       },
       {
         "fromSymbol": "src/host/freshTemplateInfra.e2e.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/freshTemplateInfra.e2e.test.ts",
         "toSymbol": "getProjectTemplateSource",
         "callExpression": "getProjectTemplateSource",
         "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
@@ -46007,12 +45555,6 @@
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "waitForRuntimeNodeInteractionReady",
         "callExpression": "waitForRuntimeNodeInteractionReady",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "toSymbol": "adminWebSmokeTest",
-        "callExpression": "adminWebSmokeTest",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -47481,8 +47023,8 @@
       },
       {
         "fromSymbol": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
+        "toSymbol": "generatedNativeOAuthLifecycleE2e",
+        "callExpression": "generatedNativeOAuthLifecycleE2e",
         "sourcePath": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts"
       },
       {
@@ -47655,8 +47197,8 @@
       },
       {
         "fromSymbol": "src/host/generatedNutritionApi.e2e.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
+        "toSymbol": "nutritionApiE2eTest",
+        "callExpression": "nutritionApiE2eTest",
         "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
       },
       {
@@ -47871,8 +47413,8 @@
       },
       {
         "fromSymbol": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
+        "toSymbol": "generatedOAuthLifecycleE2e",
+        "callExpression": "generatedOAuthLifecycleE2e",
         "sourcePath": "src/host/generatedOAuthLifecycle.e2e.test.ts"
       },
       {
@@ -53882,268 +53424,268 @@
         "sourcePath": "src/host/modules/catalog.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "afterEach",
         "callExpression": "afterEach",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "rm",
         "callExpression": "rm",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
+        "toSymbol": "androidRunTemplateSmokeDescribe",
+        "callExpression": "androidRunTemplateSmokeDescribe",
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "it",
         "callExpression": "it",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "startDefaultStudioHost",
         "callExpression": "startDefaultStudioHost",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "createHarness",
         "callExpression": "createHarness",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "runHarness",
         "callExpression": "runHarness",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "readFile",
         "callExpression": "readFile",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "reserveUnavailablePort",
         "callExpression": "reserveUnavailablePort",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "exists",
         "callExpression": "exists",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "readRecordedReverseMappings",
         "callExpression": "readRecordedReverseMappings",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "writeMultipleDeviceAdb",
         "callExpression": "writeMultipleDeviceAdb",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "createTransportReplacementHarness",
         "callExpression": "createTransportReplacementHarness",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "writeFailingAdb",
         "callExpression": "writeFailingAdb",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "isProcessAlive",
         "callExpression": "isProcessAlive",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "mkdtemp",
         "callExpression": "mkdtemp",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "syncProjectScaffold",
         "callExpression": "scaffolder.syncProjectScaffold",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/androidRunTemplate.test.ts",
+        "fromSymbol": "src/host/orchestrator/androidRunTemplate.smoke.test.ts",
         "toSymbol": "getAndroidRunTs",
         "callExpression": "getAndroidRunTs",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "createHarness",
         "toSymbol": "mkdtemp",
         "callExpression": "mkdtemp",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "createHarness",
         "toSymbol": "mkdir",
         "callExpression": "mkdir",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "createHarness",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "createHarness",
         "toSymbol": "getAndroidRunTs",
         "callExpression": "getAndroidRunTs",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "createHarness",
         "toSymbol": "writeBasicAdb",
         "callExpression": "writeBasicAdb",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "createHarness",
         "toSymbol": "writeExecutable",
         "callExpression": "writeExecutable",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "writeBasicAdb",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "writeBasicAdb",
         "toSymbol": "chmod",
         "callExpression": "chmod",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "writeFailingAdb",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "writeFailingAdb",
         "toSymbol": "chmod",
         "callExpression": "chmod",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "writeMultipleDeviceAdb",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "writeMultipleDeviceAdb",
         "toSymbol": "chmod",
         "callExpression": "chmod",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "writeExecutable",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "writeExecutable",
         "toSymbol": "chmod",
         "callExpression": "chmod",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "createTransportReplacementHarness",
         "toSymbol": "createHarness",
         "callExpression": "createHarness",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "createTransportReplacementHarness",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "createTransportReplacementHarness",
         "toSymbol": "writeStatefulAdb",
         "callExpression": "writeStatefulAdb",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "createTransportReplacementHarness",
         "toSymbol": "writeReplacementExpo",
         "callExpression": "writeReplacementExpo",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "writeStatefulAdb",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "writeStatefulAdb",
         "toSymbol": "chmod",
         "callExpression": "chmod",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "writeReplacementExpo",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "writeReplacementExpo",
         "toSymbol": "chmod",
         "callExpression": "chmod",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "readRecordedReverseMappings",
         "toSymbol": "readFile",
         "callExpression": "readFile",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "readRecordedReverseMappings",
         "toSymbol": "expect",
         "callExpression": "expect",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "exists",
         "toSymbol": "readFile",
         "callExpression": "readFile",
-        "sourcePath": "src/host/orchestrator/androidRunTemplate.test.ts"
+        "sourcePath": "src/host/orchestrator/androidRunTemplate.smoke.test.ts"
       },
       {
         "fromSymbol": "src/host/orchestrator/appTargetGeneration.test.ts",

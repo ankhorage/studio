@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.10.1
+
+### Patch Changes
+
+- d9b63c4: Update Ankhorage dependencies: `@ankhorage/runtime`.
+
 ## 5.10.0
 
 ### Minor Changes

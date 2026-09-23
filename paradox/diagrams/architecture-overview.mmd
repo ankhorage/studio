@@ -168,10 +168,6 @@ graph TD
   module_src_canExecuteProjectDeployRelease_ts["src/canExecuteProjectDeployRelease.ts"]
   package__ankhorage_studio -.-> module_src_canExecuteProjectDeployRelease_ts
   module_src_canExecuteProjectDeployRelease_ts --> module_src_projectDeployReleaseInspectionResult_ts
-  module_src_canvasDragModel_public_test_ts["src/canvasDragModel.public.test.ts"]
-  package__ankhorage_studio -.-> module_src_canvasDragModel_public_test_ts
-  module_src_canvasDragModel_public_test_ts --> module_src_canvasDragModel_ts
-  module_src_canvasDragModel_public_test_ts --> module_src_canvasDropZones_ts
   module_src_canvasDragModel_test_ts["src/canvasDragModel.test.ts"]
   package__ankhorage_studio -.-> module_src_canvasDragModel_test_ts
   module_src_canvasDragModel_test_ts --> module_src_canvasDragModel_ts
@@ -1030,10 +1026,10 @@ graph TD
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_smoke_createOAuthFixtureManifest_ts
-  module_src_host_orchestrator_androidRunTemplate_test_ts["src/host/orchestrator/androidRunTemplate.test.ts"]
-  package__ankhorage_studio -.-> module_src_host_orchestrator_androidRunTemplate_test_ts
-  module_src_host_orchestrator_androidRunTemplate_test_ts --> module_src_host_orchestrator_scaffolder_ts
-  module_src_host_orchestrator_androidRunTemplate_test_ts --> module_src_host_orchestrator_templates_ts
+  module_src_host_orchestrator_androidRunTemplate_smoke_test_ts["src/host/orchestrator/androidRunTemplate.smoke.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_androidRunTemplate_smoke_test_ts
+  module_src_host_orchestrator_androidRunTemplate_smoke_test_ts --> module_src_host_orchestrator_scaffolder_ts
+  module_src_host_orchestrator_androidRunTemplate_smoke_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts["src/host/orchestrator/appTargetGeneration.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_appTargetGeneration_test_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts --> module_src_host_orchestrator_projectTargets_ts
@@ -1492,10 +1488,6 @@ graph TD
   module_src_index_ts --> module_src_authSettings_ts
   module_src_index_ts --> module_src_mediaAuthoringModel_ts
   module_src_index_ts --> module_src_mediaPickerAuthoring_ts
-  module_src_insertModalModel_public_test_ts["src/insertModalModel.public.test.ts"]
-  package__ankhorage_studio -.-> module_src_insertModalModel_public_test_ts
-  module_src_insertModalModel_public_test_ts --> module_src_index_ts
-  module_src_insertModalModel_public_test_ts --> module_src_insertModalModel_ts
   module_src_insertModalModel_test_ts["src/insertModalModel.test.ts"]
   package__ankhorage_studio -.-> module_src_insertModalModel_test_ts
   module_src_insertModalModel_test_ts --> module_src_index_ts
@@ -1505,7 +1497,6 @@ graph TD
   module_src_insertModalModel_ts --> module_src_index_ts
   module_src_manifestState_public_test_ts["src/manifestState.public.test.ts"]
   package__ankhorage_studio -.-> module_src_manifestState_public_test_ts
-  module_src_manifestState_public_test_ts --> module_src_index_ts
   module_src_manifestState_public_test_ts --> module_src_manifestState_ts
   module_src_manifestState_routes_test_ts["src/manifestState.routes.test.ts"]
   package__ankhorage_studio -.-> module_src_manifestState_routes_test_ts
