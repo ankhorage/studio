@@ -32,3 +32,13 @@ test('hosts rich module administration only through the canonical detail page', 
   expect(pageSource).not.toContain('expo-localization');
   expect(pageSource).not.toContain('/ankh/localization');
 });
+
+test('routes the generic config-schema fallback through the central authoring engine', () => {
+  expect(pageSource).toContain('resolveModuleAdminAuthoring(module.admin)');
+  expect(pageSource).toContain('<AuthoringEditor');
+  expect(pageSource).toContain('applyAuthoringMutation(draft, mutation)');
+  expect(pageSource).not.toContain('moduleAdminModel');
+  expect(pageSource).not.toContain('<TextInput');
+  expect(pageSource).not.toContain('Comma-separated values');
+  expect(pageSource).not.toContain('JSON value');
+});
