@@ -4,14 +4,14 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
+import { SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
 const COMMAND_TIMEOUT_MS = 300_000;
 const STUDIO_TARBALL_NAME = 'ankhorage-studio.tgz';
-const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
 const STUDIO_OWNED_PEERS = {
-  '@ankhorage/permissions': CARET_SEMVER_RANGE,
+  '@ankhorage/permissions': SEMVER_PATTERNS.caret,
   [EXPO_PLATFORM.packages.imagePicker.name]: EXPO_PLATFORM.packages.imagePicker.version,
 } as const;
 

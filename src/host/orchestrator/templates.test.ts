@@ -1,5 +1,6 @@
 import type { ExpoRuntimePlan } from '@ankhorage/expo-runtime/planning';
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
+import { parseSemanticVersion, SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 import { describe, expect, it } from 'bun:test';
 
 import {
@@ -12,7 +13,6 @@ import {
 } from './templates';
 
 const WEB_TARGETS = { web: { enabled: true } } as const;
-const CARET_SEMVER_RANGE = /^\^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/u;
 
 describe('generated OAuth scaffold templates', () => {
   it('keeps generated Expo config plugin data outside the default export function', () => {
@@ -131,8 +131,8 @@ describe('generated OAuth scaffold templates', () => {
       dependencies['@ankhorage/contracts'],
       studioPackage.dependencies?.['@ankhorage/contracts'],
     );
-    expect(dependencies['@ankhorage/data-sources']).toMatch(CARET_SEMVER_RANGE);
-    expect(dependencies['@ankhorage/expo-runtime']).toMatch(CARET_SEMVER_RANGE);
+    expect(dependencies['@ankhorage/data-sources']).toMatch(SEMVER_PATTERNS.caret);
+    expect(dependencies['@ankhorage/expo-runtime']).toMatch(SEMVER_PATTERNS.caret);
     expect(dependencies['@ankhorage/navigator']).toBe(
       studioPackage.dependencies?.['@ankhorage/navigator'],
     );
@@ -140,9 +140,9 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/permissions']).toBeUndefined();
     expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();
     expect(dependencies['@react-navigation/drawer']).toBeUndefined();
-    expect(dependencies['@ankhorage/runtime']).toMatch(CARET_SEMVER_RANGE);
-    expect(dependencies['@ankhorage/studio']).toMatch(CARET_SEMVER_RANGE);
-    expect(dependencies['@ankhorage/zora']).toMatch(CARET_SEMVER_RANGE);
+    expect(dependencies['@ankhorage/runtime']).toMatch(SEMVER_PATTERNS.caret);
+    expect(dependencies['@ankhorage/studio']).toMatch(SEMVER_PATTERNS.caret);
+    expect(dependencies['@ankhorage/zora']).toMatch(SEMVER_PATTERNS.caret);
     expect(dependencies[EXPO_PLATFORM.runtime.expo.name]).toBe(EXPO_PLATFORM.runtime.expo.version);
     expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBeUndefined();
     expect(dependencies[EXPO_PLATFORM.packages.crypto.name]).toBeUndefined();
@@ -159,10 +159,11 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['expo-modules-core']).toBeUndefined();
     expect(dependencies['@expo/vector-icons']).toBeUndefined();
     expect(dependencies['babel-preset-expo']).toBeUndefined();
-    expect(devDependencies['@ankhorage/devtools']).toMatch(CARET_SEMVER_RANGE);
-    expect(devDependencies['@ankhorage/ankh']).toMatch(CARET_SEMVER_RANGE);
-    expect(devDependencies['@types/bun']).toMatch(CARET_SEMVER_RANGE);
-    expect(pkg.packageManager).toMatch(/^bun@\d+\.\d+\.\d+$/u);
+    expect(devDependencies['@ankhorage/devtools']).toMatch(SEMVER_PATTERNS.caret);
+    expect(devDependencies['@ankhorage/ankh']).toMatch(SEMVER_PATTERNS.caret);
+    expect(devDependencies['@types/bun']).toMatch(SEMVER_PATTERNS.caret);
+    expect(pkg.packageManager.startsWith('bun@')).toBe(true);
+    expect(pkg.packageManager.slice('bun@'.length)).toMatch(SEMVER_PATTERNS.exact);
     expect(pkg.scripts['knip:check']).toBe('ankhorage-knip');
     expect(pkg.scripts.typecheck).toBe('tsc --noEmit -p tsconfig.json');
     expect(devDependencies[EXPO_PLATFORM.tooling.expoDoctor.name]).toBe(
@@ -197,12 +198,12 @@ describe('generated OAuth scaffold templates', () => {
     });
     const dependencies = pkg.dependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/utility']).toMatch(CARET_SEMVER_RANGE);
+    expect(dependencies['@ankhorage/utility']).toMatch(SEMVER_PATTERNS.caret);
     expect(dependencies['@ankhorage/utility']).toBe(
       studioPackage.dependencies?.['@ankhorage/utility'],
     );
-    expect(dependencies['@ankhorage/supabase-auth']).toMatch(CARET_SEMVER_RANGE);
-    expect(dependencies['@ankhorage/supabase-storage']).toMatch(CARET_SEMVER_RANGE);
+    expect(dependencies['@ankhorage/supabase-auth']).toMatch(SEMVER_PATTERNS.caret);
+    expect(dependencies['@ankhorage/supabase-storage']).toMatch(SEMVER_PATTERNS.caret);
     expect(dependencies[EXPO_PLATFORM.packages.crypto.name]).toBe(
       EXPO_PLATFORM.packages.crypto.version,
     );
@@ -240,7 +241,7 @@ describe('generated OAuth scaffold templates', () => {
       targets: WEB_TARGETS,
     }).dependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/permissions']).toMatch(CARET_SEMVER_RANGE);
+    expect(dependencies['@ankhorage/permissions']).toMatch(SEMVER_PATTERNS.caret);
     expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBe(
       EXPO_PLATFORM.packages.camera.version,
     );
@@ -287,8 +288,8 @@ describe('generated OAuth scaffold templates', () => {
     });
     const dependencies = pkg.dependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/zora']).toMatch(CARET_SEMVER_RANGE);
-    expect(dependencies['@ankhorage/expo-runtime']).toMatch(CARET_SEMVER_RANGE);
+    expect(dependencies['@ankhorage/zora']).toMatch(SEMVER_PATTERNS.caret);
+    expect(dependencies['@ankhorage/expo-runtime']).toMatch(SEMVER_PATTERNS.caret);
   });
 
   it('uses the owner-projected animation stack without explicit Babel configuration', () => {
@@ -422,16 +423,16 @@ function expectCompatibleCaretRanges(
   generatedRange: string | undefined,
   studioRange: string | undefined,
 ): void {
-  expect(generatedRange).toMatch(CARET_SEMVER_RANGE);
-  expect(studioRange).toMatch(CARET_SEMVER_RANGE);
+  expect(generatedRange).toMatch(SEMVER_PATTERNS.caret);
+  expect(studioRange).toMatch(SEMVER_PATTERNS.caret);
   expect(getCaretCompatibilityLine(generatedRange)).toBe(getCaretCompatibilityLine(studioRange));
 }
 
 function getCaretCompatibilityLine(range: string | undefined): string | null {
-  const match = CARET_SEMVER_RANGE.exec(range ?? '');
-  if (!match) return null;
-  const [, major, minor, patch] = match;
-  if (major !== '0') return major ?? null;
-  if (minor !== '0') return `${major}.${minor}`;
-  return `${major}.${minor}.${patch}`;
+  if (!range?.startsWith('^')) return null;
+  const version = parseSemanticVersion(range.slice(1));
+  if (!version) return null;
+  if (version.major !== 0) return String(version.major);
+  if (version.minor !== 0) return `${version.major}.${version.minor}`;
+  return `${version.major}.${version.minor}.${version.patch}`;
 }
