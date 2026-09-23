@@ -21,8 +21,7 @@ export function BindingLiteralAuthoringEditor(props: {
     kind: 'object',
     fields: [{ name: 'value', optional: !props.required, structure: props.structure }],
   };
-  const state: BindingLiteralState =
-    props.value === undefined ? {} : { value: props.value };
+  const state: BindingLiteralState = props.value === undefined ? {} : { value: props.value };
   const model = deriveAuthoringModel({
     structure,
     value: state,
