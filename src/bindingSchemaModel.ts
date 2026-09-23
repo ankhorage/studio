@@ -27,8 +27,7 @@ export function resolveStudioSchemaValueMeta(
   if (!resolved) return { type: 'unknown' };
 
   const type = resolveBindableType(resolved, structure);
-  const fields =
-    structure.kind === 'object' ? resolveSchemaFields(resolved, schemas, seen) : [];
+  const fields = structure.kind === 'object' ? resolveSchemaFields(resolved, schemas, seen) : [];
   const itemType =
     structure.kind === 'ordered-list'
       ? resolveStudioSchemaValueMeta(resolved.items, schemas, seen).type
