@@ -160,11 +160,11 @@ async function expectMaterializedAppEnvironmentAsync(
   const content = await readFile(path.join(projectPath, '.env.local'), 'utf8');
   const publicOutputs = readSupabasePublicOutputs(result);
 
-  expect(readEnvironmentValue(content, publicSupabaseUrlEnvironmentVariable)).toBe(
-    publicOutputs.url,
+  expect(readEnvironmentAssignment(content, publicSupabaseUrlEnvironmentVariable)).toBe(
+    JSON.stringify(publicOutputs.url),
   );
-  expect(readEnvironmentValue(content, publicSupabaseAnonKeyEnvironmentVariable)).toBe(
-    publicOutputs.anonKey,
+  expect(readEnvironmentAssignment(content, publicSupabaseAnonKeyEnvironmentVariable)).toBe(
+    JSON.stringify(publicOutputs.anonKey),
   );
 
   expect(content).not.toContain(bootstrapEnvironmentVariable);
@@ -179,7 +179,10 @@ async function expectMaterializedAppEnvironmentAsync(
   }
 }
 
-function readEnvironmentValue(content: string, environmentVariable: string): string | undefined {
+function readEnvironmentAssignment(
+  content: string,
+  environmentVariable: string,
+): string | undefined {
   const prefix = `${environmentVariable}=`;
   return content
     .split(/\r?\n/)
