@@ -1,7 +1,11 @@
 import type { ThemeConfig } from '@ankhorage/contracts';
 import { describe, expect, test } from 'bun:test';
 
-import { createThemeReplacementUpdates, resolveActiveThemeModeSelection, resolveZoraSurfaceThemeConfig } from './adminThemeModel';
+import {
+  createThemeReplacementUpdates,
+  resolveActiveThemeModeSelection,
+  resolveZoraSurfaceThemeConfig,
+} from './adminThemeModel';
 
 const theme = {
   id: 'theme-1',
