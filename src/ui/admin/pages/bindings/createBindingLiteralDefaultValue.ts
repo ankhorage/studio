@@ -31,22 +31,22 @@ function createDefaultAuthoringValue(structure: AuthoringStructure): BindingValu
     case 'ordered-list':
       return [];
     case 'scalar':
-      switch (structure.scalarType) {
-        case 'boolean':
-          return false;
-        case 'integer':
-        case 'number':
-          return 0;
-        case 'null':
-          return null;
-        case 'string':
-          return '';
-      }
+      return createDefaultScalarValue(structure.scalarType);
     case 'set':
       return {};
     case 'unsupported':
       return undefined;
   }
+}
+
+/*** Build the deterministic empty value for one supported neutral scalar type. */
+function createDefaultScalarValue(
+  scalarType: Extract<AuthoringStructure, { readonly kind: 'scalar' }>['scalarType'],
+): BindingValue {
+  if (scalarType === 'boolean') return false;
+  if (scalarType === 'integer' || scalarType === 'number') return 0;
+  if (scalarType === 'null') return null;
+  return '';
 }
 
 /*** Preserve the existing binding defaults for non-DataSchema action inputs and unsupported neutral structures. */
