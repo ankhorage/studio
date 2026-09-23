@@ -5,11 +5,7 @@ import {
   findNavigatorAtPath as findNavigatorFromManifestState,
   pathToKey as pathToKeyFromManifestState,
 } from './manifestState';
-import {
-  collectScreenRouteEntries,
-  findNavigatorAtPath,
-  pathToKey,
-} from './routeUtils';
+import { collectScreenRouteEntries, findNavigatorAtPath, pathToKey } from './routeUtils';
 
 test('re-exports canonical route utilities from the manifest-state public facade', () => {
   expect(collectFromManifestState).toBe(collectScreenRouteEntries);

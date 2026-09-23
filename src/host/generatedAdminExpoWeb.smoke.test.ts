@@ -11,7 +11,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 import type { AppManifest, UiNode } from '@ankhorage/contracts';
-import { expect, test } from 'bun:test';
+import { expect, test as bunTest } from 'bun:test';
 
 import type { StudioModuleState } from '../moduleAdminContracts';
 import {
@@ -24,7 +24,7 @@ import { ProjectManager } from './orchestrator/projectManager';
 import { satisfiesCaretSemverRange } from './orchestrator/semverRange';
 import { createAdminSmokeBaseManifest } from './smoke/createAdminSmokeBaseManifest';
 
-const adminWebSmokeTest = process.env.ANKH_STUDIO_ADMIN_WEB_SMOKE === '1' ? test : test.skip;
+const test = process.env.ANKH_STUDIO_ADMIN_WEB_SMOKE === '1' ? bunTest : bunTest.skip;
 const TEST_TIMEOUT_MS = 240_000;
 const HTTP_TIMEOUT_MS = 120_000;
 const ROUTE_SETTLE_MS = 1_500;
@@ -446,7 +446,7 @@ function createScrollableRuntimeScreenRoot(): UiNode {
   };
 }
 
-adminWebSmokeTest('native unsupported layout fixture covers layout-sensitive Runtime relationships', () => {
+test('native unsupported layout fixture covers layout-sensitive Runtime relationships', () => {
   const root = createScrollableRuntimeScreenRoot();
   const nodes = new Map<string, UiNode>();
   const visit = (node: UiNode): void => {
@@ -470,7 +470,7 @@ adminWebSmokeTest('native unsupported layout fixture covers layout-sensitive Run
   expect(nodes.get('native-nested-scroll')?.children?.length).toBe(12);
 });
 
-adminWebSmokeTest('root-owned smoke navigation probe publishes readiness and cleans up only owned callbacks', () => {
+test('root-owned smoke navigation probe publishes readiness and cleans up only owned callbacks', () => {
   expect(SMOKE_NAVIGATION_PROBE_SOURCE).toContain('if (studio.isLoading) return;');
   expect(SMOKE_NAVIGATION_PROBE_SOURCE).toContain(
     'smokeGlobal.__studioSmokeNavigationReady = navigate;',
@@ -487,7 +487,7 @@ adminWebSmokeTest('root-owned smoke navigation probe publishes readiness and cle
   );
 });
 
-adminWebSmokeTest('navigation readiness timeout reports browser and process diagnostics', async () => {
+test('navigation readiness timeout reports browser and process diagnostics', async () => {
   const page: StudioNavigationReadinessPage = {
     errors: ['browser exploded'],
     isStudioNavigationReady() {
@@ -510,7 +510,7 @@ adminWebSmokeTest('navigation readiness timeout reports browser and process diag
   }
 });
 
-adminWebSmokeTest('navigation refuses unavailable callbacks instead of falling back to browser navigation', async () => {
+test('navigation refuses unavailable callbacks instead of falling back to browser navigation', async () => {
   const page: StudioNavigationInvocationPage = {
     evaluate() {
       return Promise.resolve(false as never);
@@ -532,7 +532,7 @@ adminWebSmokeTest('navigation refuses unavailable callbacks instead of falling b
   }
 });
 
-adminWebSmokeTest('screen-state readiness distinguishes root fallback from /products pathname matching', async () => {
+test('screen-state readiness distinguishes root fallback from /products pathname matching', async () => {
   const rootState = {
     pathname: '/',
     activeScreenId: 'catalog',
@@ -556,7 +556,7 @@ adminWebSmokeTest('screen-state readiness distinguishes root fallback from /prod
   await waitForStudioScreenState(page, productsState, 100, [], () => Promise.resolve());
 });
 
-adminWebSmokeTest('Runtime node readiness survives a hydration remount before returning stable geometry', async () => {
+test('Runtime node readiness survives a hydration remount before returning stable geometry', async () => {
   const target = { left: 10, top: 20, right: 110, bottom: 60, width: 100, height: 40 };
   const missing: RuntimeNodeInteractionSnapshot = {
     activeElement: null,
@@ -596,7 +596,7 @@ adminWebSmokeTest('Runtime node readiness survives a hydration remount before re
   ).toEqual(ready);
 });
 
-adminWebSmokeTest(
+test(
   'loads generated Studio admin routes through Expo web without a theme update loop',
   async () => {
     const rawPreservedWorkspaceRoot: unknown = process.env.ANKH_STUDIO_ADMIN_WEB_SMOKE_WORKSPACE;

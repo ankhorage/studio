@@ -3,14 +3,14 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 import type { InfraLedger } from '@ankhorage/contracts/infra';
-import { expect, test } from 'bun:test';
+import { expect, test as bunTest } from 'bun:test';
 
 import type { StudioProjectInfraLifecycle } from '../features/infrastructure/composition/createStudioProjectInfraLifecycle';
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
 import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';
 
-const hostLifecycleSmokeTest = process.env.ANKH_STUDIO_HOST_SMOKE === '1' ? test : test.skip;
+const test = process.env.ANKH_STUDIO_HOST_SMOKE === '1' ? bunTest : bunTest.skip;
 
 async function collectSourceFiles(root: string): Promise<string[]> {
   const entries = await readdir(root, { withFileTypes: true });
@@ -25,7 +25,7 @@ async function collectSourceFiles(root: string): Promise<string[]> {
   return nested.flat();
 }
 
-hostLifecycleSmokeTest('creates, synchronizes, edits and deletes a real generated app without ankhorage4', async () => {
+test('creates, synchronizes, edits and deletes a real generated app without ankhorage4', async () => {
   const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'ankhorage-studio-lifecycle-'));
   await mkdir(path.join(workspaceRoot, 'apps', 'studio'), { recursive: true });
   await writeFile(

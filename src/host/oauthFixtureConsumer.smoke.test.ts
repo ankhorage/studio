@@ -4,7 +4,7 @@ import path from 'node:path';
 
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { OAUTH_CALLBACK_ROUTE } from '@ankhorage/templates';
-import { expect, test } from 'bun:test';
+import { expect, test as bunTest } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
@@ -14,8 +14,8 @@ const SECRET_SENTINEL = 'sentinel-phase3-consumer-secret-do-not-leak';
 const PROJECT_NAME = 'OAuth Fixture Consumer';
 const PROJECT_ID = 'oauth-fixture-consumer';
 const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
-const oauthFixtureConsumerSmokeTest =
-  process.env.ANKH_STUDIO_OAUTH_FIXTURE_CONSUMER_SMOKE === '1' ? test : test.skip;
+const test =
+  process.env.ANKH_STUDIO_OAUTH_FIXTURE_CONSUMER_SMOKE === '1' ? bunTest : bunTest.skip;
 
 async function collectRelativeFiles(root: string, current = ''): Promise<string[]> {
   const absolute = path.join(root, current);
@@ -36,7 +36,7 @@ async function readProjectFile(projectRoot: string, relativePath: string): Promi
   return readFile(path.join(projectRoot, relativePath), 'utf8');
 }
 
-oauthFixtureConsumerSmokeTest('generates the released Google and Apple OAuth fixture through the real host pipeline', async () => {
+test('generates the released Google and Apple OAuth fixture through the real host pipeline', async () => {
   const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'ankhorage-oauth-consumer-'));
 
   try {

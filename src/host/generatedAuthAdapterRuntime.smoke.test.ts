@@ -6,15 +6,15 @@ import path from 'node:path';
 import { promisify } from 'node:util';
 
 import type { AppManifest } from '@ankhorage/contracts';
-import { expect, test } from 'bun:test';
+import { expect, test as bunTest } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
 import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';
 
 const execFile = promisify(execFileCallback);
-const generatedAuthRuntimeSmokeTest =
-  process.env.ANKH_STUDIO_GENERATED_AUTH_RUNTIME_SMOKE === '1' ? test : test.skip;
+const test =
+  process.env.ANKH_STUDIO_GENERATED_AUTH_RUNTIME_SMOKE === '1' ? bunTest : bunTest.skip;
 const PROJECT_NAME = 'Generated Auth Runtime';
 const PROJECT_ID = 'generated-auth-runtime';
 const AUTH_SMOKE_SCRIPT = 'auth-runtime-smoke.ts';
@@ -336,7 +336,7 @@ function expectAuthError(
   });
 }
 
-generatedAuthRuntimeSmokeTest('generated Supabase Auth adapter executes against Infra-provided public env only', async () => {
+test('generated Supabase Auth adapter executes against Infra-provided public env only', async () => {
   const { workspaceRoot, projectRoot } = await createGeneratedProject();
 
   try {
@@ -440,7 +440,7 @@ generatedAuthRuntimeSmokeTest('generated Supabase Auth adapter executes against 
   }
 }, 45_000);
 
-generatedAuthRuntimeSmokeTest('Expo Babel bundling statically embeds generated Supabase public env values', async () => {
+test('Expo Babel bundling statically embeds generated Supabase public env values', async () => {
   const { workspaceRoot, projectRoot } = await createGeneratedProject();
 
   try {
