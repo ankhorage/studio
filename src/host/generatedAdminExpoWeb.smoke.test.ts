@@ -446,7 +446,7 @@ function createScrollableRuntimeScreenRoot(): UiNode {
   };
 }
 
-test('native unsupported layout fixture covers layout-sensitive Runtime relationships', () => {
+adminWebSmokeTest('native unsupported layout fixture covers layout-sensitive Runtime relationships', () => {
   const root = createScrollableRuntimeScreenRoot();
   const nodes = new Map<string, UiNode>();
   const visit = (node: UiNode): void => {
@@ -470,7 +470,7 @@ test('native unsupported layout fixture covers layout-sensitive Runtime relation
   expect(nodes.get('native-nested-scroll')?.children?.length).toBe(12);
 });
 
-test('root-owned smoke navigation probe publishes readiness and cleans up only owned callbacks', () => {
+adminWebSmokeTest('root-owned smoke navigation probe publishes readiness and cleans up only owned callbacks', () => {
   expect(SMOKE_NAVIGATION_PROBE_SOURCE).toContain('if (studio.isLoading) return;');
   expect(SMOKE_NAVIGATION_PROBE_SOURCE).toContain(
     'smokeGlobal.__studioSmokeNavigationReady = navigate;',
@@ -487,7 +487,7 @@ test('root-owned smoke navigation probe publishes readiness and cleans up only o
   );
 });
 
-test('navigation readiness timeout reports browser and process diagnostics', async () => {
+adminWebSmokeTest('navigation readiness timeout reports browser and process diagnostics', async () => {
   const page: StudioNavigationReadinessPage = {
     errors: ['browser exploded'],
     isStudioNavigationReady() {
@@ -510,7 +510,7 @@ test('navigation readiness timeout reports browser and process diagnostics', asy
   }
 });
 
-test('navigation refuses unavailable callbacks instead of falling back to browser navigation', async () => {
+adminWebSmokeTest('navigation refuses unavailable callbacks instead of falling back to browser navigation', async () => {
   const page: StudioNavigationInvocationPage = {
     evaluate() {
       return Promise.resolve(false as never);
@@ -532,7 +532,7 @@ test('navigation refuses unavailable callbacks instead of falling back to browse
   }
 });
 
-test('screen-state readiness distinguishes root fallback from /products pathname matching', async () => {
+adminWebSmokeTest('screen-state readiness distinguishes root fallback from /products pathname matching', async () => {
   const rootState = {
     pathname: '/',
     activeScreenId: 'catalog',
@@ -556,7 +556,7 @@ test('screen-state readiness distinguishes root fallback from /products pathname
   await waitForStudioScreenState(page, productsState, 100, [], () => Promise.resolve());
 });
 
-test('Runtime node readiness survives a hydration remount before returning stable geometry', async () => {
+adminWebSmokeTest('Runtime node readiness survives a hydration remount before returning stable geometry', async () => {
   const target = { left: 10, top: 20, right: 110, bottom: 60, width: 100, height: 40 };
   const missing: RuntimeNodeInteractionSnapshot = {
     activeElement: null,

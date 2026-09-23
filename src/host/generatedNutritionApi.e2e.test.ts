@@ -56,28 +56,28 @@ interface RecordedRequest {
 nutritionApiE2eTest(
   'generated Nutrition app executes canonical product bindings over external HTTP',
   async () => {
-  const workspaceRoot = await createWorkspaceRoot();
+    const workspaceRoot = await createWorkspaceRoot();
 
-  try {
-    const manager = new ProjectManager(workspaceRoot, {
-      reconcileProjectPackageRootAsync: () => Promise.resolve(),
-    });
-    const created = await manager.createProject('Nutrition API E2E', {
-      manifest: createNutritionApiFixtureManifest(),
-      assets: [],
-    });
-    const manifest = await manager.getProjectManifest(created.id);
-    const source = assertCanonicalNutritionManifest(manifest);
-    const barcodeOperation = assertBarcodeOperation(manifest);
-    await assertGeneratedRuntimeSource(created.path);
-    const requests: RecordedRequest[] = [];
-    const endpointFetch = createRecordingFetch(requests);
+    try {
+      const manager = new ProjectManager(workspaceRoot, {
+        reconcileProjectPackageRootAsync: () => Promise.resolve(),
+      });
+      const created = await manager.createProject('Nutrition API E2E', {
+        manifest: createNutritionApiFixtureManifest(),
+        assets: [],
+      });
+      const manifest = await manager.getProjectManifest(created.id);
+      const source = assertCanonicalNutritionManifest(manifest);
+      const barcodeOperation = assertBarcodeOperation(manifest);
+      await assertGeneratedRuntimeSource(created.path);
+      const requests: RecordedRequest[] = [];
+      const endpointFetch = createRecordingFetch(requests);
 
-    await executeGeneratedRuntimeBinding(manifest.infra.apis, source, endpointFetch);
-    await executeGeneratedBarcodeLookup(manifest.infra.apis, barcodeOperation, endpointFetch);
-    await executeStudioApiOperation(manager, created.id, endpointFetch);
-    assertExternalProductRequests(requests);
-  } finally {
+      await executeGeneratedRuntimeBinding(manifest.infra.apis, source, endpointFetch);
+      await executeGeneratedBarcodeLookup(manifest.infra.apis, barcodeOperation, endpointFetch);
+      await executeStudioApiOperation(manager, created.id, endpointFetch);
+      assertExternalProductRequests(requests);
+    } finally {
       await rm(workspaceRoot, { recursive: true, force: true });
     }
   },
