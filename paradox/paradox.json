@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.9.3",
+      "value": "v5.10.0",
       "color": "cb3837"
     },
     {
@@ -972,6 +972,31 @@
       ]
     },
     {
+      "path": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
+        "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "src/index.ts",
+        "src/types/authoring-engine.ts"
+      ],
+      "exports": [
+        "applyThemeAuthoringMutation"
+      ]
+    },
+    {
+      "path": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
+        "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "src/types/authoring-engine.ts"
+      ],
+      "exports": [
+        "deriveThemeAuthoringModel"
+      ]
+    },
+    {
       "path": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1070,6 +1095,15 @@
       ]
     },
     {
+      "path": "src/features/authoring-engine/adapters/outbound/themeAuthoring.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1085,6 +1119,26 @@
       ],
       "exports": [
         "applyAuthoringMutation"
+      ]
+    },
+    {
+      "path": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "src/types/authoring-engine.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
+        "src/types/authoring-engine.ts"
+      ],
+      "exports": [
+        "applyAuthoringMutationToStructure"
       ]
     },
     {
@@ -5775,15 +5829,6 @@
       ]
     },
     {
-      "path": "src/ui/admin/pages/adminThemeHarmony.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": [
-        "formatHarmonyLabel",
-        "SUPPORTED_COLOR_HARMONIES"
-      ]
-    },
-    {
       "path": "src/ui/admin/pages/adminThemeModel.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -5797,10 +5842,8 @@
       "dependencies": [],
       "exports": [
         "ActiveThemeModeSelection",
-        "createThemeModeUpdates",
         "resolveActiveThemeModeSelection",
-        "resolveZoraSurfaceThemeConfig",
-        "resolveZoraThemeSourceModeConfig"
+        "resolveZoraSurfaceThemeConfig"
       ]
     },
     {
@@ -6528,15 +6571,17 @@
     {
       "path": "src/ui/admin/pages/ThemeAdminPage.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/pages/adminThemeHarmony.ts"
-      ],
+      "dependencies": [],
       "exports": []
     },
     {
       "path": "src/ui/admin/pages/ThemeAdminPage.tsx",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "src/types/authoring-engine.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/ThemeModeEditorSelector.tsx",
         "src/ui/admin/pages/ThemeRecipeCatalog.tsx",
@@ -6550,9 +6595,11 @@
       "path": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "src/types/authoring-engine.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
-        "src/ui/admin/pages/adminThemeHarmony.ts",
-        "src/ui/admin/pages/adminThemeModel.ts",
         "src/ui/admin/pages/ThemeModeEditorSelector.tsx",
         "src/ui/admin/pages/useActiveThemeAdmin.ts"
       ],
@@ -6572,8 +6619,11 @@
       "path": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "src/types/authoring-engine.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
-        "src/ui/admin/pages/themeTokenAuthoringModel.ts",
         "src/ui/admin/pages/useActiveThemeAdmin.ts"
       ],
       "exports": [
@@ -6647,84 +6697,18 @@
       ]
     },
     {
-      "path": "src/ui/admin/pages/ThemeTokenAction.tsx",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": [
-        "ThemeTokenAction"
-      ]
-    },
-    {
-      "path": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      ],
-      "exports": []
-    },
-    {
-      "path": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": [
-        "NumericThemeTokenFamily",
-        "updateNumericThemeToken",
-        "updateTypographyHeading",
-        "updateTypographySize",
-        "updateTypographyWeight"
-      ]
-    },
-    {
       "path": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "src/types/authoring-engine.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
-        "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-        "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
-        "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
         "src/ui/admin/pages/useActiveThemeAdmin.ts"
       ],
       "exports": [
         "ThemeTypographyAdminPage"
-      ]
-    },
-    {
-      "path": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/adminPagePrimitives.tsx",
-        "src/ui/admin/pages/ThemeTokenAction.tsx",
-        "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "src/ui/admin/pages/useActiveThemeAdmin.ts"
-      ],
-      "exports": [
-        "ThemeTypographyHeadingEditor"
-      ]
-    },
-    {
-      "path": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/adminPagePrimitives.tsx",
-        "src/ui/admin/pages/ThemeTokenAction.tsx",
-        "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "src/ui/admin/pages/useActiveThemeAdmin.ts"
-      ],
-      "exports": [
-        "ThemeTypographySizeEditor"
-      ]
-    },
-    {
-      "path": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/ui/admin/adminPagePrimitives.tsx",
-        "src/ui/admin/pages/ThemeTokenAction.tsx",
-        "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "src/ui/admin/pages/useActiveThemeAdmin.ts"
-      ],
-      "exports": [
-        "ThemeTypographyWeightEditor"
       ]
     },
     {
@@ -14423,7 +14407,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 444,
+        "line": 492,
         "column": 1
       }
     },
@@ -14432,7 +14416,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 457,
+        "line": 505,
         "column": 1
       }
     },
@@ -14441,7 +14425,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 473,
+        "line": 521,
         "column": 1
       }
     },
@@ -14559,6 +14543,78 @@
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
         "line": 512,
+        "column": 1
+      }
+    },
+    {
+      "name": "applyThemeAuthoringMutation",
+      "description": "Apply one Theme authoring mutation through owner structure and project the result onto Studio's canonical updateTheme boundary.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "line": 13,
+        "column": 1
+      }
+    },
+    {
+      "name": "projectThemeUpdate",
+      "description": "Project only the globally authored Theme branch touched by one neutral mutation.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "line": 26,
+        "column": 1
+      }
+    },
+    {
+      "name": "deriveThemeAuthoringModel",
+      "description": "Derive one selected Theme authoring node from the released Contracts root plus optional resolved inheritance evidence.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "line": 15,
+        "column": 1
+      }
+    },
+    {
+      "name": "createInheritancePolicy",
+      "description": "Project resolved owner values into scalar-leaf inheritance metadata without copying them into authored state.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "line": 49,
+        "column": 1
+      }
+    },
+    {
+      "name": "findAuthoringNode",
+      "description": "Recursively locate one derived node by its stable canonical authoring path.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "line": 81,
+        "column": 1
+      }
+    },
+    {
+      "name": "pathsEqual",
+      "description": "Compare two authoring paths without serializing them into an ambiguous delimiter form.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "line": 96,
+        "column": 1
+      }
+    },
+    {
+      "name": "missingThemePath",
+      "description": "Create an explicit unsupported node when a requested Theme path is absent from the released owner root.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "line": 103,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAuthoringPrimitive",
+      "description": "Narrow one resolved owner value to the primitive inheritance vocabulary supported by the neutral model.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "line": 121,
         "column": 1
       }
     },
@@ -14766,6 +14822,96 @@
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
         "line": 127,
+        "column": 1
+      }
+    },
+    {
+      "name": "applyAuthoringMutationToStructure",
+      "description": "Apply one neutral mutation against owner structure, materializing valid parents and pruning empty optional overrides.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "line": 16,
+        "column": 1
+      }
+    },
+    {
+      "name": "validateValueMapRename",
+      "description": "Validate one keyed rename against the owner map structure before applying it.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "line": 46,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStructureAtPath",
+      "description": "Resolve one owner structure node at a canonical object/value-map path.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "line": 64,
+        "column": 1
+      }
+    },
+    {
+      "name": "materializeMutationPath",
+      "description": "Materialize missing object/value-map ancestors only when the owner structure authorizes the path.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "line": 76,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveChildStructure",
+      "description": "Resolve one structural child for an object field or keyed value-map entry.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "line": 116,
+        "column": 1
+      }
+    },
+    {
+      "name": "isValueMapKeyAllowed",
+      "description": "Validate one keyed value-map path segment without guessing unsupported key semantics.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "line": 130,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeStructuredValue",
+      "description": "Normalize known owner structure recursively while preserving unknown sibling fields.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "line": 140,
+        "column": 1
+      }
+    },
+    {
+      "name": "shouldPruneEmptyMapValue",
+      "description": "Remove empty object-valued map entries when every owner field is optional override state.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "line": 174,
+        "column": 1
+      }
+    },
+    {
+      "name": "isEmptyRecord",
+      "description": "Return whether a runtime value is an empty record.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "line": 183,
+        "column": 1
+      }
+    },
+    {
+      "name": "rejected",
+      "description": "Create one structure-aware mutation rejection without mutating the authored value.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "line": 188,
         "column": 1
       }
     },
@@ -27613,15 +27759,6 @@
       }
     },
     {
-      "name": "formatHarmonyLabel",
-      "description": "Convert a camelCase identifier into a space-separated human label with an initial capital.\n@utility @ankhorage/utility/string",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/adminThemeHarmony.ts",
-        "line": 16,
-        "column": 1
-      }
-    },
-    {
       "name": "resolveActiveThemeModeSelection",
       "description": "Resolve the active theme by configured id, then select the requested light/dark mode config.\n@todo Move active-theme selection policy from admin UI into the theme domain/application model.",
       "sourceLocation": {
@@ -27631,29 +27768,11 @@
       }
     },
     {
-      "name": "createThemeModeUpdates",
-      "description": "Project partial mode updates into the light or dark branch expected by Studio theme mutations.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/adminThemeModel.ts",
-        "line": 36,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveZoraThemeSourceModeConfig",
-      "description": "Resolve the source color/harmony values used to seed ZORA theme administration for one mode.\n@todo Keep this ZORA/theme bridge with the theme owner rather than generic UI.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/adminThemeModel.ts",
-        "line": 47,
-        "column": 1
-      }
-    },
-    {
       "name": "resolveZoraSurfaceThemeConfig",
       "description": "Clone the theme and both mode configs before passing it into mutable/derived ZORA surface theme flows.\n@todo Keep this theme-boundary adapter with theme/ZORA integration ownership.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminThemeModel.ts",
-        "line": 58,
+        "line": 39,
         "column": 1
       }
     },
@@ -29399,7 +29518,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeAdminPage.test.ts",
-        "line": 9,
+        "line": 6,
         "column": 1
       }
     },
@@ -29408,8 +29527,17 @@
       "description": "Render active-theme metadata, global/mode ownership guidance, and the catalog of ZORA theme recipes.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeAdminPage.tsx",
-        "line": 10,
+        "line": 14,
         "column": 1
+      }
+    },
+    {
+      "name": "updateAuthoredTheme",
+      "description": "Apply one owner-derived Theme field mutation through the canonical manifest Theme boundary.",
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "line": 36,
+        "column": 9
       }
     },
     {
@@ -29417,25 +29545,25 @@
       "description": "Render primary-color and harmony authoring for the active light/dark runtime theme mode.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
-        "line": 14,
+        "line": 20,
         "column": 1
       }
     },
     {
-      "name": "updateMode",
-      "description": "Wrap partial mode config changes in the active light/dark branch before updating the theme.",
+      "name": "updateAuthoredTheme",
+      "description": "Apply one owner-derived mode mutation through the canonical Theme boundary.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
-        "line": 19,
+        "line": 51,
         "column": 9
       }
     },
     {
-      "name": "HarmonyChoice",
-      "description": "Render one selectable color-harmony option.",
+      "name": "renderThemeColorControl",
+      "description": "Preserve incomplete color input locally while committing only valid Color Theory hex values.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
-        "line": 66,
+        "line": 75,
         "column": 1
       }
     },
@@ -29444,7 +29572,7 @@
       "description": "Render the theme-colors fallback when no canonical active theme is available.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
-        "line": 86,
+        "line": 107,
         "column": 1
       }
     },
@@ -29459,46 +29587,28 @@
     },
     {
       "name": "ThemeNumericTokensAdminPage",
-      "description": "Render one numeric theme-token family with inherited/resolved values, authored overrides, reset actions, and token creation.",
+      "description": "Render one numeric Theme token family from owner structure with resolved ZORA values as inheritance.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
-        "line": 20,
+        "line": 12,
         "column": 1
       }
     },
     {
-      "name": "updateValue",
-      "description": "Set or remove one authored numeric token override and persist the updated theme token tree.",
+      "name": "updateAuthoredTheme",
+      "description": "Apply one owner-derived token mutation through the canonical Theme boundary.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
-        "line": 31,
+        "line": 32,
         "column": 9
       }
     },
     {
-      "name": "addToken",
-      "description": "Validate and insert a newly named non-negative numeric theme token.",
+      "name": "resolveNumericThemeTokenCopy",
+      "description": "Resolve route-specific numeric Theme copy without dynamic object indexing.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
-        "line": 42,
-        "column": 9
-      }
-    },
-    {
-      "name": "NumericTokenRow",
-      "description": "Render one resolved numeric token with editable value and reset control for authored overrides.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
-        "line": 82,
-        "column": 1
-      }
-    },
-    {
-      "name": "Action",
-      "description": "Render a bordered theme-token action.\n@todo Reuse canonical ZORA Button instead of a local generic action primitive.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
-        "line": 115,
+        "line": 55,
         "column": 1
       }
     },
@@ -29507,7 +29617,7 @@
       "description": "Render the numeric-token page fallback when no active theme is available.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
-        "line": 131,
+        "line": 70,
         "column": 1
       }
     },
@@ -29611,201 +29721,21 @@
       }
     },
     {
-      "name": "ThemeTokenAction",
-      "description": "Render a bordered theme-token action button used by token editors.\n@todo Replace with canonical ZORA Button instead of maintaining a Studio-local generic action primitive.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeTokenAction.tsx",
-        "line": 9,
-        "column": 1
-      }
-    },
-    {
-      "name": "updateNumericThemeToken",
-      "description": "Immutably set/remove one numeric global theme token and prune empty family/global override structures.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "line": 11,
-        "column": 1
-      }
-    },
-    {
-      "name": "updateTypographySize",
-      "description": "Immutably set/remove one typography size override and prune empty typography/global override structures.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "line": 28,
-        "column": 1
-      }
-    },
-    {
-      "name": "updateTypographyWeight",
-      "description": "Immutably set/remove one typography weight override and prune empty typography/global override structures.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "line": 40,
-        "column": 1
-      }
-    },
-    {
-      "name": "updateTypographyHeading",
-      "description": "Immutably set/remove one typography heading field override and prune empty heading/typography/global structures.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "line": 52,
-        "column": 1
-      }
-    },
-    {
-      "name": "updateTypographyTokens",
-      "description": "Replace typography overrides and normalize empty typography/global token structures.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "line": 77,
-        "column": 1
-      }
-    },
-    {
-      "name": "updateRecordValue",
-      "description": "Immutably set/delete a keyed record value and normalize an empty resulting record to undefined.\n@utility @ankhorage/utility/object",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "line": 88,
-        "column": 1
-      }
-    },
-    {
-      "name": "normalizeTypography",
-      "description": "Normalize an empty typography override shell to undefined.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "line": 100,
-        "column": 1
-      }
-    },
-    {
-      "name": "normalizeGlobalTokens",
-      "description": "Normalize an empty global theme-token override shell to undefined.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "line": 109,
-        "column": 1
-      }
-    },
-    {
       "name": "ThemeTypographyAdminPage",
-      "description": "Compose heading, type-size, and font-weight editors for the active theme's global typography token set.",
+      "description": "Render global typography overrides from the owner structure with resolved ZORA typography as inheritance.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
-        "line": 11,
-        "column": 1
-      }
-    },
-    {
-      "name": "ThemeTypographyHeadingEditor",
-      "description": "Render resolved heading typography tokens with authored size/line-height/weight overrides and reset actions.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-        "line": 14,
-        "column": 1
-      }
-    },
-    {
-      "name": "updateHeading",
-      "description": "Set or remove one authored heading token field and persist the resulting theme token tree.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-        "line": 20,
-        "column": 9
-      }
-    },
-    {
-      "name": "HeadingRow",
-      "description": "Render one heading token level with numeric metrics and semantic weight selection.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-        "line": 53,
-        "column": 1
-      }
-    },
-    {
-      "name": "MetricInput",
-      "description": "Render one numeric heading metric input with reset-to-inherited support.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-        "line": 90,
-        "column": 1
-      }
-    },
-    {
-      "name": "HeadingWeightChoice",
-      "description": "Render semantic heading-weight choices plus reset-to-inherited behavior.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-        "line": 116,
-        "column": 1
-      }
-    },
-    {
-      "name": "ThemeTypographySizeEditor",
-      "description": "Render resolved typography size tokens with authored overrides, reset controls, and custom token creation.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
         "line": 12,
         "column": 1
       }
     },
     {
-      "name": "updateSize",
-      "description": "Set or remove one authored typography size token.",
+      "name": "updateAuthoredTheme",
+      "description": "Apply one owner-derived typography mutation through the canonical Theme boundary.",
       "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
-        "line": 20,
+        "filePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
+        "line": 39,
         "column": 9
-      }
-    },
-    {
-      "name": "addSize",
-      "description": "Validate and insert one custom non-negative typography size token.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
-        "line": 27,
-        "column": 9
-      }
-    },
-    {
-      "name": "SizeRow",
-      "description": "Render one typography size token with reset-to-inherited support.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
-        "line": 67,
-        "column": 1
-      }
-    },
-    {
-      "name": "ThemeTypographyWeightEditor",
-      "description": "Render resolved typography weight tokens as selectable CSS/React Native font-weight values with reset-to-inherited controls.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
-        "line": 25,
-        "column": 1
-      }
-    },
-    {
-      "name": "updateWeight",
-      "description": "Set or remove one authored typography weight token.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
-        "line": 31,
-        "column": 9
-      }
-    },
-    {
-      "name": "WeightRow",
-      "description": "Render one typography weight token with explicit weight choices and reset-to-inherited behavior.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
-        "line": 55,
-        "column": 1
       }
     },
     {
@@ -35403,9 +35333,24 @@
         "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
       },
       {
-        "fromPath": "src/ui/admin/pages/ThemeAdminPage.test.ts",
-        "toPath": "src/ui/admin/pages/adminThemeHarmony.ts",
-        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.test.ts"
+        "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
@@ -35429,17 +35374,27 @@
       },
       {
         "fromPath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
         "toPath": "src/ui/admin/adminPagePrimitives.tsx",
-        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
-        "toPath": "src/ui/admin/pages/adminThemeHarmony.ts",
-        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
-        "toPath": "src/ui/admin/pages/adminThemeModel.ts",
         "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
       },
       {
@@ -35454,12 +35409,27 @@
       },
       {
         "fromPath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
-        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "toPath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
         "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
-        "toPath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "toPath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
         "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
       },
       {
@@ -35523,9 +35493,24 @@
         "sourcePath": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts"
       },
       {
-        "fromPath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
-        "toPath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
+        "fromPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
@@ -35534,83 +35519,8 @@
       },
       {
         "fromPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
-        "toPath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
-        "toPath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
-        "toPath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
         "toPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
         "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-        "toPath": "src/ui/admin/pages/ThemeTokenAction.tsx",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-        "toPath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-        "toPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
-        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
-        "toPath": "src/ui/admin/pages/ThemeTokenAction.tsx",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
-        "toPath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
-        "toPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
-        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
-        "toPath": "src/ui/admin/pages/ThemeTokenAction.tsx",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
-        "toPath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
-        "toPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
@@ -35666,6 +35576,41 @@
         "fromPath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
         "toPath": "src/features/authoring-engine/application/use-cases/createInitialAuthoringValue.ts",
         "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "toPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "toPath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "toPath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "toPath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
       },
       {
         "fromPath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.test.ts",
@@ -35758,6 +35703,16 @@
         "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts"
       },
       {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/themeAuthoring.test.ts",
+        "toPath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/themeAuthoring.test.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/themeAuthoring.test.ts",
+        "toPath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/themeAuthoring.test.ts"
+      },
+      {
         "fromPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.test.ts",
         "toPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
         "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.test.ts"
@@ -35766,6 +35721,26 @@
         "fromPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
         "toPath": "src/types/authoring-engine.ts",
         "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.test.ts",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.test.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.test.ts",
+        "toPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.test.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "toPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
       },
       {
         "fromPath": "src/features/authoring-engine/application/use-cases/createInitialAuthoringValue.ts",
@@ -66106,18 +66081,6 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/adminThemeModel.test.ts",
-        "toSymbol": "createThemeModeUpdates",
-        "callExpression": "createThemeModeUpdates",
-        "sourcePath": "src/ui/admin/pages/adminThemeModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/adminThemeModel.test.ts",
-        "toSymbol": "resolveZoraThemeSourceModeConfig",
-        "callExpression": "resolveZoraThemeSourceModeConfig",
-        "sourcePath": "src/ui/admin/pages/adminThemeModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/adminThemeModel.test.ts",
         "toSymbol": "resolveZoraSurfaceThemeConfig",
         "callExpression": "resolveZoraSurfaceThemeConfig",
         "sourcePath": "src/ui/admin/pages/adminThemeModel.test.ts"
@@ -68332,14 +68295,14 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/ThemeAdminPage.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
+        "toSymbol": "readSibling",
+        "callExpression": "readSibling",
         "sourcePath": "src/ui/admin/pages/ThemeAdminPage.test.ts"
       },
       {
         "fromSymbol": "src/ui/admin/pages/ThemeAdminPage.test.ts",
-        "toSymbol": "readSibling",
-        "callExpression": "readSibling",
+        "toSymbol": "expect",
+        "callExpression": "expect",
         "sourcePath": "src/ui/admin/pages/ThemeAdminPage.test.ts"
       },
       {
@@ -68349,7 +68312,19 @@
         "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
       },
       {
-        "fromSymbol": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "fromSymbol": "ThemeAdminPage",
+        "toSymbol": "deriveThemeAuthoringModel",
+        "callExpression": "deriveThemeAuthoringModel",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "updateAuthoredTheme",
+        "toSymbol": "applyThemeAuthoringMutation",
+        "callExpression": "applyThemeAuthoringMutation",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "updateAuthoredTheme",
         "toSymbol": "updateTheme",
         "callExpression": "updateTheme",
         "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
@@ -68361,15 +68336,21 @@
         "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
       },
       {
-        "fromSymbol": "updateMode",
-        "toSymbol": "updateTheme",
-        "callExpression": "updateTheme",
+        "fromSymbol": "ThemeColorsAdminPage",
+        "toSymbol": "deriveThemeAuthoringModel",
+        "callExpression": "deriveThemeAuthoringModel",
         "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
       },
       {
-        "fromSymbol": "updateMode",
-        "toSymbol": "createThemeModeUpdates",
-        "callExpression": "createThemeModeUpdates",
+        "fromSymbol": "updateAuthoredTheme",
+        "toSymbol": "applyThemeAuthoringMutation",
+        "callExpression": "applyThemeAuthoringMutation",
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "updateAuthoredTheme",
+        "toSymbol": "updateTheme",
+        "callExpression": "updateTheme",
         "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
       },
       {
@@ -68380,14 +68361,8 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
-        "toSymbol": "updateMode",
-        "callExpression": "updateMode",
-        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "HarmonyChoice",
-        "toSymbol": "formatHarmonyLabel",
-        "callExpression": "formatHarmonyLabel",
+        "toSymbol": "onMutation",
+        "callExpression": "onMutation",
         "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
       },
       {
@@ -68416,68 +68391,26 @@
       },
       {
         "fromSymbol": "ThemeNumericTokensAdminPage",
-        "toSymbol": "useState",
-        "callExpression": "useState",
+        "toSymbol": "resolveNumericThemeTokenCopy",
+        "callExpression": "resolveNumericThemeTokenCopy",
         "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
       },
       {
-        "fromSymbol": "updateValue",
-        "toSymbol": "updateNumericThemeToken",
-        "callExpression": "updateNumericThemeToken",
+        "fromSymbol": "ThemeNumericTokensAdminPage",
+        "toSymbol": "deriveThemeAuthoringModel",
+        "callExpression": "deriveThemeAuthoringModel",
         "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
       },
       {
-        "fromSymbol": "updateValue",
+        "fromSymbol": "updateAuthoredTheme",
+        "toSymbol": "applyThemeAuthoringMutation",
+        "callExpression": "applyThemeAuthoringMutation",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "updateAuthoredTheme",
         "toSymbol": "updateTheme",
         "callExpression": "updateTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "addToken",
-        "toSymbol": "parseNonNegativeNumber",
-        "callExpression": "parseNonNegativeNumber",
-        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "addToken",
-        "toSymbol": "updateValue",
-        "callExpression": "updateValue",
-        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "addToken",
-        "toSymbol": "setNewKey",
-        "callExpression": "setNewKey",
-        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "addToken",
-        "toSymbol": "setNewValue",
-        "callExpression": "setNewValue",
-        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
-        "toSymbol": "updateValue",
-        "callExpression": "updateValue",
-        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
-        "toSymbol": "parseNonNegativeNumber",
-        "callExpression": "parseNonNegativeNumber",
-        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
-        "toSymbol": "onChange",
-        "callExpression": "props.onChange",
-        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "Action",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
         "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
       },
       {
@@ -68673,160 +68606,10 @@
         "sourcePath": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts"
       },
       {
-        "fromSymbol": "ThemeTokenAction",
+        "fromSymbol": "ThemeTypographyAdminPage",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeTokenAction.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
-        "toSymbol": "updateNumericThemeToken",
-        "callExpression": "updateNumericThemeToken",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
-        "toSymbol": "updateTypographySize",
-        "callExpression": "updateTypographySize",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
-        "toSymbol": "updateTypographyWeight",
-        "callExpression": "updateTypographyWeight",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
-        "toSymbol": "updateTypographyHeading",
-        "callExpression": "updateTypographyHeading",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
-      },
-      {
-        "fromSymbol": "updateNumericThemeToken",
-        "toSymbol": "readOwnProperty",
-        "callExpression": "readOwnProperty",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateNumericThemeToken",
-        "toSymbol": "updateRecordValue",
-        "callExpression": "updateRecordValue",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateNumericThemeToken",
-        "toSymbol": "setOwnProperty",
-        "callExpression": "setOwnProperty",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateNumericThemeToken",
-        "toSymbol": "deleteOwnProperty",
-        "callExpression": "deleteOwnProperty",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateNumericThemeToken",
-        "toSymbol": "normalizeGlobalTokens",
-        "callExpression": "normalizeGlobalTokens",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateTypographySize",
-        "toSymbol": "updateTypographyTokens",
-        "callExpression": "updateTypographyTokens",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateTypographySize",
-        "toSymbol": "updateRecordValue",
-        "callExpression": "updateRecordValue",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateTypographyWeight",
-        "toSymbol": "updateTypographyTokens",
-        "callExpression": "updateTypographyTokens",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateTypographyWeight",
-        "toSymbol": "updateRecordValue",
-        "callExpression": "updateRecordValue",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateTypographyHeading",
-        "toSymbol": "readOwnProperty",
-        "callExpression": "readOwnProperty",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateTypographyHeading",
-        "toSymbol": "deleteOwnProperty",
-        "callExpression": "deleteOwnProperty",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateTypographyHeading",
-        "toSymbol": "setOwnProperty",
-        "callExpression": "setOwnProperty",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateTypographyHeading",
-        "toSymbol": "updateRecordValue",
-        "callExpression": "updateRecordValue",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateTypographyHeading",
-        "toSymbol": "updateTypographyTokens",
-        "callExpression": "updateTypographyTokens",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateTypographyTokens",
-        "toSymbol": "normalizeGlobalTokens",
-        "callExpression": "normalizeGlobalTokens",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateTypographyTokens",
-        "toSymbol": "normalizeTypography",
-        "callExpression": "normalizeTypography",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateRecordValue",
-        "toSymbol": "deleteOwnProperty",
-        "callExpression": "deleteOwnProperty",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateRecordValue",
-        "toSymbol": "setOwnProperty",
-        "callExpression": "setOwnProperty",
-        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
       },
       {
         "fromSymbol": "ThemeTypographyAdminPage",
@@ -68835,166 +68618,22 @@
         "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
       },
       {
-        "fromSymbol": "ThemeTypographyHeadingEditor",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
+        "fromSymbol": "ThemeTypographyAdminPage",
+        "toSymbol": "deriveThemeAuthoringModel",
+        "callExpression": "deriveThemeAuthoringModel",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
       },
       {
-        "fromSymbol": "ThemeTypographyHeadingEditor",
-        "toSymbol": "useActiveThemeAdmin",
-        "callExpression": "useActiveThemeAdmin",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
+        "fromSymbol": "updateAuthoredTheme",
+        "toSymbol": "applyThemeAuthoringMutation",
+        "callExpression": "applyThemeAuthoringMutation",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
       },
       {
-        "fromSymbol": "updateHeading",
+        "fromSymbol": "updateAuthoredTheme",
         "toSymbol": "updateTheme",
         "callExpression": "updateTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
-      },
-      {
-        "fromSymbol": "updateHeading",
-        "toSymbol": "updateTypographyHeading",
-        "callExpression": "updateTypographyHeading",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-        "toSymbol": "updateHeading",
-        "callExpression": "updateHeading",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-        "toSymbol": "onChange",
-        "callExpression": "props.onChange",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
-        "toSymbol": "parseNonNegativeNumber",
-        "callExpression": "parseNonNegativeNumber",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
-      },
-      {
-        "fromSymbol": "HeadingWeightChoice",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
-      },
-      {
-        "fromSymbol": "ThemeTypographySizeEditor",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromSymbol": "ThemeTypographySizeEditor",
-        "toSymbol": "useActiveThemeAdmin",
-        "callExpression": "useActiveThemeAdmin",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromSymbol": "ThemeTypographySizeEditor",
-        "toSymbol": "useState",
-        "callExpression": "useState",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromSymbol": "updateSize",
-        "toSymbol": "updateTheme",
-        "callExpression": "updateTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromSymbol": "updateSize",
-        "toSymbol": "updateTypographySize",
-        "callExpression": "updateTypographySize",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromSymbol": "addSize",
-        "toSymbol": "parseNonNegativeNumber",
-        "callExpression": "parseNonNegativeNumber",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromSymbol": "addSize",
-        "toSymbol": "updateSize",
-        "callExpression": "updateSize",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromSymbol": "addSize",
-        "toSymbol": "setNewKey",
-        "callExpression": "setNewKey",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromSymbol": "addSize",
-        "toSymbol": "setNewValue",
-        "callExpression": "setNewValue",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
-        "toSymbol": "updateSize",
-        "callExpression": "updateSize",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
-        "toSymbol": "parseNonNegativeNumber",
-        "callExpression": "parseNonNegativeNumber",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
-        "toSymbol": "onChange",
-        "callExpression": "props.onChange",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
-      },
-      {
-        "fromSymbol": "ThemeTypographyWeightEditor",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
-      },
-      {
-        "fromSymbol": "ThemeTypographyWeightEditor",
-        "toSymbol": "useActiveThemeAdmin",
-        "callExpression": "useActiveThemeAdmin",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
-      },
-      {
-        "fromSymbol": "updateWeight",
-        "toSymbol": "updateTheme",
-        "callExpression": "updateTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
-      },
-      {
-        "fromSymbol": "updateWeight",
-        "toSymbol": "updateTypographyWeight",
-        "callExpression": "updateTypographyWeight",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
-        "toSymbol": "updateWeight",
-        "callExpression": "updateWeight",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
-      },
-      {
-        "fromSymbol": "WeightRow",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
-        "toSymbol": "onChange",
-        "callExpression": "props.onChange",
-        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
       },
       {
         "fromSymbol": "useActiveThemeAdmin",
@@ -69229,6 +68868,90 @@
         "toSymbol": "onMutation",
         "callExpression": "onMutation",
         "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "applyThemeAuthoringMutation",
+        "toSymbol": "resolveContractsAuthoringStructure",
+        "callExpression": "resolveContractsAuthoringStructure",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts"
+      },
+      {
+        "fromSymbol": "applyThemeAuthoringMutation",
+        "toSymbol": "applyAuthoringMutationToStructure",
+        "callExpression": "applyAuthoringMutationToStructure",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts"
+      },
+      {
+        "fromSymbol": "applyThemeAuthoringMutation",
+        "toSymbol": "projectThemeUpdate",
+        "callExpression": "projectThemeUpdate",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation.ts"
+      },
+      {
+        "fromSymbol": "deriveThemeAuthoringModel",
+        "toSymbol": "resolveContractsAuthoringStructure",
+        "callExpression": "resolveContractsAuthoringStructure",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "deriveThemeAuthoringModel",
+        "toSymbol": "deriveAuthoringModel",
+        "callExpression": "deriveAuthoringModel",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "deriveThemeAuthoringModel",
+        "toSymbol": "createInheritancePolicy",
+        "callExpression": "createInheritancePolicy",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "deriveThemeAuthoringModel",
+        "toSymbol": "findAuthoringNode",
+        "callExpression": "findAuthoringNode",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "deriveThemeAuthoringModel",
+        "toSymbol": "missingThemePath",
+        "callExpression": "missingThemePath",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "createInheritancePolicy",
+        "toSymbol": "isAuthoringPrimitive",
+        "callExpression": "isAuthoringPrimitive",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "createInheritancePolicy",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "toSymbol": "createInheritancePolicy",
+        "callExpression": "createInheritancePolicy",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "findAuthoringNode",
+        "toSymbol": "pathsEqual",
+        "callExpression": "pathsEqual",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts",
+        "toSymbol": "findAuthoringNode",
+        "callExpression": "findAuthoringNode",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "missingThemePath",
+        "toSymbol": "deriveAuthoringModel",
+        "callExpression": "deriveAuthoringModel",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel.ts"
       },
       {
         "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.test.ts",
@@ -69477,6 +69200,30 @@
         "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts"
       },
       {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/themeAuthoring.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/themeAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/themeAuthoring.test.ts",
+        "toSymbol": "deriveThemeAuthoringModel",
+        "callExpression": "deriveThemeAuthoringModel",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/themeAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/themeAuthoring.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/themeAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/themeAuthoring.test.ts",
+        "toSymbol": "applyThemeAuthoringMutation",
+        "callExpression": "applyThemeAuthoringMutation",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/themeAuthoring.test.ts"
+      },
+      {
         "fromSymbol": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -69577,6 +69324,186 @@
         "toSymbol": "rejectedMutation",
         "callExpression": "rejectedMutation",
         "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.test.ts",
+        "toSymbol": "applyAuthoringMutationToStructure",
+        "callExpression": "applyAuthoringMutationToStructure",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.test.ts"
+      },
+      {
+        "fromSymbol": "applyAuthoringMutationToStructure",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "applyAuthoringMutationToStructure",
+        "toSymbol": "rejected",
+        "callExpression": "rejected",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "applyAuthoringMutationToStructure",
+        "toSymbol": "validateValueMapRename",
+        "callExpression": "validateValueMapRename",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "applyAuthoringMutationToStructure",
+        "toSymbol": "materializeMutationPath",
+        "callExpression": "materializeMutationPath",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "applyAuthoringMutationToStructure",
+        "toSymbol": "applyAuthoringMutation",
+        "callExpression": "applyAuthoringMutation",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "applyAuthoringMutationToStructure",
+        "toSymbol": "normalizeStructuredValue",
+        "callExpression": "normalizeStructuredValue",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "validateValueMapRename",
+        "toSymbol": "resolveStructureAtPath",
+        "callExpression": "resolveStructureAtPath",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "validateValueMapRename",
+        "toSymbol": "rejected",
+        "callExpression": "rejected",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "validateValueMapRename",
+        "toSymbol": "isValueMapKeyAllowed",
+        "callExpression": "isValueMapKeyAllowed",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "resolveStructureAtPath",
+        "toSymbol": "resolveChildStructure",
+        "callExpression": "resolveChildStructure",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "resolveStructureAtPath",
+        "toSymbol": "resolveStructureAtPath",
+        "callExpression": "resolveStructureAtPath",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "materializeMutationPath",
+        "toSymbol": "rejected",
+        "callExpression": "rejected",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "materializeMutationPath",
+        "toSymbol": "resolveChildStructure",
+        "callExpression": "resolveChildStructure",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "materializeMutationPath",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "materializeMutationPath",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "materializeMutationPath",
+        "toSymbol": "materializeMutationPath",
+        "callExpression": "materializeMutationPath",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "materializeMutationPath",
+        "toSymbol": "setOwnProperty",
+        "callExpression": "setOwnProperty",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "resolveChildStructure",
+        "toSymbol": "isValueMapKeyAllowed",
+        "callExpression": "isValueMapKeyAllowed",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "normalizeStructuredValue",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "normalizeStructuredValue",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "normalizeStructuredValue",
+        "toSymbol": "normalizeStructuredValue",
+        "callExpression": "normalizeStructuredValue",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "normalizeStructuredValue",
+        "toSymbol": "isEmptyRecord",
+        "callExpression": "isEmptyRecord",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "normalizeStructuredValue",
+        "toSymbol": "deleteOwnProperty",
+        "callExpression": "deleteOwnProperty",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "normalizeStructuredValue",
+        "toSymbol": "setOwnProperty",
+        "callExpression": "setOwnProperty",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "normalizeStructuredValue",
+        "toSymbol": "shouldPruneEmptyMapValue",
+        "callExpression": "shouldPruneEmptyMapValue",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "shouldPruneEmptyMapValue",
+        "toSymbol": "isEmptyRecord",
+        "callExpression": "isEmptyRecord",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
+      },
+      {
+        "fromSymbol": "isEmptyRecord",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts"
       },
       {
         "fromSymbol": "src/features/authoring-engine/application/use-cases/createInitialAuthoringValue.ts",

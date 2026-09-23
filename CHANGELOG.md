@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.10.0
+
+### Minor Changes
+
+- 3a88ca1: Derive global Theme administration from the released Contracts theme structure, including value-map token authoring and resolved ZORA inheritance.
+
 ## 5.9.3
 
 ### Patch Changes
