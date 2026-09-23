@@ -1,4 +1,4 @@
-import type { EventBinding, UiBindableEventMeta } from '@ankhorage/contracts';
+import type { BindingValue, EventBinding, UiBindableEventMeta } from '@ankhorage/contracts';
 import { Button, Select, Text, TextInput } from '@ankhorage/zora';
 import { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
@@ -8,7 +8,11 @@ import {
   type StudioBindingInputFieldOption,
   type StudioBindingOperationOption,
 } from '../../../../bindingAuthoringModel';
+import { AuthoringEditor } from '../../../../features/authoring-engine/adapters/inbound/AuthoringEditor';
+import { applyAuthoringMutation } from '../../../../features/authoring-engine/application/use-cases/applyAuthoringMutation';
+import { deriveAuthoringModel } from '../../../../features/authoring-engine/application/use-cases/deriveAuthoringModel';
 import { ACTION_REGISTRY } from '../../../../index';
+import type { AuthoringMutation } from '../../../../types/authoring-engine';
 import { Field } from '../../adminPagePrimitives';
 import { bindingAdminStyles } from './bindingAdminStyles';
 import {
@@ -16,6 +20,8 @@ import {
   createStudioEventInputDrafts,
   createStudioOperationKey,
   findStudioOperationByKey,
+  formatStudioBindingLiteral,
+  parseStudioBindingLiteral,
   type StudioEventInputDraft,
   type StudioEventInputSourceKind,
 } from './bindingEditorModel';
@@ -135,7 +141,13 @@ function EventInputDrafts(props: {
   return (
     <View style={bindingAdminStyles.stack}>
       {props.fields.map((field) => {
-        const draft = props.drafts[field.name] ?? { kind: 'literal' as const, value: '' };
+        const draft =
+          props.drafts[field.name] ??
+          createStudioEventInputDrafts([field], [])[field.name] ?? {
+            kind: 'literal' as const,
+            value: '',
+            authored: false,
+          };
         return (
           <View key={field.name} style={bindingAdminStyles.row}>
             <View style={bindingAdminStyles.grow}>
@@ -146,21 +158,22 @@ function EventInputDrafts(props: {
                   value={draft.kind}
                   options={INPUT_SOURCE_OPTIONS}
                   onValueChange={(kind: StudioEventInputSourceKind) =>
-                    props.onChange({ ...props.drafts, [field.name]: { ...draft, kind } })
+                    props.onChange({
+                      ...props.drafts,
+                      [field.name]: resolveInputSourceDraft(field, draft, kind),
+                    })
                   }
                 />
               </Field>
             </View>
             <View style={bindingAdminStyles.grow}>
-              <Field label={draft.kind === 'event' ? 'Payload path' : 'Literal value'}>
-                <TextInput
-                  value={draft.value}
-                  placeholder={draft.kind === 'event' ? 'values.name' : undefined}
-                  onChangeText={(value) =>
-                    props.onChange({ ...props.drafts, [field.name]: { ...draft, value } })
-                  }
-                />
-              </Field>
+              <EventInputValueEditor
+                field={field}
+                draft={draft}
+                onChange={(nextDraft) =>
+                  props.onChange({ ...props.drafts, [field.name]: nextDraft })
+                }
+              />
             </View>
           </View>
         );
@@ -172,4 +185,95 @@ function EventInputDrafts(props: {
       ) : null}
     </View>
   );
+}
+
+/*** Render an event path, DataSchema-backed Authoring Editor, or legacy action literal input. */
+function EventInputValueEditor(props: {
+  readonly field: StudioBindingInputFieldOption;
+  readonly draft: StudioEventInputDraft;
+  readonly onChange: (draft: StudioEventInputDraft) => void;
+}) {
+  const { draft, field } = props;
+  if (draft.kind === 'event') {
+    return (
+      <Field label="Payload path">
+        <TextInput
+          value={draft.value}
+          placeholder="values.name"
+          onChangeText={(value) => props.onChange({ kind: 'event', value })}
+        />
+      </Field>
+    );
+  }
+
+  if (field.authoring) {
+    if (!field.authoring.ok) {
+      return (
+        <Field label="Literal value">
+          <Text color="neutral" emphasis="muted" variant="caption">
+            {field.authoring.diagnostic.message}
+          </Text>
+        </Field>
+      );
+    }
+
+    const model = deriveAuthoringModel({
+      structure: field.authoring.structure,
+      value: draft.value,
+      label: 'Literal value',
+    });
+    return (
+      <AuthoringEditor
+        model={model}
+        onMutation={(mutation) =>
+          props.onChange({
+            kind: 'literal',
+            value: applyLiteralMutation(draft.value, mutation),
+            authored: true,
+          })
+        }
+      />
+    );
+  }
+
+  return (
+    <Field label="Literal value">
+      <TextInput
+        value={formatStudioBindingLiteral(draft.value)}
+        onChangeText={(value) =>
+          props.onChange({
+            kind: 'literal',
+            value: parseStudioBindingLiteral(value, field.value),
+            authored: true,
+          })
+        }
+      />
+    </Field>
+  );
+}
+
+/*** Switch an input draft between event and literal sources without leaking DataSchema defaults into UI code. */
+function resolveInputSourceDraft(
+  field: StudioBindingInputFieldOption,
+  current: StudioEventInputDraft,
+  kind: StudioEventInputSourceKind,
+): StudioEventInputDraft {
+  if (current.kind === kind) return current;
+  if (kind === 'event') return { kind: 'event', value: '' };
+  return (
+    createStudioEventInputDrafts([field], [])[field.name] ?? {
+      kind: 'literal',
+      value: '',
+      authored: false,
+    }
+  );
+}
+
+/*** Apply one neutral authoring mutation to a typed binding literal, handling root scalar/list edits at the binding boundary. */
+function applyLiteralMutation(current: BindingValue, mutation: AuthoringMutation): BindingValue {
+  if (mutation.path.length === 0) {
+    return mutation.kind === 'set' ? mutation.value : current;
+  }
+  const result = applyAuthoringMutation(current, mutation);
+  return result.ok ? result.value : current;
 }
