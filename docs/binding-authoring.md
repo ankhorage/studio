@@ -18,7 +18,7 @@ Operation-result bindings enumerate normalized `manifest.dataSources` uniformly,
 
 The editor only exposes events declared by the injected composed ZORA binding metadata. Events can target canonical actions or canonical data-source operations.
 
-Known event payload fields are surfaced from ZORA. Action payload fields come from Studio's existing action authoring metadata, while operation request inputs come from canonical operation request schemas. Inputs can use literal values or event payload paths, including nested paths beneath object/record payload fields.
+Known event payload fields are surfaced from ZORA. Action payload fields come from Studio's existing action authoring metadata, while operation request inputs come from canonical operation request schemas. DataSchema-backed operation literals are adapted into the same neutral Authoring Model used by other Studio authoring surfaces and rendered through the shared Authoring Editor; binding-specific source selection and event-payload mapping remain outside the engine. Inputs can use literal values or event payload paths, including nested paths beneath object/record payload fields. Unsupported DataSchema unions, dynamic records, recursive/missing references, and other unavailable engine semantics surface explicit diagnostics instead of falling back to a generic JSON editor.
 
 ## Diagnostics
 
