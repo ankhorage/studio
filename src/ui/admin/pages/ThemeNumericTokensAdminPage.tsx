@@ -8,22 +8,11 @@ import type { AuthoringMutation } from '../../../types/authoring-engine';
 import { AdminHeader, AdminScroll } from '../adminPagePrimitives';
 import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 
-type NumericThemeTokenFamily = 'spacing' | 'radii' | 'shadows';
-
-const COPY: Record<NumericThemeTokenFamily, { title: string; description: string }> = {
-  spacing: { title: 'Spacing', description: 'Shared spacing tokens used by Theme recipes.' },
-  radii: { title: 'Radii', description: 'Shared corner-radius tokens used by Theme recipes.' },
-  shadows: {
-    title: 'Shadows',
-    description: 'Shared shadow-strength tokens used by Theme recipes.',
-  },
-};
-
 /*** Render one numeric Theme token family from owner structure with resolved ZORA values as inheritance. */
 export function ThemeNumericTokensAdminPage(props: { readonly family: NumericThemeTokenFamily }) {
   const { theme: resolvedTheme } = useZoraTheme();
-  const { replaceTheme, selection } = useActiveThemeAdmin();
-  const copy = COPY[props.family];
+  const { selection, updateTheme } = useActiveThemeAdmin();
+  const copy = resolveNumericThemeTokenCopy(props.family);
 
   if (!selection) return <ThemeUnavailable />;
 
@@ -42,7 +31,7 @@ export function ThemeNumericTokensAdminPage(props: { readonly family: NumericThe
   /*** Apply one owner-derived token mutation through the canonical Theme boundary. */
   const updateAuthoredTheme = (mutation: AuthoringMutation) => {
     const result = applyThemeAuthoringMutation(selection.theme, mutation);
-    if (result.ok) replaceTheme(result.value);
+    if (result.ok) updateTheme(result.value);
   };
 
   return (
@@ -53,6 +42,28 @@ export function ThemeNumericTokensAdminPage(props: { readonly family: NumericThe
       </Card>
     </AdminScroll>
   );
+}
+
+type NumericThemeTokenFamily = 'spacing' | 'radii' | 'shadows';
+
+interface NumericThemeTokenCopy {
+  readonly title: string;
+  readonly description: string;
+}
+
+/*** Resolve route-specific numeric Theme copy without dynamic object indexing. */
+function resolveNumericThemeTokenCopy(family: NumericThemeTokenFamily): NumericThemeTokenCopy {
+  switch (family) {
+    case 'spacing':
+      return { title: 'Spacing', description: 'Shared spacing tokens used by Theme recipes.' };
+    case 'radii':
+      return { title: 'Radii', description: 'Shared corner-radius tokens used by Theme recipes.' };
+    case 'shadows':
+      return {
+        title: 'Shadows',
+        description: 'Shared shadow-strength tokens used by Theme recipes.',
+      };
+  }
 }
 
 /*** Render the numeric-token page fallback when no active theme is available. */

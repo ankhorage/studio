@@ -18,7 +18,7 @@ import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 
 /*** Render primary-color and harmony authoring for the active light/dark runtime theme mode. */
 export function ThemeColorsAdminPage() {
-  const { replaceTheme, selection } = useActiveThemeAdmin();
+  const { selection, updateTheme } = useActiveThemeAdmin();
   if (!selection) return <Unavailable />;
 
   const modePolicy: AuthoringPresentationPolicy =
@@ -50,7 +50,7 @@ export function ThemeColorsAdminPage() {
   /*** Apply one owner-derived mode mutation through the canonical Theme boundary. */
   const updateAuthoredTheme = (mutation: AuthoringMutation) => {
     const result = applyThemeAuthoringMutation(selection.theme, mutation);
-    if (result.ok) replaceTheme(result.value);
+    if (result.ok) updateTheme(result.value);
   };
 
   return (

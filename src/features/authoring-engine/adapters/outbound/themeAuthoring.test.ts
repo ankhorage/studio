@@ -63,30 +63,48 @@ test('projects resolved Theme token values as inheritance without materializing 
   });
 });
 
-test('materializes and prunes Theme token overrides through the owner structure', () => {
+test('materializes and prunes Theme token overrides through the canonical update boundary', () => {
   const withoutTokens: ThemeConfig = {
     id: 'theme-default',
     name: 'Default',
     light: theme.light,
     dark: theme.dark,
   };
-  const added = applyThemeAuthoringMutation(withoutTokens, {
-    kind: 'set',
-    path: ['tokens', 'spacing', 'm'],
-    value: 18,
-  });
-  expect(added).toEqual({
+  expect(
+    applyThemeAuthoringMutation(withoutTokens, {
+      kind: 'set',
+      path: ['tokens', 'spacing', 'm'],
+      value: 18,
+    }),
+  ).toEqual({
     ok: true,
-    value: { ...withoutTokens, tokens: { spacing: { m: 18 } } },
+    value: { tokens: { spacing: { m: 18 } } },
   });
 
-  if (!added.ok) return;
   expect(
-    applyThemeAuthoringMutation(added.value, {
-      kind: 'unset',
-      path: ['tokens', 'spacing', 'm'],
-    }),
-  ).toEqual({ ok: true, value: withoutTokens });
+    applyThemeAuthoringMutation(
+      { ...withoutTokens, tokens: { spacing: { m: 18 } } },
+      {
+        kind: 'unset',
+        path: ['tokens', 'spacing', 'm'],
+      },
+    ),
+  ).toEqual({ ok: true, value: { tokens: undefined } });
+});
+
+test('renames custom tokens immutably and projects only the touched Theme branch', () => {
+  const renamed = applyThemeAuthoringMutation(theme, {
+    kind: 'rename-key',
+    path: ['tokens', 'spacing'],
+    fromKey: 'm',
+    toKey: 'medium',
+  });
+
+  expect(renamed).toEqual({
+    ok: true,
+    value: { tokens: { spacing: { medium: 20 } } },
+  });
+  expect(theme.tokens?.spacing).toEqual({ m: 20 });
 });
 
 test('keeps Theme-specific presentation hints separate from owner structure', () => {

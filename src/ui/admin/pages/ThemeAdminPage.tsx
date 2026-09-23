@@ -12,7 +12,7 @@ import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 
 /*** Render active-theme metadata, global/mode ownership guidance, and the catalog of ZORA theme recipes. */
 export function ThemeAdminPage() {
-  const { replaceTheme, selection } = useActiveThemeAdmin();
+  const { selection, updateTheme } = useActiveThemeAdmin();
 
   if (!selection) {
     return (
@@ -35,7 +35,7 @@ export function ThemeAdminPage() {
   /*** Apply one owner-derived Theme field mutation through the canonical manifest Theme boundary. */
   const updateAuthoredTheme = (mutation: AuthoringMutation) => {
     const result = applyThemeAuthoringMutation(selection.theme, mutation);
-    if (result.ok) replaceTheme(result.value);
+    if (result.ok) updateTheme(result.value);
   };
 
   return (
