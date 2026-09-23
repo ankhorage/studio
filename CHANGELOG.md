@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.7.0
+
+### Minor Changes
+
+- 3cc8204: Route declarative module configuration fallbacks through the central Authoring Engine and surface unsupported module controls explicitly.
+
 ## 5.6.0
 
 ### Minor Changes

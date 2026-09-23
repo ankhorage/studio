@@ -347,6 +347,11 @@
       <small>4 functions</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts">
+      src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts
+      <small>2 functions</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts">
       src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts
       <small>1 function</small>
@@ -724,7 +729,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/host/freshTemplateInfra.e2e.test.ts">
       src/host/freshTemplateInfra.e2e.test.ts
-      <small>6 functions</small>
+      <small>8 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/host/generatedAdminExpoWeb.smoke.test.ts">
@@ -1575,11 +1580,6 @@
     <button class="nav-button" type="button" data-target="src/moduleAdminApi.ts">
       src/moduleAdminApi.ts
       <small>16 functions</small>
-    </button>
-  </li><li>
-    <button class="nav-button" type="button" data-target="src/moduleAdminModel.ts">
-      src/moduleAdminModel.ts
-      <small>3 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/nativeClientDeployBoundary.test.ts">
@@ -2689,6 +2689,16 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/propertiesAuthoringModel.ts</code>, <code>src/types/authoring-engine.ts</code></p>
     <p><strong>Exports:</strong> <code>resolveInstancePropertyAuthoring</code></p>
+  </article><article class="item" data-search="src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts src/moduleAdminContracts.ts">
+    <h3>src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts</code>, <code>src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts</code>, <code>src/moduleAdminContracts.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
+  </article><article class="item" data-search="src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts src/moduleAdminContracts.ts src/types/authoring-engine.ts resolveModuleAdminAuthoring">
+    <h3>src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/moduleAdminContracts.ts</code>, <code>src/types/authoring-engine.ts</code></p>
+    <p><strong>Exports:</strong> <code>resolveModuleAdminAuthoring</code></p>
   </article><article class="item" data-search="src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts src/ui/admin/pages/themeRecipeAuthoringModel.ts">
     <h3>src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts</h3>
     <p class="muted">Referenced module</p>
@@ -4234,16 +4244,6 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>StudioModuleAdminContribution</code>, <code>StudioModuleAdminControl</code>, <code>StudioModuleAdminField</code>, <code>StudioModuleOperationResult</code>, <code>StudioModuleState</code></p>
-  </article><article class="item" data-search="src/moduleAdminModel.test.ts src/moduleAdminContracts.ts src/moduleAdminModel.ts">
-    <h3>src/moduleAdminModel.test.ts</h3>
-    <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/moduleAdminContracts.ts</code>, <code>src/moduleAdminModel.ts</code></p>
-    <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/moduleAdminModel.ts src/moduleAdminContracts.ts createStudioModuleAdminDraft parseStudioModuleAdminDraft StudioModuleAdminDraft StudioModuleAdminDraftResult">
-    <h3>src/moduleAdminModel.ts</h3>
-    <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/moduleAdminContracts.ts</code></p>
-    <p><strong>Exports:</strong> <code>createStudioModuleAdminDraft</code>, <code>parseStudioModuleAdminDraft</code>, <code>StudioModuleAdminDraft</code>, <code>StudioModuleAdminDraftResult</code></p>
   </article><article class="item" data-search="src/nativeClientDeployBoundary.test.ts">
     <h3>src/nativeClientDeployBoundary.test.ts</h3>
     <p class="muted">Referenced module</p>
@@ -4949,10 +4949,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/mediaAuthoringModel.ts</code></p>
     <p><strong>Exports:</strong> <code>MediaPropertyInput</code></p>
-  </article><article class="item" data-search="src/ui/admin/pages/ModuleDetailAdminPage.tsx src/core/StudioContext.ts src/moduleAdminApi.ts src/moduleAdminContracts.ts src/moduleAdminModel.ts src/ui/admin/adminPagePrimitives.tsx src/ui/admin/ModuleAdminViewHost.tsx src/ui/admin/moduleAdminViewRegistry.ts ModuleDetailAdminPage">
+  </article><article class="item" data-search="src/ui/admin/pages/ModuleDetailAdminPage.tsx src/core/StudioContext.ts src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts src/moduleAdminApi.ts src/moduleAdminContracts.ts src/types/authoring-engine.ts src/ui/admin/adminPagePrimitives.tsx src/ui/admin/ModuleAdminViewHost.tsx src/ui/admin/moduleAdminViewRegistry.ts ModuleDetailAdminPage">
     <h3>src/ui/admin/pages/ModuleDetailAdminPage.tsx</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code>, <code>src/moduleAdminApi.ts</code>, <code>src/moduleAdminContracts.ts</code>, <code>src/moduleAdminModel.ts</code>, <code>src/ui/admin/adminPagePrimitives.tsx</code>, <code>src/ui/admin/ModuleAdminViewHost.tsx</code>, <code>src/ui/admin/moduleAdminViewRegistry.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code>, <code>src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx</code>, <code>src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts</code>, <code>src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts</code>, <code>src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts</code>, <code>src/moduleAdminApi.ts</code>, <code>src/moduleAdminContracts.ts</code>, <code>src/types/authoring-engine.ts</code>, <code>src/ui/admin/adminPagePrimitives.tsx</code>, <code>src/ui/admin/ModuleAdminViewHost.tsx</code>, <code>src/ui/admin/moduleAdminViewRegistry.ts</code></p>
     <p><strong>Exports:</strong> <code>ModuleDetailAdminPage</code></p>
   </article><article class="item" data-search="src/ui/admin/pages/ModulesAdminPage.tsx src/core/StudioContext.ts src/moduleAdminApi.ts src/moduleAdminContracts.ts src/studioAdminRouteModel.ts src/ui/admin/adminPagePrimitives.tsx ModulesAdminPage">
     <h3>src/ui/admin/pages/ModulesAdminPage.tsx</h3>
@@ -9446,6 +9446,15 @@
   package__ankhorage_studio -.-&gt; module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts --&gt; module_src_propertiesAuthoringModel_ts
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts --&gt; module_src_types_authoring_engine_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts --&gt; module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts --&gt; module_src_moduleAdminContracts_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts --&gt; module_src_moduleAdminContracts_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts --&gt; module_src_types_authoring_engine_ts
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_ts
@@ -10634,13 +10643,6 @@
   module_src_moduleAdminApi_ts --&gt; module_src_moduleAdminContracts_ts
   module_src_moduleAdminContracts_ts[&quot;src/moduleAdminContracts.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_moduleAdminContracts_ts
-  module_src_moduleAdminModel_test_ts[&quot;src/moduleAdminModel.test.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_moduleAdminModel_test_ts
-  module_src_moduleAdminModel_test_ts --&gt; module_src_moduleAdminContracts_ts
-  module_src_moduleAdminModel_test_ts --&gt; module_src_moduleAdminModel_ts
-  module_src_moduleAdminModel_ts[&quot;src/moduleAdminModel.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_moduleAdminModel_ts
-  module_src_moduleAdminModel_ts --&gt; module_src_moduleAdminContracts_ts
   module_src_nativeClientDeployBoundary_test_ts[&quot;src/nativeClientDeployBoundary.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_nativeClientDeployBoundary_test_ts
   module_src_normalizeExternalApiId_ts[&quot;src/normalizeExternalApiId.ts&quot;]
@@ -11177,9 +11179,13 @@
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx[&quot;src/ui/admin/pages/ModuleDetailAdminPage.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_ModuleDetailAdminPage_tsx
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_adapters_inbound_AuthoringEditor_tsx
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_application_use_cases_applyAuthoringMutation_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminApi_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminContracts_ts
-  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminModel_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_types_authoring_engine_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_ModuleAdminViewHost_tsx
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_moduleAdminViewRegistry_ts
@@ -11712,6 +11718,15 @@
   package__ankhorage_studio -.-&gt; module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts --&gt; module_src_propertiesAuthoringModel_ts
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts --&gt; module_src_types_authoring_engine_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts --&gt; module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts --&gt; module_src_moduleAdminContracts_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts --&gt; module_src_moduleAdminContracts_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts --&gt; module_src_types_authoring_engine_ts
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_ts
@@ -12900,13 +12915,6 @@
   module_src_moduleAdminApi_ts --&gt; module_src_moduleAdminContracts_ts
   module_src_moduleAdminContracts_ts[&quot;src/moduleAdminContracts.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_moduleAdminContracts_ts
-  module_src_moduleAdminModel_test_ts[&quot;src/moduleAdminModel.test.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_moduleAdminModel_test_ts
-  module_src_moduleAdminModel_test_ts --&gt; module_src_moduleAdminContracts_ts
-  module_src_moduleAdminModel_test_ts --&gt; module_src_moduleAdminModel_ts
-  module_src_moduleAdminModel_ts[&quot;src/moduleAdminModel.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_moduleAdminModel_ts
-  module_src_moduleAdminModel_ts --&gt; module_src_moduleAdminContracts_ts
   module_src_nativeClientDeployBoundary_test_ts[&quot;src/nativeClientDeployBoundary.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_nativeClientDeployBoundary_test_ts
   module_src_normalizeExternalApiId_ts[&quot;src/normalizeExternalApiId.ts&quot;]
@@ -13443,9 +13451,13 @@
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx[&quot;src/ui/admin/pages/ModuleDetailAdminPage.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_ModuleDetailAdminPage_tsx
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_adapters_inbound_AuthoringEditor_tsx
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_application_use_cases_applyAuthoringMutation_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminApi_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminContracts_ts
-  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminModel_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_types_authoring_engine_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_ModuleAdminViewHost_tsx
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_moduleAdminViewRegistry_ts
@@ -13757,6 +13769,8 @@
   module_src_features_authoring_engine_adapters_outbound_resolveContractsAuthoringStructure_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.test.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.ts&quot;]
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts&quot;]
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts&quot;]
   module_src_features_authoring_engine_application_use_cases_applyAuthoringMutation_test_ts[&quot;src/features/authoring-engine/application/use-cases/applyAuthoringMutation.test.ts&quot;]
@@ -14066,8 +14080,6 @@
   module_src_moduleAdminApi_test_ts[&quot;src/moduleAdminApi.test.ts&quot;]
   module_src_moduleAdminApi_ts[&quot;src/moduleAdminApi.ts&quot;]
   module_src_moduleAdminContracts_ts[&quot;src/moduleAdminContracts.ts&quot;]
-  module_src_moduleAdminModel_test_ts[&quot;src/moduleAdminModel.test.ts&quot;]
-  module_src_moduleAdminModel_ts[&quot;src/moduleAdminModel.ts&quot;]
   module_src_nativeClientDeployBoundary_test_ts[&quot;src/nativeClientDeployBoundary.test.ts&quot;]
   module_src_normalizeExternalApiId_ts[&quot;src/normalizeExternalApiId.ts&quot;]
   module_src_projectAuthApi_test_ts[&quot;src/projectAuthApi.test.ts&quot;]
@@ -14395,6 +14407,11 @@
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_test_ts --&gt; module_src_propertiesAuthoringModel_ts
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts --&gt; module_src_propertiesAuthoringModel_ts
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts --&gt; module_src_types_authoring_engine_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts --&gt; module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts --&gt; module_src_moduleAdminContracts_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts --&gt; module_src_moduleAdminContracts_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts --&gt; module_src_types_authoring_engine_ts
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_ts
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts --&gt; module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts --&gt; module_src_ui_admin_pages_themeRecipeAuthoringModel_ts
@@ -14966,9 +14983,6 @@
   module_src_moduleAdmin_public_test_ts --&gt; module_src_root_ts
   module_src_moduleAdminApi_test_ts --&gt; module_src_moduleAdminApi_ts
   module_src_moduleAdminApi_ts --&gt; module_src_moduleAdminContracts_ts
-  module_src_moduleAdminModel_test_ts --&gt; module_src_moduleAdminContracts_ts
-  module_src_moduleAdminModel_test_ts --&gt; module_src_moduleAdminModel_ts
-  module_src_moduleAdminModel_ts --&gt; module_src_moduleAdminContracts_ts
   module_src_projectAuthApi_test_ts --&gt; module_src_projectAuthApi_ts
   module_src_projectAuthApi_ts --&gt; module_src_projectAuthHealth_ts
   module_src_projectAuthApi_ts --&gt; module_src_secretResponseGuard_ts
@@ -15221,9 +15235,13 @@
   module_src_ui_admin_pages_MediaDeviceImportCard_tsx --&gt; module_src_mediaPickerAuthoring_ts
   module_src_ui_admin_pages_MediaPropertyInput_tsx --&gt; module_src_mediaAuthoringModel_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_adapters_inbound_AuthoringEditor_tsx
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_application_use_cases_applyAuthoringMutation_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminApi_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminContracts_ts
-  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminModel_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_types_authoring_engine_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_ModuleAdminViewHost_tsx
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_moduleAdminViewRegistry_ts
@@ -15431,6 +15449,8 @@
   module_src_features_authoring_engine_adapters_outbound_resolveContractsAuthoringStructure_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.test.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.ts&quot;]
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts&quot;]
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts&quot;]
   module_src_features_authoring_engine_application_use_cases_applyAuthoringMutation_test_ts[&quot;src/features/authoring-engine/application/use-cases/applyAuthoringMutation.test.ts&quot;]
@@ -15740,8 +15760,6 @@
   module_src_moduleAdminApi_test_ts[&quot;src/moduleAdminApi.test.ts&quot;]
   module_src_moduleAdminApi_ts[&quot;src/moduleAdminApi.ts&quot;]
   module_src_moduleAdminContracts_ts[&quot;src/moduleAdminContracts.ts&quot;]
-  module_src_moduleAdminModel_test_ts[&quot;src/moduleAdminModel.test.ts&quot;]
-  module_src_moduleAdminModel_ts[&quot;src/moduleAdminModel.ts&quot;]
   module_src_nativeClientDeployBoundary_test_ts[&quot;src/nativeClientDeployBoundary.test.ts&quot;]
   module_src_normalizeExternalApiId_ts[&quot;src/normalizeExternalApiId.ts&quot;]
   module_src_projectAuthApi_test_ts[&quot;src/projectAuthApi.test.ts&quot;]
@@ -16069,6 +16087,11 @@
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_test_ts --&gt; module_src_propertiesAuthoringModel_ts
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts --&gt; module_src_propertiesAuthoringModel_ts
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts --&gt; module_src_types_authoring_engine_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts --&gt; module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts --&gt; module_src_moduleAdminContracts_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts --&gt; module_src_moduleAdminContracts_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts --&gt; module_src_types_authoring_engine_ts
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts --&gt; module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_ts
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts --&gt; module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts --&gt; module_src_ui_admin_pages_themeRecipeAuthoringModel_ts
@@ -16640,9 +16663,6 @@
   module_src_moduleAdmin_public_test_ts --&gt; module_src_root_ts
   module_src_moduleAdminApi_test_ts --&gt; module_src_moduleAdminApi_ts
   module_src_moduleAdminApi_ts --&gt; module_src_moduleAdminContracts_ts
-  module_src_moduleAdminModel_test_ts --&gt; module_src_moduleAdminContracts_ts
-  module_src_moduleAdminModel_test_ts --&gt; module_src_moduleAdminModel_ts
-  module_src_moduleAdminModel_ts --&gt; module_src_moduleAdminContracts_ts
   module_src_projectAuthApi_test_ts --&gt; module_src_projectAuthApi_ts
   module_src_projectAuthApi_ts --&gt; module_src_projectAuthHealth_ts
   module_src_projectAuthApi_ts --&gt; module_src_secretResponseGuard_ts
@@ -16895,9 +16915,13 @@
   module_src_ui_admin_pages_MediaDeviceImportCard_tsx --&gt; module_src_mediaPickerAuthoring_ts
   module_src_ui_admin_pages_MediaPropertyInput_tsx --&gt; module_src_mediaAuthoringModel_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_adapters_inbound_AuthoringEditor_tsx
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_application_use_cases_applyAuthoringMutation_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminApi_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminContracts_ts
-  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminModel_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_types_authoring_engine_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_ModuleAdminViewHost_tsx
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_moduleAdminViewRegistry_ts
@@ -17107,6 +17131,8 @@
   module_src_features_authoring_engine_adapters_outbound_resolveContractsAuthoringStructure_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.test.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.ts&quot;]
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts&quot;]
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts&quot;]
   module_src_features_authoring_engine_application_use_cases_applyAuthoringMutation_test_ts[&quot;src/features/authoring-engine/application/use-cases/applyAuthoringMutation.test.ts&quot;]
@@ -17416,8 +17442,6 @@
   module_src_moduleAdminApi_test_ts[&quot;src/moduleAdminApi.test.ts&quot;]
   module_src_moduleAdminApi_ts[&quot;src/moduleAdminApi.ts&quot;]
   module_src_moduleAdminContracts_ts[&quot;src/moduleAdminContracts.ts&quot;]
-  module_src_moduleAdminModel_test_ts[&quot;src/moduleAdminModel.test.ts&quot;]
-  module_src_moduleAdminModel_ts[&quot;src/moduleAdminModel.ts&quot;]
   module_src_nativeClientDeployBoundary_test_ts[&quot;src/nativeClientDeployBoundary.test.ts&quot;]
   module_src_normalizeExternalApiId_ts[&quot;src/normalizeExternalApiId.ts&quot;]
   module_src_projectAuthApi_test_ts[&quot;src/projectAuthApi.test.ts&quot;]
@@ -18093,6 +18117,8 @@
   module_src_features_authoring_engine_adapters_outbound_resolveContractsAuthoringStructure_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.test.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.ts&quot;]
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts&quot;]
+  module_src_features_authoring_engine_adapters_outbound_resolveModuleAdminAuthoring_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts&quot;]
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_ts[&quot;src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts&quot;]
   module_src_features_authoring_engine_application_use_cases_applyAuthoringMutation_test_ts[&quot;src/features/authoring-engine/application/use-cases/applyAuthoringMutation.test.ts&quot;]
@@ -18402,8 +18428,6 @@
   module_src_moduleAdminApi_test_ts[&quot;src/moduleAdminApi.test.ts&quot;]
   module_src_moduleAdminApi_ts[&quot;src/moduleAdminApi.ts&quot;]
   module_src_moduleAdminContracts_ts[&quot;src/moduleAdminContracts.ts&quot;]
-  module_src_moduleAdminModel_test_ts[&quot;src/moduleAdminModel.test.ts&quot;]
-  module_src_moduleAdminModel_ts[&quot;src/moduleAdminModel.ts&quot;]
   module_src_nativeClientDeployBoundary_test_ts[&quot;src/nativeClientDeployBoundary.test.ts&quot;]
   module_src_normalizeExternalApiId_ts[&quot;src/normalizeExternalApiId.ts&quot;]
   module_src_projectAuthApi_test_ts[&quot;src/projectAuthApi.test.ts&quot;]
@@ -21011,6 +21035,19 @@
     <p>Return a valid primitive owner default for inheritance without coercing metadata.</p>
   </article>
     </section>
+  </section><section id="view-src-features-authoring-engine-adapters-outbound-resolvemoduleadminauthoring-ts" class="view" data-view="src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts" hidden>
+    <section class="panel">
+      <h2>src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts</h2>
+      <article class="item" data-search="resolveModuleAdminAuthoring src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts Adapt one module-owned config-schema contribution into Studio&#39;s neutral Authoring Engine vocabulary.">
+    <h3>resolveModuleAdminAuthoring</h3>
+    <p class="muted"><code>src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts:11:1</code></p>
+    <p>Adapt one module-owned config-schema contribution into Studio&#39;s neutral Authoring Engine vocabulary.</p>
+  </article><article class="item" data-search="resolveModuleAdminFieldStructure src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts Translate one exercised module control and fail closed for owner controls without central semantics.">
+    <h3>resolveModuleAdminFieldStructure</h3>
+    <p class="muted"><code>src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts:35:1</code></p>
+    <p>Translate one exercised module control and fail closed for owner controls without central semantics.</p>
+  </article>
+    </section>
   </section><section id="view-src-features-authoring-engine-adapters-outbound-resolvezorathemerecipeauthoring-test-ts" class="view" data-view="src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts" hidden>
     <section class="panel">
       <h2>src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts</h2>
@@ -22602,27 +22639,35 @@ self-consumer baseline, while published package artifacts use their own exact re
       <h2>src/host/freshTemplateInfra.e2e.test.ts</h2>
       <article class="item" data-search="runFreshTemplateInfraAcceptanceAsync src/host/freshTemplateInfra.e2e.test.ts ">
     <h3>runFreshTemplateInfraAcceptanceAsync</h3>
-    <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:54:1</code></p>
+    <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:56:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="expectCredentialNeutralLocalSupabaseManifest src/host/freshTemplateInfra.e2e.test.ts ">
     <h3>expectCredentialNeutralLocalSupabaseManifest</h3>
-    <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:122:1</code></p>
+    <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:127:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="readSupabasePublicOutputs src/host/freshTemplateInfra.e2e.test.ts ">
     <h3>readSupabasePublicOutputs</h3>
-    <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:135:1</code></p>
+    <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:140:1</code></p>
+    <p class="empty">No description available.</p>
+  </article><article class="item" data-search="expectMaterializedAppEnvironmentAsync src/host/freshTemplateInfra.e2e.test.ts ">
+    <h3>expectMaterializedAppEnvironmentAsync</h3>
+    <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:156:1</code></p>
+    <p class="empty">No description available.</p>
+  </article><article class="item" data-search="readEnvironmentAssignment src/host/freshTemplateInfra.e2e.test.ts ">
+    <h3>readEnvironmentAssignment</h3>
+    <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:182:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="resourceIdentities src/host/freshTemplateInfra.e2e.test.ts ">
     <h3>resourceIdentities</h3>
-    <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:151:1</code></p>
+    <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:193:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="expectSafeStudioInfraResult src/host/freshTemplateInfra.e2e.test.ts ">
     <h3>expectSafeStudioInfraResult</h3>
-    <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:159:1</code></p>
+    <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:201:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="createWorkspaceAsync src/host/freshTemplateInfra.e2e.test.ts ">
     <h3>createWorkspaceAsync</h3>
-    <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:166:1</code></p>
+    <p class="muted"><code>src/host/freshTemplateInfra.e2e.test.ts:208:1</code></p>
     <p class="empty">No description available.</p>
   </article>
     </section>
@@ -27162,23 +27207,6 @@ ScreenRequirements/contracts capability rather than generic Utility.</p>
 @utility @ankhorage/utility/http</p>
   </article>
     </section>
-  </section><section id="view-src-moduleadminmodel-ts" class="view" data-view="src/moduleAdminModel.ts" hidden>
-    <section class="panel">
-      <h2>src/moduleAdminModel.ts</h2>
-      <article class="item" data-search="createStudioModuleAdminDraft src/moduleAdminModel.ts Project a Studio contribution schema through the canonical generic form-draft utility.">
-    <h3>createStudioModuleAdminDraft</h3>
-    <p class="muted"><code>src/moduleAdminModel.ts:14:1</code></p>
-    <p>Project a Studio contribution schema through the canonical generic form-draft utility.</p>
-  </article><article class="item" data-search="parseStudioModuleAdminDraft src/moduleAdminModel.ts Parse a Studio contribution draft through the canonical generic form-draft utility.">
-    <h3>parseStudioModuleAdminDraft</h3>
-    <p class="muted"><code>src/moduleAdminModel.ts:24:1</code></p>
-    <p>Parse a Studio contribution draft through the canonical generic form-draft utility.</p>
-  </article><article class="item" data-search="toFormDraftFields src/moduleAdminModel.ts Translate open Studio control identifiers into the canonical generic form controls.">
-    <h3>toFormDraftFields</h3>
-    <p class="muted"><code>src/moduleAdminModel.ts:38:1</code></p>
-    <p>Translate open Studio control identifiers into the canonical generic form controls.</p>
-  </article>
-    </section>
   </section><section id="view-src-nativeclientdeployboundary-test-ts" class="view" data-view="src/nativeClientDeployBoundary.test.ts" hidden>
     <section class="panel">
       <h2>src/nativeClientDeployBoundary.test.ts</h2>
@@ -29484,11 +29512,11 @@ ScreenRequirements/contracts capability rather than generic Utility.</p>
       <h2>src/ui/admin/pages/ModuleDetailAdminPage.tsx</h2>
       <article class="item" data-search="ModuleDetailAdminPage src/ui/admin/pages/ModuleDetailAdminPage.tsx Render lifecycle, package-owned administration, and fallback metadata-driven configuration for one Studio module.">
     <h3>ModuleDetailAdminPage</h3>
-    <p class="muted"><code>src/ui/admin/pages/ModuleDetailAdminPage.tsx:25:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/ModuleDetailAdminPage.tsx:26:1</code></p>
     <p>Render lifecycle, package-owned administration, and fallback metadata-driven configuration for one Studio module.</p>
   </article><article class="item" data-search="toMessage src/ui/admin/pages/ModuleDetailAdminPage.tsx Normalize an unknown thrown value to a display message.&#10;@utility @ankhorage/utility/error">
     <h3>toMessage</h3>
-    <p class="muted"><code>src/ui/admin/pages/ModuleDetailAdminPage.tsx:265:1</code></p>
+    <p class="muted"><code>src/ui/admin/pages/ModuleDetailAdminPage.tsx:255:1</code></p>
     <p>Normalize an unknown thrown value to a display message.
 @utility @ankhorage/utility/error</p>
   </article>

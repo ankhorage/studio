@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.6.0",
+      "value": "v5.7.0",
       "color": "cb3837"
     },
     {
@@ -994,6 +994,27 @@
       ],
       "exports": [
         "resolveInstancePropertyAuthoring"
+      ]
+    },
+    {
+      "path": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts",
+        "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "src/moduleAdminContracts.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/moduleAdminContracts.ts",
+        "src/types/authoring-engine.ts"
+      ],
+      "exports": [
+        "resolveModuleAdminAuthoring"
       ]
     },
     {
@@ -4479,28 +4500,6 @@
       ]
     },
     {
-      "path": "src/moduleAdminModel.test.ts",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/moduleAdminContracts.ts",
-        "src/moduleAdminModel.ts"
-      ],
-      "exports": []
-    },
-    {
-      "path": "src/moduleAdminModel.ts",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/moduleAdminContracts.ts"
-      ],
-      "exports": [
-        "createStudioModuleAdminDraft",
-        "parseStudioModuleAdminDraft",
-        "StudioModuleAdminDraft",
-        "StudioModuleAdminDraftResult"
-      ]
-    },
-    {
       "path": "src/nativeClientDeployBoundary.test.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -6296,9 +6295,13 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/core/StudioContext.ts",
+        "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts",
+        "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
+        "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
         "src/moduleAdminApi.ts",
         "src/moduleAdminContracts.ts",
-        "src/moduleAdminModel.ts",
+        "src/types/authoring-engine.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/ModuleAdminViewHost.tsx",
         "src/ui/admin/moduleAdminViewRegistry.ts"
@@ -14508,6 +14511,24 @@
       }
     },
     {
+      "name": "resolveModuleAdminAuthoring",
+      "description": "Adapt one module-owned config-schema contribution into Studio's neutral Authoring Engine vocabulary.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts",
+        "line": 11,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveModuleAdminFieldStructure",
+      "description": "Translate one exercised module control and fail closed for owner controls without central semantics.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts",
+        "line": 35,
+        "column": 1
+      }
+    },
+    {
       "name": "cardMetadata",
       "description": null,
       "sourceLocation": {
@@ -17212,7 +17233,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 54,
+        "line": 56,
         "column": 1
       }
     },
@@ -17221,7 +17242,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 122,
+        "line": 127,
         "column": 1
       }
     },
@@ -17230,7 +17251,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 135,
+        "line": 140,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectMaterializedAppEnvironmentAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
+        "line": 156,
+        "column": 1
+      }
+    },
+    {
+      "name": "readEnvironmentAssignment",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
+        "line": 182,
         "column": 1
       }
     },
@@ -17239,7 +17278,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 151,
+        "line": 193,
         "column": 1
       }
     },
@@ -17248,7 +17287,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 159,
+        "line": 201,
         "column": 1
       }
     },
@@ -17257,7 +17296,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/freshTemplateInfra.e2e.test.ts",
-        "line": 166,
+        "line": 208,
         "column": 1
       }
     },
@@ -24858,33 +24897,6 @@
       }
     },
     {
-      "name": "createStudioModuleAdminDraft",
-      "description": "Project a Studio contribution schema through the canonical generic form-draft utility.",
-      "sourceLocation": {
-        "filePath": "src/moduleAdminModel.ts",
-        "line": 14,
-        "column": 1
-      }
-    },
-    {
-      "name": "parseStudioModuleAdminDraft",
-      "description": "Parse a Studio contribution draft through the canonical generic form-draft utility.",
-      "sourceLocation": {
-        "filePath": "src/moduleAdminModel.ts",
-        "line": 24,
-        "column": 1
-      }
-    },
-    {
-      "name": "toFormDraftFields",
-      "description": "Translate open Studio control identifiers into the canonical generic form controls.",
-      "sourceLocation": {
-        "filePath": "src/moduleAdminModel.ts",
-        "line": 38,
-        "column": 1
-      }
-    },
-    {
       "name": "collectClientSourceFiles",
       "description": null,
       "sourceLocation": {
@@ -28678,7 +28690,7 @@
       "description": "Render lifecycle, package-owned administration, and fallback metadata-driven configuration for one Studio module.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
-        "line": 25,
+        "line": 26,
         "column": 1
       }
     },
@@ -28687,7 +28699,7 @@
       "description": "Normalize an unknown thrown value to a display message.\n@utility @ankhorage/utility/error",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
-        "line": 265,
+        "line": 255,
         "column": 1
       }
     },
@@ -30618,21 +30630,6 @@
         "fromPath": "src/moduleAdminApi.ts",
         "toPath": "src/moduleAdminContracts.ts",
         "sourcePath": "src/moduleAdminApi.ts"
-      },
-      {
-        "fromPath": "src/moduleAdminModel.test.ts",
-        "toPath": "src/moduleAdminContracts.ts",
-        "sourcePath": "src/moduleAdminModel.test.ts"
-      },
-      {
-        "fromPath": "src/moduleAdminModel.test.ts",
-        "toPath": "src/moduleAdminModel.ts",
-        "sourcePath": "src/moduleAdminModel.test.ts"
-      },
-      {
-        "fromPath": "src/moduleAdminModel.ts",
-        "toPath": "src/moduleAdminContracts.ts",
-        "sourcePath": "src/moduleAdminModel.ts"
       },
       {
         "fromPath": "src/projectAuthApi.test.ts",
@@ -34871,6 +34868,26 @@
       },
       {
         "fromPath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts",
+        "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
+        "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
         "toPath": "src/moduleAdminContracts.ts",
         "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
       },
@@ -34881,7 +34898,7 @@
       },
       {
         "fromPath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
-        "toPath": "src/moduleAdminModel.ts",
+        "toPath": "src/types/authoring-engine.ts",
         "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
       },
       {
@@ -35368,6 +35385,31 @@
         "fromPath": "src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.ts",
         "toPath": "src/types/authoring-engine.ts",
         "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts",
+        "toPath": "src/moduleAdminContracts.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts",
+        "toPath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts",
+        "toPath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts",
+        "toPath": "src/moduleAdminContracts.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts"
       },
       {
         "fromPath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
@@ -40760,60 +40802,6 @@
         "sourcePath": "src/moduleAdminApi.ts"
       },
       {
-        "fromSymbol": "src/moduleAdminModel.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/moduleAdminModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/moduleAdminModel.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/moduleAdminModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/moduleAdminModel.test.ts",
-        "toSymbol": "createStudioModuleAdminDraft",
-        "callExpression": "createStudioModuleAdminDraft",
-        "sourcePath": "src/moduleAdminModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/moduleAdminModel.test.ts",
-        "toSymbol": "parseStudioModuleAdminDraft",
-        "callExpression": "parseStudioModuleAdminDraft",
-        "sourcePath": "src/moduleAdminModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/moduleAdminModel.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/moduleAdminModel.test.ts"
-      },
-      {
-        "fromSymbol": "createStudioModuleAdminDraft",
-        "toSymbol": "createFormDraft",
-        "callExpression": "createFormDraft",
-        "sourcePath": "src/moduleAdminModel.ts"
-      },
-      {
-        "fromSymbol": "createStudioModuleAdminDraft",
-        "toSymbol": "toFormDraftFields",
-        "callExpression": "toFormDraftFields",
-        "sourcePath": "src/moduleAdminModel.ts"
-      },
-      {
-        "fromSymbol": "parseStudioModuleAdminDraft",
-        "toSymbol": "parseFormDraft",
-        "callExpression": "parseFormDraft",
-        "sourcePath": "src/moduleAdminModel.ts"
-      },
-      {
-        "fromSymbol": "parseStudioModuleAdminDraft",
-        "toSymbol": "toFormDraftFields",
-        "callExpression": "toFormDraftFields",
-        "sourcePath": "src/moduleAdminModel.ts"
-      },
-      {
         "fromSymbol": "src/nativeClientDeployBoundary.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -45465,6 +45453,12 @@
       },
       {
         "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
+        "toSymbol": "expectMaterializedAppEnvironmentAsync",
+        "callExpression": "expectMaterializedAppEnvironmentAsync",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runFreshTemplateInfraAcceptanceAsync",
         "toSymbol": "expectSafeStudioInfraResult",
         "callExpression": "expectSafeStudioInfraResult",
         "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
@@ -45503,6 +45497,30 @@
         "fromSymbol": "expectCredentialNeutralLocalSupabaseManifest",
         "toSymbol": "expect",
         "callExpression": "expect",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectMaterializedAppEnvironmentAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectMaterializedAppEnvironmentAsync",
+        "toSymbol": "readSupabasePublicOutputs",
+        "callExpression": "readSupabasePublicOutputs",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectMaterializedAppEnvironmentAsync",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectMaterializedAppEnvironmentAsync",
+        "toSymbol": "readEnvironmentAssignment",
+        "callExpression": "readEnvironmentAssignment",
         "sourcePath": "src/host/freshTemplateInfra.e2e.test.ts"
       },
       {
@@ -66909,12 +66927,6 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
-        "toSymbol": "createStudioModuleAdminDraft",
-        "callExpression": "createStudioModuleAdminDraft",
-        "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
         "toSymbol": "setUnknown",
         "callExpression": "setUnknown",
         "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
@@ -66987,8 +66999,14 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
-        "toSymbol": "parseStudioModuleAdminDraft",
-        "callExpression": "parseStudioModuleAdminDraft",
+        "toSymbol": "applyAuthoringMutation",
+        "callExpression": "applyAuthoringMutation",
+        "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
         "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
       },
       {
@@ -67001,6 +67019,18 @@
         "fromSymbol": "ModuleDetailAdminPage",
         "toSymbol": "getStudioModuleAdminView",
         "callExpression": "getStudioModuleAdminView",
+        "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "ModuleDetailAdminPage",
+        "toSymbol": "resolveModuleAdminAuthoring",
+        "callExpression": "resolveModuleAdminAuthoring",
+        "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "ModuleDetailAdminPage",
+        "toSymbol": "deriveAuthoringModel",
+        "callExpression": "deriveAuthoringModel",
         "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
       },
       {
@@ -68850,6 +68880,36 @@
         "toSymbol": "resolveInstancePropertyDefault",
         "callExpression": "resolveInstancePropertyDefault",
         "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts",
+        "toSymbol": "resolveModuleAdminAuthoring",
+        "callExpression": "resolveModuleAdminAuthoring",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts",
+        "toSymbol": "deriveAuthoringModel",
+        "callExpression": "deriveAuthoringModel",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts",
+        "toSymbol": "resolveModuleAdminFieldStructure",
+        "callExpression": "resolveModuleAdminFieldStructure",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveModuleAdminAuthoring.ts"
       },
       {
         "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
