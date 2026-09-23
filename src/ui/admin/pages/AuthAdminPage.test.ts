@@ -75,3 +75,13 @@ test('auth sign-up authoring is derived from the canonical Contracts structure',
   expect(source).not.toContain('Email confirmation required');
   expect(source).not.toContain('function splitList');
 });
+
+test('auth profile authoring is derived from the canonical Contracts structure', () => {
+  expect(source).toContain("'auth-profile'");
+  expect(source).toContain('AUTH_PROFILE_AUTHORING_STRUCTURE');
+  expect(source).toContain('value: draft.profile');
+  expect(source).toContain('applyAuthoringMutation(current.profile, mutation)');
+  expect(source).not.toContain('const PROFILE_FIELDS = [');
+  expect(source).not.toContain("(['trigger', 'api', 'app'] as const)");
+  expect(source).not.toContain("(['api', 'app'] as const)");
+});

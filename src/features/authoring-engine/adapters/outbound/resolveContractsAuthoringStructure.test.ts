@@ -49,6 +49,47 @@ test('resolves the released auth flow root for descriptor-driven route authoring
   ]);
 });
 
+test('resolves the released auth profile structure for descriptor-driven authoring', () => {
+  const result = resolveContractsAuthoringStructure(STRUCTURE_DESCRIPTOR, 'auth-profile');
+
+  expect(result).toEqual({
+    ok: true,
+    structure: {
+      kind: 'object',
+      fields: [
+        {
+          name: 'createStrategy',
+          optional: true,
+          structure: { kind: 'choice', values: ['api', 'app', 'trigger'] },
+        },
+        {
+          name: 'fields',
+          optional: false,
+          structure: {
+            kind: 'ordered-list',
+            item: { kind: 'scalar', scalarType: 'string' },
+          },
+        },
+        {
+          name: 'primaryKey',
+          optional: true,
+          structure: { kind: 'choice', values: ['authUserId'] },
+        },
+        {
+          name: 'table',
+          optional: true,
+          structure: { kind: 'scalar', scalarType: 'string' },
+        },
+        {
+          name: 'updateStrategy',
+          optional: true,
+          structure: { kind: 'choice', values: ['api', 'app'] },
+        },
+      ],
+    },
+  });
+});
+
 test('resolves the released auth sign-in ordered identifier structure', () => {
   const result = resolveContractsAuthoringStructure(STRUCTURE_DESCRIPTOR, 'auth-sign-in');
 
