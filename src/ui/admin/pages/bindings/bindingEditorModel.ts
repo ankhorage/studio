@@ -138,7 +138,7 @@ function createStudioEventInputMap(
   drafts: Readonly<Record<string, StudioEventInputDraft>>,
 ): BindingInputMap {
   return Object.fromEntries(
-    fields.flatMap((field) => {
+    fields.flatMap((field): readonly BindingInputEntry[] => {
       const draft = drafts[field.name];
       if (!draft) return [];
       if (draft.kind === 'event') {
@@ -146,15 +146,17 @@ function createStudioEventInputMap(
         return [
           [
             field.name,
-            { kind: 'source' as const, source: { kind: 'event' as const, path: draft.value } },
+            { kind: 'source', source: { kind: 'event', path: draft.value } },
           ],
         ];
       }
       if (draft.value === undefined || (!draft.included && !field.required)) return [];
-      return [[field.name, { kind: 'literal' as const, value: draft.value }]];
+      return [[field.name, { kind: 'literal', value: draft.value }]];
     }),
   );
 }
+
+type BindingInputEntry = readonly [string, BindingInputMap[string]];
 
 /*** Create the empty/default binding value associated with one Studio binding metadata type. */
 function createDefaultBindingValue(meta: UiBindableValueMeta): BindingValue {
