@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.5.6
+
+### Patch Changes
+
+- 42e3920: Update Ankhorage dependencies: `@ankhorage/navigator`, `@ankhorage/zora-game`, `@ankhorage/zora`.
+
 ## 5.5.5
 
 ### Patch Changes
