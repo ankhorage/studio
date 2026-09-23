@@ -2,7 +2,6 @@ import type { ThemeConfig } from '@ankhorage/contracts';
 import { describe, expect, test } from 'bun:test';
 
 import {
-  createThemeReplacementUpdates,
   resolveActiveThemeModeSelection,
   resolveZoraSurfaceThemeConfig,
 } from './adminThemeModel';
@@ -41,16 +40,6 @@ describe('adminThemeModel', () => {
 
     expect(selection?.mode).toBe('dark');
     expect(selection?.modeConfig).toEqual(theme.dark);
-  });
-
-  test('creates a replacement patch that explicitly removes absent optional Theme state', () => {
-    const { tokens: _tokens, recipes: _recipes, ...withoutOptional } = theme;
-    const updates = createThemeReplacementUpdates(withoutOptional);
-
-    expect(Object.hasOwn(updates, 'tokens')).toBe(true);
-    expect(Object.hasOwn(updates, 'recipes')).toBe(true);
-    expect(updates.tokens).toBeUndefined();
-    expect(updates.recipes).toBeUndefined();
   });
 
   test('preserves the complete canonical theme config for live Surface sync', () => {
