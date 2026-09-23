@@ -5,6 +5,8 @@ import type {
   UiBindableValueMeta,
 } from '@ankhorage/contracts';
 
+import type { AuthoringStructureResolution } from './types/authoring-engine';
+
 export type StudioBindingCompatibility = 'compatible' | 'incompatible' | 'unknown';
 
 export interface StudioBindablePropOption {
@@ -24,6 +26,7 @@ export interface StudioBindingInputFieldOption {
   readonly label: string;
   readonly value: UiBindableValueMeta;
   readonly required: boolean;
+  readonly authoring?: AuthoringStructureResolution;
 }
 
 export interface StudioBindingResponsePathOption {
