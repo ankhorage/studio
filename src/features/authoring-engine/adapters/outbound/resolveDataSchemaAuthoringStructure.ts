@@ -49,11 +49,10 @@ export function resolveDataSchemaAuthoringStructure(
         kind: 'ordered-list',
         item: resolved.items
           ? resolveDataSchemaAuthoringStructure(resolved.items, schemas, seen, [...path, '*'])
-          : unsupportedDataSchema(
-              'array-item',
-              'Array DataSchema is missing an item schema.',
-              [...path, '*'],
-            ),
+          : unsupportedDataSchema('array-item', 'Array DataSchema is missing an item schema.', [
+              ...path,
+              '*',
+            ]),
       };
     case 'boolean':
     case 'integer':
