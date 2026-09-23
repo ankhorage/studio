@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.9.3
+
+### Patch Changes
+
+- 2dc4676: Update Ankhorage dependencies: `@ankhorage/data-sources`.
+
 ## 5.9.2
 
 ### Patch Changes
