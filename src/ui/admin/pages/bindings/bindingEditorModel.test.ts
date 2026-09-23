@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'bun:test';
 
 import type { StudioBindingInputFieldOption } from '../../../../bindingAuthoringModel';
-import { createBindingLiteralDefaultValue } from './createBindingLiteralDefaultValue';
 import { createStudioEventBinding, createStudioEventInputDrafts } from './bindingEditorModel';
+import { createBindingLiteralDefaultValue } from './createBindingLiteralDefaultValue';
 
 const requiredObjectField: StudioBindingInputFieldOption = {
   name: 'profile',
