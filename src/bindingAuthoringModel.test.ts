@@ -176,8 +176,24 @@ describe('binding operations and schemas', () => {
     const external = options.find((option) => option.operation.operationId === 'profile.read');
 
     expect(inventory?.inputFields).toMatchObject([
-      { name: 'name', required: true, value: { type: 'string' } },
-      { name: 'count', required: false, value: { type: 'number' } },
+      {
+        name: 'name',
+        required: true,
+        value: { type: 'string' },
+        authoring: {
+          ok: true,
+          structure: { kind: 'scalar', scalarType: 'string' },
+        },
+      },
+      {
+        name: 'count',
+        required: false,
+        value: { type: 'number' },
+        authoring: {
+          ok: true,
+          structure: { kind: 'scalar', scalarType: 'integer' },
+        },
+      },
     ]);
     expect(external?.responsePaths.map((entry) => entry.path)).toEqual(['', 'name', 'age']);
   });
