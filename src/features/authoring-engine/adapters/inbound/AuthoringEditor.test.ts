@@ -381,7 +381,7 @@ test('renders inherited value-map entries without emitting authored state', () =
   const inheritedKey = controls.find(
     (control) => control.type === 'TextInput' && control.props.defaultValue === 'm',
   );
-  expect(inheritedKey?.props.editable).toBe(false);
+  expect(inheritedKey?.props.readOnly).toBe(true);
   expect(
     controls.some((control) => control.type === 'TextInput' && control.props.value === '16'),
   ).toBe(true);
