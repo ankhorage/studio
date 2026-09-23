@@ -38,7 +38,7 @@ export function applyAuthoringMutationToStructure<T>(
 
   return {
     ok: true,
-    value: normalizeStructuredValue(structure, applied.value) as T,
+    value: normalizeStructuredValue(structure, applied.value, mutation.kind === 'unset') as T,
   };
 }
 
@@ -137,7 +137,11 @@ function isValueMapKeyAllowed(structure: AuthoringStructure, key: string): boole
 }
 
 /*** Normalize known owner structure recursively while preserving unknown sibling fields. */
-function normalizeStructuredValue(structure: AuthoringStructure, value: unknown): unknown {
+function normalizeStructuredValue(
+  structure: AuthoringStructure,
+  value: unknown,
+  pruneEmptyOverrides: boolean,
+): unknown {
   if (!isRecord(value)) return value;
 
   if (structure.kind === 'object') {
@@ -145,8 +149,8 @@ function normalizeStructuredValue(structure: AuthoringStructure, value: unknown)
     for (const field of structure.fields) {
       const current = readOwnProperty<unknown>(normalized, field.name);
       if (current === undefined) continue;
-      const next = normalizeStructuredValue(field.structure, current);
-      if (field.optional && isEmptyRecord(next)) {
+      const next = normalizeStructuredValue(field.structure, current, pruneEmptyOverrides);
+      if (pruneEmptyOverrides && field.optional && isEmptyRecord(next)) {
         deleteOwnProperty(normalized, field.name);
       } else {
         setOwnProperty(normalized, field.name, next);
@@ -159,8 +163,8 @@ function normalizeStructuredValue(structure: AuthoringStructure, value: unknown)
 
   const normalized: Record<string, unknown> = {};
   for (const [key, current] of Object.entries(value)) {
-    const next = normalizeStructuredValue(structure.value, current);
-    if (shouldPruneEmptyMapValue(structure.value, next)) continue;
+    const next = normalizeStructuredValue(structure.value, current, pruneEmptyOverrides);
+    if (pruneEmptyOverrides && shouldPruneEmptyMapValue(structure.value, next)) continue;
     setOwnProperty(normalized, key, next);
   }
   return normalized;

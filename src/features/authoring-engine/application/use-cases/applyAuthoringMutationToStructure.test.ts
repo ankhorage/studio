@@ -56,7 +56,8 @@ const THEME_TOKEN_STRUCTURE = {
 } as const satisfies AuthoringStructure;
 
 test('materializes owner-approved optional parents for a new authored override', () => {
-  const result = applyAuthoringMutationToStructure({ id: 'theme' }, THEME_TOKEN_STRUCTURE, {
+  const current: Readonly<Record<string, unknown>> = { id: 'theme' };
+  const result = applyAuthoringMutationToStructure(current, THEME_TOKEN_STRUCTURE, {
     kind: 'set',
     path: ['tokens', 'spacing', 'm'],
     value: 16,
@@ -69,8 +70,12 @@ test('materializes owner-approved optional parents for a new authored override',
 });
 
 test('prunes empty optional parent structures after resetting the last override', () => {
+  const current: Readonly<Record<string, unknown>> = {
+    id: 'theme',
+    tokens: { spacing: { m: 16 } },
+  };
   const result = applyAuthoringMutationToStructure(
-    { id: 'theme', tokens: { spacing: { m: 16 } } },
+    current,
     THEME_TOKEN_STRUCTURE,
     { kind: 'unset', path: ['tokens', 'spacing', 'm'] },
   );
@@ -79,16 +84,37 @@ test('prunes empty optional parent structures after resetting the last override'
 });
 
 test('prunes empty object-valued map entries and their optional ancestors', () => {
+  const current: Readonly<Record<string, unknown>> = {
+    id: 'theme',
+    tokens: { typography: { headings: { h1: { size: 32 } } } },
+  };
   const result = applyAuthoringMutationToStructure(
-    {
-      id: 'theme',
-      tokens: { typography: { headings: { h1: { size: 32 } } } },
-    },
+    current,
     THEME_TOKEN_STRUCTURE,
     { kind: 'unset', path: ['tokens', 'typography', 'headings', 'h1', 'size'] },
   );
 
   expect(result).toEqual({ ok: true, value: { id: 'theme' } });
+});
+
+test('preserves newly inserted empty object-valued map entries until they can be authored', () => {
+  const current: Readonly<Record<string, unknown>> = {
+    id: 'theme',
+    tokens: { typography: { headings: {} } },
+  };
+  const result = applyAuthoringMutationToStructure(current, THEME_TOKEN_STRUCTURE, {
+    kind: 'set',
+    path: ['tokens', 'typography', 'headings', 'display'],
+    value: {},
+  });
+
+  expect(result).toEqual({
+    ok: true,
+    value: {
+      id: 'theme',
+      tokens: { typography: { headings: { display: {} } } },
+    },
+  });
 });
 
 test('rejects value-map renames to owner-invalid keys', () => {

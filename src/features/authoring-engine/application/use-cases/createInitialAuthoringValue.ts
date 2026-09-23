@@ -19,11 +19,9 @@ export function createInitialAuthoringValue(
     case 'value-map':
       return {};
     case 'object': {
-      const required = structure.fields.filter((field) => !field.optional);
-      if (required.length === 0) return undefined;
-      const entries = required.map(
-        (field) => [field.name, createInitialAuthoringValue(field.structure)] as const,
-      );
+      const entries = structure.fields
+        .filter((field) => !field.optional)
+        .map((field) => [field.name, createInitialAuthoringValue(field.structure)] as const);
       if (entries.some(([, value]) => value === undefined)) return undefined;
       return Object.fromEntries(entries) as Readonly<Record<string, AuthoringValue>>;
     }
