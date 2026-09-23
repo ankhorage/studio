@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.9.2
+
+### Patch Changes
+
+- 7dfaf1b: Update Ankhorage dependencies: `@ankhorage/navigator`, `@ankhorage/zora-game`, `@ankhorage/zora-tabletop`, `@ankhorage/zora`.
+
 ## 5.9.1
 
 ### Patch Changes
