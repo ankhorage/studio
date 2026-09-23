@@ -12,6 +12,7 @@ import type {
   StudioBindingInputFieldOption,
   StudioBindingOperationOption,
 } from '../../../../bindingAuthoringModel';
+import type { AuthoringStructure } from '../../../../types/authoring-engine';
 
 export type StudioBindingSourceKind = PropBinding['source']['kind'];
 export type StudioEventInputSourceKind = 'event' | 'literal';
@@ -54,12 +55,18 @@ export function createStudioEventBinding(args: {
   return { target: args.target, ...(Object.keys(input).length > 0 ? { input } : {}) };
 }
 
-export interface StudioEventInputDraft {
-  readonly kind: StudioEventInputSourceKind;
-  readonly value: string;
-}
+export type StudioEventInputDraft =
+  | {
+      readonly kind: 'event';
+      readonly value: string;
+    }
+  | {
+      readonly kind: 'literal';
+      readonly value: BindingValue;
+      readonly authored: boolean;
+    };
 
-/*** Initialize event-input drafts by matching operation input fields to same-path event payload fields, falling back to empty literals. */
+/*** Initialize event-input drafts from event payload matches or typed defaults derived from neutral authoring semantics. */
 export function createStudioEventInputDrafts(
   fields: readonly StudioBindingInputFieldOption[],
   eventFields: readonly UiComponentEventPayloadFieldMeta[],
@@ -71,13 +78,17 @@ export function createStudioEventInputDrafts(
         field.name,
         matchingEventField
           ? { kind: 'event', value: matchingEventField.path }
-          : { kind: 'literal', value: '' },
+          : {
+              kind: 'literal',
+              value: createDefaultEventLiteralValue(field),
+              authored: field.required,
+            },
       ];
     }),
   );
 }
 
-/*** Parse one binding-editor text input according to the declared binding value metadata and Studio fallback semantics. */
+/*** Parse one binding-editor text input according to declared bindable metadata for non-DataSchema literal surfaces. */
 export function parseStudioBindingLiteral(input: string, meta: UiBindableValueMeta): BindingValue {
   if (meta.type === 'boolean') return input === 'true';
   if (meta.type === 'number') {
@@ -119,7 +130,7 @@ export function findStudioOperationByKey(
   return operations.find((option) => createStudioOperationKey(option.operation) === key);
 }
 
-/*** Convert event-input drafts into the canonical binding input map, omitting empty optional inputs. */
+/*** Convert event-input drafts into the canonical binding input map while omitting untouched optional literals. */
 function createStudioEventInputMap(
   fields: readonly StudioBindingInputFieldOption[],
   drafts: Readonly<Record<string, StudioEventInputDraft>>,
@@ -127,20 +138,54 @@ function createStudioEventInputMap(
   return Object.fromEntries(
     fields.flatMap((field) => {
       const draft = drafts[field.name];
-      if (!draft || (!draft.value && !field.required)) return [];
-      return [
-        [
-          field.name,
-          draft.kind === 'event'
-            ? { kind: 'source' as const, source: { kind: 'event' as const, path: draft.value } }
-            : {
-                kind: 'literal' as const,
-                value: parseStudioBindingLiteral(draft.value, field.value),
-              },
-        ],
-      ];
+      if (!draft) return [];
+      if (draft.kind === 'event') {
+        if (!draft.value && !field.required) return [];
+        return [
+          [
+            field.name,
+            {
+              kind: 'source' as const,
+              source: { kind: 'event' as const, path: draft.value },
+            },
+          ],
+        ];
+      }
+      if (!draft.authored && !field.required) return [];
+      return [[field.name, { kind: 'literal' as const, value: draft.value }]];
     }),
   );
+}
+
+/*** Create a typed draft value from neutral Authoring Engine semantics when DataSchema authoring is available. */
+function createDefaultEventLiteralValue(field: StudioBindingInputFieldOption): BindingValue {
+  if (field.authoring?.ok) return createDefaultAuthoringValue(field.authoring.structure);
+  return createDefaultBindingValue(field.value);
+}
+
+/*** Create one deterministic editor draft value without introducing a second DataSchema interpreter. */
+function createDefaultAuthoringValue(structure: AuthoringStructure): BindingValue {
+  switch (structure.kind) {
+    case 'scalar':
+      if (structure.scalarType === 'boolean') return false;
+      if (structure.scalarType === 'integer' || structure.scalarType === 'number') return 0;
+      if (structure.scalarType === 'null') return null;
+      return '';
+    case 'choice':
+      return structure.values[0] ?? '';
+    case 'object':
+      return Object.fromEntries(
+        structure.fields
+          .filter((field) => !field.optional)
+          .map((field) => [field.name, createDefaultAuthoringValue(field.structure)] as const),
+      );
+    case 'ordered-list':
+      return [];
+    case 'set':
+      return {};
+    case 'unsupported':
+      return createDefaultBindingValue({ type: 'unknown' });
+  }
 }
 
 /*** Create the empty/default binding value associated with one Studio binding metadata type. */
