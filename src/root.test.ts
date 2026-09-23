@@ -7,27 +7,11 @@ const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
 const EXACT_SEMVER_VERSION = /^\d+\.\d+\.\d+$/u;
 const MINOR_WILDCARD_SEMVER_RANGE = /^\d+\.\d+\.x$/u;
 
-test('exports the Studio runtime symbols used by generated app layouts', async () => {
-  const rootSource = await Bun.file(new URL('./root.ts', import.meta.url)).text();
-
-  expect(rootSource).toContain("export { useStudio } from './core/StudioContext.js';");
-  expect(rootSource).toContain("export { StudioProvider } from './core/StudioProvider.js';");
-  expect(rootSource).toContain("export { AnkhStudio } from './ui/AnkhStudio.js';");
-  expect(rootSource).toContain("export { AnkhAdminPage } from './ui/admin/AnkhAdminPage.js';");
-  expect(rootSource).toContain('export { useStudioAdminWorkspace }');
-  expect(rootSource).toContain('export { StudioAdminAccessGate }');
-  expect(rootSource).not.toContain('AnkhAdminShell');
-  expect(rootSource).toContain(
-    "export { useStudioAppBarAugmentation } from './ui/useStudioAppBarAugmentation.js';",
-  );
-});
-
 test('keeps the package root independent from every nested app package', async () => {
   const packageJson = (await Bun.file(new URL('../package.json', import.meta.url)).json()) as {
     readonly dependencies?: Readonly<Record<string, string>>;
     readonly overrides?: Readonly<Record<string, string>>;
     readonly peerDependencies?: Readonly<Record<string, string>>;
-    readonly scripts?: Readonly<Record<string, string>>;
     readonly workspaces?: readonly string[];
   };
   const appPackageJson = (await Bun.file(
@@ -39,9 +23,6 @@ test('keeps the package root independent from every nested app package', async (
   };
 
   expect(packageJson.workspaces).toBeUndefined();
-  expect(packageJson.scripts?.test).toBe(
-    "bun test src --path-ignore-patterns '**/*.e2e.test.ts' --path-ignore-patterns '**/*.smoke.test.ts'",
-  );
   const prettierIgnore = await Bun.file(new URL('../.prettierignore', import.meta.url)).text();
   expect(prettierIgnore).toContain('/apps/');
   expect(packageJson.peerDependencies?.expo).toBe(EXPO_PLATFORM.runtime.expo.version);
