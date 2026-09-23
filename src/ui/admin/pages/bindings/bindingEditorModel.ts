@@ -12,6 +12,7 @@ import type {
   StudioBindingInputFieldOption,
   StudioBindingOperationOption,
 } from '../../../../bindingAuthoringModel';
+import { createBindingLiteralDefaultValue } from './createBindingLiteralDefaultValue';
 
 export type StudioBindingSourceKind = PropBinding['source']['kind'];
 export type StudioEventInputSourceKind = 'event' | 'literal';
@@ -54,12 +55,18 @@ export function createStudioEventBinding(args: {
   return { target: args.target, ...(Object.keys(input).length > 0 ? { input } : {}) };
 }
 
-export interface StudioEventInputDraft {
-  readonly kind: StudioEventInputSourceKind;
-  readonly value: string;
-}
+export type StudioEventInputDraft =
+  | {
+      readonly kind: 'event';
+      readonly value: string;
+    }
+  | {
+      readonly kind: 'literal';
+      readonly value: BindingValue | undefined;
+      readonly included: boolean;
+    };
 
-/*** Initialize event-input drafts by matching operation input fields to same-path event payload fields, falling back to empty literals. */
+/*** Initialize event-input drafts by matching operation input fields to same-path event payload fields, otherwise keeping optional literals omitted until authored. */
 export function createStudioEventInputDrafts(
   fields: readonly StudioBindingInputFieldOption[],
   eventFields: readonly UiComponentEventPayloadFieldMeta[],
@@ -67,11 +74,17 @@ export function createStudioEventInputDrafts(
   return Object.fromEntries(
     fields.map((field) => {
       const matchingEventField = eventFields.find((candidate) => candidate.path === field.name);
+      if (matchingEventField) {
+        return [field.name, { kind: 'event' as const, value: matchingEventField.path }];
+      }
+
       return [
         field.name,
-        matchingEventField
-          ? { kind: 'event', value: matchingEventField.path }
-          : { kind: 'literal', value: '' },
+        {
+          kind: 'literal' as const,
+          value: createBindingLiteralDefaultValue(field),
+          included: field.required,
+        },
       ];
     }),
   );
@@ -119,7 +132,7 @@ export function findStudioOperationByKey(
   return operations.find((option) => createStudioOperationKey(option.operation) === key);
 }
 
-/*** Convert event-input drafts into the canonical binding input map, omitting empty optional inputs. */
+/*** Convert event-input drafts into the canonical binding input map, omitting untouched optional literal inputs. */
 function createStudioEventInputMap(
   fields: readonly StudioBindingInputFieldOption[],
   drafts: Readonly<Record<string, StudioEventInputDraft>>,
@@ -127,29 +140,25 @@ function createStudioEventInputMap(
   return Object.fromEntries(
     fields.flatMap((field) => {
       const draft = drafts[field.name];
-      if (!draft || (!draft.value && !field.required)) return [];
-      return [
-        [
-          field.name,
-          draft.kind === 'event'
-            ? { kind: 'source' as const, source: { kind: 'event' as const, path: draft.value } }
-            : {
-                kind: 'literal' as const,
-                value: parseStudioBindingLiteral(draft.value, field.value),
-              },
-        ],
-      ];
+      if (!draft) return [];
+      if (draft.kind === 'event') {
+        if (!draft.value && !field.required) return [];
+        return [
+          [
+            field.name,
+            { kind: 'source' as const, source: { kind: 'event' as const, path: draft.value } },
+          ],
+        ];
+      }
+      if (draft.value === undefined || (!draft.included && !field.required)) return [];
+      return [[field.name, { kind: 'literal' as const, value: draft.value }]];
     }),
   );
 }
 
 /*** Create the empty/default binding value associated with one Studio binding metadata type. */
 function createDefaultBindingValue(meta: UiBindableValueMeta): BindingValue {
-  if (meta.type === 'boolean') return false;
-  if (meta.type === 'number') return 0;
-  if (meta.type === 'array') return [];
-  if (meta.type === 'object' || meta.type === 'record' || meta.type === 'imageAsset') return {};
-  return '';
+  return createBindingLiteralDefaultValue({ value: meta });
 }
 
 /***
