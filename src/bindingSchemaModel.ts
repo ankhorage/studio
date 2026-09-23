@@ -146,6 +146,8 @@ function resolveBindableType(
       return 'object';
     case 'ordered-list':
       return 'array';
+    case 'value-map':
+      return 'record';
     case 'unsupported':
       return structure.sourceKind === 'record' ? 'record' : 'unknown';
     case 'set':
