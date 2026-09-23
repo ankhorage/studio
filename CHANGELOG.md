@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.5.7
+
+### Patch Changes
+
+- 9148a71: Update Ankhorage dependencies: `@ankhorage/zora-tabletop`.
+
 ## 5.5.6
 
 ### Patch Changes
