@@ -296,7 +296,7 @@
     "modulePath": "src/bindingOperationModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingOperationModel.ts",
-      "line": 22,
+      "line": 23,
       "column": 1
     },
     "exportPaths": [
@@ -466,7 +466,7 @@
     "modulePath": "src/bindingOperationModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingOperationModel.ts",
-      "line": 128,
+      "line": 132,
       "column": 1
     },
     "exportPaths": [
@@ -771,7 +771,7 @@
     "modulePath": "src/bindingOperationModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingOperationModel.ts",
-      "line": 33,
+      "line": 34,
       "column": 1
     },
     "exportPaths": [
@@ -3256,7 +3256,7 @@
     "modulePath": "src/bindingAuthoringContracts.ts",
     "sourceLocation": {
       "filePath": "src/bindingAuthoringContracts.ts",
-      "line": 16,
+      "line": 18,
       "column": 1
     },
     "exportPaths": [
@@ -3298,7 +3298,7 @@
     "modulePath": "src/bindingAuthoringContracts.ts",
     "sourceLocation": {
       "filePath": "src/bindingAuthoringContracts.ts",
-      "line": 10,
+      "line": 12,
       "column": 1
     },
     "exportPaths": [
@@ -3340,7 +3340,7 @@
     "modulePath": "src/bindingAuthoringContracts.ts",
     "sourceLocation": {
       "filePath": "src/bindingAuthoringContracts.ts",
-      "line": 8,
+      "line": 10,
       "column": 1
     },
     "exportPaths": [
@@ -3360,7 +3360,7 @@
     "modulePath": "src/bindingAuthoringContracts.ts",
     "sourceLocation": {
       "filePath": "src/bindingAuthoringContracts.ts",
-      "line": 43,
+      "line": 46,
       "column": 1
     },
     "exportPaths": [
@@ -3409,7 +3409,7 @@
     "modulePath": "src/bindingAuthoringContracts.ts",
     "sourceLocation": {
       "filePath": "src/bindingAuthoringContracts.ts",
-      "line": 22,
+      "line": 24,
       "column": 1
     },
     "exportPaths": [
@@ -3418,6 +3418,13 @@
     "relatedSymbols": [],
     "signatures": [],
     "members": [
+      {
+        "name": "authoring",
+        "kind": "property",
+        "type": "AuthoringStructure | undefined",
+        "required": false,
+        "description": null
+      },
       {
         "name": "label",
         "kind": "property",
@@ -3458,7 +3465,7 @@
     "modulePath": "src/bindingAuthoringContracts.ts",
     "sourceLocation": {
       "filePath": "src/bindingAuthoringContracts.ts",
-      "line": 35,
+      "line": 38,
       "column": 1
     },
     "exportPaths": [
@@ -3517,7 +3524,7 @@
     "modulePath": "src/bindingAuthoringContracts.ts",
     "sourceLocation": {
       "filePath": "src/bindingAuthoringContracts.ts",
-      "line": 29,
+      "line": 32,
       "column": 1
     },
     "exportPaths": [

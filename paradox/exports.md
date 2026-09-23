@@ -107,7 +107,7 @@ Deep-clone a UiNode tree while assigning fresh identifiers and shallow-cloning n
 
 Kind: `function`
 Module: `src/bindingOperationModel.ts`
-Source: `src/bindingOperationModel.ts:22:1`
+Source: `src/bindingOperationModel.ts:23:1`
 
 Collect and alphabetically sort the API operations available for Studio binding authoring.
 @todo Move binding operation catalog behavior under src/bindings/.
@@ -171,7 +171,7 @@ Materialize one enabled component or recipe catalog entry into a fresh UiNode tr
 
 Kind: `function`
 Module: `src/bindingOperationModel.ts`
-Source: `src/bindingOperationModel.ts:128:1`
+Source: `src/bindingOperationModel.ts:132:1`
 
 Convert an action payload schema into Studio binding input-field options.
 @todo Move action binding-field projection under src/bindings/.
@@ -296,7 +296,7 @@ Find the first node with a matching id in a depth-first tree traversal.
 
 Kind: `function`
 Module: `src/bindingOperationModel.ts`
-Source: `src/bindingOperationModel.ts:33:1`
+Source: `src/bindingOperationModel.ts:34:1`
 
 Find an option through the canonical keyed array lookup utility.
 
@@ -1090,7 +1090,7 @@ Source: `src/propertiesAuthoringModel.ts:4:1`
 
 Kind: `type`
 Module: `src/bindingAuthoringContracts.ts`
-Source: `src/bindingAuthoringContracts.ts:16:1`
+Source: `src/bindingAuthoringContracts.ts:18:1`
 
 ### Members
 
@@ -1104,7 +1104,7 @@ Source: `src/bindingAuthoringContracts.ts:16:1`
 
 Kind: `type`
 Module: `src/bindingAuthoringContracts.ts`
-Source: `src/bindingAuthoringContracts.ts:10:1`
+Source: `src/bindingAuthoringContracts.ts:12:1`
 
 ### Members
 
@@ -1118,13 +1118,13 @@ Source: `src/bindingAuthoringContracts.ts:10:1`
 
 Kind: `unknown`
 Module: `src/bindingAuthoringContracts.ts`
-Source: `src/bindingAuthoringContracts.ts:8:1`
+Source: `src/bindingAuthoringContracts.ts:10:1`
 
 ## StudioBindingDiagnostic
 
 Kind: `type`
 Module: `src/bindingAuthoringContracts.ts`
-Source: `src/bindingAuthoringContracts.ts:43:1`
+Source: `src/bindingAuthoringContracts.ts:46:1`
 
 ### Members
 
@@ -1139,12 +1139,13 @@ Source: `src/bindingAuthoringContracts.ts:43:1`
 
 Kind: `type`
 Module: `src/bindingAuthoringContracts.ts`
-Source: `src/bindingAuthoringContracts.ts:22:1`
+Source: `src/bindingAuthoringContracts.ts:24:1`
 
 ### Members
 
 | Name | Kind | Type | Required | Description |
 | --- | --- | --- | --- | --- |
+| authoring | property | `AuthoringStructure \| undefined` | no |  |
 | label | property | `string` | yes |  |
 | name | property | `string` | yes |  |
 | required | property | `boolean` | yes |  |
@@ -1154,7 +1155,7 @@ Source: `src/bindingAuthoringContracts.ts:22:1`
 
 Kind: `type`
 Module: `src/bindingAuthoringContracts.ts`
-Source: `src/bindingAuthoringContracts.ts:35:1`
+Source: `src/bindingAuthoringContracts.ts:38:1`
 
 ### Members
 
@@ -1170,7 +1171,7 @@ Source: `src/bindingAuthoringContracts.ts:35:1`
 
 Kind: `type`
 Module: `src/bindingAuthoringContracts.ts`
-Source: `src/bindingAuthoringContracts.ts:29:1`
+Source: `src/bindingAuthoringContracts.ts:32:1`
 
 ### Members
 

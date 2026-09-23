@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.7.0",
+      "value": "v5.8.0",
       "color": "cb3837"
     },
     {
@@ -423,7 +423,9 @@
     {
       "path": "src/bindingAuthoringContracts.ts",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": [
+        "src/types/authoring-engine.ts"
+      ],
       "exports": [
         "StudioBindableEventOption",
         "StudioBindablePropOption",
@@ -526,7 +528,8 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/bindingAuthoringContracts.ts",
-        "src/bindingSchemaModel.ts"
+        "src/bindingSchemaModel.ts",
+        "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts"
       ],
       "exports": [
         "collectStudioBindingOperationOptions",
@@ -973,6 +976,24 @@
       ],
       "exports": [
         "resolveContractsAuthoringStructure"
+      ]
+    },
+    {
+      "path": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/types/authoring-engine.ts"
+      ],
+      "exports": [
+        "resolveDataSchemaAuthoringStructure"
       ]
     },
     {
@@ -5868,10 +5889,21 @@
       ]
     },
     {
+      "path": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/bindingAuthoringModel.ts",
+        "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/bindingAuthoringModel.ts"
+        "src/bindingAuthoringModel.ts",
+        "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"
       ],
       "exports": [
         "createStudioEventBinding",
@@ -5888,6 +5920,30 @@
       ]
     },
     {
+      "path": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
+        "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "src/types/authoring-engine.ts"
+      ],
+      "exports": [
+        "BindingLiteralAuthoringEditor"
+      ]
+    },
+    {
+      "path": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/bindingAuthoringModel.ts",
+        "src/types/authoring-engine.ts"
+      ],
+      "exports": [
+        "createBindingLiteralDefaultValue"
+      ]
+    },
+    {
       "path": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
       "isEntrypoint": false,
       "dependencies": [
@@ -5895,7 +5951,9 @@
         "src/index.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
-        "src/ui/admin/pages/bindings/bindingEditorModel.ts"
+        "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx",
+        "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"
       ],
       "exports": [
         "EventBindingComposer"
@@ -7170,7 +7228,7 @@
       "modulePath": "src/bindingOperationModel.ts",
       "sourceLocation": {
         "filePath": "src/bindingOperationModel.ts",
-        "line": 22,
+        "line": 23,
         "column": 1
       },
       "exportPaths": [
@@ -7340,7 +7398,7 @@
       "modulePath": "src/bindingOperationModel.ts",
       "sourceLocation": {
         "filePath": "src/bindingOperationModel.ts",
-        "line": 128,
+        "line": 132,
         "column": 1
       },
       "exportPaths": [
@@ -7645,7 +7703,7 @@
       "modulePath": "src/bindingOperationModel.ts",
       "sourceLocation": {
         "filePath": "src/bindingOperationModel.ts",
-        "line": 33,
+        "line": 34,
         "column": 1
       },
       "exportPaths": [
@@ -10130,7 +10188,7 @@
       "modulePath": "src/bindingAuthoringContracts.ts",
       "sourceLocation": {
         "filePath": "src/bindingAuthoringContracts.ts",
-        "line": 16,
+        "line": 18,
         "column": 1
       },
       "exportPaths": [
@@ -10172,7 +10230,7 @@
       "modulePath": "src/bindingAuthoringContracts.ts",
       "sourceLocation": {
         "filePath": "src/bindingAuthoringContracts.ts",
-        "line": 10,
+        "line": 12,
         "column": 1
       },
       "exportPaths": [
@@ -10214,7 +10272,7 @@
       "modulePath": "src/bindingAuthoringContracts.ts",
       "sourceLocation": {
         "filePath": "src/bindingAuthoringContracts.ts",
-        "line": 8,
+        "line": 10,
         "column": 1
       },
       "exportPaths": [
@@ -10234,7 +10292,7 @@
       "modulePath": "src/bindingAuthoringContracts.ts",
       "sourceLocation": {
         "filePath": "src/bindingAuthoringContracts.ts",
-        "line": 43,
+        "line": 46,
         "column": 1
       },
       "exportPaths": [
@@ -10283,7 +10341,7 @@
       "modulePath": "src/bindingAuthoringContracts.ts",
       "sourceLocation": {
         "filePath": "src/bindingAuthoringContracts.ts",
-        "line": 22,
+        "line": 24,
         "column": 1
       },
       "exportPaths": [
@@ -10292,6 +10350,13 @@
       "relatedSymbols": [],
       "signatures": [],
       "members": [
+        {
+          "name": "authoring",
+          "kind": "property",
+          "type": "AuthoringStructure | undefined",
+          "required": false,
+          "description": null
+        },
         {
           "name": "label",
           "kind": "property",
@@ -10332,7 +10397,7 @@
       "modulePath": "src/bindingAuthoringContracts.ts",
       "sourceLocation": {
         "filePath": "src/bindingAuthoringContracts.ts",
-        "line": 35,
+        "line": 38,
         "column": 1
       },
       "exportPaths": [
@@ -10391,7 +10456,7 @@
       "modulePath": "src/bindingAuthoringContracts.ts",
       "sourceLocation": {
         "filePath": "src/bindingAuthoringContracts.ts",
-        "line": 29,
+        "line": 32,
         "column": 1
       },
       "exportPaths": [
@@ -13444,7 +13509,7 @@
       "description": "Collect and alphabetically sort the API operations available for Studio binding authoring.\n@todo Move binding operation catalog behavior under src/bindings/.",
       "sourceLocation": {
         "filePath": "src/bindingOperationModel.ts",
-        "line": 22,
+        "line": 23,
         "column": 1
       }
     },
@@ -13453,7 +13518,7 @@
       "description": "Find an option through the canonical keyed array lookup utility.",
       "sourceLocation": {
         "filePath": "src/bindingOperationModel.ts",
-        "line": 33,
+        "line": 34,
         "column": 1
       }
     },
@@ -13462,7 +13527,7 @@
       "description": "Create a stable key for a Studio binding-operation reference.",
       "sourceLocation": {
         "filePath": "src/bindingOperationModel.ts",
-        "line": 41,
+        "line": 42,
         "column": 1
       }
     },
@@ -13471,7 +13536,7 @@
       "description": "Project all endpoint operations from one API definition into Studio binding options.\n@todo Keep API-to-binding option projection under src/bindings/.",
       "sourceLocation": {
         "filePath": "src/bindingOperationModel.ts",
-        "line": 49,
+        "line": 50,
         "column": 1
       }
     },
@@ -13480,7 +13545,7 @@
       "description": "Collect request parameters and request-body properties as Studio binding input fields.\n@todo Keep operation input-field projection under src/bindings/.",
       "sourceLocation": {
         "filePath": "src/bindingOperationModel.ts",
-        "line": 72,
+        "line": 73,
         "column": 1
       }
     },
@@ -13489,7 +13554,7 @@
       "description": "Resolve an inline schema or schema reference from an API operation slot.\n@todo Move this reusable API-contract helper to @ankhorage/contracts beside API schema definitions.",
       "sourceLocation": {
         "filePath": "src/bindingOperationModel.ts",
-        "line": 104,
+        "line": 108,
         "column": 1
       }
     },
@@ -13498,7 +13563,7 @@
       "description": "Format one API definition as a compact id, origin, and protocol label.\n@todo Keep API-specific presentation formatting with the binding authoring owner.",
       "sourceLocation": {
         "filePath": "src/bindingOperationModel.ts",
-        "line": 120,
+        "line": 124,
         "column": 1
       }
     },
@@ -13507,7 +13572,7 @@
       "description": "Convert an action payload schema into Studio binding input-field options.\n@todo Move action binding-field projection under src/bindings/.",
       "sourceLocation": {
         "filePath": "src/bindingOperationModel.ts",
-        "line": 128,
+        "line": 132,
         "column": 1
       }
     },
@@ -13516,7 +13581,7 @@
       "description": "Narrow an arbitrary payload type string to the primitive types supported by bindable values.\n@todo Keep bindable-type semantics under src/bindings/.",
       "sourceLocation": {
         "filePath": "src/bindingOperationModel.ts",
-        "line": 150,
+        "line": 154,
         "column": 1
       }
     },
@@ -14471,6 +14536,51 @@
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
         "line": 141,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveDataSchemaAuthoringStructure",
+      "description": "Translate one Contracts DataSchema into Studio's neutral authoring structure without importing binding workflow policy.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts",
+        "line": 11,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveFiniteChoice",
+      "description": "Resolve DataSchema enum/const declarations into finite primitive choice semantics when lossless.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts",
+        "line": 89,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveUnsupportedComposition",
+      "description": "Reject DataSchema composition forms that require neutral union/intersection semantics not owned by WP4.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts",
+        "line": 106,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAuthoringPrimitive",
+      "description": "Check whether one serializable DataSchema literal fits the neutral primitive choice vocabulary.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts",
+        "line": 142,
+        "column": 1
+      }
+    },
+    {
+      "name": "unsupportedDataSchema",
+      "description": "Preserve unsupported DataSchema semantics as an explicit neutral authoring diagnostic.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts",
+        "line": 152,
         "column": 1
       }
     },
@@ -27772,7 +27882,7 @@
       "description": "Create the default property-binding shape for one selected Studio binding source kind and value metadata.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
-        "line": 30,
+        "line": 31,
         "column": 1
       }
     },
@@ -27781,16 +27891,16 @@
       "description": "Build an event binding target and optional input map from the current Studio event-input drafts.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
-        "line": 46,
+        "line": 47,
         "column": 1
       }
     },
     {
       "name": "createStudioEventInputDrafts",
-      "description": "Initialize event-input drafts by matching operation input fields to same-path event payload fields, falling back to empty literals.",
+      "description": "Initialize event-input drafts by matching operation input fields to same-path event payload fields, otherwise keeping optional literals omitted until authored.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
-        "line": 63,
+        "line": 70,
         "column": 1
       }
     },
@@ -27799,7 +27909,7 @@
       "description": "Parse one binding-editor text input according to the declared binding value metadata and Studio fallback semantics.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
-        "line": 81,
+        "line": 88,
         "column": 1
       }
     },
@@ -27808,7 +27918,7 @@
       "description": "Format a JSON-compatible value for text editing while preserving strings verbatim.\n@utility @ankhorage/utility/json",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
-        "line": 98,
+        "line": 105,
         "column": 1
       }
     },
@@ -27817,7 +27927,7 @@
       "description": "Build a stable composite key from a multi-part operation identity.\n@utility @ankhorage/utility/string",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
-        "line": 106,
+        "line": 113,
         "column": 1
       }
     },
@@ -27826,16 +27936,16 @@
       "description": "Find the first array item whose projected composite key equals a requested key.\n@utility @ankhorage/utility/array",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
-        "line": 115,
+        "line": 122,
         "column": 1
       }
     },
     {
       "name": "createStudioEventInputMap",
-      "description": "Convert event-input drafts into the canonical binding input map, omitting empty optional inputs.",
+      "description": "Convert event-input drafts into the canonical binding input map, omitting untouched optional literal inputs.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
-        "line": 123,
+        "line": 130,
         "column": 1
       }
     },
@@ -27844,7 +27954,7 @@
       "description": "Create the empty/default binding value associated with one Studio binding metadata type.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
-        "line": 147,
+        "line": 151,
         "column": 1
       }
     },
@@ -27867,11 +27977,56 @@
       }
     },
     {
+      "name": "BindingLiteralAuthoringEditor",
+      "description": "Render one DataSchema-backed binding literal through the shared neutral Authoring Engine and emit typed canonical values.",
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx",
+        "line": 13,
+        "column": 1
+      }
+    },
+    {
+      "name": "createBindingLiteralDefaultValue",
+      "description": "Create a deterministic typed literal value for one binding input from neutral authoring semantics, falling back to bindable metadata.",
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDefaultAuthoringValue",
+      "description": "Build the minimum value needed to render required neutral authoring nodes without guessing unsupported structures.",
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
+        "line": 19,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDefaultScalarValue",
+      "description": "Build the deterministic empty value for one supported neutral scalar type.",
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
+        "line": 43,
+        "column": 1
+      }
+    },
+    {
+      "name": "createBindableMetaDefaultValue",
+      "description": "Preserve the existing binding defaults for non-DataSchema action inputs and unsupported neutral structures.",
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
+        "line": 53,
+        "column": 1
+      }
+    },
+    {
       "name": "EventBindingComposer",
       "description": "Compose a new event binding by selecting an action/API target and authoring its input mappings from event payload or literal values.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
-        "line": 37,
+        "line": 41,
         "column": 1
       }
     },
@@ -27880,7 +28035,7 @@
       "description": "Build and emit the current event binding when its selected target can be resolved.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
-        "line": 64,
+        "line": 68,
         "column": 9
       }
     },
@@ -27889,7 +28044,7 @@
       "description": "Render editors for each declared target input and let each input choose event-payload or literal sourcing.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
-        "line": 121,
+        "line": 125,
         "column": 1
       }
     },
@@ -30277,6 +30432,11 @@
         "sourcePath": "src/authSettings.test.ts"
       },
       {
+        "fromPath": "src/bindingAuthoringContracts.ts",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/bindingAuthoringContracts.ts"
+      },
+      {
         "fromPath": "src/bindingAuthoringModel.test.ts",
         "toPath": "src/bindingAuthoringModel.ts",
         "sourcePath": "src/bindingAuthoringModel.test.ts"
@@ -30359,6 +30519,11 @@
       {
         "fromPath": "src/bindingOperationModel.ts",
         "toPath": "src/bindingSchemaModel.ts",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromPath": "src/bindingOperationModel.ts",
+        "toPath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts",
         "sourcePath": "src/bindingOperationModel.ts"
       },
       {
@@ -35362,6 +35527,16 @@
         "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts"
       },
       {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.test.ts",
+        "toPath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.test.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts"
+      },
+      {
         "fromPath": "src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.test.ts",
         "toPath": "src/propertiesAuthoringModel.ts",
         "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.test.ts"
@@ -35757,9 +35932,59 @@
         "sourcePath": "src/ui/admin/pages/bindings/BindingDiagnosticsCard.tsx"
       },
       {
+        "fromPath": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts",
+        "toPath": "src/bindingAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts",
+        "toPath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts",
+        "toPath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts"
+      },
+      {
         "fromPath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
         "toPath": "src/bindingAuthoringModel.ts",
         "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "toPath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx",
+        "toPath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx",
+        "toPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx",
+        "toPath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
+        "toPath": "src/bindingAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"
       },
       {
         "fromPath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
@@ -35784,6 +36009,16 @@
       {
         "fromPath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
         "toPath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toPath": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toPath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
         "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
       },
       {
@@ -38337,14 +38572,20 @@
       },
       {
         "fromSymbol": "collectOperationInputFields",
+        "toSymbol": "resolveSlotSchema",
+        "callExpression": "resolveSlotSchema",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "collectOperationInputFields",
         "toSymbol": "resolveStudioSchemaValueMeta",
         "callExpression": "resolveStudioSchemaValueMeta",
         "sourcePath": "src/bindingOperationModel.ts"
       },
       {
         "fromSymbol": "collectOperationInputFields",
-        "toSymbol": "resolveSlotSchema",
-        "callExpression": "resolveSlotSchema",
+        "toSymbol": "resolveDataSchemaAuthoringStructure",
+        "callExpression": "resolveDataSchemaAuthoringStructure",
         "sourcePath": "src/bindingOperationModel.ts"
       },
       {
@@ -68840,6 +69081,84 @@
         "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts"
       },
       {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.test.ts",
+        "toSymbol": "resolveDataSchemaAuthoringStructure",
+        "callExpression": "resolveDataSchemaAuthoringStructure",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.test.ts"
+      },
+      {
+        "fromSymbol": "resolveDataSchemaAuthoringStructure",
+        "toSymbol": "resolveSchemaReference",
+        "callExpression": "resolveSchemaReference",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts"
+      },
+      {
+        "fromSymbol": "resolveDataSchemaAuthoringStructure",
+        "toSymbol": "unsupportedDataSchema",
+        "callExpression": "unsupportedDataSchema",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts"
+      },
+      {
+        "fromSymbol": "resolveDataSchemaAuthoringStructure",
+        "toSymbol": "resolveFiniteChoice",
+        "callExpression": "resolveFiniteChoice",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts"
+      },
+      {
+        "fromSymbol": "resolveDataSchemaAuthoringStructure",
+        "toSymbol": "resolveUnsupportedComposition",
+        "callExpression": "resolveUnsupportedComposition",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts"
+      },
+      {
+        "fromSymbol": "resolveDataSchemaAuthoringStructure",
+        "toSymbol": "resolveSingleSchemaType",
+        "callExpression": "resolveSingleSchemaType",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts"
+      },
+      {
+        "fromSymbol": "resolveDataSchemaAuthoringStructure",
+        "toSymbol": "resolveDataSchemaAuthoringStructure",
+        "callExpression": "resolveDataSchemaAuthoringStructure",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts",
+        "toSymbol": "resolveDataSchemaAuthoringStructure",
+        "callExpression": "resolveDataSchemaAuthoringStructure",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts"
+      },
+      {
+        "fromSymbol": "resolveFiniteChoice",
+        "toSymbol": "unsupportedDataSchema",
+        "callExpression": "unsupportedDataSchema",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts"
+      },
+      {
+        "fromSymbol": "resolveUnsupportedComposition",
+        "toSymbol": "unsupportedDataSchema",
+        "callExpression": "unsupportedDataSchema",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure.ts"
+      },
+      {
         "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -70934,6 +71253,42 @@
         "sourcePath": "src/host/layout/templates/auth/screenController.ts"
       },
       {
+        "fromSymbol": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts",
+        "toSymbol": "createStudioEventInputDrafts",
+        "callExpression": "createStudioEventInputDrafts",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts",
+        "toSymbol": "createBindingLiteralDefaultValue",
+        "callExpression": "createBindingLiteralDefaultValue",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts",
+        "toSymbol": "createStudioEventBinding",
+        "callExpression": "createStudioEventBinding",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.test.ts"
+      },
+      {
         "fromSymbol": "createStudioPropBindingForSource",
         "toSymbol": "createDefaultBindingValue",
         "callExpression": "createDefaultBindingValue",
@@ -70943,6 +71298,12 @@
         "fromSymbol": "createStudioEventBinding",
         "toSymbol": "createStudioEventInputMap",
         "callExpression": "createStudioEventInputMap",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "toSymbol": "createBindingLiteralDefaultValue",
+        "callExpression": "createBindingLiteralDefaultValue",
         "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts"
       },
       {
@@ -70958,9 +71319,9 @@
         "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts"
       },
       {
-        "fromSymbol": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
-        "toSymbol": "parseStudioBindingLiteral",
-        "callExpression": "parseStudioBindingLiteral",
+        "fromSymbol": "createDefaultBindingValue",
+        "toSymbol": "createBindingLiteralDefaultValue",
+        "callExpression": "createBindingLiteralDefaultValue",
         "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts"
       },
       {
@@ -70968,6 +71329,48 @@
         "toSymbol": "isBindingValue",
         "callExpression": "isBindingValue",
         "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts"
+      },
+      {
+        "fromSymbol": "BindingLiteralAuthoringEditor",
+        "toSymbol": "deriveAuthoringModel",
+        "callExpression": "deriveAuthoringModel",
+        "sourcePath": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx",
+        "toSymbol": "applyAuthoringMutation",
+        "callExpression": "applyAuthoringMutation",
+        "sourcePath": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "props.onChange",
+        "sourcePath": "src/ui/admin/pages/bindings/BindingLiteralAuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "createBindingLiteralDefaultValue",
+        "toSymbol": "createDefaultAuthoringValue",
+        "callExpression": "createDefaultAuthoringValue",
+        "sourcePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"
+      },
+      {
+        "fromSymbol": "createBindingLiteralDefaultValue",
+        "toSymbol": "createBindableMetaDefaultValue",
+        "callExpression": "createBindableMetaDefaultValue",
+        "sourcePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
+        "toSymbol": "createDefaultAuthoringValue",
+        "callExpression": "createDefaultAuthoringValue",
+        "sourcePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"
+      },
+      {
+        "fromSymbol": "createDefaultAuthoringValue",
+        "toSymbol": "createDefaultScalarValue",
+        "callExpression": "createDefaultScalarValue",
+        "sourcePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"
       },
       {
         "fromSymbol": "EventBindingComposer",
@@ -71037,8 +71440,26 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toSymbol": "createBindingLiteralDefaultValue",
+        "callExpression": "createBindingLiteralDefaultValue",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
         "toSymbol": "onChange",
         "callExpression": "props.onChange",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toSymbol": "formatStudioBindingLiteral",
+        "callExpression": "formatStudioBindingLiteral",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toSymbol": "parseStudioBindingLiteral",
+        "callExpression": "parseStudioBindingLiteral",
         "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
       },
       {
@@ -72835,6 +73256,11 @@
       {
         "fromSymbol": "StudioBindableEventOption",
         "toType": "UiBindableEventMeta",
+        "sourcePath": "src/bindingAuthoringContracts.ts"
+      },
+      {
+        "fromSymbol": "StudioBindingInputFieldOption",
+        "toType": "AuthoringStructure",
         "sourcePath": "src/bindingAuthoringContracts.ts"
       },
       {
