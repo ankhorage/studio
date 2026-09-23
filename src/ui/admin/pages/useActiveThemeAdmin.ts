@@ -1,14 +1,20 @@
+import type { ThemeConfig } from '@ankhorage/contracts';
 import { useZoraTheme } from '@ankhorage/zora';
 
 import { useStudio } from '../../../core/StudioContext';
 import type { ThemeUpdates } from '../../../index';
-import { type ActiveThemeModeSelection, resolveActiveThemeModeSelection } from './adminThemeModel';
+import {
+  type ActiveThemeModeSelection,
+  createThemeReplacementUpdates,
+  resolveActiveThemeModeSelection,
+} from './adminThemeModel';
 
 interface ActiveThemeAdminState {
   readonly mode: 'light' | 'dark';
   readonly selection: ActiveThemeModeSelection | null;
   readonly setMode: (mode: 'light' | 'dark') => void;
   readonly updateTheme: (updates: ThemeUpdates) => void;
+  readonly replaceTheme: (theme: ThemeConfig) => void;
 }
 
 /***
@@ -32,5 +38,11 @@ export function useActiveThemeAdmin(): ActiveThemeAdminState {
     studio.updateTheme(selection.theme.id, updates);
   };
 
-  return { mode, selection, setMode, updateTheme };
+  /*** Replace the selected canonical Theme while preserving explicit removal of optional authored state. */
+  const replaceTheme = (theme: ThemeConfig) => {
+    if (theme.id !== selection?.theme.id) return;
+    studio.updateTheme(theme.id, createThemeReplacementUpdates(theme));
+  };
+
+  return { mode, selection, setMode, updateTheme, replaceTheme };
 }

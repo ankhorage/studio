@@ -1,11 +1,14 @@
-import { parseNonNegativeNumber } from '@ankhorage/utility/number';
-import { Card, Text, useZoraTheme } from '@ankhorage/zora';
-import React, { useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Card, useZoraTheme } from '@ankhorage/zora';
+import React from 'react';
 
-import { AdminHeader, AdminScroll, Field, Input } from '../adminPagePrimitives';
-import { type NumericThemeTokenFamily, updateNumericThemeToken } from './themeTokenAuthoringModel';
+import { AuthoringEditor } from '../../../features/authoring-engine/adapters/inbound/AuthoringEditor';
+import { applyThemeAuthoringMutation } from '../../../features/authoring-engine/adapters/outbound/applyThemeAuthoringMutation';
+import { deriveThemeAuthoringModel } from '../../../features/authoring-engine/adapters/outbound/deriveThemeAuthoringModel';
+import type { AuthoringMutation } from '../../../types/authoring-engine';
+import { AdminHeader, AdminScroll } from '../adminPagePrimitives';
 import { useActiveThemeAdmin } from './useActiveThemeAdmin';
+
+type NumericThemeTokenFamily = 'spacing' | 'radii' | 'shadows';
 
 const COPY: Record<NumericThemeTokenFamily, { title: string; description: string }> = {
   spacing: { title: 'Spacing', description: 'Shared spacing tokens used by Theme recipes.' },
@@ -16,114 +19,39 @@ const COPY: Record<NumericThemeTokenFamily, { title: string; description: string
   },
 };
 
-/*** Render one numeric theme-token family with inherited/resolved values, authored overrides, reset actions, and token creation. */
+/*** Render one numeric Theme token family from owner structure with resolved ZORA values as inheritance. */
 export function ThemeNumericTokensAdminPage(props: { readonly family: NumericThemeTokenFamily }) {
   const { theme: resolvedTheme } = useZoraTheme();
-  const { selection, updateTheme } = useActiveThemeAdmin();
-  const [newKey, setNewKey] = useState('');
-  const [newValue, setNewValue] = useState('');
+  const { replaceTheme, selection } = useActiveThemeAdmin();
   const copy = COPY[props.family];
 
   if (!selection) return <ThemeUnavailable />;
-  const resolved = resolvedTheme[props.family];
-  const authored = selection.theme.tokens?.[props.family];
-  /*** Set or remove one authored numeric token override and persist the updated theme token tree. */
-  const updateValue = (key: string, value: number | undefined) => {
-    const tokens = updateNumericThemeToken({
-      tokens: selection.theme.tokens,
-      family: props.family,
-      key,
-      value,
-    });
-    updateTheme({ tokens });
-  };
 
-  /*** Validate and insert a newly named non-negative numeric theme token. */
-  const addToken = () => {
-    const key = newKey.trim();
-    const value = parseNonNegativeNumber(newValue);
-    if (!key || key === 'none' || value === null) return;
-    updateValue(key, value);
-    setNewKey('');
-    setNewValue('');
+  const resolvedValue =
+    props.family === 'spacing'
+      ? { tokens: { spacing: resolvedTheme.spacing } }
+      : props.family === 'radii'
+        ? { tokens: { radii: resolvedTheme.radii } }
+        : { tokens: { shadows: resolvedTheme.shadows } };
+  const model = deriveThemeAuthoringModel({
+    theme: selection.theme,
+    path: ['tokens', props.family],
+    resolvedValue,
+  });
+
+  /*** Apply one owner-derived token mutation through the canonical Theme boundary. */
+  const updateAuthoredTheme = (mutation: AuthoringMutation) => {
+    const result = applyThemeAuthoringMutation(selection.theme, mutation);
+    if (result.ok) replaceTheme(result.value);
   };
 
   return (
     <AdminScroll>
       <AdminHeader title={copy.title} description={copy.description} />
       <Card title={`${selection.theme.name} · ${copy.title}`}>
-        <View style={styles.list}>
-          {Object.entries(resolved).map(([key, value]) => (
-            <NumericTokenRow
-              key={key}
-              tokenKey={key}
-              value={value}
-              authored={authored?.[key] !== undefined}
-              locked={key === 'none'}
-              onChange={(next) => updateValue(key, next)}
-            />
-          ))}
-        </View>
-      </Card>
-      <Card title="Add token">
-        <Field label="Token name">
-          <Input value={newKey} autoCapitalize="none" onChangeText={setNewKey} />
-        </Field>
-        <Field label="Value">
-          <Input value={newValue} keyboardType="numeric" onChangeText={setNewValue} />
-        </Field>
-        <Action label="Add token" onPress={addToken} />
+        <AuthoringEditor model={model} onMutation={updateAuthoredTheme} />
       </Card>
     </AdminScroll>
-  );
-}
-
-/*** Render one resolved numeric token with editable value and reset control for authored overrides. */
-function NumericTokenRow(props: {
-  readonly tokenKey: string;
-  readonly value: number;
-  readonly authored: boolean;
-  readonly locked: boolean;
-  readonly onChange: (value: number | undefined) => void;
-}) {
-  return (
-    <View style={styles.row}>
-      <View style={styles.rowInput}>
-        <Field label={props.tokenKey}>
-          <Input
-            value={String(props.value)}
-            editable={!props.locked}
-            keyboardType="numeric"
-            onChangeText={(text) => {
-              const value = parseNonNegativeNumber(text);
-              if (value !== null) props.onChange(value);
-            }}
-          />
-        </Field>
-      </View>
-      {props.authored && !props.locked ? (
-        <Action label="Reset" onPress={() => props.onChange(undefined)} />
-      ) : null}
-    </View>
-  );
-}
-
-/***
- * Render a bordered theme-token action.
- * @todo Reuse canonical ZORA Button instead of a local generic action primitive.
- */
-function Action(props: { readonly label: string; readonly onPress: () => void }) {
-  const { theme } = useZoraTheme();
-  return (
-    <Pressable
-      accessibilityRole="button"
-      onPress={props.onPress}
-      style={[styles.action, { borderColor: theme.colors.border }]}
-    >
-      <Text color="primary" weight="semiBold">
-        {props.label}
-      </Text>
-    </Pressable>
   );
 }
 
@@ -138,18 +66,3 @@ function ThemeUnavailable() {
     </AdminScroll>
   );
 }
-
-const styles = StyleSheet.create({
-  list: { gap: 12 },
-  row: { flexDirection: 'row', alignItems: 'flex-end', gap: 12 },
-  rowInput: { flex: 1 },
-  action: {
-    minHeight: 42,
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 9,
-    justifyContent: 'center',
-    alignSelf: 'flex-start',
-  },
-});

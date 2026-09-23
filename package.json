@@ -217,7 +217,7 @@
   "dependencies": {
     "@ankhorage/apm": "^0.8.10",
     "@ankhorage/color-theory": "^0.3.1",
-    "@ankhorage/contracts": "^22.7.0",
+    "@ankhorage/contracts": "^22.8.0",
     "@ankhorage/data-sources": "^2.0.14",
     "@ankhorage/deploy": "^0.12.9",
     "@ankhorage/expo-runtime": "^4.0.6",

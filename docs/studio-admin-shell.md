@@ -97,9 +97,13 @@ attempted steps, result code, and verification state without alternate Studio pe
 credential material remains server-only, execution IDs are created by the trusted host, and browser
 responses continue through the secret-shaped response guard.
 
-Theme administration is a single `/ankh/theme` page that edits the canonical active theme through
-the existing manifest theme state for the currently active rendered theme mode. It does not
-introduce mode-specific routes, mode switching UI, or a second theme model.
+Theme administration consumes the released Contracts `theme-config` structure through the central
+Authoring Engine. `/ankh/theme` edits owner-defined metadata, `/ankh/theme/colors` edits the
+currently previewed light/dark mode, and typography/spacing/radii/shadows use the same neutral
+structure model. Resolved ZORA/Surface tokens are presentation-only inheritance evidence: resetting
+an override removes authored state instead of copying a default into the manifest. ZORA remains the
+owner of component/pattern recipe metadata. Studio does not maintain a second Theme field schema or
+finite option catalog.
 
 Modules administration uses the standalone Orchestrator ledger as the canonical lifecycle and
 configuration source. `/ankh/modules` lists registered and installed states and invokes install or

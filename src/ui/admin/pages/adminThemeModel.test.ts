@@ -1,12 +1,7 @@
 import type { ThemeConfig } from '@ankhorage/contracts';
 import { describe, expect, test } from 'bun:test';
 
-import {
-  createThemeModeUpdates,
-  resolveActiveThemeModeSelection,
-  resolveZoraSurfaceThemeConfig,
-  resolveZoraThemeSourceModeConfig,
-} from './adminThemeModel';
+import { createThemeReplacementUpdates, resolveActiveThemeModeSelection, resolveZoraSurfaceThemeConfig } from './adminThemeModel';
 
 const theme = {
   id: 'theme-1',
@@ -44,25 +39,14 @@ describe('adminThemeModel', () => {
     expect(selection?.modeConfig).toEqual(theme.dark);
   });
 
-  test('creates updates only for the active mode', () => {
-    expect(createThemeModeUpdates('dark', { primaryColor: '#333333' })).toEqual({
-      dark: { primaryColor: '#333333' },
-    });
-    expect(createThemeModeUpdates('light', { harmony: 'triadic' })).toEqual({
-      light: { harmony: 'triadic' },
-    });
-  });
+  test('creates a replacement patch that explicitly removes absent optional Theme state', () => {
+    const { tokens: _tokens, recipes: _recipes, ...withoutOptional } = theme;
+    const updates = createThemeReplacementUpdates(withoutOptional);
 
-  test('uses matching mode config for generated Zora theme source values', () => {
-    expect(resolveZoraThemeSourceModeConfig({ theme, mode: 'dark' })).toEqual(theme.dark);
-    expect(resolveZoraThemeSourceModeConfig({ theme, mode: 'light' })).toEqual(theme.light);
-  });
-
-  test('live mode changes resolve the matching canonical source mode config', () => {
-    const liveModes = ['light', 'dark'] as const;
-    const resolved = liveModes.map((mode) => resolveZoraThemeSourceModeConfig({ theme, mode }));
-
-    expect(resolved).toEqual([theme.light, theme.dark]);
+    expect(Object.hasOwn(updates, 'tokens')).toBe(true);
+    expect(Object.hasOwn(updates, 'recipes')).toBe(true);
+    expect(updates.tokens).toBeUndefined();
+    expect(updates.recipes).toBeUndefined();
   });
 
   test('preserves the complete canonical theme config for live Surface sync', () => {

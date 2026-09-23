@@ -6,6 +6,8 @@ import type {
 } from '@ankhorage/contracts';
 import { readOwnProperty } from '@ankhorage/utility/object';
 
+import type { ThemeUpdates } from '../../../index';
+
 type ActiveThemeMode = NonNullable<AppManifest['activeThemeMode']>;
 
 export interface ActiveThemeModeSelection {
@@ -32,23 +34,15 @@ export function resolveActiveThemeModeSelection(args: {
   return { theme, mode: args.surfaceMode, modeConfig };
 }
 
-/*** Project partial mode updates into the light or dark branch expected by Studio theme mutations. */
-export function createThemeModeUpdates(
-  mode: ActiveThemeMode,
-  updates: Partial<ThemeModeConfig>,
-): { readonly light?: Partial<ThemeModeConfig>; readonly dark?: Partial<ThemeModeConfig> } {
-  return mode === 'dark' ? { dark: updates } : { light: updates };
-}
-
-/***
- * Resolve the source color/harmony values used to seed ZORA theme administration for one mode.
- * @todo Keep this ZORA/theme bridge with the theme owner rather than generic UI.
- */
-export function resolveZoraThemeSourceModeConfig(args: {
-  readonly theme: ThemeConfig;
-  readonly mode: ActiveThemeMode;
-}): Pick<ThemeModeConfig, 'primaryColor' | 'harmony'> {
-  return args.theme[args.mode];
+/*** Create a full Theme patch that preserves explicit removal of optional authored top-level state. */
+export function createThemeReplacementUpdates(theme: ThemeConfig): ThemeUpdates {
+  return {
+    name: theme.name,
+    light: theme.light,
+    dark: theme.dark,
+    tokens: theme.tokens,
+    recipes: theme.recipes,
+  };
 }
 
 /***
