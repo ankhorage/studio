@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.10.4
+
+### Patch Changes
+
+- 77bd1c2: Update Ankhorage dependencies: `@ankhorage/minikube`, `@ankhorage/repository`, `@ankhorage/runtime`, `@ankhorage/supabase-auth`, `@ankhorage/supabase-storage`, `@ankhorage/zora-game`, `@ankhorage/zora-tabletop`, `@ankhorage/zora`.
+
 ## 5.10.3
 
 ### Patch Changes
