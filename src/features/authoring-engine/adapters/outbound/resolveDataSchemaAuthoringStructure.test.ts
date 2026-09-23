@@ -40,10 +40,7 @@ describe('resolveDataSchemaAuthoringStructure', () => {
       ],
     });
     expect(
-      resolveDataSchemaAuthoringStructure(
-        { type: 'array', items: { type: 'string' } },
-        undefined,
-      ),
+      resolveDataSchemaAuthoringStructure({ type: 'array', items: { type: 'string' } }, undefined),
     ).toEqual({
       kind: 'ordered-list',
       item: { kind: 'scalar', scalarType: 'string' },
@@ -80,10 +77,7 @@ describe('resolveDataSchemaAuthoringStructure', () => {
       { type: 'object', additionalProperties: { type: 'string' } },
       undefined,
     );
-    const unresolved = resolveDataSchemaAuthoringStructure(
-      { ref: { id: 'missing' } },
-      {},
-    );
+    const unresolved = resolveDataSchemaAuthoringStructure({ ref: { id: 'missing' } }, {});
 
     expect(union).toMatchObject({
       kind: 'unsupported',
