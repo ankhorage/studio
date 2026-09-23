@@ -6,7 +6,6 @@ import type {
 } from '@ankhorage/contracts';
 import { readOwnProperty } from '@ankhorage/utility/object';
 
-import type { ThemeUpdates } from '../../../index';
 
 type ActiveThemeMode = NonNullable<AppManifest['activeThemeMode']>;
 
@@ -32,17 +31,6 @@ export function resolveActiveThemeModeSelection(args: {
   const modeConfig = theme[args.surfaceMode];
 
   return { theme, mode: args.surfaceMode, modeConfig };
-}
-
-/*** Create a full Theme patch that preserves explicit removal of optional authored top-level state. */
-export function createThemeReplacementUpdates(theme: ThemeConfig): ThemeUpdates {
-  return {
-    name: theme.name,
-    light: theme.light,
-    dark: theme.dark,
-    tokens: theme.tokens,
-    recipes: theme.recipes,
-  };
 }
 
 /***

@@ -11,7 +11,7 @@ import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 /*** Render global typography overrides from the owner structure with resolved ZORA typography as inheritance. */
 export function ThemeTypographyAdminPage() {
   const { theme: resolvedTheme } = useZoraTheme();
-  const { replaceTheme, selection } = useActiveThemeAdmin();
+  const { selection, updateTheme } = useActiveThemeAdmin();
 
   if (!selection) {
     return (
@@ -38,7 +38,7 @@ export function ThemeTypographyAdminPage() {
   /*** Apply one owner-derived typography mutation through the canonical Theme boundary. */
   const updateAuthoredTheme = (mutation: AuthoringMutation) => {
     const result = applyThemeAuthoringMutation(selection.theme, mutation);
-    if (result.ok) replaceTheme(result.value);
+    if (result.ok) updateTheme(result.value);
   };
 
   return (
