@@ -383,14 +383,10 @@ test('renders inherited value-map entries without emitting authored state', () =
   );
   expect(inheritedKey?.props.editable).toBe(false);
   expect(
-    controls.some(
-      (control) => control.type === 'TextInput' && control.props.value === '16',
-    ),
+    controls.some((control) => control.type === 'TextInput' && control.props.value === '16'),
   ).toBe(true);
   expect(
-    controls.some(
-      (control) => control.type === 'Button' && control.props.children === 'Remove',
-    ),
+    controls.some((control) => control.type === 'Button' && control.props.children === 'Remove'),
   ).toBe(false);
   expect(mutations).toEqual([]);
 });
