@@ -369,7 +369,9 @@ function ValueMapEditor(props: {
               <Button
                 variant="outline"
                 onPress={() => {
-                  const authoredCount = model.entries.filter((candidate) => candidate.authored).length;
+                  const authoredCount = model.entries.filter(
+                    (candidate) => candidate.authored,
+                  ).length;
                   if (model.optional && authoredCount === 1) {
                     props.onMutation({ kind: 'unset', path: model.path });
                     return;
