@@ -6,7 +6,6 @@ import type {
 } from '@ankhorage/contracts';
 import { readOwnProperty } from '@ankhorage/utility/object';
 
-
 type ActiveThemeMode = NonNullable<AppManifest['activeThemeMode']>;
 
 export interface ActiveThemeModeSelection {
