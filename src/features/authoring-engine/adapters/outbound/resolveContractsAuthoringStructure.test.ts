@@ -191,6 +191,34 @@ test('preserves canonical set semantics from Contracts descriptors', () => {
   });
 });
 
+test('preserves canonical value-map semantics from Contracts descriptors', () => {
+  const document = {
+    protocolVersion: 1,
+    packageName: '@example/owner',
+    packageVersion: '1.0.0',
+    roots: { tokens: 'Tokens' },
+    descriptors: {
+      Tokens: {
+        id: 'Tokens',
+        descriptor: {
+          kind: 'value-map',
+          key: { kind: 'scalar', type: 'string' },
+          value: { kind: 'scalar', type: 'number' },
+        },
+      },
+    },
+  } as const satisfies StructureDescriptorDocument;
+
+  expect(resolveContractsAuthoringStructure(document, 'tokens')).toEqual({
+    ok: true,
+    structure: {
+      kind: 'value-map',
+      key: { kind: 'scalar', scalarType: 'string' },
+      value: { kind: 'scalar', scalarType: 'number' },
+    },
+  });
+});
+
 test('reports missing roots rather than guessing an editor', () => {
   const result = resolveContractsAuthoringStructure(STRUCTURE_DESCRIPTOR, 'missing-root');
 

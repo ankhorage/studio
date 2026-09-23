@@ -275,6 +275,122 @@ test('edits and appends open ordered string items without a finite choice catalo
   });
 });
 
+test('renders open value maps and emits rename, update, remove, and add mutations', () => {
+  const mutations: AuthoringMutation[] = [];
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'object',
+      fields: [
+        {
+          name: 'spacing',
+          optional: true,
+          structure: {
+            kind: 'value-map',
+            key: { kind: 'scalar', scalarType: 'string' },
+            value: { kind: 'scalar', scalarType: 'number' },
+          },
+        },
+      ],
+    },
+    value: { spacing: { m: 16 } },
+  });
+  const controls = renderControls(
+    editor.AuthoringEditor({
+      model,
+      onMutation: (mutation) => mutations.push(mutation),
+    }),
+  );
+
+  const inputs = controls.filter((control) => control.type === 'TextInput');
+  const keyInput = inputs.find((control) => control.props.defaultValue === 'm');
+  const valueInput = inputs.find((control) => control.props.value === '16');
+
+  const rename = keyInput?.props.onEndEditing;
+  if (typeof rename !== 'function') throw new Error('Missing value-map rename handler.');
+  Reflect.apply(rename, undefined, [{ nativeEvent: { text: 'medium' } }]);
+  expect(mutations.at(-1)).toEqual({
+    kind: 'rename-key',
+    path: ['spacing'],
+    fromKey: 'm',
+    toKey: 'medium',
+  });
+
+  const update = valueInput?.props.onChangeText;
+  if (typeof update !== 'function') throw new Error('Missing value-map value handler.');
+  Reflect.apply(update, undefined, ['20']);
+  expect(mutations.at(-1)).toEqual({
+    kind: 'set',
+    path: ['spacing', 'm'],
+    value: 20,
+  });
+
+  const remove = controls.find(
+    (control) => control.type === 'Button' && control.props.children === 'Remove',
+  )?.props.onPress;
+  if (typeof remove !== 'function') throw new Error('Missing value-map remove handler.');
+  Reflect.apply(remove, undefined, []);
+  expect(mutations.at(-1)).toEqual({ kind: 'unset', path: ['spacing'] });
+
+  const add = controls.find(
+    (control) => control.type === 'Button' && control.props.children === 'Add entry',
+  )?.props.onPress;
+  if (typeof add !== 'function') throw new Error('Missing value-map add handler.');
+  Reflect.apply(add, undefined, []);
+  expect(mutations.at(-1)).toEqual({
+    kind: 'set',
+    path: ['spacing', 'newKey'],
+    value: 0,
+  });
+});
+
+test('renders inherited value-map entries without emitting authored state', () => {
+  const mutations: AuthoringMutation[] = [];
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'object',
+      fields: [
+        {
+          name: 'spacing',
+          optional: true,
+          structure: {
+            kind: 'value-map',
+            key: { kind: 'scalar', scalarType: 'string' },
+            value: { kind: 'scalar', scalarType: 'number' },
+          },
+        },
+      ],
+    },
+    value: {},
+    policy: {
+      fields: {
+        spacing: {
+          fields: {
+            m: { inheritance: { value: 16 } },
+          },
+        },
+      },
+    },
+  });
+  const controls = renderControls(
+    editor.AuthoringEditor({
+      model,
+      onMutation: (mutation) => mutations.push(mutation),
+    }),
+  );
+
+  const inheritedKey = controls.find(
+    (control) => control.type === 'TextInput' && control.props.defaultValue === 'm',
+  );
+  expect(inheritedKey?.props.readOnly).toBe(true);
+  expect(
+    controls.some((control) => control.type === 'TextInput' && control.props.value === '16'),
+  ).toBe(true);
+  expect(
+    controls.some((control) => control.type === 'Button' && control.props.children === 'Remove'),
+  ).toBe(false);
+  expect(mutations).toEqual([]);
+});
+
 test('delegates owner-requested custom controls while retaining the central Field wrapper', () => {
   const mutations: AuthoringMutation[] = [];
   const model = deriveAuthoringModel({

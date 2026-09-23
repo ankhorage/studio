@@ -57,6 +57,11 @@ export type AuthoringStructure =
       readonly item: AuthoringStructure;
     }
   | {
+      readonly kind: 'value-map';
+      readonly key: AuthoringStructure;
+      readonly value: AuthoringStructure;
+    }
+  | {
       readonly kind: 'unsupported';
       readonly sourceKind: string;
       readonly diagnostic: AuthoringDiagnostic;
@@ -115,6 +120,29 @@ export interface AuthoringOrderedListNode extends AuthoringNodeBase {
   readonly items: readonly AuthoringPrimitive[];
 }
 
+export type AuthoringValueMapKey =
+  | {
+      readonly kind: 'choice';
+      readonly values: readonly string[];
+    }
+  | {
+      readonly kind: 'scalar';
+      readonly scalarType: 'string';
+    };
+
+interface AuthoringValueMapEntry {
+  readonly key: string;
+  readonly authored: boolean;
+  readonly value: AuthoringNode;
+}
+
+export interface AuthoringValueMapNode extends AuthoringNodeBase {
+  readonly kind: 'value-map';
+  readonly key: AuthoringValueMapKey;
+  readonly valueStructure: AuthoringStructure;
+  readonly entries: readonly AuthoringValueMapEntry[];
+}
+
 interface AuthoringUnsupportedNode extends AuthoringNodeBase {
   readonly kind: 'unsupported';
   readonly diagnostic: AuthoringDiagnostic;
@@ -126,7 +154,8 @@ export type AuthoringNode =
   | AuthoringOrderedListNode
   | AuthoringScalarNode
   | AuthoringSetNode
-  | AuthoringUnsupportedNode;
+  | AuthoringUnsupportedNode
+  | AuthoringValueMapNode;
 
 export type AuthoringStructureResolution =
   | {
@@ -147,6 +176,12 @@ export type AuthoringMutation =
   | {
       readonly kind: 'unset';
       readonly path: readonly string[];
+    }
+  | {
+      readonly kind: 'rename-key';
+      readonly path: readonly string[];
+      readonly fromKey: string;
+      readonly toKey: string;
     };
 
 export type AuthoringMutationResult<T> =

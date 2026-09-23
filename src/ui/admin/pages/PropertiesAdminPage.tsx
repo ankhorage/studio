@@ -54,6 +54,7 @@ function ResolvedProperties({ node }: { readonly node: UiNode }) {
 
   /*** Apply one neutral field mutation through Studio's canonical node update and autosave boundary. */
   const applyMutation = (mutation: AuthoringMutation) => {
+    if (mutation.kind === 'rename-key') return;
     const [propertyName] = mutation.path;
     if (!propertyName || mutation.path.length !== 1) return;
     const value =
