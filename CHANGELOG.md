@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.9.0
+
+### Minor Changes
+
+- c7af7f8: Add first-class value-map semantics to the neutral Authoring Engine for descriptor-driven Theme token authoring.
+
 ## 5.8.1
 
 ### Patch Changes

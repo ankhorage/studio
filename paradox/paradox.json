@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.8.1",
+      "value": "v5.9.0",
       "color": "cb3837"
     },
     {
@@ -962,6 +962,7 @@
       "path": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/authoring-engine/application/use-cases/createInitialAuthoringValue.ts",
         "src/types/authoring-engine.ts"
       ],
       "exports": [
@@ -1084,6 +1085,16 @@
       ],
       "exports": [
         "applyAuthoringMutation"
+      ]
+    },
+    {
+      "path": "src/features/authoring-engine/application/use-cases/createInitialAuthoringValue.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/types/authoring-engine.ts"
+      ],
+      "exports": [
+        "createInitialAuthoringValue"
       ]
     },
     {
@@ -5538,7 +5549,9 @@
         "AuthoringSetNode",
         "AuthoringStructure",
         "AuthoringStructureResolution",
-        "AuthoringValue"
+        "AuthoringValue",
+        "AuthoringValueMapKey",
+        "AuthoringValueMapNode"
       ]
     },
     {
@@ -13654,7 +13667,7 @@
       "description": "Resolve a homogeneous finite primitive choice into the compatibility type it represents.",
       "sourceLocation": {
         "filePath": "src/bindingSchemaModel.ts",
-        "line": 157,
+        "line": 159,
         "column": 1
       }
     },
@@ -13663,7 +13676,7 @@
       "description": "Test whether a bindable value type represents an object-shaped value.\n@todo Keep this bindable-type semantic predicate under src/bindings/.",
       "sourceLocation": {
         "filePath": "src/bindingSchemaModel.ts",
-        "line": 172,
+        "line": 174,
         "column": 1
       }
     },
@@ -13672,7 +13685,7 @@
       "description": "Detect the object-field shape Studio accepts as an image-asset-compatible binding value.\n@todo Keep image-asset binding compatibility under src/bindings/.",
       "sourceLocation": {
         "filePath": "src/bindingSchemaModel.ts",
-        "line": 180,
+        "line": 182,
         "column": 1
       }
     },
@@ -14410,7 +14423,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 328,
+        "line": 444,
         "column": 1
       }
     },
@@ -14419,7 +14432,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 341,
+        "line": 457,
         "column": 1
       }
     },
@@ -14428,7 +14441,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 357,
+        "line": 473,
         "column": 1
       }
     },
@@ -14437,7 +14450,7 @@
       "description": "Render one neutral authoring model with ZORA controls without owning product-specific schema.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 26,
+        "line": 28,
         "column": 1
       }
     },
@@ -14446,7 +14459,7 @@
       "description": "Choose the ZORA control for one neutral structural node.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 61,
+        "line": 63,
         "column": 1
       }
     },
@@ -14455,7 +14468,7 @@
       "description": "Render one finite primitive choice and translate its control value back to the owner value.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 125,
+        "line": 137,
         "column": 1
       }
     },
@@ -14464,7 +14477,7 @@
       "description": "Render finite unordered string membership with one switch per owner-provided member.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 162,
+        "line": 174,
         "column": 1
       }
     },
@@ -14473,7 +14486,34 @@
       "description": "Render an ordered primitive list with editing, append, remove, and positional controls.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 203,
+        "line": 215,
+        "column": 1
+      }
+    },
+    {
+      "name": "ValueMapEditor",
+      "description": "Render keyed map entries with recursive values, atomic rename, removal, and structural insertion.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "line": 324,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveNextValueMapKey",
+      "description": "Choose a deterministic unused map key without assigning ordering semantics to persisted values.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "line": 407,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveOpenValueMapKey",
+      "description": "Recursively find the first unused generic key for an open scalar-string value map.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "line": 415,
         "column": 1
       }
     },
@@ -14482,7 +14522,7 @@
       "description": "Move one ordered-list item immutably while preserving every other authored item.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 312,
+        "line": 421,
         "column": 1
       }
     },
@@ -14491,7 +14531,7 @@
       "description": "Render one scalar authoring node and translate ZORA changes to neutral mutations.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 330,
+        "line": 439,
         "column": 1
       }
     },
@@ -14500,7 +14540,7 @@
       "description": "Convert text input to a scalar set/unset mutation without coercing invalid numeric values.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 375,
+        "line": 484,
         "column": 1
       }
     },
@@ -14509,7 +14549,7 @@
       "description": "Encode a primitive choice into a stable Select value without losing its runtime type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 398,
+        "line": 507,
         "column": 1
       }
     },
@@ -14518,7 +14558,7 @@
       "description": "Format one supported authored node for read-only presentation.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 403,
+        "line": 512,
         "column": 1
       }
     },
@@ -14545,7 +14585,7 @@
       "description": "Resolve one local descriptor reference and reject unsupported external/cyclic references explicitly.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
-        "line": 89,
+        "line": 95,
         "column": 1
       }
     },
@@ -14554,7 +14594,7 @@
       "description": "Preserve an unsupported descriptor kind as an explicit authoring diagnostic.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
-        "line": 141,
+        "line": 147,
         "column": 1
       }
     },
@@ -14689,7 +14729,25 @@
       "description": "Recursively update a JSON object by rebuilding entries instead of injecting arbitrary keys.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
-        "line": 22,
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "renameRecordKeyAtPath",
+      "description": "Rename one keyed entry atomically while rejecting missing sources and duplicate targets.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
+        "line": 66,
+        "column": 1
+      }
+    },
+    {
+      "name": "renameRecordKey",
+      "description": "Rename one record key without changing the associated value or surrounding entries.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
+        "line": 89,
         "column": 1
       }
     },
@@ -14698,7 +14756,7 @@
       "description": "Replace or append one record entry while retaining deterministic existing key order.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
-        "line": 54,
+        "line": 113,
         "column": 1
       }
     },
@@ -14707,7 +14765,16 @@
       "description": "Return one explicit mutation rejection at the requested authoring path.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
-        "line": 68,
+        "line": 127,
+        "column": 1
+      }
+    },
+    {
+      "name": "createInitialAuthoringValue",
+      "description": "Create one deterministic structurally valid initial value for generic collection insertion.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/createInitialAuthoringValue.ts",
+        "line": 4,
         "column": 1
       }
     },
@@ -14716,7 +14783,7 @@
       "description": "Derive one UI-neutral authoring model from neutral structure semantics and a runtime value.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 14,
+        "line": 15,
         "column": 1
       }
     },
@@ -14725,7 +14792,16 @@
       "description": "Recursively derive one authoring node while retaining path, optionality, and inherited policy.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 32,
+        "line": 35,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolvePresentationFieldPolicy",
+      "description": "Resolve one presentation field policy without arbitrary dynamic object indexing.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "line": 165,
         "column": 1
       }
     },
@@ -14734,7 +14810,7 @@
       "description": "Read and validate one scalar runtime value against its portable structural type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 132,
+        "line": 173,
         "column": 1
       }
     },
@@ -14743,7 +14819,7 @@
       "description": "Decide whether one unknown runtime value satisfies a scalar descriptor type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 153,
+        "line": 194,
         "column": 1
       }
     },
@@ -14752,7 +14828,7 @@
       "description": "Read one finite-choice value without coercing values outside the descriptor options.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 172,
+        "line": 213,
         "column": 1
       }
     },
@@ -14761,7 +14837,43 @@
       "description": "Validate canonical unordered string membership against finite owner-provided choices.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 193,
+        "line": 234,
+        "column": 1
+      }
+    },
+    {
+      "name": "readValueMapValue",
+      "description": "Validate keyed value-map state while keeping key identity distinct from collection order.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "line": 287,
+        "column": 1
+      }
+    },
+    {
+      "name": "mergeValueMapEntries",
+      "description": "Merge authored entries with presentation-only inherited keys without materializing defaults.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "line": 324,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveValueMapKey",
+      "description": "Resolve the currently supported portable value-map key semantics.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "line": 340,
+        "column": 1
+      }
+    },
+    {
+      "name": "isValueMapKeyAllowed",
+      "description": "Check one authored object key against the resolved value-map key contract.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "line": 363,
         "column": 1
       }
     },
@@ -14770,7 +14882,7 @@
       "description": "Validate one ordered primitive list while preserving authored order and duplicates.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 246,
+        "line": 368,
         "column": 1
       }
     },
@@ -14779,7 +14891,7 @@
       "description": "Create an invalid-value result for malformed ordered-list runtime data.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 304,
+        "line": 426,
         "column": 1
       }
     },
@@ -14788,7 +14900,7 @@
       "description": "Convert an invalid runtime value to an explicit unsupported authoring node.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 316,
+        "line": 438,
         "column": 1
       }
     },
@@ -14797,7 +14909,7 @@
       "description": "Convert a source property name to a default human-readable field label.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 337,
+        "line": 459,
         "column": 1
       }
     },
@@ -14806,7 +14918,7 @@
       "description": "Format one authoring path for diagnostics without leaking implementation details.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "line": 344,
+        "line": 466,
         "column": 1
       }
     },
@@ -28945,7 +29057,7 @@
       "description": "Render owner-requested media authoring without moving media policy into the neutral engine.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 66,
+        "line": 67,
         "column": 9
       }
     },
@@ -28954,7 +29066,7 @@
       "description": "Accept only canonical instance-property values emitted by supported generic or media editors.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 124,
+        "line": 125,
         "column": 1
       }
     },
@@ -28963,7 +29075,7 @@
       "description": "Render the properties-page fallback when the requested node cannot be resolved.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 133,
+        "line": 134,
         "column": 1
       }
     },
@@ -28972,7 +29084,7 @@
       "description": "Render the properties-page fallback when the component exposes no per-instance authoring fields.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 144,
+        "line": 145,
         "column": 1
       }
     },
@@ -29431,7 +29543,7 @@
       "description": "Render the theme-recipe fallback for missing active themes or invalid recipe metadata.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
-        "line": 74,
+        "line": 75,
         "column": 1
       }
     },
@@ -35551,6 +35663,11 @@
         "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
       },
       {
+        "fromPath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "toPath": "src/features/authoring-engine/application/use-cases/createInitialAuthoringValue.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
+      },
+      {
         "fromPath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.test.ts",
         "toPath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
         "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.test.ts"
@@ -35649,6 +35766,11 @@
         "fromPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
         "toPath": "src/types/authoring-engine.ts",
         "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/application/use-cases/createInitialAuthoringValue.ts",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/createInitialAuthoringValue.ts"
       },
       {
         "fromPath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.test.ts",
@@ -69073,6 +69195,30 @@
         "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
       },
       {
+        "fromSymbol": "ValueMapEditor",
+        "toSymbol": "resolveNextValueMapKey",
+        "callExpression": "resolveNextValueMapKey",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "ValueMapEditor",
+        "toSymbol": "createInitialAuthoringValue",
+        "callExpression": "createInitialAuthoringValue",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "resolveNextValueMapKey",
+        "toSymbol": "resolveOpenValueMapKey",
+        "callExpression": "resolveOpenValueMapKey",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "resolveOpenValueMapKey",
+        "toSymbol": "resolveOpenValueMapKey",
+        "callExpression": "resolveOpenValueMapKey",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
+      },
+      {
         "fromSymbol": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
         "toSymbol": "handleScalarTextChange",
         "callExpression": "handleScalarTextChange",
@@ -69362,6 +69508,12 @@
       },
       {
         "fromSymbol": "applyAuthoringMutation",
+        "toSymbol": "renameRecordKeyAtPath",
+        "callExpression": "renameRecordKeyAtPath",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts"
+      },
+      {
+        "fromSymbol": "applyAuthoringMutation",
         "toSymbol": "updateRecordAtPath",
         "callExpression": "updateRecordAtPath",
         "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts"
@@ -69389,6 +69541,48 @@
         "toSymbol": "updateRecordAtPath",
         "callExpression": "updateRecordAtPath",
         "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts"
+      },
+      {
+        "fromSymbol": "renameRecordKeyAtPath",
+        "toSymbol": "renameRecordKey",
+        "callExpression": "renameRecordKey",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts"
+      },
+      {
+        "fromSymbol": "renameRecordKeyAtPath",
+        "toSymbol": "rejectedMutation",
+        "callExpression": "rejectedMutation",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts"
+      },
+      {
+        "fromSymbol": "renameRecordKeyAtPath",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts"
+      },
+      {
+        "fromSymbol": "renameRecordKeyAtPath",
+        "toSymbol": "renameRecordKeyAtPath",
+        "callExpression": "renameRecordKeyAtPath",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts"
+      },
+      {
+        "fromSymbol": "renameRecordKeyAtPath",
+        "toSymbol": "replaceRecordEntry",
+        "callExpression": "replaceRecordEntry",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts"
+      },
+      {
+        "fromSymbol": "renameRecordKey",
+        "toSymbol": "rejectedMutation",
+        "callExpression": "rejectedMutation",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/application/use-cases/createInitialAuthoringValue.ts",
+        "toSymbol": "createInitialAuthoringValue",
+        "callExpression": "createInitialAuthoringValue",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/createInitialAuthoringValue.ts"
       },
       {
         "fromSymbol": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.test.ts",
@@ -69446,6 +69640,30 @@
       },
       {
         "fromSymbol": "deriveNode",
+        "toSymbol": "readValueMapValue",
+        "callExpression": "readValueMapValue",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "deriveNode",
+        "toSymbol": "mergeValueMapEntries",
+        "callExpression": "mergeValueMapEntries",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "toSymbol": "resolvePresentationFieldPolicy",
+        "callExpression": "resolvePresentationFieldPolicy",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "toSymbol": "deriveNode",
+        "callExpression": "deriveNode",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "deriveNode",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
@@ -69454,12 +69672,6 @@
         "fromSymbol": "deriveNode",
         "toSymbol": "formatPath",
         "callExpression": "formatPath",
-        "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
-        "toSymbol": "deriveNode",
-        "callExpression": "deriveNode",
         "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
       },
       {
@@ -69478,6 +69690,24 @@
         "fromSymbol": "readSetValue",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "readValueMapValue",
+        "toSymbol": "resolveValueMapKey",
+        "callExpression": "resolveValueMapKey",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "readValueMapValue",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "toSymbol": "isValueMapKeyAllowed",
+        "callExpression": "isValueMapKeyAllowed",
         "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
       },
       {
