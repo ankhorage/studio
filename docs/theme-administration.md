@@ -26,9 +26,10 @@ The Theme authoring path follows the standalone package boundaries:
   canonical manifest mutations
 ```
 
-Studio consumes released Contracts and ZORA public APIs, with Surface resolved through ZORA.
-Recipe field definitions, defaults, options, kinds, and token-family
-relationships are never copied into Studio.
+Studio resolves the released Contracts `theme-config` root through the central Authoring Engine and
+selects only the owner paths needed by each Theme route. Resolved Surface/ZORA values are projected
+as inheritance evidence rather than copied into authored state. Recipe field definitions, defaults,
+options, kinds, and token-family relationships are never copied into Studio.
 
 ## Routes
 
@@ -56,8 +57,10 @@ routes are not duplicated as fixed sidebar entries.
 ## Light and dark editing
 
 Colors and harmony remain mode-specific source on `ThemeConfig.light` and `ThemeConfig.dark`.
-The Theme editor Light/Dark selector calls the mounted ZORA/Surface `setMode` authority, so the app
-and `/ankh` render the same actual runtime mode.
+Harmony choices come directly from the Contracts owner enum, including `square`, while primary
+colors keep Color Theory hex validation before persistence. The Theme editor Light/Dark selector
+calls the mounted ZORA/Surface `setMode` authority, so the app and `/ankh` render the same actual
+runtime mode.
 
 Switching the editor between Light and Dark does not persist `activeThemeMode`. Changing a project's
 configured default mode is a separate concern from previewing or editing either source branch.
@@ -65,16 +68,17 @@ configured default mode is a separate concern from previewing or editing either 
 ## Global tokens
 
 Spacing, radii, typography, and shadows are theme-global authored overrides shared by both modes.
-Studio shows the currently resolved Surface tokens and persists only values that the author changes.
-Omitted values continue to inherit Surface defaults.
+Their structures come from Contracts: spacing/radii/shadows are open `value-map` values, while
+typography exposes the canonical headings, sizes, and weights maps. Studio shows currently resolved
+Surface/ZORA tokens as inherited entries and persists only authored overrides.
 
-Numeric spacing, radii, typography-size, and shadow values reject negative and non-finite values.
-The canonical `none` spacing and radius values remain inherited at zero. Free spacing, radius,
-typography-size, and shadow token names may be added where the owner contracts permit them.
-Canonical typography heading and weight slots remain constrained by the Surface owner contract.
+The central editor accepts finite numeric values according to the owner number structure and does not
+invent a Studio-only nonnegative constraint. Open owner maps support add, remove, rename, and update
+of custom keys. Typography heading keys and weight values likewise remain open where Contracts does
+not publish a finite choice; Studio no longer maintains local heading or font-weight catalogs.
 
 Resetting an authored value removes that override instead of copying the current resolved default
-into the manifest.
+into the manifest. Empty optional override containers are pruned after reset.
 
 ## Component and pattern recipes
 
