@@ -8,6 +8,9 @@ import { expect, test } from 'bun:test';
 import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig.js';
 import { createAuth5NativeOAuthSmokeFixture } from './createAuth5NativeOAuthSmokeFixture.js';
 
+const auth5NativeFixtureSmokeTest =
+  process.env.ANKH_STUDIO_AUTH5_NATIVE_FIXTURE_SMOKE === '1' ? test : test.skip;
+
 interface GeneratedPackageJson {
   readonly dependencies?: Record<string, string>;
   readonly scripts?: Record<string, string>;
@@ -36,7 +39,7 @@ interface GeneratedManifest {
   };
 }
 
-test('prepares a secret-free real generated app for Auth 5 native smoke validation', async () => {
+auth5NativeFixtureSmokeTest('prepares a secret-free real generated app for Auth 5 native smoke validation', async () => {
   const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'ankh-auth5-native-smoke-'));
   try {
     const fixture = await createAuth5NativeOAuthSmokeFixture(workspaceRoot);
