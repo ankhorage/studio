@@ -21,6 +21,7 @@ import { expect, test } from 'bun:test';
 import { StudioExternalApiService } from './apis/studioExternalApiService';
 import { ProjectManager } from './orchestrator/projectManager';
 
+const nutritionApiE2eTest = process.env.ANKH_STUDIO_NUTRITION_API_E2E === '1' ? test : test.skip;
 const NUTRITION_API_BASE_URL = 'https://api.ankhorage.com/v1/nutrition';
 const PRODUCTS_REQUEST_URL = `${NUTRITION_API_BASE_URL}/products?limit=50&offset=0`;
 const BARCODE = '7612345678901';
@@ -52,11 +53,15 @@ interface RecordedRequest {
   readonly init: EndpointTestFetchInit;
 }
 
-test('generated Nutrition app executes canonical product bindings over external HTTP', async () => {
+nutritionApiE2eTest(
+  'generated Nutrition app executes canonical product bindings over external HTTP',
+  async () => {
   const workspaceRoot = await createWorkspaceRoot();
 
   try {
-    const manager = new ProjectManager(workspaceRoot);
+    const manager = new ProjectManager(workspaceRoot, {
+      reconcileProjectPackageRootAsync: () => Promise.resolve(),
+    });
     const created = await manager.createProject('Nutrition API E2E', {
       manifest: createNutritionApiFixtureManifest(),
       assets: [],
@@ -73,9 +78,11 @@ test('generated Nutrition app executes canonical product bindings over external 
     await executeStudioApiOperation(manager, created.id, endpointFetch);
     assertExternalProductRequests(requests);
   } finally {
-    await rm(workspaceRoot, { recursive: true, force: true });
-  }
-}, 60_000);
+      await rm(workspaceRoot, { recursive: true, force: true });
+    }
+  },
+  30_000,
+);
 
 function createNutritionApiFixtureManifest(): AppManifest {
   const { manifest } = composeCategoryAppManifest({

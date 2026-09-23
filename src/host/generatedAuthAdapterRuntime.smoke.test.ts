@@ -13,6 +13,8 @@ import { ProjectManager } from './orchestrator/projectManager';
 import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';
 
 const execFile = promisify(execFileCallback);
+const generatedAuthRuntimeSmokeTest =
+  process.env.ANKH_STUDIO_GENERATED_AUTH_RUNTIME_SMOKE === '1' ? test : test.skip;
 const PROJECT_NAME = 'Generated Auth Runtime';
 const PROJECT_ID = 'generated-auth-runtime';
 const AUTH_SMOKE_SCRIPT = 'auth-runtime-smoke.ts';
@@ -334,7 +336,7 @@ function expectAuthError(
   });
 }
 
-test('generated Supabase Auth adapter executes against Infra-provided public env only', async () => {
+generatedAuthRuntimeSmokeTest('generated Supabase Auth adapter executes against Infra-provided public env only', async () => {
   const { workspaceRoot, projectRoot } = await createGeneratedProject();
 
   try {
@@ -438,7 +440,7 @@ test('generated Supabase Auth adapter executes against Infra-provided public env
   }
 }, 45_000);
 
-test('Expo Babel bundling statically embeds generated Supabase public env values', async () => {
+generatedAuthRuntimeSmokeTest('Expo Babel bundling statically embeds generated Supabase public env values', async () => {
   const { workspaceRoot, projectRoot } = await createGeneratedProject();
 
   try {

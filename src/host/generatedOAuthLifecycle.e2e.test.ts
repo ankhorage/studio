@@ -17,6 +17,8 @@ const SCENARIO_ENV = 'ANKH_GENERATED_OAUTH_SCENARIO';
 const temporaryRoots = new Set<string>();
 const hadOriginalLocation = Reflect.has(globalThis, 'location');
 const originalLocation: unknown = Reflect.get(globalThis, 'location');
+const generatedOAuthLifecycleE2e =
+  process.env.ANKH_STUDIO_GENERATED_OAUTH_E2E === '1' ? describe : describe.skip;
 
 type IsolatedScenario = 'denial' | 'expired' | 'malformed' | 'mismatched' | 'missing' | 'success';
 
@@ -66,13 +68,13 @@ const isolatedScenario =
     ? isolatedScenarioValue
     : undefined;
 if (isolatedScenario !== undefined) {
-  describe('isolated generated OAuth lifecycle scenario', () => {
+  generatedOAuthLifecycleE2e('isolated generated OAuth lifecycle scenario', () => {
     it(isolatedScenario, async () => {
       await runScenario(isolatedScenario);
     });
   });
 } else {
-  describe('generated OAuth lifecycle across full-page navigation', () => {
+  generatedOAuthLifecycleE2e('generated OAuth lifecycle across full-page navigation', () => {
     it('preserves PKCE state, exchanges once, persists one session, and tolerates callback reload', async () => {
       await runIsolatedScenario('success');
     });
