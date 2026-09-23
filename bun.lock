@@ -30,8 +30,8 @@
         "@ankhorage/utility": "^1.6.0",
         "@ankhorage/zora": "^21.0.19",
         "@ankhorage/zora-chess": "^0.2.2",
-        "@ankhorage/zora-game": "^0.8.48",
-        "@ankhorage/zora-tabletop": "^0.1.46",
+        "@ankhorage/zora-game": "^0.8.49",
+        "@ankhorage/zora-tabletop": "^0.1.47",
         "@fastify/cors": "^11.3.0",
         "expo-document-picker": "~57.0.2",
         "expo-file-system": "~57.0.7",
@@ -142,9 +142,9 @@
 
     "@ankhorage/zora-chess": ["@ankhorage/zora-chess@0.2.2", "", { "dependencies": { "chess.js": "^1.4.0" }, "peerDependencies": { "@ankhorage/zora": ">=4.2.2", "react": ">=18.2.0", "react-native": ">=0.72.0" } }, "sha512-ZcL6Qk4KE5+tChW5bSr6kSAKv6H0FL3ab87TltPgSxBDe5HT+v7uA3wSvkS7WUL3MRx+8RUFmakKWLgwJl1/RA=="],
 
-    "@ankhorage/zora-game": ["@ankhorage/zora-game@0.8.48", "", { "dependencies": { "@ankhorage/game": "^0.1.2", "@ankhorage/runtime": "^3.0.22" }, "peerDependencies": { "@ankhorage/zora": ">=21.0.18", "react": "19.2.3", "react-native": "0.86.x" } }, "sha512-OpVhGqVIFCSdpNem8AFC7Wpn1Ni1K2g3j1NaK/jqCt83YmrBTGtOaBwAEsh+w+KAH7B0aQhwTwicBNYTgyQ5Zw=="],
+    "@ankhorage/zora-game": ["@ankhorage/zora-game@0.8.49", "", { "dependencies": { "@ankhorage/game": "^0.1.2", "@ankhorage/runtime": "^3.0.23" }, "peerDependencies": { "@ankhorage/zora": ">=21.0.19", "react": "19.2.3", "react-native": "0.86.x" } }, "sha512-UAQvLtM+Y8x6bjzoJhv77A9TP2Zq+mUSa9+H709sfDH7G+1hqqqozUSf6WtoZkSjznBn1zXlpNzxpScojNsjFQ=="],
 
-    "@ankhorage/zora-tabletop": ["@ankhorage/zora-tabletop@0.1.46", "", { "peerDependencies": { "@ankhorage/zora": ">=21.0.18", "react": ">=18.2.0", "react-native": ">=0.72.0" } }, "sha512-sLfc0vTXjFcCtadt9IMBvF1X0jylXhfOvt4qkzfTvbu5uuYP9RVKKfYlNOzLCufOJK9P0SZU2kiSCvKv+TCGMQ=="],
+    "@ankhorage/zora-tabletop": ["@ankhorage/zora-tabletop@0.1.47", "", { "peerDependencies": { "@ankhorage/zora": ">=21.0.19", "react": ">=18.2.0", "react-native": ">=0.72.0" } }, "sha512-G+Fj4v/mGJtMtgiQ3wtSIaDQW7Sqn/HGYgUMqF6Pq1Vldq4zs1QX+DQaU5hJqMEPfjDOj1+lIPTfs5tXt1JMGg=="],
 
     "@babel/code-frame": ["@babel/code-frame@7.29.7", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.29.7", "js-tokens": "^4.0.0", "picocolors": "^1.1.1" } }, "sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw=="],
 
