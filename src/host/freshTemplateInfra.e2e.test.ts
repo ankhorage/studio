@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -15,6 +15,8 @@ const preserveFailedInfrastructureForDiagnostics =
   process.env.ANKH_STUDIO_PRESERVE_FAILED_INFRA === '1';
 const bootstrapEnvironmentVariable = 'SUPABASE_BOOTSTRAP';
 const prefixedBootstrapEnvironmentVariable = 'ANKH_INFRA_CREDENTIAL_SUPABASE_BOOTSTRAP';
+const publicSupabaseUrlEnvironmentVariable = 'EXPO_PUBLIC_SUPABASE_URL';
+const publicSupabaseAnonKeyEnvironmentVariable = 'EXPO_PUBLIC_SUPABASE_ANON_KEY';
 const privateBootstrapFieldNames = [
   'postgresPassword',
   'jwtSecret',
@@ -78,6 +80,7 @@ async function runFreshTemplateInfraAcceptanceAsync(templateCase: {
       expect(first.runtime).toBe('minikube');
       expect(firstPublic.url).toStartWith('http://127.0.0.1:');
       expect(firstPublic.anonKey.length).toBeGreaterThan(0);
+      await expectMaterializedAppEnvironmentAsync(created.path, first);
       expectSafeStudioInfraResult(first);
       expect((await firstManager.getInfrastructureStatus(created.id)).state).toBe('ready');
 
@@ -90,6 +93,7 @@ async function runFreshTemplateInfraAcceptanceAsync(templateCase: {
       const secondPublic = readSupabasePublicOutputs(second);
       expect(secondPublic).toEqual(firstPublic);
       expect(resourceIdentities(second)).toEqual(resourceIdentities(first));
+      await expectMaterializedAppEnvironmentAsync(created.path, second);
       expectSafeStudioInfraResult(second);
 
       await secondManager.downInfrastructure(created.id);
@@ -102,6 +106,7 @@ async function runFreshTemplateInfraAcceptanceAsync(templateCase: {
       });
       expect(readSupabasePublicOutputs(resumed)).toEqual(firstPublic);
       expect(resourceIdentities(resumed)).toEqual(resourceIdentities(first));
+      await expectMaterializedAppEnvironmentAsync(created.path, resumed);
       expectSafeStudioInfraResult(resumed);
 
       const health = await fetch(`${firstPublic.url}/auth/v1/health`);
@@ -137,15 +142,49 @@ function readSupabasePublicOutputs(result: StudioInfraUpResult): {
   readonly anonKey: string;
 } {
   const url = result.reconciled.outputs.find(
-    ({ environmentVariable }) => environmentVariable === 'EXPO_PUBLIC_SUPABASE_URL',
+    ({ environmentVariable }) => environmentVariable === publicSupabaseUrlEnvironmentVariable,
   )?.value;
   const anonKey = result.reconciled.outputs.find(
-    ({ environmentVariable }) => environmentVariable === 'EXPO_PUBLIC_SUPABASE_ANON_KEY',
+    ({ environmentVariable }) => environmentVariable === publicSupabaseAnonKeyEnvironmentVariable,
   )?.value;
   if (typeof url !== 'string' || typeof anonKey !== 'string') {
     throw new Error('Expected string Supabase URL and anon-key outputs from Studio Infra up.');
   }
   return { url, anonKey };
+}
+
+async function expectMaterializedAppEnvironmentAsync(
+  projectPath: string,
+  result: StudioInfraUpResult,
+): Promise<void> {
+  const content = await readFile(path.join(projectPath, '.env.local'), 'utf8');
+  const publicOutputs = readSupabasePublicOutputs(result);
+
+  expect(readEnvironmentValue(content, publicSupabaseUrlEnvironmentVariable)).toBe(
+    publicOutputs.url,
+  );
+  expect(readEnvironmentValue(content, publicSupabaseAnonKeyEnvironmentVariable)).toBe(
+    publicOutputs.anonKey,
+  );
+
+  expect(content).not.toContain(bootstrapEnvironmentVariable);
+  expect(content).not.toContain(prefixedBootstrapEnvironmentVariable);
+  for (const fieldName of privateBootstrapFieldNames) expect(content).not.toContain(fieldName);
+
+  for (const output of result.reconciled.outputs) {
+    if (output.visibility !== 'secret') continue;
+    expect(content).not.toContain(output.name);
+    expect(content).not.toContain(output.reference.ref);
+    expect(content).not.toContain(output.reference.key);
+  }
+}
+
+function readEnvironmentValue(content: string, environmentVariable: string): string | undefined {
+  const prefix = `${environmentVariable}=`;
+  return content
+    .split(/\r?\n/)
+    .find((line) => line.startsWith(prefix))
+    ?.slice(prefix.length);
 }
 
 function resourceIdentities(result: StudioInfraUpResult): readonly string[] {
