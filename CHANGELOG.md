@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.9.1
+
+### Patch Changes
+
+- 433ec70: Update Ankhorage dependencies: `@ankhorage/contracts`, `@ankhorage/minikube`, `@ankhorage/repository`, `@ankhorage/runtime`, `@ankhorage/supabase-auth`, `@ankhorage/supabase-storage`, `@ankhorage/zora`.
+
 ## 5.9.0
 
 ### Minor Changes
