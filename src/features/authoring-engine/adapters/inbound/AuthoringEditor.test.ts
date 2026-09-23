@@ -343,6 +343,54 @@ test('renders open value maps and emits rename, update, remove, and add mutation
   });
 });
 
+test('adds object-valued map entries when every nested field is optional', () => {
+  const mutations: AuthoringMutation[] = [];
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'object',
+      fields: [
+        {
+          name: 'headings',
+          optional: true,
+          structure: {
+            kind: 'value-map',
+            key: { kind: 'scalar', scalarType: 'string' },
+            value: {
+              kind: 'object',
+              fields: [
+                {
+                  name: 'size',
+                  optional: true,
+                  structure: { kind: 'scalar', scalarType: 'number' },
+                },
+              ],
+            },
+          },
+        },
+      ],
+    },
+    value: { headings: {} },
+  });
+  const controls = renderControls(
+    editor.AuthoringEditor({
+      model,
+      onMutation: (mutation) => mutations.push(mutation),
+    }),
+  );
+
+  const add = controls.find(
+    (control) => control.type === 'Button' && control.props.children === 'Add entry',
+  )?.props.onPress;
+  if (typeof add !== 'function') throw new Error('Missing object value-map add handler.');
+  Reflect.apply(add, undefined, []);
+
+  expect(mutations.at(-1)).toEqual({
+    kind: 'set',
+    path: ['headings', 'newKey'],
+    value: {},
+  });
+});
+
 test('renders inherited value-map entries without emitting authored state', () => {
   const mutations: AuthoringMutation[] = [];
   const model = deriveAuthoringModel({

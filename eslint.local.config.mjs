@@ -123,11 +123,7 @@ export default [
     'src/ui/admin/pages/ApiOperationsCard.tsx',
     'src/ui/admin/pages/BindingsAdminPage.tsx',
     'src/ui/admin/pages/PropertiesAdminPage.tsx',
-    'src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx',
     'src/ui/admin/pages/ThemeRecipeAdminPage.tsx',
-    'src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx',
-    'src/ui/admin/pages/ThemeTypographySizeEditor.tsx',
-    'src/ui/admin/pages/ThemeTypographyWeightEditor.tsx',
     'src/ui/admin/pages/bindings/EventBindingComposer.tsx',
   ]),
   legacyRuleExceptions('simple-import-sort/imports', [
