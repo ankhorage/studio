@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.10.6
+
+### Patch Changes
+
+- 3c1755a: Update Ankhorage dependencies: `@ankhorage/navigator`, `@ankhorage/runtime`, `@ankhorage/zora-game`, `@ankhorage/zora-tabletop`, `@ankhorage/zora`.
+
 ## 5.10.5
 
 ### Patch Changes
