@@ -8,6 +8,7 @@ import process from 'node:process';
 import { promisify } from 'node:util';
 
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
+import { SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 
 const execFileAsync = promisify(execFile);
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
@@ -109,7 +110,7 @@ async function resolveLatestPublishedStudioVersionAsync(): Promise<string> {
     },
   );
   const value: unknown = JSON.parse(stdout);
-  if (typeof value !== 'string' || !/^\d+\.\d+\.\d+$/u.test(value)) {
+  if (typeof value !== 'string' || !SEMVER_PATTERNS.exact.test(value)) {
     throw new Error('Published Studio version discovery returned no stable semantic version.');
   }
   return value;

@@ -8,11 +8,11 @@ import process from 'node:process';
 import { promisify } from 'node:util';
 
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
+import { SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 
 const execFileAsync = promisify(execFile);
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
 const COMMAND_TIMEOUT_MS = 300_000;
-const STABLE_SEMVER_PATTERN = /^\d+\.\d+\.\d+$/u;
 const { oldVersion: OLD_STUDIO_VERSION, currentVersion: CURRENT_STUDIO_VERSION } =
   await resolvePublishedStudioRestartBoundaryAsync();
 const USER_FILE_NAME = 'USER_NOTES.md';
@@ -165,7 +165,7 @@ async function resolvePublishedStudioRestartBoundaryAsync(): Promise<{
     ...new Set(
       parsed.filter(
         (version): version is string =>
-          typeof version === 'string' && STABLE_SEMVER_PATTERN.test(version),
+          typeof version === 'string' && SEMVER_PATTERNS.exact.test(version),
       ),
     ),
   ].sort(compareStableVersions);

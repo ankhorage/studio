@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
+import { SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 
 import type { GeneratedPackagePolicy } from '../../../../types/project-updates.js';
 
@@ -17,8 +18,6 @@ const STUDIO_SELF_CONSUMER_PACKAGE_JSON_URL = new URL(
   import.meta.url,
 );
 const COLOR_THEORY_PACKAGE_JSON_PATH = REQUIRE.resolve('@ankhorage/color-theory/package.json');
-const SEMVER_PATTERN = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u;
-const BUN_PACKAGE_MANAGER_PATTERN = /^bun@\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u;
 const GENERATED_PACKAGE_POLICY = readGeneratedPackagePolicy();
 
 /*** Read and validate owner package metadata used as generated-app dependency floors. */
@@ -153,7 +152,7 @@ function readPackageManifest(
 /*** Read and validate Studio's exact package version. */
 function readStudioVersion(studio: Readonly<Record<string, unknown>>): string {
   const version = readRequiredString(studio, 'version', 'Studio');
-  if (!SEMVER_PATTERN.test(version)) {
+  if (!SEMVER_PATTERNS.exactWithPrerelease.test(version)) {
     throw new Error('Studio package.json version must be exact semver.');
   }
   return version;
@@ -162,7 +161,10 @@ function readStudioVersion(studio: Readonly<Record<string, unknown>>): string {
 /*** Read and validate Studio's exact Bun package-manager pin. */
 function readStudioPackageManager(studio: Readonly<Record<string, unknown>>): string {
   const packageManager = readRequiredString(studio, 'packageManager', 'Studio');
-  if (!BUN_PACKAGE_MANAGER_PATTERN.test(packageManager)) {
+  if (
+    !packageManager.startsWith('bun@') ||
+    !SEMVER_PATTERNS.exactWithPrerelease.test(packageManager.slice('bun@'.length))
+  ) {
     throw new Error('Studio package.json packageManager must pin an exact Bun version.');
   }
   return packageManager;

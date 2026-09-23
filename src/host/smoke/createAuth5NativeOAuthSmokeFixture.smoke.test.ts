@@ -3,6 +3,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
+import { SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 import { expect, test as bunTest } from 'bun:test';
 
 import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig.js';
@@ -58,7 +59,7 @@ test('prepares a secret-free real generated app for Auth 5 native smoke validati
 
     expect(packageJson.scripts?.android).toBe('bun scripts/ankh-android.ts');
     expect(packageJson.scripts?.ios).toBe('expo run:ios');
-    expect(packageJson.dependencies?.['@ankhorage/expo-runtime']).toMatch(/^\^\d+\.\d+\.\d+$/u);
+    expect(packageJson.dependencies?.['@ankhorage/expo-runtime']).toMatch(SEMVER_PATTERNS.caret);
     expect(packageJson.dependencies?.[EXPO_PLATFORM.packages.crypto.name]).toBe(
       EXPO_PLATFORM.packages.crypto.version,
     );
