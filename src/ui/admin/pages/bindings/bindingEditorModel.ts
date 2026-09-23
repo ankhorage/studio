@@ -71,23 +71,17 @@ export function createStudioEventInputDrafts(
   fields: readonly StudioBindingInputFieldOption[],
   eventFields: readonly UiComponentEventPayloadFieldMeta[],
 ): Readonly<Record<string, StudioEventInputDraft>> {
-  return Object.fromEntries(
-    fields.map((field) => {
-      const matchingEventField = eventFields.find((candidate) => candidate.path === field.name);
-      if (matchingEventField) {
-        return [field.name, { kind: 'event' as const, value: matchingEventField.path }];
-      }
-
-      return [
-        field.name,
-        {
-          kind: 'literal' as const,
+  return fields.reduce<Readonly<Record<string, StudioEventInputDraft>>>((drafts, field) => {
+    const matchingEventField = eventFields.find((candidate) => candidate.path === field.name);
+    const draft: StudioEventInputDraft = matchingEventField
+      ? { kind: 'event', value: matchingEventField.path }
+      : {
+          kind: 'literal',
           value: createBindingLiteralDefaultValue(field),
           included: field.required,
-        },
-      ];
-    }),
-  );
+        };
+    return { ...drafts, [field.name]: draft };
+  }, {});
 }
 
 /*** Parse one binding-editor text input according to the declared binding value metadata and Studio fallback semantics. */
@@ -143,12 +137,7 @@ function createStudioEventInputMap(
       if (!draft) return [];
       if (draft.kind === 'event') {
         if (!draft.value && !field.required) return [];
-        return [
-          [
-            field.name,
-            { kind: 'source', source: { kind: 'event', path: draft.value } },
-          ],
-        ];
+        return [[field.name, { kind: 'source', source: { kind: 'event', path: draft.value } }]];
       }
       if (draft.value === undefined || (!draft.included && !field.required)) return [];
       return [[field.name, { kind: 'literal', value: draft.value }]];
