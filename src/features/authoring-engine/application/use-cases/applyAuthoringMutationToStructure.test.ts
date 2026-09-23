@@ -74,11 +74,10 @@ test('prunes empty optional parent structures after resetting the last override'
     id: 'theme',
     tokens: { spacing: { m: 16 } },
   };
-  const result = applyAuthoringMutationToStructure(
-    current,
-    THEME_TOKEN_STRUCTURE,
-    { kind: 'unset', path: ['tokens', 'spacing', 'm'] },
-  );
+  const result = applyAuthoringMutationToStructure(current, THEME_TOKEN_STRUCTURE, {
+    kind: 'unset',
+    path: ['tokens', 'spacing', 'm'],
+  });
 
   expect(result).toEqual({ ok: true, value: { id: 'theme' } });
 });
@@ -88,11 +87,10 @@ test('prunes empty object-valued map entries and their optional ancestors', () =
     id: 'theme',
     tokens: { typography: { headings: { h1: { size: 32 } } } },
   };
-  const result = applyAuthoringMutationToStructure(
-    current,
-    THEME_TOKEN_STRUCTURE,
-    { kind: 'unset', path: ['tokens', 'typography', 'headings', 'h1', 'size'] },
-  );
+  const result = applyAuthoringMutationToStructure(current, THEME_TOKEN_STRUCTURE, {
+    kind: 'unset',
+    path: ['tokens', 'typography', 'headings', 'h1', 'size'],
+  });
 
   expect(result).toEqual({ ok: true, value: { id: 'theme' } });
 });
