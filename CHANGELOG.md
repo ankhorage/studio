@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.10.3
+
+### Patch Changes
+
+- 60d03d6: Update Ankhorage dependencies: `@ankhorage/contracts`, `@ankhorage/runtime`.
+
 ## 5.10.2
 
 ### Patch Changes
