@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.10.5
+
+### Patch Changes
+
+- c0b0042: Update Ankhorage dependencies: `@ankhorage/data-sources`.
+
 ## 5.10.4
 
 ### Patch Changes
