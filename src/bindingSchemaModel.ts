@@ -4,16 +4,18 @@ import type {
   UiBindableValueFieldMeta,
   UiBindableValueMeta,
 } from '@ankhorage/contracts';
-import { resolveSchemaReference, resolveSingleSchemaType } from '@ankhorage/utility/schema';
+import { resolveSchemaReference } from '@ankhorage/utility/schema';
 
 import type {
   StudioBindingCompatibility,
   StudioBindingResponsePathOption,
 } from './bindingAuthoringContracts';
+import { resolveDataSchemaAuthoringStructure } from './features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure';
+import type { AuthoringStructure } from './types/authoring-engine';
 
 /***
- * Resolve a contracts data schema into the bindable value metadata used by Studio authoring.
- * @todo Move binding schema interpretation under src/bindings/.
+ * Project canonical DataSchema authoring semantics into the bindable metadata used by compatibility policy.
+ * @todo Move binding schema projection under src/bindings/.
  */
 export function resolveStudioSchemaValueMeta(
   schema: DataSchema | undefined,
@@ -22,10 +24,16 @@ export function resolveStudioSchemaValueMeta(
 ): UiBindableValueMeta {
   const resolved = resolveSchemaReference(schema, schemas, seen);
   if (!resolved) return { type: 'unknown' };
-  const type = resolveSchemaType(resolved);
-  const fields = resolveSchemaFields(resolved, schemas, seen);
+
+  const authoring = resolveDataSchemaAuthoringStructure(resolved, schemas);
+  const structure = authoring.ok ? authoring.structure : undefined;
+  const type = resolveBindableType(resolved, structure);
+  const fields =
+    structure?.kind === 'object' ? resolveSchemaFields(resolved, schemas, seen) : [];
   const itemType =
-    type === 'array' ? resolveStudioSchemaValueMeta(resolved.items, schemas, seen).type : undefined;
+    structure?.kind === 'ordered-list'
+      ? resolveStudioSchemaValueMeta(resolved.items, schemas, seen).type
+      : undefined;
 
   return {
     type,
@@ -78,7 +86,8 @@ function collectNestedPaths(
   const resolved = resolveSchemaReference(schema, schemas, seen);
   if (!resolved) return;
 
-  if (resolveSchemaType(resolved) === 'array' && resolved.items) {
+  const meta = resolveStudioSchemaValueMeta(resolved, schemas, seen);
+  if (meta.type === 'array' && resolved.items) {
     const path = prefix ? `${prefix}.0` : '0';
     paths.push({
       path,
@@ -102,8 +111,7 @@ function collectNestedPaths(
 }
 
 /***
- * Project schema properties into the field metadata expected by Studio bindings.
- * @todo Keep bindable field projection under src/bindings/.
+ * Project resolved object fields into the metadata used by binding compatibility diagnostics.
  */
 function resolveSchemaFields(
   schema: DataSchema,
@@ -117,32 +125,49 @@ function resolveSchemaFields(
   }));
 }
 
-/***
- * Normalize a schema's format, primitive type, and structural hints into one effective value type.
- * @utility @ankhorage/utility/schema
- */
-function resolveSchemaType(schema: DataSchema): UiBindableValueMeta['type'] {
+/*** Project neutral authoring structure into the older bindable-shape vocabulary without reinterpreting DataSchema shape. */
+function resolveBindableType(
+  schema: DataSchema,
+  structure: AuthoringStructure | undefined,
+): UiBindableValueMeta['type'] {
   if (schema.format === 'date' || schema.format === 'date-time') return 'date';
-  const rawType = resolveSingleSchemaType(schema.type);
-  if (rawType === 'integer') return 'number';
-  if (rawType === 'object') return schema.additionalProperties ? 'record' : 'object';
-  if (
-    rawType === 'array' ||
-    rawType === 'boolean' ||
-    rawType === 'number' ||
-    rawType === 'string'
-  ) {
-    return rawType;
+  if (!structure) return 'unknown';
+
+  switch (structure.kind) {
+    case 'scalar':
+      if (structure.scalarType === 'integer') return 'number';
+      if (
+        structure.scalarType === 'boolean' ||
+        structure.scalarType === 'number' ||
+        structure.scalarType === 'string'
+      ) {
+        return structure.scalarType;
+      }
+      return 'unknown';
+    case 'choice':
+      return resolveChoiceType(structure.values);
+    case 'object':
+      return 'object';
+    case 'ordered-list':
+      return 'array';
+    case 'unsupported':
+      return structure.sourceKind === 'data-schema-additional-properties' ? 'record' : 'unknown';
+    case 'set':
+      return 'unknown';
   }
-  if (!rawType && schema.properties) return 'object';
-  if (!rawType && schema.items) return 'array';
-  return 'unknown';
 }
 
-/***
- * Return a schema primitive type only when the declaration contains exactly one effective type.
- * @utility @ankhorage/utility/schema
- */
+/*** Resolve a homogeneous finite primitive choice into the compatibility type it represents. */
+function resolveChoiceType(
+  values: readonly (boolean | number | string | null)[],
+): UiBindableValueMeta['type'] {
+  const nonNull = values.filter((value) => value !== null);
+  if (nonNull.length === 0) return 'unknown';
+  const first = typeof nonNull[0];
+  if (!nonNull.every((value) => typeof value === first)) return 'unknown';
+  if (first === 'boolean' || first === 'number' || first === 'string') return first;
+  return 'unknown';
+}
 
 /***
  * Test whether a bindable value type represents an object-shaped value.
