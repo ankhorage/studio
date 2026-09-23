@@ -8,8 +8,7 @@ import { expect, test as bunTest } from 'bun:test';
 import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig.js';
 import { createAuth5NativeOAuthSmokeFixture } from './createAuth5NativeOAuthSmokeFixture.js';
 
-const test =
-  process.env.ANKH_STUDIO_AUTH5_NATIVE_FIXTURE_SMOKE === '1' ? bunTest : bunTest.skip;
+const test = process.env.ANKH_STUDIO_AUTH5_NATIVE_FIXTURE_SMOKE === '1' ? bunTest : bunTest.skip;
 
 interface GeneratedPackageJson {
   readonly dependencies?: Record<string, string>;

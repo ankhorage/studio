@@ -14,8 +14,7 @@ const SECRET_SENTINEL = 'sentinel-phase3-consumer-secret-do-not-leak';
 const PROJECT_NAME = 'OAuth Fixture Consumer';
 const PROJECT_ID = 'oauth-fixture-consumer';
 const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
-const test =
-  process.env.ANKH_STUDIO_OAUTH_FIXTURE_CONSUMER_SMOKE === '1' ? bunTest : bunTest.skip;
+const test = process.env.ANKH_STUDIO_OAUTH_FIXTURE_CONSUMER_SMOKE === '1' ? bunTest : bunTest.skip;
 
 async function collectRelativeFiles(root: string, current = ''): Promise<string[]> {
   const absolute = path.join(root, current);
