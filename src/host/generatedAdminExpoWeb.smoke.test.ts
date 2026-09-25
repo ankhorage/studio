@@ -853,7 +853,12 @@ test(
         expect(missingDetail).toContain('missing or was deleted');
         expect(page.errors).toEqual([]);
 
-        await verifyResponsiveAuthoringAcceptance(page, studioApi, expoOutput);
+        await verifyResponsiveAuthoringAcceptance(
+          debugPort,
+          appUrl,
+          studioApi,
+          expoOutput,
+        );
         await verifyWorkspaceReturnToApp(page, expoOutput);
       } finally {
         page.close();
@@ -1067,10 +1072,15 @@ interface ResponsiveAuthoringRoute {
  * Exercise released owner-derived authoring semantics at desktop and narrow mobile widths, then prove one canonical mutation survives manifest persistence and reload.
  */
 async function verifyResponsiveAuthoringAcceptance(
-  page: ChromePage,
+  debugPort: number,
+  appUrl: string,
   studioApi: SmokeStudioApiServer,
   expoOutput: readonly string[],
 ): Promise<void> {
+  const page = await openChromePage(debugPort);
+  await page.blockHotReloadConnections();
+
+  try {
   const routes: readonly ResponsiveAuthoringRoute[] = [
     {
       pathname: '/ankh/screens/dashboard',
@@ -1107,10 +1117,17 @@ async function verifyResponsiveAuthoringAcceptance(
   ] as const;
   const desktopSnapshots = new Map<string, ResponsiveAuthoringSnapshot>();
 
+  let firstRoute = true;
   for (const viewport of viewports) {
     await page.setViewportSize(viewport.width, viewport.height);
     for (const route of routes) {
-      await page.navigateStudio(route.pathname, expoOutput);
+      if (firstRoute) {
+        await page.navigate(new URL(route.pathname, appUrl).toString());
+        await page.waitForStudioNavigationReady(HTTP_TIMEOUT_MS, expoOutput);
+        firstRoute = false;
+      } else {
+        await page.navigateStudio(route.pathname, expoOutput);
+      }
       const snapshot = await waitForResponsiveAuthoringSnapshot(
         page,
         route.evidence,
@@ -1143,8 +1160,12 @@ async function verifyResponsiveAuthoringAcceptance(
     }
   }
 
-  await page.navigateStudio('/ankh/screens/dashboard', expoOutput);
-  await waitForResponsiveAuthoringSnapshot(page, ['Screen metadata', 'Dashboard'], HTTP_TIMEOUT_MS);
+    await page.navigateStudio('/ankh/screens/dashboard', expoOutput);
+    await waitForResponsiveAuthoringSnapshot(
+      page,
+      ['Screen metadata', 'Dashboard'],
+      HTTP_TIMEOUT_MS,
+    );
   await replaceFocusedInputValue(page, 'Dashboard', 'Dashboard WP8 accepted');
   await waitForManifestScreenName(studioApi, 'dashboard', 'Dashboard WP8 accepted', 15_000);
 
@@ -1159,8 +1180,11 @@ async function verifyResponsiveAuthoringAcceptance(
     HTTP_TIMEOUT_MS,
   );
 
-  await page.setViewportSize(1280, 900);
-  expect(page.errors).toEqual([]);
+    await page.setViewportSize(1280, 900);
+    expect(page.errors).toEqual([]);
+  } finally {
+    page.close();
+  }
 }
 
 /*** Wait until all requested owner-derived evidence is rendered and return viewport/form-control geometry. */
