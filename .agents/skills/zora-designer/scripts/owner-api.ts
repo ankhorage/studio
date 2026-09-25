@@ -4,6 +4,12 @@ import { readFile } from 'node:fs/promises';
 import { dirname, join, parse, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
+import {
+  compareSemanticVersions,
+  parseSemanticVersion,
+  SEMVER_PATTERNS,
+} from '@ankhorage/utility/semver';
+
 interface OwnerRequirement {
   exports: readonly string[];
   minimumVersion: string;
@@ -257,7 +263,7 @@ function resolvePluginMinimumVersion(
 ): string {
   if (targetManifest.name === packageName) {
     const { version } = targetManifest;
-    if (typeof version === 'string' && parseVersion(version)[0] >= 0) return version;
+    if (typeof version === 'string' && parseComparableVersion(version) !== null) return version;
     throw new Error(`ZORA plugin owner package ${packageName} must declare a semantic version.`);
   }
 
@@ -275,10 +281,16 @@ function resolvePluginMinimumVersion(
 
 /*** Read the semantic lower bound from one supported published dependency specifier. */
 function readPluginMinimumVersion(packageName: string, specifier: string): string {
-  const normalized = specifier.trim().replace(/^workspace:/u, '');
-  const match = /^(?:\^|~|>=)?(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)$/u.exec(normalized);
-  const minimumVersion = match?.[1];
-  if (minimumVersion === undefined) {
+  const trimmed = specifier.trim();
+  const normalized = trimmed.startsWith('workspace:')
+    ? trimmed.slice('workspace:'.length)
+    : trimmed;
+  const minimumVersion = normalized.startsWith('>=')
+    ? normalized.slice(2)
+    : normalized.startsWith('^') || normalized.startsWith('~')
+      ? normalized.slice(1)
+      : normalized;
+  if (!SEMVER_PATTERNS.exactWithPrerelease.test(minimumVersion)) {
     throw new Error(
       `ZORA plugin ${packageName} must use an exact, caret, tilde, or >= semantic dependency range; found ${specifier}.`,
     );
@@ -666,20 +678,17 @@ function ownerError(requirement: OwnerRequirement, detail: string, cause?: unkno
 
 /*** Compare stable semantic versions needed by the released public API gates. */
 function compareVersions(left: string, right: string): number {
-  const leftParts = parseVersion(left);
-  const rightParts = parseVersion(right);
-  for (let index = 0; index < 3; index += 1) {
-    const difference = leftParts[index] - rightParts[index];
-    if (difference !== 0) return difference;
-  }
-  return 0;
+  const leftVersion = parseComparableVersion(left);
+  const rightVersion = parseComparableVersion(right);
+  if (!leftVersion) return rightVersion ? -1 : 0;
+  if (!rightVersion) return 1;
+  return compareSemanticVersions(leftVersion, rightVersion);
 }
 
-/*** Parse the numeric major, minor, and patch tuple from a semantic version. */
-function parseVersion(version: string): [number, number, number] {
-  const match = /^(\d+)\.(\d+)\.(\d+)(?:[-+].*)?$/u.exec(version);
-  if (!match) return [-1, -1, -1];
-  return [Number(match[1]), Number(match[2]), Number(match[3])];
+/*** Parse the stable numeric core used by released-owner version gates. */
+function parseComparableVersion(version: string) {
+  const stableCore = version.split('-')[0]?.split('+')[0] ?? '';
+  return parseSemanticVersion(stableCore);
 }
 
 /*** Read and validate the screen tree boundary supplied by portable JSON input. */

@@ -1,11 +1,11 @@
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
-import { satisfiesCaretSemverRange } from '@ankhorage/utility/semver';
+import {
+  parseSemanticVersion,
+  satisfiesCaretSemverRange,
+  SEMVER_PATTERNS,
+} from '@ankhorage/utility/semver';
 import { expect, test } from 'bun:test';
-
-const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
-const EXACT_SEMVER_VERSION = /^\d+\.\d+\.\d+$/u;
-const MINOR_WILDCARD_SEMVER_RANGE = /^\d+\.\d+\.x$/u;
 
 test('keeps the package root independent from every nested app package', async () => {
   const packageJson = (await Bun.file(new URL('../package.json', import.meta.url)).json()) as {
@@ -28,21 +28,21 @@ test('keeps the package root independent from every nested app package', async (
   expect(packageJson.peerDependencies?.expo).toBe(EXPO_PLATFORM.runtime.expo.version);
   const reactNativePeerRange = packageJson.peerDependencies?.['react-native'];
   const appReactNativeVersion = appPackageJson.dependencies?.['react-native'];
-  expect(reactNativePeerRange).toMatch(MINOR_WILDCARD_SEMVER_RANGE);
-  expect(appReactNativeVersion).toMatch(EXACT_SEMVER_VERSION);
+  expect(reactNativePeerRange).toMatch(SEMVER_PATTERNS.minorWildcard);
+  expect(appReactNativeVersion).toMatch(SEMVER_PATTERNS.exact);
   if (typeof reactNativePeerRange === 'string' && typeof appReactNativeVersion === 'string') {
-    const match = /^(\d+)\.(\d+)\.\d+$/u.exec(appReactNativeVersion);
-    expect(match).not.toBeNull();
-    expect(reactNativePeerRange).toBe(`${match?.[1]}.${match?.[2]}.x`);
+    const version = parseSemanticVersion(appReactNativeVersion);
+    expect(version).not.toBeNull();
+    expect(reactNativePeerRange).toBe(`${version?.major}.${version?.minor}.x`);
   }
   const contractsRange = packageJson.dependencies?.['@ankhorage/contracts'];
-  expect(contractsRange).toMatch(CARET_SEMVER_RANGE);
+  expect(contractsRange).toMatch(SEMVER_PATTERNS.caret);
   expect(packageJson.overrides?.['@ankhorage/contracts']).toBe('$@ankhorage/contracts');
   const expoRuntimeRange = packageJson.dependencies?.['@ankhorage/expo-runtime'];
-  expect(expoRuntimeRange).toMatch(CARET_SEMVER_RANGE);
-  expect(packageJson.dependencies?.['@ankhorage/runtime']).toMatch(CARET_SEMVER_RANGE);
-  expect(packageJson.dependencies?.['@ankhorage/zora']).toMatch(CARET_SEMVER_RANGE);
-  expect(appPackageJson.dependencies?.['@ankhorage/expo-runtime']).toMatch(CARET_SEMVER_RANGE);
+  expect(expoRuntimeRange).toMatch(SEMVER_PATTERNS.caret);
+  expect(packageJson.dependencies?.['@ankhorage/runtime']).toMatch(SEMVER_PATTERNS.caret);
+  expect(packageJson.dependencies?.['@ankhorage/zora']).toMatch(SEMVER_PATTERNS.caret);
+  expect(appPackageJson.dependencies?.['@ankhorage/expo-runtime']).toMatch(SEMVER_PATTERNS.caret);
   expect(
     Object.keys(appPackageJson.overrides ?? {}).filter((packageName) =>
       packageName.startsWith('@ankhorage/'),
@@ -80,7 +80,7 @@ test('keeps the standalone Studio registry dependency consistent with its own lo
 
   // The root version may be unpublished; the standalone consumer advances after release succeeds.
   const studioRange = appPackageJson.dependencies?.['@ankhorage/studio'];
-  expect(studioRange).toMatch(CARET_SEMVER_RANGE);
+  expect(studioRange).toMatch(SEMVER_PATTERNS.caret);
   if (typeof studioRange !== 'string') throw new Error('Standalone Studio must declare its owner.');
   expect(lockValue).toMatchObject({
     workspaces: { '': { dependencies: { '@ankhorage/studio': studioRange } } },
@@ -91,11 +91,12 @@ test('keeps the standalone Studio registry dependency consistent with its own lo
   if (!isRecord(packages)) throw new Error('Standalone Studio lock must contain packages.');
   const studioEntry = readOwnProperty(packages, '@ankhorage/studio');
   const lockedPackage: unknown = Array.isArray(studioEntry) ? studioEntry[0] : undefined;
-  expect(lockedPackage).toMatch(/^@ankhorage\/studio@\d+\.\d+\.\d+$/u);
   if (typeof lockedPackage !== 'string') throw new Error('Standalone Studio must lock its owner.');
-  expect(
-    satisfiesCaretSemverRange(lockedPackage.slice('@ankhorage/studio@'.length), studioRange),
-  ).toBe(true);
+  const studioPackagePrefix = '@ankhorage/studio@';
+  expect(lockedPackage.startsWith(studioPackagePrefix)).toBe(true);
+  const lockedVersion = lockedPackage.slice(studioPackagePrefix.length);
+  expect(lockedVersion).toMatch(SEMVER_PATTERNS.exact);
+  expect(satisfiesCaretSemverRange(lockedVersion, studioRange)).toBe(true);
 });
 
 test('keeps Studio package metadata and the first-party app on the Expo owner contract', async () => {
@@ -178,8 +179,8 @@ test('supplies the published peers required by consumed Expo Runtime entrypoints
   const studioDependencies = new Map(Object.entries(packageJson.dependencies ?? {}));
 
   const permissionsRange = expoRuntimePeers.get('@ankhorage/permissions');
-  expect(permissionsRange).toMatch(CARET_SEMVER_RANGE);
-  expect(studioDependencies.get('@ankhorage/permissions')).toMatch(CARET_SEMVER_RANGE);
+  expect(permissionsRange).toMatch(SEMVER_PATTERNS.caret);
+  expect(studioDependencies.get('@ankhorage/permissions')).toMatch(SEMVER_PATTERNS.caret);
   const imagePickerVersion = EXPO_PLATFORM.packages.imagePicker.version;
   expect(expoRuntimePeers.get('expo-image-picker')).toBe(imagePickerVersion);
   expect(studioDependencies.get('expo-image-picker')).toBe(imagePickerVersion);
