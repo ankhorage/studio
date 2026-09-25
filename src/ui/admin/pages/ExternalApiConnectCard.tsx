@@ -1,4 +1,4 @@
-import { Button, Card, Text, TextInput } from '@ankhorage/zora';
+import { Button, Card, Field, Text, TextInput } from '@ankhorage/zora';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 
@@ -8,7 +8,6 @@ import { connectExternalApi } from '../../../externalApiApi';
 import type { ExternalApiConnectResult } from '../../../externalApiAuthoringContracts';
 import {
   ExternalApiDiagnosticList,
-  ExternalApiField,
   externalApiAdminStyles,
 } from './ExternalApiAdminPrimitives';
 
@@ -89,7 +88,7 @@ export function ExternalApiConnectCard({
       description="Start with the service or schema URL. Studio derives the API ID and discovers the protocol automatically."
     >
       <View style={externalApiAdminStyles.stack}>
-        <ExternalApiField label="Service or schema URL">
+        <View style={externalApiAdminStyles.field}><Field label="Service or schema URL">
           <TextInput
             accessibilityLabel="Service or schema URL"
             value={url}
@@ -99,7 +98,7 @@ export function ExternalApiConnectCard({
             onChangeText={changeUrl}
             onSubmitEditing={() => void discover()}
           />
-        </ExternalApiField>
+        </Field></View>
         <View style={externalApiAdminStyles.actions}>
           <Button loading={busy} disabled={busy || !url.trim()} onPress={() => void discover()}>
             Discover API
