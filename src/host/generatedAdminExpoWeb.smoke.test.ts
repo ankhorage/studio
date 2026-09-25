@@ -1194,7 +1194,8 @@ async function waitForResponsiveAuthoringSnapshot(
 
 /*** Read visible text plus form values/placeholders so semantic controls can be asserted without coupling to ZORA DOM nesting. */
 async function readResponsiveAuthoringEvidence(page: ChromePage): Promise<string> {
-  return page.evaluate<string>(`(() => {
+  return (
+    (await page.evaluate<string | undefined>(`(() => {
     const formEvidence = [...document.querySelectorAll('input, textarea, select')].flatMap(
       (element) => {
         if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
@@ -1212,7 +1213,8 @@ async function readResponsiveAuthoringEvidence(page: ChromePage): Promise<string
     return [document.body?.innerText ?? '', ...formEvidence, ...actionEvidence]
       .filter(Boolean)
       .join('\n');
-  })()`);
+  })()`)) ?? ''
+  );
 }
 
 /*** Replace one currently rendered input value through real Chrome input dispatch so React Native Web observes the mutation. */
