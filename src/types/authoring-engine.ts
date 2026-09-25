@@ -62,6 +62,17 @@ export type AuthoringStructure =
       readonly value: AuthoringStructure;
     }
   | {
+      readonly kind: 'entity-registry';
+      readonly key: AuthoringStructure;
+      readonly value: AuthoringStructure;
+      readonly identityField?: string;
+    }
+  | {
+      readonly kind: 'union';
+      readonly variants: readonly AuthoringStructure[];
+      readonly discriminator?: string;
+    }
+  | {
       readonly kind: 'unsupported';
       readonly sourceKind: string;
       readonly diagnostic: AuthoringDiagnostic;
@@ -120,7 +131,7 @@ export interface AuthoringOrderedListNode extends AuthoringNodeBase {
   readonly items: readonly AuthoringPrimitive[];
 }
 
-export type AuthoringValueMapKey =
+export type AuthoringCollectionKey =
   | {
       readonly kind: 'choice';
       readonly values: readonly string[];
@@ -129,6 +140,8 @@ export type AuthoringValueMapKey =
       readonly kind: 'scalar';
       readonly scalarType: 'string';
     };
+
+export type AuthoringValueMapKey = AuthoringCollectionKey;
 
 interface AuthoringValueMapEntry {
   readonly key: string;
@@ -143,6 +156,32 @@ export interface AuthoringValueMapNode extends AuthoringNodeBase {
   readonly entries: readonly AuthoringValueMapEntry[];
 }
 
+interface AuthoringEntityRegistryEntry {
+  readonly key: string;
+  readonly value: AuthoringNode;
+}
+
+export interface AuthoringEntityRegistryNode extends AuthoringNodeBase {
+  readonly kind: 'entity-registry';
+  readonly key: AuthoringCollectionKey;
+  readonly valueStructure: AuthoringStructure;
+  readonly identityField?: string;
+  readonly entries: readonly AuthoringEntityRegistryEntry[];
+}
+
+export interface AuthoringUnionVariant {
+  readonly value: AuthoringPrimitive;
+  readonly structure: AuthoringStructure;
+}
+
+export interface AuthoringUnionNode extends AuthoringNodeBase {
+  readonly kind: 'union';
+  readonly discriminator: string;
+  readonly variants: readonly AuthoringUnionVariant[];
+  readonly selected: AuthoringPrimitive | undefined;
+  readonly value: AuthoringNode | undefined;
+}
+
 interface AuthoringUnsupportedNode extends AuthoringNodeBase {
   readonly kind: 'unsupported';
   readonly diagnostic: AuthoringDiagnostic;
@@ -150,10 +189,12 @@ interface AuthoringUnsupportedNode extends AuthoringNodeBase {
 
 export type AuthoringNode =
   | AuthoringChoiceNode
+  | AuthoringEntityRegistryNode
   | AuthoringObjectNode
   | AuthoringOrderedListNode
   | AuthoringScalarNode
   | AuthoringSetNode
+  | AuthoringUnionNode
   | AuthoringUnsupportedNode
   | AuthoringValueMapNode;
 
