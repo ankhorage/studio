@@ -6,10 +6,7 @@ import { View } from 'react-native';
 import { useStudio } from '../../../core/StudioContext';
 import { createManualRestApi } from '../../../externalApiApi';
 import type { ExternalApiConnectResult } from '../../../externalApiAuthoringContracts';
-import {
-  ExternalApiDiagnosticList,
-  externalApiAdminStyles,
-} from './ExternalApiAdminPrimitives';
+import { ExternalApiDiagnosticList, externalApiAdminStyles } from './ExternalApiAdminPrimitives';
 
 interface ManualRestApiCardProps {
   readonly apiId: string;
@@ -76,12 +73,12 @@ export function ManualRestApiCard({
           Studio will persist this through the same canonical infra.apis entry. Retry discovery at
           any time without losing the URL above.
         </Text>
-        <View style={externalApiAdminStyles.field}><Field label="Generated API ID">
+        <View style={externalApiAdminStyles.field}>\n          <Field label="Generated API ID">
           <Text selectable variant="bodySmall">
             {apiId}
           </Text>
-        </Field></View>
-        <View style={externalApiAdminStyles.field}><Field label="Base URL">
+          </Field>\n        </View>
+        <View style={externalApiAdminStyles.field}>\n          <Field label="Base URL">
           <TextInput
             accessibilityLabel="Manual REST base URL"
             value={baseUrl}
@@ -89,40 +86,40 @@ export function ManualRestApiCard({
             autoCorrect={false}
             onChangeText={setBaseUrl}
           />
-        </Field></View>
+          </Field>\n        </View>
         <View style={externalApiAdminStyles.columns}>
-          <View style={externalApiAdminStyles.field}><Field label="Endpoint ID">
+          <View style={externalApiAdminStyles.field}>\n            <Field label="Endpoint ID">
             <TextInput
               accessibilityLabel="Endpoint ID"
               value={endpointId}
               autoCapitalize="none"
               onChangeText={setEndpointId}
             />
-          </Field></View>
-          <View style={externalApiAdminStyles.field}><Field label="Path">
+            </Field>\n          </View>
+          <View style={externalApiAdminStyles.field}>\n            <Field label="Path">
             <TextInput
               accessibilityLabel="Endpoint path"
               value={path}
               autoCapitalize="none"
               onChangeText={setPath}
             />
-          </Field></View>
-          <View style={externalApiAdminStyles.field}><Field label="Operation ID">
+            </Field>\n          </View>
+          <View style={externalApiAdminStyles.field}>\n            <Field label="Operation ID">
             <TextInput
               accessibilityLabel="Operation ID"
               value={operationId}
               autoCapitalize="none"
               onChangeText={setOperationId}
             />
-          </Field></View>
+            </Field>\n          </View>
         </View>
         <View style={externalApiAdminStyles.columns}>
-          <View style={externalApiAdminStyles.field}><Field label="HTTP method">
+          <View style={externalApiAdminStyles.field}>\n            <Field label="HTTP method">
             <Select value={method} options={METHOD_OPTIONS} onValueChange={setMethod} />
-          </Field></View>
-          <View style={externalApiAdminStyles.field}><Field label="Intent">
+            </Field>\n          </View>
+          <View style={externalApiAdminStyles.field}>\n            <Field label="Intent">
             <Select value={intent} options={INTENT_OPTIONS} onValueChange={setIntent} />
-          </Field></View>
+            </Field>\n          </View>
         </View>
         <ButtonGroup orientation="responsive" align="end">
           <Button variant="outline" disabled={busy} onPress={onRetry}>
