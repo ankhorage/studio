@@ -1,4 +1,5 @@
 import type { SecretMetadata } from '@ankhorage/contracts/secrets';
+import { uniqueSortedStrings } from '@ankhorage/utility/array';
 import { Heading, IconButton, Text, useZoraTheme } from '@ankhorage/zora';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -71,13 +72,13 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
   const [deleting, setDeleting] = useState(false);
 
   const kindOptions = useMemo(
-    () => ['All', ...uniqueSorted(inventory.items.map((item) => item.kind))],
+    () => ['All', ...uniqueSortedStrings(inventory.items.map((item) => item.kind))],
     [inventory.items],
   );
   const providerOptions = useMemo(
     () => [
       'All',
-      ...uniqueSorted(inventory.items.map((item) => item.provider).filter(isPresentString)),
+      ...uniqueSortedStrings(inventory.items.map((item) => item.provider).filter(isPresentString)),
     ],
     [inventory.items],
   );
@@ -773,14 +774,6 @@ function formatSecretCleanupBusyReason(
  */
 function secretInventoryKey(metadata: SecretMetadata): string {
   return `${metadata.scope.environment}:${metadata.ref}`;
-}
-
-/***
- * Deduplicate string values and return a locale-sorted copy.
- * @utility @ankhorage/utility/array
- */
-function uniqueSorted(values: readonly string[]): string[] {
-  return [...new Set(values)].sort((left, right) => left.localeCompare(right));
 }
 
 /***
