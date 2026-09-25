@@ -159,10 +159,7 @@ export class ProjectDeployService {
   }
 
   /*** Persist one browser-authored Monetization value through Deploy's canonical owner projection. */
-  writeMonetizationAuthoring(
-    projectId: string,
-    value: DeployMonetizationAuthoringValue,
-  ) {
+  writeMonetizationAuthoring(projectId: string, value: DeployMonetizationAuthoringValue) {
     return this.writeMonetization(projectId, fromDeployMonetizationAuthoringValue(value));
   }
 
