@@ -1,4 +1,3 @@
-import { isSerializableValue } from '@ankhorage/contracts';
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
 import {
   isReleaseStepResumable,
@@ -160,21 +159,16 @@ export class ProjectDeployService {
   }
 
   /*** Persist one browser-authored Monetization value through Deploy's canonical owner projection. */
-  writeMonetizationAuthoring(projectId: string, value: unknown) {
-    if (!isSerializableValue(value)) throw new Error('Serializable Monetization authoring value required.');
-    return this.writeMonetization(
-      projectId,
-      fromDeployMonetizationAuthoringValue(value as DeployMonetizationAuthoringValue),
-    );
+  writeMonetizationAuthoring(
+    projectId: string,
+    value: DeployMonetizationAuthoringValue,
+  ) {
+    return this.writeMonetization(projectId, fromDeployMonetizationAuthoringValue(value));
   }
 
   /*** Persist one browser-authored Release value through Deploy's canonical owner projection. */
-  writeReleaseAuthoring(projectId: string, value: unknown) {
-    if (!isSerializableValue(value)) throw new Error('Serializable Release authoring value required.');
-    return this.writeRelease(
-      projectId,
-      fromDeployReleaseAuthoringValue(value as DeployReleaseAuthoringValue),
-    );
+  writeReleaseAuthoring(projectId: string, value: DeployReleaseAuthoringValue) {
+    return this.writeRelease(projectId, fromDeployReleaseAuthoringValue(value));
   }
 
   /*** Read authored monetization products for one project. */
