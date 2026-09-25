@@ -32,11 +32,7 @@ export function DeployOwnerAuthoringEditor<T>(props: DeployOwnerAuthoringEditorP
         policy: props.policy,
       })}
       onMutation={(mutation) => {
-        const result = applyAuthoringMutationToStructure(
-          props.value,
-          structure,
-          mutation,
-        );
+        const result = applyAuthoringMutationToStructure(props.value, structure, mutation);
         if (!result.ok) {
           props.onError(result.diagnostic.message);
           return;
