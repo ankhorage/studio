@@ -290,7 +290,6 @@ const SCREEN_METADATA_STRUCTURE = {
   ],
 } as const satisfies AuthoringStructure;
 
-
 test('derives stable entity-registry details and keeps duplicated identity read-only', () => {
   const model = deriveAuthoringModel({
     structure: {
@@ -317,7 +316,7 @@ test('derives stable entity-registry details and keeps duplicated identity read-
   });
   if (model.kind !== 'entity-registry') return;
   const entry = model.entries.at(0)?.value;
-  if (!entry || entry.kind !== 'object') return;
+  if (entry?.kind !== 'object') return;
   expect(entry.fields.find((field) => field.path.at(-1) === 'id')).toMatchObject({
     kind: 'scalar',
     value: 'alpha',
@@ -367,7 +366,11 @@ test('derives the active discriminated union variant without duplicating its dis
           kind: 'object',
           fields: [
             { name: 'kind', optional: false, structure: { kind: 'choice', values: ['beta'] } },
-            { name: 'count', optional: false, structure: { kind: 'scalar', scalarType: 'integer' } },
+            {
+              name: 'count',
+              optional: false,
+              structure: { kind: 'scalar', scalarType: 'integer' },
+            },
           ],
         },
       ],
