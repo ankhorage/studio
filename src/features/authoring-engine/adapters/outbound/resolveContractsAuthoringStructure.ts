@@ -5,7 +5,6 @@ import type {
 } from '@ankhorage/contracts/structure';
 
 import type {
-  AuthoringDiagnostic,
   AuthoringStructure,
   AuthoringStructureResolution,
 } from '../../../../types/authoring-engine';
@@ -84,10 +83,27 @@ function resolveDescriptor(
         key: resolveDescriptor(descriptor.key, document, visited, [...path, '<key>']),
         value: resolveDescriptor(descriptor.value, document, visited, [...path, '*']),
       };
+    case 'entity-registry':
+      return {
+        kind: 'entity-registry',
+        key: resolveDescriptor(descriptor.key, document, visited, [...path, '<key>']),
+        value: resolveDescriptor(descriptor.value, document, visited, [...path, '*']),
+        ...(descriptor.identityField === undefined
+          ? {}
+          : { identityField: descriptor.identityField }),
+      };
+    case 'union':
+      return {
+        kind: 'union',
+        variants: descriptor.variants.map((variant, index) =>
+          resolveDescriptor(variant, document, visited, [...path, `<variant:${index}>`]),
+        ),
+        ...(descriptor.discriminator === undefined
+          ? {}
+          : { discriminator: descriptor.discriminator }),
+      };
     case 'ref':
       return resolveReference(descriptor, document, visited, path);
-    default:
-      return unsupportedStructure(descriptor.kind, path);
   }
 }
 
@@ -141,14 +157,4 @@ function resolveReference(
     new Set([...visited, descriptor.id]),
     path,
   );
-}
-
-/*** Preserve an unsupported descriptor kind as an explicit authoring diagnostic. */
-function unsupportedStructure(sourceKind: string, path: readonly string[]): AuthoringStructure {
-  const diagnostic: AuthoringDiagnostic = {
-    code: 'unsupported-structure',
-    message: `Structure kind "${sourceKind}" does not have a Studio authoring adapter yet.`,
-    path,
-  };
-  return { kind: 'unsupported', sourceKind, diagnostic };
 }

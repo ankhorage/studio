@@ -4,14 +4,17 @@ import { StyleSheet, View } from 'react-native';
 
 import type {
   AuthoringChoiceNode,
+  AuthoringEntityRegistryNode,
   AuthoringMutation,
   AuthoringNode,
   AuthoringOrderedListNode,
   AuthoringScalarNode,
   AuthoringSetNode,
+  AuthoringUnionNode,
   AuthoringValueMapNode,
 } from '../../../../types/authoring-engine';
 import { createInitialAuthoringValue } from '../../application/use-cases/createInitialAuthoringValue';
+import { createInitialEntityRegistryValue } from '../../application/use-cases/createInitialEntityRegistryValue';
 
 export interface AuthoringCustomControlProps {
   readonly model: AuthoringNode;
@@ -123,6 +126,26 @@ function AuthoringControl({ model, onMutation, renderCustomControl }: AuthoringE
   if (model.kind === 'value-map') {
     return (
       <ValueMapEditor
+        model={model}
+        onMutation={onMutation}
+        renderCustomControl={renderCustomControl}
+      />
+    );
+  }
+
+  if (model.kind === 'entity-registry') {
+    return (
+      <EntityRegistryEditor
+        model={model}
+        onMutation={onMutation}
+        renderCustomControl={renderCustomControl}
+      />
+    );
+  }
+
+  if (model.kind === 'union') {
+    return (
+      <UnionEditor
         model={model}
         onMutation={onMutation}
         renderCustomControl={renderCustomControl}
@@ -403,6 +426,120 @@ function ValueMapEditor(props: {
   );
 }
 
+/*** Render stable keyed entities without exposing key rename as an entity operation. */
+function EntityRegistryEditor(props: {
+  readonly model: AuthoringEntityRegistryNode;
+  readonly onMutation: (mutation: AuthoringMutation) => void;
+  readonly renderCustomControl?: AuthoringEditorProps['renderCustomControl'];
+}) {
+  const { model } = props;
+  const newKey = resolveNextRegistryKey(model);
+  const initial =
+    newKey === undefined
+      ? undefined
+      : createInitialEntityRegistryValue(model.valueStructure, model.identityField, newKey);
+
+  return (
+    <Field label={model.label} description={model.description} required={!model.optional}>
+      <View style={styles.membership}>
+        {model.entries.map((entry) => (
+          <View key={entry.key} style={styles.valueMapRow}>
+            <View style={styles.valueMapKey}>
+              <Text>{entry.key}</Text>
+            </View>
+            <View style={styles.valueMapValue}>
+              <AuthoringEditor
+                model={entry.value}
+                onMutation={props.onMutation}
+                renderCustomControl={props.renderCustomControl}
+              />
+            </View>
+            <Button
+              variant="outline"
+              onPress={() => props.onMutation({ kind: 'unset', path: [...model.path, entry.key] })}
+            >
+              Remove
+            </Button>
+          </View>
+        ))}
+        {newKey !== undefined && initial !== undefined ? (
+          <Button
+            variant="outline"
+            onPress={() =>
+              props.onMutation({ kind: 'set', path: [...model.path, newKey], value: initial })
+            }
+          >
+            Add entity
+          </Button>
+        ) : null}
+      </View>
+    </Field>
+  );
+}
+
+/*** Render explicit discriminated-union selection plus the selected variant detail editor. */
+function UnionEditor(props: {
+  readonly model: AuthoringUnionNode;
+  readonly onMutation: (mutation: AuthoringMutation) => void;
+  readonly renderCustomControl?: AuthoringEditorProps['renderCustomControl'];
+}) {
+  const { model } = props;
+  const options = model.variants.map((variant) => ({
+    label: String(variant.value),
+    value: encodeChoiceValue(variant.value),
+  }));
+
+  return (
+    <Field label={model.label} description={model.description} required={!model.optional}>
+      <View style={styles.fields}>
+        <Select
+          options={options}
+          value={model.selected === undefined ? undefined : encodeChoiceValue(model.selected)}
+          onValueChange={(controlValue) => {
+            const variant = model.variants.find(
+              (candidate) => encodeChoiceValue(candidate.value) === controlValue,
+            );
+            const initial = variant && createInitialAuthoringValue(variant.structure);
+            if (initial !== undefined) {
+              props.onMutation({ kind: 'set', path: model.path, value: initial });
+            }
+          }}
+        />
+        {model.value ? (
+          <AuthoringEditor
+            model={model.value}
+            onMutation={props.onMutation}
+            renderCustomControl={props.renderCustomControl}
+          />
+        ) : null}
+        {model.optional && model.selected !== undefined ? (
+          <Button
+            variant="outline"
+            onPress={() => props.onMutation({ kind: 'unset', path: model.path })}
+          >
+            Remove
+          </Button>
+        ) : null}
+      </View>
+    </Field>
+  );
+}
+
+/*** Choose one deterministic unused identity key for a generic or finite owner registry. */
+function resolveNextRegistryKey(model: AuthoringEntityRegistryNode): string | undefined {
+  const used = new Set(model.entries.map((entry) => entry.key));
+  if (model.key.kind === 'choice') {
+    return model.key.values.find((candidate) => !used.has(candidate));
+  }
+  return resolveOpenRegistryKey(used);
+}
+
+/*** Recursively find the first unused generic entity key without mutating existing identity. */
+function resolveOpenRegistryKey(used: ReadonlySet<string>, index = 1): string {
+  const candidate = index === 1 ? 'newEntity' : `newEntity${index}`;
+  return used.has(candidate) ? resolveOpenRegistryKey(used, index + 1) : candidate;
+}
+
 /*** Choose a deterministic unused map key without assigning ordering semantics to persisted values. */
 function resolveNextValueMapKey(model: AuthoringValueMapNode): string | undefined {
   const used = new Set(model.entries.map((entry) => entry.key));
@@ -512,15 +649,19 @@ function encodeChoiceValue(value: string | number | boolean | null): string {
 function formatAuthoringNodeValue(
   model:
     | AuthoringChoiceNode
+    | AuthoringEntityRegistryNode
     | AuthoringOrderedListNode
     | AuthoringScalarNode
     | AuthoringSetNode
+    | AuthoringUnionNode
     | AuthoringValueMapNode,
 ): string {
-  if (model.kind === 'value-map')
+  if (model.kind === 'value-map' || model.kind === 'entity-registry')
     return model.entries.length > 0
       ? model.entries.map((entry) => entry.key).join(', ')
       : 'Not set';
+  if (model.kind === 'union')
+    return model.selected === undefined ? 'Not set' : String(model.selected);
   if (model.kind === 'set')
     return model.selected.length > 0 ? model.selected.join(', ') : 'Not set';
   if (model.kind === 'ordered-list')
