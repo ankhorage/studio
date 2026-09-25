@@ -179,12 +179,11 @@ function resolvePublicRoutePath(
 
 /*** Read the concrete semantic version from Expo Runtime's package range. */
 function resolveExactVersion(versionRange: string): string {
-  const normalized =
-    versionRange.startsWith('>=')
-      ? versionRange.slice(2)
-      : versionRange.startsWith('^') || versionRange.startsWith('~')
-        ? versionRange.slice(1)
-        : versionRange;
+  const normalized = versionRange.startsWith('>=')
+    ? versionRange.slice(2)
+    : versionRange.startsWith('^') || versionRange.startsWith('~')
+      ? versionRange.slice(1)
+      : versionRange;
   const version = parseSemanticVersion(normalized);
   if (!version)
     throw new Error(`Expo Router range ${JSON.stringify(versionRange)} has no version.`);
