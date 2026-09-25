@@ -7,7 +7,10 @@ import type {
   AuthoringUnionVariant,
 } from '../../../types/authoring-engine';
 
-type UnionFailure = { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
+interface UnionFailure {
+  readonly ok: false;
+  readonly diagnostic: AuthoringDiagnostic;
+}
 
 type UnionResolution =
   | {
@@ -24,7 +27,7 @@ export function resolveAuthoringUnion(
   value: unknown,
   path: readonly string[],
 ): UnionResolution {
-  const discriminator = structure.discriminator;
+  const { discriminator } = structure;
   if (!discriminator) {
     return unsupported(path, 'Union authoring requires an explicit owner discriminator.');
   }
@@ -33,7 +36,7 @@ export function resolveAuthoringUnion(
     resolveVariant(variant, discriminator, path),
   );
   const invalid = variants.find((variant) => !variant.ok);
-  if (invalid && !invalid.ok) return invalid;
+  if (invalid) return invalid;
 
   const resolved = variants
     .filter((variant): variant is Extract<typeof variant, { readonly ok: true }> => variant.ok)
@@ -65,8 +68,12 @@ function resolveVariant(
   discriminator: string,
   path: readonly string[],
 ):
-  | { readonly ok: true; readonly value: AuthoringPrimitive; readonly structure: AuthoringStructure }
-  | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic } {
+  | {
+      readonly ok: true;
+      readonly value: AuthoringPrimitive;
+      readonly structure: AuthoringStructure;
+    }
+  | UnionFailure {
   if (structure.kind !== 'object') {
     return unsupported(path, 'Discriminated union variants must be object structures.');
   }
