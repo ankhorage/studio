@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v6.0.0",
+      "value": "v6.0.1",
       "color": "cb3837"
     },
     {
@@ -18038,16 +18038,16 @@
       "description": "Wait until all requested owner-derived evidence is rendered and return viewport/form-control geometry.",
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1167,
+        "line": 1189,
         "column": 1
       }
     },
     {
       "name": "readResponsiveAuthoringEvidence",
-      "description": "Read visible text plus form values/placeholders so semantic controls can be asserted without coupling to ZORA DOM nesting.",
+      "description": "Read visible body text plus form values/placeholders without depending on one fragile CDP evaluation result.",
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1196,
+        "line": 1218,
         "column": 1
       }
     },
@@ -18056,7 +18056,7 @@
       "description": "Replace one currently rendered input value through real Chrome input dispatch so React Native Web observes the mutation.",
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1219,
+        "line": 1243,
         "column": 1
       }
     },
@@ -18065,7 +18065,7 @@
       "description": "Wait for Studio autosave to cross the existing manifest host boundary.",
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1242,
+        "line": 1266,
         "column": 1
       }
     },
@@ -18074,7 +18074,7 @@
       "description": "Preserve the last app route while navigating through multiple administration destinations.",
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1263,
+        "line": 1287,
         "column": 1
       }
     },
@@ -18083,7 +18083,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1368,
+        "line": 1392,
         "column": 1
       }
     },
@@ -18092,7 +18092,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1596,
+        "line": 1620,
         "column": 1
       }
     },
@@ -18101,7 +18101,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1623,
+        "line": 1647,
         "column": 1
       }
     },
@@ -18110,7 +18110,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1642,
+        "line": 1666,
         "column": 1
       }
     },
@@ -18119,7 +18119,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1662,
+        "line": 1686,
         "column": 1
       }
     },
@@ -18128,7 +18128,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1681,
+        "line": 1705,
         "column": 1
       }
     },
@@ -18137,7 +18137,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1702,
+        "line": 1726,
         "column": 1
       }
     },
@@ -18146,7 +18146,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1706,
+        "line": 1730,
         "column": 1
       }
     },
@@ -18155,7 +18155,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1726,
+        "line": 1750,
         "column": 1
       }
     },
@@ -18164,7 +18164,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1747,
+        "line": 1771,
         "column": 1
       }
     },
@@ -18173,7 +18173,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1769,
+        "line": 1793,
         "column": 1
       }
     },
@@ -18182,7 +18182,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1808,
+        "line": 1832,
         "column": 1
       }
     },
@@ -18191,7 +18191,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1822,
+        "line": 1846,
         "column": 1
       }
     },
@@ -18200,7 +18200,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1851,
+        "line": 1875,
         "column": 1
       }
     },
@@ -18209,7 +18209,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1858,
+        "line": 1882,
         "column": 1
       }
     },
@@ -18218,7 +18218,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1865,
+        "line": 1889,
         "column": 1
       }
     },
@@ -18227,7 +18227,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1874,
+        "line": 1898,
         "column": 1
       }
     },
@@ -18236,7 +18236,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1899,
+        "line": 1923,
         "column": 1
       }
     },
@@ -18245,7 +18245,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1906,
+        "line": 1930,
         "column": 1
       }
     },
@@ -18254,7 +18254,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1938,
+        "line": 1962,
         "column": 1
       }
     },
@@ -18263,7 +18263,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1976,
+        "line": 2000,
         "column": 1
       }
     },
@@ -18272,7 +18272,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2005,
+        "line": 2029,
         "column": 1
       }
     },
@@ -18281,7 +18281,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2283,
+        "line": 2307,
         "column": 1
       }
     },
@@ -18290,7 +18290,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2307,
+        "line": 2331,
         "column": 1
       }
     },
@@ -18299,7 +18299,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2324,
+        "line": 2348,
         "column": 1
       }
     },
@@ -18308,7 +18308,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2340,
+        "line": 2364,
         "column": 1
       }
     },
@@ -18317,7 +18317,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2363,
+        "line": 2387,
         "column": 1
       }
     },
@@ -18326,7 +18326,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2393,
+        "line": 2417,
         "column": 1
       }
     },
@@ -18335,7 +18335,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2456,
+        "line": 2480,
         "column": 1
       }
     },
@@ -18344,7 +18344,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2543,
+        "line": 2567,
         "column": 1
       }
     },
@@ -18353,7 +18353,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2596,
+        "line": 2620,
         "column": 1
       }
     },
@@ -18362,7 +18362,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2610,
+        "line": 2634,
         "column": 1
       }
     },
@@ -18371,7 +18371,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2619,
+        "line": 2643,
         "column": 1
       }
     },
@@ -18380,7 +18380,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2635,
+        "line": 2659,
         "column": 1
       }
     },
@@ -18389,7 +18389,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2642,
+        "line": 2666,
         "column": 1
       }
     },
@@ -18398,7 +18398,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2648,
+        "line": 2672,
         "column": 1
       }
     },
@@ -18407,7 +18407,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2661,
+        "line": 2685,
         "column": 1
       }
     },
@@ -18416,7 +18416,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2678,
+        "line": 2702,
         "column": 1
       }
     },
@@ -18425,7 +18425,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2695,
+        "line": 2719,
         "column": 1
       }
     },
@@ -18434,7 +18434,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2701,
+        "line": 2725,
         "column": 1
       }
     },
@@ -18443,7 +18443,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2707,
+        "line": 2731,
         "column": 1
       }
     },
@@ -18452,7 +18452,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2723,
+        "line": 2747,
         "column": 1
       }
     },
@@ -18461,7 +18461,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 3279,
+        "line": 3303,
         "column": 1
       }
     },
@@ -18470,7 +18470,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 3294,
+        "line": 3318,
         "column": 1
       }
     },
@@ -18479,7 +18479,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 3298,
+        "line": 3322,
         "column": 1
       }
     },
@@ -18488,7 +18488,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 3307,
+        "line": 3331,
         "column": 1
       }
     },
@@ -18497,7 +18497,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 3318,
+        "line": 3342,
         "column": 1
       }
     },
@@ -25967,7 +25967,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 62,
+        "line": 70,
         "column": 9
       }
     },
@@ -25976,7 +25976,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 103,
+        "line": 111,
         "column": 9
       }
     },
@@ -25985,7 +25985,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 112,
+        "line": 120,
         "column": 9
       }
     },
@@ -25994,7 +25994,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 122,
+        "line": 130,
         "column": 9
       }
     },
@@ -26003,7 +26003,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 150,
+        "line": 158,
         "column": 9
       }
     },
@@ -26012,7 +26012,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 180,
+        "line": 188,
         "column": 9
       }
     },
@@ -26021,7 +26021,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 211,
+        "line": 219,
         "column": 9
       }
     },
@@ -26030,7 +26030,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 271,
+        "line": 279,
         "column": 9
       }
     },
@@ -26039,7 +26039,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 290,
+        "line": 344,
         "column": 9
       }
     },
@@ -26048,7 +26048,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 309,
+        "line": 363,
         "column": 9
       }
     },
@@ -26057,7 +26057,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 367,
+        "line": 421,
         "column": 9
       }
     },
@@ -26066,7 +26066,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 385,
+        "line": 439,
         "column": 1
       }
     },
@@ -26075,7 +26075,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 403,
+        "line": 457,
         "column": 1
       }
     },
@@ -26084,7 +26084,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 421,
+        "line": 475,
         "column": 1
       }
     },
@@ -26093,7 +26093,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 437,
+        "line": 491,
         "column": 1
       }
     },
@@ -26102,7 +26102,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 456,
+        "line": 510,
         "column": 1
       }
     },
@@ -26327,7 +26327,7 @@
       "description": "Decode an HTTP response as JSON and convert decoding failure to the client's API error.\n@utility @ankhorage/utility/http",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 291,
+        "line": 297,
         "column": 1
       }
     },
@@ -26336,7 +26336,7 @@
       "description": "Build the Studio deploy endpoint path for one project and suffix. @todo Keep deploy endpoint routing under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 300,
+        "line": 306,
         "column": 1
       }
     },
@@ -26345,7 +26345,7 @@
       "description": "Create a JSON RequestInit with method, content type, and serialized body.\n@utility @ankhorage/utility/http",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 308,
+        "line": 314,
         "column": 1
       }
     },
@@ -26354,7 +26354,7 @@
       "description": "Serialize a deploy listing-asset location into endpoint query parameters. @todo Keep deploy protocol serialization under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 317,
+        "line": 323,
         "column": 1
       }
     },
@@ -26363,7 +26363,7 @@
       "description": "Parse the browser-safe Deploy authoring snapshot without importing Deploy runtime code.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 330,
+        "line": 336,
         "column": 1
       }
     },
@@ -26372,7 +26372,7 @@
       "description": "Parse the deploy-config response shape. @todo Keep deploy payload validation under src/deploy/ or its owning deploy contract package.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 348,
+        "line": 354,
         "column": 1
       }
     },
@@ -26381,7 +26381,7 @@
       "description": "Parse the project store-listing response shape. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 356,
+        "line": 362,
         "column": 1
       }
     },
@@ -26390,7 +26390,7 @@
       "description": "Parse the monetization desired-state response shape. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 370,
+        "line": 376,
         "column": 1
       }
     },
@@ -26399,7 +26399,7 @@
       "description": "Parse a success-or-failure monetization inspection response. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 379,
+        "line": 385,
         "column": 1
       }
     },
@@ -26408,7 +26408,7 @@
       "description": "Validate a monetization inspection payload. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 396,
+        "line": 402,
         "column": 1
       }
     },
@@ -26417,7 +26417,7 @@
       "description": "Validate a monetization plan payload. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 411,
+        "line": 417,
         "column": 1
       }
     },
@@ -26426,7 +26426,7 @@
       "description": "Parse a monetization execution result and validate the payload for its status. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 427,
+        "line": 433,
         "column": 1
       }
     },
@@ -26435,7 +26435,7 @@
       "description": "Test whether an unknown value is one of the monetization plan statuses.\n@utility @ankhorage/utility/value",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 447,
+        "line": 453,
         "column": 1
       }
     },
@@ -26444,7 +26444,7 @@
       "description": "Test whether an unknown value is one of the monetization execution statuses.\n@utility @ankhorage/utility/value",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 455,
+        "line": 461,
         "column": 1
       }
     },
@@ -26453,7 +26453,7 @@
       "description": "Parse the prepared release desired-state response shape. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 460,
+        "line": 466,
         "column": 1
       }
     },
@@ -26462,7 +26462,7 @@
       "description": "Parse release history as an array of valid history records. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 476,
+        "line": 482,
         "column": 1
       }
     },
@@ -26471,7 +26471,7 @@
       "description": "Parse a success-or-failure release inspection response. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 482,
+        "line": 488,
         "column": 1
       }
     },
@@ -26480,7 +26480,7 @@
       "description": "Parse a release execution envelope and its nested execution result. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 515,
+        "line": 521,
         "column": 1
       }
     },
@@ -26489,7 +26489,7 @@
       "description": "Validate the nested project release execution result and reconciliation payload. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 525,
+        "line": 531,
         "column": 1
       }
     },
@@ -26498,7 +26498,7 @@
       "description": "Parse one release lifecycle-control execution result. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 550,
+        "line": 556,
         "column": 1
       }
     },
@@ -26507,7 +26507,7 @@
       "description": "Validate a generic failure payload containing string code and message fields.\n@utility @ankhorage/utility/validation",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 569,
+        "line": 575,
         "column": 1
       }
     },
@@ -26516,7 +26516,7 @@
       "description": "Test whether an unknown value is one of the release reconciliation statuses.\n@utility @ankhorage/utility/value",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 580,
+        "line": 586,
         "column": 1
       }
     },
@@ -26525,7 +26525,7 @@
       "description": "Test whether an unknown value is one of the release lifecycle-control statuses.\n@utility @ankhorage/utility/value",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 594,
+        "line": 600,
         "column": 1
       }
     },
@@ -26534,7 +26534,16 @@
       "description": "Validate the minimal release-history record shape used by this deploy client. @todo Keep deploy history contract validation under src/deploy/ or its owning package.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 599,
+        "line": 605,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertAuthoringBrowserSafe",
+      "description": "Allow validated owner structure metadata to use descriptor keys such as \"value\" while keeping every browser payload field under the raw-secret guard.",
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 618,
         "column": 1
       }
     },
@@ -26543,7 +26552,7 @@
       "description": "Reject deploy responses that expose forbidden secret-shaped fields. @todo Keep deploy response safety policy under src/deploy/ while using generic nested-key scanning.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 612,
+        "line": 631,
         "column": 1
       }
     },
@@ -26552,7 +26561,7 @@
       "description": "Read a string error field from an unknown response record or return a fallback message.\n@utility @ankhorage/utility/error",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 626,
+        "line": 645,
         "column": 1
       }
     },
@@ -26561,7 +26570,7 @@
       "description": "Throw the deploy client's canonical invalid-response error for a labeled payload. @todo Keep deploy-specific error construction under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 632,
+        "line": 651,
         "column": 1
       }
     },
@@ -26570,7 +26579,7 @@
       "description": "Narrow an unknown non-array object to a string-keyed record.\n@utility @ankhorage/utility/value",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 640,
+        "line": 659,
         "column": 1
       }
     },
@@ -42423,8 +42432,8 @@
       },
       {
         "fromSymbol": "requestJson",
-        "toSymbol": "assertBrowserSafe",
-        "callExpression": "assertBrowserSafe",
+        "toSymbol": "assertSafe",
+        "callExpression": "assertSafe",
         "sourcePath": "src/projectDeployClient.ts"
       },
       {
@@ -42707,6 +42716,24 @@
         "fromSymbol": "isHistoryRecord",
         "toSymbol": "asRecord",
         "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "assertAuthoringBrowserSafe",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "assertAuthoringBrowserSafe",
+        "toSymbol": "isStructureDescriptorDocument",
+        "callExpression": "isStructureDescriptorDocument",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "assertAuthoringBrowserSafe",
+        "toSymbol": "assertBrowserSafe",
+        "callExpression": "assertBrowserSafe",
         "sourcePath": "src/projectDeployClient.ts"
       },
       {
@@ -46581,8 +46608,32 @@
       },
       {
         "fromSymbol": "verifyResponsiveAuthoringAcceptance",
+        "toSymbol": "openChromePage",
+        "callExpression": "openChromePage",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyResponsiveAuthoringAcceptance",
+        "toSymbol": "blockHotReloadConnections",
+        "callExpression": "page.blockHotReloadConnections",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyResponsiveAuthoringAcceptance",
         "toSymbol": "setViewportSize",
         "callExpression": "page.setViewportSize",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyResponsiveAuthoringAcceptance",
+        "toSymbol": "navigate",
+        "callExpression": "page.navigate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyResponsiveAuthoringAcceptance",
+        "toSymbol": "waitForStudioNavigationReady",
+        "callExpression": "page.waitForStudioNavigationReady",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -46623,14 +46674,14 @@
       },
       {
         "fromSymbol": "verifyResponsiveAuthoringAcceptance",
-        "toSymbol": "waitForStudioNavigationReady",
-        "callExpression": "page.waitForStudioNavigationReady",
+        "toSymbol": "evaluate",
+        "callExpression": "page.evaluate",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
         "fromSymbol": "verifyResponsiveAuthoringAcceptance",
-        "toSymbol": "evaluate",
-        "callExpression": "page.evaluate",
+        "toSymbol": "close",
+        "callExpression": "page.close",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -46643,6 +46694,12 @@
         "fromSymbol": "waitForResponsiveAuthoringSnapshot",
         "toSymbol": "evaluate",
         "callExpression": "page.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readResponsiveAuthoringEvidence",
+        "toSymbol": "readBodyText",
+        "callExpression": "page.readBodyText",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {

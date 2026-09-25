@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 6.0.1
+
+### Patch Changes
+
+- c85ac89: Emit formatter-stable generated root layouts and run the responsive Studio administration browser acceptance as a permanent acceptance gate.
+
 ## 6.0.0
 
 ### Major Changes
