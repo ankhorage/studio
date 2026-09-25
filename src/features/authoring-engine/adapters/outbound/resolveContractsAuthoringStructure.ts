@@ -158,4 +158,3 @@ function resolveReference(
     path,
   );
 }
-
