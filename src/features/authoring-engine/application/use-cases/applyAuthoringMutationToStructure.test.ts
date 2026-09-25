@@ -150,7 +150,6 @@ test('rejects owner-unknown materialization paths', () => {
   });
 });
 
-
 const REGISTRY_STRUCTURE = {
   kind: 'object',
   fields: [
