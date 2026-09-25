@@ -1214,29 +1214,29 @@ async function waitForResponsiveAuthoringSnapshot(
   );
 }
 
-/*** Read visible text plus form values/placeholders so semantic controls can be asserted without coupling to ZORA DOM nesting. */
+/*** Read visible body text plus form values/placeholders without depending on one fragile CDP evaluation result. */
 async function readResponsiveAuthoringEvidence(page: ChromePage): Promise<string> {
-  return (
+  const bodyText = await page.readBodyText();
+  const formEvidence =
     (await page.evaluate<string | undefined>(`(() => {
-    const formEvidence = [...document.querySelectorAll('input, textarea, select')].flatMap(
-      (element) => {
-        if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
-          return [element.value, element.placeholder];
-        }
-        if (element instanceof HTMLSelectElement) {
-          return [element.value, ...[...element.options].map((option) => option.textContent ?? '')];
-        }
-        return [];
-      },
-    );
-    const actionEvidence = [...document.querySelectorAll('[role="button"], button')].map(
-      (element) => element.textContent ?? '',
-    );
-    return [document.body?.innerText ?? '', ...formEvidence, ...actionEvidence]
-      .filter(Boolean)
-      .join('\n');
-  })()`)) ?? ''
-  );
+      const fields = [...document.querySelectorAll('input, textarea, select')].flatMap(
+        (element) => {
+          if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
+            return [element.value, element.placeholder];
+          }
+          if (element instanceof HTMLSelectElement) {
+            return [
+              element.value,
+              ...[...element.options].map((option) => option.textContent ?? ''),
+            ];
+          }
+          return [];
+        },
+      );
+      return fields.filter(Boolean).join('\\n');
+    })()`)) ?? '';
+
+  return [bodyText, formEvidence].filter(Boolean).join('\n');
 }
 
 /*** Replace one currently rendered input value through real Chrome input dispatch so React Native Web observes the mutation. */
