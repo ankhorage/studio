@@ -135,9 +135,11 @@ function deriveNode(args: {
         : unsupportedValue(base, value.diagnostic);
     }
     case 'entity-registry': {
+      const valueStructure = args.structure.value;
+      const identityField = args.structure.identityField;
       const value = readEntityRegistryValue(
         args.structure.key,
-        args.structure.identityField,
+        identityField,
         args.value,
         args.optional,
         args.path,
@@ -148,18 +150,16 @@ function deriveNode(args: {
         ...base,
         kind: 'entity-registry',
         key: value.key,
-        valueStructure: args.structure.value,
-        ...(args.structure.identityField === undefined
-          ? {}
-          : { identityField: args.structure.identityField }),
+        valueStructure,
+        ...(identityField === undefined ? {} : { identityField }),
         entries: value.entries.map(([key, entryValue]) => ({
           key,
           value: deriveNode({
-            structure: args.structure.value,
+            structure: valueStructure,
             value: entryValue,
             policy: withRegistryIdentityReadOnly(
               resolvePresentationFieldPolicy(args.policy?.fields, key),
-              args.structure.identityField,
+              identityField,
             ),
             path: [...args.path, key],
             label: key,
