@@ -433,7 +433,6 @@ function EntityRegistryEditor(props: {
   readonly renderCustomControl?: AuthoringEditorProps['renderCustomControl'];
 }) {
   const { model } = props;
-  const pendingKey = { value: '' };
 
   return (
     <Field label={model.label} description={model.description} required={!model.optional}>
@@ -459,21 +458,11 @@ function EntityRegistryEditor(props: {
           </View>
         ))}
         {model.key.kind === 'scalar' ? (
-          <View style={styles.registryAdd}>
-            <TextInput
-              placeholder="Entity identity"
-              autoCapitalize="none"
-              onChangeText={(value) => {
-                pendingKey.value = value;
-              }}
-            />
-            <Button
-              variant="outline"
-              onPress={() => addRegistryEntity(props, pendingKey.value)}
-            >
-              Add entity
-            </Button>
-          </View>
+          <TextInput
+            placeholder="Entity identity · press Enter to add"
+            autoCapitalize="none"
+            onSubmitEditing={(event) => addRegistryEntity(props, event.nativeEvent.text)}
+          />
         ) : (
           <FiniteRegistryAdd model={model} onMutation={props.onMutation} />
         )}
@@ -515,7 +504,9 @@ function FiniteRegistryAdd(props: {
   return (
     <Button
       variant="outline"
-      onPress={() => props.onMutation({ kind: 'set', path: [...props.model.path, key], value: initial })}
+      onPress={() =>
+        props.onMutation({ kind: 'set', path: [...props.model.path, key], value: initial })
+      }
     >
       Add entity
     </Button>
@@ -747,11 +738,5 @@ const styles = StyleSheet.create({
   valueMapValue: {
     flex: 1,
     minWidth: 180,
-  },
-  registryAdd: {
-    alignItems: 'flex-end',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
   },
 });
