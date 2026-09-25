@@ -142,7 +142,7 @@ test('initializes the Studio provider with the runtime manifest', () => {
   expect(generated).toContain(
     'const activeStudioTheme = resolveManifestActiveTheme(studioRuntimeManifest);',
   );
-  expect(generated).not.toContain('themes.find(');
+  expect(generated).not.toContain('themes.find(');\n  expect(generated).toContain(\n    \"readOwnProperty<AppManifest['themes'][string]>(\",\n  );
   expect(generated).not.toContain("AppManifest['themes'][number]");
   expect(generated).not.toContain('?? activeTheme');
   expect(generated).toContain(
