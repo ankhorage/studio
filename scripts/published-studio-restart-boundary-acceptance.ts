@@ -8,7 +8,11 @@ import process from 'node:process';
 import { promisify } from 'node:util';
 
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
-import { SEMVER_PATTERNS } from '@ankhorage/utility/semver';
+import {
+  compareSemanticVersions,
+  parseSemanticVersion,
+  SEMVER_PATTERNS,
+} from '@ankhorage/utility/semver';
 
 const execFileAsync = promisify(execFile);
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
@@ -179,19 +183,12 @@ async function resolvePublishedStudioRestartBoundaryAsync(): Promise<{
 
 /*** Compare two stable semantic versions numerically by major, minor, then patch. */
 function compareStableVersions(left: string, right: string): number {
-  const leftParts = readStableVersionParts(left);
-  const rightParts = readStableVersionParts(right);
-  return leftParts.reduce((difference, value, index) => {
-    if (difference !== 0) return difference;
-    return value - (rightParts.at(index) ?? 0);
-  }, 0);
-}
-
-/*** Parse one stable semantic version into its numeric major, minor, and patch parts. */
-function readStableVersionParts(version: string): readonly [number, number, number] {
-  const match = /^(\d+)\.(\d+)\.(\d+)$/u.exec(version);
-  if (match === null) throw new Error(`Invalid stable Studio version: ${version}.`);
-  return [Number(match.at(1)), Number(match.at(2)), Number(match.at(3))];
+  const leftVersion = parseSemanticVersion(left);
+  const rightVersion = parseSemanticVersion(right);
+  if (!leftVersion || !rightVersion) {
+    throw new Error(`Invalid stable Studio version comparison: ${left} / ${right}.`);
+  }
+  return compareSemanticVersions(leftVersion, rightVersion);
 }
 
 /*** Reconstruct and validate the retained previous published lock state before the latest release. */
