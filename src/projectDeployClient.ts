@@ -1,4 +1,6 @@
+import { isSerializableValue, type SerializableValue } from '@ankhorage/contracts';
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
+import { isStructureDescriptorDocument } from '@ankhorage/contracts/structure';
 import type {
   MonetizationDesiredState,
   MonetizationProduct,
@@ -27,6 +29,7 @@ import type { ProjectDeployReleaseInspectionResult } from './projectDeployReleas
 import type { ProjectDeployRequest } from './projectDeployRequest';
 import type { ProjectDeployRuntimeInput } from './projectDeployRuntimeInput';
 import { findRawSecretResponseKey } from './secretResponseGuard';
+import type { ProjectDeployAuthoringSnapshot } from './types/project-deploy-authoring';
 
 /*** Execute and validate Studio deploy HTTP operations through an injected request transport. @todo Move this concrete deploy client under src/deploy/ at the package edge. */
 export class ProjectDeployClient {
@@ -87,6 +90,32 @@ export class ProjectDeployClient {
       withAssetLocation(projectPath(projectId, 'listing/asset'), location),
       { method: 'DELETE' },
       parseListing,
+    );
+  }
+
+  /*** Read browser-safe owner metadata and authoring values projected by the trusted Studio host. */
+  readAuthoring(projectId: string): Promise<ProjectDeployAuthoringSnapshot> {
+    return this.requestJson(projectPath(projectId, 'authoring'), undefined, parseAuthoring);
+  }
+
+  /*** Persist a neutral Monetization authoring value through the trusted host owner projection. */
+  writeMonetizationAuthoring(
+    projectId: string,
+    value: SerializableValue,
+  ): Promise<MonetizationDesiredState> {
+    return this.requestJson(
+      projectPath(projectId, 'authoring/monetization'),
+      jsonRequest('PUT', value),
+      parseMonetization,
+    );
+  }
+
+  /*** Persist a neutral Release authoring value through the trusted host owner projection. */
+  writeReleaseAuthoring(projectId: string, value: SerializableValue): Promise<ReleaseDesiredState> {
+    return this.requestJson(
+      projectPath(projectId, 'authoring/release'),
+      jsonRequest('PUT', value),
+      parseRelease,
     );
   }
 
@@ -295,6 +324,24 @@ function withAssetLocation(path: string, location: ProjectStoreListingAssetLocat
     query.set('filename', location.filename);
   }
   return `${path}?${query.toString()}`;
+}
+
+/*** Parse the browser-safe Deploy authoring snapshot without importing Deploy runtime code. */
+function parseAuthoring(value: unknown): ProjectDeployAuthoringSnapshot {
+  const record = asRecord(value);
+  if (
+    record === null ||
+    !isStructureDescriptorDocument(record.structure) ||
+    !isSerializableValue(record.monetization) ||
+    !isSerializableValue(record.release)
+  ) {
+    invalid('Deploy authoring');
+  }
+  return {
+    structure: record.structure,
+    monetization: record.monetization,
+    release: record.release,
+  };
 }
 
 /*** Parse the deploy-config response shape. @todo Keep deploy payload validation under src/deploy/ or its owning deploy contract package. */

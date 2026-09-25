@@ -1,6 +1,6 @@
-import { Card, Heading, Text, useZoraTheme } from '@ankhorage/zora';
+import { Card, Heading, Text } from '@ankhorage/zora';
 import React from 'react';
-import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 /***
  * Render scrollable administration page content with Studio's shared page spacing and width constraints.
@@ -53,29 +53,6 @@ export function Field(props: { readonly label: string; readonly children: React.
 }
 
 /***
- * Render a theme-aware React Native text input for Studio administration forms.
- * @todo Replace with the canonical ZORA Input component/pattern rather than duplicating focus-independent input styling in Studio.
- */
-export function Input(props: React.ComponentProps<typeof TextInput>) {
-  const { theme } = useZoraTheme();
-  return (
-    <TextInput
-      {...props}
-      placeholderTextColor={theme.colors.textMuted}
-      style={[
-        styles.input,
-        {
-          color: theme.colors.text,
-          backgroundColor: theme.colors.background,
-          borderColor: theme.colors.border,
-        },
-        props.style,
-      ]}
-    />
-  );
-}
-
-/***
  * Render one label/value metadata pair in Studio administration pages.
  * @todo Prefer a canonical ZORA key/value or definition-list pattern if available.
  */
@@ -116,13 +93,6 @@ const styles = StyleSheet.create({
   },
   field: {
     gap: 6,
-  },
-  input: {
-    minHeight: 44,
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
   },
   keyValue: {
     gap: 4,
