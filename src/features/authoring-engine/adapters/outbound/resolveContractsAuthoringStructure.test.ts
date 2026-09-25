@@ -233,7 +233,6 @@ test('reports missing roots rather than guessing an editor', () => {
   });
 });
 
-
 test('resolves released Deploy entity-registry and union semantics without a Studio shadow schema', () => {
   const result = resolveContractsAuthoringStructure(DEPLOY_AUTHORING_STRUCTURE, 'monetization');
 
@@ -250,10 +249,7 @@ test('resolves released Deploy entity-registry and union semantics without a Stu
 });
 
 test('preserves nested released Deploy rollout unions and target-set semantics', () => {
-  const result = resolveContractsAuthoringStructure(
-    DEPLOY_AUTHORING_STRUCTURE,
-    'prepared-release',
-  );
+  const result = resolveContractsAuthoringStructure(DEPLOY_AUTHORING_STRUCTURE, 'prepared-release');
 
   expect(result.ok).toBe(true);
   if (!result.ok || result.structure.kind !== 'object') return;
@@ -262,7 +258,7 @@ test('preserves nested released Deploy rollout unions and target-set semantics',
   const rollout = result.structure.fields.find((field) => field.name === 'rollout')?.structure;
   expect(targets).toMatchObject({ kind: 'set' });
   expect(rollout).toMatchObject({ kind: 'object' });
-  if (!rollout || rollout.kind !== 'object') return;
+  if (rollout?.kind !== 'object') return;
   expect(rollout.fields.find((field) => field.name === 'android')?.structure).toMatchObject({
     kind: 'union',
     discriminator: 'mode',
