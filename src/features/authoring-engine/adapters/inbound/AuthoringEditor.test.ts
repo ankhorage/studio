@@ -583,6 +583,82 @@ test('renders discriminated union selection and initializes the selected owner v
   });
 });
 
+test('preserves shared owner fields when switching a product-like discriminated union', () => {
+  const mutations: AuthoringMutation[] = [];
+  const sharedFields = [
+    { name: 'id', optional: false, structure: { kind: 'scalar', scalarType: 'string' } },
+    {
+      name: 'basePrice',
+      optional: false,
+      structure: {
+        kind: 'object',
+        fields: [
+          { name: 'amount', optional: false, structure: { kind: 'scalar', scalarType: 'string' } },
+        ],
+      },
+    },
+  ] as const;
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'union',
+      discriminator: 'kind',
+      variants: [
+        {
+          kind: 'object',
+          fields: [
+            ...sharedFields,
+            { name: 'kind', optional: false, structure: { kind: 'choice', values: ['consumable'] } },
+          ],
+        },
+        {
+          kind: 'object',
+          fields: [
+            ...sharedFields,
+            { name: 'kind', optional: false, structure: { kind: 'choice', values: ['subscription'] } },
+            {
+              name: 'subscription',
+              optional: false,
+              structure: {
+                kind: 'object',
+                fields: [
+                  {
+                    name: 'period',
+                    optional: false,
+                    structure: { kind: 'choice', values: ['P1M', 'P1Y'] },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    value: { id: 'pro', basePrice: { amount: '19.90' }, kind: 'consumable' },
+  });
+  const controls = renderControls(
+    editor.AuthoringEditor({
+      model,
+      onMutation: (mutation) => mutations.push(mutation),
+    }),
+  );
+  const select = controls.find((control) => control.type === 'Select');
+  const selectSubscription = select?.props.onValueChange;
+  if (typeof selectSubscription !== 'function') throw new Error('Missing union variant handler.');
+
+  Reflect.apply(selectSubscription, undefined, ['string:"subscription"']);
+
+  expect(mutations.at(-1)).toEqual({
+    kind: 'set',
+    path: [],
+    value: {
+      id: 'pro',
+      basePrice: { amount: '19.90' },
+      kind: 'subscription',
+      subscription: { period: 'P1M' },
+    },
+  });
+});
+
 test('delegates owner-requested custom controls while retaining the central Field wrapper', () => {
   const mutations: AuthoringMutation[] = [];
   const model = deriveAuthoringModel({
