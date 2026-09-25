@@ -6,10 +6,7 @@ import { useStudio } from '../../../core/StudioContext';
 import { deriveExternalApiIdFromUrl } from '../../../deriveExternalApiIdFromUrl';
 import { connectExternalApi } from '../../../externalApiApi';
 import type { ExternalApiConnectResult } from '../../../externalApiAuthoringContracts';
-import {
-  ExternalApiDiagnosticList,
-  externalApiAdminStyles,
-} from './ExternalApiAdminPrimitives';
+import { ExternalApiDiagnosticList, externalApiAdminStyles } from './ExternalApiAdminPrimitives';
 
 interface ExternalApiDiscoveryFailure {
   readonly apiId: string;
@@ -88,7 +85,7 @@ export function ExternalApiConnectCard({
       description="Start with the service or schema URL. Studio derives the API ID and discovers the protocol automatically."
     >
       <View style={externalApiAdminStyles.stack}>
-        <View style={externalApiAdminStyles.field}><Field label="Service or schema URL">
+        <View style={externalApiAdminStyles.field}>\n          <Field label="Service or schema URL">
           <TextInput
             accessibilityLabel="Service or schema URL"
             value={url}
@@ -98,7 +95,7 @@ export function ExternalApiConnectCard({
             onChangeText={changeUrl}
             onSubmitEditing={() => void discover()}
           />
-        </Field></View>
+          </Field>\n        </View>
         <View style={externalApiAdminStyles.actions}>
           <Button loading={busy} disabled={busy || !url.trim()} onPress={() => void discover()}>
             Discover API
