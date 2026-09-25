@@ -21,6 +21,9 @@ export function applyAuthoringMutationToStructure<T>(
   structure: AuthoringStructure,
   mutation: AuthoringMutation,
 ): AuthoringMutationResult<T> {
+  if (mutation.kind === 'set' && mutation.path.length === 0) {
+    return replaceStructuredRoot(structure, mutation) as AuthoringMutationResult<T>;
+  }
   if (!isRecord(current)) {
     return rejected(mutation, 'Structured authoring mutations require object state.');
   }
@@ -48,6 +51,24 @@ export function applyAuthoringMutationToStructure<T>(
   return {
     ok: true,
     value: normalizeStructuredValue(structure, applied.value, mutation.kind === 'unset') as T,
+  };
+}
+
+/*** Replace an object-shaped structured root for root-level union/object variant selection. */
+function replaceStructuredRoot(
+  structure: AuthoringStructure,
+  mutation: Extract<AuthoringMutation, { readonly kind: 'set' }>,
+): AuthoringMutationResult<Readonly<Record<string, unknown>>> {
+  if (!isRecord(mutation.value)) {
+    return rejected(mutation, 'Root structured replacement requires object state.');
+  }
+  const validation = validateStructuredValue(structure, mutation.value, mutation, []);
+  if (!validation.ok) return validation;
+  return {
+    ok: true,
+    value: normalizeStructuredValue(structure, mutation.value, false) as Readonly<
+      Record<string, unknown>
+    >,
   };
 }
 
