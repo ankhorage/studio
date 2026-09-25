@@ -415,16 +415,19 @@ function GeneratedRootView({ children }: { children: ReactNode }) {
   );
 }
 
-function resolveZoraSurfaceThemeConfig(theme: AppManifest['themes'][string]) {
+function resolveZoraSurfaceThemeConfig(\n  theme: AppManifest['themes'][string],\n): AppManifest['themes'][string] {
   return {
-    ...theme,
+    id: theme.id,
+    name: theme.name,
     light: { ...theme.light },
     dark: { ...theme.dark },
+    ...(theme.tokens === undefined ? {} : { tokens: theme.tokens }),
+    ...(theme.recipes === undefined ? {} : { recipes: theme.recipes }),
   };
 }
 
 function resolveManifestActiveTheme(manifest: AppManifest): AppManifest['themes'][string] {
-  const theme = readOwnProperty(manifest.themes, manifest.activeThemeId);
+  const theme = readOwnProperty<AppManifest['themes'][string]>(\n    manifest.themes,\n    manifest.activeThemeId,\n  );
   if (!theme) {
     throw new Error("Manifest active theme '" + manifest.activeThemeId + "' is missing.");
   }

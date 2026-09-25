@@ -143,6 +143,7 @@ test('keeps Studio package metadata and the first-party app on the Expo owner co
     'expo-constants': EXPO_PLATFORM.packages.constants.version,
     'expo-dev-client': EXPO_PLATFORM.packages.devClient.version,
     'expo-font': EXPO_PLATFORM.packages.font.version,
+    'expo-image-picker': EXPO_PLATFORM.packages.imagePicker.version,
     'expo-linking': EXPO_PLATFORM.packages.linking.version,
     'expo-router': EXPO_PLATFORM.navigation.expoRouter.version,
     'expo-splash-screen': EXPO_PLATFORM.packages.splashScreen.version,

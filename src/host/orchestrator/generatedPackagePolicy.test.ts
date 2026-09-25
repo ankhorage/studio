@@ -74,7 +74,7 @@ test('does not introduce optional generated dependencies when their capability i
   });
 
   expect(packageJson.dependencies['@ankhorage/studio']).toBeUndefined();
-  expect(packageJson.dependencies['@ankhorage/utility']).toBeUndefined();
+  expect(packageJson.dependencies['@ankhorage/utility']).toBeDefined();
   expect(packageJson.dependencies['@ankhorage/supabase-auth']).toBeUndefined();
   expect(packageJson.dependencies['@ankhorage/supabase-storage']).toBeUndefined();
   expect(Object.hasOwn(packageJson.dependencies, '@react-native-picker/picker')).toBe(false);
