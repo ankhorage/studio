@@ -22,10 +22,7 @@ export function DeployListingLocaleAuthoringCard(props: {
 }) {
   const structure =
     props.authoring.status === 'ready'
-      ? resolveContractsAuthoringStructure(
-          props.authoring.data.structure,
-          'store-listing-locale',
-        )
+      ? resolveContractsAuthoringStructure(props.authoring.data.structure, 'store-listing-locale')
       : null;
 
   return (
