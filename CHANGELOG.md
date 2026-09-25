@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.11.1
+
+### Patch Changes
+
+- d215689: Capture stable open registry identities before entity insertion in the shared Authoring Editor.
+
 ## 5.11.0
 
 ### Minor Changes

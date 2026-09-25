@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.11.0",
+      "value": "v5.11.1",
       "color": "cb3837"
     },
     {
@@ -14453,7 +14453,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 625,
+        "line": 636,
         "column": 1
       }
     },
@@ -14462,7 +14462,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 638,
+        "line": 649,
         "column": 1
       }
     },
@@ -14471,7 +14471,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.test.ts",
-        "line": 654,
+        "line": 665,
         "column": 1
       }
     },
@@ -14539,29 +14539,38 @@
       }
     },
     {
+      "name": "addRegistryEntity",
+      "description": "Insert one open-key registry entity only after its stable owner identity has been supplied.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "line": 475,
+        "column": 1
+      }
+    },
+    {
+      "name": "FiniteRegistryAdd",
+      "description": "Render deterministic insertion for finite owner-defined registry identities.",
+      "sourceLocation": {
+        "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "line": 491,
+        "column": 1
+      }
+    },
+    {
       "name": "UnionEditor",
       "description": "Render explicit discriminated-union selection plus the selected variant detail editor.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 481,
+        "line": 517,
         "column": 1
       }
     },
     {
-      "name": "resolveNextRegistryKey",
-      "description": "Choose one deterministic unused identity key for a generic or finite owner registry.",
+      "name": "resolveNextFiniteRegistryKey",
+      "description": "Choose the next unused finite owner identity without assigning collection order semantics.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 529,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveOpenRegistryKey",
-      "description": "Recursively find the first unused generic entity key without mutating existing identity.",
-      "sourceLocation": {
-        "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 538,
+        "line": 565,
         "column": 1
       }
     },
@@ -14570,7 +14579,7 @@
       "description": "Choose a deterministic unused map key without assigning ordering semantics to persisted values.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 544,
+        "line": 572,
         "column": 1
       }
     },
@@ -14579,7 +14588,7 @@
       "description": "Recursively find the first unused generic key for an open scalar-string value map.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 552,
+        "line": 580,
         "column": 1
       }
     },
@@ -14588,7 +14597,7 @@
       "description": "Move one ordered-list item immutably while preserving every other authored item.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 558,
+        "line": 586,
         "column": 1
       }
     },
@@ -14597,7 +14606,7 @@
       "description": "Render one scalar authoring node and translate ZORA changes to neutral mutations.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 576,
+        "line": 604,
         "column": 1
       }
     },
@@ -14606,7 +14615,7 @@
       "description": "Convert text input to a scalar set/unset mutation without coercing invalid numeric values.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 621,
+        "line": 649,
         "column": 1
       }
     },
@@ -14615,7 +14624,7 @@
       "description": "Encode a primitive choice into a stable Select value without losing its runtime type.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 644,
+        "line": 672,
         "column": 1
       }
     },
@@ -14624,7 +14633,7 @@
       "description": "Format one supported authored node for read-only presentation.",
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
-        "line": 649,
+        "line": 677,
         "column": 1
       }
     },
@@ -68789,13 +68798,31 @@
         "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
       },
       {
-        "fromSymbol": "EntityRegistryEditor",
-        "toSymbol": "resolveNextRegistryKey",
-        "callExpression": "resolveNextRegistryKey",
+        "fromSymbol": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "toSymbol": "addRegistryEntity",
+        "callExpression": "addRegistryEntity",
         "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
       },
       {
-        "fromSymbol": "EntityRegistryEditor",
+        "fromSymbol": "addRegistryEntity",
+        "toSymbol": "createInitialEntityRegistryValue",
+        "callExpression": "createInitialEntityRegistryValue",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "addRegistryEntity",
+        "toSymbol": "onMutation",
+        "callExpression": "props.onMutation",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "FiniteRegistryAdd",
+        "toSymbol": "resolveNextFiniteRegistryKey",
+        "callExpression": "resolveNextFiniteRegistryKey",
+        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "FiniteRegistryAdd",
         "toSymbol": "createInitialEntityRegistryValue",
         "callExpression": "createInitialEntityRegistryValue",
         "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
@@ -68810,18 +68837,6 @@
         "fromSymbol": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
         "toSymbol": "createInitialAuthoringValue",
         "callExpression": "createInitialAuthoringValue",
-        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
-      },
-      {
-        "fromSymbol": "resolveNextRegistryKey",
-        "toSymbol": "resolveOpenRegistryKey",
-        "callExpression": "resolveOpenRegistryKey",
-        "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
-      },
-      {
-        "fromSymbol": "resolveOpenRegistryKey",
-        "toSymbol": "resolveOpenRegistryKey",
-        "callExpression": "resolveOpenRegistryKey",
         "sourcePath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx"
       },
       {
