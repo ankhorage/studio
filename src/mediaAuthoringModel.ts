@@ -7,6 +7,7 @@ import type {
   UiNode,
 } from '@ankhorage/contracts';
 import { deleteOwnProperty, readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
+import { slugifyAscii } from '@ankhorage/utility/string';
 
 export interface StudioMediaUsage {
   readonly screenId: string;
@@ -86,12 +87,7 @@ export function readStudioMediaAssetReference(value: unknown): MediaAssetReferen
  * @utility @ankhorage/utility/string
  */
 export function createStudioMediaAssetId(name: string, registry: MediaAssetRegistry = {}): string {
-  const base =
-    name
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '') || 'media';
+  const base = slugifyAscii(name) || 'media';
   if (!readOwnProperty<MediaAsset>(registry, base)) return base;
   let suffix = 2;
   while (readOwnProperty<MediaAsset>(registry, `${base}-${suffix}`)) suffix += 1;

@@ -1,3 +1,5 @@
+import { slugifyAscii } from '@ankhorage/utility/string';
+
 import {
   STUDIO_PROJECT_ID_PATTERN,
   STUDIO_RESERVED_PROJECT_IDS,
@@ -13,12 +15,7 @@ import type {
  * @utility @ankhorage/utility/string
  */
 export function deriveProjectId(projectName: string): string {
-  return projectName
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
+  return slugifyAscii(projectName);
 }
 
 /***

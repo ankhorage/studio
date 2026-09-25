@@ -12,6 +12,7 @@ import type {
 } from '@ankhorage/contracts';
 import { NAVIGATOR_TYPES } from '@ankhorage/contracts';
 import { deleteOwnProperty, readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
+import { slugifyAscii } from '@ankhorage/utility/string';
 
 import type {
   NodePlacement,
@@ -1450,13 +1451,7 @@ export function makeUniqueRouteNameForParent(
  * @todo Keep this semantic route-name normalization under routes/ rather than extracting it as a generic slug utility.
  */
 function normalizeRouteName(value: string): string {
-  return (
-    value
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '') || 'screen'
-  );
+  return slugifyAscii(value) || 'screen';
 }
 
 /***
