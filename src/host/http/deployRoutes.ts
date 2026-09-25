@@ -36,9 +36,23 @@ export function registerProjectDeployRoutes(
     });
 
   registerConfigRoutes(fastify, service);
+  registerAuthoringRoutes(fastify, service);
   registerListingRoutes(fastify, service);
   registerMonetizationRoutes(fastify, service);
   registerReleaseRoutes(fastify, service);
+}
+
+/*** Register browser-safe Deploy authoring metadata/value projection routes. */
+function registerAuthoringRoutes(fastify: FastifyInstance, service: ProjectDeployService): void {
+  fastify.get('/api/projects/:id/deploy/authoring', async (req, reply) =>
+    respond(reply, () => service.readAuthoring(projectId(req))),
+  );
+  fastify.put('/api/projects/:id/deploy/authoring/monetization', async (req, reply) =>
+    respond(reply, () => service.writeMonetizationAuthoring(projectId(req), req.body)),
+  );
+  fastify.put('/api/projects/:id/deploy/authoring/release', async (req, reply) =>
+    respond(reply, () => service.writeReleaseAuthoring(projectId(req), req.body)),
+  );
 }
 
 /*** Register deployment-config read/write routes. */
