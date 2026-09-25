@@ -313,8 +313,9 @@ test('replaces a root discriminated union with a validated target variant', () =
     ],
   } as const satisfies AuthoringStructure;
 
+  const current: Readonly<Record<string, unknown>> = { kind: 'a' };
   expect(
-    applyAuthoringMutationToStructure({ kind: 'a' }, rootUnion, {
+    applyAuthoringMutationToStructure(current, rootUnion, {
       kind: 'set',
       path: [],
       value: { kind: 'b', label: 'B' },
