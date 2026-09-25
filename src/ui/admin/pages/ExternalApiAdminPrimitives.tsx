@@ -1,30 +1,8 @@
 import type { DataSourceDiagnostic } from '@ankhorage/contracts/data';
 import { Text } from '@ankhorage/zora';
-import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import type { ExternalApiDiscoveryAttempt } from '../../../externalApiAuthoringContracts';
-
-/***
- * Render a labeled field wrapper used by external-API admin forms.
- * @todo Replace this Studio-local generic field primitive with the canonical ZORA FormField pattern.
- */
-export function ExternalApiField({
-  label,
-  children,
-}: {
-  readonly label: string;
-  readonly children: ReactNode;
-}) {
-  return (
-    <View style={externalApiAdminStyles.field}>
-      <Text variant="bodySmall" weight="semiBold">
-        {label}
-      </Text>
-      {children}
-    </View>
-  );
-}
 
 /*** Render external API discovery attempts and canonical data-source diagnostics as administration feedback. */
 export function ExternalApiDiagnosticList({
