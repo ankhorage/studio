@@ -1,82 +1,78 @@
+import { DEPLOY_AUTHORING_STRUCTURE } from '@ankhorage/deploy/authoring';
 import type { ProjectStoreListingAssetLocation } from '@ankhorage/deploy/project';
-import { Button, Card, Dialog, Select, Text, View as ZoraView } from '@ankhorage/zora';
+import { Button, Card, Dialog, Text, View as ZoraView } from '@ankhorage/zora';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
+import { resolveContractsAuthoringStructure } from '../../../../features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure';
 import { pickProjectDeployImage } from '../../../../projectDeployAssetPicker';
 import {
   removeProjectDeployListingAsset,
   writeProjectDeployListingAsset,
 } from '../../../../projectDeployApi';
-import { adminPageStyles, Field, Input, KeyValue } from '../../adminPagePrimitives';
+import { adminPageStyles, KeyValue } from '../../adminPagePrimitives';
 import type { ProjectDeployDashboardState } from './deployDashboardTypes';
+import { DeployOwnerAuthoringEditor } from './DeployOwnerAuthoringEditor';
 
-type AssetKind = 'screenshot' | 'android-shared';
-type ScreenshotTarget = 'android' | 'ios';
-type SharedVariant = 'icon' | 'feature';
 type PickedImage = NonNullable<Awaited<ReturnType<typeof pickProjectDeployImage>>>;
 
-const KIND_OPTIONS = [
-  { value: 'screenshot', label: 'Store screenshot' },
-  { value: 'android-shared', label: 'Android shared asset' },
-] satisfies readonly { readonly value: AssetKind; readonly label: string }[];
+const ASSET_LOCATION_STRUCTURE = resolveContractsAuthoringStructure(
+  DEPLOY_AUTHORING_STRUCTURE,
+  'store-listing-asset-location',
+);
+const DEFAULT_ASSET_LOCATION: ProjectStoreListingAssetLocation = {
+  kind: 'screenshot',
+  target: 'android',
+  locale: 'en-US',
+  variant: 'phone',
+  filename: '',
+};
 
-const TARGET_OPTIONS = [
-  { value: 'android', label: 'Android' },
-  { value: 'ios', label: 'iOS' },
-] satisfies readonly { readonly value: ScreenshotTarget; readonly label: string }[];
-
-const SHARED_VARIANT_OPTIONS = [
-  { value: 'icon', label: 'Icon' },
-  { value: 'feature', label: 'Feature graphic' },
-] satisfies readonly { readonly value: SharedVariant; readonly label: string }[];
-
+/*** Author a semantic store-asset location from Deploy metadata while keeping image I/O as workflow UI. */
 export function DeployStoreAssetAuthoringCard(props: {
   readonly projectId: string;
   readonly listing: ProjectDeployDashboardState['listing'];
   readonly onMutation: () => void;
 }) {
-  const [kind, setKind] = useState<AssetKind>('screenshot');
-  const [target, setTarget] = useState<ScreenshotTarget>('android');
-  const [locale, setLocale] = useState('en-US');
-  const [variant, setVariant] = useState('phone');
-  const [sharedVariant, setSharedVariant] = useState<SharedVariant>('icon');
-  const [filename, setFilename] = useState('');
+  const [location, setLocation] =
+    useState<ProjectStoreListingAssetLocation>(DEFAULT_ASSET_LOCATION);
   const [image, setImage] = useState<PickedImage | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [confirmRemove, setConfirmRemove] = useState(false);
 
-  const location = createLocation({ kind, target, locale, variant, sharedVariant, filename });
-
+  /*** Pick one local image while leaving semantic asset-location authoring to the shared engine. */
   const chooseImage = async () => {
     setError(null);
     try {
       const selected = await pickProjectDeployImage();
       if (!selected) return;
       setImage(selected);
-      if (kind === 'screenshot') setFilename(selected.filename);
+      if (location.kind === 'screenshot') {
+        setLocation({ ...location, filename: selected.filename });
+      }
     } catch (caught) {
-      setError(readError(caught));
+      setError(caught instanceof Error ? caught.message : String(caught));
     }
   };
 
+  /*** Upload the selected bytes to the currently authored Deploy semantic asset location. */
   const upload = async () => {
-    if (!location || !image) return;
+    if (!image) return;
     setBusy(true);
     setError(null);
     try {
       await writeProjectDeployListingAsset(props.projectId, location, image.data);
       props.onMutation();
     } catch (caught) {
-      setError(readError(caught));
+      setError(caught instanceof Error ? caught.message : String(caught));
     } finally {
       setBusy(false);
     }
   };
 
+  /*** Remove the currently authored semantic asset location through Deploy's owner API. */
   const remove = async () => {
-    if (!location) return;
     setConfirmRemove(false);
     setBusy(true);
     setError(null);
@@ -84,7 +80,7 @@ export function DeployStoreAssetAuthoringCard(props: {
       await removeProjectDeployListingAsset(props.projectId, location);
       props.onMutation();
     } catch (caught) {
-      setError(readError(caught));
+      setError(caught instanceof Error ? caught.message : String(caught));
     } finally {
       setBusy(false);
     }
@@ -93,35 +89,14 @@ export function DeployStoreAssetAuthoringCard(props: {
   return (
     <Card
       title="Store assets"
-      description="Upload or remove a semantic Deploy asset location. Studio never constructs Deploy filesystem paths."
+      description="Asset-location variants and finite choices come from Deploy owner metadata. Image picking, upload and removal remain workflow operations."
     >
-      <Field label="Asset kind">
-        <Select value={kind} options={KIND_OPTIONS} onValueChange={setKind} />
-      </Field>
-      {kind === 'screenshot' ? (
-        <>
-          <Field label="Target">
-            <Select value={target} options={TARGET_OPTIONS} onValueChange={setTarget} />
-          </Field>
-          <Field label="Locale">
-            <Input value={locale} onChangeText={setLocale} />
-          </Field>
-          <Field label="Variant">
-            <Input value={variant} placeholder="phone" onChangeText={setVariant} />
-          </Field>
-          <Field label="Filename">
-            <Input value={filename} placeholder="01.png" onChangeText={setFilename} />
-          </Field>
-        </>
-      ) : (
-        <Field label="Android shared variant">
-          <Select
-            value={sharedVariant}
-            options={SHARED_VARIANT_OPTIONS}
-            onValueChange={setSharedVariant}
-          />
-        </Field>
-      )}
+      <DeployOwnerAuthoringEditor
+        structure={ASSET_LOCATION_STRUCTURE}
+        value={location}
+        onChange={setLocation}
+        onError={setError}
+      />
       <Button disabled={busy} variant="outline" onPress={() => void chooseImage()}>
         Choose PNG/JPEG
       </Button>
@@ -132,14 +107,10 @@ export function DeployStoreAssetAuthoringCard(props: {
         />
       ) : null}
       {error ? <Text color="danger">{error}</Text> : null}
-      <Button disabled={busy || image === null || location === null} onPress={() => void upload()}>
+      <Button disabled={busy || image === null} onPress={() => void upload()}>
         {busy ? 'Working…' : 'Upload asset'}
       </Button>
-      <Button
-        disabled={busy || location === null}
-        variant="outline"
-        onPress={() => setConfirmRemove(true)}
-      >
+      <Button disabled={busy} variant="outline" onPress={() => setConfirmRemove(true)}>
         Remove semantic location
       </Button>
       {props.listing.status === 'ready' ? (
@@ -194,32 +165,4 @@ export function DeployStoreAssetAuthoringCard(props: {
       />
     </Card>
   );
-}
-
-function createLocation(input: {
-  readonly kind: AssetKind;
-  readonly target: ScreenshotTarget;
-  readonly locale: string;
-  readonly variant: string;
-  readonly sharedVariant: SharedVariant;
-  readonly filename: string;
-}): ProjectStoreListingAssetLocation | null {
-  if (input.kind === 'android-shared') {
-    return { kind: 'android-shared', variant: input.sharedVariant };
-  }
-  const locale = input.locale.trim();
-  const variant = input.variant.trim();
-  const filename = input.filename.trim();
-  if (locale === '' || variant === '' || filename === '') return null;
-  return {
-    kind: 'screenshot',
-    target: input.target,
-    locale,
-    variant,
-    filename,
-  };
-}
-
-function readError(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
 }
