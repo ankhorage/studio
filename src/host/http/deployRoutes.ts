@@ -3,6 +3,10 @@ import { randomUUID } from 'node:crypto';
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
 import type { MonetizationProduct, ReleaseLifecycleControl, ReleasePlan } from '@ankhorage/deploy';
 import type {
+  DeployMonetizationAuthoringValue,
+  DeployReleaseAuthoringValue,
+} from '@ankhorage/deploy/authoring';
+import type {
   ProjectMonetizationInspection,
   ProjectMonetizationPlan,
   ProjectReleaseInput,
@@ -48,10 +52,17 @@ function registerAuthoringRoutes(fastify: FastifyInstance, service: ProjectDeplo
     respond(reply, () => service.readAuthoring(projectId(req))),
   );
   fastify.put('/api/projects/:id/deploy/authoring/monetization', async (req, reply) =>
-    respond(reply, () => service.writeMonetizationAuthoring(projectId(req), req.body)),
+    respond(reply, () =>
+      service.writeMonetizationAuthoring(
+        projectId(req),
+        req.body as DeployMonetizationAuthoringValue,
+      ),
+    ),
   );
   fastify.put('/api/projects/:id/deploy/authoring/release', async (req, reply) =>
-    respond(reply, () => service.writeReleaseAuthoring(projectId(req), req.body)),
+    respond(reply, () =>
+      service.writeReleaseAuthoring(projectId(req), req.body as DeployReleaseAuthoringValue),
+    ),
   );
 }
 
