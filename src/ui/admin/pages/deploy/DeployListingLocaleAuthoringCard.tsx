@@ -1,4 +1,3 @@
-import { DEPLOY_AUTHORING_STRUCTURE } from '@ankhorage/deploy/authoring';
 import type { ProjectStoreListing, StoreListingLocale } from '@ankhorage/deploy/project';
 import { Button, Card, Dialog, Select, Text, View } from '@ankhorage/zora';
 import React, { useState } from 'react';
@@ -14,17 +13,21 @@ import { DeployOwnerAuthoringEditor } from './DeployOwnerAuthoringEditor';
 
 const NEW_LOCALE = '__new__';
 const EMPTY_LOCALE: StoreListingLocale = { locale: '', name: '' };
-const LOCALE_STRUCTURE = resolveContractsAuthoringStructure(
-  DEPLOY_AUTHORING_STRUCTURE,
-  'store-listing-locale',
-);
-
 /*** Author store-listing locales from Deploy metadata while retaining locale selection/removal workflow. */
 export function DeployListingLocaleAuthoringCard(props: {
   readonly projectId: string;
+  readonly authoring: ProjectDeployDashboardState['authoring'];
   readonly listing: ProjectDeployDashboardState['listing'];
   readonly onMutation: () => void;
 }) {
+  const structure =
+    props.authoring.status === 'ready'
+      ? resolveContractsAuthoringStructure(
+          props.authoring.data.structure,
+          'store-listing-locale',
+        )
+      : null;
+
   return (
     <Card
       title="Store listing locales"
@@ -33,13 +36,20 @@ export function DeployListingLocaleAuthoringCard(props: {
       {props.listing.status === 'ready' ? (
         <>
           <KeyValue label="Listing revision" value={props.listing.data.revision} />
-          <ListingLocaleDraftEditor
-            key={props.listing.data.revision}
-            projectId={props.projectId}
-            listing={props.listing.data}
-            onMutation={props.onMutation}
-          />
+          {structure ? (
+            <ListingLocaleDraftEditor
+              key={props.listing.data.revision}
+              projectId={props.projectId}
+              listing={props.listing.data}
+              structure={structure}
+              onMutation={props.onMutation}
+            />
+          ) : null}
         </>
+      ) : null}
+      {props.authoring.status === 'loading' ? <Text>Loading authoring metadata…</Text> : null}
+      {props.authoring.status === 'error' ? (
+        <Text color="danger">{props.authoring.message}</Text>
       ) : null}
       {props.listing.status === 'loading' ? <Text>Loading listing…</Text> : null}
       {props.listing.status === 'error' ? (
@@ -53,6 +63,7 @@ export function DeployListingLocaleAuthoringCard(props: {
 function ListingLocaleDraftEditor(props: {
   readonly projectId: string;
   readonly listing: ProjectStoreListing;
+  readonly structure: ReturnType<typeof resolveContractsAuthoringStructure>;
   readonly onMutation: () => void;
 }) {
   const [selected, setSelected] = useState(NEW_LOCALE);
@@ -119,7 +130,7 @@ function ListingLocaleDraftEditor(props: {
         <Select value={selected} options={options} onValueChange={selectLocale} />
       </Field>
       <DeployOwnerAuthoringEditor
-        structure={LOCALE_STRUCTURE}
+        structure={props.structure}
         value={draft}
         policy={selected === NEW_LOCALE ? undefined : { fields: { locale: { readOnly: true } } }}
         onChange={setDraft}
