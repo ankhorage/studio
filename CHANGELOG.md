@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.10.10
+
+### Patch Changes
+
+- 701716e: Update Ankhorage dependencies: `@ankhorage/contracts`, `@ankhorage/deploy`, `@ankhorage/runtime`, `@ankhorage/utility`.
+
 ## 5.10.9
 
 ### Patch Changes
