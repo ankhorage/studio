@@ -3,7 +3,7 @@
 
 # @ankhorage/studio
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v5.12.1](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v6.0.0](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
 
 Studio authoring package for Ankhorage apps
 
@@ -35,7 +35,6 @@ Manage Studio development and projects through the Ankh CLI.
 - [cloneWithNewIds sequence](././paradox/diagrams/sequences/clone-with-new-ids.mmd)
 - [collectStudioMediaAssetUsages sequence](././paradox/diagrams/sequences/collect-studio-media-asset-usages.mmd)
 - [createNodeFromCatalogEntry sequence](././paradox/diagrams/sequences/create-node-from-catalog-entry.mmd)
-- [createStudioInstancePropertyPatch sequence](././paradox/diagrams/sequences/create-studio-instance-property-patch.mmd)
 - [createStudioMediaAssetId sequence](././paradox/diagrams/sequences/create-studio-media-asset-id.mmd)
 - [createStudioUrlMediaAsset sequence](././paradox/diagrams/sequences/create-studio-url-media-asset.mmd)
 - [deriveProjectId sequence](././paradox/diagrams/sequences/derive-project-id.mmd)

@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.12.1",
+      "value": "v6.0.0",
       "color": "cb3837"
     },
     {
@@ -1081,6 +1081,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts",
+        "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
         "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
         "src/ui/admin/pages/themeRecipeAuthoringModel.ts"
       ],
@@ -4298,7 +4299,6 @@
         "collectStudioResponsePaths",
         "createNodeFromCatalogEntry",
         "createStudioActionInputFields",
-        "createStudioInstancePropertyPatch",
         "createStudioMediaAssetId",
         "createStudioMediaAssetReference",
         "createStudioUrlMediaAsset",
@@ -4385,7 +4385,6 @@
         "StudioContextValue",
         "StudioEvent",
         "StudioIdGenerator",
-        "StudioInstancePropertyValue",
         "StudioManifest",
         "StudioMediaAssetRemovalResult",
         "StudioMediaDeleteResult",
@@ -4987,23 +4986,13 @@
       ]
     },
     {
-      "path": "src/propertiesAuthoringModel.test.ts",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/propertiesAuthoringModel.ts"
-      ],
-      "exports": []
-    },
-    {
       "path": "src/propertiesAuthoringModel.ts",
       "isEntrypoint": false,
       "dependencies": [],
       "exports": [
-        "createStudioInstancePropertyPatch",
         "StudioAuthoringComponentMeta",
         "StudioAuthoringMetaRegistry",
-        "StudioAuthoringPropSchema",
-        "StudioInstancePropertyValue"
+        "StudioAuthoringPropSchema"
       ]
     },
     {
@@ -5045,7 +5034,6 @@
         "createNodeFromCatalogEntry",
         "CreateProjectFromTemplateScreen",
         "createStudioActionInputFields",
-        "createStudioInstancePropertyPatch",
         "createStudioMediaAssetId",
         "createStudioMediaAssetReference",
         "createStudioUrlMediaAsset",
@@ -5140,7 +5128,6 @@
         "StudioContextValue",
         "StudioEvent",
         "StudioIdGenerator",
-        "StudioInstancePropertyValue",
         "StudioManifest",
         "StudioMediaAssetRemovalResult",
         "StudioMediaDeleteResult",
@@ -6015,6 +6002,12 @@
       "exports": []
     },
     {
+      "path": "src/ui/admin/pages/AuthoringEngineConsumerAudit.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
       "path": "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -6082,7 +6075,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/bindingAuthoringModel.ts",
-        "src/types/authoring-engine.ts"
+        "src/features/authoring-engine/application/use-cases/createInitialAuthoringValue.ts"
       ],
       "exports": [
         "createBindingLiteralDefaultValue"
@@ -6581,10 +6574,9 @@
         "src/core/StudioContext.ts",
         "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
         "src/features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring.ts",
+        "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
         "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
         "src/manifestState.ts",
-        "src/mediaAuthoringModel.ts",
-        "src/propertiesAuthoringModel.ts",
         "src/types/authoring-engine.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/MediaPropertyInput.tsx"
@@ -6751,6 +6743,7 @@
       "dependencies": [
         "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
         "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts",
+        "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
         "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
         "src/types/authoring-engine.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
@@ -6776,7 +6769,7 @@
       "dependencies": [],
       "exports": [
         "ThemeRecipeAuthoringKind",
-        "updateThemeRecipeField"
+        "updateThemeRecipeOverrides"
       ]
     },
     {
@@ -7062,7 +7055,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 460,
+        "line": 459,
         "column": 14
       },
       "exportPaths": [
@@ -7082,7 +7075,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 368,
+        "line": 367,
         "column": 1
       },
       "exportPaths": [
@@ -7234,7 +7227,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1441,
+        "line": 1440,
         "column": 1
       },
       "exportPaths": [
@@ -7272,7 +7265,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 759,
+        "line": 758,
         "column": 1
       },
       "exportPaths": [
@@ -7308,7 +7301,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 611,
+        "line": 610,
         "column": 14
       },
       "exportPaths": [
@@ -7470,7 +7463,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1354,
+        "line": 1353,
         "column": 1
       },
       "exportPaths": [
@@ -7541,54 +7534,6 @@
             }
           ],
           "returnType": "readonly StudioBindingInputFieldOption[]",
-          "returnDescription": null
-        }
-      ],
-      "members": [],
-      "structuredRows": []
-    },
-    {
-      "name": "createStudioInstancePropertyPatch",
-      "description": "Create an immutable props patch that removes a property for undefined or replaces it for a defined value.\n@utility @ankhorage/utility/object",
-      "isReadme": false,
-      "examples": [],
-      "kind": "function",
-      "modulePath": "src/propertiesAuthoringModel.ts",
-      "sourceLocation": {
-        "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 31,
-        "column": 1
-      },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "StudioInstancePropertyValue"
-      ],
-      "signatures": [
-        {
-          "label": "(node: UiNode, propertyName: string, value: StudioInstancePropertyValue | undefined) => Readonly<Record<string, unknown>>",
-          "parameters": [
-            {
-              "name": "node",
-              "type": "UiNode",
-              "required": true,
-              "description": null
-            },
-            {
-              "name": "propertyName",
-              "type": "string",
-              "required": true,
-              "description": null
-            },
-            {
-              "name": "value",
-              "type": "StudioInstancePropertyValue | undefined",
-              "required": true,
-              "description": null
-            }
-          ],
-          "returnType": "Readonly<Record<string, unknown>>",
           "returnDescription": null
         }
       ],
@@ -7785,7 +7730,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 633,
+        "line": 632,
         "column": 14
       },
       "exportPaths": [
@@ -7867,7 +7812,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 602,
+        "line": 601,
         "column": 14
       },
       "exportPaths": [
@@ -7901,7 +7846,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1264,
+        "line": 1263,
         "column": 1
       },
       "exportPaths": [
@@ -7935,7 +7880,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 346,
+        "line": 345,
         "column": 1
       },
       "exportPaths": [
@@ -8030,7 +7975,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 328,
+        "line": 327,
         "column": 1
       },
       "exportPaths": [
@@ -8075,7 +8020,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 305,
+        "line": 304,
         "column": 1
       },
       "exportPaths": [
@@ -8095,7 +8040,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 356,
+        "line": 355,
         "column": 1
       },
       "exportPaths": [
@@ -8115,7 +8060,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 334,
+        "line": 333,
         "column": 1
       },
       "exportPaths": [
@@ -8204,7 +8149,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 302,
+        "line": 301,
         "column": 1
       },
       "exportPaths": [
@@ -8224,7 +8169,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 303,
+        "line": 302,
         "column": 1
       },
       "exportPaths": [
@@ -8244,7 +8189,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 351,
+        "line": 350,
         "column": 1
       },
       "exportPaths": [
@@ -8340,7 +8285,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1041,
+        "line": 1040,
         "column": 1
       },
       "exportPaths": [
@@ -8377,7 +8322,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 976,
+        "line": 975,
         "column": 1
       },
       "exportPaths": [
@@ -8429,7 +8374,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 983,
+        "line": 982,
         "column": 1
       },
       "exportPaths": [
@@ -8464,7 +8409,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 313,
+        "line": 312,
         "column": 1
       },
       "exportPaths": [
@@ -8522,7 +8467,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 321,
+        "line": 320,
         "column": 1
       },
       "exportPaths": [
@@ -8571,7 +8516,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 308,
+        "line": 307,
         "column": 1
       },
       "exportPaths": [
@@ -8646,7 +8591,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1189,
+        "line": 1188,
         "column": 1
       },
       "exportPaths": [
@@ -8683,7 +8628,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1068,
+        "line": 1067,
         "column": 1
       },
       "exportPaths": [
@@ -8735,7 +8680,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1075,
+        "line": 1074,
         "column": 1
       },
       "exportPaths": [
@@ -8770,7 +8715,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 263,
+        "line": 262,
         "column": 1
       },
       "exportPaths": [
@@ -8821,7 +8766,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 270,
+        "line": 269,
         "column": 1
       },
       "exportPaths": [
@@ -8841,7 +8786,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 283,
+        "line": 282,
         "column": 1
       },
       "exportPaths": [
@@ -8878,7 +8823,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 261,
+        "line": 260,
         "column": 1
       },
       "exportPaths": [
@@ -8898,7 +8843,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 295,
+        "line": 294,
         "column": 1
       },
       "exportPaths": [
@@ -8918,7 +8863,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 288,
+        "line": 287,
         "column": 1
       },
       "exportPaths": [
@@ -9475,7 +9420,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 670,
+        "line": 669,
         "column": 14
       },
       "exportPaths": [
@@ -9655,7 +9600,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 931,
+        "line": 930,
         "column": 1
       },
       "exportPaths": [
@@ -9692,7 +9637,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1489,
+        "line": 1488,
         "column": 1
       },
       "exportPaths": [
@@ -9729,7 +9674,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 866,
+        "line": 865,
         "column": 1
       },
       "exportPaths": [
@@ -9767,7 +9712,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1117,
+        "line": 1116,
         "column": 1
       },
       "exportPaths": [
@@ -9934,7 +9879,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1227,
+        "line": 1226,
         "column": 14
       },
       "exportPaths": [
@@ -10039,7 +9984,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 360,
+        "line": 359,
         "column": 1
       },
       "exportPaths": [
@@ -10083,7 +10028,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 358,
+        "line": 357,
         "column": 1
       },
       "exportPaths": [
@@ -10103,7 +10048,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 366,
+        "line": 365,
         "column": 1
       },
       "exportPaths": [
@@ -10123,7 +10068,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 181,
+        "line": 180,
         "column": 1
       },
       "exportPaths": [
@@ -10143,7 +10088,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 227,
+        "line": 226,
         "column": 1
       },
       "exportPaths": [
@@ -10163,7 +10108,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 207,
+        "line": 206,
         "column": 1
       },
       "exportPaths": [
@@ -10183,7 +10128,7 @@
       "modulePath": "src/propertiesAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 16,
+        "line": 15,
         "column": 1
       },
       "exportPaths": [
@@ -10220,7 +10165,7 @@
       "modulePath": "src/propertiesAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 21,
+        "line": 20,
         "column": 1
       },
       "exportPaths": [
@@ -10240,7 +10185,7 @@
       "modulePath": "src/propertiesAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 4,
+        "line": 3,
         "column": 1
       },
       "exportPaths": [
@@ -10620,7 +10565,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 392,
+        "line": 391,
         "column": 1
       },
       "exportPaths": [
@@ -10640,7 +10585,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 376,
+        "line": 375,
         "column": 1
       },
       "exportPaths": [
@@ -10675,7 +10620,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 381,
+        "line": 380,
         "column": 1
       },
       "exportPaths": [
@@ -10726,7 +10671,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 388,
+        "line": 387,
         "column": 1
       },
       "exportPaths": [
@@ -10746,7 +10691,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 407,
+        "line": 406,
         "column": 1
       },
       "exportPaths": [
@@ -11145,7 +11090,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 400,
+        "line": 399,
         "column": 1
       },
       "exportPaths": [
@@ -11165,27 +11110,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 390,
-        "column": 1
-      },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [],
-      "signatures": [],
-      "members": [],
-      "structuredRows": []
-    },
-    {
-      "name": "StudioInstancePropertyValue",
-      "description": null,
-      "isReadme": false,
-      "examples": [],
-      "kind": "unknown",
-      "modulePath": "src/propertiesAuthoringModel.ts",
-      "sourceLocation": {
-        "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 25,
+        "line": 389,
         "column": 1
       },
       "exportPaths": [
@@ -11205,7 +11130,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 236,
+        "line": 235,
         "column": 1
       },
       "exportPaths": [
@@ -11672,7 +11597,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 176,
+        "line": 175,
         "column": 1
       },
       "exportPaths": [
@@ -11878,7 +11803,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 174,
+        "line": 173,
         "column": 1
       },
       "exportPaths": [
@@ -11940,7 +11865,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 180,
+        "line": 179,
         "column": 1
       },
       "exportPaths": [
@@ -11960,7 +11885,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 172,
+        "line": 171,
         "column": 1
       },
       "exportPaths": [
@@ -12071,7 +11996,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 170,
+        "line": 169,
         "column": 1
       },
       "exportPaths": [
@@ -12169,7 +12094,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 179,
+        "line": 178,
         "column": 1
       },
       "exportPaths": [
@@ -12189,7 +12114,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 175,
+        "line": 174,
         "column": 1
       },
       "exportPaths": [
@@ -12209,7 +12134,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 243,
+        "line": 242,
         "column": 1
       },
       "exportPaths": [
@@ -12267,7 +12192,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 173,
+        "line": 172,
         "column": 1
       },
       "exportPaths": [
@@ -12287,7 +12212,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 251,
+        "line": 250,
         "column": 1
       },
       "exportPaths": [
@@ -12570,7 +12495,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 238,
+        "line": 237,
         "column": 1
       },
       "exportPaths": [
@@ -12590,7 +12515,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 552,
+        "line": 551,
         "column": 14
       },
       "exportPaths": [
@@ -12610,7 +12535,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 642,
+        "line": 641,
         "column": 14
       },
       "exportPaths": [
@@ -12748,7 +12673,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1287,
+        "line": 1286,
         "column": 1
       },
       "exportPaths": [
@@ -12792,7 +12717,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 775,
+        "line": 774,
         "column": 1
       },
       "exportPaths": [
@@ -14909,7 +14834,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
-        "line": 119,
+        "line": 124,
         "column": 1
       }
     },
@@ -18068,7 +17993,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 105,
+        "line": 106,
         "column": 1
       }
     },
@@ -18077,7 +18002,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 208,
+        "line": 209,
         "column": 1
       }
     },
@@ -18086,7 +18011,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 452,
+        "line": 453,
         "column": 9
       }
     },
@@ -18095,7 +18020,52 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 870,
+        "line": 873,
+        "column": 1
+      }
+    },
+    {
+      "name": "verifyResponsiveAuthoringAcceptance",
+      "description": "Exercise released owner-derived authoring semantics at desktop and narrow mobile widths, then prove one canonical mutation survives manifest persistence and reload.",
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1069,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForResponsiveAuthoringSnapshot",
+      "description": "Wait until all requested owner-derived evidence is rendered and return viewport/form-control geometry.",
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1167,
+        "column": 1
+      }
+    },
+    {
+      "name": "readResponsiveAuthoringEvidence",
+      "description": "Read visible text plus form values/placeholders so semantic controls can be asserted without coupling to ZORA DOM nesting.",
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1196,
+        "column": 1
+      }
+    },
+    {
+      "name": "replaceFocusedInputValue",
+      "description": "Replace one currently rendered input value through real Chrome input dispatch so React Native Web observes the mutation.",
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1219,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForManifestScreenName",
+      "description": "Wait for Studio autosave to cross the existing manifest host boundary.",
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1242,
         "column": 1
       }
     },
@@ -18104,7 +18074,7 @@
       "description": "Preserve the last app route while navigating through multiple administration destinations.",
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1050,
+        "line": 1263,
         "column": 1
       }
     },
@@ -18113,7 +18083,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1155,
+        "line": 1368,
         "column": 1
       }
     },
@@ -18122,7 +18092,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1383,
+        "line": 1596,
         "column": 1
       }
     },
@@ -18131,7 +18101,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1410,
+        "line": 1623,
         "column": 1
       }
     },
@@ -18140,7 +18110,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1429,
+        "line": 1642,
         "column": 1
       }
     },
@@ -18149,7 +18119,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1449,
+        "line": 1662,
         "column": 1
       }
     },
@@ -18158,7 +18128,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1468,
+        "line": 1681,
         "column": 1
       }
     },
@@ -18167,7 +18137,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1489,
+        "line": 1702,
         "column": 1
       }
     },
@@ -18176,7 +18146,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1493,
+        "line": 1706,
         "column": 1
       }
     },
@@ -18185,7 +18155,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1513,
+        "line": 1726,
         "column": 1
       }
     },
@@ -18194,7 +18164,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1534,
+        "line": 1747,
         "column": 1
       }
     },
@@ -18203,7 +18173,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1556,
+        "line": 1769,
         "column": 1
       }
     },
@@ -18212,7 +18182,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1595,
+        "line": 1808,
         "column": 1
       }
     },
@@ -18221,7 +18191,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1609,
+        "line": 1822,
         "column": 1
       }
     },
@@ -18230,7 +18200,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1638,
+        "line": 1851,
         "column": 1
       }
     },
@@ -18239,7 +18209,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1645,
+        "line": 1858,
         "column": 1
       }
     },
@@ -18248,7 +18218,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1652,
+        "line": 1865,
         "column": 1
       }
     },
@@ -18257,7 +18227,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1661,
+        "line": 1874,
         "column": 1
       }
     },
@@ -18266,7 +18236,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1686,
+        "line": 1899,
         "column": 1
       }
     },
@@ -18275,7 +18245,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1693,
+        "line": 1906,
         "column": 1
       }
     },
@@ -18284,7 +18254,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1725,
+        "line": 1938,
         "column": 1
       }
     },
@@ -18293,7 +18263,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1763,
+        "line": 1976,
         "column": 1
       }
     },
@@ -18302,7 +18272,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1792,
+        "line": 2005,
         "column": 1
       }
     },
@@ -18311,7 +18281,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2070,
+        "line": 2283,
         "column": 1
       }
     },
@@ -18320,7 +18290,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2094,
+        "line": 2307,
         "column": 1
       }
     },
@@ -18329,7 +18299,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2111,
+        "line": 2324,
         "column": 1
       }
     },
@@ -18338,7 +18308,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2127,
+        "line": 2340,
         "column": 1
       }
     },
@@ -18347,7 +18317,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2149,
+        "line": 2363,
         "column": 1
       }
     },
@@ -18356,7 +18326,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2178,
+        "line": 2393,
         "column": 1
       }
     },
@@ -18365,7 +18335,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2241,
+        "line": 2456,
         "column": 1
       }
     },
@@ -18374,7 +18344,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2305,
+        "line": 2543,
         "column": 1
       }
     },
@@ -18383,7 +18353,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2338,
+        "line": 2596,
         "column": 1
       }
     },
@@ -18392,7 +18362,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2352,
+        "line": 2610,
         "column": 1
       }
     },
@@ -18401,7 +18371,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2361,
+        "line": 2619,
         "column": 1
       }
     },
@@ -18410,7 +18380,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2377,
+        "line": 2635,
         "column": 1
       }
     },
@@ -18419,7 +18389,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2384,
+        "line": 2642,
         "column": 1
       }
     },
@@ -18428,7 +18398,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2390,
+        "line": 2648,
         "column": 1
       }
     },
@@ -18437,7 +18407,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2403,
+        "line": 2661,
         "column": 1
       }
     },
@@ -18446,7 +18416,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2420,
+        "line": 2678,
         "column": 1
       }
     },
@@ -18455,7 +18425,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2437,
+        "line": 2695,
         "column": 1
       }
     },
@@ -18464,7 +18434,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2443,
+        "line": 2701,
         "column": 1
       }
     },
@@ -18473,7 +18443,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2449,
+        "line": 2707,
         "column": 1
       }
     },
@@ -18482,7 +18452,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2465,
+        "line": 2723,
         "column": 1
       }
     },
@@ -18491,7 +18461,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 3021,
+        "line": 3279,
         "column": 1
       }
     },
@@ -18500,7 +18470,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 3036,
+        "line": 3294,
         "column": 1
       }
     },
@@ -18509,7 +18479,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 3040,
+        "line": 3298,
         "column": 1
       }
     },
@@ -18518,7 +18488,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 3049,
+        "line": 3307,
         "column": 1
       }
     },
@@ -18527,7 +18497,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 3060,
+        "line": 3318,
         "column": 1
       }
     },
@@ -24467,7 +24437,7 @@
       "description": "Generate a compact time/random identifier with an optional lowercase prefix.\n@utility @ankhorage/utility/id\n@todo Move the Studio-facing wrapper out of `src/index.ts`; the reusable identifier primitive belongs in Utility.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 602,
+        "line": 601,
         "column": 14
       }
     },
@@ -24476,7 +24446,7 @@
       "description": "Deep-clone a UiNode tree while assigning fresh identifiers and shallow-cloning node props.\n@utility @ankhorage/utility/tree\n@todo `cloneTreeWithNewIds` currently allocates child ids before the root; retain this public pre-order callback contract until Utility supports configurable traversal order.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 611,
+        "line": 610,
         "column": 14
       }
     },
@@ -24485,7 +24455,7 @@
       "description": "Find the first node with a matching id in a depth-first tree traversal.\n@utility @ankhorage/utility/tree\n@todo Move the UiNode wrapper out of `src/index.ts`; parameterize id and child accessors for Utility.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 633,
+        "line": 632,
         "column": 14
       }
     },
@@ -24494,7 +24464,7 @@
       "description": "Immutably update one UiNode by id while preserving Studio's alias/style versus props patch semantics.\n@utility @ankhorage/utility/tree\n@todo Keep Studio-specific patch projection in the canvas/properties owner and extract the generic immutable tree-update primitive to Utility.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 642,
+        "line": 641,
         "column": 14
       }
     },
@@ -24503,7 +24473,7 @@
       "description": "Immutably remove a node by id from a UiNode tree and preserve unchanged branches by reference.\n@utility @ankhorage/utility/tree\n@todo Move the UiNode wrapper out of `src/index.ts` and parameterize tree accessors for Utility.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 670,
+        "line": 669,
         "column": 14
       }
     },
@@ -24512,7 +24482,7 @@
       "description": "Find a node together with its parent and sibling index in a depth-first traversal.\n@utility @ankhorage/utility/tree",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 684,
+        "line": 683,
         "column": 1
       }
     },
@@ -24521,7 +24491,7 @@
       "description": "Return whether a node tree contains a descendant with the requested id.\n@utility @ankhorage/utility/tree",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 692,
+        "line": 691,
         "column": 1
       }
     },
@@ -24530,7 +24500,7 @@
       "description": "Immutably remove one node from a tree and return both the next tree and removed node for move operations.\n@utility @ankhorage/utility/tree",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 700,
+        "line": 699,
         "column": 1
       }
     },
@@ -24539,7 +24509,7 @@
       "description": "Return whether Studio component metadata permits one child type under a parent type.\n@todo Move this component-placement policy from `src/index.ts` into the `canvas/` or insert-authoring domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 759,
+        "line": 758,
         "column": 1
       }
     },
@@ -24548,7 +24518,7 @@
       "description": "Validate one resolved Studio placement against parent existence, child policy, index bounds and sibling-reference invariants.\n@todo Move placement validation from the public entrypoint into the `canvas/` domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 775,
+        "line": 774,
         "column": 1
       }
     },
@@ -24557,7 +24527,7 @@
       "description": "Resolve a requested inside/before/after insertion target to a validated Studio placement.\n@todo Move insertion-placement policy from `src/index.ts` into the `canvas/`/insert domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 866,
+        "line": 865,
         "column": 1
       }
     },
@@ -24566,7 +24536,7 @@
       "description": "Resolve the preferred insertion placement by trying the selected node, its sibling position, then the screen root.\n@todo Move Studio default insertion policy from `src/index.ts` into the insert/canvas domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 931,
+        "line": 930,
         "column": 1
       }
     },
@@ -24575,7 +24545,7 @@
       "description": "Immutably insert a child at a requested parent/index anywhere in a tree and report whether insertion occurred.\n@utility @ankhorage/utility/tree",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 992,
+        "line": 991,
         "column": 1
       }
     },
@@ -24584,7 +24554,7 @@
       "description": "Create and insert one Studio node after validating its requested placement.\n@todo Move Studio insertion orchestration from `src/index.ts` into the insert/canvas domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1041,
+        "line": 1040,
         "column": 1
       }
     },
@@ -24593,7 +24563,7 @@
       "description": "Adjust a target placement for removal-induced index shifts and reject no-op/self-reference moves.\n@todo Keep this placement-specific policy in the canvas domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1084,
+        "line": 1083,
         "column": 1
       }
     },
@@ -24602,7 +24572,7 @@
       "description": "Validate and resolve a requested Studio node move after accounting for source removal and descendant/no-op invariants.\n@todo Move node-move policy from `src/index.ts` into the canvas domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1117,
+        "line": 1116,
         "column": 1
       }
     },
@@ -24611,7 +24581,7 @@
       "description": "Execute a validated Studio node move as immutable removal followed by insertion.\n@todo Move node-move orchestration from `src/index.ts` into the canvas domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1189,
+        "line": 1188,
         "column": 1
       }
     },
@@ -24620,7 +24590,7 @@
       "description": "Resolve Studio's display label for an insert-catalog category, falling back to the raw category id.\n@todo Move insert-catalog presentation metadata out of `src/index.ts` into the insert domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1264,
+        "line": 1263,
         "column": 1
       }
     },
@@ -24629,7 +24599,7 @@
       "description": "Resolve a category's preferred sort position and place unknown categories after the configured list.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1269,
+        "line": 1268,
         "column": 1
       }
     },
@@ -24638,7 +24608,7 @@
       "description": "Convert an insert-recipe validation issue to the Studio-facing disabled reason text.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1275,
+        "line": 1274,
         "column": 1
       }
     },
@@ -24647,7 +24617,7 @@
       "description": "Validate an insert recipe recursively against Studio component metadata and allowed-child constraints.\n@todo Move recipe validation from `src/index.ts` into the insert/templates domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1287,
+        "line": 1286,
         "column": 1
       }
     },
@@ -24656,7 +24626,7 @@
       "description": "Visit one recipe node, validating metadata and child compatibility while retaining the recipe path.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1292,
+        "line": 1291,
         "column": 9
       }
     },
@@ -24665,7 +24635,7 @@
       "description": "Materialize a Studio insert-recipe tree into UiNodes using component blueprint defaults and an injected id generator.\n@todo Move recipe-node creation from `src/index.ts` into the insert/templates domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1329,
+        "line": 1328,
         "column": 1
       }
     },
@@ -24674,7 +24644,7 @@
       "description": "Build one recipe node and recursively materialize its children.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1335,
+        "line": 1334,
         "column": 9
       }
     },
@@ -24683,7 +24653,7 @@
       "description": "Materialize one enabled component or recipe catalog entry into a fresh UiNode tree.\n@todo Move insert-catalog node creation from `src/index.ts` into the insert domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1354,
+        "line": 1353,
         "column": 1
       }
     },
@@ -24692,7 +24662,7 @@
       "description": "Project one Studio component metadata entry into its insert-catalog entry and direct-node availability state.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1375,
+        "line": 1374,
         "column": 1
       }
     },
@@ -24701,7 +24671,7 @@
       "description": "Project one Studio recipe into an enabled/disabled insert-catalog entry after recipe validation.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1399,
+        "line": 1398,
         "column": 1
       }
     },
@@ -24710,7 +24680,7 @@
       "description": "Build and deterministically sort Studio's component/recipe insert catalog from component metadata and recipes.\n@todo Move insert-catalog construction from `src/index.ts` into the insert domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1441,
+        "line": 1440,
         "column": 1
       }
     },
@@ -24719,7 +24689,7 @@
       "description": "Resolve the default validated placement for one insert-catalog entry.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1469,
+        "line": 1468,
         "column": 1
       }
     },
@@ -24728,7 +24698,7 @@
       "description": "Resolve enabled/disabled insert-catalog state against the active screen and selected-node placement context.\n@todo Move context-sensitive insert catalog projection from `src/index.ts` into the insert/canvas application domain.",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1489,
+        "line": 1488,
         "column": 1
       }
     },
@@ -24737,7 +24707,7 @@
       "description": "Return whether a value is a non-array record whose values are all strings or numbers.\n@utility @ankhorage/utility/object",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1543,
+        "line": 1542,
         "column": 1
       }
     },
@@ -26929,15 +26899,6 @@
       }
     },
     {
-      "name": "createStudioInstancePropertyPatch",
-      "description": "Create an immutable props patch that removes a property for undefined or replaces it for a defined value.\n@utility @ankhorage/utility/object",
-      "sourceLocation": {
-        "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 31,
-        "column": 1
-      }
-    },
-    {
       "name": "removeExternalApi",
       "description": "Remove exactly one canonical API id from the API registry without affecting other entries.",
       "sourceLocation": {
@@ -28522,6 +28483,15 @@
       }
     },
     {
+      "name": "readSource",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthoringEngineConsumerAudit.test.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
       "name": "BindingDiagnosticsCard",
       "description": "Render Studio binding diagnostics with severity-aware presentation and optional diagnostic paths.",
       "sourceLocation": {
@@ -28648,29 +28618,11 @@
       }
     },
     {
-      "name": "createDefaultAuthoringValue",
-      "description": "Build the minimum value needed to render required neutral authoring nodes without guessing unsupported structures.",
+      "name": "createBindableMetaDefaultValue",
+      "description": "Preserve binding defaults for non-DataSchema action inputs and unsupported neutral structures.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
         "line": 19,
-        "column": 1
-      }
-    },
-    {
-      "name": "createDefaultScalarValue",
-      "description": "Build the deterministic empty value for one supported neutral scalar type.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
-        "line": 43,
-        "column": 1
-      }
-    },
-    {
-      "name": "createBindableMetaDefaultValue",
-      "description": "Preserve the existing binding defaults for non-DataSchema action inputs and unsupported neutral structures.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
-        "line": 53,
         "column": 1
       }
     },
@@ -29507,7 +29459,7 @@
       "description": "Resolve the requested manifest node, synchronize Studio selection context, and render its per-instance property authoring.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 25,
+        "line": 21,
         "column": 1
       }
     },
@@ -29516,16 +29468,16 @@
       "description": "Render identity plus owner-derived instance-property groups through the central Authoring Editor.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 51,
+        "line": 47,
         "column": 1
       }
     },
     {
       "name": "applyMutation",
-      "description": "Apply one neutral field mutation through Studio's canonical node update and autosave boundary.",
+      "description": "Apply one neutral field mutation through the central mutation engine and Studio's canonical node autosave boundary.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 56,
+        "line": 52,
         "column": 9
       }
     },
@@ -29534,17 +29486,8 @@
       "description": "Render owner-requested media authoring without moving media policy into the neutral engine.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 67,
+        "line": 58,
         "column": 9
-      }
-    },
-    {
-      "name": "resolveInstancePropertyValue",
-      "description": "Accept only canonical instance-property values emitted by supported generic or media editors.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 125,
-        "column": 1
       }
     },
     {
@@ -29552,7 +29495,7 @@
       "description": "Render the properties-page fallback when the requested node cannot be resolved.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 134,
+        "line": 116,
         "column": 1
       }
     },
@@ -29561,7 +29504,7 @@
       "description": "Render the properties-page fallback when the component exposes no per-instance authoring fields.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 145,
+        "line": 127,
         "column": 1
       }
     },
@@ -29984,16 +29927,16 @@
       "description": "Render one ZORA component/pattern theme recipe and persist field overrides into the canonical active Studio theme.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
-        "line": 14,
+        "line": 19,
         "column": 1
       }
     },
     {
-      "name": "updateField",
-      "description": "Apply one recipe field override or restore inheritance by removing it from the authored theme.",
+      "name": "updateRecipe",
+      "description": "Apply one recipe mutation through the central mutation engine before persisting the canonical Theme override object.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
-        "line": 41,
+        "line": 46,
         "column": 9
       }
     },
@@ -30002,25 +29945,16 @@
       "description": "Render the theme-recipe fallback for missing active themes or invalid recipe metadata.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
-        "line": 75,
+        "line": 77,
         "column": 1
       }
     },
     {
-      "name": "updateThemeRecipeField",
-      "description": "Immutably set or remove one component/pattern recipe field override and prune empty recipe/bucket structures.\n@todo Move this theme-recipe mutation policy from admin UI into the theme authoring domain.",
+      "name": "updateThemeRecipeOverrides",
+      "description": "Replace one component/pattern recipe override object and prune empty recipe/bucket structures.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts",
-        "line": 14,
-        "column": 1
-      }
-    },
-    {
-      "name": "updateField",
-      "description": "Apply the generic record-update primitive to one theme recipe field map.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts",
-        "line": 37,
+        "line": 9,
         "column": 1
       }
     },
@@ -30029,7 +29963,7 @@
       "description": "Immutably set/delete a keyed record value and normalize an empty resulting record to undefined.\n@utility @ankhorage/utility/object",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts",
-        "line": 49,
+        "line": 31,
         "column": 1
       }
     },
@@ -30527,14 +30461,6 @@
       "sourcePath": "src/bindingOperationModel.ts",
       "symbolName": "createStudioActionInputFields",
       "description": "Convert an action payload schema into Studio binding input-field options.\n@todo Move action binding-field projection under src/bindings/.",
-      "isReadme": false
-    },
-    {
-      "kind": "export",
-      "name": "createStudioInstancePropertyPatch",
-      "sourcePath": "src/propertiesAuthoringModel.ts",
-      "symbolName": "createStudioInstancePropertyPatch",
-      "description": "Create an immutable props patch that removes a property for undefined or replaces it for a defined value.\n@utility @ankhorage/utility/object",
       "isReadme": false
     },
     {
@@ -31394,11 +31320,6 @@
         "fromPath": "src/projectSecretUsage.test.ts",
         "toPath": "src/projectSecretUsage.ts",
         "sourcePath": "src/projectSecretUsage.test.ts"
-      },
-      {
-        "fromPath": "src/propertiesAuthoringModel.test.ts",
-        "toPath": "src/propertiesAuthoringModel.ts",
-        "sourcePath": "src/propertiesAuthoringModel.test.ts"
       },
       {
         "fromPath": "src/root.ts",
@@ -35577,22 +35498,17 @@
       },
       {
         "fromPath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
         "toPath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
         "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
         "toPath": "src/manifestState.ts",
-        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "toPath": "src/mediaAuthoringModel.ts",
-        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "toPath": "src/propertiesAuthoringModel.ts",
         "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
       },
       {
@@ -35813,6 +35729,11 @@
       {
         "fromPath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
         "toPath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "toPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
         "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
       },
       {
@@ -36063,6 +35984,11 @@
       {
         "fromPath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
         "toPath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"
+      },
+      {
+        "fromPath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
+        "toPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutation.ts",
         "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"
       },
       {
@@ -36557,7 +36483,7 @@
       },
       {
         "fromPath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
-        "toPath": "src/types/authoring-engine.ts",
+        "toPath": "src/features/authoring-engine/application/use-cases/createInitialAuthoringValue.ts",
         "sourcePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"
       },
       {
@@ -43354,42 +43280,6 @@
         "sourcePath": "src/projectStructureSkill.test.ts"
       },
       {
-        "fromSymbol": "src/propertiesAuthoringModel.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/propertiesAuthoringModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/propertiesAuthoringModel.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/propertiesAuthoringModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/propertiesAuthoringModel.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/propertiesAuthoringModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/propertiesAuthoringModel.test.ts",
-        "toSymbol": "createStudioInstancePropertyPatch",
-        "callExpression": "createStudioInstancePropertyPatch",
-        "sourcePath": "src/propertiesAuthoringModel.test.ts"
-      },
-      {
-        "fromSymbol": "createStudioInstancePropertyPatch",
-        "toSymbol": "withoutOwnProperty",
-        "callExpression": "withoutOwnProperty",
-        "sourcePath": "src/propertiesAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "createStudioInstancePropertyPatch",
-        "toSymbol": "withOwnProperty",
-        "callExpression": "withOwnProperty",
-        "sourcePath": "src/propertiesAuthoringModel.ts"
-      },
-      {
         "fromSymbol": "removeExternalApi",
         "toSymbol": "readOwnProperty",
         "callExpression": "readOwnProperty",
@@ -46505,6 +46395,12 @@
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "verifyResponsiveAuthoringAcceptance",
+        "callExpression": "verifyResponsiveAuthoringAcceptance",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "verifyWorkspaceReturnToApp",
         "callExpression": "verifyWorkspaceReturnToApp",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -46681,6 +46577,96 @@
         "fromSymbol": "verifyNestedNutritionSelection",
         "toSymbol": "readRuntimeNodeCenter",
         "callExpression": "page.readRuntimeNodeCenter",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyResponsiveAuthoringAcceptance",
+        "toSymbol": "setViewportSize",
+        "callExpression": "page.setViewportSize",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyResponsiveAuthoringAcceptance",
+        "toSymbol": "navigateStudio",
+        "callExpression": "page.navigateStudio",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyResponsiveAuthoringAcceptance",
+        "toSymbol": "waitForResponsiveAuthoringSnapshot",
+        "callExpression": "waitForResponsiveAuthoringSnapshot",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyResponsiveAuthoringAcceptance",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyResponsiveAuthoringAcceptance",
+        "toSymbol": "replaceFocusedInputValue",
+        "callExpression": "replaceFocusedInputValue",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyResponsiveAuthoringAcceptance",
+        "toSymbol": "waitForManifestScreenName",
+        "callExpression": "waitForManifestScreenName",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyResponsiveAuthoringAcceptance",
+        "toSymbol": "reload",
+        "callExpression": "page.reload",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyResponsiveAuthoringAcceptance",
+        "toSymbol": "waitForStudioNavigationReady",
+        "callExpression": "page.waitForStudioNavigationReady",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyResponsiveAuthoringAcceptance",
+        "toSymbol": "evaluate",
+        "callExpression": "page.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForResponsiveAuthoringSnapshot",
+        "toSymbol": "readResponsiveAuthoringEvidence",
+        "callExpression": "readResponsiveAuthoringEvidence",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForResponsiveAuthoringSnapshot",
+        "toSymbol": "evaluate",
+        "callExpression": "page.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readResponsiveAuthoringEvidence",
+        "toSymbol": "evaluate",
+        "callExpression": "page.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "replaceFocusedInputValue",
+        "toSymbol": "evaluate",
+        "callExpression": "page.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "replaceFocusedInputValue",
+        "toSymbol": "insertText",
+        "callExpression": "page.insertText",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForManifestScreenName",
+        "toSymbol": "readManifest",
+        "callExpression": "studioApi.readManifest",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -67228,6 +67214,36 @@
         "sourcePath": "src/ui/admin/pages/AuthAdminPlatformSetup.test.ts"
       },
       {
+        "fromSymbol": "src/ui/admin/pages/AuthoringEngineConsumerAudit.test.ts",
+        "toSymbol": "fileURLToPath",
+        "callExpression": "fileURLToPath",
+        "sourcePath": "src/ui/admin/pages/AuthoringEngineConsumerAudit.test.ts"
+      },
+      {
+        "fromSymbol": "readSource",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/ui/admin/pages/AuthoringEngineConsumerAudit.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthoringEngineConsumerAudit.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/AuthoringEngineConsumerAudit.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthoringEngineConsumerAudit.test.ts",
+        "toSymbol": "readSource",
+        "callExpression": "readSource",
+        "sourcePath": "src/ui/admin/pages/AuthoringEngineConsumerAudit.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthoringEngineConsumerAudit.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/AuthoringEngineConsumerAudit.test.ts"
+      },
+      {
         "fromSymbol": "src/ui/admin/pages/BindingsAdminPage.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -68015,20 +68031,14 @@
       },
       {
         "fromSymbol": "applyMutation",
-        "toSymbol": "resolveInstancePropertyValue",
-        "callExpression": "resolveInstancePropertyValue",
+        "toSymbol": "applyAuthoringMutation",
+        "callExpression": "applyAuthoringMutation",
         "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
       },
       {
         "fromSymbol": "applyMutation",
         "toSymbol": "updateNode",
         "callExpression": "studio.updateNode",
-        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "applyMutation",
-        "toSymbol": "createStudioInstancePropertyPatch",
-        "callExpression": "createStudioInstancePropertyPatch",
         "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
       },
       {
@@ -68041,12 +68051,6 @@
         "fromSymbol": "src/ui/admin/pages/PropertiesAdminPage.tsx",
         "toSymbol": "deriveAuthoringModel",
         "callExpression": "deriveAuthoringModel",
-        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "resolveInstancePropertyValue",
-        "toSymbol": "readStudioMediaAssetReference",
-        "callExpression": "readStudioMediaAssetReference",
         "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
       },
       {
@@ -68878,15 +68882,21 @@
         "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
       },
       {
-        "fromSymbol": "updateField",
+        "fromSymbol": "updateRecipe",
+        "toSymbol": "applyAuthoringMutation",
+        "callExpression": "applyAuthoringMutation",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "updateRecipe",
         "toSymbol": "updateTheme",
         "callExpression": "updateTheme",
         "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
       },
       {
-        "fromSymbol": "updateField",
-        "toSymbol": "updateThemeRecipeField",
-        "callExpression": "updateThemeRecipeField",
+        "fromSymbol": "updateRecipe",
+        "toSymbol": "updateThemeRecipeOverrides",
+        "callExpression": "updateThemeRecipeOverrides",
         "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
       },
       {
@@ -68909,44 +68919,32 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/themeRecipeAuthoringModel.test.ts",
-        "toSymbol": "updateThemeRecipeField",
-        "callExpression": "updateThemeRecipeField",
+        "toSymbol": "updateThemeRecipeOverrides",
+        "callExpression": "updateThemeRecipeOverrides",
         "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.test.ts"
       },
       {
-        "fromSymbol": "updateThemeRecipeField",
+        "fromSymbol": "updateThemeRecipeOverrides",
         "toSymbol": "readOwnProperty",
         "callExpression": "readOwnProperty",
         "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts"
       },
       {
-        "fromSymbol": "updateThemeRecipeField",
-        "toSymbol": "updateField",
-        "callExpression": "updateField",
-        "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateThemeRecipeField",
+        "fromSymbol": "updateThemeRecipeOverrides",
         "toSymbol": "updateRecord",
         "callExpression": "updateRecord",
         "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts"
       },
       {
-        "fromSymbol": "updateThemeRecipeField",
+        "fromSymbol": "updateThemeRecipeOverrides",
         "toSymbol": "setOwnProperty",
         "callExpression": "setOwnProperty",
         "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts"
       },
       {
-        "fromSymbol": "updateThemeRecipeField",
+        "fromSymbol": "updateThemeRecipeOverrides",
         "toSymbol": "deleteOwnProperty",
         "callExpression": "deleteOwnProperty",
-        "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "updateField",
-        "toSymbol": "updateRecord",
-        "callExpression": "updateRecord",
         "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts"
       },
       {
@@ -69659,8 +69657,14 @@
       },
       {
         "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
-        "toSymbol": "updateThemeRecipeField",
-        "callExpression": "updateThemeRecipeField",
+        "toSymbol": "applyAuthoringMutation",
+        "callExpression": "applyAuthoringMutation",
+        "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts",
+        "toSymbol": "updateThemeRecipeOverrides",
+        "callExpression": "updateThemeRecipeOverrides",
         "sourcePath": "src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"
       },
       {
@@ -72491,26 +72495,14 @@
       },
       {
         "fromSymbol": "createBindingLiteralDefaultValue",
-        "toSymbol": "createDefaultAuthoringValue",
-        "callExpression": "createDefaultAuthoringValue",
+        "toSymbol": "createInitialAuthoringValue",
+        "callExpression": "createInitialAuthoringValue",
         "sourcePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"
       },
       {
         "fromSymbol": "createBindingLiteralDefaultValue",
         "toSymbol": "createBindableMetaDefaultValue",
         "callExpression": "createBindableMetaDefaultValue",
-        "sourcePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts",
-        "toSymbol": "createDefaultAuthoringValue",
-        "callExpression": "createDefaultAuthoringValue",
-        "sourcePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"
-      },
-      {
-        "fromSymbol": "createDefaultAuthoringValue",
-        "toSymbol": "createDefaultScalarValue",
-        "callExpression": "createDefaultScalarValue",
         "sourcePath": "src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"
       },
       {
@@ -74684,21 +74676,6 @@
         "fromSymbol": "StudioMediaPickerAdapter",
         "toType": "StudioMediaPickerResult",
         "sourcePath": "src/mediaPickerAuthoring.ts"
-      },
-      {
-        "fromSymbol": "createStudioInstancePropertyPatch",
-        "toType": "Readonly",
-        "sourcePath": "src/propertiesAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "createStudioInstancePropertyPatch",
-        "toType": "StudioInstancePropertyValue",
-        "sourcePath": "src/propertiesAuthoringModel.ts"
-      },
-      {
-        "fromSymbol": "createStudioInstancePropertyPatch",
-        "toType": "UiNode",
-        "sourcePath": "src/propertiesAuthoringModel.ts"
       },
       {
         "fromSymbol": "StudioAuthoringComponentMeta",
