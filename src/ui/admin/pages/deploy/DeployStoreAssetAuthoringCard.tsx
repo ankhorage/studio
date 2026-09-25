@@ -5,11 +5,11 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 
 import { resolveContractsAuthoringStructure } from '../../../../features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure';
-import { pickProjectDeployImage } from '../../../../projectDeployAssetPicker';
 import {
   removeProjectDeployListingAsset,
   writeProjectDeployListingAsset,
 } from '../../../../projectDeployApi';
+import { pickProjectDeployImage } from '../../../../projectDeployAssetPicker';
 import { adminPageStyles, KeyValue } from '../../adminPagePrimitives';
 import type { ProjectDeployDashboardState } from './deployDashboardTypes';
 import { DeployOwnerAuthoringEditor } from './DeployOwnerAuthoringEditor';
