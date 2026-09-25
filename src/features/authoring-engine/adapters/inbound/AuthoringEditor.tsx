@@ -433,7 +433,7 @@ function EntityRegistryEditor(props: {
   readonly renderCustomControl?: AuthoringEditorProps['renderCustomControl'];
 }) {
   const { model } = props;
-  let pendingKey = '';
+  const pendingKey = { value: '' };
 
   return (
     <Field label={model.label} description={model.description} required={!model.optional}>
@@ -464,10 +464,13 @@ function EntityRegistryEditor(props: {
               placeholder="Entity identity"
               autoCapitalize="none"
               onChangeText={(value) => {
-                pendingKey = value;
+                pendingKey.value = value;
               }}
             />
-            <Button variant="outline" onPress={() => addRegistryEntity(props, pendingKey)}>
+            <Button
+              variant="outline"
+              onPress={() => addRegistryEntity(props, pendingKey.value)}
+            >
               Add entity
             </Button>
           </View>
