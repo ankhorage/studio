@@ -7,6 +7,7 @@ import type {
 } from '@ankhorage/contracts/navigator';
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { createNavigatorPlan, generateNavigator } from '@ankhorage/navigator';
+import { parseSemanticVersion } from '@ankhorage/utility/semver';
 
 export interface NavigatorOwnedLayoutFile {
   path: string;
@@ -178,10 +179,16 @@ function resolvePublicRoutePath(
 
 /*** Read the concrete semantic version from Expo Runtime's package range. */
 function resolveExactVersion(versionRange: string): string {
-  const version = /\d+\.\d+\.\d+/u.exec(versionRange)?.[0];
+  const normalized =
+    versionRange.startsWith('>=')
+      ? versionRange.slice(2)
+      : versionRange.startsWith('^') || versionRange.startsWith('~')
+        ? versionRange.slice(1)
+        : versionRange;
+  const version = parseSemanticVersion(normalized);
   if (!version)
     throw new Error(`Expo Router range ${JSON.stringify(versionRange)} has no version.`);
-  return version;
+  return `${version.major}.${version.minor}.${version.patch}`;
 }
 
 /*** Add an Expo platform suffix to a generated TypeScript layout path. */

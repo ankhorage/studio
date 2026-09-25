@@ -1,6 +1,7 @@
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { parseSemanticVersion, SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 import { afterEach, expect, test } from 'bun:test';
 
 import { getGeneratedPackagePolicy } from '../../features/project-updates/adapters/outbound/getGeneratedPackagePolicy';
@@ -224,22 +225,29 @@ function createVersionBelowRange(range: string): string {
 }
 
 function parseSemverRange(range: string): ParsedSemverRange {
-  const match = /^(?<operator>\^|~)?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+|x)$/u.exec(range);
-  if (match?.groups === undefined) throw new Error(`Unsupported test semver range: ${range}.`);
-  const { major, minor, operator = '', patch } = match.groups;
-  if (
-    major === undefined ||
-    minor === undefined ||
-    patch === undefined ||
-    (operator !== '' && operator !== '^' && operator !== '~')
-  ) {
+  const operator: ParsedSemverRange['operator'] = range.startsWith('^')
+    ? '^'
+    : range.startsWith('~')
+      ? '~'
+      : '';
+  const normalized = operator === '' ? range : range.slice(1);
+  if (SEMVER_PATTERNS.minorWildcard.test(normalized)) {
+    const [major, minor] = normalized.split('.');
+    if (major === undefined || minor === undefined) {
+      throw new Error(`Unsupported test semver range: ${range}.`);
+    }
+    return { major: Number(major), minor: Number(minor), operator, patch: 'x' };
+  }
+  if (!SEMVER_PATTERNS.exact.test(normalized)) {
     throw new Error(`Unsupported test semver range: ${range}.`);
   }
+  const version = parseSemanticVersion(normalized);
+  if (!version) throw new Error(`Unsupported test semver range: ${range}.`);
   return {
-    major: Number(major),
-    minor: Number(minor),
+    major: version.major,
+    minor: version.minor,
     operator,
-    patch,
+    patch: String(version.patch),
   };
 }
 
