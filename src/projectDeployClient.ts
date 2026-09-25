@@ -24,12 +24,12 @@ import { toStandaloneArrayBuffer } from '@ankhorage/utility/binary';
 
 import { ProjectDeployApiError } from './projectDeployApiError';
 import type { ProjectDeployMonetizationInspectionResult } from './projectDeployMonetizationInspectionResult';
-import type { ProjectDeployAuthoringSnapshot } from './types/project-deploy-authoring';
 import type { ProjectDeployReleaseExecutionResponse } from './projectDeployReleaseExecutionResponse';
 import type { ProjectDeployReleaseInspectionResult } from './projectDeployReleaseInspectionResult';
 import type { ProjectDeployRequest } from './projectDeployRequest';
 import type { ProjectDeployRuntimeInput } from './projectDeployRuntimeInput';
 import { findRawSecretResponseKey } from './secretResponseGuard';
+import type { ProjectDeployAuthoringSnapshot } from './types/project-deploy-authoring';
 
 /*** Execute and validate Studio deploy HTTP operations through an injected request transport. @todo Move this concrete deploy client under src/deploy/ at the package edge. */
 export class ProjectDeployClient {
@@ -111,10 +111,7 @@ export class ProjectDeployClient {
   }
 
   /*** Persist a neutral Release authoring value through the trusted host owner projection. */
-  writeReleaseAuthoring(
-    projectId: string,
-    value: SerializableValue,
-  ): Promise<ReleaseDesiredState> {
+  writeReleaseAuthoring(projectId: string, value: SerializableValue): Promise<ReleaseDesiredState> {
     return this.requestJson(
       projectPath(projectId, 'authoring/release'),
       jsonRequest('PUT', value),
