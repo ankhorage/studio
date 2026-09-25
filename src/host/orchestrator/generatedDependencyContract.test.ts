@@ -26,6 +26,7 @@ describe('generated app dependency contract', () => {
     });
 
     expectRuntimePeers(dependencies);
+    expect(dependencies['@ankhorage/utility']).toBeDefined();
     expectStudioAuthoringDependencies(dependencies, undefined);
   });
 
