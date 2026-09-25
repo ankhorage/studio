@@ -439,7 +439,7 @@ test('renders inherited value-map entries without emitting authored state', () =
   expect(mutations).toEqual([]);
 });
 
-test('renders stable entity registries and emits keyed add/remove mutations without rename UI', () => {
+test('captures open registry identity before insertion and keeps existing identity immutable', () => {
   const mutations: AuthoringMutation[] = [];
   const model = deriveAuthoringModel({
     structure: {
@@ -493,15 +493,29 @@ test('renders stable entity registries and emits keyed add/remove mutations with
   Reflect.apply(remove, undefined, []);
   expect(mutations.at(-1)).toEqual({ kind: 'unset', path: ['products', 'alpha'] });
 
+  const identityInput = controls.find(
+    (control) => control.type === 'TextInput' && control.props.placeholder === 'Entity identity',
+  );
+  const changeIdentity = identityInput?.props.onChangeText;
   const add = controls.find(
     (control) => control.type === 'Button' && control.props.children === 'Add entity',
   )?.props.onPress;
-  if (typeof add !== 'function') throw new Error('Missing entity add handler.');
+  if (typeof changeIdentity !== 'function' || typeof add !== 'function') {
+    throw new Error('Missing open registry insertion controls.');
+  }
+
+  const beforeInvalid = mutations.length;
+  Reflect.apply(add, undefined, []);
+  Reflect.apply(changeIdentity, undefined, ['alpha']);
+  Reflect.apply(add, undefined, []);
+  expect(mutations).toHaveLength(beforeInvalid);
+
+  Reflect.apply(changeIdentity, undefined, [' beta ']);
   Reflect.apply(add, undefined, []);
   expect(mutations.at(-1)).toEqual({
     kind: 'set',
-    path: ['products', 'newEntity'],
-    value: { id: 'newEntity', name: '' },
+    path: ['products', 'beta'],
+    value: { id: 'beta', name: '' },
   });
 });
 
