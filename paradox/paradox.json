@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.12.0",
+      "value": "v5.12.1",
       "color": "cb3837"
     },
     {
@@ -6446,8 +6446,7 @@
       ],
       "exports": [
         "externalApiAdminStyles",
-        "ExternalApiDiagnosticList",
-        "ExternalApiField"
+        "ExternalApiDiagnosticList"
       ]
     },
     {
@@ -6832,6 +6831,12 @@
       "exports": [
         "useActiveThemeAdmin"
       ]
+    },
+    {
+      "path": "src/ui/admin/pages/WorkflowRouteAudit.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
     },
     {
       "path": "src/ui/AnkhStudio.ts",
@@ -29309,20 +29314,11 @@
       }
     },
     {
-      "name": "ExternalApiField",
-      "description": "Render a labeled field wrapper used by external-API admin forms.\n@todo Replace this Studio-local generic field primitive with the canonical ZORA FormField pattern.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
-        "line": 12,
-        "column": 1
-      }
-    },
-    {
       "name": "ExternalApiDiagnosticList",
       "description": "Render external API discovery attempts and canonical data-source diagnostics as administration feedback.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
-        "line": 30,
+        "line": 8,
         "column": 1
       }
     },
@@ -29331,7 +29327,7 @@
       "description": "Render URL-first external API discovery and persist the discovered canonical definition before exposing advanced authoring.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
-        "line": 27,
+        "line": 23,
         "column": 1
       }
     },
@@ -29340,7 +29336,7 @@
       "description": "Render advanced settings for one selected canonical external API and persist edits without introducing a parallel model.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ExternalApiEditCard.tsx",
-        "line": 24,
+        "line": 20,
         "column": 1
       }
     },
@@ -29349,7 +29345,7 @@
       "description": "Resolve the editable source URL from an external API's protocol-specific canonical definition.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ExternalApiEditCard.tsx",
-        "line": 206,
+        "line": 224,
         "column": 1
       }
     },
@@ -29358,7 +29354,7 @@
       "description": "Resolve the initial discovery strategy represented by one imported external API definition.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ExternalApiEditCard.tsx",
-        "line": 212,
+        "line": 230,
         "column": 1
       }
     },
@@ -29367,7 +29363,7 @@
       "description": "Render a focused manual REST fallback after automatic discovery fails, retaining the attempted URL and canonical API id.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ManualRestApiCard.tsx",
-        "line": 23,
+        "line": 19,
         "column": 1
       }
     },
@@ -30107,6 +30103,15 @@
         "filePath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
         "line": 30,
         "column": 9
+      }
+    },
+    {
+      "name": "readPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/WorkflowRouteAudit.test.ts",
+        "line": 8,
+        "column": 1
       }
     },
     {
@@ -69057,6 +69062,36 @@
         "toSymbol": "updateTheme",
         "callExpression": "studio.updateTheme",
         "sourcePath": "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/WorkflowRouteAudit.test.ts",
+        "toSymbol": "fileURLToPath",
+        "callExpression": "fileURLToPath",
+        "sourcePath": "src/ui/admin/pages/WorkflowRouteAudit.test.ts"
+      },
+      {
+        "fromSymbol": "readPage",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/ui/admin/pages/WorkflowRouteAudit.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/WorkflowRouteAudit.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/WorkflowRouteAudit.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/WorkflowRouteAudit.test.ts",
+        "toSymbol": "readPage",
+        "callExpression": "readPage",
+        "sourcePath": "src/ui/admin/pages/WorkflowRouteAudit.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/WorkflowRouteAudit.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/WorkflowRouteAudit.test.ts"
       },
       {
         "fromSymbol": "useStudioAdminWorkspace",

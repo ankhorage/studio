@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.12.1
+
+### Patch Changes
+
+- 31e2fb2: Complete the remaining administration workflow audits and replace the External API local field wrapper with canonical ZORA Field composition.
+
 ## 5.12.0
 
 ### Minor Changes
