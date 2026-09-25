@@ -38,22 +38,26 @@ export function DeployAdminPage({ projectId }: { readonly projectId: string }) {
       <DeployAuthoredStateCard state={dashboard.state} />
       <DeployListingLocaleAuthoringCard
         projectId={projectId}
+        authoring={dashboard.state.authoring}
         listing={dashboard.state.listing}
         onMutation={dashboard.refresh}
       />
       <DeployStoreAssetAuthoringCard
         projectId={projectId}
+        authoring={dashboard.state.authoring}
         listing={dashboard.state.listing}
         onMutation={dashboard.refresh}
       />
       <DeployMonetizationAuthoringCard
         projectId={projectId}
+        authoring={dashboard.state.authoring}
         monetization={dashboard.state.monetization}
         onMutation={dashboard.refresh}
       />
       <DeployMonetizationSyncCard projectId={projectId} onComplete={dashboard.refresh} />
       <DeployPreparedReleaseAuthoringCard
         projectId={projectId}
+        authoring={dashboard.state.authoring}
         release={dashboard.state.release}
         onMutation={dashboard.refresh}
       />
