@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.10.11
+
+### Patch Changes
+
+- 1302735: Update Ankhorage dependencies: `@ankhorage/deploy`, `@ankhorage/minikube`, `@ankhorage/navigator`, `@ankhorage/repository`, `@ankhorage/runtime`, `@ankhorage/supabase-auth`, `@ankhorage/supabase-storage`, `@ankhorage/zora-game`, `@ankhorage/zora`.
+
 ## 5.10.10
 
 ### Patch Changes
