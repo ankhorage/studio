@@ -1,4 +1,5 @@
 import type { AuthoringStructure, AuthoringValue } from '../../../../types/authoring-engine';
+import { resolveAuthoringUnion } from '../../utils/resolveAuthoringUnion';
 
 /*** Create one deterministic structurally valid initial value for generic collection insertion. */
 export function createInitialAuthoringValue(
@@ -17,7 +18,14 @@ export function createInitialAuthoringValue(
     case 'ordered-list':
       return [];
     case 'value-map':
+    case 'entity-registry':
       return {};
+    case 'union': {
+      const resolved = resolveAuthoringUnion(structure, undefined, []);
+      return resolved.ok && resolved.variants[0]
+        ? createInitialAuthoringValue(resolved.variants[0].structure)
+        : undefined;
+    }
     case 'object': {
       const entries = structure.fields
         .filter((field) => !field.optional)
