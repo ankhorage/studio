@@ -1,7 +1,4 @@
-import type {
-  AuthoringCollectionKey,
-  AuthoringStructure,
-} from '../../../types/authoring-engine';
+import type { AuthoringCollectionKey, AuthoringStructure } from '../../../types/authoring-engine';
 
 /*** Resolve the supported string-key semantics shared by maps and entity registries. */
 export function resolveAuthoringCollectionKey(
