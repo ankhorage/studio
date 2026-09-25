@@ -1,8 +1,8 @@
 import {
   DEPLOY_AUTHORING_STRUCTURE,
+  type DeployReleaseAuthoringValue,
   fromDeployReleaseAuthoringValue,
   toDeployReleaseAuthoringValue,
-  type DeployReleaseAuthoringValue,
 } from '@ankhorage/deploy/authoring';
 import { Button, Card, Text } from '@ankhorage/zora';
 import React, { useState } from 'react';
