@@ -11,6 +11,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 import type { AppManifest, UiNode } from '@ankhorage/contracts';
+import { DEPLOY_AUTHORING_STRUCTURE } from '@ankhorage/deploy/authoring';
 import { expect, test as bunTest } from 'bun:test';
 
 import type { StudioModuleState } from '../moduleAdminContracts';
@@ -851,6 +852,8 @@ test(
         );
         expect(missingDetail).toContain('missing or was deleted');
         expect(page.errors).toEqual([]);
+
+        await verifyResponsiveAuthoringAcceptance(page, studioApi, expoOutput);
         await verifyWorkspaceReturnToApp(page, expoOutput);
       } finally {
         page.close();
@@ -1044,6 +1047,216 @@ async function verifyNestedNutritionSelection(
     await page.readAppBarActionGeometry(['Administration', 'Preview']),
     ['Administration', 'Preview'],
   );
+}
+
+interface ResponsiveAuthoringSnapshot {
+  readonly inputCount: number;
+  readonly selectCount: number;
+  readonly switchCount: number;
+  readonly textareaCount: number;
+  readonly overflowWidth: number;
+  readonly viewportWidth: number;
+}
+
+interface ResponsiveAuthoringRoute {
+  readonly pathname: string;
+  readonly evidence: readonly string[];
+}
+
+/***
+ * Exercise released owner-derived authoring semantics at desktop and narrow mobile widths, then prove one canonical mutation survives manifest persistence and reload.
+ */
+async function verifyResponsiveAuthoringAcceptance(
+  page: ChromePage,
+  studioApi: SmokeStudioApiServer,
+  expoOutput: readonly string[],
+): Promise<void> {
+  const routes: readonly ResponsiveAuthoringRoute[] = [
+    {
+      pathname: '/ankh/screens/dashboard',
+      evidence: ['Screen metadata', 'Stable screen ID', 'Dashboard'],
+    },
+    {
+      pathname: '/ankh/auth',
+      evidence: ['Email and password', 'Add phone', 'Add username'],
+    },
+    {
+      pathname: '/ankh/theme/spacing',
+      evidence: ['Spacing', 'Add entry'],
+    },
+    {
+      pathname: '/ankh/deploy',
+      evidence: [
+        'Monetization desired state',
+        'Prepared release desired state',
+        'Entity identity · press Enter to add',
+        'non-consumable',
+      ],
+    },
+    {
+      pathname: '/ankh/modules/example-unsupported-config',
+      evidence: [
+        'Package-owned unsupported config',
+        'Module admin control "structured-json" does not have a central Authoring Engine adapter.',
+      ],
+    },
+  ];
+  const viewports = [
+    { width: 1440, height: 900 },
+    { width: 390, height: 844 },
+  ] as const;
+  const desktopSnapshots = new Map<string, ResponsiveAuthoringSnapshot>();
+
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport.width, viewport.height);
+    for (const route of routes) {
+      await page.navigateStudio(route.pathname, expoOutput);
+      const snapshot = await waitForResponsiveAuthoringSnapshot(
+        page,
+        route.evidence,
+        HTTP_TIMEOUT_MS,
+      );
+      expect(snapshot.overflowWidth).toBeLessThanOrEqual(1);
+
+      const semanticControls = {
+        inputCount: snapshot.inputCount,
+        selectCount: snapshot.selectCount,
+        switchCount: snapshot.switchCount,
+        textareaCount: snapshot.textareaCount,
+      };
+      if (viewport.width === viewports[0].width) {
+        desktopSnapshots.set(route.pathname, snapshot);
+      } else {
+        const desktop = desktopSnapshots.get(route.pathname);
+        if (!desktop) throw new Error(`Missing desktop authoring snapshot for ${route.pathname}.`);
+        expect(semanticControls).toEqual({
+          inputCount: desktop.inputCount,
+          selectCount: desktop.selectCount,
+          switchCount: desktop.switchCount,
+          textareaCount: desktop.textareaCount,
+        });
+      }
+
+      if (route.pathname === '/ankh/modules/example-unsupported-config') {
+        expect(snapshot.textareaCount).toBe(0);
+      }
+    }
+  }
+
+  await page.navigateStudio('/ankh/screens/dashboard', expoOutput);
+  await waitForResponsiveAuthoringSnapshot(page, ['Screen metadata', 'Dashboard'], HTTP_TIMEOUT_MS);
+  await replaceFocusedInputValue(page, 'Dashboard', 'Dashboard WP8 accepted');
+  await waitForManifestScreenName(studioApi, 'dashboard', 'Dashboard WP8 accepted', 15_000);
+
+  await page.reload();
+  await page.waitForStudioNavigationReady(HTTP_TIMEOUT_MS, expoOutput);
+  expect(await page.evaluate<string>('globalThis.location.pathname')).toBe(
+    '/ankh/screens/dashboard',
+  );
+  await waitForResponsiveAuthoringSnapshot(
+    page,
+    ['Screen metadata', 'Dashboard WP8 accepted'],
+    HTTP_TIMEOUT_MS,
+  );
+
+  await page.setViewportSize(1280, 900);
+  expect(page.errors).toEqual([]);
+}
+
+/*** Wait until all requested owner-derived evidence is rendered and return viewport/form-control geometry. */
+async function waitForResponsiveAuthoringSnapshot(
+  page: ChromePage,
+  evidence: readonly string[],
+  timeoutMs: number,
+): Promise<ResponsiveAuthoringSnapshot> {
+  const start = Date.now();
+  let lastEvidence = '';
+
+  while (Date.now() - start < timeoutMs) {
+    lastEvidence = await readResponsiveAuthoringEvidence(page);
+    if (evidence.every((token) => lastEvidence.includes(token))) {
+      return page.evaluate<ResponsiveAuthoringSnapshot>(`(() => ({
+        inputCount: document.querySelectorAll('input').length,
+        selectCount: document.querySelectorAll('select').length,
+        switchCount: document.querySelectorAll('[role="switch"]').length,
+        textareaCount: document.querySelectorAll('textarea').length,
+        overflowWidth: Math.max(0, document.documentElement.scrollWidth - window.innerWidth),
+        viewportWidth: window.innerWidth,
+      }))()`);
+    }
+    await Bun.sleep(250);
+  }
+
+  throw new Error(
+    `Timed out waiting for authoring evidence: ${evidence.join(', ')}.\nRendered evidence:\n${lastEvidence}`,
+  );
+}
+
+/*** Read visible text plus form values/placeholders so semantic controls can be asserted without coupling to ZORA DOM nesting. */
+async function readResponsiveAuthoringEvidence(page: ChromePage): Promise<string> {
+  return page.evaluate<string>(`(() => {
+    const formEvidence = [...document.querySelectorAll('input, textarea, select')].flatMap(
+      (element) => {
+        if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
+          return [element.value, element.placeholder];
+        }
+        if (element instanceof HTMLSelectElement) {
+          return [element.value, ...[...element.options].map((option) => option.textContent ?? '')];
+        }
+        return [];
+      },
+    );
+    const actionEvidence = [...document.querySelectorAll('[role="button"], button')].map(
+      (element) => element.textContent ?? '',
+    );
+    return [document.body?.innerText ?? '', ...formEvidence, ...actionEvidence]
+      .filter(Boolean)
+      .join('\n');
+  })()`);
+}
+
+/*** Replace one currently rendered input value through real Chrome input dispatch so React Native Web observes the mutation. */
+async function replaceFocusedInputValue(
+  page: ChromePage,
+  currentValue: string,
+  nextValue: string,
+): Promise<void> {
+  const focused = await page.evaluate<boolean>(`(() => {
+    const input = [...document.querySelectorAll('input')].find(
+      (candidate) => candidate.value === ${JSON.stringify(currentValue)} && !candidate.readOnly,
+    );
+    if (!(input instanceof HTMLInputElement)) return false;
+    input.focus();
+    input.setSelectionRange(0, input.value.length);
+    return true;
+  })()`);
+  if (!focused) throw new Error(`Could not focus authoring input with value ${currentValue}.`);
+
+  await page.insertText(nextValue);
+  await page.evaluate(
+    'document.activeElement instanceof HTMLElement && document.activeElement.blur()',
+  );
+}
+
+/*** Wait for Studio autosave to cross the existing manifest host boundary. */
+async function waitForManifestScreenName(
+  studioApi: SmokeStudioApiServer,
+  screenId: string,
+  expectedName: string,
+  timeoutMs: number,
+): Promise<void> {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    if (
+      Object.values(studioApi.readManifest().screens).some(
+        (screen) => screen.id === screenId && screen.name === expectedName,
+      )
+    ) {
+      return;
+    }
+    await Bun.sleep(250);
+  }
+  throw new Error(`Manifest did not persist screen name "${expectedName}" for ${screenId}.`);
 }
 
 /*** Preserve the last app route while navigating through multiple administration destinations. */
@@ -2144,6 +2357,7 @@ function spawnExpoWeb(projectRoot: string, apiBase: string): ChildProcessWithout
 interface SmokeStudioApiServer {
   readonly apiBase: string;
   readonly close: () => Promise<void>;
+  readonly readManifest: () => AppManifest;
 }
 
 async function startSmokeStudioApi(args: {
@@ -2172,6 +2386,7 @@ async function startSmokeStudioApi(args: {
   return {
     apiBase: `http://127.0.0.1:${port}/api`,
     close: () => closeHttpServer(server),
+    readManifest: () => manifest,
   };
 }
 
@@ -2239,6 +2454,29 @@ async function handleSmokeStudioApiRequest(args: {
 }
 
 function createSmokeDeployOwnerState(suffix: string): unknown {
+  if (suffix === 'authoring') {
+    return {
+      structure: DEPLOY_AUTHORING_STRUCTURE,
+      monetization: {
+        products: {
+          pro: {
+            id: 'pro',
+            kind: 'non-consumable',
+            localizations: {
+              'en-US': { locale: 'en-US', name: 'Pro', description: 'Smoke Pro unlock' },
+            },
+            basePrice: { country: 'CH', currency: 'CHF', amount: '4.9' },
+          },
+        },
+      },
+      release: {
+        version: '1.2.3',
+        targets: { web: true },
+        notes: { 'en-US': { locale: 'en-US', text: 'Smoke release' } },
+        rollout: { web: { mode: 'immediate' } },
+      },
+    };
+  }
   if (suffix === 'config') return { targets: { web: { enabled: true } } };
   if (suffix === 'listing') {
     return {
@@ -2322,6 +2560,26 @@ function createSmokeModuleStates(): readonly StudioModuleState[] {
         title: 'Package-owned example config',
         description: 'Rendered through the generic host.',
         fields: [{ key: 'value', label: 'Value', control: 'text', required: false }],
+      },
+    },
+    {
+      ...base,
+      id: 'example-unsupported-config',
+      name: 'Example unsupported config module',
+      description: 'Browser smoke fail-closed authoring contribution',
+      config: { metadata: { retries: 3 } },
+      admin: {
+        kind: 'config-schema',
+        title: 'Package-owned unsupported config',
+        description: 'Must remain an explicit Authoring Engine diagnostic.',
+        fields: [
+          {
+            key: 'metadata',
+            label: 'Metadata',
+            control: 'structured-json',
+            required: false,
+          },
+        ],
       },
     },
     {
