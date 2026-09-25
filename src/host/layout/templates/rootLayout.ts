@@ -427,7 +427,7 @@ function resolveZoraSurfaceThemeConfig(\n  theme: AppManifest['themes'][string],
 }
 
 function resolveManifestActiveTheme(manifest: AppManifest): AppManifest['themes'][string] {
-  const theme = readOwnProperty(manifest.themes, manifest.activeThemeId);
+  const theme = readOwnProperty<AppManifest['themes'][string]>(\n    manifest.themes,\n    manifest.activeThemeId,\n  );
   if (!theme) {
     throw new Error("Manifest active theme '" + manifest.activeThemeId + "' is missing.");
   }
