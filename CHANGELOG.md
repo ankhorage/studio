@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.11.2
+
+### Patch Changes
+
+- 554a88a: Preserve structurally compatible shared owner fields when switching discriminated union variants.
+
 ## 5.11.1
 
 ### Patch Changes
