@@ -327,9 +327,11 @@ test('Deploy authoring keeps validated descriptor value metadata while rejecting
       release: { version: '1.0.0', targets: {}, notes: {}, rollout: {} },
     }),
   ];
-  const client = new ProjectDeployClient(() =>
-    Promise.resolve(responses.shift() ?? responses[responses.length - 1]!),
-  );
+  const client = new ProjectDeployClient(() => {
+    const response = responses.shift();
+    if (!response) throw new Error('Expected another Deploy authoring response fixture.');
+    return Promise.resolve(response);
+  });
 
   expect((await client.readAuthoring('demo')).structure).toEqual(structure);
   const error = await captureProjectDeployApiError(() => client.readAuthoring('demo'));
