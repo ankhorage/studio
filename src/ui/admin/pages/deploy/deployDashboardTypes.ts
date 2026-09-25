@@ -3,6 +3,7 @@ import type { MonetizationDesiredState, ReleaseDesiredState } from '@ankhorage/d
 import type { ProjectStoreListing } from '@ankhorage/deploy/project';
 
 import type { ProjectDeployReleaseHistoryRecord } from '../../../../projectDeployReleaseHistoryRecord';
+import type { ProjectDeployAuthoringSnapshot } from '../../../../types/project-deploy-authoring';
 
 export type DeployLoadable<T> =
   | { readonly status: 'loading' }
@@ -10,6 +11,7 @@ export type DeployLoadable<T> =
   | { readonly status: 'error'; readonly message: string };
 
 export interface ProjectDeployDashboardState {
+  readonly authoring: DeployLoadable<ProjectDeployAuthoringSnapshot>;
   readonly config: DeployLoadable<AppDeployManifest | null>;
   readonly listing: DeployLoadable<ProjectStoreListing>;
   readonly monetization: DeployLoadable<MonetizationDesiredState>;
