@@ -439,6 +439,139 @@ test('renders inherited value-map entries without emitting authored state', () =
   expect(mutations).toEqual([]);
 });
 
+test('renders stable entity registries and emits keyed add/remove mutations without rename UI', () => {
+  const mutations: AuthoringMutation[] = [];
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'object',
+      fields: [
+        {
+          name: 'products',
+          optional: false,
+          structure: {
+            kind: 'entity-registry',
+            key: { kind: 'scalar', scalarType: 'string' },
+            identityField: 'id',
+            value: {
+              kind: 'object',
+              fields: [
+                {
+                  name: 'id',
+                  optional: false,
+                  structure: { kind: 'scalar', scalarType: 'string' },
+                },
+                {
+                  name: 'name',
+                  optional: false,
+                  structure: { kind: 'scalar', scalarType: 'string' },
+                },
+              ],
+            },
+          },
+        },
+      ],
+    },
+    value: { products: { alpha: { id: 'alpha', name: 'Alpha' } } },
+  });
+  const controls = renderControls(
+    editor.AuthoringEditor({
+      model,
+      onMutation: (mutation) => mutations.push(mutation),
+    }),
+  );
+
+  expect(
+    controls.some(
+      (control) => control.type === 'TextInput' && control.props.defaultValue === 'alpha',
+    ),
+  ).toBe(false);
+
+  const remove = controls.find(
+    (control) => control.type === 'Button' && control.props.children === 'Remove',
+  )?.props.onPress;
+  if (typeof remove !== 'function') throw new Error('Missing entity removal handler.');
+  Reflect.apply(remove, undefined, []);
+  expect(mutations.at(-1)).toEqual({ kind: 'unset', path: ['products', 'alpha'] });
+
+  const add = controls.find(
+    (control) => control.type === 'Button' && control.props.children === 'Add entity',
+  )?.props.onPress;
+  if (typeof add !== 'function') throw new Error('Missing entity add handler.');
+  Reflect.apply(add, undefined, []);
+  expect(mutations.at(-1)).toEqual({
+    kind: 'set',
+    path: ['products', 'newEntity'],
+    value: { id: 'newEntity', name: '' },
+  });
+});
+
+test('renders discriminated union selection and initializes the selected owner variant', () => {
+  const mutations: AuthoringMutation[] = [];
+  const model = deriveAuthoringModel({
+    structure: {
+      kind: 'object',
+      fields: [
+        {
+          name: 'rollout',
+          optional: true,
+          structure: {
+            kind: 'union',
+            discriminator: 'mode',
+            variants: [
+              {
+                kind: 'object',
+                fields: [
+                  {
+                    name: 'mode',
+                    optional: false,
+                    structure: { kind: 'choice', values: ['immediate'] },
+                  },
+                ],
+              },
+              {
+                kind: 'object',
+                fields: [
+                  {
+                    name: 'mode',
+                    optional: false,
+                    structure: { kind: 'choice', values: ['staged'] },
+                  },
+                  {
+                    name: 'fraction',
+                    optional: false,
+                    structure: { kind: 'scalar', scalarType: 'string' },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    },
+    value: { rollout: { mode: 'immediate' } },
+  });
+  const controls = renderControls(
+    editor.AuthoringEditor({
+      model,
+      onMutation: (mutation) => mutations.push(mutation),
+    }),
+  );
+  const select = controls.find((control) => control.type === 'Select');
+  expect(select?.props.options).toEqual([
+    { label: 'immediate', value: 'string:"immediate"' },
+    { label: 'staged', value: 'string:"staged"' },
+  ]);
+
+  const selectStaged = select?.props.onValueChange;
+  if (typeof selectStaged !== 'function') throw new Error('Missing union variant handler.');
+  Reflect.apply(selectStaged, undefined, ['string:"staged"']);
+  expect(mutations.at(-1)).toEqual({
+    kind: 'set',
+    path: ['rollout'],
+    value: { mode: 'staged', fraction: '' },
+  });
+});
+
 test('delegates owner-requested custom controls while retaining the central Field wrapper', () => {
   const mutations: AuthoringMutation[] = [];
   const model = deriveAuthoringModel({
