@@ -95,7 +95,12 @@ export class ProjectDeployClient {
 
   /*** Read browser-safe owner metadata and authoring values projected by the trusted Studio host. */
   readAuthoring(projectId: string): Promise<ProjectDeployAuthoringSnapshot> {
-    return this.requestJson(projectPath(projectId, 'authoring'), undefined, parseAuthoring);
+    return this.requestJson(
+      projectPath(projectId, 'authoring'),
+      undefined,
+      parseAuthoring,
+      assertAuthoringBrowserSafe,
+    );
   }
 
   /*** Persist a neutral Monetization authoring value through the trusted host owner projection. */
@@ -273,10 +278,11 @@ export class ProjectDeployClient {
     path: string,
     init: RequestInit | undefined,
     parse: (value: unknown) => T,
+    assertSafe: (value: unknown) => void = assertBrowserSafe,
   ): Promise<T> {
     const response = await this.request(path, init);
     const value = await readJson(response);
-    assertBrowserSafe(value);
+    assertSafe(value);
     if (!response.ok) {
       throw new ProjectDeployApiError(readError(value), response.status);
     }
@@ -605,6 +611,19 @@ function isHistoryRecord(value: unknown): boolean {
     typeof record.recordedAt === 'string' &&
     result !== null &&
     typeof result.status === 'string'
+  );
+}
+
+/*** Allow validated owner structure metadata to use descriptor keys such as "value" while keeping every browser payload field under the raw-secret guard. */
+function assertAuthoringBrowserSafe(value: unknown): void {
+  const record = asRecord(value);
+  if (record === null || !isStructureDescriptorDocument(record.structure)) {
+    assertBrowserSafe(value);
+    return;
+  }
+
+  assertBrowserSafe(
+    Object.fromEntries(Object.entries(record).filter(([key]) => key !== 'structure')),
   );
 }
 
