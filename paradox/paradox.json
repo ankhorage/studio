@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.11.2",
+      "value": "v5.12.0",
       "color": "cb3837"
     },
     {
@@ -4759,7 +4759,8 @@
         "src/projectDeployReleaseExecutionResponse.ts",
         "src/projectDeployReleaseHistoryRecord.ts",
         "src/projectDeployReleaseInspectionResult.ts",
-        "src/projectDeployRuntimeInput.ts"
+        "src/projectDeployRuntimeInput.ts",
+        "src/types/project-deploy-authoring.ts"
       ],
       "exports": [
         "executeProjectDeployMonetization",
@@ -4768,6 +4769,7 @@
         "inspectProjectDeployMonetization",
         "inspectProjectDeployRelease",
         "listProjectDeployReleaseHistory",
+        "readProjectDeployAuthoring",
         "readProjectDeployConfig",
         "readProjectDeployListing",
         "readProjectDeployMonetization",
@@ -4778,7 +4780,9 @@
         "writeProjectDeployListingAsset",
         "writeProjectDeployListingLocale",
         "writeProjectDeployMonetization",
-        "writeProjectDeployRelease"
+        "writeProjectDeployMonetizationAuthoring",
+        "writeProjectDeployRelease",
+        "writeProjectDeployReleaseAuthoring"
       ]
     },
     {
@@ -4815,7 +4819,8 @@
         "src/projectDeployReleaseInspectionResult.ts",
         "src/projectDeployRequest.ts",
         "src/projectDeployRuntimeInput.ts",
-        "src/secretResponseGuard.ts"
+        "src/secretResponseGuard.ts",
+        "src/types/project-deploy-authoring.ts"
       ],
       "exports": [
         "ProjectDeployClient"
@@ -5676,6 +5681,14 @@
       ]
     },
     {
+      "path": "src/types/project-deploy-authoring.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "ProjectDeployAuthoringSnapshot"
+      ]
+    },
+    {
       "path": "src/types/project-generation.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -5725,7 +5738,6 @@
         "adminPageStyles",
         "AdminScroll",
         "Field",
-        "Input",
         "KeyValue",
         "Metric"
       ]
@@ -6177,7 +6189,8 @@
       "path": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/projectDeployReleaseHistoryRecord.ts"
+        "src/projectDeployReleaseHistoryRecord.ts",
+        "src/types/project-deploy-authoring.ts"
       ],
       "exports": [
         "DeployLoadable",
@@ -6218,9 +6231,11 @@
       "path": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
         "src/projectDeployApi.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
-        "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
+        "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx"
       ],
       "exports": [
         "DeployListingLocaleAuthoringCard"
@@ -6230,9 +6245,12 @@
       "path": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
         "src/projectDeployApi.ts",
+        "src/types/authoring-engine.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
-        "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
+        "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx"
       ],
       "exports": [
         "DeployMonetizationAuthoringCard"
@@ -6275,6 +6293,26 @@
       ]
     },
     {
+      "path": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "src/types/authoring-engine.ts"
+      ],
+      "exports": [
+        "DeployOwnerAuthoringEditor",
+        "DeployOwnerAuthoringEditorProps"
+      ]
+    },
+    {
+      "path": "src/ui/admin/pages/deploy/DeployOwnerAuthoringMigration.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
       "path": "src/ui/admin/pages/deploy/DeployPlanPreview.tsx",
       "isEntrypoint": false,
       "dependencies": [
@@ -6289,9 +6327,12 @@
       "path": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
         "src/projectDeployApi.ts",
+        "src/types/authoring-engine.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
-        "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
+        "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx"
       ],
       "exports": [
         "DeployPreparedReleaseAuthoringCard"
@@ -6332,10 +6373,12 @@
       "path": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
         "src/projectDeployApi.ts",
         "src/projectDeployAssetPicker.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
-        "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
+        "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx"
       ],
       "exports": [
         "DeployStoreAssetAuthoringCard"
@@ -17903,7 +17946,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/deploy/ProjectDeployService.test.ts",
-        "line": 78,
+        "line": 132,
         "column": 1
       }
     },
@@ -17912,7 +17955,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/deploy/ProjectDeployService.test.ts",
-        "line": 94,
+        "line": 148,
         "column": 1
       }
     },
@@ -19100,7 +19143,16 @@
       "description": "Register all Studio deployment config, listing, monetization and release HTTP adapters around ProjectDeployService.",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 22,
+        "line": 26,
+        "column": 1
+      }
+    },
+    {
+      "name": "registerAuthoringRoutes",
+      "description": "Register browser-safe Deploy authoring metadata/value projection routes.",
+      "sourceLocation": {
+        "filePath": "src/host/http/deployRoutes.ts",
+        "line": 50,
         "column": 1
       }
     },
@@ -19109,7 +19161,7 @@
       "description": "Register deployment-config read/write routes.",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 45,
+        "line": 70,
         "column": 1
       }
     },
@@ -19118,7 +19170,7 @@
       "description": "Register store-listing locale and asset routes.",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 57,
+        "line": 82,
         "column": 1
       }
     },
@@ -19127,7 +19179,7 @@
       "description": "Register bounded binary store-listing asset writes.",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 79,
+        "line": 104,
         "column": 1
       }
     },
@@ -19136,7 +19188,7 @@
       "description": "Register deployment monetization read/write/inspect/execute routes.",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 101,
+        "line": 126,
         "column": 1
       }
     },
@@ -19145,7 +19197,7 @@
       "description": "Project one monetization execute HTTP body into the ProjectDeployService operation input.",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 122,
+        "line": 147,
         "column": 1
       }
     },
@@ -19154,7 +19206,7 @@
       "description": "Register release desired-state, inspection, mutation and history routes.",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 137,
+        "line": 162,
         "column": 1
       }
     },
@@ -19163,7 +19215,7 @@
       "description": "Register release execute/resume/control mutation routes.",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 156,
+        "line": 181,
         "column": 1
       }
     },
@@ -19172,7 +19224,7 @@
       "description": "Start a new release execution with a fresh UUID and return both execution id and service result.",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 172,
+        "line": 197,
         "column": 1
       }
     },
@@ -19181,7 +19233,7 @@
       "description": "Resume a prior release under a fresh execution UUID and return both execution id and result.",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 193,
+        "line": 218,
         "column": 1
       }
     },
@@ -19190,7 +19242,7 @@
       "description": "Project one release-control HTTP body into the ProjectDeployService control operation.",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 212,
+        "line": 237,
         "column": 1
       }
     },
@@ -19199,7 +19251,7 @@
       "description": "Ensure a Fastify instance has an octet-stream Buffer body parser.\n@utility @ankhorage/utility/http/fastify",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 228,
+        "line": 253,
         "column": 1
       }
     },
@@ -19208,7 +19260,7 @@
       "description": "Parse a deploy store-listing asset location from HTTP query data.",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 239,
+        "line": 264,
         "column": 1
       }
     },
@@ -19217,7 +19269,7 @@
       "description": "Read the canonical `id` route parameter from a Fastify request.\n@utility @ankhorage/utility/http/fastify",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 269,
+        "line": 294,
         "column": 1
       }
     },
@@ -19226,7 +19278,7 @@
       "description": "Execute an async Fastify route operation and map thrown failures to a configured HTTP error response.\n@utility @ankhorage/utility/http/fastify",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 277,
+        "line": 302,
         "column": 1
       }
     },
@@ -19235,7 +19287,7 @@
       "description": "Convert an unknown thrown value to a human-readable message.\n@utility @ankhorage/utility/error",
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 289,
+        "line": 314,
         "column": 1
       }
     },
@@ -25931,7 +25983,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 31,
+        "line": 34,
         "column": 9
       }
     },
@@ -25940,7 +25992,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 46,
+        "line": 62,
         "column": 9
       }
     },
@@ -25949,7 +26001,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 55,
+        "line": 103,
         "column": 9
       }
     },
@@ -25958,7 +26010,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 65,
+        "line": 112,
         "column": 9
       }
     },
@@ -25967,7 +26019,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 93,
+        "line": 122,
         "column": 9
       }
     },
@@ -25976,7 +26028,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 123,
+        "line": 150,
         "column": 9
       }
     },
@@ -25985,7 +26037,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 154,
+        "line": 180,
         "column": 9
       }
     },
@@ -25994,7 +26046,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 214,
+        "line": 211,
         "column": 9
       }
     },
@@ -26003,7 +26055,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 233,
+        "line": 271,
         "column": 9
       }
     },
@@ -26012,7 +26064,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 252,
+        "line": 290,
         "column": 9
       }
     },
@@ -26021,7 +26073,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 310,
+        "line": 309,
+        "column": 9
+      }
+    },
+    {
+      "name": "request",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.test.ts",
+        "line": 367,
         "column": 9
       }
     },
@@ -26030,7 +26091,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 328,
+        "line": 385,
         "column": 1
       }
     },
@@ -26039,7 +26100,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 346,
+        "line": 403,
         "column": 1
       }
     },
@@ -26048,7 +26109,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 364,
+        "line": 421,
         "column": 1
       }
     },
@@ -26057,7 +26118,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 380,
+        "line": 437,
         "column": 1
       }
     },
@@ -26066,7 +26127,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 399,
+        "line": 456,
         "column": 1
       }
     },
@@ -26075,7 +26136,7 @@
       "description": "Read authored deploy configuration through the shared deploy client. @todo Move the deploy facade under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 33,
+        "line": 35,
         "column": 1
       }
     },
@@ -26084,7 +26145,7 @@
       "description": "Read the project store listing through the shared deploy client. @todo Move the deploy facade under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 38,
+        "line": 40,
         "column": 1
       }
     },
@@ -26093,7 +26154,7 @@
       "description": "Write one store-listing locale through the shared deploy client. @todo Move the deploy facade under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 43,
+        "line": 45,
         "column": 1
       }
     },
@@ -26102,7 +26163,7 @@
       "description": "Remove one store-listing locale through the shared deploy client. @todo Move the deploy facade under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 51,
+        "line": 53,
         "column": 1
       }
     },
@@ -26111,7 +26172,7 @@
       "description": "Upload one store-listing asset through the shared deploy client. @todo Move the deploy facade under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 59,
+        "line": 61,
         "column": 1
       }
     },
@@ -26120,7 +26181,34 @@
       "description": "Remove one store-listing asset through the shared deploy client. @todo Move the deploy facade under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 68,
+        "line": 70,
+        "column": 1
+      }
+    },
+    {
+      "name": "readProjectDeployAuthoring",
+      "description": "Read browser-safe Deploy owner metadata and authoring values through the trusted host.",
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 78,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeProjectDeployMonetizationAuthoring",
+      "description": "Persist a neutral Monetization authoring value through the trusted host owner projection.",
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 85,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeProjectDeployReleaseAuthoring",
+      "description": "Persist a neutral Release authoring value through the trusted host owner projection.",
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 93,
         "column": 1
       }
     },
@@ -26129,7 +26217,7 @@
       "description": "Read authored monetization state through the shared deploy client. @todo Move the deploy facade under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 76,
+        "line": 101,
         "column": 1
       }
     },
@@ -26138,7 +26226,7 @@
       "description": "Write authored monetization products through the shared deploy client. @todo Move the deploy facade under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 83,
+        "line": 108,
         "column": 1
       }
     },
@@ -26147,7 +26235,7 @@
       "description": "Inspect monetization changes for one project/runtime target. @todo Move deploy inspection under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 91,
+        "line": 116,
         "column": 1
       }
     },
@@ -26156,7 +26244,7 @@
       "description": "Execute an inspected monetization plan. @todo Move deploy execution under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 99,
+        "line": 124,
         "column": 1
       }
     },
@@ -26165,7 +26253,7 @@
       "description": "Read authored release state through the shared deploy client. @todo Move the deploy facade under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 109,
+        "line": 134,
         "column": 1
       }
     },
@@ -26174,7 +26262,7 @@
       "description": "Write authored release state through the shared deploy client. @todo Move the deploy facade under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 114,
+        "line": 139,
         "column": 1
       }
     },
@@ -26183,7 +26271,7 @@
       "description": "Read release history and require the Studio resumability projection on every record. @todo Move deploy history access under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 122,
+        "line": 147,
         "column": 1
       }
     },
@@ -26192,7 +26280,7 @@
       "description": "Inspect a project release and require lifecycle controls in successful results. @todo Move deploy inspection under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 133,
+        "line": 158,
         "column": 1
       }
     },
@@ -26201,7 +26289,7 @@
       "description": "Execute an inspected project release plan. @todo Move deploy execution under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 145,
+        "line": 170,
         "column": 1
       }
     },
@@ -26210,7 +26298,7 @@
       "description": "Resume a previous project release execution. @todo Move deploy execution under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 155,
+        "line": 180,
         "column": 1
       }
     },
@@ -26219,7 +26307,7 @@
       "description": "Execute one release lifecycle control action. @todo Move deploy lifecycle control under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 164,
+        "line": 189,
         "column": 1
       }
     },
@@ -26228,7 +26316,7 @@
       "description": "Narrow a release-history record to the Studio projection that includes resumability state.\n@todo Keep this deploy response contract guard under src/deploy/ or move it to the owning deploy contract package.",
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 176,
+        "line": 201,
         "column": 1
       }
     },
@@ -26264,7 +26352,7 @@
       "description": "Decode an HTTP response as JSON and convert decoding failure to the client's API error.\n@utility @ankhorage/utility/http",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 262,
+        "line": 291,
         "column": 1
       }
     },
@@ -26273,7 +26361,7 @@
       "description": "Build the Studio deploy endpoint path for one project and suffix. @todo Keep deploy endpoint routing under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 271,
+        "line": 300,
         "column": 1
       }
     },
@@ -26282,7 +26370,7 @@
       "description": "Create a JSON RequestInit with method, content type, and serialized body.\n@utility @ankhorage/utility/http",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 279,
+        "line": 308,
         "column": 1
       }
     },
@@ -26291,7 +26379,16 @@
       "description": "Serialize a deploy listing-asset location into endpoint query parameters. @todo Keep deploy protocol serialization under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 288,
+        "line": 317,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseAuthoring",
+      "description": "Parse the browser-safe Deploy authoring snapshot without importing Deploy runtime code.",
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 330,
         "column": 1
       }
     },
@@ -26300,7 +26397,7 @@
       "description": "Parse the deploy-config response shape. @todo Keep deploy payload validation under src/deploy/ or its owning deploy contract package.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 301,
+        "line": 348,
         "column": 1
       }
     },
@@ -26309,7 +26406,7 @@
       "description": "Parse the project store-listing response shape. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 309,
+        "line": 356,
         "column": 1
       }
     },
@@ -26318,7 +26415,7 @@
       "description": "Parse the monetization desired-state response shape. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 323,
+        "line": 370,
         "column": 1
       }
     },
@@ -26327,7 +26424,7 @@
       "description": "Parse a success-or-failure monetization inspection response. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 332,
+        "line": 379,
         "column": 1
       }
     },
@@ -26336,7 +26433,7 @@
       "description": "Validate a monetization inspection payload. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 349,
+        "line": 396,
         "column": 1
       }
     },
@@ -26345,7 +26442,7 @@
       "description": "Validate a monetization plan payload. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 364,
+        "line": 411,
         "column": 1
       }
     },
@@ -26354,7 +26451,7 @@
       "description": "Parse a monetization execution result and validate the payload for its status. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 380,
+        "line": 427,
         "column": 1
       }
     },
@@ -26363,7 +26460,7 @@
       "description": "Test whether an unknown value is one of the monetization plan statuses.\n@utility @ankhorage/utility/value",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 400,
+        "line": 447,
         "column": 1
       }
     },
@@ -26372,7 +26469,7 @@
       "description": "Test whether an unknown value is one of the monetization execution statuses.\n@utility @ankhorage/utility/value",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 408,
+        "line": 455,
         "column": 1
       }
     },
@@ -26381,7 +26478,7 @@
       "description": "Parse the prepared release desired-state response shape. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 413,
+        "line": 460,
         "column": 1
       }
     },
@@ -26390,7 +26487,7 @@
       "description": "Parse release history as an array of valid history records. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 429,
+        "line": 476,
         "column": 1
       }
     },
@@ -26399,7 +26496,7 @@
       "description": "Parse a success-or-failure release inspection response. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 435,
+        "line": 482,
         "column": 1
       }
     },
@@ -26408,7 +26505,7 @@
       "description": "Parse a release execution envelope and its nested execution result. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 468,
+        "line": 515,
         "column": 1
       }
     },
@@ -26417,7 +26514,7 @@
       "description": "Validate the nested project release execution result and reconciliation payload. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 478,
+        "line": 525,
         "column": 1
       }
     },
@@ -26426,7 +26523,7 @@
       "description": "Parse one release lifecycle-control execution result. @todo Keep deploy payload validation under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 503,
+        "line": 550,
         "column": 1
       }
     },
@@ -26435,7 +26532,7 @@
       "description": "Validate a generic failure payload containing string code and message fields.\n@utility @ankhorage/utility/validation",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 522,
+        "line": 569,
         "column": 1
       }
     },
@@ -26444,7 +26541,7 @@
       "description": "Test whether an unknown value is one of the release reconciliation statuses.\n@utility @ankhorage/utility/value",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 533,
+        "line": 580,
         "column": 1
       }
     },
@@ -26453,7 +26550,7 @@
       "description": "Test whether an unknown value is one of the release lifecycle-control statuses.\n@utility @ankhorage/utility/value",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 547,
+        "line": 594,
         "column": 1
       }
     },
@@ -26462,7 +26559,7 @@
       "description": "Validate the minimal release-history record shape used by this deploy client. @todo Keep deploy history contract validation under src/deploy/ or its owning package.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 552,
+        "line": 599,
         "column": 1
       }
     },
@@ -26471,7 +26568,7 @@
       "description": "Reject deploy responses that expose forbidden secret-shaped fields. @todo Keep deploy response safety policy under src/deploy/ while using generic nested-key scanning.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 565,
+        "line": 612,
         "column": 1
       }
     },
@@ -26480,7 +26577,7 @@
       "description": "Read a string error field from an unknown response record or return a fallback message.\n@utility @ankhorage/utility/error",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 579,
+        "line": 626,
         "column": 1
       }
     },
@@ -26489,7 +26586,7 @@
       "description": "Throw the deploy client's canonical invalid-response error for a labeled payload. @todo Keep deploy-specific error construction under src/deploy/.",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 585,
+        "line": 632,
         "column": 1
       }
     },
@@ -26498,7 +26595,7 @@
       "description": "Narrow an unknown non-array object to a string-keyed record.\n@utility @ankhorage/utility/value",
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 593,
+        "line": 640,
         "column": 1
       }
     },
@@ -27709,20 +27806,11 @@
       }
     },
     {
-      "name": "Input",
-      "description": "Render a theme-aware React Native text input for Studio administration forms.\n@todo Replace with the canonical ZORA Input component/pattern rather than duplicating focus-independent input styling in Studio.",
-      "sourceLocation": {
-        "filePath": "src/ui/admin/adminPagePrimitives.tsx",
-        "line": 59,
-        "column": 1
-      }
-    },
-    {
       "name": "KeyValue",
       "description": "Render one label/value metadata pair in Studio administration pages.\n@todo Prefer a canonical ZORA key/value or definition-list pattern if available.",
       "sourceLocation": {
         "filePath": "src/ui/admin/adminPagePrimitives.tsx",
-        "line": 82,
+        "line": 59,
         "column": 1
       }
     },
@@ -28781,82 +28869,64 @@
     },
     {
       "name": "DeployListingLocaleAuthoringCard",
-      "description": null,
+      "description": "Author store-listing locales from Deploy metadata while retaining locale selection/removal workflow.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 40,
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "ListingLocaleDraftEditor",
+      "description": "Edit one revision-scoped locale draft while locale selection and deletion remain workflow state.",
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
+        "line": 60,
         "column": 1
       }
     },
     {
       "name": "selectLocale",
-      "description": null,
+      "description": "Select one existing locale or reset the revision-scoped editor for a new locale.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 67,
+        "line": 81,
         "column": 9
       }
     },
     {
       "name": "save",
-      "description": null,
+      "description": "Persist the current locale value through Deploy's owner API.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 73,
+        "line": 92,
         "column": 9
       }
     },
     {
       "name": "remove",
-      "description": null,
+      "description": "Remove the selected locale through Deploy's lifecycle API without interpreting its fields.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 87,
+        "line": 107,
         "column": 9
       }
     },
     {
-      "name": "toDraft",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 213,
-        "column": 1
-      }
-    },
-    {
-      "name": "toOwnerLocale",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 228,
-        "column": 1
-      }
-    },
-    {
-      "name": "optionalField",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 247,
-        "column": 1
-      }
-    },
-    {
-      "name": "readError",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "line": 252,
-        "column": 1
-      }
-    },
-    {
       "name": "DeployMonetizationAuthoringCard",
-      "description": null,
+      "description": "Author Monetization desired state from the host-projected Deploy owner structure.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx",
-        "line": 9,
+        "line": 13,
+        "column": 1
+      }
+    },
+    {
+      "name": "MonetizationDraftEditor",
+      "description": "Edit one revision-scoped Monetization draft and persist it through the trusted host owner projection.",
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx",
+        "line": 60,
         "column": 1
       }
     },
@@ -28865,17 +28935,8 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx",
-        "line": 23,
+        "line": 70,
         "column": 9
-      }
-    },
-    {
-      "name": "readError",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx",
-        "line": 65,
-        "column": 1
       }
     },
     {
@@ -28942,6 +29003,24 @@
       }
     },
     {
+      "name": "DeployOwnerAuthoringEditor",
+      "description": "Render one Deploy-owned structure through the neutral Authoring Engine and apply immutable typed mutations.",
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx",
+        "line": 21,
+        "column": 1
+      }
+    },
+    {
+      "name": "readSibling",
+      "description": "Read one deploy-admin sibling as migration evidence without coupling tests to rendered DOM details.",
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringMigration.test.ts",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
       "name": "DeployPlanPreview",
       "description": null,
       "sourceLocation": {
@@ -28952,10 +29031,19 @@
     },
     {
       "name": "DeployPreparedReleaseAuthoringCard",
-      "description": null,
+      "description": "Author prepared Release desired state from the host-projected Deploy owner structure.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
-        "line": 9,
+        "line": 13,
+        "column": 1
+      }
+    },
+    {
+      "name": "ReleaseDraftEditor",
+      "description": "Edit one revision-scoped Release draft and persist it through the trusted host owner projection.",
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
+        "line": 60,
         "column": 1
       }
     },
@@ -28964,26 +29052,8 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
-        "line": 29,
+        "line": 70,
         "column": 9
-      }
-    },
-    {
-      "name": "isRecord",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
-        "line": 68,
-        "column": 1
-      }
-    },
-    {
-      "name": "readError",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
-        "line": 72,
-        "column": 1
       }
     },
     {
@@ -29105,56 +29175,38 @@
     },
     {
       "name": "DeployStoreAssetAuthoringCard",
-      "description": null,
+      "description": "Author a semantic store-asset location from Deploy metadata while keeping image I/O as workflow UI.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
-        "line": 34,
+        "line": 27,
         "column": 1
       }
     },
     {
       "name": "chooseImage",
-      "description": null,
+      "description": "Pick one local image while leaving semantic asset-location authoring to the shared engine.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
-        "line": 52,
+        "line": 48,
         "column": 9
       }
     },
     {
       "name": "upload",
-      "description": null,
+      "description": "Upload the selected bytes to the currently authored Deploy semantic asset location.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
-        "line": 64,
+        "line": 63,
         "column": 9
       }
     },
     {
       "name": "remove",
-      "description": null,
+      "description": "Remove the currently authored semantic asset location through Deploy's owner API.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
         "line": 78,
         "column": 9
-      }
-    },
-    {
-      "name": "createLocation",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
-        "line": 199,
-        "column": 1
-      }
-    },
-    {
-      "name": "readError",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
-        "line": 223,
-        "column": 1
       }
     },
     {
@@ -29225,7 +29277,7 @@
       "description": "Load the five deploy-dashboard resources for one project, invalidate stale generations, and expose an explicit refresh trigger.\n@todo Keep this React adapter at the deploy admin UI edge while dashboard loading/orchestration moves into deploy application ownership.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts",
-        "line": 21,
+        "line": 22,
         "column": 1
       }
     },
@@ -29234,7 +29286,7 @@
       "description": "Load all deploy-dashboard resources concurrently while isolating each resource failure into its own loadable state.",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts",
-        "line": 54,
+        "line": 56,
         "column": 1
       }
     },
@@ -29243,7 +29295,7 @@
       "description": "Convert a promise into a discriminated ready/error loadable result while normalizing unknown errors to messages.\n@utility @ankhorage/utility/async",
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts",
-        "line": 69,
+        "line": 72,
         "column": 1
       }
     },
@@ -31244,6 +31296,11 @@
         "sourcePath": "src/projectDeployApi.ts"
       },
       {
+        "fromPath": "src/projectDeployApi.ts",
+        "toPath": "src/types/project-deploy-authoring.ts",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
         "fromPath": "src/projectDeployAssetPicker.test.ts",
         "toPath": "src/projectDeployAssetPicker.ts",
         "sourcePath": "src/projectDeployAssetPicker.test.ts"
@@ -31281,6 +31338,11 @@
       {
         "fromPath": "src/projectDeployClient.ts",
         "toPath": "src/secretResponseGuard.ts",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromPath": "src/projectDeployClient.ts",
+        "toPath": "src/types/project-deploy-authoring.ts",
         "sourcePath": "src/projectDeployClient.ts"
       },
       {
@@ -36599,6 +36661,11 @@
         "sourcePath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
       },
       {
+        "fromPath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "toPath": "src/types/project-deploy-authoring.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
+      },
+      {
         "fromPath": "src/ui/admin/pages/deploy/DeployExecutionResultView.tsx",
         "toPath": "src/projectDeployReleaseExecutionResponse.ts",
         "sourcePath": "src/ui/admin/pages/deploy/DeployExecutionResultView.tsx"
@@ -36620,6 +36687,11 @@
       },
       {
         "fromPath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
+        "toPath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
         "toPath": "src/projectDeployApi.ts",
         "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
       },
@@ -36634,8 +36706,23 @@
         "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
       },
       {
+        "fromPath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx",
+        "toPath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"
+      },
+      {
         "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx",
         "toPath": "src/projectDeployApi.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx",
+        "toPath": "src/types/authoring-engine.ts",
         "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"
       },
       {
@@ -36646,6 +36733,11 @@
       {
         "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx",
         "toPath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx",
         "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"
       },
       {
@@ -36694,6 +36786,26 @@
         "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
       },
       {
+        "fromPath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx",
+        "toPath": "src/features/authoring-engine/adapters/inbound/AuthoringEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx",
+        "toPath": "src/features/authoring-engine/application/use-cases/applyAuthoringMutationToStructure.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx",
+        "toPath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx",
+        "toPath": "src/types/authoring-engine.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx"
+      },
+      {
         "fromPath": "src/ui/admin/pages/deploy/DeployPlanPreview.tsx",
         "toPath": "src/projectDeployReleaseInspectionResult.ts",
         "sourcePath": "src/ui/admin/pages/deploy/DeployPlanPreview.tsx"
@@ -36705,7 +36817,17 @@
       },
       {
         "fromPath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
+        "toPath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
         "toPath": "src/projectDeployApi.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
+        "toPath": "src/types/authoring-engine.ts",
         "sourcePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"
       },
       {
@@ -36716,6 +36838,11 @@
       {
         "fromPath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
         "toPath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx",
         "sourcePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"
       },
       {
@@ -36785,12 +36912,17 @@
       },
       {
         "fromPath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
-        "toPath": "src/projectDeployAssetPicker.ts",
+        "toPath": "src/features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure.ts",
         "sourcePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
         "toPath": "src/projectDeployApi.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
+        "toPath": "src/projectDeployAssetPicker.ts",
         "sourcePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx"
       },
       {
@@ -36801,6 +36933,11 @@
       {
         "fromPath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
         "toPath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx",
         "sourcePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx"
       },
       {
@@ -41755,6 +41892,24 @@
       },
       {
         "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "readAuthoring",
+        "callExpression": "client.readAuthoring",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "writeMonetizationAuthoring",
+        "callExpression": "client.writeMonetizationAuthoring",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "writeReleaseAuthoring",
+        "callExpression": "client.writeReleaseAuthoring",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
         "toSymbol": "captureProjectDeployApiError",
         "callExpression": "captureProjectDeployApiError",
         "sourcePath": "src/projectDeployApi.test.ts"
@@ -41895,6 +42050,24 @@
         "fromSymbol": "removeProjectDeployListingAsset",
         "toSymbol": "removeListingAsset",
         "callExpression": "client.removeListingAsset",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromSymbol": "readProjectDeployAuthoring",
+        "toSymbol": "readAuthoring",
+        "callExpression": "client.readAuthoring",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromSymbol": "writeProjectDeployMonetizationAuthoring",
+        "toSymbol": "writeMonetizationAuthoring",
+        "callExpression": "client.writeMonetizationAuthoring",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromSymbol": "writeProjectDeployReleaseAuthoring",
+        "toSymbol": "writeReleaseAuthoring",
+        "callExpression": "client.writeReleaseAuthoring",
         "sourcePath": "src/projectDeployApi.ts"
       },
       {
@@ -42108,6 +42281,54 @@
         "sourcePath": "src/projectDeployClient.ts"
       },
       {
+        "fromSymbol": "readAuthoring",
+        "toSymbol": "requestJson",
+        "callExpression": "this.requestJson",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "readAuthoring",
+        "toSymbol": "projectPath",
+        "callExpression": "projectPath",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "writeMonetizationAuthoring",
+        "toSymbol": "requestJson",
+        "callExpression": "this.requestJson",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "writeMonetizationAuthoring",
+        "toSymbol": "projectPath",
+        "callExpression": "projectPath",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "writeMonetizationAuthoring",
+        "toSymbol": "jsonRequest",
+        "callExpression": "jsonRequest",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "writeReleaseAuthoring",
+        "toSymbol": "requestJson",
+        "callExpression": "this.requestJson",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "writeReleaseAuthoring",
+        "toSymbol": "projectPath",
+        "callExpression": "projectPath",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "writeReleaseAuthoring",
+        "toSymbol": "jsonRequest",
+        "callExpression": "jsonRequest",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
         "fromSymbol": "readMonetization",
         "toSymbol": "requestJson",
         "callExpression": "this.requestJson",
@@ -42285,6 +42506,30 @@
         "fromSymbol": "requestJson",
         "toSymbol": "parse",
         "callExpression": "parse",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseAuthoring",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseAuthoring",
+        "toSymbol": "isStructureDescriptorDocument",
+        "callExpression": "isStructureDescriptorDocument",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseAuthoring",
+        "toSymbol": "isSerializableValue",
+        "callExpression": "isSerializableValue",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseAuthoring",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
         "sourcePath": "src/projectDeployClient.ts"
       },
       {
@@ -51552,6 +51797,24 @@
         "sourcePath": "src/host/deploy/ProjectDeployService.test.ts"
       },
       {
+        "fromSymbol": "src/host/deploy/ProjectDeployService.test.ts",
+        "toSymbol": "readAuthoring",
+        "callExpression": "service.readAuthoring",
+        "sourcePath": "src/host/deploy/ProjectDeployService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/deploy/ProjectDeployService.test.ts",
+        "toSymbol": "writeMonetizationAuthoring",
+        "callExpression": "service.writeMonetizationAuthoring",
+        "sourcePath": "src/host/deploy/ProjectDeployService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/deploy/ProjectDeployService.test.ts",
+        "toSymbol": "writeReleaseAuthoring",
+        "callExpression": "service.writeReleaseAuthoring",
+        "sourcePath": "src/host/deploy/ProjectDeployService.test.ts"
+      },
+      {
         "fromSymbol": "readConfig",
         "toSymbol": "readProjectDeploymentConfig",
         "callExpression": "readProjectDeploymentConfig",
@@ -51633,6 +51896,54 @@
         "fromSymbol": "removeListingAsset",
         "toSymbol": "projectRoot",
         "callExpression": "this.projectRoot",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "readAuthoring",
+        "toSymbol": "readMonetization",
+        "callExpression": "this.readMonetization",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "readAuthoring",
+        "toSymbol": "readRelease",
+        "callExpression": "this.readRelease",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "readAuthoring",
+        "toSymbol": "toDeployMonetizationAuthoringValue",
+        "callExpression": "toDeployMonetizationAuthoringValue",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "readAuthoring",
+        "toSymbol": "toDeployReleaseAuthoringValue",
+        "callExpression": "toDeployReleaseAuthoringValue",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "writeMonetizationAuthoring",
+        "toSymbol": "writeMonetization",
+        "callExpression": "this.writeMonetization",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "writeMonetizationAuthoring",
+        "toSymbol": "fromDeployMonetizationAuthoringValue",
+        "callExpression": "fromDeployMonetizationAuthoringValue",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "writeReleaseAuthoring",
+        "toSymbol": "writeRelease",
+        "callExpression": "this.writeRelease",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "writeReleaseAuthoring",
+        "toSymbol": "fromDeployReleaseAuthoringValue",
+        "callExpression": "fromDeployReleaseAuthoringValue",
         "sourcePath": "src/host/deploy/ProjectDeployService.ts"
       },
       {
@@ -52057,6 +52368,12 @@
       },
       {
         "fromSymbol": "registerProjectDeployRoutes",
+        "toSymbol": "registerAuthoringRoutes",
+        "callExpression": "registerAuthoringRoutes",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "registerProjectDeployRoutes",
         "toSymbol": "registerListingRoutes",
         "callExpression": "registerListingRoutes",
         "sourcePath": "src/host/http/deployRoutes.ts"
@@ -52081,14 +52398,32 @@
       },
       {
         "fromSymbol": "src/host/http/deployRoutes.ts",
-        "toSymbol": "readConfig",
-        "callExpression": "service.readConfig",
+        "toSymbol": "readAuthoring",
+        "callExpression": "service.readAuthoring",
         "sourcePath": "src/host/http/deployRoutes.ts"
       },
       {
         "fromSymbol": "src/host/http/deployRoutes.ts",
         "toSymbol": "projectId",
         "callExpression": "projectId",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/deployRoutes.ts",
+        "toSymbol": "writeMonetizationAuthoring",
+        "callExpression": "service.writeMonetizationAuthoring",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/deployRoutes.ts",
+        "toSymbol": "writeReleaseAuthoring",
+        "callExpression": "service.writeReleaseAuthoring",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/deployRoutes.ts",
+        "toSymbol": "readConfig",
+        "callExpression": "service.readConfig",
         "sourcePath": "src/host/http/deployRoutes.ts"
       },
       {
@@ -61930,12 +62265,6 @@
         "toSymbol": "getGeneratedPackagePolicy",
         "callExpression": "getGeneratedPackagePolicy",
         "sourcePath": "src/host/zoraExtensions/zoraExtensions.test.ts"
-      },
-      {
-        "fromSymbol": "Input",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/admin/adminPagePrimitives.tsx"
       },
       {
         "fromSymbol": "src/ui/admin/AnkhAdminPage.test.ts",
@@ -72415,26 +72744,14 @@
       },
       {
         "fromSymbol": "DeployListingLocaleAuthoringCard",
+        "toSymbol": "resolveContractsAuthoringStructure",
+        "callExpression": "resolveContractsAuthoringStructure",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "ListingLocaleDraftEditor",
         "toSymbol": "useState",
         "callExpression": "useState",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "DeployListingLocaleAuthoringCard",
-        "toSymbol": "useEffect",
-        "callExpression": "useEffect",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "toSymbol": "setDraft",
-        "callExpression": "setDraft",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
-        "toSymbol": "toDraft",
-        "callExpression": "toDraft",
         "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
       },
       {
@@ -72475,12 +72792,6 @@
       },
       {
         "fromSymbol": "save",
-        "toSymbol": "toOwnerLocale",
-        "callExpression": "toOwnerLocale",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "save",
         "toSymbol": "setSelected",
         "callExpression": "setSelected",
         "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
@@ -72489,12 +72800,6 @@
         "fromSymbol": "save",
         "toSymbol": "onMutation",
         "callExpression": "props.onMutation",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "save",
-        "toSymbol": "readError",
-        "callExpression": "readError",
         "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
       },
       {
@@ -72540,12 +72845,6 @@
         "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
       },
       {
-        "fromSymbol": "remove",
-        "toSymbol": "readError",
-        "callExpression": "readError",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
-      },
-      {
         "fromSymbol": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
         "toSymbol": "save",
         "callExpression": "save",
@@ -72564,27 +72863,15 @@
         "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
       },
       {
-        "fromSymbol": "toOwnerLocale",
-        "toSymbol": "optionalField",
-        "callExpression": "optionalField",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"
+        "fromSymbol": "DeployMonetizationAuthoringCard",
+        "toSymbol": "resolveContractsAuthoringStructure",
+        "callExpression": "resolveContractsAuthoringStructure",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"
       },
       {
-        "fromSymbol": "DeployMonetizationAuthoringCard",
+        "fromSymbol": "MonetizationDraftEditor",
         "toSymbol": "useState",
         "callExpression": "useState",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "DeployMonetizationAuthoringCard",
-        "toSymbol": "useEffect",
-        "callExpression": "useEffect",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx",
-        "toSymbol": "setSource",
-        "callExpression": "setSource",
         "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"
       },
       {
@@ -72601,20 +72888,14 @@
       },
       {
         "fromSymbol": "save",
-        "toSymbol": "writeProjectDeployMonetization",
-        "callExpression": "writeProjectDeployMonetization",
+        "toSymbol": "writeProjectDeployMonetizationAuthoring",
+        "callExpression": "writeProjectDeployMonetizationAuthoring",
         "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"
       },
       {
         "fromSymbol": "save",
         "toSymbol": "onMutation",
         "callExpression": "props.onMutation",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "save",
-        "toSymbol": "readError",
-        "callExpression": "readError",
         "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"
       },
       {
@@ -72756,21 +73037,69 @@
         "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
       },
       {
+        "fromSymbol": "DeployOwnerAuthoringEditor",
+        "toSymbol": "deriveAuthoringModel",
+        "callExpression": "deriveAuthoringModel",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx",
+        "toSymbol": "applyAuthoringMutationToStructure",
+        "callExpression": "applyAuthoringMutationToStructure",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx",
+        "toSymbol": "onError",
+        "callExpression": "props.onError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "props.onChange",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx"
+      },
+      {
+        "fromSymbol": "readSibling",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringMigration.test.ts"
+      },
+      {
+        "fromSymbol": "readSibling",
+        "toSymbol": "fileURLToPath",
+        "callExpression": "fileURLToPath",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringMigration.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployOwnerAuthoringMigration.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringMigration.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployOwnerAuthoringMigration.test.ts",
+        "toSymbol": "readSibling",
+        "callExpression": "readSibling",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringMigration.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployOwnerAuthoringMigration.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployOwnerAuthoringMigration.test.ts"
+      },
+      {
         "fromSymbol": "DeployPreparedReleaseAuthoringCard",
+        "toSymbol": "resolveContractsAuthoringStructure",
+        "callExpression": "resolveContractsAuthoringStructure",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "ReleaseDraftEditor",
         "toSymbol": "useState",
         "callExpression": "useState",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "DeployPreparedReleaseAuthoringCard",
-        "toSymbol": "useEffect",
-        "callExpression": "useEffect",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
-        "toSymbol": "setSource",
-        "callExpression": "setSource",
         "sourcePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"
       },
       {
@@ -72787,26 +73116,14 @@
       },
       {
         "fromSymbol": "save",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "save",
-        "toSymbol": "writeProjectDeployRelease",
-        "callExpression": "writeProjectDeployRelease",
+        "toSymbol": "writeProjectDeployReleaseAuthoring",
+        "callExpression": "writeProjectDeployReleaseAuthoring",
         "sourcePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"
       },
       {
         "fromSymbol": "save",
         "toSymbol": "onMutation",
         "callExpression": "props.onMutation",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "save",
-        "toSymbol": "readError",
-        "callExpression": "readError",
         "sourcePath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"
       },
       {
@@ -73183,8 +73500,8 @@
       },
       {
         "fromSymbol": "DeployStoreAssetAuthoringCard",
-        "toSymbol": "createLocation",
-        "callExpression": "createLocation",
+        "toSymbol": "resolveContractsAuthoringStructure",
+        "callExpression": "resolveContractsAuthoringStructure",
         "sourcePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx"
       },
       {
@@ -73207,14 +73524,8 @@
       },
       {
         "fromSymbol": "chooseImage",
-        "toSymbol": "setFilename",
-        "callExpression": "setFilename",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "chooseImage",
-        "toSymbol": "readError",
-        "callExpression": "readError",
+        "toSymbol": "setLocation",
+        "callExpression": "setLocation",
         "sourcePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx"
       },
       {
@@ -73239,12 +73550,6 @@
         "fromSymbol": "upload",
         "toSymbol": "onMutation",
         "callExpression": "props.onMutation",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "upload",
-        "toSymbol": "readError",
-        "callExpression": "readError",
         "sourcePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx"
       },
       {
@@ -73275,12 +73580,6 @@
         "fromSymbol": "remove",
         "toSymbol": "onMutation",
         "callExpression": "props.onMutation",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx"
-      },
-      {
-        "fromSymbol": "remove",
-        "toSymbol": "readError",
-        "callExpression": "readError",
         "sourcePath": "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx"
       },
       {
@@ -73377,6 +73676,12 @@
         "fromSymbol": "loadDashboard",
         "toSymbol": "capture",
         "callExpression": "capture",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
+      },
+      {
+        "fromSymbol": "loadDashboard",
+        "toSymbol": "readProjectDeployAuthoring",
+        "callExpression": "readProjectDeployAuthoring",
         "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
       },
       {

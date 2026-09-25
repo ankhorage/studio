@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.12.0
+
+### Minor Changes
+
+- b35e1bf: Derive Deploy monetization, prepared release, listing locale, and semantic asset-location authoring from the released Deploy owner structure through the central Authoring Engine.
+
 ## 5.11.2
 
 ### Patch Changes
