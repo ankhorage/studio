@@ -30,6 +30,10 @@ test('keeps external API administration progressive and owner-backed', () => {
   expect(manualSource).toContain('Manual REST fallback');
   expect(manualSource).toContain('Retry discovery');
   expect(manualSource).toContain('attemptedUrl');
+  expect(manualSource).toContain("DataOperationIntent");
+  expect(manualSource).toContain('<Field');
+  expect(manualSource).not.toContain('ExternalApiField');
+  expect(manualSource).not.toContain('JSON.parse');
 
   expect(catalogSource).toContain('ListSection');
   expect(catalogSource).toContain('ListItem');
@@ -43,6 +47,10 @@ test('keeps external API administration progressive and owner-backed', () => {
   expect(editSource).toContain('connectExternalApi');
   expect(editSource).toContain('updateManualRestApi');
   expect(editSource).toContain('Protocol discovery strategy');
+  expect(editSource).toContain('<Field');
+  expect(editSource).not.toContain('ExternalApiField');
+  expect(connectSource).toContain('<Field');
+  expect(connectSource).not.toContain('ExternalApiField');
 });
 
 test('collects operations through canonical APIs, endpoints, and operations', () => {
