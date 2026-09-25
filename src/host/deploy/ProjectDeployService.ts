@@ -1,3 +1,4 @@
+import { isSerializableValue } from '@ankhorage/contracts';
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
 import {
   isReleaseStepResumable,
@@ -6,6 +7,15 @@ import {
   type ReleaseLifecycleControl,
   type ReleasePlan,
 } from '@ankhorage/deploy';
+import {
+  DEPLOY_AUTHORING_STRUCTURE,
+  type DeployMonetizationAuthoringValue,
+  type DeployReleaseAuthoringValue,
+  fromDeployMonetizationAuthoringValue,
+  fromDeployReleaseAuthoringValue,
+  toDeployMonetizationAuthoringValue,
+  toDeployReleaseAuthoringValue,
+} from '@ankhorage/deploy/authoring';
 import type {
   ProjectMonetizationExecutionResult,
   ProjectMonetizationInspection,
@@ -129,6 +139,42 @@ export class ProjectDeployService {
       projectRoot: this.projectRoot(projectId),
       location,
     });
+  }
+
+  /*** Project released Deploy authoring metadata and current desired state across the trusted host boundary. */
+  async readAuthoring(projectId: string) {
+    const [monetization, release] = await Promise.all([
+      this.readMonetization(projectId),
+      this.readRelease(projectId),
+    ]);
+    return {
+      structure: DEPLOY_AUTHORING_STRUCTURE,
+      monetization: toDeployMonetizationAuthoringValue(monetization.products),
+      release: toDeployReleaseAuthoringValue({
+        version: release.version,
+        targets: release.targets,
+        notes: release.notes,
+        rollout: release.rollout,
+      }),
+    };
+  }
+
+  /*** Persist one browser-authored Monetization value through Deploy's canonical owner projection. */
+  writeMonetizationAuthoring(projectId: string, value: unknown) {
+    if (!isSerializableValue(value)) throw new Error('Serializable Monetization authoring value required.');
+    return this.writeMonetization(
+      projectId,
+      fromDeployMonetizationAuthoringValue(value as DeployMonetizationAuthoringValue),
+    );
+  }
+
+  /*** Persist one browser-authored Release value through Deploy's canonical owner projection. */
+  writeReleaseAuthoring(projectId: string, value: unknown) {
+    if (!isSerializableValue(value)) throw new Error('Serializable Release authoring value required.');
+    return this.writeRelease(
+      projectId,
+      fromDeployReleaseAuthoringValue(value as DeployReleaseAuthoringValue),
+    );
   }
 
   /*** Read authored monetization products for one project. */
