@@ -36,6 +36,13 @@ export function DeployStoreAssetAuthoringCard(props: {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [confirmRemove, setConfirmRemove] = useState(false);
+  const structure =
+    props.authoring.status === 'ready'
+      ? resolveContractsAuthoringStructure(
+          props.authoring.data.structure,
+          'store-listing-asset-location',
+        )
+      : null;
 
   /*** Pick one local image while leaving semantic asset-location authoring to the shared engine. */
   const chooseImage = async () => {
