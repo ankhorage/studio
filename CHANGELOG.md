@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.10.9
+
+### Patch Changes
+
+- 090422b: Unify public Host project-id validation with Studio creation policy so repeated-hyphen ids are rejected consistently.
+
 ## 5.10.8
 
 ### Patch Changes

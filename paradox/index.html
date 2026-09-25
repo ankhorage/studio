@@ -2243,7 +2243,7 @@
       <div class="summary">
         <div><strong>146</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>592</strong><span class="muted">modules</span></div>
+        <div><strong>593</strong><span class="muted">modules</span></div>
         <div><strong>2</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -2534,6 +2534,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>STUDIO_ZORA_EXTENSION_SOURCES</code></p>
+  </article><article class="item" data-search="src/constants/projectIdentity.ts STUDIO_PROJECT_ID_PATTERN STUDIO_RESERVED_PROJECT_IDS">
+    <h3>src/constants/projectIdentity.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>STUDIO_PROJECT_ID_PATTERN</code>, <code>STUDIO_RESERVED_PROJECT_IDS</code></p>
   </article><article class="item" data-search="src/contractGuards.test.ts src/contractGuards.ts">
     <h3>src/contractGuards.test.ts</h3>
     <p class="muted">Referenced module</p>
@@ -3714,10 +3719,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts</code>, <code>src/host/orchestrator/projectManager.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/host/orchestrator/projectPaths.ts assertProjectId getAppsRoot getProjectPath">
+  </article><article class="item" data-search="src/host/orchestrator/projectPaths.ts src/constants/projectIdentity.ts assertProjectId getAppsRoot getProjectPath">
     <h3>src/host/orchestrator/projectPaths.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Dependencies:</strong> <code>src/constants/projectIdentity.ts</code></p>
     <p><strong>Exports:</strong> <code>assertProjectId</code>, <code>getAppsRoot</code>, <code>getProjectPath</code></p>
   </article><article class="item" data-search="src/host/orchestrator/projectRepositoryConnection.test.ts src/host/orchestrator/projectManager.ts">
     <h3>src/host/orchestrator/projectRepositoryConnection.test.ts</h3>
@@ -4379,10 +4384,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/projectIdentity.ts</code>, <code>src/projectWorkspaceContracts.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/projectIdentity.ts src/projectWorkspaceContracts.ts deriveProjectId ProjectCreationValidationError validateProjectCreationInput">
+  </article><article class="item" data-search="src/projectIdentity.ts src/constants/projectIdentity.ts src/projectWorkspaceContracts.ts deriveProjectId ProjectCreationValidationError validateProjectCreationInput">
     <h3>src/projectIdentity.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/projectWorkspaceContracts.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/constants/projectIdentity.ts</code>, <code>src/projectWorkspaceContracts.ts</code></p>
     <p><strong>Exports:</strong> <code>deriveProjectId</code>, <code>ProjectCreationValidationError</code>, <code>validateProjectCreationInput</code></p>
   </article><article class="item" data-search="src/projectOAuthSetup.test.ts src/projectOAuthSetup.ts">
     <h3>src/projectOAuthSetup.test.ts</h3>
@@ -9346,6 +9351,8 @@
   module_src_cli_index_ts --&gt; module_src_host_templates_index_ts
   module_src_constants_ts[&quot;src/constants.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_constants_ts
+  module_src_constants_projectIdentity_ts[&quot;src/constants/projectIdentity.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_constants_projectIdentity_ts
   module_src_contractGuards_test_ts[&quot;src/contractGuards.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_contractGuards_test_ts
   module_src_contractGuards_test_ts --&gt; module_src_contractGuards_ts
@@ -10276,6 +10283,7 @@
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectPaths_ts
+  module_src_host_orchestrator_projectPaths_ts --&gt; module_src_constants_projectIdentity_ts
   module_src_host_orchestrator_projectRepositoryConnection_test_ts[&quot;src/host/orchestrator/projectRepositoryConnection.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectRepositoryConnection_test_ts
   module_src_host_orchestrator_projectRepositoryConnection_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
@@ -10763,6 +10771,7 @@
   module_src_projectIdentity_test_ts --&gt; module_src_projectWorkspaceContracts_ts
   module_src_projectIdentity_ts[&quot;src/projectIdentity.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_projectIdentity_ts
+  module_src_projectIdentity_ts --&gt; module_src_constants_projectIdentity_ts
   module_src_projectIdentity_ts --&gt; module_src_projectWorkspaceContracts_ts
   module_src_projectOAuthSetup_test_ts[&quot;src/projectOAuthSetup.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_projectOAuthSetup_test_ts
@@ -11649,6 +11658,8 @@
   module_src_cli_index_ts --&gt; module_src_host_templates_index_ts
   module_src_constants_ts[&quot;src/constants.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_constants_ts
+  module_src_constants_projectIdentity_ts[&quot;src/constants/projectIdentity.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_constants_projectIdentity_ts
   module_src_contractGuards_test_ts[&quot;src/contractGuards.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_contractGuards_test_ts
   module_src_contractGuards_test_ts --&gt; module_src_contractGuards_ts
@@ -12579,6 +12590,7 @@
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectPaths_ts
+  module_src_host_orchestrator_projectPaths_ts --&gt; module_src_constants_projectIdentity_ts
   module_src_host_orchestrator_projectRepositoryConnection_test_ts[&quot;src/host/orchestrator/projectRepositoryConnection.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectRepositoryConnection_test_ts
   module_src_host_orchestrator_projectRepositoryConnection_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
@@ -13066,6 +13078,7 @@
   module_src_projectIdentity_test_ts --&gt; module_src_projectWorkspaceContracts_ts
   module_src_projectIdentity_ts[&quot;src/projectIdentity.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_projectIdentity_ts
+  module_src_projectIdentity_ts --&gt; module_src_constants_projectIdentity_ts
   module_src_projectIdentity_ts --&gt; module_src_projectWorkspaceContracts_ts
   module_src_projectOAuthSetup_test_ts[&quot;src/projectOAuthSetup.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_projectOAuthSetup_test_ts
@@ -13817,6 +13830,7 @@
   module_src_cli_index_test_ts[&quot;src/cli/index.test.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_constants_ts[&quot;src/constants.ts&quot;]
+  module_src_constants_projectIdentity_ts[&quot;src/constants/projectIdentity.ts&quot;]
   module_src_contractGuards_test_ts[&quot;src/contractGuards.test.ts&quot;]
   module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
   module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
@@ -14888,6 +14902,7 @@
   module_src_host_orchestrator_projectManagerCurrentState_test_ts --&gt; module_src_manifestSync_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectPaths_ts --&gt; module_src_constants_projectIdentity_ts
   module_src_host_orchestrator_projectRepositoryConnection_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectStore_ts --&gt; module_src_contractGuards_ts
   module_src_host_orchestrator_projectStore_ts --&gt; module_src_host_orchestrator_projectPaths_ts
@@ -15110,6 +15125,7 @@
   module_src_projectDeployClient_ts --&gt; module_src_secretResponseGuard_ts
   module_src_projectIdentity_test_ts --&gt; module_src_projectIdentity_ts
   module_src_projectIdentity_test_ts --&gt; module_src_projectWorkspaceContracts_ts
+  module_src_projectIdentity_ts --&gt; module_src_constants_projectIdentity_ts
   module_src_projectIdentity_ts --&gt; module_src_projectWorkspaceContracts_ts
   module_src_projectOAuthSetup_test_ts --&gt; module_src_projectOAuthSetup_ts
   module_src_projectSecretApi_test_ts --&gt; module_src_projectSecretApi_ts
@@ -15525,6 +15541,7 @@
   module_src_cli_index_test_ts[&quot;src/cli/index.test.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_constants_ts[&quot;src/constants.ts&quot;]
+  module_src_constants_projectIdentity_ts[&quot;src/constants/projectIdentity.ts&quot;]
   module_src_contractGuards_test_ts[&quot;src/contractGuards.test.ts&quot;]
   module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
   module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
@@ -16596,6 +16613,7 @@
   module_src_host_orchestrator_projectManagerCurrentState_test_ts --&gt; module_src_manifestSync_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectPaths_ts --&gt; module_src_constants_projectIdentity_ts
   module_src_host_orchestrator_projectRepositoryConnection_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectStore_ts --&gt; module_src_contractGuards_ts
   module_src_host_orchestrator_projectStore_ts --&gt; module_src_host_orchestrator_projectPaths_ts
@@ -16818,6 +16836,7 @@
   module_src_projectDeployClient_ts --&gt; module_src_secretResponseGuard_ts
   module_src_projectIdentity_test_ts --&gt; module_src_projectIdentity_ts
   module_src_projectIdentity_test_ts --&gt; module_src_projectWorkspaceContracts_ts
+  module_src_projectIdentity_ts --&gt; module_src_constants_projectIdentity_ts
   module_src_projectIdentity_ts --&gt; module_src_projectWorkspaceContracts_ts
   module_src_projectOAuthSetup_test_ts --&gt; module_src_projectOAuthSetup_ts
   module_src_projectSecretApi_test_ts --&gt; module_src_projectSecretApi_ts
@@ -17235,6 +17254,7 @@
   module_src_cli_index_test_ts[&quot;src/cli/index.test.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_constants_ts[&quot;src/constants.ts&quot;]
+  module_src_constants_projectIdentity_ts[&quot;src/constants/projectIdentity.ts&quot;]
   module_src_contractGuards_test_ts[&quot;src/contractGuards.test.ts&quot;]
   module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
   module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
@@ -18224,6 +18244,7 @@
   module_src_cli_index_test_ts[&quot;src/cli/index.test.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_constants_ts[&quot;src/constants.ts&quot;]
+  module_src_constants_projectIdentity_ts[&quot;src/constants/projectIdentity.ts&quot;]
   module_src_contractGuards_test_ts[&quot;src/contractGuards.test.ts&quot;]
   module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
   module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
@@ -24788,17 +24809,17 @@ the currently running Studio contracts.</p>
       <h2>src/host/orchestrator/projectPaths.ts</h2>
       <article class="item" data-search="getAppsRoot src/host/orchestrator/projectPaths.ts Resolve the Studio workspace directory containing generated application projects.&#10;@todo Move project path policy from generic `host/orchestrator` into the `projects/` domain host edge.">
     <h3>getAppsRoot</h3>
-    <p class="muted"><code>src/host/orchestrator/projectPaths.ts:10:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectPaths.ts:12:1</code></p>
     <p>Resolve the Studio workspace directory containing generated application projects.
 @todo Move project path policy from generic `host/orchestrator` into the `projects/` domain host edge.</p>
   </article><article class="item" data-search="assertProjectId src/host/orchestrator/projectPaths.ts Validate the Studio project-id contract before it is used as a filesystem segment.&#10;@todo Keep project-id policy with the `projects/` domain rather than generic host orchestration.">
     <h3>assertProjectId</h3>
-    <p class="muted"><code>src/host/orchestrator/projectPaths.ts:18:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectPaths.ts:20:1</code></p>
     <p>Validate the Studio project-id contract before it is used as a filesystem segment.
 @todo Keep project-id policy with the `projects/` domain rather than generic host orchestration.</p>
   </article><article class="item" data-search="getProjectPath src/host/orchestrator/projectPaths.ts Resolve a validated Studio project id beneath the workspace apps root and reject path escape.&#10;@todo Move project filesystem location policy into the `projects/` domain host edge; generic bounded-path resolution can use Utility.">
     <h3>getProjectPath</h3>
-    <p class="muted"><code>src/host/orchestrator/projectPaths.ts:34:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectPaths.ts:36:1</code></p>
     <p>Resolve a validated Studio project id beneath the workspace apps root and reject path escape.
 @todo Move project filesystem location policy into the `projects/` domain host edge; generic bounded-path resolution can use Utility.</p>
   </article>

@@ -191,6 +191,8 @@ graph TD
   module_src_cli_index_ts --> module_src_host_templates_index_ts
   module_src_constants_ts["src/constants.ts"]
   package__ankhorage_studio -.-> module_src_constants_ts
+  module_src_constants_projectIdentity_ts["src/constants/projectIdentity.ts"]
+  package__ankhorage_studio -.-> module_src_constants_projectIdentity_ts
   module_src_contractGuards_test_ts["src/contractGuards.test.ts"]
   package__ankhorage_studio -.-> module_src_contractGuards_test_ts
   module_src_contractGuards_test_ts --> module_src_contractGuards_ts
@@ -1121,6 +1123,7 @@ graph TD
   module_src_host_orchestrator_projectManagerDeletion_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts["src/host/orchestrator/projectPaths.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_orchestrator_projectPaths_ts --> module_src_constants_projectIdentity_ts
   module_src_host_orchestrator_projectRepositoryConnection_test_ts["src/host/orchestrator/projectRepositoryConnection.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectRepositoryConnection_test_ts
   module_src_host_orchestrator_projectRepositoryConnection_test_ts --> module_src_host_orchestrator_projectManager_ts
@@ -1608,6 +1611,7 @@ graph TD
   module_src_projectIdentity_test_ts --> module_src_projectWorkspaceContracts_ts
   module_src_projectIdentity_ts["src/projectIdentity.ts"]
   package__ankhorage_studio -.-> module_src_projectIdentity_ts
+  module_src_projectIdentity_ts --> module_src_constants_projectIdentity_ts
   module_src_projectIdentity_ts --> module_src_projectWorkspaceContracts_ts
   module_src_projectOAuthSetup_test_ts["src/projectOAuthSetup.test.ts"]
   package__ankhorage_studio -.-> module_src_projectOAuthSetup_test_ts

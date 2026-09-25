@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.10.8",
+      "value": "v5.10.9",
       "color": "cb3837"
     },
     {
@@ -654,6 +654,15 @@
       "dependencies": [],
       "exports": [
         "STUDIO_ZORA_EXTENSION_SOURCES"
+      ]
+    },
+    {
+      "path": "src/constants/projectIdentity.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "STUDIO_PROJECT_ID_PATTERN",
+        "STUDIO_RESERVED_PROJECT_IDS"
       ]
     },
     {
@@ -3203,7 +3212,9 @@
     {
       "path": "src/host/orchestrator/projectPaths.ts",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": [
+        "src/constants/projectIdentity.ts"
+      ],
       "exports": [
         "assertProjectId",
         "getAppsRoot",
@@ -4801,6 +4812,7 @@
       "path": "src/projectIdentity.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/constants/projectIdentity.ts",
         "src/projectWorkspaceContracts.ts"
       ],
       "exports": [
@@ -20940,7 +20952,7 @@
       "description": "Resolve the Studio workspace directory containing generated application projects.\n@todo Move project path policy from generic `host/orchestrator` into the `projects/` domain host edge.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectPaths.ts",
-        "line": 10,
+        "line": 12,
         "column": 1
       }
     },
@@ -20949,7 +20961,7 @@
       "description": "Validate the Studio project-id contract before it is used as a filesystem segment.\n@todo Keep project-id policy with the `projects/` domain rather than generic host orchestration.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectPaths.ts",
-        "line": 18,
+        "line": 20,
         "column": 1
       }
     },
@@ -20958,7 +20970,7 @@
       "description": "Resolve a validated Studio project id beneath the workspace apps root and reject path escape.\n@todo Move project filesystem location policy into the `projects/` domain host edge; generic bounded-path resolution can use Utility.",
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectPaths.ts",
-        "line": 34,
+        "line": 36,
         "column": 1
       }
     },
@@ -30957,6 +30969,11 @@
       },
       {
         "fromPath": "src/projectIdentity.ts",
+        "toPath": "src/constants/projectIdentity.ts",
+        "sourcePath": "src/projectIdentity.ts"
+      },
+      {
+        "fromPath": "src/projectIdentity.ts",
         "toPath": "src/projectWorkspaceContracts.ts",
         "sourcePath": "src/projectIdentity.ts"
       },
@@ -33104,6 +33121,11 @@
         "fromPath": "src/host/orchestrator/projectManagerDeletion.test.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
         "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectPaths.ts",
+        "toPath": "src/constants/projectIdentity.ts",
+        "sourcePath": "src/host/orchestrator/projectPaths.ts"
       },
       {
         "fromPath": "src/host/orchestrator/projectRepositoryConnection.test.ts",
