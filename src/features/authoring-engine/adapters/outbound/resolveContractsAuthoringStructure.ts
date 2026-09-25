@@ -105,8 +105,6 @@ function resolveDescriptor(
       };
     case 'ref':
       return resolveReference(descriptor, document, visited, path);
-    default:
-      return unsupportedStructure(descriptor.kind, path);
   }
 }
 
