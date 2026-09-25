@@ -121,9 +121,7 @@ function ListingLocaleDraftEditor(props: {
       <DeployOwnerAuthoringEditor
         structure={LOCALE_STRUCTURE}
         value={draft}
-        policy={
-          selected === NEW_LOCALE ? undefined : { fields: { locale: { readOnly: true } } }
-        }
+        policy={selected === NEW_LOCALE ? undefined : { fields: { locale: { readOnly: true } } }}
         onChange={setDraft}
         onError={setError}
       />
