@@ -494,24 +494,21 @@ test('captures open registry identity before insertion and keeps existing identi
   expect(mutations.at(-1)).toEqual({ kind: 'unset', path: ['products', 'alpha'] });
 
   const identityInput = controls.find(
-    (control) => control.type === 'TextInput' && control.props.placeholder === 'Entity identity',
+    (control) =>
+      control.type === 'TextInput' &&
+      control.props.placeholder === 'Entity identity · press Enter to add',
   );
-  const changeIdentity = identityInput?.props.onChangeText;
-  const add = controls.find(
-    (control) => control.type === 'Button' && control.props.children === 'Add entity',
-  )?.props.onPress;
-  if (typeof changeIdentity !== 'function' || typeof add !== 'function') {
-    throw new Error('Missing open registry insertion controls.');
+  const submitIdentity = identityInput?.props.onSubmitEditing;
+  if (typeof submitIdentity !== 'function') {
+    throw new Error('Missing open registry identity submit handler.');
   }
 
   const beforeInvalid = mutations.length;
-  Reflect.apply(add, undefined, []);
-  Reflect.apply(changeIdentity, undefined, ['alpha']);
-  Reflect.apply(add, undefined, []);
+  Reflect.apply(submitIdentity, undefined, [{ nativeEvent: { text: '' } }]);
+  Reflect.apply(submitIdentity, undefined, [{ nativeEvent: { text: 'alpha' } }]);
   expect(mutations).toHaveLength(beforeInvalid);
 
-  Reflect.apply(changeIdentity, undefined, [' beta ']);
-  Reflect.apply(add, undefined, []);
+  Reflect.apply(submitIdentity, undefined, [{ nativeEvent: { text: ' beta ' } }]);
   expect(mutations.at(-1)).toEqual({
     kind: 'set',
     path: ['products', 'beta'],
