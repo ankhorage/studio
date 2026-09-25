@@ -1233,7 +1233,9 @@ async function replaceFocusedInputValue(
   if (!focused) throw new Error(`Could not focus authoring input with value ${currentValue}.`);
 
   await page.insertText(nextValue);
-  await page.evaluate('document.activeElement instanceof HTMLElement && document.activeElement.blur()');
+  await page.evaluate(
+    'document.activeElement instanceof HTMLElement && document.activeElement.blur()',
+  );
 }
 
 /*** Wait for Studio autosave to cross the existing manifest host boundary. */
@@ -1245,7 +1247,13 @@ async function waitForManifestScreenName(
 ): Promise<void> {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
-    if (studioApi.readManifest().screens[screenId]?.name === expectedName) return;
+    if (
+      Object.values(studioApi.readManifest().screens).some(
+        (screen) => screen.id === screenId && screen.name === expectedName,
+      )
+    ) {
+      return;
+    }
     await Bun.sleep(250);
   }
   throw new Error(`Manifest did not persist screen name "${expectedName}" for ${screenId}.`);
