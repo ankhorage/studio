@@ -7,6 +7,8 @@ import type {
   AuthoringUnionVariant,
 } from '../../../types/authoring-engine';
 
+type UnionFailure = { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
+
 type UnionResolution =
   | {
       readonly ok: true;
@@ -14,7 +16,7 @@ type UnionResolution =
       readonly variants: readonly AuthoringUnionVariant[];
       readonly selected: AuthoringUnionVariant | undefined;
     }
-  | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
+  | UnionFailure;
 
 /*** Resolve one explicitly discriminated union without guessing ambiguous variant semantics. */
 export function resolveAuthoringUnion(
@@ -92,7 +94,7 @@ function encodePrimitive(value: AuthoringPrimitive): string {
 }
 
 /*** Create a fail-closed unsupported-union result. */
-function unsupported(path: readonly string[], message: string): UnionResolution {
+function unsupported(path: readonly string[], message: string): UnionFailure {
   return {
     ok: false,
     diagnostic: { code: 'unsupported-structure', message, path },
@@ -100,7 +102,7 @@ function unsupported(path: readonly string[], message: string): UnionResolution 
 }
 
 /*** Create an invalid authored-union value result. */
-function invalidValue(path: readonly string[], message: string): UnionResolution {
+function invalidValue(path: readonly string[], message: string): UnionFailure {
   return {
     ok: false,
     diagnostic: { code: 'invalid-value', message, path },
