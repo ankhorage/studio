@@ -966,8 +966,8 @@ export function getPackageJson(args: {
       '@ankhorage/expo-runtime': EXPO_RUNTIME_VERSION,
       '@ankhorage/navigator': NAVIGATOR_VERSION,
       '@ankhorage/runtime': RUNTIME_VERSION,
+      '@ankhorage/utility': UTILITY_VERSION,
       ...(includeStudio ? { '@ankhorage/studio': STUDIO_VERSION } : {}),
-      ...(authProvider !== null ? { '@ankhorage/utility': UTILITY_VERSION } : {}),
       ...(authProvider === 'supabase'
         ? {
             '@ankhorage/supabase-auth': SUPABASE_AUTH_VERSION,
