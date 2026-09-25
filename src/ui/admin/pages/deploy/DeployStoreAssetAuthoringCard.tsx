@@ -1,4 +1,5 @@
 import type { ProjectStoreListingAssetLocation } from '@ankhorage/deploy/project';
+import { toErrorMessage } from '@ankhorage/utility/error';
 import { Button, Card, Dialog, Select, Text, View as ZoraView } from '@ankhorage/zora';
 import React, { useState } from 'react';
 import { View } from 'react-native';
@@ -220,6 +221,4 @@ function createLocation(input: {
   };
 }
 
-function readError(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
-}
+

@@ -1,4 +1,5 @@
 import type { MonetizationProduct } from '@ankhorage/deploy';
+import { toErrorMessage } from '@ankhorage/utility/error';
 import { Button, Card, Text } from '@ankhorage/zora';
 import React, { useEffect, useState } from 'react';
 
@@ -62,6 +63,4 @@ export function DeployMonetizationAuthoringCard(props: {
   );
 }
 
-function readError(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
-}
+

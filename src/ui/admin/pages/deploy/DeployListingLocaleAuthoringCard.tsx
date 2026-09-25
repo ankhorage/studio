@@ -1,4 +1,5 @@
 import type { StoreListingLocale } from '@ankhorage/deploy/project';
+import { toErrorMessage } from '@ankhorage/utility/error';
 import { Button, Card, Dialog, Select, Text, View } from '@ankhorage/zora';
 import React, { useEffect, useState } from 'react';
 
@@ -249,6 +250,4 @@ function optionalField<Key extends string>(key: Key, value: string): Partial<Rec
   return trimmed === '' ? {} : ({ [key]: trimmed } as Record<Key, string>);
 }
 
-function readError(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
-}
+
