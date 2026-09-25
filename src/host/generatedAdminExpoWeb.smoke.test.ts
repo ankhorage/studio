@@ -853,7 +853,7 @@ test(
         expect(missingDetail).toContain('missing or was deleted');
         expect(page.errors).toEqual([]);
 
-        await verifyResponsiveAuthoringAcceptance(page, studioApi, expoOutput);
+        await verifyResponsiveAuthoringAcceptance(debugPort, appUrl, studioApi, expoOutput);
         await verifyWorkspaceReturnToApp(page, expoOutput);
       } finally {
         page.close();
@@ -1067,100 +1067,122 @@ interface ResponsiveAuthoringRoute {
  * Exercise released owner-derived authoring semantics at desktop and narrow mobile widths, then prove one canonical mutation survives manifest persistence and reload.
  */
 async function verifyResponsiveAuthoringAcceptance(
-  page: ChromePage,
+  debugPort: number,
+  appUrl: string,
   studioApi: SmokeStudioApiServer,
   expoOutput: readonly string[],
 ): Promise<void> {
-  const routes: readonly ResponsiveAuthoringRoute[] = [
-    {
-      pathname: '/ankh/screens/dashboard',
-      evidence: ['Screen metadata', 'Stable screen ID', 'Dashboard'],
-    },
-    {
-      pathname: '/ankh/auth',
-      evidence: ['Email and password', 'Add phone', 'Add username'],
-    },
-    {
-      pathname: '/ankh/theme/spacing',
-      evidence: ['Spacing', 'Add entry'],
-    },
-    {
-      pathname: '/ankh/deploy',
-      evidence: [
-        'Monetization desired state',
-        'Prepared release desired state',
-        'Entity identity · press Enter to add',
-        'non-consumable',
-      ],
-    },
-    {
-      pathname: '/ankh/modules/example-unsupported-config',
-      evidence: [
-        'Package-owned unsupported config',
-        'Module admin control "structured-json" does not have a central Authoring Engine adapter.',
-      ],
-    },
-  ];
-  const viewports = [
-    { width: 1440, height: 900 },
-    { width: 390, height: 844 },
-  ] as const;
-  const desktopSnapshots = new Map<string, ResponsiveAuthoringSnapshot>();
+  const page = await openChromePage(debugPort);
+  await page.blockHotReloadConnections();
 
-  for (const viewport of viewports) {
-    await page.setViewportSize(viewport.width, viewport.height);
-    for (const route of routes) {
-      await page.navigateStudio(route.pathname, expoOutput);
-      const snapshot = await waitForResponsiveAuthoringSnapshot(
-        page,
-        route.evidence,
-        HTTP_TIMEOUT_MS,
-      );
-      expect(snapshot.overflowWidth).toBeLessThanOrEqual(1);
+  try {
+    const routes: readonly ResponsiveAuthoringRoute[] = [
+      {
+        pathname: '/ankh/screens/dashboard',
+        evidence: ['Screen metadata', 'Stable screen ID', 'Dashboard'],
+      },
+      {
+        pathname: '/ankh/auth',
+        evidence: ['Email and password', 'Add phone', 'Add username'],
+      },
+      {
+        pathname: '/ankh/theme/spacing',
+        evidence: ['Spacing', 'Add entry'],
+      },
+      {
+        pathname: '/ankh/deploy',
+        evidence: [
+          'Monetization desired state',
+          'Prepared release desired state',
+          'Entity identity · press Enter to add',
+          'non-consumable',
+        ],
+      },
+      {
+        pathname: '/ankh/modules/example-unsupported-config',
+        evidence: [
+          'Package-owned unsupported config',
+          'Module admin control "structured-json" does not have a central Authoring Engine adapter.',
+        ],
+      },
+    ];
+    const viewports = [
+      { width: 1440, height: 900 },
+      { width: 390, height: 844 },
+    ] as const;
+    const desktopSnapshots = new Map<string, ResponsiveAuthoringSnapshot>();
 
-      const semanticControls = {
-        inputCount: snapshot.inputCount,
-        selectCount: snapshot.selectCount,
-        switchCount: snapshot.switchCount,
-        textareaCount: snapshot.textareaCount,
-      };
-      if (viewport.width === viewports[0].width) {
-        desktopSnapshots.set(route.pathname, snapshot);
-      } else {
-        const desktop = desktopSnapshots.get(route.pathname);
-        if (!desktop) throw new Error(`Missing desktop authoring snapshot for ${route.pathname}.`);
-        expect(semanticControls).toEqual({
-          inputCount: desktop.inputCount,
-          selectCount: desktop.selectCount,
-          switchCount: desktop.switchCount,
-          textareaCount: desktop.textareaCount,
-        });
-      }
+    let firstRoute = true;
+    for (const viewport of viewports) {
+      await page.setViewportSize(viewport.width, viewport.height);
+      for (const route of routes) {
+        if (firstRoute) {
+          await page.navigate(new URL(route.pathname, appUrl).toString());
+          await page.waitForStudioNavigationReady(HTTP_TIMEOUT_MS, expoOutput);
+          firstRoute = false;
+        } else {
+          await page.navigateStudio(route.pathname, expoOutput);
+        }
 
-      if (route.pathname === '/ankh/modules/example-unsupported-config') {
-        expect(snapshot.textareaCount).toBe(0);
+        const snapshot = await waitForResponsiveAuthoringSnapshot(
+          page,
+          route.evidence,
+          HTTP_TIMEOUT_MS,
+        );
+        expect(snapshot.overflowWidth).toBeLessThanOrEqual(1);
+
+        const semanticControls = {
+          inputCount: snapshot.inputCount,
+          selectCount: snapshot.selectCount,
+          switchCount: snapshot.switchCount,
+          textareaCount: snapshot.textareaCount,
+        };
+        if (viewport.width === viewports[0].width) {
+          desktopSnapshots.set(route.pathname, snapshot);
+        } else {
+          const desktop = desktopSnapshots.get(route.pathname);
+          if (!desktop) {
+            throw new Error(`Missing desktop authoring snapshot for ${route.pathname}.`);
+          }
+          expect(semanticControls).toEqual({
+            inputCount: desktop.inputCount,
+            selectCount: desktop.selectCount,
+            switchCount: desktop.switchCount,
+            textareaCount: desktop.textareaCount,
+          });
+        }
+
+        if (route.pathname === '/ankh/modules/example-unsupported-config') {
+          expect(snapshot.textareaCount).toBe(0);
+        }
       }
     }
+
+    await page.navigateStudio('/ankh/screens/dashboard', expoOutput);
+    await waitForResponsiveAuthoringSnapshot(
+      page,
+      ['Screen metadata', 'Dashboard'],
+      HTTP_TIMEOUT_MS,
+    );
+    await replaceFocusedInputValue(page, 'Dashboard', 'Dashboard WP8 accepted');
+    await waitForManifestScreenName(studioApi, 'dashboard', 'Dashboard WP8 accepted', 15_000);
+
+    await page.reload();
+    await page.waitForStudioNavigationReady(HTTP_TIMEOUT_MS, expoOutput);
+    expect(await page.evaluate<string>('globalThis.location.pathname')).toBe(
+      '/ankh/screens/dashboard',
+    );
+    await waitForResponsiveAuthoringSnapshot(
+      page,
+      ['Screen metadata', 'Dashboard WP8 accepted'],
+      HTTP_TIMEOUT_MS,
+    );
+
+    await page.setViewportSize(1280, 900);
+    expect(page.errors).toEqual([]);
+  } finally {
+    page.close();
   }
-
-  await page.navigateStudio('/ankh/screens/dashboard', expoOutput);
-  await waitForResponsiveAuthoringSnapshot(page, ['Screen metadata', 'Dashboard'], HTTP_TIMEOUT_MS);
-  await replaceFocusedInputValue(page, 'Dashboard', 'Dashboard WP8 accepted');
-  await waitForManifestScreenName(studioApi, 'dashboard', 'Dashboard WP8 accepted', 15_000);
-
-  await page.reload();
-  await page.waitForStudioNavigationReady(HTTP_TIMEOUT_MS, expoOutput);
-  expect(await page.evaluate<string>('globalThis.location.pathname')).toBe(
-    '/ankh/screens/dashboard',
-  );
-  await waitForResponsiveAuthoringSnapshot(
-    page,
-    ['Screen metadata', 'Dashboard WP8 accepted'],
-    HTTP_TIMEOUT_MS,
-  );
-
-  await page.setViewportSize(1280, 900);
-  expect(page.errors).toEqual([]);
 }
 
 /*** Wait until all requested owner-derived evidence is rendered and return viewport/form-control geometry. */
@@ -1192,27 +1214,29 @@ async function waitForResponsiveAuthoringSnapshot(
   );
 }
 
-/*** Read visible text plus form values/placeholders so semantic controls can be asserted without coupling to ZORA DOM nesting. */
+/*** Read visible body text plus form values/placeholders without depending on one fragile CDP evaluation result. */
 async function readResponsiveAuthoringEvidence(page: ChromePage): Promise<string> {
-  return page.evaluate<string>(`(() => {
-    const formEvidence = [...document.querySelectorAll('input, textarea, select')].flatMap(
-      (element) => {
-        if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
-          return [element.value, element.placeholder];
-        }
-        if (element instanceof HTMLSelectElement) {
-          return [element.value, ...[...element.options].map((option) => option.textContent ?? '')];
-        }
-        return [];
-      },
-    );
-    const actionEvidence = [...document.querySelectorAll('[role="button"], button')].map(
-      (element) => element.textContent ?? '',
-    );
-    return [document.body?.innerText ?? '', ...formEvidence, ...actionEvidence]
-      .filter(Boolean)
-      .join('\n');
-  })()`);
+  const bodyText = await page.readBodyText();
+  const formEvidence =
+    (await page.evaluate<string | undefined>(`(() => {
+      const fields = [...document.querySelectorAll('input, textarea, select')].flatMap(
+        (element) => {
+          if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
+            return [element.value, element.placeholder];
+          }
+          if (element instanceof HTMLSelectElement) {
+            return [
+              element.value,
+              ...[...element.options].map((option) => option.textContent ?? ''),
+            ];
+          }
+          return [];
+        },
+      );
+      return fields.filter(Boolean).join('\\n');
+    })()`)) ?? '';
+
+  return [bodyText, formEvidence].filter(Boolean).join('\n');
 }
 
 /*** Replace one currently rendered input value through real Chrome input dispatch so React Native Web observes the mutation. */

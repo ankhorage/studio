@@ -55,7 +55,15 @@ test('Deploy client transports owner authoring metadata without Deploy runtime i
     descriptors: {
       Monetization: {
         id: 'Monetization',
-        descriptor: { kind: 'object', fields: {} },
+        descriptor: {
+          kind: 'object',
+          fields: {
+            products: {
+              optional: false,
+              value: { kind: 'scalar', type: 'string' },
+            },
+          },
+        },
       },
     },
   } as const;
@@ -284,6 +292,52 @@ test('Deploy client authors monetization and prepared release as canonical owner
   expect(requests[0]?.init?.body).toBe(JSON.stringify({ products }));
   expect(requests[1]?.path).toBe('/projects/demo/deploy/release');
   expect(requests[1]?.init?.body).toBe(JSON.stringify(release));
+});
+
+test('Deploy authoring keeps validated descriptor value metadata while rejecting payload secrets', async () => {
+  const structure = {
+    protocolVersion: 1,
+    packageName: '@ankhorage/deploy',
+    packageVersion: '0.13.1',
+    roots: { monetization: 'Monetization' },
+    descriptors: {
+      Monetization: {
+        id: 'Monetization',
+        descriptor: {
+          kind: 'object',
+          fields: {
+            products: {
+              optional: false,
+              value: { kind: 'scalar', type: 'string' },
+            },
+          },
+        },
+      },
+    },
+  } as const;
+  const responses = [
+    Response.json({
+      structure,
+      monetization: { products: [] },
+      release: { version: '1.0.0', targets: {}, notes: {}, rollout: {} },
+    }),
+    Response.json({
+      structure,
+      monetization: { products: [], secret: 'DEP12_SENTINEL_MUST_NOT_CROSS' },
+      release: { version: '1.0.0', targets: {}, notes: {}, rollout: {} },
+    }),
+  ];
+  const client = new ProjectDeployClient(() => {
+    const response = responses.shift();
+    if (!response) throw new Error('Expected another Deploy authoring response fixture.');
+    return Promise.resolve(response);
+  });
+
+  expect((await client.readAuthoring('demo')).structure).toEqual(structure);
+  const error = await captureProjectDeployApiError(() => client.readAuthoring('demo'));
+  expect(error.status).toBe(502);
+  expect(error.message).toContain('forbidden secret-shaped field');
+  expect(error.message).not.toContain('DEP12_SENTINEL_MUST_NOT_CROSS');
 });
 
 test('Deploy authoring responses cannot smuggle secret-shaped fields into browser state', async () => {

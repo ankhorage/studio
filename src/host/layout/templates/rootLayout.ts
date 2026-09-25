@@ -423,9 +423,7 @@ function resolveZoraSurfaceThemeConfig(theme: AppManifest['themes'][string]) {
   };
 }
 
-function resolveManifestActiveTheme(
-  manifest: AppManifest,
-): AppManifest['themes'][string] {
+function resolveManifestActiveTheme(manifest: AppManifest): AppManifest['themes'][string] {
   const theme = readOwnProperty(manifest.themes, manifest.activeThemeId);
   if (!theme) {
     throw new Error("Manifest active theme '" + manifest.activeThemeId + "' is missing.");
@@ -460,7 +458,6 @@ ${indentedRootHookBlock}  const manifestContext = useOptionalManifestContext();
 ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContentNode};
 
   ${outputDeclaration}
-
 
   const shell = (
     <GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>
