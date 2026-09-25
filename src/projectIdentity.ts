@@ -1,12 +1,12 @@
+import {
+  STUDIO_PROJECT_ID_PATTERN,
+  STUDIO_RESERVED_PROJECT_IDS,
+} from './constants/projectIdentity';
 import type {
   ProjectCreationValidationFailure,
   ProjectCreationValidationResult,
   StudioProjectSummary,
 } from './projectWorkspaceContracts';
-
-const RESERVED_PROJECT_IDS = ['studio'] as const;
-
-const PROJECT_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 
 /***
  * Normalize a project name into a lowercase hyphenated identifier.
@@ -34,7 +34,7 @@ function normalizeProjectName(projectName: string): string {
  * @todo Move project identity/reserved-id policy under src/projects/.
  */
 function isReservedProjectId(projectId: string): boolean {
-  return RESERVED_PROJECT_IDS.includes(projectId as (typeof RESERVED_PROJECT_IDS)[number]);
+  return STUDIO_RESERVED_PROJECT_IDS.has(projectId);
 }
 
 /*** Represent a failed Studio project-creation validation as an Error carrying its structured reason. */
@@ -65,7 +65,7 @@ export function validateProjectCreationInput(args: {
     };
   }
 
-  if (!PROJECT_ID_PATTERN.test(projectId)) {
+  if (!STUDIO_PROJECT_ID_PATTERN.test(projectId)) {
     return {
       ok: false,
       projectId,
