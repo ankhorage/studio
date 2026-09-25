@@ -2,6 +2,7 @@ import {
   STRUCTURE_DESCRIPTOR,
   type StructureDescriptorDocument,
 } from '@ankhorage/contracts/structure';
+import { DEPLOY_AUTHORING_STRUCTURE } from '@ankhorage/deploy/authoring';
 import { expect, test } from 'bun:test';
 
 import { resolveContractsAuthoringStructure } from './resolveContractsAuthoringStructure';
@@ -229,5 +230,41 @@ test('reports missing roots rather than guessing an editor', () => {
       message: 'Structure root "missing-root" is not published by @ankhorage/contracts.',
       path: [],
     },
+  });
+});
+
+
+test('resolves released Deploy entity-registry and union semantics without a Studio shadow schema', () => {
+  const result = resolveContractsAuthoringStructure(DEPLOY_AUTHORING_STRUCTURE, 'monetization');
+
+  expect(result.ok).toBe(true);
+  if (!result.ok || result.structure.kind !== 'object') return;
+
+  const products = result.structure.fields.find((field) => field.name === 'products')?.structure;
+  expect(products).toMatchObject({
+    kind: 'entity-registry',
+    identityField: 'id',
+    key: { kind: 'scalar', scalarType: 'string' },
+    value: { kind: 'union', discriminator: 'kind' },
+  });
+});
+
+test('preserves nested released Deploy rollout unions and target-set semantics', () => {
+  const result = resolveContractsAuthoringStructure(
+    DEPLOY_AUTHORING_STRUCTURE,
+    'prepared-release',
+  );
+
+  expect(result.ok).toBe(true);
+  if (!result.ok || result.structure.kind !== 'object') return;
+
+  const targets = result.structure.fields.find((field) => field.name === 'targets')?.structure;
+  const rollout = result.structure.fields.find((field) => field.name === 'rollout')?.structure;
+  expect(targets).toMatchObject({ kind: 'set' });
+  expect(rollout).toMatchObject({ kind: 'object' });
+  if (!rollout || rollout.kind !== 'object') return;
+  expect(rollout.fields.find((field) => field.name === 'android')?.structure).toMatchObject({
+    kind: 'union',
+    discriminator: 'mode',
   });
 });
