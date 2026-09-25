@@ -122,7 +122,7 @@ Collect and alphabetically sort the API operations available for Studio binding 
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:138:1`
+Source: `src/mediaAuthoringModel.ts:134:1`
 
 Collect every Studio node-property usage of one media asset across all manifest screens.
 @todo Move media usage analysis under src/media/ while extracting generic deep-value traversal.
@@ -203,7 +203,7 @@ Create an immutable props patch that removes a property for undefined or replace
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:88:1`
+Source: `src/mediaAuthoringModel.ts:89:1`
 
 Create a unique slug-like media id from a name and an existing keyed registry.
 @utility @ankhorage/utility/string
@@ -219,7 +219,7 @@ Create a unique slug-like media id from a name and an existing keyed registry.
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:68:1`
+Source: `src/mediaAuthoringModel.ts:69:1`
 
 Create the canonical media-reference object for one media id.
 @todo Keep the MediaAssetReference constructor with its contracts/media owner unless a generic single-key reference constructor is extracted.
@@ -234,7 +234,7 @@ Create the canonical media-reference object for one media id.
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:105:1`
+Source: `src/mediaAuthoringModel.ts:101:1`
 
 Create a URL-backed Studio media asset after validating and normalizing its HTTP URL.
 @todo Move URL-media authoring behavior under src/media/ while reusing generic URL normalization.
@@ -249,7 +249,7 @@ Create a URL-backed Studio media asset after validating and normalizing its HTTP
 
 Kind: `function`
 Module: `src/projectIdentity.ts`
-Source: `src/projectIdentity.ts:15:1`
+Source: `src/projectIdentity.ts:17:1`
 
 Normalize a project name into a lowercase hyphenated identifier.
 @utility @ankhorage/utility/string
@@ -529,7 +529,7 @@ Source: `src/index.ts:308:1`
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:53:1`
+Source: `src/mediaAuthoringModel.ts:54:1`
 
 List manifest media assets, optionally filter by kind, and sort them by name.
 @utility @ankhorage/utility/array
@@ -691,7 +691,7 @@ Source: `src/projectWorkspaceContracts.ts:18:1`
 
 Kind: `type`
 Module: `src/projectIdentity.ts`
-Source: `src/projectIdentity.ts:41:1`
+Source: `src/projectIdentity.ts:38:1`
 
 Represent a failed Studio project-creation validation as an Error carrying its structured reason.
 
@@ -785,7 +785,7 @@ Source: `src/projectWorkspaceContracts.ts:16:1`
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:76:1`
+Source: `src/mediaAuthoringModel.ts:77:1`
 
 Parse an unknown value as an exact one-key media-reference object.
 @todo Keep MediaAssetReference semantics with media/contracts; implement it from generic object/value utilities.
@@ -835,7 +835,7 @@ Remove one indexed event binding and delete the event entry when no bindings rem
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:153:1`
+Source: `src/mediaAuthoringModel.ts:149:1`
 
 Remove an unused media asset from the manifest and reject removal when the asset is missing or referenced.
 @todo Move media removal policy under src/media/.
@@ -1312,13 +1312,13 @@ Source: `src/index.ts:236:1`
 
 Kind: `unknown`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:17:1`
+Source: `src/mediaAuthoringModel.ts:18:1`
 
 ## StudioMediaDeleteResult
 
 Kind: `unknown`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:25:1`
+Source: `src/mediaAuthoringModel.ts:26:1`
 
 ## StudioMediaIngestResult
 
@@ -1398,7 +1398,7 @@ Source: `src/mediaPickerAuthoring.ts:3:1`
 
 Kind: `type`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:11:1`
+Source: `src/mediaAuthoringModel.ts:12:1`
 
 ### Members
 
@@ -1642,7 +1642,7 @@ Expose Studio's trusted package-policy projection through the public APM extensi
 
 Kind: `unknown`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:45:1`
+Source: `src/mediaAuthoringModel.ts:46:1`
 
 ## TemplateCatalog
 
@@ -1729,7 +1729,7 @@ Immutably update one UiNode by id while preserving Studio's alias/style versus p
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:128:1`
+Source: `src/mediaAuthoringModel.ts:124:1`
 
 Immutably insert or replace a keyed media asset in a manifest registry.
 @utility @ankhorage/utility/object
@@ -1794,7 +1794,7 @@ Validate one resolved Studio placement against parent existence, child policy, i
 
 Kind: `function`
 Module: `src/projectIdentity.ts`
-Source: `src/projectIdentity.ts:53:1`
+Source: `src/projectIdentity.ts:50:1`
 
 Validate a new Studio project name and derived id against format, reservation, and uniqueness rules.
 @todo Move project creation validation under src/projects/.
