@@ -787,7 +787,7 @@ async function runAuthHiddenRouteDrawerStudioNavigationSmokeAsync(
   );
 }
 
-/*** Validate integrated/none auth-scope fixtures keep the public app root accessible and deny Studio Admin routes without a global session. */
+/*** Validate integrated/none auth-scope fixtures keep the public app root accessible while Studio remains available through its development-only access gate. */
 async function runScopeAwareStudioChecksAsync(
   project: NavigationProject,
   studioApiUrl: string,
@@ -806,12 +806,14 @@ async function runScopeAwareStudioChecksAsync(
       await chrome.navigateAsync(rootUrl);
       await chrome.waitForLocationAsync({ pathname: '/' });
       await chrome.waitForBodyTextAsync('Navigation Home');
-      await chrome.navigateAsync(`${rootUrl}/ankh/deploy`);
+
+      await chrome.navigateAsync(`${rootUrl}/ankh`);
+      await chrome.waitForLocationAsync({ pathname: '/ankh' });
+      await chrome.waitForBodyTextAsync('Administration');
+
+      await chrome.clickByRoleAndNameAsync('button', 'Back to app');
       await chrome.waitForLocationAsync({ pathname: '/' });
-      const bodyText = await chrome.waitForBodyTextAsync('Navigation Home');
-      if (bodyText.includes('Deployment administration') || bodyText.includes('Administration')) {
-        throw new Error(`${project.id} exposed Studio administration without a global session.`);
-      }
+      await chrome.waitForBodyTextAsync('Navigation Home');
       assertNoBrowserErrors(chrome.errors, `${project.id} public scope navigation`);
     },
     { EXPO_PUBLIC_API_URL: studioApiUrl },
