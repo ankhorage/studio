@@ -85,17 +85,19 @@ export function ExternalApiConnectCard({
       description="Start with the service or schema URL. Studio derives the API ID and discovers the protocol automatically."
     >
       <View style={externalApiAdminStyles.stack}>
-        <View style={externalApiAdminStyles.field}>\n          <Field label="Service or schema URL">
-          <TextInput
-            accessibilityLabel="Service or schema URL"
-            value={url}
-            autoCapitalize="none"
-            autoCorrect={false}
-            placeholder="https://api.example.com/openapi.json"
-            onChangeText={changeUrl}
-            onSubmitEditing={() => void discover()}
-          />
-          </Field>\n        </View>
+        <View style={externalApiAdminStyles.field}>
+          <Field label="Service or schema URL">
+            <TextInput
+              accessibilityLabel="Service or schema URL"
+              value={url}
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder="https://api.example.com/openapi.json"
+              onChangeText={changeUrl}
+              onSubmitEditing={() => void discover()}
+            />
+          </Field>
+        </View>
         <View style={externalApiAdminStyles.actions}>
           <Button loading={busy} disabled={busy || !url.trim()} onPress={() => void discover()}>
             Discover API
