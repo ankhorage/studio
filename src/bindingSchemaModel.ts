@@ -150,7 +150,10 @@ function resolveBindableType(
       return 'record';
     case 'unsupported':
       return structure.sourceKind === 'record' ? 'record' : 'unknown';
+    case 'entity-registry':
+      return 'record';
     case 'set':
+    case 'union':
       return 'unknown';
   }
 }
