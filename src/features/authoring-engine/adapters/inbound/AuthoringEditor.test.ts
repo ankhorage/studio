@@ -607,14 +607,22 @@ test('preserves shared owner fields when switching a product-like discriminated 
           kind: 'object',
           fields: [
             ...sharedFields,
-            { name: 'kind', optional: false, structure: { kind: 'choice', values: ['consumable'] } },
+            {
+              name: 'kind',
+              optional: false,
+              structure: { kind: 'choice', values: ['consumable'] },
+            },
           ],
         },
         {
           kind: 'object',
           fields: [
             ...sharedFields,
-            { name: 'kind', optional: false, structure: { kind: 'choice', values: ['subscription'] } },
+            {
+              name: 'kind',
+              optional: false,
+              structure: { kind: 'choice', values: ['subscription'] },
+            },
             {
               name: 'subscription',
               optional: false,
