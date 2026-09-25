@@ -177,6 +177,7 @@ function deriveNode(args: {
         discriminator: resolved.discriminator,
         variants: resolved.variants,
         selected: resolved.selected?.value,
+        authoredValue: isRecord(args.value) ? args.value : undefined,
         value:
           resolved.selected === undefined
             ? undefined

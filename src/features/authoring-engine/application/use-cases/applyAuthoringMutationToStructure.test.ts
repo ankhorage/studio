@@ -294,6 +294,38 @@ test('switches discriminated union variants and edits only the active variant', 
   });
 });
 
+test('replaces a root discriminated union with a validated target variant', () => {
+  const rootUnion = {
+    kind: 'union',
+    discriminator: 'kind',
+    variants: [
+      {
+        kind: 'object',
+        fields: [{ name: 'kind', optional: false, structure: { kind: 'choice', values: ['a'] } }],
+      },
+      {
+        kind: 'object',
+        fields: [
+          { name: 'kind', optional: false, structure: { kind: 'choice', values: ['b'] } },
+          { name: 'label', optional: false, structure: { kind: 'scalar', scalarType: 'string' } },
+        ],
+      },
+    ],
+  } as const satisfies AuthoringStructure;
+
+  const current: Readonly<Record<string, unknown>> = { kind: 'a' };
+  expect(
+    applyAuthoringMutationToStructure(current, rootUnion, {
+      kind: 'set',
+      path: [],
+      value: { kind: 'b', label: 'B' },
+    }),
+  ).toEqual({
+    ok: true,
+    value: { kind: 'b', label: 'B' },
+  });
+});
+
 test('rejects nested edits when the current union discriminator is unknown', () => {
   const result = applyAuthoringMutationToStructure(
     { rollout: { mode: 'unknown' } },
