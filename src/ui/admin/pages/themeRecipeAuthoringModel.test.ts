@@ -1,23 +1,22 @@
 import { describe, expect, test } from 'bun:test';
 
-import { updateThemeRecipeField } from './themeRecipeAuthoringModel';
+import { updateThemeRecipeOverrides } from './themeRecipeAuthoringModel';
 
 describe('themeRecipeAuthoringModel', () => {
-  test('persists only the selected component recipe override value', () => {
+  test('persists the centrally mutated component recipe override object', () => {
     expect(
-      updateThemeRecipeField({
+      updateThemeRecipeOverrides({
         recipes: undefined,
         kind: 'component',
         recipeName: 'Button',
-        fieldName: 'size',
-        value: 'l',
+        fields: { size: 'l' },
       }),
     ).toEqual({ components: { Button: { size: 'l' } } });
   });
 
-  test('preserves sibling and stale values while editing a known field', () => {
+  test('preserves the complete centrally mutated recipe field object', () => {
     expect(
-      updateThemeRecipeField({
+      updateThemeRecipeOverrides({
         recipes: {
           components: {
             Card: { staleField: 'preserve', tone: 'default' },
@@ -25,34 +24,31 @@ describe('themeRecipeAuthoringModel', () => {
         },
         kind: 'component',
         recipeName: 'Card',
-        fieldName: 'tone',
-        value: 'subtle',
+        fields: { staleField: 'preserve', tone: 'subtle' },
       }),
     ).toEqual({
       components: { Card: { staleField: 'preserve', tone: 'subtle' } },
     });
   });
 
-  test('reset removes the field instead of copying a metadata default', () => {
+  test('persists a central mutation result with one override removed', () => {
     expect(
-      updateThemeRecipeField({
+      updateThemeRecipeOverrides({
         recipes: { components: { Button: { size: 'l', variant: 'solid' } } },
         kind: 'component',
         recipeName: 'Button',
-        fieldName: 'size',
-        value: undefined,
+        fields: { variant: 'solid' },
       }),
     ).toEqual({ components: { Button: { variant: 'solid' } } });
   });
 
-  test('reset removes empty recipe and bucket structures', () => {
+  test('removes empty recipe and bucket structures', () => {
     expect(
-      updateThemeRecipeField({
+      updateThemeRecipeOverrides({
         recipes: { patterns: { Panel: { compact: true } } },
         kind: 'pattern',
         recipeName: 'Panel',
-        fieldName: 'compact',
-        value: undefined,
+        fields: undefined,
       }),
     ).toBeUndefined();
   });
