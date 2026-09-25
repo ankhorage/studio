@@ -174,7 +174,9 @@ function resolveEffectiveStructure(
   if (!resolved.ok || resolved.selected === undefined) {
     return rejected(
       mutation,
-      resolved.ok ? 'Select a union variant before editing its fields.' : resolved.diagnostic.message,
+      resolved.ok
+        ? 'Select a union variant before editing its fields.'
+        : resolved.diagnostic.message,
     );
   }
   return { ok: true, structure: resolved.selected.structure };
@@ -211,12 +213,10 @@ function validateStructuredValue(
   if (structure.kind === 'object') {
     for (const field of structure.fields) {
       const current = readOwnProperty<unknown>(value, field.name);
-      const result = validateStructuredValue(
-        field.structure,
-        current,
-        mutation,
-        [...path, field.name],
-      );
+      const result = validateStructuredValue(field.structure, current, mutation, [
+        ...path,
+        field.name,
+      ]);
       if (!result.ok) return result;
     }
   }
@@ -246,7 +246,11 @@ function validateEntityRegistryValue(
     }
     if (structure.identityField !== undefined) {
       if (!isRecord(entryValue)) {
-        return rejectedAt(mutation, [...path, entryKey], 'Entity-registry value must be an object.');
+        return rejectedAt(
+          mutation,
+          [...path, entryKey],
+          'Entity-registry value must be an object.',
+        );
       }
       if (readOwnProperty<unknown>(entryValue, structure.identityField) !== entryKey) {
         return rejectedAt(
@@ -256,12 +260,10 @@ function validateEntityRegistryValue(
         );
       }
     }
-    const nested = validateStructuredValue(
-      structure.value,
-      entryValue,
-      mutation,
-      [...path, entryKey],
-    );
+    const nested = validateStructuredValue(structure.value, entryValue, mutation, [
+      ...path,
+      entryKey,
+    ]);
     if (!nested.ok) return nested;
   }
   return { ok: true };
@@ -388,9 +390,7 @@ type StructuredRecordResult =
   | { readonly ok: true; readonly value: Readonly<Record<string, unknown>> }
   | StructuredMutationRejection;
 
-type StructuredStructureResult =
-  | { readonly ok: true; readonly structure: AuthoringStructure }
-  | StructuredMutationRejection;
+type StructuredStructureResult = { readonly ok: true; readonly structure: AuthoringStructure } | StructuredMutationRejection;
 
 type StructuredValidationResult = { readonly ok: true } | StructuredMutationRejection;
 
