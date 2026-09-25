@@ -135,8 +135,7 @@ function deriveNode(args: {
         : unsupportedValue(base, value.diagnostic);
     }
     case 'entity-registry': {
-      const valueStructure = args.structure.value;
-      const identityField = args.structure.identityField;
+      const { identityField, value: valueStructure } = args.structure;
       const value = readEntityRegistryValue(
         args.structure.key,
         identityField,
