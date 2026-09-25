@@ -1,4 +1,3 @@
-import { DEPLOY_AUTHORING_STRUCTURE } from '@ankhorage/deploy/authoring';
 import type { ProjectStoreListingAssetLocation } from '@ankhorage/deploy/project';
 import { Button, Card, Dialog, Text, View as ZoraView } from '@ankhorage/zora';
 import React, { useState } from 'react';
@@ -16,10 +15,6 @@ import { DeployOwnerAuthoringEditor } from './DeployOwnerAuthoringEditor';
 
 type PickedImage = NonNullable<Awaited<ReturnType<typeof pickProjectDeployImage>>>;
 
-const ASSET_LOCATION_STRUCTURE = resolveContractsAuthoringStructure(
-  DEPLOY_AUTHORING_STRUCTURE,
-  'store-listing-asset-location',
-);
 const DEFAULT_ASSET_LOCATION: ProjectStoreListingAssetLocation = {
   kind: 'screenshot',
   target: 'android',
@@ -31,6 +26,7 @@ const DEFAULT_ASSET_LOCATION: ProjectStoreListingAssetLocation = {
 /*** Author a semantic store-asset location from Deploy metadata while keeping image I/O as workflow UI. */
 export function DeployStoreAssetAuthoringCard(props: {
   readonly projectId: string;
+  readonly authoring: ProjectDeployDashboardState['authoring'];
   readonly listing: ProjectDeployDashboardState['listing'];
   readonly onMutation: () => void;
 }) {
@@ -91,12 +87,18 @@ export function DeployStoreAssetAuthoringCard(props: {
       title="Store assets"
       description="Asset-location variants and finite choices come from Deploy owner metadata. Image picking, upload and removal remain workflow operations."
     >
-      <DeployOwnerAuthoringEditor
-        structure={ASSET_LOCATION_STRUCTURE}
-        value={location}
-        onChange={setLocation}
-        onError={setError}
-      />
+      {structure ? (
+        <DeployOwnerAuthoringEditor
+          structure={structure}
+          value={location}
+          onChange={setLocation}
+          onError={setError}
+        />
+      ) : null}
+      {props.authoring.status === 'loading' ? <Text>Loading authoring metadata…</Text> : null}
+      {props.authoring.status === 'error' ? (
+        <Text color="danger">{props.authoring.message}</Text>
+      ) : null}
       <Button disabled={busy} variant="outline" onPress={() => void chooseImage()}>
         Choose PNG/JPEG
       </Button>
