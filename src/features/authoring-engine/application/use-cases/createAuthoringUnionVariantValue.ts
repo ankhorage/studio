@@ -59,10 +59,7 @@ function areAuthoringStructuresEquivalent(
     case 'set':
       return right.kind === 'set' && areAuthoringStructuresEquivalent(left.member, right.member);
     case 'ordered-list':
-      return (
-        right.kind === 'ordered-list' &&
-        areAuthoringStructuresEquivalent(left.item, right.item)
-      );
+      return right.kind === 'ordered-list' && areAuthoringStructuresEquivalent(left.item, right.item);
     case 'value-map':
     case 'entity-registry':
       return equalKeyedStructures(left, right);
@@ -84,7 +81,7 @@ function equalPrimitiveLists(
 ): boolean {
   return (
     left.length === right.length &&
-    left.every((value, index) => Object.is(value, right[index]))
+    left.every((value, index) => Object.is(value, right.at(index)))
   );
 }
 
@@ -96,9 +93,9 @@ function equalObjectFields(
   return (
     left.length === right.length &&
     left.every((field, index) => {
-      const candidate = right[index];
+      const candidate = right.at(index);
+      if (!candidate) return false;
       return (
-        candidate !== undefined &&
         field.name === candidate.name &&
         field.optional === candidate.optional &&
         areAuthoringStructuresEquivalent(field.structure, candidate.structure)
@@ -109,10 +106,7 @@ function equalObjectFields(
 
 /*** Compare map/registry key-value semantics, including stable registry identity declarations. */
 function equalKeyedStructures(
-  left: Extract<
-    AuthoringStructure,
-    { readonly kind: 'value-map' | 'entity-registry' }
-  >,
+  left: Extract<AuthoringStructure, { readonly kind: 'value-map' | 'entity-registry' }>,
   right: AuthoringStructure,
 ): boolean {
   if (left.kind === 'value-map') {
@@ -140,8 +134,8 @@ function equalUnionStructures(
     left.discriminator === right.discriminator &&
     left.variants.length === right.variants.length &&
     left.variants.every((variant, index) => {
-      const candidate = right.variants[index];
-      return candidate !== undefined && areAuthoringStructuresEquivalent(variant, candidate);
+      const candidate = right.variants.at(index);
+      return candidate ? areAuthoringStructuresEquivalent(variant, candidate) : false;
     })
   );
 }
