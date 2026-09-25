@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.11.0
+
+### Minor Changes
+
+- f848a09: Support stable entity-registry and explicitly discriminated union semantics in the central Authoring Engine.
+
 ## 5.10.13
 
 ### Patch Changes
