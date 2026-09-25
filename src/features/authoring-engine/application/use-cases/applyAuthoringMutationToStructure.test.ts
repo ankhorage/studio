@@ -301,9 +301,7 @@ test('replaces a root discriminated union with a validated target variant', () =
     variants: [
       {
         kind: 'object',
-        fields: [
-          { name: 'kind', optional: false, structure: { kind: 'choice', values: ['a'] } },
-        ],
+        fields: [{ name: 'kind', optional: false, structure: { kind: 'choice', values: ['a'] } }],
       },
       {
         kind: 'object',
