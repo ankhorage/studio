@@ -1,74 +1,94 @@
-import type { ProjectReleaseInput } from '@ankhorage/deploy/project';
+import {
+  DEPLOY_AUTHORING_STRUCTURE,
+  fromDeployReleaseAuthoringValue,
+  toDeployReleaseAuthoringValue,
+  type DeployReleaseAuthoringValue,
+} from '@ankhorage/deploy/authoring';
 import { Button, Card, Text } from '@ankhorage/zora';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
+import { resolveContractsAuthoringStructure } from '../../../../features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure';
 import { writeProjectDeployRelease } from '../../../../projectDeployApi';
-import { Field, Input, KeyValue } from '../../adminPagePrimitives';
+import { KeyValue } from '../../adminPagePrimitives';
 import type { ProjectDeployDashboardState } from './deployDashboardTypes';
+import { DeployOwnerAuthoringEditor } from './DeployOwnerAuthoringEditor';
 
+const RELEASE_STRUCTURE = resolveContractsAuthoringStructure(
+  DEPLOY_AUTHORING_STRUCTURE,
+  'prepared-release',
+);
+
+/*** Author prepared Release desired state through Deploy's released structure and canonical projections. */
 export function DeployPreparedReleaseAuthoringCard(props: {
   readonly projectId: string;
   readonly release: ProjectDeployDashboardState['release'];
   readonly onMutation: () => void;
 }) {
-  const [source, setSource] = useState('{}');
+  return (
+    <Card
+      title="Prepared release desired state"
+      description="Version, target membership, localized notes and rollout variants are derived from Deploy owner metadata. Execution remains inspect → confirm → execute."
+    >
+      {props.release.status === 'ready' ? (
+        <>
+          <KeyValue label="Prepared release revision" value={props.release.data.revision} />
+          <ReleaseDraftEditor
+            key={props.release.data.revision}
+            projectId={props.projectId}
+            initial={toDeployReleaseAuthoringValue({
+              version: props.release.data.version,
+              targets: props.release.data.targets,
+              notes: props.release.data.notes,
+              rollout: props.release.data.rollout,
+            })}
+            onMutation={props.onMutation}
+          />
+        </>
+      ) : null}
+      {props.release.status === 'loading' ? <Text>Loading prepared release…</Text> : null}
+      {props.release.status === 'error' ? (
+        <Text color="danger">{props.release.message}</Text>
+      ) : null}
+    </Card>
+  );
+}
+
+/*** Edit one revision-scoped Release draft and persist it through Deploy's canonical projection. */
+function ReleaseDraftEditor(props: {
+  readonly projectId: string;
+  readonly initial: DeployReleaseAuthoringValue;
+  readonly onMutation: () => void;
+}) {
+  const [draft, setDraft] = useState(props.initial);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (props.release.status !== 'ready') return;
-    const release: ProjectReleaseInput = {
-      version: props.release.data.version,
-      targets: props.release.data.targets,
-      notes: props.release.data.notes,
-      rollout: props.release.data.rollout,
-    };
-    setSource(JSON.stringify(release, null, 2));
-  }, [props.release]);
-
+  /*** Persist the current Release authoring value through Deploy's canonical reverse projection. */
   const save = async () => {
     setBusy(true);
     setError(null);
     try {
-      const parsed: unknown = JSON.parse(source);
-      if (!isRecord(parsed))
-        throw new Error('Canonical ProjectReleaseInput must be a JSON object.');
-      await writeProjectDeployRelease(props.projectId, parsed as unknown as ProjectReleaseInput);
+      await writeProjectDeployRelease(props.projectId, fromDeployReleaseAuthoringValue(draft));
       props.onMutation();
     } catch (caught) {
-      setError(readError(caught));
+      setError(caught instanceof Error ? caught.message : String(caught));
     } finally {
       setBusy(false);
     }
   };
 
   return (
-    <Card
-      title="Prepared release desired state"
-      description="Author the exact Deploy ProjectReleaseInput. Saving desired state never executes a provider; execution remains inspect → confirm → execute below."
-    >
-      {props.release.status === 'ready' ? (
-        <KeyValue label="Prepared release revision" value={props.release.data.revision} />
-      ) : null}
-      <Field label="Canonical ProjectReleaseInput">
-        <Input multiline numberOfLines={14} value={source} onChangeText={setSource} />
-      </Field>
-      {props.release.status === 'loading' ? <Text>Loading prepared release…</Text> : null}
-      {props.release.status === 'error' ? (
-        <Text color="danger">{props.release.message}</Text>
-      ) : null}
+    <>
+      <DeployOwnerAuthoringEditor
+        structure={RELEASE_STRUCTURE}
+        value={draft}
+        onChange={setDraft}
+        onError={setError}
+      />
       {error ? <Text color="danger">{error}</Text> : null}
       <Button disabled={busy} onPress={() => void save()}>
         {busy ? 'Saving…' : 'Save prepared release'}
       </Button>
-    </Card>
+    </>
   );
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-function readError(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
 }
