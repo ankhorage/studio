@@ -1,8 +1,9 @@
+import { slugifyAscii } from '@ankhorage/utility/string';
+
 import {
   STUDIO_PROJECT_ID_PATTERN,
   STUDIO_RESERVED_PROJECT_IDS,
 } from './constants/projectIdentity';
-import { slugifyAscii } from '@ankhorage/utility/string';
 import type {
   ProjectCreationValidationFailure,
   ProjectCreationValidationResult,
