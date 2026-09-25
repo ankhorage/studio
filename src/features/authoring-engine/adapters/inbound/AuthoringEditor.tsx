@@ -14,6 +14,7 @@ import type {
   AuthoringValueMapNode,
 } from '../../../../types/authoring-engine';
 import { createInitialAuthoringValue } from '../../application/use-cases/createInitialAuthoringValue';
+import { createAuthoringUnionVariantValue } from '../../application/use-cases/createAuthoringUnionVariantValue';
 import { createInitialEntityRegistryValue } from '../../application/use-cases/createInitialEntityRegistryValue';
 
 export interface AuthoringCustomControlProps {
@@ -535,9 +536,19 @@ function UnionEditor(props: {
             const variant = model.variants.find(
               (candidate) => encodeChoiceValue(candidate.value) === controlValue,
             );
-            const initial = variant && createInitialAuthoringValue(variant.structure);
-            if (initial !== undefined) {
-              props.onMutation({ kind: 'set', path: model.path, value: initial });
+            const current = model.variants.find((candidate) =>
+              Object.is(candidate.value, model.selected),
+            );
+            const next =
+              variant &&
+              createAuthoringUnionVariantValue({
+                currentValue: model.authoredValue,
+                currentStructure: current?.structure,
+                targetStructure: variant.structure,
+                discriminator: model.discriminator,
+              });
+            if (next !== undefined) {
+              props.onMutation({ kind: 'set', path: model.path, value: next });
             }
           }}
         />
