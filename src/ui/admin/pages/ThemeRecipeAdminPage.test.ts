@@ -23,8 +23,10 @@ test('delegates recipe controls to the central authoring engine and retains them
 
   expect(page).toContain('resolveZoraThemeRecipeAuthoring(meta');
   expect(page).toContain('deriveAuthoringModel(');
-  expect(page).toContain('<AuthoringEditor model={model} onMutation={updateField} />');
-  expect(page).toContain('updateThemeRecipeField(');
+  expect(page).toContain('<AuthoringEditor model={model} onMutation={updateRecipe} />');
+  expect(page).toContain('applyAuthoringMutation(current, mutation)');
+  expect(page).toContain('updateThemeRecipeOverrides(');
+  expect(page).not.toContain("mutation.kind ===");
   expect(page).not.toContain('ThemeRecipeFieldEditor');
   expect(page).not.toContain('Object.entries(meta.fields).map');
 });
