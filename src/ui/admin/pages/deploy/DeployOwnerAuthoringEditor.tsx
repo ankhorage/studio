@@ -22,18 +22,19 @@ export function DeployOwnerAuthoringEditor<T>(props: DeployOwnerAuthoringEditorP
   if (!props.structure.ok) {
     return <Text color="danger">{props.structure.diagnostic.message}</Text>;
   }
+  const { structure } = props.structure;
 
   return (
     <AuthoringEditor
       model={deriveAuthoringModel({
-        structure: props.structure.structure,
+        structure,
         value: props.value,
         policy: props.policy,
       })}
       onMutation={(mutation) => {
         const result = applyAuthoringMutationToStructure(
           props.value,
-          props.structure.structure,
+          structure,
           mutation,
         );
         if (!result.ok) {
