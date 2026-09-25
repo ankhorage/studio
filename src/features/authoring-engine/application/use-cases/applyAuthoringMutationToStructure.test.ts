@@ -233,6 +233,19 @@ test('adds and removes stable registry entities by record identity', () => {
   ).toEqual({ ok: true, value: { items: {} } });
 });
 
+test('rejects empty registry identity keys at the application boundary', () => {
+  const result = applyAuthoringMutationToStructure({ items: {} }, REGISTRY_STRUCTURE, {
+    kind: 'set',
+    path: ['items', ''],
+    value: { id: '', name: 'Invalid' },
+  });
+
+  expect(result).toMatchObject({
+    ok: false,
+    diagnostic: { code: 'mutation-rejected' },
+  });
+});
+
 test('rejects registry identity-field mutation and mismatched inserted identity', () => {
   const current = { items: { alpha: { id: 'alpha', name: 'Alpha' } } };
   const identityMutation = applyAuthoringMutationToStructure(current, REGISTRY_STRUCTURE, {

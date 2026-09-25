@@ -433,11 +433,6 @@ function EntityRegistryEditor(props: {
   readonly renderCustomControl?: AuthoringEditorProps['renderCustomControl'];
 }) {
   const { model } = props;
-  const newKey = resolveNextRegistryKey(model);
-  const initial =
-    newKey === undefined
-      ? undefined
-      : createInitialEntityRegistryValue(model.valueStructure, model.identityField, newKey);
 
   return (
     <Field label={model.label} description={model.description} required={!model.optional}>
@@ -462,18 +457,59 @@ function EntityRegistryEditor(props: {
             </Button>
           </View>
         ))}
-        {newKey !== undefined && initial !== undefined ? (
-          <Button
-            variant="outline"
-            onPress={() =>
-              props.onMutation({ kind: 'set', path: [...model.path, newKey], value: initial })
-            }
-          >
-            Add entity
-          </Button>
-        ) : null}
+        {model.key.kind === 'scalar' ? (
+          <TextInput
+            placeholder="Entity identity · press Enter to add"
+            autoCapitalize="none"
+            onSubmitEditing={(event) => addRegistryEntity(props, event.nativeEvent.text)}
+          />
+        ) : (
+          <FiniteRegistryAdd model={model} onMutation={props.onMutation} />
+        )}
       </View>
     </Field>
+  );
+}
+
+/*** Insert one open-key registry entity only after its stable owner identity has been supplied. */
+function addRegistryEntity(
+  props: Pick<AuthoringEditorProps, 'onMutation'> & { readonly model: AuthoringEntityRegistryNode },
+  candidate: string,
+): void {
+  const key = candidate.trim();
+  if (key === '' || props.model.entries.some((entry) => entry.key === key)) return;
+  const initial = createInitialEntityRegistryValue(
+    props.model.valueStructure,
+    props.model.identityField,
+    key,
+  );
+  if (initial === undefined) return;
+  props.onMutation({ kind: 'set', path: [...props.model.path, key], value: initial });
+}
+
+/*** Render deterministic insertion for finite owner-defined registry identities. */
+function FiniteRegistryAdd(props: {
+  readonly model: AuthoringEntityRegistryNode;
+  readonly onMutation: (mutation: AuthoringMutation) => void;
+}) {
+  const key = resolveNextFiniteRegistryKey(props.model);
+  if (key === undefined) return null;
+  const initial = createInitialEntityRegistryValue(
+    props.model.valueStructure,
+    props.model.identityField,
+    key,
+  );
+  if (initial === undefined) return null;
+
+  return (
+    <Button
+      variant="outline"
+      onPress={() =>
+        props.onMutation({ kind: 'set', path: [...props.model.path, key], value: initial })
+      }
+    >
+      Add entity
+    </Button>
   );
 }
 
@@ -525,19 +561,11 @@ function UnionEditor(props: {
   );
 }
 
-/*** Choose one deterministic unused identity key for a generic or finite owner registry. */
-function resolveNextRegistryKey(model: AuthoringEntityRegistryNode): string | undefined {
+/*** Choose the next unused finite owner identity without assigning collection order semantics. */
+function resolveNextFiniteRegistryKey(model: AuthoringEntityRegistryNode): string | undefined {
+  if (model.key.kind !== 'choice') return undefined;
   const used = new Set(model.entries.map((entry) => entry.key));
-  if (model.key.kind === 'choice') {
-    return model.key.values.find((candidate) => !used.has(candidate));
-  }
-  return resolveOpenRegistryKey(used);
-}
-
-/*** Recursively find the first unused generic entity key without mutating existing identity. */
-function resolveOpenRegistryKey(used: ReadonlySet<string>, index = 1): string {
-  const candidate = index === 1 ? 'newEntity' : `newEntity${index}`;
-  return used.has(candidate) ? resolveOpenRegistryKey(used, index + 1) : candidate;
+  return model.key.values.find((candidate) => !used.has(candidate));
 }
 
 /*** Choose a deterministic unused map key without assigning ordering semantics to persisted values. */
