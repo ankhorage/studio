@@ -82,8 +82,7 @@ function equalPrimitiveLists(
   right: readonly (boolean | number | string | null)[],
 ): boolean {
   return (
-    left.length === right.length &&
-    left.every((value, index) => Object.is(value, right.at(index)))
+    left.length === right.length && left.every((value, index) => Object.is(value, right.at(index)))
   );
 }
 
