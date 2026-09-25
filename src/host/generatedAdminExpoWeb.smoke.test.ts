@@ -853,12 +853,7 @@ test(
         expect(missingDetail).toContain('missing or was deleted');
         expect(page.errors).toEqual([]);
 
-        await verifyResponsiveAuthoringAcceptance(
-          debugPort,
-          appUrl,
-          studioApi,
-          expoOutput,
-        );
+        await verifyResponsiveAuthoringAcceptance(debugPort, appUrl, studioApi, expoOutput);
         await verifyWorkspaceReturnToApp(page, expoOutput);
       } finally {
         page.close();
