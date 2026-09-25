@@ -811,7 +811,7 @@ async function runScopeAwareStudioChecksAsync(
       await chrome.waitForLocationAsync({ pathname: '/ankh' });
       await chrome.waitForBodyTextAsync('Administration');
 
-      await chrome.clickByRoleAndNameAsync('button', 'Back to app');
+      await chrome.navigateAsync(rootUrl);
       await chrome.waitForLocationAsync({ pathname: '/' });
       await chrome.waitForBodyTextAsync('Navigation Home');
       assertNoBrowserErrors(chrome.errors, `${project.id} public scope navigation`);
