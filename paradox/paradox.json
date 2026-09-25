@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v6.0.1",
+      "value": "v6.0.2",
       "color": "cb3837"
     },
     {
@@ -21026,7 +21026,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 186,
+        "line": 187,
         "column": 1
       }
     },
@@ -21035,7 +21035,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 196,
+        "line": 197,
         "column": 1
       }
     },
@@ -21044,7 +21044,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 204,
+        "line": 205,
         "column": 1
       }
     },
@@ -21053,7 +21053,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 229,
+        "line": 230,
         "column": 1
       }
     },
@@ -21593,7 +21593,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.test.ts",
-        "line": 422,
+        "line": 425,
         "column": 1
       }
     },
@@ -21602,7 +21602,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.test.ts",
-        "line": 431,
+        "line": 434,
         "column": 1
       }
     },
@@ -23786,7 +23786,7 @@
     },
     {
       "name": "runScopeAwareStudioChecksAsync",
-      "description": "Validate integrated/none auth-scope fixtures keep the public app root accessible and deny Studio Admin routes without a global session.",
+      "description": "Validate integrated/none auth-scope fixtures keep the public app root accessible while Studio remains available through its development-only access gate.",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
         "line": 791,
@@ -23798,7 +23798,7 @@
       "description": "Poll an HTTP endpoint until it responds below the 5xx range, including caller-provided diagnostics on timeout.\n@utility @ankhorage/utility/http",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 825,
+        "line": 827,
         "column": 1
       }
     },
@@ -23807,7 +23807,7 @@
       "description": "Collect UTF-8 stdout and stderr chunks from a child process into a shared output buffer.\n@utility @ankhorage/utility/node/process",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 842,
+        "line": 844,
         "column": 1
       }
     },
@@ -23816,7 +23816,7 @@
       "description": "Terminate a detached child-process group, falling back to the direct child when group signaling is unavailable.\n@utility @ankhorage/utility/node/process",
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 854,
+        "line": 856,
         "column": 1
       }
     },
@@ -26921,7 +26921,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/root.test.ts",
-        "line": 189,
+        "line": 190,
         "column": 1
       }
     },
@@ -54762,6 +54762,12 @@
       },
       {
         "fromSymbol": "src/host/orchestrator/generatedDependencyContract.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/generatedDependencyContract.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/generatedDependencyContract.test.ts",
         "toSymbol": "expectStudioAuthoringDependencies",
         "callExpression": "expectStudioAuthoringDependencies",
         "sourcePath": "src/host/orchestrator/generatedDependencyContract.test.ts"
@@ -54800,12 +54806,6 @@
         "fromSymbol": "src/host/orchestrator/generatedDependencyContract.test.ts",
         "toSymbol": "readdir",
         "callExpression": "readdir",
-        "sourcePath": "src/host/orchestrator/generatedDependencyContract.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
         "sourcePath": "src/host/orchestrator/generatedDependencyContract.test.ts"
       },
       {
