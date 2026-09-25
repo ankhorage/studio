@@ -13,8 +13,8 @@ import type {
   AuthoringUnionNode,
   AuthoringValueMapNode,
 } from '../../../../types/authoring-engine';
-import { createInitialAuthoringValue } from '../../application/use-cases/createInitialAuthoringValue';
 import { createAuthoringUnionVariantValue } from '../../application/use-cases/createAuthoringUnionVariantValue';
+import { createInitialAuthoringValue } from '../../application/use-cases/createInitialAuthoringValue';
 import { createInitialEntityRegistryValue } from '../../application/use-cases/createInitialEntityRegistryValue';
 
 export interface AuthoringCustomControlProps {
