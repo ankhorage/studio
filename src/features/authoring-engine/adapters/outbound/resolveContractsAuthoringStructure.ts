@@ -84,6 +84,25 @@ function resolveDescriptor(
         key: resolveDescriptor(descriptor.key, document, visited, [...path, '<key>']),
         value: resolveDescriptor(descriptor.value, document, visited, [...path, '*']),
       };
+    case 'entity-registry':
+      return {
+        kind: 'entity-registry',
+        key: resolveDescriptor(descriptor.key, document, visited, [...path, '<key>']),
+        value: resolveDescriptor(descriptor.value, document, visited, [...path, '*']),
+        ...(descriptor.identityField === undefined
+          ? {}
+          : { identityField: descriptor.identityField }),
+      };
+    case 'union':
+      return {
+        kind: 'union',
+        variants: descriptor.variants.map((variant, index) =>
+          resolveDescriptor(variant, document, visited, [...path, `<variant:${index}>`]),
+        ),
+        ...(descriptor.discriminator === undefined
+          ? {}
+          : { discriminator: descriptor.discriminator }),
+      };
     case 'ref':
       return resolveReference(descriptor, document, visited, path);
     default:
