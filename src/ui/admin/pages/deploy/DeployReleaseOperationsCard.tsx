@@ -4,6 +4,7 @@ import type {
   ReleaseControlExecutionResult,
   ReleaseLifecycleControl,
 } from '@ankhorage/deploy';
+import { toErrorMessage } from '@ankhorage/utility/error';
 import { Button, Card, Dialog, Select, Text, View } from '@ankhorage/zora';
 import React, { useRef, useState } from 'react';
 
@@ -353,6 +354,4 @@ function endMutation(
   setBusy(false);
 }
 
-function readError(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
-}
+

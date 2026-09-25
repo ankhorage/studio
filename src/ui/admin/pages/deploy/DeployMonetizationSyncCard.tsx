@@ -1,5 +1,6 @@
 import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type { ProjectMonetizationExecutionResult } from '@ankhorage/deploy/project';
+import { toErrorMessage } from '@ankhorage/utility/error';
 import { Button, Card, Dialog, Select, Text, View } from '@ankhorage/zora';
 import React, { useRef, useState } from 'react';
 
@@ -163,6 +164,4 @@ function ViewFailure({
   );
 }
 
-function readError(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
-}
+
