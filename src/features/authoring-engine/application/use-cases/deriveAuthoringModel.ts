@@ -1,6 +1,7 @@
-import { isRecord } from '@ankhorage/utility/object';
+import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 
 import type {
+  AuthoringCollectionKey,
   AuthoringDiagnostic,
   AuthoringNode,
   AuthoringOrderedListItem,
@@ -10,6 +11,9 @@ import type {
   AuthoringStructure,
   AuthoringValueMapKey,
 } from '../../../../types/authoring-engine';
+import { isAuthoringCollectionKeyAllowed } from '../../utils/isAuthoringCollectionKeyAllowed';
+import { resolveAuthoringCollectionKey } from '../../utils/resolveAuthoringCollectionKey';
+import { resolveAuthoringUnion } from '../../utils/resolveAuthoringUnion';
 
 /*** Derive one UI-neutral authoring model from neutral structure semantics and a runtime value. */
 export function deriveAuthoringModel(args: {
@@ -129,6 +133,68 @@ function deriveNode(args: {
             ),
           }
         : unsupportedValue(base, value.diagnostic);
+    }
+    case 'entity-registry': {
+      const value = readEntityRegistryValue(
+        args.structure.key,
+        args.structure.value,
+        args.structure.identityField,
+        args.value,
+        args.optional,
+        args.path,
+      );
+      if (!value.ok) return unsupportedValue(base, value.diagnostic);
+
+      return {
+        ...base,
+        kind: 'entity-registry',
+        key: value.key,
+        valueStructure: args.structure.value,
+        ...(args.structure.identityField === undefined
+          ? {}
+          : { identityField: args.structure.identityField }),
+        entries: value.entries.map(([key, entryValue]) => ({
+          key,
+          value: deriveNode({
+            structure: args.structure.value,
+            value: entryValue,
+            policy: withRegistryIdentityReadOnly(
+              resolvePresentationFieldPolicy(args.policy?.fields, key),
+              args.structure.identityField,
+            ),
+            path: [...args.path, key],
+            label: key,
+            optional: false,
+            inheritedReadOnly: readOnly,
+          }),
+        })),
+      };
+    }
+    case 'union': {
+      const resolved = resolveAuthoringUnion(args.structure, args.value, args.path);
+      if (!resolved.ok) return unsupportedValue(base, resolved.diagnostic);
+      return {
+        ...base,
+        kind: 'union',
+        discriminator: resolved.discriminator,
+        variants: resolved.variants,
+        selected: resolved.selected?.value,
+        value:
+          resolved.selected === undefined
+            ? undefined
+            : deriveNode({
+                structure: withoutUnionDiscriminator(
+                  resolved.selected.structure,
+                  resolved.discriminator,
+                ),
+                value: args.value,
+                policy: args.policy,
+                path: args.path,
+                label: args.label,
+                optional: false,
+                inheritedReadOnly: readOnly,
+              }),
+      };
     }
     case 'object': {
       if (args.value !== undefined && !isRecord(args.value)) {
@@ -289,10 +355,19 @@ function readValueMapValue(
   value: unknown,
   optional: boolean,
 ): ValueMapReadResult {
-  const key = resolveValueMapKey(keyStructure);
-  if (!key.ok) return key;
+  const key = resolveAuthoringCollectionKey(keyStructure);
+  if (!key) {
+    return {
+      ok: false,
+      diagnostic: {
+        code: 'unsupported-structure',
+        message: 'Value-map authoring requires scalar-string or finite-string-choice keys.',
+        path: [],
+      },
+    };
+  }
 
-  if (value === undefined && optional) return { ok: true, key: key.key, entries: [] };
+  if (value === undefined && optional) return { ok: true, key, entries: [] };
   if (!isRecord(value)) {
     return {
       ok: false,
@@ -305,7 +380,7 @@ function readValueMapValue(
   }
 
   const entries = Object.entries(value).sort(([left], [right]) => left.localeCompare(right));
-  const invalid = entries.find(([candidate]) => !isValueMapKeyAllowed(key.key, candidate));
+  const invalid = entries.find(([candidate]) => !isAuthoringCollectionKeyAllowed(key, candidate));
   if (invalid) {
     return {
       ok: false,
@@ -317,7 +392,7 @@ function readValueMapValue(
     };
   }
 
-  return { ok: true, key: key.key, entries };
+  return { ok: true, key, entries };
 }
 
 /*** Merge authored entries with presentation-only inherited keys without materializing defaults. */
@@ -328,7 +403,7 @@ function mergeValueMapEntries(
 ): readonly (readonly [string, unknown, boolean])[] {
   const authoredKeys = new Set(authoredEntries.map(([entryKey]) => entryKey));
   const inheritedKeys = Object.keys(fields ?? {}).filter(
-    (candidate) => !authoredKeys.has(candidate) && isValueMapKeyAllowed(key, candidate),
+    (candidate) => !authoredKeys.has(candidate) && isAuthoringCollectionKeyAllowed(key, candidate),
   );
   return [
     ...authoredEntries.map(([entryKey, value]) => [entryKey, value, true] as const),
@@ -336,32 +411,89 @@ function mergeValueMapEntries(
   ].sort(([left], [right]) => left.localeCompare(right));
 }
 
-/*** Resolve the currently supported portable value-map key semantics. */
-function resolveValueMapKey(structure: AuthoringStructure): ValueMapKeyResult {
-  if (structure.kind === 'scalar' && structure.scalarType === 'string') {
-    return { ok: true, key: { kind: 'scalar', scalarType: 'string' } };
+/*** Validate one stable entity registry without assigning semantic meaning to record order. */
+function readEntityRegistryValue(
+  keyStructure: AuthoringStructure,
+  valueStructure: AuthoringStructure,
+  identityField: string | undefined,
+  value: unknown,
+  optional: boolean,
+  path: readonly string[],
+): EntityRegistryReadResult {
+  const key = resolveAuthoringCollectionKey(keyStructure);
+  if (!key) {
+    return {
+      ok: false,
+      diagnostic: {
+        code: 'unsupported-structure',
+        message: 'Entity-registry authoring requires scalar-string or finite-string-choice keys.',
+        path,
+      },
+    };
   }
-  if (structure.kind === 'choice') {
-    const values = structure.values.filter(
-      (candidate): candidate is string => typeof candidate === 'string',
-    );
-    if (values.length === structure.values.length) {
-      return { ok: true, key: { kind: 'choice', values } };
+  if (value === undefined && optional) return { ok: true, key, entries: [] };
+  if (!isRecord(value)) {
+    return {
+      ok: false,
+      diagnostic: {
+        code: 'invalid-value',
+        message: 'Expected entity-registry object.',
+        path,
+      },
+    };
+  }
+
+  const entries = Object.entries(value).sort(([left], [right]) => left.localeCompare(right));
+  for (const [entryKey, entryValue] of entries) {
+    if (!isAuthoringCollectionKeyAllowed(key, entryKey)) {
+      return registryInvalid(path, 'Invalid entity-registry key "' + entryKey + '".');
+    }
+    if (identityField !== undefined) {
+      if (!isRecord(entryValue)) {
+        return registryInvalid(path, 'Entity-registry identity requires object values.');
+      }
+      if (readOwnProperty<unknown>(entryValue, identityField) !== entryKey) {
+        return registryInvalid(
+          [...path, entryKey, identityField],
+          'Entity-registry key must match owner identity field "' + identityField + '".',
+        );
+      }
     }
   }
+  return { ok: true, key, entries };
+}
+
+/*** Build one entity-registry invalid-value result with an exact authored path. */
+function registryInvalid(path: readonly string[], message: string): EntityRegistryReadResult {
+  return { ok: false, diagnostic: { code: 'invalid-value', message, path } };
+}
+
+/*** Keep an entity identity field immutable inside its keyed detail editor. */
+function withRegistryIdentityReadOnly(
+  policy: AuthoringPresentationPolicy | undefined,
+  identityField: string | undefined,
+): AuthoringPresentationPolicy | undefined {
+  if (!identityField) return policy;
+  const identityPolicy = resolvePresentationFieldPolicy(policy?.fields, identityField);
   return {
-    ok: false,
-    diagnostic: {
-      code: 'unsupported-structure',
-      message: 'Value-map authoring requires scalar-string or finite-string-choice keys.',
-      path: [],
+    ...policy,
+    fields: {
+      ...policy?.fields,
+      [identityField]: { ...identityPolicy, readOnly: true },
     },
   };
 }
 
-/*** Check one authored object key against the resolved value-map key contract. */
-function isValueMapKeyAllowed(key: AuthoringValueMapKey, candidate: string): boolean {
-  return key.kind === 'scalar' || key.values.includes(candidate);
+/*** Remove the union discriminator from detail rendering because variant selection owns it. */
+function withoutUnionDiscriminator(
+  structure: AuthoringStructure,
+  discriminator: string,
+): AuthoringStructure {
+  if (structure.kind !== 'object') return structure;
+  return {
+    ...structure,
+    fields: structure.fields.filter((field) => field.name !== discriminator),
+  };
 }
 
 /*** Validate one ordered primitive list while preserving authored order and duplicates. */
@@ -487,14 +619,18 @@ type OrderedListReadResult =
     }
   | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
 
-type ValueMapKeyResult =
-  | { readonly ok: true; readonly key: AuthoringValueMapKey }
-  | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
-
 type ValueMapReadResult =
   | {
       readonly ok: true;
       readonly key: AuthoringValueMapKey;
+      readonly entries: readonly (readonly [string, unknown])[];
+    }
+  | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
+
+type EntityRegistryReadResult =
+  | {
+      readonly ok: true;
+      readonly key: AuthoringCollectionKey;
       readonly entries: readonly (readonly [string, unknown])[];
     }
   | { readonly ok: false; readonly diagnostic: AuthoringDiagnostic };
