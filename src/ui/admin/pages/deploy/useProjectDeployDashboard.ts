@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import {
   listProjectDeployReleaseHistory,
+  readProjectDeployAuthoring,
   readProjectDeployConfig,
   readProjectDeployListing,
   readProjectDeployMonetization,
@@ -43,6 +44,7 @@ export function useProjectDeployDashboard(projectId: string) {
 }
 
 const loadingState: ProjectDeployDashboardState = {
+  authoring: { status: 'loading' },
   config: { status: 'loading' },
   listing: { status: 'loading' },
   monetization: { status: 'loading' },
@@ -52,14 +54,15 @@ const loadingState: ProjectDeployDashboardState = {
 
 /*** Load all deploy-dashboard resources concurrently while isolating each resource failure into its own loadable state. */
 async function loadDashboard(projectId: string): Promise<ProjectDeployDashboardState> {
-  const [config, listing, monetization, release, history] = await Promise.all([
+  const [authoring, config, listing, monetization, release, history] = await Promise.all([
+    capture(readProjectDeployAuthoring(projectId)),
     capture(readProjectDeployConfig(projectId)),
     capture(readProjectDeployListing(projectId)),
     capture(readProjectDeployMonetization(projectId)),
     capture(readProjectDeployRelease(projectId)),
     capture(listProjectDeployReleaseHistory(projectId)),
   ]);
-  return { config, listing, monetization, release, history };
+  return { authoring, config, listing, monetization, release, history };
 }
 
 /***
