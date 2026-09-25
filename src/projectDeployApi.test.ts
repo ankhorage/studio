@@ -60,10 +60,7 @@ test('Deploy client transports owner authoring metadata without Deploy runtime i
           fields: {
             products: {
               optional: false,
-              value: {
-                kind: 'array',
-                item: { kind: 'primitive', primitive: 'string' },
-              },
+              value: { kind: 'scalar', type: 'string' },
             },
           },
         },
@@ -311,10 +308,7 @@ test('Deploy authoring keeps validated descriptor value metadata while rejecting
           fields: {
             products: {
               optional: false,
-              value: {
-                kind: 'array',
-                item: { kind: 'primitive', primitive: 'string' },
-              },
+              value: { kind: 'scalar', type: 'string' },
             },
           },
         },
