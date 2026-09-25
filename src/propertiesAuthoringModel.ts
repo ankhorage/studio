@@ -1,5 +1,4 @@
-import type { MediaAssetKind, MediaAssetReference, UiNode } from '@ankhorage/contracts';
-import { withoutOwnProperty, withOwnProperty } from '@ankhorage/utility/object';
+import type { MediaAssetKind } from '@ankhorage/contracts';
 
 export interface StudioAuthoringPropSchema {
   readonly type: string;
@@ -21,23 +20,3 @@ export interface StudioAuthoringComponentMeta {
 export type StudioAuthoringMetaRegistry = Readonly<
   Record<string, StudioAuthoringComponentMeta | undefined>
 >;
-
-export type StudioInstancePropertyValue = string | number | boolean | MediaAssetReference;
-
-/***
- * Create an immutable props patch that removes a property for undefined or replaces it for a defined value.
- * @utility @ankhorage/utility/object
- */
-export function createStudioInstancePropertyPatch(
-  node: UiNode,
-  propertyName: string,
-  value: StudioInstancePropertyValue | undefined,
-): Readonly<Record<string, unknown>> {
-  const props = node.props ?? {};
-  return {
-    props:
-      value === undefined
-        ? withoutOwnProperty(props, propertyName)
-        : withOwnProperty<unknown>(props, propertyName, value),
-  };
-}

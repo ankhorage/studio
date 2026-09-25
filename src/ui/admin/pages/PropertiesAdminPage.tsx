@@ -8,14 +8,10 @@ import {
   AuthoringEditor,
 } from '../../../features/authoring-engine/adapters/inbound/AuthoringEditor';
 import { resolveInstancePropertyAuthoring } from '../../../features/authoring-engine/adapters/outbound/resolveInstancePropertyAuthoring';
+import { applyAuthoringMutation } from '../../../features/authoring-engine/application/use-cases/applyAuthoringMutation';
 import { deriveAuthoringModel } from '../../../features/authoring-engine/application/use-cases/deriveAuthoringModel';
 import { findNodeInManifest, findScreenIdForNode } from '../../../manifestState';
-import { readStudioMediaAssetReference } from '../../../mediaAuthoringModel';
-import {
-  createStudioInstancePropertyPatch,
-  type StudioInstancePropertyValue,
-} from '../../../propertiesAuthoringModel';
-import type { AuthoringMutation, AuthoringValue } from '../../../types/authoring-engine';
+import type { AuthoringMutation } from '../../../types/authoring-engine';
 import { AdminHeader, AdminScroll, KeyValue } from '../adminPagePrimitives';
 import { MediaPropertyInput } from './MediaPropertyInput';
 
@@ -52,15 +48,10 @@ function ResolvedProperties({ node }: { readonly node: UiNode }) {
   const studio = useStudio();
   const authoring = resolveInstancePropertyAuthoring(node, studio.bindableComponentMeta);
 
-  /*** Apply one neutral field mutation through Studio's canonical node update and autosave boundary. */
+  /*** Apply one neutral field mutation through the central mutation engine and Studio's canonical node autosave boundary. */
   const applyMutation = (mutation: AuthoringMutation) => {
-    if (mutation.kind === 'rename-key') return;
-    const [propertyName] = mutation.path;
-    if (!propertyName || mutation.path.length !== 1) return;
-    const value =
-      mutation.kind === 'unset' ? undefined : resolveInstancePropertyValue(mutation.value);
-    if (mutation.kind === 'set' && value === undefined) return;
-    studio.updateNode(node.id, createStudioInstancePropertyPatch(node, propertyName, value));
+    const result = applyAuthoringMutation(node.props ?? {}, mutation);
+    if (result.ok) studio.updateNode(node.id, { props: result.value });
   };
 
   /*** Render owner-requested media authoring without moving media policy into the neutral engine. */
@@ -119,15 +110,6 @@ function ResolvedProperties({ node }: { readonly node: UiNode }) {
       </Text>
     </>
   );
-}
-
-/*** Accept only canonical instance-property values emitted by supported generic or media editors. */
-function resolveInstancePropertyValue(
-  value: AuthoringValue,
-): StudioInstancePropertyValue | undefined {
-  if (typeof value === 'string' || typeof value === 'boolean') return value;
-  if (typeof value === 'number' && Number.isFinite(value)) return value;
-  return readStudioMediaAssetReference(value) ?? undefined;
 }
 
 /*** Render the properties-page fallback when the requested node cannot be resolved. */

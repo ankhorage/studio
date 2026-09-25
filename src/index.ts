@@ -149,7 +149,6 @@ export const STUDIO_PUBLIC_CONTRACTS = [
   'removeStudioMediaAsset',
   'StudioMediaDeleteResult',
   'StudioMediaPickerAdapter',
-  'createStudioInstancePropertyPatch',
   'resolveStudioBindableProps',
   'resolveStudioBindableEvents',
   'collectStudioBindingOperationOptions',
