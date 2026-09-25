@@ -15,5 +15,5 @@ export function createInitialEntityRegistryValue(
 
   const value = { ...initial };
   setOwnProperty(value, identityField, key);
-  return value as AuthoringValue;
+  return value;
 }
