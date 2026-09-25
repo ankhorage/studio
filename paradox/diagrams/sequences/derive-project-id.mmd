@@ -1,0 +1,5 @@
+sequenceDiagram
+  participant participant_deriveProjectId as deriveProjectId
+  participant participant_slugifyAscii as slugifyAscii
+  participant_deriveProjectId->>participant_slugifyAscii: slugifyAscii()
+  participant_slugifyAscii-->>participant_deriveProjectId: return

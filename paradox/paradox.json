@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.10.12",
+      "value": "v5.10.13",
       "color": "cb3837"
     },
     {
@@ -7264,7 +7264,7 @@
       "modulePath": "src/mediaAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 138,
+        "line": 134,
         "column": 1
       },
       "exportPaths": [
@@ -7482,7 +7482,7 @@
       "modulePath": "src/mediaAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 88,
+        "line": 89,
         "column": 1
       },
       "exportPaths": [
@@ -7522,7 +7522,7 @@
       "modulePath": "src/mediaAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 68,
+        "line": 69,
         "column": 1
       },
       "exportPaths": [
@@ -7556,7 +7556,7 @@
       "modulePath": "src/mediaAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 105,
+        "line": 101,
         "column": 1
       },
       "exportPaths": [
@@ -7592,7 +7592,7 @@
       "modulePath": "src/projectIdentity.ts",
       "sourceLocation": {
         "filePath": "src/projectIdentity.ts",
-        "line": 15,
+        "line": 17,
         "column": 1
       },
       "exportPaths": [
@@ -8484,7 +8484,7 @@
       "modulePath": "src/mediaAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 53,
+        "line": 54,
         "column": 1
       },
       "exportPaths": [
@@ -9001,7 +9001,7 @@
       "modulePath": "src/projectIdentity.ts",
       "sourceLocation": {
         "filePath": "src/projectIdentity.ts",
-        "line": 41,
+        "line": 38,
         "column": 1
       },
       "exportPaths": [
@@ -9319,7 +9319,7 @@
       "modulePath": "src/mediaAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 76,
+        "line": 77,
         "column": 1
       },
       "exportPaths": [
@@ -9445,7 +9445,7 @@
       "modulePath": "src/mediaAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 153,
+        "line": 149,
         "column": 1
       },
       "exportPaths": [
@@ -11103,7 +11103,7 @@
       "modulePath": "src/mediaAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 17,
+        "line": 18,
         "column": 1
       },
       "exportPaths": [
@@ -11123,7 +11123,7 @@
       "modulePath": "src/mediaAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 25,
+        "line": 26,
         "column": 1
       },
       "exportPaths": [
@@ -11388,7 +11388,7 @@
       "modulePath": "src/mediaAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 11,
+        "line": 12,
         "column": 1
       },
       "exportPaths": [
@@ -12257,7 +12257,7 @@
       "modulePath": "src/mediaAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 45,
+        "line": 46,
         "column": 1
       },
       "exportPaths": [
@@ -12534,7 +12534,7 @@
       "modulePath": "src/mediaAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 128,
+        "line": 124,
         "column": 1
       },
       "exportPaths": [
@@ -12708,7 +12708,7 @@
       "modulePath": "src/projectIdentity.ts",
       "sourceLocation": {
         "filePath": "src/projectIdentity.ts",
-        "line": 53,
+        "line": 50,
         "column": 1
       },
       "exportPaths": [
@@ -24426,7 +24426,7 @@
       "description": "Generate a Studio manifest-state identifier from the current time, randomness, and optional prefix.\n@todo Move this identifier policy from the src root into the manifest domain or the domain that owns generated authoring IDs.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 146,
+        "line": 147,
         "column": 14
       }
     },
@@ -24435,7 +24435,7 @@
       "description": "Serialize the manifest fields used to detect broad Studio authoring-state changes.\n@todo Move this manifest state projection from the src root into the manifest domain.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 157,
+        "line": 158,
         "column": 1
       }
     },
@@ -24444,7 +24444,7 @@
       "description": "Convert a navigator parent path to the stable key used for route grouping.\n@todo Move this route-path helper from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 177,
+        "line": 178,
         "column": 1
       }
     },
@@ -24453,7 +24453,7 @@
       "description": "Return whether a route segment represents an Expo Router-style group segment.\n@todo Move this route semantic helper from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 185,
+        "line": 186,
         "column": 1
       }
     },
@@ -24462,7 +24462,7 @@
       "description": "Recursively collect screen-targeting routes together with their navigator and route paths.\n@todo Move route traversal from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 193,
+        "line": 194,
         "column": 1
       }
     },
@@ -24471,7 +24471,7 @@
       "description": "Group collected screen routes by the navigator parent path that owns them.\n@todo Move route grouping from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 223,
+        "line": 224,
         "column": 1
       }
     },
@@ -24480,7 +24480,7 @@
       "description": "Verify that every screen registry key equals its unique stable ScreenSpec identifier.\n@todo Move this manifest screen invariant from the src root into the manifest domain.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 246,
+        "line": 247,
         "column": 1
       }
     },
@@ -24489,7 +24489,7 @@
       "description": "Resolve a screen by stable identifier only when the manifest screen registry satisfies its canonical identity invariant.\n@todo Move this screen lookup from the src root into the manifest domain.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 261,
+        "line": 262,
         "column": 1
       }
     },
@@ -24498,7 +24498,7 @@
       "description": "Derive the complete screen/navigation authoring model and diagnostics without flattening the navigator tree.\n@todo Move navigation-model derivation from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 273,
+        "line": 274,
         "column": 1
       }
     },
@@ -24507,7 +24507,7 @@
       "description": "Resolve a concrete app pathname only when a screen has one unique, non-dynamic route reference.\n@todo Move canonical route-path resolution from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 343,
+        "line": 344,
         "column": 1
       }
     },
@@ -24516,7 +24516,7 @@
       "description": "Traverse a navigator tree to collect route references and navigation diagnostics for each screen.\n@todo Move navigation traversal and diagnostics from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 372,
+        "line": 373,
         "column": 1
       }
     },
@@ -24525,7 +24525,7 @@
       "description": "Append one route's explicit or named path segments to the current runtime route path.\n@todo Move runtime route-path construction from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 499,
+        "line": 500,
         "column": 1
       }
     },
@@ -24534,7 +24534,7 @@
       "description": "Compare two route paths for ordered segment equality.\n@todo Keep this small comparison helper local to routes/ unless broader reuse is demonstrated.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 510,
+        "line": 511,
         "column": 1
       }
     },
@@ -24543,7 +24543,7 @@
       "description": "Format a route parent path for navigation diagnostic messages.\n@todo Move route diagnostic formatting from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 520,
+        "line": 521,
         "column": 1
       }
     },
@@ -24552,7 +24552,7 @@
       "description": "List routed screen identifiers in navigator traversal order.\n@todo Move route ordering behavior from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 528,
+        "line": 529,
         "column": 1
       }
     },
@@ -24561,7 +24561,7 @@
       "description": "Resolve the initial leaf screen selected by a nested navigator tree, falling back to the first usable route.\n@todo Move initial-route resolution from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 536,
+        "line": 537,
         "column": 1
       }
     },
@@ -24570,7 +24570,7 @@
       "description": "Resolve the active screen Studio should select when a manifest is first opened.\n@todo Move initial Studio screen selection out of the src root into routes/ or selection/ according to its caller boundary.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 566,
+        "line": 567,
         "column": 1
       }
     },
@@ -24579,7 +24579,7 @@
       "description": "Resolve the root UI node for the active canonical screen.\n@todo Move active-screen root resolution from the src root into the manifest/selection boundary.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 578,
+        "line": 579,
         "column": 1
       }
     },
@@ -24588,7 +24588,7 @@
       "description": "Recursively find a UI node by identifier in a manifest-owned UI tree.\n@todo Move UI-tree traversal from the src root into canvas/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 590,
+        "line": 591,
         "column": 1
       }
     },
@@ -24597,7 +24597,7 @@
       "description": "Keep a selected node identifier only while that node still exists in the active tree.\n@todo Move selection validity policy from the src root into selection/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 605,
+        "line": 606,
         "column": 1
       }
     },
@@ -24606,7 +24606,7 @@
       "description": "Find the canonical screen whose UI tree contains a given node identifier.\n@todo Move screen ownership lookup from the src root into the manifest/canvas boundary.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 617,
+        "line": 618,
         "column": 1
       }
     },
@@ -24615,7 +24615,7 @@
       "description": "Update authored properties of one node in the active screen while preserving manifest immutability.\n@todo Move canvas node mutation from the src root into canvas/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 632,
+        "line": 633,
         "column": 1
       }
     },
@@ -24624,7 +24624,7 @@
       "description": "Delete a non-root node from the active screen and remove data bindings owned by the deleted subtree.\n@todo Split this canvas mutation and binding cleanup between canvas/ and bindings/ instead of the src root.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 661,
+        "line": 662,
         "column": 1
       }
     },
@@ -24633,7 +24633,7 @@
       "description": "Insert a new UI node at a validated canvas placement in the active screen.\n@todo Move canvas insertion orchestration from the src root into canvas/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 702,
+        "line": 703,
         "column": 1
       }
     },
@@ -24642,7 +24642,7 @@
       "description": "Move an existing UI node to a validated canvas placement in the active screen.\n@todo Move canvas movement orchestration from the src root into canvas/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 740,
+        "line": 741,
         "column": 1
       }
     },
@@ -24651,7 +24651,7 @@
       "description": "Replace the manifest component data-binding registry.\n@todo Move binding-state mutation from the src root into bindings/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 779,
+        "line": 780,
         "column": 1
       }
     },
@@ -24660,7 +24660,7 @@
       "description": "Replace the manifest data-source registry.\n@todo Resolve data-source authoring ownership with bindings/external APIs and remove this src-root mutation.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 790,
+        "line": 791,
         "column": 1
       }
     },
@@ -24669,7 +24669,7 @@
       "description": "Create the default light/dark theme configuration for a newly authored theme.\n@todo Extract theme authoring from manifestState.ts; the current Studio structure target does not yet name a dedicated theme domain.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 801,
+        "line": 802,
         "column": 1
       }
     },
@@ -24678,7 +24678,7 @@
       "description": "Append a theme to the manifest, creating a default theme when none is supplied.\n@todo Extract theme authoring from manifestState.ts into its resolved owner.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 823,
+        "line": 824,
         "column": 1
       }
     },
@@ -24687,7 +24687,7 @@
       "description": "Merge shared and mode-specific updates into one manifest theme.\n@todo Extract theme authoring from manifestState.ts into its resolved owner.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 836,
+        "line": 837,
         "column": 1
       }
     },
@@ -24696,7 +24696,7 @@
       "description": "Delete a theme while preserving at least one theme and a valid active-theme identifier.\n@todo Extract theme authoring from manifestState.ts into its resolved owner.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 860,
+        "line": 861,
         "column": 1
       }
     },
@@ -24705,7 +24705,7 @@
       "description": "Set the active theme identifier in the manifest.\n@todo Extract theme authoring from manifestState.ts into its resolved owner.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 881,
+        "line": 882,
         "column": 1
       }
     },
@@ -24714,7 +24714,7 @@
       "description": "Set the active light/dark theme mode in the manifest.\n@todo Extract theme authoring from manifestState.ts into its resolved owner.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 894,
+        "line": 895,
         "column": 1
       }
     },
@@ -24723,7 +24723,7 @@
       "description": "Replace OAuth providers while preserving or creating the surrounding manifest auth configuration.\n@todo Move auth policy from the src root into auth/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 905,
+        "line": 906,
         "column": 1
       }
     },
@@ -24732,7 +24732,7 @@
       "description": "Resolve the navigator path Studio treats as the primary application navigator.\n@todo Move primary-navigator policy from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 946,
+        "line": 947,
         "column": 1
       }
     },
@@ -24741,7 +24741,7 @@
       "description": "Find the navigator parent path that owns a route targeting the requested screen.\n@todo Move route traversal from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 960,
+        "line": 961,
         "column": 1
       }
     },
@@ -24750,7 +24750,7 @@
       "description": "Resolve the direct route collection owned by a navigator parent path.\n@todo Move navigator path lookup from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 987,
+        "line": 988,
         "column": 1
       }
     },
@@ -24759,7 +24759,7 @@
       "description": "Insert a route into the navigator identified by a parent path without mutating the existing tree.\n@todo Move route-tree mutation from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1007,
+        "line": 1008,
         "column": 1
       }
     },
@@ -24768,7 +24768,7 @@
       "description": "Resolve a nested navigator by its route-name path.\n@todo Move navigator lookup from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1035,
+        "line": 1036,
         "column": 1
       }
     },
@@ -24777,7 +24777,7 @@
       "description": "Immutably update the navigator identified by a route-name path.\n@todo Move navigator-tree mutation from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1055,
+        "line": 1056,
         "column": 1
       }
     },
@@ -24786,7 +24786,7 @@
       "description": "Rebuild a navigator with one concrete discriminant and only shared navigator state.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1080,
+        "line": 1081,
         "column": 1
       }
     },
@@ -24795,7 +24795,7 @@
       "description": "Change the primary navigator type when the requested navigator type is valid and different.\n@todo Move navigator authoring policy from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1115,
+        "line": 1116,
         "column": 1
       }
     },
@@ -24804,7 +24804,7 @@
       "description": "Change the primary navigator initial route when the requested sibling route is unique.\n@todo Move navigator authoring policy from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1145,
+        "line": 1146,
         "column": 1
       }
     },
@@ -24813,7 +24813,7 @@
       "description": "Set whether one route is visible in primary navigation while preserving the canonical visible representation.\n@todo Move route visibility authoring from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1173,
+        "line": 1174,
         "column": 1
       }
     },
@@ -24822,7 +24822,7 @@
       "description": "Reorder one uniquely named route within its navigator parent.\n@todo Move route ordering authoring from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1212,
+        "line": 1213,
         "column": 1
       }
     },
@@ -24831,7 +24831,7 @@
       "description": "Create a new screen from a template, generate a collision-free route, and make the new screen active.\n@todo Split screen creation between manifest screen state and routes/ instead of keeping both in one src-root function.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1245,
+        "line": 1246,
         "column": 1
       }
     },
@@ -24840,7 +24840,7 @@
       "description": "Delete a screen, remove route references and bindings for its subtree, and resolve a safe next active screen.\n@todo Split this cross-domain operation across manifest, routes/, bindings/, and selection application responsibilities.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1310,
+        "line": 1311,
         "column": 1
       }
     },
@@ -24849,7 +24849,7 @@
       "description": "Recursively remove a screen target from routes and prune nested navigators that become empty.\n@todo Move route cleanup from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1363,
+        "line": 1364,
         "column": 1
       }
     },
@@ -24858,7 +24858,7 @@
       "description": "Generate a route name that is unique among sibling routes by appending a numeric suffix when needed.\n@todo Move route-name generation from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1399,
+        "line": 1400,
         "column": 1
       }
     },
@@ -24867,7 +24867,7 @@
       "description": "Convert route path segments to the canonical pathname pattern used by Studio authoring.\n@todo Move canonical route-pattern logic from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1416,
+        "line": 1417,
         "column": 1
       }
     },
@@ -24876,7 +24876,7 @@
       "description": "Generate a route name that avoids both sibling-name and canonical-path collisions.\n@todo Move route-name collision policy from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1427,
+        "line": 1428,
         "column": 1
       }
     },
@@ -24885,7 +24885,7 @@
       "description": "Normalize arbitrary screen text into the lowercase hyphenated route-name form used by Studio.\n@todo Keep this semantic route-name normalization under routes/ rather than extracting it as a generic slug utility.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1452,
+        "line": 1453,
         "column": 1
       }
     },
@@ -24894,7 +24894,7 @@
       "description": "Collect canonical pathname patterns for every route in a nested navigator tree.\n@todo Move route-pattern traversal from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1466,
+        "line": 1461,
         "column": 1
       }
     },
@@ -24903,7 +24903,7 @@
       "description": "Deep-clone a UI node tree while assigning fresh identifiers and copying mutable node data.\n@todo Move UI-tree cloning from the src root into canvas/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1485,
+        "line": 1480,
         "column": 1
       }
     },
@@ -24912,7 +24912,7 @@
       "description": "Immutably update alias, style, and props for a node in a UI tree.\n@todo Move UI-tree mutation from the src root into canvas/ or properties/ according to final authoring ownership.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1503,
+        "line": 1498,
         "column": 1
       }
     },
@@ -24921,7 +24921,7 @@
       "description": "Immutably remove a node from a UI tree while preserving the remaining hierarchy.\n@todo Move UI-tree mutation from the src root into canvas/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1532,
+        "line": 1527,
         "column": 1
       }
     },
@@ -24930,7 +24930,7 @@
       "description": "Collect every node identifier in a UI subtree.\n@todo Move UI-tree traversal from the src root into canvas/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1552,
+        "line": 1547,
         "column": 1
       }
     },
@@ -24939,7 +24939,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1554,
+        "line": 1549,
         "column": 9
       }
     },
@@ -24948,7 +24948,7 @@
       "description": "Repair a navigator's initial-route field after route removal while preserving canonical omission when no initial route exists.\n@todo Move navigator normalization from the src root into routes/.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1566,
+        "line": 1561,
         "column": 1
       }
     },
@@ -24957,7 +24957,7 @@
       "description": "Narrow an unknown node style value to the string-or-number style record accepted by Studio node updates.\n@todo Keep this semantic style predicate with the canvas/properties authoring logic rather than treating it as a generic record utility.",
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1591,
+        "line": 1586,
         "column": 1
       }
     },
@@ -25020,7 +25020,7 @@
       "description": "List manifest media assets, optionally filter by kind, and sort them by name.\n@utility @ankhorage/utility/array",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 53,
+        "line": 54,
         "column": 1
       }
     },
@@ -25029,7 +25029,7 @@
       "description": "Create the canonical media-reference object for one media id.\n@todo Keep the MediaAssetReference constructor with its contracts/media owner unless a generic single-key reference constructor is extracted.",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 68,
+        "line": 69,
         "column": 1
       }
     },
@@ -25038,7 +25038,7 @@
       "description": "Parse an unknown value as an exact one-key media-reference object.\n@todo Keep MediaAssetReference semantics with media/contracts; implement it from generic object/value utilities.",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 76,
+        "line": 77,
         "column": 1
       }
     },
@@ -25047,7 +25047,7 @@
       "description": "Create a unique slug-like media id from a name and an existing keyed registry.\n@utility @ankhorage/utility/string",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 88,
+        "line": 89,
         "column": 1
       }
     },
@@ -25056,7 +25056,7 @@
       "description": "Create a URL-backed Studio media asset after validating and normalizing its HTTP URL.\n@todo Move URL-media authoring behavior under src/media/ while reusing generic URL normalization.",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 105,
+        "line": 101,
         "column": 1
       }
     },
@@ -25065,7 +25065,7 @@
       "description": "Immutably insert or replace a keyed media asset in a manifest registry.\n@utility @ankhorage/utility/object",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 128,
+        "line": 124,
         "column": 1
       }
     },
@@ -25074,7 +25074,7 @@
       "description": "Collect every Studio node-property usage of one media asset across all manifest screens.\n@todo Move media usage analysis under src/media/ while extracting generic deep-value traversal.",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 138,
+        "line": 134,
         "column": 1
       }
     },
@@ -25083,7 +25083,7 @@
       "description": "Remove an unused media asset from the manifest and reject removal when the asset is missing or referenced.\n@todo Move media removal policy under src/media/.",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 153,
+        "line": 149,
         "column": 1
       }
     },
@@ -25092,7 +25092,7 @@
       "description": "Recursively traverse a UiNode tree and inspect every prop value for media references.\n@todo Keep UiNode traversal with src/media/ or replace it with canonical tree/value traversal utilities.",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 177,
+        "line": 173,
         "column": 1
       }
     },
@@ -25101,7 +25101,7 @@
       "description": "Walk nested arrays and records while carrying a property path and report values matching a media-reference predicate.\n@utility @ankhorage/utility/object",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 193,
+        "line": 189,
         "column": 1
       }
     },
@@ -25110,7 +25110,7 @@
       "description": "Normalize an HTTP(S) URL and reject credentials or unsupported protocols.\n@utility @ankhorage/utility/url",
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
-        "line": 222,
+        "line": 218,
         "column": 1
       }
     },
@@ -26172,7 +26172,7 @@
       "description": "Normalize a project name into a lowercase hyphenated identifier.\n@utility @ankhorage/utility/string",
       "sourceLocation": {
         "filePath": "src/projectIdentity.ts",
-        "line": 15,
+        "line": 17,
         "column": 1
       }
     },
@@ -26181,7 +26181,7 @@
       "description": "Normalize a human-readable name for case-insensitive equality checks.\n@utility @ankhorage/utility/string",
       "sourceLocation": {
         "filePath": "src/projectIdentity.ts",
-        "line": 28,
+        "line": 25,
         "column": 1
       }
     },
@@ -26190,7 +26190,7 @@
       "description": "Test whether a project id is reserved by the Studio workspace.\n@todo Move project identity/reserved-id policy under src/projects/.",
       "sourceLocation": {
         "filePath": "src/projectIdentity.ts",
-        "line": 36,
+        "line": 33,
         "column": 1
       }
     },
@@ -26199,7 +26199,7 @@
       "description": "Validate a new Studio project name and derived id against format, reservation, and uniqueness rules.\n@todo Move project creation validation under src/projects/.",
       "sourceLocation": {
         "filePath": "src/projectIdentity.ts",
-        "line": 53,
+        "line": 50,
         "column": 1
       }
     },
@@ -40378,6 +40378,12 @@
         "sourcePath": "src/manifestState.ts"
       },
       {
+        "fromSymbol": "normalizeRouteName",
+        "toSymbol": "slugifyAscii",
+        "callExpression": "slugifyAscii",
+        "sourcePath": "src/manifestState.ts"
+      },
+      {
         "fromSymbol": "collectCanonicalRoutePatterns",
         "toSymbol": "appendRuntimeRoutePath",
         "callExpression": "appendRuntimeRoutePath",
@@ -40562,6 +40568,12 @@
         "toSymbol": "removeStudioMediaAsset",
         "callExpression": "removeStudioMediaAsset",
         "sourcePath": "src/mediaAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "createStudioMediaAssetId",
+        "toSymbol": "slugifyAscii",
+        "callExpression": "slugifyAscii",
+        "sourcePath": "src/mediaAuthoringModel.ts"
       },
       {
         "fromSymbol": "createStudioMediaAssetId",
@@ -42140,6 +42152,12 @@
         "toSymbol": "validateProjectCreationInput",
         "callExpression": "validateProjectCreationInput",
         "sourcePath": "src/projectIdentity.test.ts"
+      },
+      {
+        "fromSymbol": "deriveProjectId",
+        "toSymbol": "slugifyAscii",
+        "callExpression": "slugifyAscii",
+        "sourcePath": "src/projectIdentity.ts"
       },
       {
         "fromSymbol": "validateProjectCreationInput",

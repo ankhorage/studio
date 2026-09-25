@@ -332,7 +332,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 138,
+      "line": 134,
       "column": 1
     },
     "exportPaths": [
@@ -550,7 +550,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 88,
+      "line": 89,
       "column": 1
     },
     "exportPaths": [
@@ -590,7 +590,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 68,
+      "line": 69,
       "column": 1
     },
     "exportPaths": [
@@ -624,7 +624,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 105,
+      "line": 101,
       "column": 1
     },
     "exportPaths": [
@@ -660,7 +660,7 @@
     "modulePath": "src/projectIdentity.ts",
     "sourceLocation": {
       "filePath": "src/projectIdentity.ts",
-      "line": 15,
+      "line": 17,
       "column": 1
     },
     "exportPaths": [
@@ -1552,7 +1552,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 53,
+      "line": 54,
       "column": 1
     },
     "exportPaths": [
@@ -2069,7 +2069,7 @@
     "modulePath": "src/projectIdentity.ts",
     "sourceLocation": {
       "filePath": "src/projectIdentity.ts",
-      "line": 41,
+      "line": 38,
       "column": 1
     },
     "exportPaths": [
@@ -2387,7 +2387,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 76,
+      "line": 77,
       "column": 1
     },
     "exportPaths": [
@@ -2513,7 +2513,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 153,
+      "line": 149,
       "column": 1
     },
     "exportPaths": [
@@ -4171,7 +4171,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 17,
+      "line": 18,
       "column": 1
     },
     "exportPaths": [
@@ -4191,7 +4191,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 25,
+      "line": 26,
       "column": 1
     },
     "exportPaths": [
@@ -4456,7 +4456,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 11,
+      "line": 12,
       "column": 1
     },
     "exportPaths": [
@@ -5325,7 +5325,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 45,
+      "line": 46,
       "column": 1
     },
     "exportPaths": [
@@ -5602,7 +5602,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 128,
+      "line": 124,
       "column": 1
     },
     "exportPaths": [
@@ -5776,7 +5776,7 @@
     "modulePath": "src/projectIdentity.ts",
     "sourceLocation": {
       "filePath": "src/projectIdentity.ts",
-      "line": 53,
+      "line": 50,
       "column": 1
     },
     "exportPaths": [

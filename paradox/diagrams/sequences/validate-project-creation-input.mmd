@@ -2,10 +2,13 @@ sequenceDiagram
   participant participant_deriveProjectId as deriveProjectId
   participant participant_isReservedProjectId as isReservedProjectId
   participant participant_normalizeProjectName as normalizeProjectName
+  participant participant_slugifyAscii as slugifyAscii
   participant participant_validateProjectCreationInput as validateProjectCreationInput
   participant_validateProjectCreationInput->>participant_normalizeProjectName: normalizeProjectName()
   participant_normalizeProjectName-->>participant_validateProjectCreationInput: return
   participant_validateProjectCreationInput->>participant_deriveProjectId: deriveProjectId()
+  participant_deriveProjectId->>participant_slugifyAscii: slugifyAscii()
+  participant_slugifyAscii-->>participant_deriveProjectId: return
   participant_deriveProjectId-->>participant_validateProjectCreationInput: return
   participant_validateProjectCreationInput->>participant_isReservedProjectId: isReservedProjectId()
   participant_isReservedProjectId-->>participant_validateProjectCreationInput: return

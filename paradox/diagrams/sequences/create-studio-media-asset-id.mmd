@@ -1,5 +1,8 @@
 sequenceDiagram
   participant participant_createStudioMediaAssetId as createStudioMediaAssetId
   participant participant_readOwnProperty as readOwnProperty
+  participant participant_slugifyAscii as slugifyAscii
+  participant_createStudioMediaAssetId->>participant_slugifyAscii: slugifyAscii()
+  participant_slugifyAscii-->>participant_createStudioMediaAssetId: return
   participant_createStudioMediaAssetId->>participant_readOwnProperty: readOwnProperty()
   participant_readOwnProperty-->>participant_createStudioMediaAssetId: return

@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.10.13
+
+### Patch Changes
+
+- c32c84a: Update Ankhorage dependencies: `@ankhorage/navigator`, `@ankhorage/paradox`, `@ankhorage/zora-game`.
+
 ## 5.10.12
 
 ### Patch Changes
