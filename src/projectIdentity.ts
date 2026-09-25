@@ -2,6 +2,7 @@ import {
   STUDIO_PROJECT_ID_PATTERN,
   STUDIO_RESERVED_PROJECT_IDS,
 } from './constants/projectIdentity';
+import { slugifyAscii } from '@ankhorage/utility/string';
 import type {
   ProjectCreationValidationFailure,
   ProjectCreationValidationResult,
@@ -13,12 +14,7 @@ import type {
  * @utility @ankhorage/utility/string
  */
 export function deriveProjectId(projectName: string): string {
-  return projectName
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
+  return slugifyAscii(projectName);
 }
 
 /***
