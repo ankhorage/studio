@@ -513,7 +513,10 @@ function UnionEditor(props: {
           />
         ) : null}
         {model.optional && model.selected !== undefined ? (
-          <Button variant="outline" onPress={() => props.onMutation({ kind: 'unset', path: model.path })}>
+          <Button
+            variant="outline"
+            onPress={() => props.onMutation({ kind: 'unset', path: model.path })}
+          >
             Remove
           </Button>
         ) : null}
@@ -657,7 +660,8 @@ function formatAuthoringNodeValue(
     return model.entries.length > 0
       ? model.entries.map((entry) => entry.key).join(', ')
       : 'Not set';
-  if (model.kind === 'union') return model.selected === undefined ? 'Not set' : String(model.selected);
+  if (model.kind === 'union')
+    return model.selected === undefined ? 'Not set' : String(model.selected);
   if (model.kind === 'set')
     return model.selected.length > 0 ? model.selected.join(', ') : 'Not set';
   if (model.kind === 'ordered-list')
