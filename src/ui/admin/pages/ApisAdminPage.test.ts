@@ -30,7 +30,7 @@ test('keeps external API administration progressive and owner-backed', () => {
   expect(manualSource).toContain('Manual REST fallback');
   expect(manualSource).toContain('Retry discovery');
   expect(manualSource).toContain('attemptedUrl');
-  expect(manualSource).toContain("DataOperationIntent");
+  expect(manualSource).toContain('DataOperationIntent');
   expect(manualSource).toContain('<Field');
   expect(manualSource).not.toContain('ExternalApiField');
   expect(manualSource).not.toContain('JSON.parse');
