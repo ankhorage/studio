@@ -5,7 +5,6 @@ import type {
 } from '@ankhorage/contracts/structure';
 
 import type {
-  AuthoringDiagnostic,
   AuthoringStructure,
   AuthoringStructureResolution,
 } from '../../../../types/authoring-engine';
@@ -160,12 +159,3 @@ function resolveReference(
   );
 }
 
-/*** Preserve an unsupported descriptor kind as an explicit authoring diagnostic. */
-function unsupportedStructure(sourceKind: string, path: readonly string[]): AuthoringStructure {
-  const diagnostic: AuthoringDiagnostic = {
-    code: 'unsupported-structure',
-    message: `Structure kind "${sourceKind}" does not have a Studio authoring adapter yet.`,
-    path,
-  };
-  return { kind: 'unsupported', sourceKind, diagnostic };
-}
