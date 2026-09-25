@@ -417,9 +417,12 @@ function GeneratedRootView({ children }: { children: ReactNode }) {
 
 function resolveZoraSurfaceThemeConfig(\n  theme: AppManifest['themes'][string],\n): AppManifest['themes'][string] {
   return {
-    ...theme,
+    id: theme.id,
+    name: theme.name,
     light: { ...theme.light },
     dark: { ...theme.dark },
+    ...(theme.tokens === undefined ? {} : { tokens: theme.tokens }),
+    ...(theme.recipes === undefined ? {} : { recipes: theme.recipes }),
   };
 }
 
