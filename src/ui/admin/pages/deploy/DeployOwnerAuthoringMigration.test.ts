@@ -12,17 +12,15 @@ test('routes Monetization and Release authoring through Deploy projections and t
   const monetization = readSibling('DeployMonetizationAuthoringCard.tsx');
   const release = readSibling('DeployPreparedReleaseAuthoringCard.tsx');
 
-  expect(monetization).toContain('DEPLOY_AUTHORING_STRUCTURE');
-  expect(monetization).toContain('toDeployMonetizationAuthoringValue');
-  expect(monetization).toContain('fromDeployMonetizationAuthoringValue');
+  expect(monetization).toContain('props.authoring.data.structure');
+  expect(monetization).toContain('writeProjectDeployMonetizationAuthoring');
   expect(monetization).toContain('<DeployOwnerAuthoringEditor');
   expect(monetization).not.toContain('JSON.parse');
   expect(monetization).not.toContain('JSON.stringify');
   expect(monetization).not.toContain('<Input');
 
-  expect(release).toContain('DEPLOY_AUTHORING_STRUCTURE');
-  expect(release).toContain('toDeployReleaseAuthoringValue');
-  expect(release).toContain('fromDeployReleaseAuthoringValue');
+  expect(release).toContain('props.authoring.data.structure');
+  expect(release).toContain('writeProjectDeployReleaseAuthoring');
   expect(release).toContain('<DeployOwnerAuthoringEditor');
   expect(release).not.toContain('JSON.parse');
   expect(release).not.toContain('JSON.stringify');
@@ -58,5 +56,5 @@ test('keeps the Deploy adapter thin over the neutral model and immutable mutatio
   expect(source).toContain('deriveAuthoringModel');
   expect(source).toContain('applyAuthoringMutationToStructure');
   expect(source).toContain('<AuthoringEditor');
-  expect(source).not.toContain('DEPLOY_AUTHORING_STRUCTURE');
+  expect(source).not.toContain('@ankhorage/deploy');
 });
