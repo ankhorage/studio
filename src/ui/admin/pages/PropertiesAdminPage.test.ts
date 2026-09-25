@@ -19,7 +19,10 @@ test('derives instance Properties from injected owner metadata through the centr
   expect(source).toContain('resolveInstancePropertyAuthoring');
   expect(source).toContain('deriveAuthoringModel');
   expect(source).toContain('<AuthoringEditor');
-  expect(source).toContain('createStudioInstancePropertyPatch');
+  expect(source).toContain('applyAuthoringMutation(node.props ?? {}, mutation)');
+  expect(source).toContain('studio.updateNode(node.id, { props: result.value })');
+  expect(source).not.toContain('createStudioInstancePropertyPatch');
+  expect(source).not.toContain("mutation.kind ===");
   expect(source).not.toContain('resolveStudioInstancePropertyGroups');
   expect(source).not.toContain('InstancePropertyEditor');
   expect(source).not.toContain('ZORA_COMPONENT_META');
