@@ -415,7 +415,7 @@ function GeneratedRootView({ children }: { children: ReactNode }) {
   );
 }
 
-function resolveZoraSurfaceThemeConfig(theme: AppManifest['themes'][string]) {
+function resolveZoraSurfaceThemeConfig(\n  theme: AppManifest['themes'][string],\n): AppManifest['themes'][string] {
   return {
     ...theme,
     light: { ...theme.light },
