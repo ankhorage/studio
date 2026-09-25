@@ -1,7 +1,4 @@
-import type {
-  ThemeRecipeFieldOverrides,
-  ThemeRecipeOverrides,
-} from '@ankhorage/contracts';
+import type { ThemeRecipeFieldOverrides, ThemeRecipeOverrides } from '@ankhorage/contracts';
 import { deleteOwnProperty, readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
 
 export type ThemeRecipeAuthoringKind = 'component' | 'pattern';
