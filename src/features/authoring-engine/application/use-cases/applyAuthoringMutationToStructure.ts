@@ -390,7 +390,9 @@ type StructuredRecordResult =
   | { readonly ok: true; readonly value: Readonly<Record<string, unknown>> }
   | StructuredMutationRejection;
 
-type StructuredStructureResult = { readonly ok: true; readonly structure: AuthoringStructure } | StructuredMutationRejection;
+type StructuredStructureResult =
+  | { readonly ok: true; readonly structure: AuthoringStructure }
+  | StructuredMutationRejection;
 
 type StructuredValidationResult = { readonly ok: true } | StructuredMutationRejection;
 
