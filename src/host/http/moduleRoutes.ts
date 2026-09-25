@@ -1,3 +1,4 @@
+import { toErrorMessage } from '@ankhorage/utility/error';
 import { isRecord } from '@ankhorage/utility/object';
 import type { FastifyInstance } from 'fastify';
 
@@ -35,7 +36,7 @@ export function registerProjectModuleRoutes(
     try {
       return await orchestrator.listModules(req.params.id);
     } catch (error: unknown) {
-      return reply.status(500).send({ error: toMessage(error) });
+      return reply.status(500).send({ error: toErrorMessage(error, String(error)) });
     }
   });
 
@@ -48,7 +49,7 @@ export function registerProjectModuleRoutes(
         if (!moduleState) return reply.status(404).send({ error: 'Module not found' });
         return moduleState;
       } catch (error: unknown) {
-        return reply.status(500).send({ error: toMessage(error) });
+        return reply.status(500).send({ error: toErrorMessage(error, String(error)) });
       }
     },
   );
@@ -61,7 +62,7 @@ export function registerProjectModuleRoutes(
       try {
         return await orchestrator.installModule(req.params.id, req.params.moduleId, config);
       } catch (error: unknown) {
-        return reply.status(400).send({ error: toMessage(error) });
+        return reply.status(400).send({ error: toErrorMessage(error, String(error)) });
       }
     },
   );
@@ -73,7 +74,7 @@ export function registerProjectModuleRoutes(
       try {
         return await orchestrator.uninstallModule(req.params.id, req.params.moduleId);
       } catch (error: unknown) {
-        return reply.status(400).send({ error: toMessage(error) });
+        return reply.status(400).send({ error: toErrorMessage(error, String(error)) });
       }
     },
   );
@@ -93,7 +94,7 @@ export function registerProjectModuleRoutes(
           req.body.config,
         );
       } catch (error: unknown) {
-        return reply.status(400).send({ error: toMessage(error) });
+        return reply.status(400).send({ error: toErrorMessage(error, String(error)) });
       }
     },
   );
@@ -114,17 +115,11 @@ export function registerProjectModuleRoutes(
           ...(body.componentMeta === undefined ? {} : { componentMeta: body.componentMeta }),
         });
       } catch (error: unknown) {
-        return reply.status(400).send({ error: toMessage(error) });
+        return reply.status(400).send({ error: toErrorMessage(error, String(error)) });
       }
     },
   );
 }
 
 
-/***
- * Convert an unknown thrown value to a human-readable message.
- * @utility @ankhorage/utility/error
- */
-function toMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
-}
+

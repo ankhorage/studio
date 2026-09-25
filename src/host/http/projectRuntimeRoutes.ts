@@ -1,3 +1,4 @@
+import { toErrorMessage } from '@ankhorage/utility/error';
 import type { FastifyInstance, FastifyReply } from 'fastify';
 
 import type { ProjectManager } from '../orchestrator/projectManager';
@@ -39,6 +40,6 @@ export function registerProjectRuntimeRoutes(
 
 /*** Translate a project runtime failure into the bounded Studio HTTP response. */
 function sendRuntimeFailure(reply: FastifyReply, error: unknown): unknown {
-  const message = error instanceof Error ? error.message : String(error);
+  const message = toErrorMessage(error, String(error));
   return reply.status(500).send({ error: message });
 }

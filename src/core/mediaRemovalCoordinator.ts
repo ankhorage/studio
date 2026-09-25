@@ -1,4 +1,5 @@
 import type { AppManifest, MediaAssetSource } from '@ankhorage/contracts';
+import { toErrorMessage } from '@ankhorage/utility/error';
 
 import { removeStudioMediaAsset, type StudioMediaDeleteResult } from '../mediaAuthoringModel';
 
@@ -29,7 +30,7 @@ export async function commitStudioMediaRemoval(args: {
     await args.persistManifest();
   } catch (error) {
     args.applyManifest(args.manifest);
-    return { ok: false, reason: 'save-failed', message: toMessage(error), mediaRemoved: false };
+    return { ok: false, reason: 'save-failed', message: toErrorMessage(error, String(error)), mediaRemoved: false };
   }
 
   try {
@@ -37,7 +38,7 @@ export async function commitStudioMediaRemoval(args: {
     if (cleanup.ok) return { ok: true, cleanup: cleanup.cleanup ?? 'none' };
     return cleanupFailure(cleanup.reason ?? 'Media source cleanup failed.');
   } catch (error) {
-    return cleanupFailure(toMessage(error));
+    return cleanupFailure(toErrorMessage(error, String(error)));
   }
 }
 
@@ -46,10 +47,4 @@ function cleanupFailure(message: string): StudioMediaDeleteResult {
   return { ok: false, reason: 'cleanup-failed', message, mediaRemoved: true };
 }
 
-/***
- * Convert an unknown thrown value into a stable error message.
- * @utility @ankhorage/utility/error
- */
-function toMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
-}
+

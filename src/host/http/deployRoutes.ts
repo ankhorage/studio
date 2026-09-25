@@ -10,6 +10,7 @@ import type {
   ProjectStoreListingAssetLocation,
   StoreListingLocale,
 } from '@ankhorage/deploy/project';
+import { toErrorMessage } from '@ankhorage/utility/error';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import type { ProjectDeployRuntimeInput } from '../../projectDeployRuntimeInput';
@@ -278,14 +279,8 @@ async function respond(reply: FastifyReply, operation: () => Promise<unknown>): 
   try {
     return await operation();
   } catch (error) {
-    return reply.status(400).send({ error: readErrorMessage(error) });
+    return reply.status(400).send({ error: toErrorMessage(error, String(error)) });
   }
 }
 
-/***
- * Convert an unknown thrown value to a human-readable message.
- * @utility @ankhorage/utility/error
- */
-function readErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
-}
+
