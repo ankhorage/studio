@@ -258,15 +258,11 @@ test('rejects registry identity-field mutation and mismatched inserted identity'
 
 test('switches discriminated union variants and edits only the active variant', () => {
   const current: Readonly<Record<string, unknown>> = { rollout: { mode: 'immediate' } };
-  const switched = applyAuthoringMutationToStructure(
-    current,
-    UNION_STRUCTURE,
-    {
-      kind: 'set',
-      path: ['rollout'],
-      value: { mode: 'staged', fraction: '0.25' },
-    },
-  );
+  const switched = applyAuthoringMutationToStructure(current, UNION_STRUCTURE, {
+    kind: 'set',
+    path: ['rollout'],
+    value: { mode: 'staged', fraction: '0.25' },
+  });
   expect(switched).toEqual({
     ok: true,
     value: { rollout: { mode: 'staged', fraction: '0.25' } },
