@@ -1,49 +1,52 @@
-import {
-  DEPLOY_AUTHORING_STRUCTURE,
-  type DeployReleaseAuthoringValue,
-  fromDeployReleaseAuthoringValue,
-  toDeployReleaseAuthoringValue,
-} from '@ankhorage/deploy/authoring';
+import type { SerializableValue } from '@ankhorage/contracts';
 import { Button, Card, Text } from '@ankhorage/zora';
 import React, { useState } from 'react';
 
 import { resolveContractsAuthoringStructure } from '../../../../features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure';
-import { writeProjectDeployRelease } from '../../../../projectDeployApi';
+import { writeProjectDeployReleaseAuthoring } from '../../../../projectDeployApi';
+import type { AuthoringStructureResolution } from '../../../../types/authoring-engine';
 import { KeyValue } from '../../adminPagePrimitives';
 import type { ProjectDeployDashboardState } from './deployDashboardTypes';
 import { DeployOwnerAuthoringEditor } from './DeployOwnerAuthoringEditor';
 
-const RELEASE_STRUCTURE = resolveContractsAuthoringStructure(
-  DEPLOY_AUTHORING_STRUCTURE,
-  'prepared-release',
-);
-
-/*** Author prepared Release desired state through Deploy's released structure and canonical projections. */
+/*** Author prepared Release desired state from the host-projected Deploy owner structure. */
 export function DeployPreparedReleaseAuthoringCard(props: {
   readonly projectId: string;
+  readonly authoring: ProjectDeployDashboardState['authoring'];
   readonly release: ProjectDeployDashboardState['release'];
   readonly onMutation: () => void;
 }) {
+  const owner =
+    props.authoring.status === 'ready'
+      ? {
+          initial: props.authoring.data.release,
+          structure: resolveContractsAuthoringStructure(
+            props.authoring.data.structure,
+            'prepared-release',
+          ),
+        }
+      : null;
+
   return (
     <Card
       title="Prepared release desired state"
       description="Version, target membership, localized notes and rollout variants are derived from Deploy owner metadata. Execution remains inspect → confirm → execute."
     >
       {props.release.status === 'ready' ? (
-        <>
-          <KeyValue label="Prepared release revision" value={props.release.data.revision} />
-          <ReleaseDraftEditor
-            key={props.release.data.revision}
-            projectId={props.projectId}
-            initial={toDeployReleaseAuthoringValue({
-              version: props.release.data.version,
-              targets: props.release.data.targets,
-              notes: props.release.data.notes,
-              rollout: props.release.data.rollout,
-            })}
-            onMutation={props.onMutation}
-          />
-        </>
+        <KeyValue label="Prepared release revision" value={props.release.data.revision} />
+      ) : null}
+      {props.release.status === 'ready' && owner ? (
+        <ReleaseDraftEditor
+          key={props.release.data.revision}
+          projectId={props.projectId}
+          initial={owner.initial}
+          structure={owner.structure}
+          onMutation={props.onMutation}
+        />
+      ) : null}
+      {props.authoring.status === 'loading' ? <Text>Loading authoring metadata…</Text> : null}
+      {props.authoring.status === 'error' ? (
+        <Text color="danger">{props.authoring.message}</Text>
       ) : null}
       {props.release.status === 'loading' ? <Text>Loading prepared release…</Text> : null}
       {props.release.status === 'error' ? (
@@ -53,22 +56,22 @@ export function DeployPreparedReleaseAuthoringCard(props: {
   );
 }
 
-/*** Edit one revision-scoped Release draft and persist it through Deploy's canonical projection. */
+/*** Edit one revision-scoped Release draft and persist it through the trusted host owner projection. */
 function ReleaseDraftEditor(props: {
   readonly projectId: string;
-  readonly initial: DeployReleaseAuthoringValue;
+  readonly initial: SerializableValue;
+  readonly structure: AuthoringStructureResolution;
   readonly onMutation: () => void;
 }) {
   const [draft, setDraft] = useState(props.initial);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  /*** Persist the current Release authoring value through Deploy's canonical reverse projection. */
   const save = async () => {
     setBusy(true);
     setError(null);
     try {
-      await writeProjectDeployRelease(props.projectId, fromDeployReleaseAuthoringValue(draft));
+      await writeProjectDeployReleaseAuthoring(props.projectId, draft);
       props.onMutation();
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : String(caught));
@@ -80,7 +83,7 @@ function ReleaseDraftEditor(props: {
   return (
     <>
       <DeployOwnerAuthoringEditor
-        structure={RELEASE_STRUCTURE}
+        structure={props.structure}
         value={draft}
         onChange={setDraft}
         onError={setError}
