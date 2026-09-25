@@ -1,6 +1,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { isRecord } from '@ankhorage/utility/object';
+
 import { applyCurrentGeneratedPackagePolicy } from '../../features/project-updates/composition/applyCurrentGeneratedPackagePolicy';
 
 /*** Reconcile one generated app package manifest against current owner-managed version ranges. */
@@ -35,10 +37,6 @@ function assertGeneratedPackageManifest(value: unknown): asserts value is Genera
   }
 }
 
-/*** Return whether a value is a non-array object. */
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
 
 /*** Return whether a value is an object whose own values are strings. */
 function isStringRecord(value: unknown): value is Record<string, string> {

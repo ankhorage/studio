@@ -1,6 +1,8 @@
 import { appendFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 
+import { isRecord } from '@ankhorage/utility/object';
+
 import {
   NATIVE_EVIDENCE_ANDROID_SCHEME,
   NATIVE_EVIDENCE_IOS_SCHEME,
@@ -337,9 +339,4 @@ function containsSensitiveText(value: string): boolean {
   return /access_token|authorization:|code=|refresh_token|secret=/iu.test(value);
 }
 
-/*** Narrow an unknown value to a plain non-array record.
- * @utility @ankhorage/utility/object
- */
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
+

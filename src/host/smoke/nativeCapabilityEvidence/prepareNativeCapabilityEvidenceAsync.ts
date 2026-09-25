@@ -2,6 +2,8 @@ import { createHash } from 'node:crypto';
 import { access, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { isRecord } from '@ankhorage/utility/object';
+
 import { assertReactNativeOwnerGraphAsync } from '../assertReactNativeOwnerGraphAsync';
 import { generateExpoRouterTypesAsync } from '../generateExpoRouterTypesAsync';
 import { resolveAppOwnedExpoCliAsync } from '../resolveAppOwnedExpoCliAsync';
@@ -720,10 +722,4 @@ async function writeNativeEvidenceAppFilesAsync(appRoot: string): Promise<void> 
   );
 }
 
-/***
- * Narrow an unknown value to a non-null, non-array object record.
- * @utility @ankhorage/utility/object
- */
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
+

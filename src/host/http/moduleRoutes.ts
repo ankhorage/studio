@@ -1,3 +1,4 @@
+import { isRecord } from '@ankhorage/utility/object';
 import type { FastifyInstance } from 'fastify';
 
 import type { ModuleManager } from '../orchestrator/moduleManager';
@@ -119,13 +120,6 @@ export function registerProjectModuleRoutes(
   );
 }
 
-/***
- * Narrow an unknown non-array object to a string-keyed record.
- * @utility @ankhorage/utility/object
- */
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
 
 /***
  * Convert an unknown thrown value to a human-readable message.

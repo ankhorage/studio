@@ -1,4 +1,5 @@
 import type { ProjectReleaseInput } from '@ankhorage/deploy/project';
+import { isRecord } from '@ankhorage/utility/object';
 import { Button, Card, Text } from '@ankhorage/zora';
 import React, { useEffect, useState } from 'react';
 
@@ -65,9 +66,6 @@ export function DeployPreparedReleaseAuthoringCard(props: {
   );
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
 
 function readError(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
