@@ -12,6 +12,7 @@ describe('local Studio host ownership', () => {
   test('rejects path traversal and the reserved Studio app id', () => {
     expect(() => assertProjectId('../outside')).toThrow();
     expect(() => assertProjectId('studio')).toThrow();
+    expect(() => assertProjectId('invalid--app')).toThrow();
     expect(() => getProjectPath('/tmp/workspace', 'valid-app')).not.toThrow();
   });
 
