@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v5.10.7",
+      "value": "v5.10.8",
       "color": "cb3837"
     },
     {
@@ -15684,7 +15684,7 @@
       "description": "Return Studio-owned generated-app dependency policy from this exact package artifact.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 9,
+        "line": 10,
         "column": 1
       }
     },
@@ -15693,7 +15693,7 @@
       "description": "Read and validate owner package metadata used as generated-app dependency floors.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 25,
+        "line": 24,
         "column": 1
       }
     },
@@ -15702,7 +15702,7 @@
       "description": "Build generated package policy from validated owner package sections.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 49,
+        "line": 48,
         "column": 1
       }
     },
@@ -15711,7 +15711,7 @@
       "description": "Read generated runtime dependency ranges from Studio's dependency contract.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 74,
+        "line": 73,
         "column": 1
       }
     },
@@ -15720,7 +15720,7 @@
       "description": "Resolve the Studio range generated apps may install: source checkouts follow the verified\nself-consumer baseline, while published package artifacts use their own exact release line.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 97,
+        "line": 96,
         "column": 1
       }
     },
@@ -15729,7 +15729,7 @@
       "description": "Read every installed ZORA extension range from Studio's own dependency contract.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 108,
+        "line": 107,
         "column": 1
       }
     },
@@ -15738,7 +15738,7 @@
       "description": "Read generated native peer ranges from Studio's peer dependency contract.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 120,
+        "line": 119,
         "column": 1
       }
     },
@@ -15747,7 +15747,7 @@
       "description": "Parse one owner package manifest as a validated object.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 144,
+        "line": 143,
         "column": 1
       }
     },
@@ -15756,7 +15756,7 @@
       "description": "Read and validate Studio's exact package version.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 154,
+        "line": 153,
         "column": 1
       }
     },
@@ -15765,7 +15765,7 @@
       "description": "Read and validate Studio's exact Bun package-manager pin.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 163,
+        "line": 162,
         "column": 1
       }
     },
@@ -15774,7 +15774,7 @@
       "description": "Read one required package-manifest dependency section.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 172,
+        "line": 174,
         "column": 1
       }
     },
@@ -15783,7 +15783,7 @@
       "description": "Read one required non-empty string property from package metadata.",
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 185,
+        "line": 187,
         "column": 1
       }
     },
@@ -19806,7 +19806,7 @@
       "description": "Generate Navigator-owned layouts for enabled targets while leaving root-shell and screen ownership in Studio.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 25,
+        "line": 26,
         "column": 1
       }
     },
@@ -19815,7 +19815,7 @@
       "description": "Resolve enabled targets with Web first so its source remains the universal fallback file.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 56,
+        "line": 57,
         "column": 1
       }
     },
@@ -19824,7 +19824,7 @@
       "description": "Read one deploy target without dynamic object injection.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 63,
+        "line": 64,
         "column": 1
       }
     },
@@ -19833,7 +19833,7 @@
       "description": "Plan and generate one platform without passing any AppManifest state to Navigator.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 75,
+        "line": 76,
         "column": 1
       }
     },
@@ -19842,7 +19842,7 @@
       "description": "Suppress generated Stack headers when the integrating app shell declares its own visible header.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 106,
+        "line": 107,
         "column": 1
       }
     },
@@ -19851,7 +19851,7 @@
       "description": "Project Studio-owned public route paths into the navigator slice required by headless tabs.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 144,
+        "line": 145,
         "column": 1
       }
     },
@@ -19860,7 +19860,7 @@
       "description": "Resolve one safe route segment to its canonical public path while omitting groups and index.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 161,
+        "line": 162,
         "column": 1
       }
     },
@@ -19869,7 +19869,7 @@
       "description": "Read the concrete semantic version from Expo Runtime's package range.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 180,
+        "line": 181,
         "column": 1
       }
     },
@@ -19878,7 +19878,7 @@
       "description": "Add an Expo platform suffix to a generated TypeScript layout path.",
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 188,
+        "line": 194,
         "column": 1
       }
     },
@@ -21219,7 +21219,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.test.ts",
-        "line": 421,
+        "line": 422,
         "column": 1
       }
     },
@@ -21228,7 +21228,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.test.ts",
-        "line": 430,
+        "line": 431,
         "column": 1
       }
     },
@@ -22056,7 +22056,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.smoke.test.ts",
-        "line": 92,
+        "line": 93,
         "column": 1
       }
     },
@@ -22065,7 +22065,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.smoke.test.ts",
-        "line": 96,
+        "line": 97,
         "column": 1
       }
     },
@@ -22227,7 +22227,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 163,
+        "line": 164,
         "column": 1
       }
     },
@@ -22236,7 +22236,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 169,
+        "line": 170,
         "column": 1
       }
     },
@@ -22245,7 +22245,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 207,
+        "line": 208,
         "column": 1
       }
     },
@@ -22254,7 +22254,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 214,
+        "line": 215,
         "column": 1
       }
     },
@@ -22263,7 +22263,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 226,
+        "line": 227,
         "column": 1
       }
     },
@@ -22272,7 +22272,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 246,
+        "line": 254,
         "column": 1
       }
     },
@@ -22281,7 +22281,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 250,
+        "line": 258,
         "column": 1
       }
     },
@@ -22290,7 +22290,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 259,
+        "line": 267,
         "column": 1
       }
     },
@@ -22299,7 +22299,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 276,
+        "line": 284,
         "column": 1
       }
     },
@@ -22308,7 +22308,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 297,
+        "line": 305,
         "column": 1
       }
     },
@@ -26502,7 +26502,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/root.test.ts",
-        "line": 188,
+        "line": 189,
         "column": 1
       }
     },
@@ -37435,8 +37435,14 @@
       },
       {
         "fromSymbol": "compareStableVersions",
-        "toSymbol": "readStableVersionParts",
-        "callExpression": "readStableVersionParts",
+        "toSymbol": "parseSemanticVersion",
+        "callExpression": "parseSemanticVersion",
+        "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
+      },
+      {
+        "fromSymbol": "compareStableVersions",
+        "toSymbol": "compareSemanticVersions",
+        "callExpression": "compareSemanticVersions",
         "sourcePath": "scripts/published-studio-restart-boundary-acceptance.ts"
       },
       {
@@ -42699,6 +42705,12 @@
         "fromSymbol": "src/root.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
+        "sourcePath": "src/root.test.ts"
+      },
+      {
+        "fromSymbol": "src/root.test.ts",
+        "toSymbol": "parseSemanticVersion",
+        "callExpression": "parseSemanticVersion",
         "sourcePath": "src/root.test.ts"
       },
       {
@@ -56736,6 +56748,12 @@
         "sourcePath": "src/host/orchestrator/templates.test.ts"
       },
       {
+        "fromSymbol": "getCaretCompatibilityLine",
+        "toSymbol": "parseSemanticVersion",
+        "callExpression": "parseSemanticVersion",
+        "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
         "fromSymbol": "getPackageJson",
         "toSymbol": "applyCurrentGeneratedPackagePolicy",
         "callExpression": "applyCurrentGeneratedPackagePolicy",
@@ -58833,6 +58851,12 @@
         "fromSymbol": "createVersionBelowRange",
         "toSymbol": "parseSemverRange",
         "callExpression": "parseSemverRange",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "parseSemverRange",
+        "toSymbol": "parseSemanticVersion",
+        "callExpression": "parseSemanticVersion",
         "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
       },
       {
@@ -64071,6 +64095,12 @@
         "fromSymbol": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
         "toSymbol": "withGeneratedRoutePaths",
         "callExpression": "withGeneratedRoutePaths",
+        "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
+      },
+      {
+        "fromSymbol": "resolveExactVersion",
+        "toSymbol": "parseSemanticVersion",
+        "callExpression": "parseSemanticVersion",
         "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
       },
       {

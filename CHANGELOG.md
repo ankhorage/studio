@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 5.10.8
+
+### Patch Changes
+
+- 16c5bc3: Consume canonical SemVer patterns from @ankhorage/utility and remove duplicated Studio regex policy.
+
 ## 5.10.7
 
 ### Patch Changes
