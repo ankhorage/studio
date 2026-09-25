@@ -10,9 +10,7 @@ function readSource(relativePath: string): string {
 }
 
 test('keeps generic authoring initialization and mutation interpretation inside the central engine', () => {
-  const bindingDefault = readSource(
-    'ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts',
-  );
+  const bindingDefault = readSource('ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts');
   const properties = readSource('ui/admin/pages/PropertiesAdminPage.tsx');
   const themeRecipe = readSource('ui/admin/pages/ThemeRecipeAdminPage.tsx');
 
@@ -21,7 +19,7 @@ test('keeps generic authoring initialization and mutation interpretation inside 
 
   for (const consumer of [properties, themeRecipe]) {
     expect(consumer).toContain('applyAuthoringMutation');
-    expect(consumer).not.toContain("mutation.kind ===");
+    expect(consumer).not.toContain('mutation.kind ===');
     expect(consumer).not.toContain('mutation.path.length');
   }
 });
