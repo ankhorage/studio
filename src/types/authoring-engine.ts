@@ -179,6 +179,7 @@ export interface AuthoringUnionNode extends AuthoringNodeBase {
   readonly discriminator: string;
   readonly variants: readonly AuthoringUnionVariant[];
   readonly selected: AuthoringPrimitive | undefined;
+  readonly authoredValue: Readonly<Record<string, unknown>> | undefined;
   readonly value: AuthoringNode | undefined;
 }
 
