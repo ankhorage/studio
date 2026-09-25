@@ -98,77 +98,99 @@ export function ExternalApiEditCard({ api, onCancel, onSaved }: ExternalApiEditC
       description="Advanced settings are shown only for the selected connected API. Imported endpoints and schemas remain canonical and read-only."
     >
       <View style={externalApiAdminStyles.stack}>
-        <View style={externalApiAdminStyles.field}>\n          <Field label="Generated API ID">
-          <Text selectable variant="bodySmall">
-            {api.id}
-          </Text>
-          </Field>\n        </View>
-        <View style={externalApiAdminStyles.field}>\n          <Field label="Service or schema URL">
-          <TextInput
-            accessibilityLabel="Service or schema URL"
-            value={url}
-            autoCapitalize="none"
-            autoCorrect={false}
-            onChangeText={setUrl}
-          />
-          </Field>\n        </View>
-        <View style={externalApiAdminStyles.columns}>
-          <View style={externalApiAdminStyles.field}>\n            <Field label="Display name (optional)">
-            <TextInput accessibilityLabel="API display name" value={name} onChangeText={setName} />
-            </Field>\n          </View>
-          <View style={externalApiAdminStyles.field}>\n            <Field label="Protocol discovery strategy">
-            {isManualRest ? (
-              <Text variant="bodySmall">Manual REST</Text>
-            ) : (
-              <Select value={protocol} options={PROTOCOL_OPTIONS} onValueChange={setProtocol} />
-            )}
-            </Field>\n          </View>
+        <View style={externalApiAdminStyles.field}>
+          <Field label="Generated API ID">
+            <Text selectable variant="bodySmall">
+              {api.id}
+            </Text>
+          </Field>
         </View>
-        <View style={externalApiAdminStyles.field}>\n          <Field label="Description (optional)">
-          <TextInput
-            accessibilityLabel="API description"
-            value={description}
-            multiline
-            onChangeText={setDescription}
-          />
-          </Field>\n        </View>
+        <View style={externalApiAdminStyles.field}>
+          <Field label="Service or schema URL">
+            <TextInput
+              accessibilityLabel="Service or schema URL"
+              value={url}
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChangeText={setUrl}
+            />
+          </Field>
+        </View>
         <View style={externalApiAdminStyles.columns}>
-          <View style={externalApiAdminStyles.field}>\n            <Field label="Credential secret ref (optional)">
+          <View style={externalApiAdminStyles.field}>
+            <Field label="Display name (optional)">
+              <TextInput
+                accessibilityLabel="API display name"
+                value={name}
+                onChangeText={setName}
+              />
+            </Field>
+          </View>
+          <View style={externalApiAdminStyles.field}>
+            <Field label="Protocol discovery strategy">
+              {isManualRest ? (
+                <Text variant="bodySmall">Manual REST</Text>
+              ) : (
+                <Select value={protocol} options={PROTOCOL_OPTIONS} onValueChange={setProtocol} />
+              )}
+            </Field>
+          </View>
+        </View>
+        <View style={externalApiAdminStyles.field}>
+          <Field label="Description (optional)">
             <TextInput
-              accessibilityLabel="Credential secret reference"
-              value={credentialId}
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="services/example"
-              onChangeText={setCredentialId}
+              accessibilityLabel="API description"
+              value={description}
+              multiline
+              onChangeText={setDescription}
             />
-            </Field>\n          </View>
-          <View style={externalApiAdminStyles.field}>\n            <Field label="Credential label (optional)">
-            <TextInput
-              accessibilityLabel="Credential label"
-              value={credentialLabel}
-              onChangeText={setCredentialLabel}
-            />
-            </Field>\n          </View>
-          <View style={externalApiAdminStyles.field}>\n            <Field label="Credential kind">
-            <TextInput
-              accessibilityLabel="Credential kind"
-              value={credentialKind}
-              autoCapitalize="none"
-              autoCorrect={false}
-              onChangeText={setCredentialKind}
-            />
-            </Field>\n          </View>
-          <View style={externalApiAdminStyles.field}>\n            <Field label="Credential scope (optional)">
-            <TextInput
-              accessibilityLabel="Credential scope"
-              value={credentialScope}
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="header:x-api-key"
-              onChangeText={setCredentialScope}
-            />
-            </Field>\n          </View>
+          </Field>
+        </View>
+        <View style={externalApiAdminStyles.columns}>
+          <View style={externalApiAdminStyles.field}>
+            <Field label="Credential secret ref (optional)">
+              <TextInput
+                accessibilityLabel="Credential secret reference"
+                value={credentialId}
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="services/example"
+                onChangeText={setCredentialId}
+              />
+            </Field>
+          </View>
+          <View style={externalApiAdminStyles.field}>
+            <Field label="Credential label (optional)">
+              <TextInput
+                accessibilityLabel="Credential label"
+                value={credentialLabel}
+                onChangeText={setCredentialLabel}
+              />
+            </Field>
+          </View>
+          <View style={externalApiAdminStyles.field}>
+            <Field label="Credential kind">
+              <TextInput
+                accessibilityLabel="Credential kind"
+                value={credentialKind}
+                autoCapitalize="none"
+                autoCorrect={false}
+                onChangeText={setCredentialKind}
+              />
+            </Field>
+          </View>
+          <View style={externalApiAdminStyles.field}>
+            <Field label="Credential scope (optional)">
+              <TextInput
+                accessibilityLabel="Credential scope"
+                value={credentialScope}
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="header:x-api-key"
+                onChangeText={setCredentialScope}
+              />
+            </Field>
+          </View>
         </View>
         <Text color="neutral" emphasis="muted" variant="caption">
           Saving a discovered OpenAPI or GraphQL API runs discovery again under the same generated
