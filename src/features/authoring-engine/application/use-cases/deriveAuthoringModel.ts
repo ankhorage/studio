@@ -137,7 +137,6 @@ function deriveNode(args: {
     case 'entity-registry': {
       const value = readEntityRegistryValue(
         args.structure.key,
-        args.structure.value,
         args.structure.identityField,
         args.value,
         args.optional,
@@ -414,7 +413,6 @@ function mergeValueMapEntries(
 /*** Validate one stable entity registry without assigning semantic meaning to record order. */
 function readEntityRegistryValue(
   keyStructure: AuthoringStructure,
-  valueStructure: AuthoringStructure,
   identityField: string | undefined,
   value: unknown,
   optional: boolean,
