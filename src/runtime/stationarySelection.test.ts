@@ -191,7 +191,7 @@ describe('stationarySelection RN integration', () => {
 
   it('uses public element geometry for web and native indication measurement', () => {
     expect(source).toContain('getBoundingClientRect');
-    expect(source).toContain('measureRenderedBoxes(child)');
+    expect(source).toContain('measureWebDescendantUnion(view)');
     expect(source).toContain('measureNativeRuntimeNodeElement(view)');
     expect(source).not.toContain('findNodeHandle');
     expect(source).not.toContain('ReactNativePrivateInterface');

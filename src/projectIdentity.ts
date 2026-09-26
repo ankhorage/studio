@@ -12,7 +12,6 @@ import type {
 
 /***
  * Normalize a project name into a lowercase hyphenated identifier.
- * @utility @ankhorage/utility/string
  */
 export function deriveProjectId(projectName: string): string {
   return slugifyAscii(projectName);

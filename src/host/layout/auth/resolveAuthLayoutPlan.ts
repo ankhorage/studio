@@ -7,6 +7,7 @@ import {
   type RouteDefinition,
 } from '@ankhorage/contracts';
 import { getSupabaseOAuthProviderDefinition } from '@ankhorage/supabase-auth';
+import { toPortablePath } from '@ankhorage/utility/node/path';
 import path from 'path';
 
 const APP_ROOT_REL = 'src/app';
@@ -315,7 +316,7 @@ function buildGeneratedFilePlans(
       { path: AUTH_OAUTH_STATE_FILE_PATH, kind: 'oauth-state' },
       { path: AUTH_OAUTH_RUNTIME_FILE_PATH, kind: 'oauth-runtime' },
       {
-        path: normalizeRel(path.join(APP_ROOT_REL, `${oauth.callbackRouteName}.tsx`)),
+        path: toPortablePath(path.join(APP_ROOT_REL, `${oauth.callbackRouteName}.tsx`)),
         kind: 'oauth-callback',
         routeName: oauth.callbackRouteName,
       },
@@ -378,7 +379,7 @@ function resolveRouteScreenFilePath(routeRel: string): string {
   const fileName = `${path.basename(routeRel)}.tsx`;
   const dirRel = path.dirname(routeRel);
   const targetDirRel = dirRel === '.' ? '' : dirRel;
-  return normalizeRel(path.join(APP_ROOT_REL, targetDirRel, fileName));
+  return toPortablePath(path.join(APP_ROOT_REL, targetDirRel, fileName));
 }
 
 /*** Reuse already-grouped app/auth navigators when the manifest explicitly contains both groups. */
@@ -587,14 +588,6 @@ function hasRouteName(routes: RouteDefinition[], routeName: string): boolean {
   }
 
   return false;
-}
-
-/***
- * Convert a generated filesystem path to portable slash separators.
- * @utility @ankhorage/utility/node/path
- */
-function normalizeRel(filePath: string): string {
-  return filePath.replace(/\\/g, '/');
 }
 
 /***

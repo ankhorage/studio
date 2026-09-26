@@ -4,6 +4,7 @@ import {
   type MediaBundledSource,
   type MediaStorageSource,
 } from '@ankhorage/contracts';
+import { toErrorMessage } from '@ankhorage/utility/error';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import { ProjectBundledMediaService } from '../media/projectBundledMediaService';
@@ -38,7 +39,7 @@ export function registerProjectMediaRoutes(
       const { id } = req.params as { id: string };
       return { url: await storageService.resolve(id, source) };
     } catch (error) {
-      return reply.status(400).send({ error: readErrorMessage(error) });
+      return reply.status(400).send({ error: toErrorMessage(error, String(error)) });
     }
   });
 }
@@ -60,7 +61,7 @@ function registerMediaCleanupRoute(
       else await bundledService.remove(id, source);
       return { cleanup: 'removed' };
     } catch (error) {
-      return reply.status(400).send({ error: readErrorMessage(error) });
+      return reply.status(400).send({ error: toErrorMessage(error, String(error)) });
     }
   });
 }
@@ -102,7 +103,7 @@ function registerMediaByteRoute(
         const { id } = req.params as { id: string };
         return { asset: await ingest(id, input) };
       } catch (error) {
-        return reply.status(400).send({ error: readErrorMessage(error) });
+        return reply.status(400).send({ error: toErrorMessage(error, String(error)) });
       }
     },
   );
@@ -179,12 +180,4 @@ function readNumber(value: unknown) {
   if (typeof value !== 'string' || value.length === 0) return undefined;
   const parsed = Number(value);
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined;
-}
-
-/***
- * Convert an unknown thrown value to a human-readable message.
- * @utility @ankhorage/utility/error
- */
-function readErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
 }

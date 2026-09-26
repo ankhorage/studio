@@ -1,7 +1,10 @@
 import {
+  appendEncodedPathSegment,
   decodeFirstPathSegmentAfterPrefix,
   decodeSinglePathSegmentAfterPrefix,
+  isPathAtOrBelow,
 } from '@ankhorage/utility/url';
+import { resolveNavigableLocation } from '@ankhorage/utility/web';
 import type { IoniconsIconName } from '@react-native-vector-icons/ionicons/static';
 
 import type { StudioAdminRouteId, StudioAdminRoutePath, StudioAdminStaticRoutePath } from './index';
@@ -382,10 +385,9 @@ export function resolveStudioScreenId(pathname: string): string | null {
 
 /***
  * Build a Studio screen-detail pathname from an arbitrary screen id.
- * @utility @ankhorage/utility/url
  */
 export function createStudioScreenRoutePath(screenId: string): `/ankh/screens/${string}` {
-  return `/ankh/screens/${encodeURIComponent(screenId)}`;
+  return appendEncodedPathSegment('/ankh/screens', screenId) as `/ankh/screens/${string}`;
 }
 
 /*** Resolve the module id from a Studio module-detail pathname. */
@@ -395,10 +397,9 @@ export function resolveStudioModuleId(pathname: string): string | null {
 
 /***
  * Build a Studio module-detail pathname from an arbitrary module id.
- * @utility @ankhorage/utility/url
  */
 export function createStudioModuleRoutePath(moduleId: string): `/ankh/modules/${string}` {
-  return `/ankh/modules/${encodeURIComponent(moduleId)}`;
+  return appendEncodedPathSegment('/ankh/modules', moduleId) as `/ankh/modules/${string}`;
 }
 
 /*** Resolve a component/pattern theme recipe name from its Studio contextual pathname. */
@@ -414,24 +415,27 @@ export function resolveStudioThemeRecipeName(pathname: string): string | null {
 
 /***
  * Build a Studio component/pattern recipe pathname by URL-encoding the recipe name.
- * @utility @ankhorage/utility/url
  */
 export function createStudioThemeRecipeRoutePath(
   kind: 'component' | 'pattern',
   recipeName: string,
 ): `/ankh/theme/components/${string}` | `/ankh/theme/patterns/${string}` {
-  const encoded = encodeURIComponent(recipeName);
   return kind === 'component'
-    ? `/ankh/theme/components/${encoded}`
-    : `/ankh/theme/patterns/${encoded}`;
+    ? (appendEncodedPathSegment(
+        '/ankh/theme/components',
+        recipeName,
+      ) as `/ankh/theme/components/${string}`)
+    : (appendEncodedPathSegment(
+        '/ankh/theme/patterns',
+        recipeName,
+      ) as `/ankh/theme/patterns/${string}`);
 }
 
 /***
  * Build a Studio bindings pathname from an arbitrary node id.
- * @utility @ankhorage/utility/url
  */
 export function createStudioBindingsRoutePath(nodeId: string): `/ankh/bindings/${string}` {
-  return `/ankh/bindings/${encodeURIComponent(nodeId)}`;
+  return appendEncodedPathSegment('/ankh/bindings', nodeId) as `/ankh/bindings/${string}`;
 }
 
 /*** Resolve the contextual node id from a Studio properties pathname. */
@@ -441,10 +445,9 @@ export function resolveStudioPropertiesNodeId(pathname: string): string | null {
 
 /***
  * Build a Studio properties pathname from an arbitrary node id.
- * @utility @ankhorage/utility/url
  */
 export function createStudioPropertiesRoutePath(nodeId: string): `/ankh/properties/${string}` {
-  return `/ankh/properties/${encodeURIComponent(nodeId)}`;
+  return appendEncodedPathSegment('/ankh/properties', nodeId) as `/ankh/properties/${string}`;
 }
 
 /***
@@ -535,24 +538,17 @@ export function createStudioAdminRouteRenderState(args: {
 
 /***
  * Return whether a pathname is at or below the Studio admin path prefix.
- * @utility @ankhorage/utility/url
  */
 export function isStudioAdminPath(pathname: string): boolean {
-  return pathname === '/ankh' || pathname.startsWith('/ankh/');
+  return isPathAtOrBelow(pathname, '/ankh');
 }
 
 /***
  * Preserve the current browser search/hash suffix when a requested pathname equals `location.pathname`.
- * @utility @ankhorage/utility/web
  */
 export function resolveStudioNavigableLocation(pathname: string): string {
   const runtimeGlobal = globalThis as { readonly location?: Location };
-  const { location } = runtimeGlobal;
-  if (location?.pathname === pathname) {
-    return `${pathname}${location.search}${location.hash}`;
-  }
-
-  return pathname;
+  return resolveNavigableLocation(pathname, runtimeGlobal.location);
 }
 
 /***

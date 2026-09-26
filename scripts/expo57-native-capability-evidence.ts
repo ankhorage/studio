@@ -1,8 +1,8 @@
 import path from 'node:path';
 
-import { NATIVE_EVIDENCE_SERVER_PORT } from '../src/host/smoke/nativeCapabilityEvidence/constants';
-import { createNativeEvidenceServer } from '../src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer';
-import { prepareNativeCapabilityEvidenceAsync } from '../src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync';
+import { NATIVE_EVIDENCE_SERVER_PORT } from '../test/smoke/nativeCapabilityEvidence/constants';
+import { createNativeEvidenceServer } from '../test/smoke/nativeCapabilityEvidence/createNativeEvidenceServer';
+import { prepareNativeCapabilityEvidenceAsync } from '../test/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync';
 
 const [command, ...args] = process.argv.slice(2);
 const [rawWorkspaceRoot] = args;

@@ -1,4 +1,6 @@
 import type { DataContractValue, DataOperationIntent } from '@ankhorage/contracts/data';
+import { asRecord } from '@ankhorage/utility/object';
+import { isNonEmptyString } from '@ankhorage/utility/string';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import type {
@@ -97,7 +99,7 @@ function invalidPayload(reply: FastifyReply, message: string) {
 
 /*** Parse an unknown connect payload into the external-API authoring contract. */
 function readConnectRequest(value: unknown): ExternalApiConnectRequest | null {
-  const record = readRecord(value);
+  const record = asRecord(value);
   const protocol = record?.protocol;
   if (
     !record ||
@@ -119,7 +121,7 @@ function readConnectRequest(value: unknown): ExternalApiConnectRequest | null {
 
 /*** Parse editable settings for one existing manually authored REST API. */
 function readManualRestSettingsRequest(value: unknown): ManualRestApiSettingsRequest | null {
-  const record = readRecord(value);
+  const record = asRecord(value);
   if (!record || typeof record.apiId !== 'string' || typeof record.baseUrl !== 'string')
     return null;
   return {
@@ -133,13 +135,13 @@ function readManualRestSettingsRequest(value: unknown): ManualRestApiSettingsReq
 
 /*** Parse an unknown external API removal payload into the canonical Studio authoring contract. */
 function readRemoveRequest(value: unknown): ExternalApiRemoveRequest | null {
-  const record = readRecord(value);
+  const record = asRecord(value);
   return record && typeof record.apiId === 'string' ? { apiId: record.apiId } : null;
 }
 
 /*** Parse an unknown manual REST payload into the external-API authoring contract. */
 function readManualRestRequest(value: unknown): ManualRestApiRequest | null {
-  const record = readRecord(value);
+  const record = asRecord(value);
   if (
     !record ||
     typeof record.apiId !== 'string' ||
@@ -168,7 +170,7 @@ function readManualRestRequest(value: unknown): ManualRestApiRequest | null {
 
 /*** Parse an unknown operation-test payload into the external-API authoring contract. */
 function readOperationTestRequest(value: unknown): ExternalApiOperationTestRequest | null {
-  const record = readRecord(value);
+  const record = asRecord(value);
   if (
     !record ||
     typeof record.apiId !== 'string' ||
@@ -190,7 +192,7 @@ function readOperationTestRequest(value: unknown): ExternalApiOperationTestReque
 
 /*** Parse optional credential metadata from an unknown external-API payload. */
 function readCredential(value: unknown) {
-  const record = readRecord(value);
+  const record = asRecord(value);
   if (!record || typeof record.id !== 'string' || typeof record.kind !== 'string') return undefined;
   return {
     id: record.id,
@@ -206,7 +208,7 @@ function readCredential(value: unknown) {
  */
 function readDataValues(value: unknown): Readonly<Record<string, DataContractValue>> | undefined {
   if (value === undefined) return undefined;
-  const record = readRecord(value);
+  const record = asRecord(value);
   if (!record || !Object.values(record).every(isDataContractValue)) return undefined;
   return record as Readonly<Record<string, DataContractValue>>;
 }
@@ -218,8 +220,8 @@ function readDataValues(value: unknown): Readonly<Record<string, DataContractVal
 function isDataContractValue(value: unknown): value is DataContractValue {
   if (value === null || ['boolean', 'number', 'string'].includes(typeof value)) return true;
   if (Array.isArray(value)) return value.every(isDataContractValue);
-  const record = readRecord(value);
-  return record !== null && Object.values(record).every(isDataContractValue);
+  const record = asRecord(value);
+  return record !== undefined && Object.values(record).every(isDataContractValue);
 }
 
 /***
@@ -236,20 +238,7 @@ function isIntent(value: unknown): value is DataOperationIntent {
   );
 }
 
-/***
- * Narrow an unknown non-array object to a string-keyed record.
- * @utility @ankhorage/utility/object
- */
-function readRecord(value: unknown): Record<string, unknown> | null {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-    ? (value as Record<string, unknown>)
-    : null;
-}
-
-/***
- * Read a trimmed non-empty string from an unknown value.
- * @utility @ankhorage/utility/string
- */
+/*** Read a trimmed non-empty string from an external API request value. */
 function readString(value: unknown): string | undefined {
-  return typeof value === 'string' && value.trim() ? value.trim() : undefined;
+  return isNonEmptyString(value) ? value.trim() : undefined;
 }

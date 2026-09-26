@@ -14,6 +14,7 @@ import type { AppManifest, UiNode } from '@ankhorage/contracts';
 import { DEPLOY_AUTHORING_STRUCTURE } from '@ankhorage/deploy/authoring';
 import { expect, test as bunTest } from 'bun:test';
 
+import { createAdminSmokeBaseManifest } from '../../test/smoke/createAdminSmokeBaseManifest';
 import type { StudioModuleState } from '../moduleAdminContracts';
 import {
   bunLockfileReferencesPackageVersion,
@@ -23,7 +24,6 @@ import {
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
 import { satisfiesCaretSemverRange } from './orchestrator/semverRange';
-import { createAdminSmokeBaseManifest } from './smoke/createAdminSmokeBaseManifest';
 
 const test = process.env.ANKH_STUDIO_ADMIN_WEB_SMOKE === '1' ? bunTest : bunTest.skip;
 const TEST_TIMEOUT_MS = 240_000;

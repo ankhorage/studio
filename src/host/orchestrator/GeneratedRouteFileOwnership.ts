@@ -1,8 +1,7 @@
 import { isMissingPathError, writeJsonFileAtomic } from '@ankhorage/utility/node/fs';
-import { normalizePortablePath } from '@ankhorage/utility/node/path';
+import { normalizePortablePath, resolvePathWithinRoot } from '@ankhorage/utility/node/path';
 import { isRecord } from '@ankhorage/utility/object';
 import { promises as fs } from 'fs';
-import path from 'path';
 
 const ROUTE_LEDGER_REL_PATH = '.ankh/route-ledger.json';
 const GENERATED_AUTH_FILE_PATHS = new Set([
@@ -74,7 +73,7 @@ async function assertRouteLedgerMissing(projectPath: string): Promise<void> {
 
 /*** Create canonical route ownership state from generated paths after normalization, deduplication, sorting, and ownership validation. */
 function createRouteLedger(projectPath: string, generatedPaths: readonly string[]): RouteLedger {
-  const files = [...new Set(generatedPaths.map(normalizeRelativePath))].sort();
+  const files = [...new Set(generatedPaths.map(normalizePortablePath))].sort();
   for (const filePath of files) resolveGeneratedFile(projectPath, filePath);
   return {
     schemaVersion: 1,
@@ -93,14 +92,6 @@ function isRouteLedger(value: unknown): value is RouteLedger {
     Array.isArray(value.files) &&
     value.files.every((filePath) => typeof filePath === 'string')
   );
-}
-
-/***
- * Normalize a filesystem-style relative path to portable POSIX separators and dot-segment semantics.
- * @utility @ankhorage/utility/node/path
- */
-function normalizeRelativePath(filePath: string): string {
-  return normalizePortablePath(filePath);
 }
 
 /*** Read, parse, validate, normalize, and revalidate the required generated-route ownership ledger. */
@@ -131,7 +122,7 @@ async function readRequiredRouteLedger(projectPath: string): Promise<RouteLedger
     throw new Error(`Project route ownership state is invalid at '${ledgerPath}'.`);
   }
 
-  const files = parsed.files.map(normalizeRelativePath);
+  const files = parsed.files.map(normalizePortablePath);
   try {
     for (const filePath of files) resolveGeneratedFile(projectPath, filePath);
   } catch (error) {
@@ -158,19 +149,13 @@ function resolveGeneratedFile(projectPath: string, relativePath: string): string
 
 /***
  * Resolve a relative path beneath a root and reject absolute, root-self, or escaping paths.
- * @utility @ankhorage/utility/node/path
  */
 function resolveProjectFile(projectPath: string, relativePath: string): string {
-  if (path.isAbsolute(relativePath)) {
+  try {
+    return resolvePathWithinRoot(projectPath, relativePath);
+  } catch {
     throw new Error(`Invalid generated route ownership path: ${relativePath}`);
   }
-  const root = path.resolve(projectPath);
-  const target = path.resolve(root, relativePath);
-  const relative = path.relative(root, target);
-  if (relative === '' || relative.startsWith('..') || path.isAbsolute(relative)) {
-    throw new Error(`Invalid generated route ownership path: ${relativePath}`);
-  }
-  return target;
 }
 
 /***

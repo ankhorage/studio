@@ -6,13 +6,11 @@ export type RuntimeDiagnosticsNoticeColor = 'danger' | 'warning';
 
 /***
  * Format a code/message/severity diagnostic as one compact display line.
- * @utility @ankhorage/utility/diagnostics
  */
 export const formatRuntimeDiagnostic = formatDiagnostic;
 
 /***
  * Format multiple diagnostics as newline-separated display text.
- * @utility @ankhorage/utility/diagnostics
  */
 export const formatRuntimeDiagnostics = formatDiagnostics;
 
@@ -28,7 +26,6 @@ export function resolveRuntimeDiagnosticsNoticeColor(
 
 /***
  * Compare two ordered diagnostics arrays by the fields that define Studio runtime diagnostic identity.
- * @utility @ankhorage/utility/array
  */
 export function areRuntimeDiagnosticsEqual(
   left: readonly DataSourceDiagnostic[],

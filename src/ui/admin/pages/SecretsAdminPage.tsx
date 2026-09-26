@@ -1,5 +1,7 @@
 import type { SecretMetadata } from '@ankhorage/contracts/secrets';
 import { uniqueSortedStrings } from '@ankhorage/utility/array';
+import { toErrorMessage } from '@ankhorage/utility/error';
+import { createCompositeKey, isNonEmptyString } from '@ankhorage/utility/string';
 import { Heading, IconButton, Text, useZoraTheme } from '@ankhorage/zora';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -78,7 +80,7 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
   const providerOptions = useMemo(
     () => [
       'All',
-      ...uniqueSortedStrings(inventory.items.map((item) => item.provider).filter(isPresentString)),
+      ...uniqueSortedStrings(inventory.items.map((item) => item.provider).filter(isNonEmptyString)),
     ],
     [inventory.items],
   );
@@ -745,10 +747,10 @@ function Message({ text }: { readonly text: string }) {
 
 /***
  * Normalize secret API/general failures to a user-display message with a caller-specific fallback.
- * @utility @ankhorage/utility/error
  */
 function toMessage(error: unknown): string {
-  if (error instanceof ProjectSecretApiError || error instanceof Error) return error.message;
+  if (error instanceof ProjectSecretApiError || error instanceof Error)
+    return toErrorMessage(error);
   return 'The Studio secret operation failed.';
 }
 
@@ -770,18 +772,9 @@ function formatSecretCleanupBusyReason(
 
 /***
  * Build a stable composite inventory key from environment and logical secret reference.
- * @utility @ankhorage/utility/string
  */
 function secretInventoryKey(metadata: SecretMetadata): string {
-  return `${metadata.scope.environment}:${metadata.ref}`;
-}
-
-/***
- * Narrow an optional string to a present non-empty string.
- * @utility @ankhorage/utility/string
- */
-function isPresentString(value: string | undefined): value is string {
-  return typeof value === 'string' && value.length > 0;
+  return createCompositeKey([metadata.scope.environment, metadata.ref], ':');
 }
 
 const styles = StyleSheet.create({

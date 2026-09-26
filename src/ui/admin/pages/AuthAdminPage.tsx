@@ -9,6 +9,8 @@ import type {
   AuthOAuthSetupFieldRequirement,
 } from '@ankhorage/contracts/auth';
 import { STRUCTURE_DESCRIPTOR } from '@ankhorage/contracts/structure';
+import { upsertBy } from '@ankhorage/utility/array';
+import { toErrorMessage } from '@ankhorage/utility/error';
 import {
   getSupabaseOAuthProviderDefinition,
   SUPABASE_OAUTH_PROVIDER_IDS,
@@ -621,7 +623,7 @@ function OAuthProviderSetting(props: {
     props.onChange(
       {
         ...props.oauth,
-        providers: upsertProvider(props.oauth.providers, nextProvider),
+        providers: upsertBy(props.oauth.providers, nextProvider, (provider) => provider.id),
       },
       null,
     );
@@ -761,21 +763,6 @@ function OAuthProviderSetting(props: {
 }
 
 /***
- * Immutably insert or replace an array item selected by its `id` key.
- * @utility @ankhorage/utility/array
- */
-function upsertProvider(
-  providers: NonNullable<StudioAuthSettings['oauth']>['providers'],
-  provider: NonNullable<StudioAuthSettings['oauth']>['providers'][number],
-) {
-  const index = providers.findIndex((candidate) => candidate.id === provider.id);
-  if (index < 0) return [...providers, provider];
-  return providers.map((candidate, candidateIndex) =>
-    candidateIndex === index ? provider : candidate,
-  );
-}
-
-/***
  * Return an immutable object copy without its `signUp` property; parameterized key omission is reusable.
  * @utility @ankhorage/utility/object
  */
@@ -851,11 +838,10 @@ function createFallbackManifest(): AppManifest {
 
 /***
  * Normalize auth API/general failures to a user-display message with a caller-specific fallback.
- * @utility @ankhorage/utility/error
  */
 function toMessage(error: unknown): string {
-  if (error instanceof ProjectAuthApiError) return error.message;
-  return error instanceof Error ? error.message : 'Authentication configuration request failed.';
+  if (error instanceof ProjectAuthApiError || error instanceof Error) return toErrorMessage(error);
+  return 'Authentication configuration request failed.';
 }
 
 /*** Convert an auth write-conflict reason into the administration message appropriate to the blocked operation. */

@@ -1,4 +1,5 @@
-import { readOwnProperty } from '@ankhorage/utility/object';
+import { isSupportedKey, resolveSupportedPolicy } from '@ankhorage/utility/classification';
+import { withOwnProperty } from '@ankhorage/utility/object';
 
 export type InteractionPolicy = 'enabled' | 'passive';
 export type ThirdPartyComponentSupport = Readonly<Record<string, true>>;
@@ -11,43 +12,19 @@ export interface InteractionPolicyResolverArgs {
 
 const EMPTY_THIRD_PARTY: ThirdPartyComponentSupport = {};
 
-type ComponentClassification = 'zora-builtin' | 'third-party-supported' | 'unsupported';
-
-/***
- * Classify one string key against a primary predicate and an explicit supported-key record.
- * @utility @ankhorage/utility/classification
- */
-function classifyComponent(
-  nodeType: string,
-  isSupportedNodeType: (type: string) => boolean,
-  thirdPartySupport: ThirdPartyComponentSupport,
-): ComponentClassification {
-  if (isSupportedNodeType(nodeType)) {
-    return 'zora-builtin';
-  }
-
-  if (readOwnProperty<true>(thirdPartySupport, nodeType) === true) {
-    return 'third-party-supported';
-  }
-
-  return 'unsupported';
-}
-
 /***
  * Return whether a string key is accepted by either a primary predicate or an explicit supported-key record.
- * @utility @ankhorage/utility/classification
  */
 export function isComponentSupported(
   nodeType: string,
   thirdPartySupport: ThirdPartyComponentSupport,
   isSupportedNodeType: (type: string) => boolean,
 ): boolean {
-  return classifyComponent(nodeType, isSupportedNodeType, thirdPartySupport) !== 'unsupported';
+  return isSupportedKey(nodeType, isSupportedNodeType, thirdPartySupport);
 }
 
 /***
  * Resolve a two-state policy for supported values while returning undefined for unsupported values.
- * @utility @ankhorage/utility/classification
  */
 function resolveInteractionPolicy(
   nodeType: string,
@@ -55,13 +32,14 @@ function resolveInteractionPolicy(
   thirdPartySupport: ThirdPartyComponentSupport,
   isSupportedNodeType: (type: string) => boolean,
 ): InteractionPolicy | undefined {
-  const classification = classifyComponent(nodeType, isSupportedNodeType, thirdPartySupport);
-
-  if (classification === 'unsupported') {
-    return undefined;
-  }
-
-  return previewMode ? 'enabled' : 'passive';
+  return resolveSupportedPolicy({
+    key: nodeType,
+    active: previewMode,
+    activePolicy: 'enabled',
+    inactivePolicy: 'passive',
+    isPrimary: isSupportedNodeType,
+    explicitSupport: thirdPartySupport,
+  });
 }
 
 const POLICY_PROP = 'interactionPolicy';
@@ -76,7 +54,6 @@ export type InteractionPolicyNodePropsResolver<TNode extends { type: string } = 
 
 /***
  * Create a props resolver that conditionally injects one derived property based on node classification and preview state.
- * @utility @ankhorage/utility/object
  */
 export function createInteractionPolicyResolver(
   args: InteractionPolicyResolverArgs,
@@ -98,10 +75,7 @@ export function createInteractionPolicyResolver(
       return baseProps;
     }
 
-    return {
-      ...baseProps,
-      [POLICY_PROP]: policy,
-    };
+    return withOwnProperty(baseProps, POLICY_PROP, policy);
   };
 }
 

@@ -120,7 +120,6 @@ function findDropZoneByKind(
 
 /***
  * Resolve a before, inside, or after drop-target rectangle from target and dragged rectangles.
- * @utility @ankhorage/utility/geometry
  */
 export function resolveCanvasDropZoneRect(args: {
   readonly kind: PlacementKind;

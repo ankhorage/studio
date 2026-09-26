@@ -1,5 +1,6 @@
 import type { AuthOAuthProviderConfig, AuthOAuthProviderId } from '@ankhorage/contracts';
 import { DEFAULT_AUTH_FLOW } from '@ankhorage/contracts';
+import { upsertBy } from '@ankhorage/utility/array';
 
 import type { StudioAuthSettings, StudioAuthSettingsMutation } from '../../../authSettings';
 
@@ -111,7 +112,7 @@ export function applyStoredOAuthCredentialLink(
     ...nextSettings,
     oauth: {
       ...oauth,
-      providers: upsertOAuthProvider(oauth.providers, nextProvider),
+      providers: upsertBy(oauth.providers, nextProvider, (provider) => provider.id),
     },
   };
 }
@@ -288,19 +289,4 @@ function createDefaultOAuthSettings(): NonNullable<StudioAuthSettings['oauth']> 
     callbackRoute: '/auth/callback',
     providers: [],
   };
-}
-
-/***
- * Immutably insert or replace an array entry selected by a key projection; this instance keys OAuth providers by id.
- * @utility @ankhorage/utility/array
- */
-function upsertOAuthProvider(
-  providers: NonNullable<StudioAuthSettings['oauth']>['providers'],
-  provider: AuthOAuthProviderConfig,
-): AuthOAuthProviderConfig[] {
-  const index = providers.findIndex((candidate) => candidate.id === provider.id);
-  if (index < 0) return [...providers, provider];
-  return providers.map((candidate, candidateIndex) =>
-    candidateIndex === index ? provider : candidate,
-  );
 }

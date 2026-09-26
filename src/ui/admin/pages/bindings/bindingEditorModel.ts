@@ -7,6 +7,8 @@ import type {
   UiBindableValueMeta,
   UiComponentEventPayloadFieldMeta,
 } from '@ankhorage/contracts';
+import { findByKey } from '@ankhorage/utility/array';
+import { createCompositeKey, stringifyJson } from '@ankhorage/utility/string';
 
 import type {
   StudioBindingInputFieldOption,
@@ -100,30 +102,27 @@ export function parseStudioBindingLiteral(input: string, meta: UiBindableValueMe
 
 /***
  * Format a JSON-compatible value for text editing while preserving strings verbatim.
- * @utility @ankhorage/utility/json
  */
 export function formatStudioBindingLiteral(value: BindingValue): string {
-  return typeof value === 'string' ? value : JSON.stringify(value);
+  return typeof value === 'string' ? value : stringifyJson(value, { space: 0 });
 }
 
 /***
  * Build a stable composite key from a multi-part operation identity.
- * @utility @ankhorage/utility/string
  */
 export function createStudioOperationKey(operation: BindingOperationRef): string {
   const { apiId, endpointId, operationId } = operation;
-  return `${apiId}::${endpointId ?? ''}::${operationId}`;
+  return createCompositeKey([apiId, endpointId ?? '', operationId], '::');
 }
 
 /***
  * Find the first array item whose projected composite key equals a requested key.
- * @utility @ankhorage/utility/array
  */
 export function findStudioOperationByKey(
   operations: readonly StudioBindingOperationOption[],
   key: string,
 ): StudioBindingOperationOption | undefined {
-  return operations.find((option) => createStudioOperationKey(option.operation) === key);
+  return findByKey(operations, key, (option) => createStudioOperationKey(option.operation));
 }
 
 /*** Convert event-input drafts into the canonical binding input map, omitting untouched optional literal inputs. */

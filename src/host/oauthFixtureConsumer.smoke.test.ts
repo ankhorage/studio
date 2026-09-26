@@ -7,9 +7,9 @@ import { OAUTH_CALLBACK_ROUTE } from '@ankhorage/templates';
 import { SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 import { expect, test as bunTest } from 'bun:test';
 
+import { createOAuthFixtureManifest } from '../../test/smoke/createOAuthFixtureManifest';
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
-import { createOAuthFixtureManifest } from './smoke/createOAuthFixtureManifest';
 
 const SECRET_SENTINEL = 'sentinel-phase3-consumer-secret-do-not-leak';
 const PROJECT_NAME = 'OAuth Fixture Consumer';

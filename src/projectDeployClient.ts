@@ -21,6 +21,9 @@ import type {
   StoreListingLocale,
 } from '@ankhorage/deploy/project';
 import { toStandaloneArrayBuffer } from '@ankhorage/utility/binary';
+import { asRecord as asUtilityRecord } from '@ankhorage/utility/object';
+import { isCodeMessageFailure } from '@ankhorage/utility/validation';
+import { isOneOf } from '@ankhorage/utility/value';
 
 import { ProjectDeployApiError } from './projectDeployApiError';
 import type { ProjectDeployMonetizationInspectionResult } from './projectDeployMonetizationInspectionResult';
@@ -418,7 +421,7 @@ function parseMonetizationPlan(value: unknown): void {
   const plan = asRecord(value);
   if (
     plan === null ||
-    !isMonetizationPlanStatus(plan.status) ||
+    !isOneOf(plan.status, ['no-change', 'changes', 'blocked']) ||
     typeof plan.desiredRevision !== 'string' ||
     typeof plan.currentRevision !== 'string' ||
     !Array.isArray(plan.steps) ||
@@ -432,7 +435,7 @@ function parseMonetizationPlan(value: unknown): void {
 /*** Parse a monetization execution result and validate the payload for its status. @todo Keep deploy payload validation under src/deploy/. */
 function parseMonetizationExecutionResult(value: unknown): ProjectMonetizationExecutionResult {
   const result = asRecord(value);
-  if (result === null || !isMonetizationExecutionStatus(result.status)) {
+  if (result === null || !isOneOf(result.status, ['completed', 'action-required', 'failed'])) {
     invalid('Monetization execution');
   }
   if (result.status === 'completed') {
@@ -444,22 +447,6 @@ function parseMonetizationExecutionResult(value: unknown): ProjectMonetizationEx
     parseFailure(result.failure, 'Monetization execution failure');
   }
   return value as ProjectMonetizationExecutionResult;
-}
-
-/***
- * Test whether an unknown value is one of the monetization plan statuses.
- * @utility @ankhorage/utility/value
- */
-function isMonetizationPlanStatus(value: unknown): boolean {
-  return value === 'no-change' || value === 'changes' || value === 'blocked';
-}
-
-/***
- * Test whether an unknown value is one of the monetization execution statuses.
- * @utility @ankhorage/utility/value
- */
-function isMonetizationExecutionStatus(value: unknown): boolean {
-  return value === 'completed' || value === 'action-required' || value === 'failed';
 }
 
 /*** Parse the prepared release desired-state response shape. @todo Keep deploy payload validation under src/deploy/. */
@@ -541,7 +528,7 @@ function parseProjectReleaseExecutionResult(value: unknown): void {
     execution === null ||
     typeof execution.historyRecorded !== 'boolean' ||
     reconcile === null ||
-    !isReconcileStatus(reconcile.status) ||
+    !isOneOf(reconcile.status, ['completed', 'waiting', 'blocked', 'failed', 'drifted']) ||
     typeof reconcile.currentRevision !== 'string' ||
     !Array.isArray(reconcile.executedStepIds)
   ) {
@@ -557,7 +544,7 @@ function parseControlResult(value: unknown): ReleaseControlExecutionResult {
   const result = asRecord(value);
   if (
     result === null ||
-    !isControlStatus(result.status) ||
+    !isOneOf(result.status, ['completed', 'blocked', 'failed']) ||
     typeof result.mutationAttempted !== 'boolean'
   ) {
     invalid('Release lifecycle control');
@@ -570,35 +557,9 @@ function parseControlResult(value: unknown): ReleaseControlExecutionResult {
 
 /***
  * Validate a generic failure payload containing string code and message fields.
- * @utility @ankhorage/utility/validation
  */
 function parseFailure(value: unknown, label: string): void {
-  const failure = asRecord(value);
-  if (failure === null || typeof failure.code !== 'string' || typeof failure.message !== 'string') {
-    invalid(label);
-  }
-}
-
-/***
- * Test whether an unknown value is one of the release reconciliation statuses.
- * @utility @ankhorage/utility/value
- */
-function isReconcileStatus(value: unknown): boolean {
-  return (
-    value === 'completed' ||
-    value === 'waiting' ||
-    value === 'blocked' ||
-    value === 'failed' ||
-    value === 'drifted'
-  );
-}
-
-/***
- * Test whether an unknown value is one of the release lifecycle-control statuses.
- * @utility @ankhorage/utility/value
- */
-function isControlStatus(value: unknown): boolean {
-  return value === 'completed' || value === 'blocked' || value === 'failed';
+  if (!isCodeMessageFailure(value)) invalid(label);
 }
 
 /*** Validate the minimal release-history record shape used by this deploy client. @todo Keep deploy history contract validation under src/deploy/ or its owning package. */
@@ -654,10 +615,7 @@ function invalid(label: string): never {
 
 /***
  * Narrow an unknown non-array object to a string-keyed record.
- * @utility @ankhorage/utility/value
  */
 function asRecord(value: unknown): Record<string, unknown> | null {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-    ? (value as Record<string, unknown>)
-    : null;
+  return asUtilityRecord(value) ?? null;
 }
