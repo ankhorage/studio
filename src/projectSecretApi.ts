@@ -1,7 +1,7 @@
 import type { AuthOAuthProviderId } from '@ankhorage/contracts';
 import type { SecretMetadata, SecretPayload } from '@ankhorage/contracts/secrets';
 import { isStringArray } from '@ankhorage/utility/array';
-import { asRecord } from '@ankhorage/utility/object';
+import { isRecord } from '@ankhorage/utility/object';
 
 import {
   type ProjectSecretUsage,
@@ -240,7 +240,7 @@ export function parseConfigureProjectOAuthProviderResponse(
 ): ConfigureProjectOAuthProviderResponse {
   rejectRawSecretResponse(value, 'OAuth configuration response was invalid.');
   const record = asRecord(value);
-  if (record === undefined || typeof record.ok !== 'boolean') {
+  if (record === null || typeof record.ok !== 'boolean') {
     throw createInvalidResponseError('OAuth configuration response was invalid.');
   }
 
@@ -345,7 +345,7 @@ export function parseProjectSecretHttpErrorResponse(
  */
 function readResult(value: unknown): { readonly ok: boolean; readonly data?: unknown } {
   const record = asRecord(value);
-  if (record === undefined || typeof record.ok !== 'boolean') {
+  if (record === null || typeof record.ok !== 'boolean') {
     throw createInvalidResponseError('Secret-store response was invalid.');
   }
   return { ok: record.ok, data: record.data };
@@ -354,14 +354,14 @@ function readResult(value: unknown): { readonly ok: boolean; readonly data?: unk
 /*** Validate and normalize browser-safe secret metadata from an unknown payload. */
 function parseSecretMetadata(value: unknown): SecretMetadata {
   const record = asRecord(value);
-  if (record === undefined) {
+  if (record === null) {
     throw createInvalidResponseError('Secret metadata was invalid.');
   }
 
   const scope = asRecord(record.scope);
   if (
     typeof record.ref !== 'string' ||
-    scope === undefined ||
+    scope === null ||
     typeof scope.projectId !== 'string' ||
     typeof scope.environment !== 'string' ||
     typeof record.kind !== 'string' ||
@@ -387,7 +387,7 @@ function parseSecretMetadata(value: unknown): SecretMetadata {
 /*** Validate and normalize a project secret usage-summary payload. */
 function parseProjectSecretUsageSummary(value: unknown): ProjectSecretUsageSummary {
   const record = asRecord(value);
-  if (record === undefined || typeof record.ref !== 'string' || !Array.isArray(record.usages)) {
+  if (record === null || typeof record.ref !== 'string' || !Array.isArray(record.usages)) {
     throw createInvalidResponseError('Secret usage summary was invalid.');
   }
   return {
@@ -400,7 +400,7 @@ function parseProjectSecretUsageSummary(value: unknown): ProjectSecretUsageSumma
 function parseProjectSecretUsage(value: unknown): ProjectSecretUsage {
   const record = asRecord(value);
   if (
-    record === undefined ||
+    record === null ||
     typeof record.ref !== 'string' ||
     typeof record.path !== 'string' ||
     !isProjectSecretUsageCategory(record.category) ||
@@ -427,11 +427,7 @@ function parseProjectSecretUsage(value: unknown): ProjectSecretUsage {
  */
 function parseError(value: unknown): { readonly code: string; readonly message: string } {
   const record = asRecord(value);
-  if (
-    record === undefined ||
-    typeof record.code !== 'string' ||
-    typeof record.message !== 'string'
-  ) {
+  if (record === null || typeof record.code !== 'string' || typeof record.message !== 'string') {
     throw createInvalidResponseError('Secret error response was invalid.');
   }
   return { code: record.code, message: record.message };
@@ -449,6 +445,14 @@ function createQuery(values: Readonly<Record<string, string | undefined>>): stri
   }
   const query = params.toString();
   return query ? `?${query}` : '';
+}
+
+/***
+ * Narrow an unknown value to a strict non-array record or return null.
+ * @utility @ankhorage/utility/value
+ */
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return isRecord(value) ? value : null;
 }
 
 /***
