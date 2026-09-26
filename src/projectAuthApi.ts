@@ -28,7 +28,7 @@ export class ProjectAuthApiError extends Error {
 
 /***
  * Fetch and validate auth-health state for one project and optional deploy environment.
- * @todo Move project-auth HTTP access from the source root into the auth package-edge adapter.
+ * TODO: Move project-auth HTTP access from the source root into the auth package-edge adapter.
  */
 export async function getProjectAuthHealth(input: {
   readonly projectId: string;
@@ -53,7 +53,7 @@ export function parseProjectAuthHealthResponse(value: unknown): ProjectAuthHealt
 
 /***
  * Fetch a Studio-host path, decode JSON, and translate unsuccessful HTTP responses through a caller-owned error parser.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function requestJson(path: string, init?: RequestInit): Promise<unknown> {
   const { studioApiBase } = await import('./utils/studioApiBase');
@@ -65,7 +65,7 @@ async function requestJson(path: string, init?: RequestInit): Promise<unknown> {
 
 /***
  * Decode a Response body as JSON while preserving the response status for decode failures.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function readJson(response: Response): Promise<unknown> {
   try {
@@ -104,7 +104,7 @@ export function parseProjectAuthHttpErrorResponse(
 
 /***
  * Create a typed invalid-upstream-response error with a fixed bad-gateway status.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 function invalidResponse(message: string): ProjectAuthApiError {
   return new ProjectAuthApiError({ code: 'invalid_response', message, status: 502 });
@@ -112,7 +112,7 @@ function invalidResponse(message: string): ProjectAuthApiError {
 
 /***
  * Narrow an unknown value to a strict non-array record or return null.
- * @utility @ankhorage/utility/value
+ * Utility candidate: @ankhorage/utility/value
  */
 function asRecord(value: unknown): Record<string, unknown> | null {
   return isRecord(value) ? value : null;
@@ -212,7 +212,7 @@ function parseProjectOAuthProviderHealth(value: unknown): ProjectOAuthProviderHe
 
 /***
  * Serialize defined non-empty string values into an optional URL query string.
- * @utility @ankhorage/utility/url
+ * Utility candidate: @ankhorage/utility/url
  */
 function createQuery(values: Readonly<Record<string, string | undefined>>): string {
   const params = new URLSearchParams();
@@ -226,7 +226,7 @@ function createQuery(values: Readonly<Record<string, string | undefined>>): stri
 
 /***
  * Reject an unknown response when a nested forbidden-key detector reports a match.
- * @utility @ankhorage/utility/validation
+ * Utility candidate: @ankhorage/utility/validation
  */
 function rejectRawSecretResponse(value: unknown, message: string): void {
   const match = findRawSecretResponseKey(value);
@@ -239,7 +239,7 @@ function rejectRawSecretResponse(value: unknown, message: string): void {
 
 /***
  * Return whether a value belongs to the canonical deploy-environment identifier set.
- * @todo Move this reusable guard to the deploy contracts owner beside APP_ENVIRONMENT_IDS.
+ * TODO: Move this reusable guard to the deploy contracts owner beside APP_ENVIRONMENT_IDS.
  */
 function isAppEnvironmentId(value: unknown): value is AppEnvironmentId {
   return typeof value === 'string' && APP_ENVIRONMENT_IDS.includes(value as AppEnvironmentId);
@@ -247,7 +247,7 @@ function isAppEnvironmentId(value: unknown): value is AppEnvironmentId {
 
 /***
  * Return whether every array entry belongs to the canonical deploy-target identifier set.
- * @todo Move this reusable guard to the deploy contracts owner beside APP_DEPLOY_TARGET_IDS.
+ * TODO: Move this reusable guard to the deploy contracts owner beside APP_DEPLOY_TARGET_IDS.
  */
 function isAppDeployTargetIdArray(value: unknown): value is AppDeployTargetId[] {
   return (

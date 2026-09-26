@@ -3,7 +3,7 @@ export type ExternalApiIdResult =
 
 /***
  * Normalize user input into the lowercase, hyphenated identifier format used for external APIs.
- * @utility @ankhorage/utility/string
+ * Utility candidate: @ankhorage/utility/string
  */
 export function normalizeExternalApiId(value: string): ExternalApiIdResult {
   const apiId = value
