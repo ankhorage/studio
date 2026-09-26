@@ -21,6 +21,7 @@ import type {
   StoreListingLocale,
 } from '@ankhorage/deploy/project';
 import { toStandaloneArrayBuffer } from '@ankhorage/utility/binary';
+import { createJsonRequestInit } from '@ankhorage/utility/http';
 import { asRecord as asUtilityRecord } from '@ankhorage/utility/object';
 import { isCodeMessageFailure } from '@ankhorage/utility/validation';
 import { isOneOf } from '@ankhorage/utility/value';
@@ -53,7 +54,7 @@ export class ProjectDeployClient {
   writeListingLocale(projectId: string, locale: StoreListingLocale): Promise<ProjectStoreListing> {
     return this.requestJson(
       projectPath(projectId, 'listing/locale'),
-      jsonRequest('PUT', locale),
+      createJsonRequestInit('PUT', locale),
       parseListing,
     );
   }
@@ -113,7 +114,7 @@ export class ProjectDeployClient {
   ): Promise<MonetizationDesiredState> {
     return this.requestJson(
       projectPath(projectId, 'authoring/monetization'),
-      jsonRequest('PUT', value),
+      createJsonRequestInit('PUT', value),
       parseMonetization,
     );
   }
@@ -122,7 +123,7 @@ export class ProjectDeployClient {
   writeReleaseAuthoring(projectId: string, value: SerializableValue): Promise<ReleaseDesiredState> {
     return this.requestJson(
       projectPath(projectId, 'authoring/release'),
-      jsonRequest('PUT', value),
+      createJsonRequestInit('PUT', value),
       parseRelease,
     );
   }
@@ -139,7 +140,7 @@ export class ProjectDeployClient {
   ): Promise<MonetizationDesiredState> {
     return this.requestJson(
       projectPath(projectId, 'monetization'),
-      jsonRequest('PUT', { products }),
+      createJsonRequestInit('PUT', { products }),
       parseMonetization,
     );
   }
@@ -151,7 +152,7 @@ export class ProjectDeployClient {
   }): Promise<ProjectDeployMonetizationInspectionResult> {
     return this.requestJson(
       projectPath(input.projectId, 'monetization/inspect'),
-      jsonRequest('POST', input.runtime),
+      createJsonRequestInit('POST', input.runtime),
       parseMonetizationInspectionResult,
     );
   }
@@ -165,7 +166,7 @@ export class ProjectDeployClient {
   }): Promise<ProjectMonetizationExecutionResult> {
     return this.requestJson(
       projectPath(input.projectId, 'monetization/execute'),
-      jsonRequest('POST', {
+      createJsonRequestInit('POST', {
         runtime: input.runtime,
         inspection: input.inspection,
         plan: input.plan,
@@ -183,7 +184,7 @@ export class ProjectDeployClient {
   writeRelease(projectId: string, release: ProjectReleaseInput): Promise<ReleaseDesiredState> {
     return this.requestJson(
       projectPath(projectId, 'release'),
-      jsonRequest('PUT', release),
+      createJsonRequestInit('PUT', release),
       parseRelease,
     );
   }
@@ -200,11 +201,7 @@ export class ProjectDeployClient {
   }): Promise<ProjectDeployReleaseInspectionResult> {
     return this.requestJson(
       projectPath(input.projectId, 'release/inspect'),
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(input.runtime),
-      },
+      createJsonRequestInit('POST', input.runtime),
       parseInspection,
     );
   }
@@ -264,11 +261,7 @@ export class ProjectDeployClient {
   ): Promise<T> {
     return this.requestJson(
       projectPath(projectId, suffix),
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      },
+      createJsonRequestInit('POST', body),
       parse,
     );
   }
@@ -308,18 +301,6 @@ async function readJson(response: Response): Promise<unknown> {
 /*** Build the Studio deploy endpoint path for one project and suffix. @todo Keep deploy endpoint routing under src/deploy/. */
 function projectPath(projectId: string, suffix: string): string {
   return `/projects/${encodeURIComponent(projectId)}/deploy/${suffix}`;
-}
-
-/***
- * Create a JSON RequestInit with method, content type, and serialized body.
- * @utility @ankhorage/utility/http
- */
-function jsonRequest(method: 'POST' | 'PUT', body: unknown): RequestInit {
-  return {
-    method,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  };
 }
 
 /*** Serialize a deploy listing-asset location into endpoint query parameters. @todo Keep deploy protocol serialization under src/deploy/. */
