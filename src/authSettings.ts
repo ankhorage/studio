@@ -75,7 +75,7 @@ const FORBIDDEN_INLINE_SECRET_KEYS = new Set([
 
 /***
  * Read authored authentication settings from a manifest and clone nested mutable collections.
- * @todo Move the auth settings model from the source root into the auth domain.
+ * TODO: Move the auth settings model from the source root into the auth domain.
  */
 export function readStudioAuthSettings(
   manifest: AppManifest,
@@ -128,7 +128,7 @@ export function readStudioAuthSettings(
 
 /***
  * Replace a manifest's authored authentication settings while preserving authorization policy.
- * @todo Move the auth settings model from the source root into the auth domain.
+ * TODO: Move the auth settings model from the source root into the auth domain.
  */
 export function applyStudioAuthSettings(
   manifest: AppManifest,
@@ -209,7 +209,7 @@ function replaceAuthEnvironment(
 
 /***
  * Validate an unknown authored auth configuration and return the canonical Studio auth settings shape.
- * @todo Keep auth validation with the auth domain rather than at the source root.
+ * TODO: Keep auth validation with the auth domain rather than at the source root.
  */
 export function validateStudioAuthSettings(value: unknown): StudioAuthSettingsValidationResult {
   const forbiddenPath = findForbiddenInlineSecretPath(value);

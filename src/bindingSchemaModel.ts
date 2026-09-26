@@ -15,7 +15,7 @@ import type { AuthoringStructure } from './types/authoring-engine';
 
 /***
  * Project canonical DataSchema authoring semantics into the bindable metadata used by compatibility policy.
- * @todo Move binding schema projection under src/bindings/.
+ * TODO: Move binding schema projection under src/bindings/.
  */
 export function resolveStudioSchemaValueMeta(
   schema: DataSchema | undefined,
@@ -42,7 +42,7 @@ export function resolveStudioSchemaValueMeta(
 
 /***
  * Collect response-path options from a schema for Studio binding authoring.
- * @todo Move response-path authoring under src/bindings/.
+ * TODO: Move response-path authoring under src/bindings/.
  */
 export function collectStudioResponsePaths(
   schema: DataSchema | undefined,
@@ -56,7 +56,7 @@ export function collectStudioResponsePaths(
 
 /***
  * Assess whether an actual bindable value shape can satisfy an expected Studio binding shape.
- * @todo Keep binding compatibility policy under src/bindings/.
+ * TODO: Keep binding compatibility policy under src/bindings/.
  */
 export function assessStudioBindingCompatibility(
   expected: UiBindableValueMeta,
@@ -172,7 +172,7 @@ function resolveChoiceType(
 
 /***
  * Test whether a bindable value type represents an object-shaped value.
- * @todo Keep this bindable-type semantic predicate under src/bindings/.
+ * TODO: Keep this bindable-type semantic predicate under src/bindings/.
  */
 function isObjectLike(type: UiBindableValueMeta['type']): boolean {
   return type === 'object' || type === 'record';
@@ -180,7 +180,7 @@ function isObjectLike(type: UiBindableValueMeta['type']): boolean {
 
 /***
  * Detect the object-field shape Studio accepts as an image-asset-compatible binding value.
- * @todo Keep image-asset binding compatibility under src/bindings/.
+ * TODO: Keep image-asset binding compatibility under src/bindings/.
  */
 function isImageAssetShape(value: UiBindableValueMeta): boolean {
   return (

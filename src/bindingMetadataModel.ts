@@ -7,7 +7,7 @@ import type {
 
 /***
  * Convert a component's bindable prop metadata record into labeled authoring options.
- * @utility @ankhorage/utility/collection
+ * Utility candidate: @ankhorage/utility/collection
  */
 export function resolveStudioBindableProps(
   node: UiNode,
@@ -24,7 +24,7 @@ export function resolveStudioBindableProps(
 
 /***
  * Convert a component's bindable event metadata record into labeled authoring options.
- * @utility @ankhorage/utility/collection
+ * Utility candidate: @ankhorage/utility/collection
  */
 export function resolveStudioBindableEvents(
   node: UiNode,

@@ -18,7 +18,7 @@ import { resolveDataSchemaAuthoringStructure } from './features/authoring-engine
 
 /***
  * Collect and alphabetically sort the API operations available for Studio binding authoring.
- * @todo Move binding operation catalog behavior under src/bindings/.
+ * TODO: Move binding operation catalog behavior under src/bindings/.
  */
 export function collectStudioBindingOperationOptions(
   apis: ApiDefinitionRegistry,
@@ -45,7 +45,7 @@ function toOperationKey(reference: BindingOperationRef): string {
 
 /***
  * Project all endpoint operations from one API definition into Studio binding options.
- * @todo Keep API-to-binding option projection under src/bindings/.
+ * TODO: Keep API-to-binding option projection under src/bindings/.
  */
 function collectApiOperations(api: ApiDefinition): StudioBindingOperationOption[] {
   return Object.values(api.endpoints).flatMap((endpoint) =>
@@ -68,7 +68,7 @@ function collectApiOperations(api: ApiDefinition): StudioBindingOperationOption[
 
 /***
  * Collect request parameters and request-body properties as Studio binding input fields.
- * @todo Keep operation input-field projection under src/bindings/.
+ * TODO: Keep operation input-field projection under src/bindings/.
  */
 function collectOperationInputFields(
   api: ApiDefinition,
@@ -103,7 +103,7 @@ function collectOperationInputFields(
 
 /***
  * Resolve an inline schema or schema reference from an API operation slot.
- * @todo Move this reusable API-contract helper to @ankhorage/contracts beside API schema definitions.
+ * TODO: Move this reusable API-contract helper to @ankhorage/contracts beside API schema definitions.
  */
 function resolveSlotSchema(
   api: ApiDefinition,
@@ -119,7 +119,7 @@ function resolveSlotSchema(
 
 /***
  * Format one API definition as a compact id, origin, and protocol label.
- * @todo Keep API-specific presentation formatting with the binding authoring owner.
+ * TODO: Keep API-specific presentation formatting with the binding authoring owner.
  */
 function describeApi(api: ApiDefinition): string {
   return `${api.id} · ${api.origin} · ${api.protocol}`;
@@ -127,7 +127,7 @@ function describeApi(api: ApiDefinition): string {
 
 /***
  * Convert an action payload schema into Studio binding input-field options.
- * @todo Move action binding-field projection under src/bindings/.
+ * TODO: Move action binding-field projection under src/bindings/.
  */
 export function createStudioActionInputFields(
   payloadSchema:
@@ -149,7 +149,7 @@ export function createStudioActionInputFields(
 
 /***
  * Narrow an arbitrary payload type string to the primitive types supported by bindable values.
- * @todo Keep bindable-type semantics under src/bindings/.
+ * TODO: Keep bindable-type semantics under src/bindings/.
  */
 function toBindableType(type: string): UiBindableValueMeta['type'] {
   if (type === 'string' || type === 'number' || type === 'boolean' || type === 'object') {
