@@ -1,5 +1,5 @@
 /*** Create the generated React Native screen source that displays redacted native capability evidence.
- * @todo Move this acceptance-fixture source generator from src/host/smoke to test/smoke/nativeCapabilityEvidence.
+ * TODO: Move this acceptance-fixture source generator from src/host/smoke to test/smoke/nativeCapabilityEvidence.
  */
 export function createNativeEvidenceScreenSource(): string {
   return `import { Stack } from 'expo-router';

@@ -75,7 +75,7 @@ const EVIDENCE_RESULTS = new Set([
 ]);
 
 /*** Start the deterministic local OAuth/permission/media evidence server used by native acceptance.
- * @todo Move this acceptance fixture server from src/host/smoke to test/smoke/nativeCapabilityEvidence.
+ * TODO: Move this acceptance fixture server from src/host/smoke to test/smoke/nativeCapabilityEvidence.
  */
 export function createNativeEvidenceServer(options: {
   readonly port?: number;
@@ -316,7 +316,7 @@ function isEvidenceResult(value: unknown): value is string {
 }
 
 /*** Read an HTTP request JSON body and return a record or an empty record on invalid input.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function readJsonRecordAsync(request: Request): Promise<Readonly<Record<string, unknown>>> {
   try {
@@ -338,7 +338,7 @@ function containsSensitiveText(value: string): boolean {
 }
 
 /*** Narrow an unknown value to a plain non-array record.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);

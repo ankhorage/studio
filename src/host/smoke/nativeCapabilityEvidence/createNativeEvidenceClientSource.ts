@@ -1,5 +1,5 @@
 /*** Create the generated client source used by the native capability evidence fixture app.
- * @todo Move this acceptance-fixture source generator from src/host/smoke to test/smoke/nativeCapabilityEvidence.
+ * TODO: Move this acceptance-fixture source generator from src/host/smoke to test/smoke/nativeCapabilityEvidence.
  */
 export function createNativeEvidenceClientSource(): string {
   return `import { Platform } from 'react-native';

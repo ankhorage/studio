@@ -35,7 +35,7 @@ const ROUTER_REWRITE_DISABLED = '1';
 
 /***
  * Prepare the complete released-Studio native capability evidence workspace, validate its frozen owner graph and generated native output, and persist baseline evidence.
- * @todo Move this end-to-end acceptance orchestration from production src/host/smoke to test/smoke.
+ * TODO: Move this end-to-end acceptance orchestration from production src/host/smoke to test/smoke.
  */
 export async function prepareNativeCapabilityEvidenceAsync(workspaceRoot: string): Promise<void> {
   await assertFreshWorkspaceAsync(workspaceRoot);
@@ -298,7 +298,7 @@ async function assertReleasedNativeOAuthWiringAsync(appRoot: string): Promise<vo
 
 /***
  * Assert that package metadata has the requested package name and exact version.
- * @utility @ankhorage/utility/package
+ * Utility candidate: @ankhorage/utility/package
  */
 function assertPackageVersion(
   packageJson: Readonly<Record<string, unknown>>,
@@ -316,7 +316,7 @@ function assertPackageVersion(
 
 /***
  * Read, parse and validate a package.json-compatible file as a non-array object record.
- * @utility @ankhorage/utility/node/package
+ * Utility candidate: @ankhorage/utility/node/package
  */
 async function readPackageJsonAsync(filePath: string): Promise<Readonly<Record<string, unknown>>> {
   const parsed: unknown = JSON.parse(await readFile(filePath, 'utf8'));
@@ -340,7 +340,7 @@ function createCommandEnvironment(
 
 /***
  * Read the current process PATH as a string, falling back to an empty path.
- * @utility @ankhorage/utility/node/env
+ * Utility candidate: @ankhorage/utility/node/env
  */
 function getPathEnvironment(): string {
   return getEnvironmentValue('PATH') ?? '';
@@ -348,7 +348,7 @@ function getPathEnvironment(): string {
 
 /***
  * Read one Bun environment variable only when its runtime value is a string.
- * @utility @ankhorage/utility/node/env
+ * Utility candidate: @ankhorage/utility/node/env
  */
 function getEnvironmentValue(name: string): string | undefined {
   const environment = Bun.env as unknown as Readonly<Record<string, unknown>>;
@@ -434,7 +434,7 @@ async function resolveNode24PathAsync(): Promise<string> {
 
 /***
  * Extract a completed/total check-count pair from command output using a caller-provided regular expression.
- * @utility @ankhorage/utility/string
+ * Utility candidate: @ankhorage/utility/string
  */
 function readCheckSummary(output: string, pattern: RegExp, label: string): string {
   const match = pattern.exec(output);
@@ -637,7 +637,7 @@ async function writeBaselineEvidenceAsync(args: {
 
 /***
  * Run an executable with --version and require a successful non-empty version string.
- * @utility @ankhorage/utility/node/process
+ * Utility candidate: @ankhorage/utility/node/process
  */
 async function resolveExecutableVersionAsync(executable: string): Promise<string> {
   const childProcess = Bun.spawn([executable, '--version'], { stderr: 'ignore', stdout: 'pipe' });
@@ -722,7 +722,7 @@ async function writeNativeEvidenceAppFilesAsync(appRoot: string): Promise<void> 
 
 /***
  * Narrow an unknown value to a non-null, non-array object record.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);

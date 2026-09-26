@@ -44,7 +44,7 @@ export interface Auth5NativeOAuthSmokeInfraDependencies {
 }
 
 /*** Prepare trusted OAuth infrastructure for the Auth 5 native smoke fixture without exposing credentials.
- * @todo Move this acceptance infrastructure orchestrator from src/host/smoke to test/smoke.
+ * TODO: Move this acceptance infrastructure orchestrator from src/host/smoke to test/smoke.
  */
 export async function prepareAuth5NativeOAuthSmokeInfra(
   args: PrepareAuth5NativeOAuthSmokeInfraArgs,
@@ -134,7 +134,7 @@ function resolveGoogleCredentialRef(manifest: AppManifest): string {
 }
 
 /*** Normalize the smoke manifest OAuth callback route to an unprefixed relative route name.
- * @utility @ankhorage/utility/route
+ * Utility candidate: @ankhorage/utility/route
  */
 function resolveOAuthCallbackRoute(manifest: AppManifest): string {
   const callbackRoute = manifest.infra.environments.local.auth?.oauth?.callbackRoute.trim();
@@ -145,7 +145,7 @@ function resolveOAuthCallbackRoute(manifest: AppManifest): string {
 }
 
 /*** Read a required key from dotenv-formatted text and return its unquoted non-empty value.
- * @utility @ankhorage/utility/node/env
+ * Utility candidate: @ankhorage/utility/node/env
  */
 function parseRequiredEnvValue(raw: string, key: string): string {
   for (const line of raw.split(/\r?\n/u)) {
@@ -160,7 +160,7 @@ function parseRequiredEnvValue(raw: string, key: string): string {
 }
 
 /*** Remove one matching pair of single or double quotes around a string.
- * @utility @ankhorage/utility/string
+ * Utility candidate: @ankhorage/utility/string
  */
 function stripMatchingQuotes(value: string): string {
   if (value.length < 2) return value;
