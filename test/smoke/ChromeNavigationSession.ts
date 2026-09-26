@@ -1,7 +1,8 @@
 import { type ChildProcess, spawn } from 'node:child_process';
-import { access } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { pathExists } from '@ankhorage/utility/node/fs';
+import { stopProcess } from '@ankhorage/utility/node/process';
 
 import { getChromeNavigationIssue } from './getChromeNavigationIssue';
 
@@ -657,19 +658,6 @@ function createRoleHitTestExpression(role: string, name: string, occurrence: num
 }
 
 /***
- * Report whether a filesystem path is accessible to the current process.
- * @utility @ankhorage/utility/node/fs
- */
-async function canAccessAsync(filePath: string): Promise<boolean> {
-  try {
-    await access(filePath);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-/***
  * Narrow an unknown value to a non-null object record.
  * @utility @ankhorage/utility/object
  */
@@ -713,22 +701,9 @@ async function resolveChromePathAsync(): Promise<string> {
   );
 
   for (const candidate of candidates) {
-    if (await canAccessAsync(candidate)) return candidate;
+    if (await pathExists(candidate)) return candidate;
   }
   throw new Error('Could not resolve Chrome/Chromium. Set CHROME_PATH before acceptance.');
-}
-
-/***
- * Terminate a spawned detached process group, falling back to terminating the direct child when group signaling is unavailable.
- * @utility @ankhorage/utility/node/process
- */
-function stopProcess(processToStop: ChildProcess): void {
-  if (!processToStop.pid) return;
-  try {
-    globalThis.process.kill(-processToStop.pid, 'SIGTERM');
-  } catch {
-    processToStop.kill('SIGTERM');
-  }
 }
 
 /***

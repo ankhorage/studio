@@ -1,7 +1,8 @@
 import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
 import { stat } from 'node:fs/promises';
-import { createServer } from 'node:net';
 import path from 'node:path';
+import { reserveTcpPort } from '@ankhorage/utility/node/net';
+import { collectProcessOutput } from '@ankhorage/utility/node/process';
 
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 
@@ -17,7 +18,7 @@ export async function generateExpoRouterTypesAsync(options: {
 }): Promise<void> {
   console.log(`\n==> ${options.label}`);
   const expoCli = await resolveAppOwnedExpoCliAsync(options.projectRoot);
-  const expoPort = await reservePortAsync();
+  const expoPort = await reserveTcpPort('Expo Router type');
   const output: string[] = [];
   const expoProcess = spawn(expoCli, ['start', '--port', String(expoPort), '--clear'], {
     cwd: options.projectRoot,
@@ -52,18 +53,6 @@ export async function generateExpoRouterTypesAsync(options: {
 }
 
 /***
- * Collect UTF-8 stdout and stderr chunks from a child process into a shared sink.
- * @utility @ankhorage/utility/node/process
- */
-function collectProcessOutput(
-  processToCollect: ChildProcessWithoutNullStreams,
-  output: string[],
-): void {
-  processToCollect.stdout.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
-  processToCollect.stderr.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
-}
-
-/***
  * Return whether a filesystem path exists while rethrowing non-missing filesystem failures.
  * @utility @ankhorage/utility/node/fs
  */
@@ -75,25 +64,6 @@ async function pathExistsAsync(targetPath: string): Promise<boolean> {
     if (error instanceof Error && 'code' in error && error.code === 'ENOENT') return false;
     throw error;
   }
-}
-
-/***
- * Reserve an ephemeral loopback TCP port and release the reservation before returning it.
- * @utility @ankhorage/utility/node/net
- */
-async function reservePortAsync(): Promise<number> {
-  return new Promise((resolve, reject) => {
-    const server = createServer();
-    server.once('error', reject);
-    server.listen(0, '127.0.0.1', () => {
-      const address = server.address();
-      if (typeof address !== 'object' || address === null) {
-        server.close(() => reject(new Error('Could not reserve an Expo Router type port.')));
-        return;
-      }
-      server.close(() => resolve(address.port));
-    });
-  });
 }
 
 /***
