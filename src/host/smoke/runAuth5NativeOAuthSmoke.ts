@@ -1,5 +1,5 @@
 /*** CLI smoke-preparation script for creating the Auth 5 native OAuth fixture workspace.
- * @todo Move this smoke CLI entry from src/host/smoke to test/smoke or a dedicated test script edge.
+ * TODO: Move this smoke CLI entry from src/host/smoke to test/smoke or a dedicated test script edge.
  */
 import { existsSync } from 'node:fs';
 import { mkdir } from 'node:fs/promises';

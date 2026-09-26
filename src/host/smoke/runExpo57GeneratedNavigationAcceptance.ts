@@ -24,7 +24,7 @@ const ROUTER_REWRITE_DISABLED = '1';
 
 /***
  * Run the focused authenticated hidden-route Drawer acceptance against a generated Studio app and assert lockfile stability.
- * @todo Move this focused navigation acceptance from production src/host/smoke to test/smoke.
+ * TODO: Move this focused navigation acceptance from production src/host/smoke to test/smoke.
  */
 export async function runExpo57AuthHiddenRouteDrawerAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-auth-hidden-drawer-'));
@@ -57,7 +57,7 @@ export async function runExpo57AuthHiddenRouteDrawerAcceptanceAsync(): Promise<v
 
 /***
  * Generate the full navigation fixture matrix and validate Router-owned tabs/drawer, auth scopes, Studio Admin navigation, dynamic/static routes, Web behavior and frozen lockfiles.
- * @todo Move this generated navigation acceptance matrix from production src/host/smoke to test/smoke.
+ * TODO: Move this generated navigation acceptance matrix from production src/host/smoke to test/smoke.
  */
 export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-navigation-'));
@@ -395,7 +395,7 @@ async function installGeneratedProjectAsync(project: NavigationProject): Promise
 
 /***
  * Compute a SHA-256 hex digest for byte content.
- * @utility @ankhorage/utility/crypto
+ * Utility candidate: @ankhorage/utility/crypto
  */
 function hash(value: Uint8Array): string {
   return createHash('sha256').update(value).digest('hex');
@@ -403,7 +403,7 @@ function hash(value: Uint8Array): string {
 
 /***
  * Recursively list JavaScript/TypeScript source files beneath a source root.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function listSourceFilesAsync(rootPath: string): Promise<string[]> {
   const entries = await readdir(rootPath, { withFileTypes: true });
@@ -418,7 +418,7 @@ async function listSourceFilesAsync(rootPath: string): Promise<string[]> {
 
 /***
  * Report whether a filesystem path currently exists, propagating non-ENOENT stat failures.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function pathExistsAsync(targetPath: string): Promise<boolean> {
   try {
@@ -822,7 +822,7 @@ async function runScopeAwareStudioChecksAsync(
 
 /***
  * Poll an HTTP endpoint until it responds below the 5xx range, including caller-provided diagnostics on timeout.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function waitForHttpAsync(url: string, diagnostics: () => string): Promise<void> {
   const start = Date.now();
@@ -839,7 +839,7 @@ async function waitForHttpAsync(url: string, diagnostics: () => string): Promise
 
 /***
  * Collect UTF-8 stdout and stderr chunks from a child process into a shared output buffer.
- * @utility @ankhorage/utility/node/process
+ * Utility candidate: @ankhorage/utility/node/process
  */
 function collectProcessOutput(
   processToCollect: ChildProcessWithoutNullStreams,
@@ -851,7 +851,7 @@ function collectProcessOutput(
 
 /***
  * Terminate a detached child-process group, falling back to the direct child when group signaling is unavailable.
- * @utility @ankhorage/utility/node/process
+ * Utility candidate: @ankhorage/utility/node/process
  */
 function stopProcess(processToStop: ChildProcessWithoutNullStreams): void {
   if (!processToStop.pid) return;

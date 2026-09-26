@@ -17,7 +17,7 @@ const ACCEPTANCE_CATEGORY_LABEL = 'Developer Tools';
 
 /***
  * Build and install an isolated standalone Studio fixture, exercise development/static/native output against a real local host, and assert checkout independence plus lockfile stability.
- * @todo Move this standalone end-to-end acceptance orchestration from production src/host/smoke to test/smoke.
+ * TODO: Move this standalone end-to-end acceptance orchestration from production src/host/smoke to test/smoke.
  */
 export async function runExpo57StudioStandaloneAcceptance(
   options: {
@@ -122,7 +122,7 @@ function createCommandEnvironment(cacheRoot: string): Readonly<Record<string, st
 
 /***
  * Compute a SHA-256 hex digest for byte content.
- * @utility @ankhorage/utility/crypto
+ * Utility candidate: @ankhorage/utility/crypto
  */
 function hash(value: Uint8Array): string {
   return createHash('sha256').update(value).digest('hex');

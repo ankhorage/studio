@@ -22,7 +22,7 @@ const ROUTER_REWRITE_DISABLED = '1';
 
 /***
  * Generate, install and validate the Expo 57 capability fixture across static checks, owner graph, browser OAuth/capability behavior and native prebuild while preserving its frozen lockfile.
- * @todo Move this generated-capability acceptance orchestration from production src/host/smoke to test/smoke.
+ * TODO: Move this generated-capability acceptance orchestration from production src/host/smoke to test/smoke.
  */
 export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-capabilities-'));
@@ -334,7 +334,7 @@ async function startBrowserOAuthAttemptAsync(
 
 /***
  * Capture every file under a project's src tree as a deterministic relative-path-to-byte-content map.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function snapshotSourceTreeAsync(projectRoot: string): Promise<Map<string, Uint8Array>> {
   const sourceRoot = path.join(projectRoot, 'src');
@@ -350,7 +350,7 @@ async function snapshotSourceTreeAsync(projectRoot: string): Promise<Map<string,
 
 /***
  * Assert that a project's current src tree exactly matches a previously captured byte snapshot.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function assertSourceTreeUnchangedAsync(
   projectRoot: string,

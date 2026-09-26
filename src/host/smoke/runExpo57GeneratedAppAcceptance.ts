@@ -16,7 +16,7 @@ const COMMAND_TIMEOUT_MS = 300_000;
 
 /***
  * Create a generated standalone Expo 57 app, perform a cold frozen install and full static/native validation, and assert that acceptance leaves its lockfile unchanged.
- * @todo Move this generated-app acceptance orchestration from production src/host/smoke to test/smoke.
+ * TODO: Move this generated-app acceptance orchestration from production src/host/smoke to test/smoke.
  */
 export async function runExpo57GeneratedAppAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-acceptance-'));
@@ -144,7 +144,7 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
 
 /***
  * Compute a SHA-256 hex digest for byte content.
- * @utility @ankhorage/utility/crypto
+ * Utility candidate: @ankhorage/utility/crypto
  */
 function hash(value: Uint8Array): string {
   return createHash('sha256').update(value).digest('hex');

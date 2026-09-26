@@ -1,5 +1,5 @@
 /*** CLI smoke script for activating Auth 5 native OAuth infrastructure and printing redacted verification instructions.
- * @todo Move this smoke CLI entry from src/host/smoke to test/smoke or a dedicated test script edge.
+ * TODO: Move this smoke CLI entry from src/host/smoke to test/smoke or a dedicated test script edge.
  */
 import path from 'node:path';
 
