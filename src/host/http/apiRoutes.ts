@@ -14,7 +14,7 @@ import { ProjectSecretService } from '../secrets/projectSecretService';
 
 /***
  * Register Studio external-API connect/manual/settings/remove/test HTTP adapters around the external API service.
- * @todo Keep this Fastify adapter at the host edge while moving reusable parsing/response primitives to their shared owners.
+ * TODO: Keep this Fastify adapter at the host edge while moving reusable parsing/response primitives to their shared owners.
  */
 export function registerProjectApiRoutes(
   fastify: FastifyInstance,
@@ -72,7 +72,7 @@ export function registerProjectApiRoutes(
 
 /***
  * Read one named string route parameter from a Fastify request params object.
- * @utility @ankhorage/utility/http/fastify
+ * Utility candidate: @ankhorage/utility/http/fastify
  */
 function readProjectId(request: FastifyRequest): string {
   return (request.params as { readonly id: string }).id;
@@ -80,7 +80,7 @@ function readProjectId(request: FastifyRequest): string {
 
 /***
  * Return a successful `{ok}` result directly or send failed results with a configurable semantic HTTP status.
- * @utility @ankhorage/utility/http/fastify
+ * Utility candidate: @ankhorage/utility/http/fastify
  */
 function sendResult(reply: FastifyReply, result: { readonly ok: boolean }) {
   return result.ok ? result : reply.status(422).send(result);
@@ -202,7 +202,7 @@ function readCredential(value: unknown) {
 
 /***
  * Parse an optional record whose values satisfy the shared DataContractValue contract.
- * @todo Move this reusable data-contract parser beside `DataContractValue` in `@ankhorage/contracts/data` rather than Utility.
+ * TODO: Move this reusable data-contract parser beside `DataContractValue` in `@ankhorage/contracts/data` rather than Utility.
  */
 function readDataValues(value: unknown): Readonly<Record<string, DataContractValue>> | undefined {
   if (value === undefined) return undefined;
@@ -213,7 +213,7 @@ function readDataValues(value: unknown): Readonly<Record<string, DataContractVal
 
 /***
  * Recursively validate the shared DataContractValue union.
- * @todo Move this reusable guard to `@ankhorage/contracts/data`; the same implementation already appears elsewhere in Studio.
+ * TODO: Move this reusable guard to `@ankhorage/contracts/data`; the same implementation already appears elsewhere in Studio.
  */
 function isDataContractValue(value: unknown): value is DataContractValue {
   if (value === null || ['boolean', 'number', 'string'].includes(typeof value)) return true;
@@ -224,7 +224,7 @@ function isDataContractValue(value: unknown): value is DataContractValue {
 
 /***
  * Validate the DataOperationIntent literal union.
- * @todo Move this guard beside `DataOperationIntent` in `@ankhorage/contracts/data`.
+ * TODO: Move this guard beside `DataOperationIntent` in `@ankhorage/contracts/data`.
  */
 function isIntent(value: unknown): value is DataOperationIntent {
   return (
@@ -238,7 +238,7 @@ function isIntent(value: unknown): value is DataOperationIntent {
 
 /***
  * Narrow an unknown non-array object to a string-keyed record.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function readRecord(value: unknown): Record<string, unknown> | null {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -248,7 +248,7 @@ function readRecord(value: unknown): Record<string, unknown> | null {
 
 /***
  * Read a trimmed non-empty string from an unknown value.
- * @utility @ankhorage/utility/string
+ * Utility candidate: @ankhorage/utility/string
  */
 function readString(value: unknown): string | undefined {
   return typeof value === 'string' && value.trim() ? value.trim() : undefined;

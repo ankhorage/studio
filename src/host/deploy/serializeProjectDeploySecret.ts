@@ -14,7 +14,7 @@ export function serializeProjectDeploySecret(
 
 /***
  * Normalize an optional string to a trimmed non-empty value or null.
- * @utility @ankhorage/utility/value
+ * Utility candidate: @ankhorage/utility/value
  */
 function nonEmpty(value: string | undefined): string | null {
   const normalized = value?.trim();
