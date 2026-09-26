@@ -227,7 +227,7 @@
     "@ankhorage/deploy": "^0.13.1",
     "@ankhorage/expo-runtime": "^4.0.7",
     "@ankhorage/infra": "^7.1.6",
-    "@ankhorage/local": "^0.3.1",
+    "@ankhorage/local": "^0.3.2",
     "@ankhorage/minikube": "^0.4.16",
     "@ankhorage/navigator": "^3.3.14",
     "@ankhorage/orchestrator": "^0.3.3",
