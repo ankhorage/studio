@@ -1,4 +1,9 @@
 import type { AuthOAuthProviderId } from '@ankhorage/contracts';
+import {
+  createExclusiveKeyedAsyncCoordinator,
+  type ExclusiveKeyedAsyncResult,
+} from '@ankhorage/utility/concurrency';
+import { createKeyedValueStore } from '@ankhorage/utility/registry';
 
 import type { StudioAuthSettings } from '../../../authSettings';
 import type { StoredOAuthCredentialLink } from './adminAuthCredentialFlow';
@@ -18,191 +23,102 @@ export type AuthAdminWriteResult<T> =
         | 'credential_secret_cleanup_busy';
     };
 
+/*** Map generic coordinator conflicts to Studio auth-admin write reasons. */
+function toAuthAdminWriteResult<T>(result: ExclusiveKeyedAsyncResult<T>): AuthAdminWriteResult<T> {
+  if (result.ok) return result;
+  const reason = {
+    exclusive_busy: 'full_auth_save_busy',
+    keyed_busy: 'credential_transaction_busy',
+    primary_busy: 'provider_busy',
+    secondary_busy: 'credential_ref_busy',
+    secondary_exclusive_busy: 'credential_secret_cleanup_busy',
+  } as const;
+  return { ok: false, reason: reason[result.reason] };
+}
+
+/*** Coordinate Studio auth writes with project-specific conflict reasons. */
 export class AuthAdminWriteCoordinator {
-  private fullAuthSaveActive = false;
-  private readonly activeProviderIds = new Set<AuthOAuthProviderId>();
-  private readonly activeCredentialRefs = new Set<string>();
-  private readonly activeCredentialSecretCleanupRefs = new Set<string>();
+  private readonly coordinator = createExclusiveKeyedAsyncCoordinator<
+    AuthOAuthProviderId,
+    string
+  >();
 
-  /***
-   * Return whether the coordinator currently holds its exclusive whole-resource write lock.
-   * @utility @ankhorage/utility/concurrency
-   */
   isFullAuthSaveActive(): boolean {
-    return this.fullAuthSaveActive;
+    return this.coordinator.isExclusiveActive();
   }
 
-  /***
-   * Return whether any keyed transaction is currently active.
-   * @utility @ankhorage/utility/concurrency
-   */
   isAnyCredentialTransactionActive(): boolean {
-    return this.activeProviderIds.size > 0;
+    return this.coordinator.hasActiveKeyed();
   }
 
-  /***
-   * Return whether one primary key currently owns an active keyed transaction.
-   * @utility @ankhorage/utility/concurrency
-   */
   isProviderBusy(providerId: AuthOAuthProviderId): boolean {
-    return this.activeProviderIds.has(providerId);
+    return this.coordinator.isPrimaryBusy(providerId);
   }
 
-  /***
-   * Return whether one secondary key is reserved either by a transaction or a cleanup operation.
-   * @utility @ankhorage/utility/concurrency
-   */
   isCredentialRefBusy(credentialsRef: string): boolean {
-    return (
-      this.activeCredentialRefs.has(credentialsRef) ||
-      this.activeCredentialSecretCleanupRefs.has(credentialsRef)
-    );
+    return this.coordinator.isSecondaryBusy(credentialsRef);
   }
 
-  /***
-   * Return an immutable snapshot copy of currently busy primary keys.
-   * @utility @ankhorage/utility/collection
-   */
   getBusyProviderIds(): ReadonlySet<AuthOAuthProviderId> {
-    return new Set(this.activeProviderIds);
+    return this.coordinator.getBusyPrimaryKeys();
   }
 
-  /***
-   * Return an immutable snapshot copy of currently busy secondary transaction keys.
-   * @utility @ankhorage/utility/collection
-   */
   getBusyCredentialRefs(): ReadonlySet<string> {
-    return new Set(this.activeCredentialRefs);
+    return this.coordinator.getBusySecondaryKeys();
   }
 
-  /***
-   * Return an immutable snapshot copy of secondary keys currently reserved for cleanup.
-   * @utility @ankhorage/utility/collection
-   */
   getBusyCredentialSecretCleanupRefs(): ReadonlySet<string> {
-    return new Set(this.activeCredentialSecretCleanupRefs);
+    return this.coordinator.getBusySecondaryExclusiveKeys();
   }
 
-  /***
-   * Execute an exclusive whole-resource asynchronous operation unless any conflicting whole/keyed operation is active.
-   * @utility @ankhorage/utility/concurrency
-   */
   async runFullAuthSave<T>(operation: () => Promise<T>): Promise<AuthAdminWriteResult<T>> {
-    if (this.fullAuthSaveActive) return { ok: false, reason: 'full_auth_save_busy' };
-    if (this.activeProviderIds.size > 0) {
-      return { ok: false, reason: 'credential_transaction_busy' };
-    }
-
-    this.fullAuthSaveActive = true;
-    try {
-      return { ok: true, value: await operation() };
-    } finally {
-      this.fullAuthSaveActive = false;
-    }
+    return toAuthAdminWriteResult(await this.coordinator.runExclusive(operation));
   }
 
-  /***
-   * Execute an asynchronous operation while atomically reserving a primary and secondary key and rejecting conflicting reservations.
-   * @utility @ankhorage/utility/concurrency
-   */
   async runCredentialTransaction<T>(
     providerId: AuthOAuthProviderId,
     credentialsRef: string,
     operation: () => Promise<T>,
   ): Promise<AuthAdminWriteResult<T>> {
-    if (this.fullAuthSaveActive) return { ok: false, reason: 'full_auth_save_busy' };
-    if (this.activeProviderIds.has(providerId)) return { ok: false, reason: 'provider_busy' };
-    if (this.activeCredentialRefs.has(credentialsRef)) {
-      return { ok: false, reason: 'credential_ref_busy' };
-    }
-    if (this.activeCredentialSecretCleanupRefs.has(credentialsRef)) {
-      return { ok: false, reason: 'credential_secret_cleanup_busy' };
-    }
-
-    this.activeProviderIds.add(providerId);
-    this.activeCredentialRefs.add(credentialsRef);
-    try {
-      return { ok: true, value: await operation() };
-    } finally {
-      this.activeCredentialRefs.delete(credentialsRef);
-      this.activeProviderIds.delete(providerId);
-    }
+    return toAuthAdminWriteResult(
+      await this.coordinator.runKeyed(providerId, credentialsRef, operation),
+    );
   }
 
-  /***
-   * Execute an asynchronous cleanup while reserving one secondary key against concurrent transaction/cleanup use.
-   * @utility @ankhorage/utility/concurrency
-   */
   async runCredentialSecretCleanup<T>(
     credentialsRef: string,
     operation: () => Promise<T>,
   ): Promise<AuthAdminWriteResult<T>> {
-    if (this.activeCredentialRefs.has(credentialsRef)) {
-      return { ok: false, reason: 'credential_transaction_busy' };
-    }
-    if (this.activeCredentialSecretCleanupRefs.has(credentialsRef)) {
-      return { ok: false, reason: 'credential_secret_cleanup_busy' };
-    }
-
-    this.activeCredentialSecretCleanupRefs.add(credentialsRef);
-    try {
-      return { ok: true, value: await operation() };
-    } finally {
-      this.activeCredentialSecretCleanupRefs.delete(credentialsRef);
-    }
+    return toAuthAdminWriteResult(
+      await this.coordinator.runSecondaryExclusive(credentialsRef, operation),
+    );
   }
 }
 
+/*** Store pending Studio OAuth credential links by provider identity. */
 export class AuthAdminPendingCredentialRecoveryStore {
-  private readonly linksByProviderId = new Map<AuthOAuthProviderId, StoredOAuthCredentialLink>();
+  private readonly links = createKeyedValueStore<AuthOAuthProviderId, StoredOAuthCredentialLink>(
+    (link) => link.providerId,
+  );
 
-  /***
-   * Return all values currently held by a keyed in-memory registry.
-   * @utility @ankhorage/utility/registry
-   */
   list(): readonly StoredOAuthCredentialLink[] {
-    return [...this.linksByProviderId.values()];
+    return this.links.list();
   }
 
-  /***
-   * Resolve one registry value by primary key, normalizing a miss to null.
-   * @utility @ankhorage/utility/registry
-   */
   get(providerId: AuthOAuthProviderId): StoredOAuthCredentialLink | null {
-    return this.linksByProviderId.get(providerId) ?? null;
+    return this.links.get(providerId);
   }
 
-  /***
-   * Insert or replace one registry value using a key derived from the value.
-   * @utility @ankhorage/utility/registry
-   */
   set(link: StoredOAuthCredentialLink): void {
-    this.linksByProviderId.set(link.providerId, link);
+    this.links.set(link);
   }
 
-  /***
-   * Delete one registry value by primary key.
-   * @utility @ankhorage/utility/registry
-   */
   clear(providerId: AuthOAuthProviderId): void {
-    this.linksByProviderId.delete(providerId);
+    this.links.delete(providerId);
   }
 
-  /***
-   * Delete and return every registry value matching a secondary-key predicate.
-   * @utility @ankhorage/utility/registry
-   */
   clearByCredentialsRef(credentialsRef: string): readonly StoredOAuthCredentialLink[] {
-    const cleared: StoredOAuthCredentialLink[] = [];
-
-    for (const link of this.linksByProviderId.values()) {
-      if (link.credentialsRef !== credentialsRef) continue;
-
-      this.linksByProviderId.delete(link.providerId);
-      cleared.push(link);
-    }
-
-    return cleared;
+    return this.links.deleteWhere((link) => link.credentialsRef === credentialsRef);
   }
 }
 

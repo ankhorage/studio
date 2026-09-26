@@ -1,5 +1,11 @@
 import type { ThemeRecipeFieldOverrides, ThemeRecipeOverrides } from '@ankhorage/contracts';
-import { deleteOwnProperty, readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
+import {
+  deleteOwnProperty,
+  isEmptyRecord,
+  readOwnProperty,
+  setOwnProperty,
+  withOptionalOwnProperty,
+} from '@ankhorage/utility/object';
 
 export type ThemeRecipeAuthoringKind = 'component' | 'pattern';
 
@@ -26,15 +32,12 @@ export function updateThemeRecipeOverrides(args: {
 
 /***
  * Immutably set/delete a keyed record value and normalize an empty resulting record to undefined.
- * @utility @ankhorage/utility/object
  */
 function updateRecord<T>(
   record: Readonly<Record<string, T>> | undefined,
   key: string,
   value: T | undefined,
 ): Readonly<Record<string, T>> | undefined {
-  const next = { ...record };
-  if (value === undefined) deleteOwnProperty(next, key);
-  else setOwnProperty(next, key, value);
-  return Object.keys(next).length > 0 ? next : undefined;
+  const next = withOptionalOwnProperty(record ?? {}, key, value);
+  return isEmptyRecord(next) ? undefined : next;
 }

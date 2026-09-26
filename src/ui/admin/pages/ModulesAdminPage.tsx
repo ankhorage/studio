@@ -1,3 +1,4 @@
+import { toErrorMessage } from '@ankhorage/utility/error';
 import { Button, ButtonGroup, Card, Text } from '@ankhorage/zora';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -29,7 +30,7 @@ export function ModulesAdminPage() {
       setModules(await listProjectModules(studio.projectId));
       setMessage(null);
     } catch (error) {
-      setMessage(toMessage(error));
+      setMessage(toErrorMessage(error, String(error)));
     } finally {
       setLoading(false);
     }
@@ -57,7 +58,7 @@ export function ModulesAdminPage() {
         await studio.refetchManifest();
         setModules(await listProjectModules(studio.projectId));
       } catch (error) {
-        setMessage(toMessage(error));
+        setMessage(toErrorMessage(error, String(error)));
       } finally {
         setBusyId(null);
       }
@@ -146,14 +147,6 @@ function formatStatus(module: StudioModuleState): string {
   if (module.installed && !module.available) return 'installed, unavailable';
   if (module.installed) return 'installed';
   return module.available ? 'available' : 'unavailable';
-}
-
-/***
- * Normalize an unknown thrown value to a display message.
- * @utility @ankhorage/utility/error
- */
-function toMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
 }
 
 const styles = StyleSheet.create({

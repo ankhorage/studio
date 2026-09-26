@@ -1,4 +1,12 @@
 import type { UiNode } from '@ankhorage/contracts';
+import { toRect } from '@ankhorage/utility/geometry';
+import { resolveWebResizeTarget } from '@ankhorage/utility/react-native/web';
+import {
+  collectWebDescendants,
+  isWebElementLike,
+  measureNonZeroWebElement,
+  measureWebDescendantUnion,
+} from '@ankhorage/utility/web';
 import { useZoraTheme, ZORA_COMPONENT_REGISTRY } from '@ankhorage/zora';
 import React from 'react';
 import {
@@ -42,7 +50,6 @@ import {
   type RuntimeNodeMeasurement,
   runtimeNodeMeasurementChangeAffectsActiveIndicators,
   shouldRenderSelectedNodeChrome,
-  unionMeasuredRects,
 } from './runtimeNodeMeasurement.js';
 import type { StationarySelectionCoordinator } from './stationarySelectionCoordinator.js';
 import { createStationarySelectionCoordinator } from './stationarySelectionCoordinator.js';
@@ -76,79 +83,22 @@ interface RuntimeNodeMeasurementContextValue {
 const RuntimeNodeMeasurementContext =
   React.createContext<RuntimeNodeMeasurementContextValue | null>(null);
 
-interface WebRectLike {
-  readonly left: number;
-  readonly top: number;
-  readonly width: number;
-  readonly height: number;
-}
-
-interface WebElementLike {
-  readonly children: ArrayLike<WebElementLike>;
-  getBoundingClientRect(): WebRectLike;
-}
-
-/***
- * Detect a DOM-like element that exposes child traversal and bounding-rectangle measurement.
- * @utility @ankhorage/utility/web
- */
-function isWebElementLike(value: unknown): value is WebElementLike {
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    'children' in value &&
-    'getBoundingClientRect' in value &&
-    typeof value.getBoundingClientRect === 'function'
-  );
-}
-
 /***
  * Resolve an unknown React-Native view value to a DOM resize target only on the web platform.
- * @utility @ankhorage/utility/react-native/web
  */
 function getWebResizeTarget(value: unknown): Element | null {
-  return Platform.OS === 'web' && isWebElementLike(value) ? (value as unknown as Element) : null;
+  return resolveWebResizeTarget(value, Platform.OS, isWebElementLike) as Element | null;
 }
 
 /***
  * Recursively collect every descendant DOM resize target from a DOM-like value when running on web.
- * @utility @ankhorage/utility/web
  */
 function getWebDescendantResizeTargets(value: unknown): readonly Element[] {
   if (Platform.OS !== 'web' || !isWebElementLike(value)) {
     return [];
   }
 
-  return Array.from(value.children).flatMap((child) => [
-    child as unknown as Element,
-    ...getWebDescendantResizeTargets(child),
-  ]);
-}
-
-/***
- * Convert a left/top/width/height rectangle into the package's x/y measured-rectangle shape.
- * @utility @ankhorage/utility/geometry
- */
-function toMeasuredRect(rect: WebRectLike): MeasuredRect {
-  return {
-    x: rect.left,
-    y: rect.top,
-    width: rect.width,
-    height: rect.height,
-  };
-}
-
-/***
- * Measure a DOM-like element, falling through zero-area wrappers to the rendered descendant boxes they contain.
- * @utility @ankhorage/utility/web
- */
-function measureRenderedBoxes(element: WebElementLike): readonly MeasuredRect[] {
-  const rect = toMeasuredRect(element.getBoundingClientRect());
-  if (rect.width > 0 && rect.height > 0) {
-    return [rect];
-  }
-
-  return Array.from(element.children).flatMap((child) => measureRenderedBoxes(child));
+  return collectWebDescendants(value) as Element[];
 }
 
 /***
@@ -161,7 +111,7 @@ function measureRootView(view: ViewRef | null): Promise<MeasuredRect | null> {
   }
 
   if (Platform.OS === 'web' && isWebElementLike(view)) {
-    return Promise.resolve(toMeasuredRect(view.getBoundingClientRect()));
+    return Promise.resolve(toRect(view.getBoundingClientRect()));
   }
 
   return Promise.resolve(measureNativeElement(view));
@@ -169,7 +119,6 @@ function measureRootView(view: ViewRef | null): Promise<MeasuredRect | null> {
 
 /***
  * Measure the rendered descendant boxes of a web view and return their union rectangle.
- * @utility @ankhorage/utility/web
  */
 function measureRuntimeNodeWebView(view: ViewRef | null): Promise<MeasuredRect | null> {
   if (!view) {
@@ -177,9 +126,7 @@ function measureRuntimeNodeWebView(view: ViewRef | null): Promise<MeasuredRect |
   }
 
   if (isWebElementLike(view)) {
-    return Promise.resolve(
-      unionMeasuredRects(Array.from(view.children).flatMap((child) => measureRenderedBoxes(child))),
-    );
+    return Promise.resolve(measureWebDescendantUnion(view));
   }
 
   return Promise.resolve(null);
@@ -187,15 +134,13 @@ function measureRuntimeNodeWebView(view: ViewRef | null): Promise<MeasuredRect |
 
 /***
  * Measure one authored web view directly and treat zero-area geometry as absent.
- * @utility @ankhorage/utility/web
  */
 function measureAuthoredWebView(view: ViewRef): Promise<MeasuredRect | null> {
   if (!isWebElementLike(view)) {
     return Promise.resolve(null);
   }
 
-  const rect = toMeasuredRect(view.getBoundingClientRect());
-  return Promise.resolve(rect.width > 0 && rect.height > 0 ? rect : null);
+  return Promise.resolve(measureNonZeroWebElement(view));
 }
 
 /***

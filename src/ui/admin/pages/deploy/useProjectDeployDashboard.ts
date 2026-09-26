@@ -1,3 +1,4 @@
+import { captureAsync } from '@ankhorage/utility/async';
 import { useCallback, useEffect, useState } from 'react';
 
 import {
@@ -8,7 +9,7 @@ import {
   readProjectDeployMonetization,
   readProjectDeployRelease,
 } from '../../../../projectDeployApi';
-import type { DeployLoadable, ProjectDeployDashboardState } from './deployDashboardTypes';
+import type { ProjectDeployDashboardState } from './deployDashboardTypes';
 
 interface LoadedDashboardState {
   requestKey: string;
@@ -55,24 +56,12 @@ const loadingState: ProjectDeployDashboardState = {
 /*** Load all deploy-dashboard resources concurrently while isolating each resource failure into its own loadable state. */
 async function loadDashboard(projectId: string): Promise<ProjectDeployDashboardState> {
   const [authoring, config, listing, monetization, release, history] = await Promise.all([
-    capture(readProjectDeployAuthoring(projectId)),
-    capture(readProjectDeployConfig(projectId)),
-    capture(readProjectDeployListing(projectId)),
-    capture(readProjectDeployMonetization(projectId)),
-    capture(readProjectDeployRelease(projectId)),
-    capture(listProjectDeployReleaseHistory(projectId)),
+    captureAsync(readProjectDeployAuthoring(projectId)),
+    captureAsync(readProjectDeployConfig(projectId)),
+    captureAsync(readProjectDeployListing(projectId)),
+    captureAsync(readProjectDeployMonetization(projectId)),
+    captureAsync(readProjectDeployRelease(projectId)),
+    captureAsync(listProjectDeployReleaseHistory(projectId)),
   ]);
   return { authoring, config, listing, monetization, release, history };
-}
-
-/***
- * Convert a promise into a discriminated ready/error loadable result while normalizing unknown errors to messages.
- * @utility @ankhorage/utility/async
- */
-async function capture<T>(operation: Promise<T>): Promise<DeployLoadable<T>> {
-  try {
-    return { status: 'ready', data: await operation };
-  } catch (error) {
-    return { status: 'error', message: error instanceof Error ? error.message : String(error) };
-  }
 }

@@ -14,11 +14,13 @@ import type {
   UiNode,
 } from '@ankhorage/contracts';
 import { createCompactId as createUtilityCompactId } from '@ankhorage/utility/id';
+import { isRecordOf } from '@ankhorage/utility/object';
 import {
   findTreeNode,
   findTreeNodeWithParent,
   isTreeDescendant,
   removeTreeNode,
+  removeTreeNodeWithValue,
   type TreeAdapter,
   updateTreeNode,
 } from '@ankhorage/utility/tree';
@@ -595,7 +597,6 @@ export const TPL_SCREEN_EMPTY: UiNode = {
 
 /***
  * Generate a compact time/random identifier with an optional lowercase prefix.
- * @utility @ankhorage/utility/id
  * @todo Move the Studio-facing wrapper out of `src/index.ts`; the reusable identifier primitive belongs in Utility.
  */
 export const generateStudioId: StudioIdGenerator = (prefix?: string): string => {
@@ -626,7 +627,6 @@ export const cloneWithNewIds = (
 
 /***
  * Find the first node with a matching id in a depth-first tree traversal.
- * @utility @ankhorage/utility/tree
  * @todo Move the UiNode wrapper out of `src/index.ts`; parameterize id and child accessors for Utility.
  */
 export const findNodeById = (root: UiNode, id: string): UiNode | null => {
@@ -635,7 +635,6 @@ export const findNodeById = (root: UiNode, id: string): UiNode | null => {
 
 /***
  * Immutably update one UiNode by id while preserving Studio's alias/style versus props patch semantics.
- * @utility @ankhorage/utility/tree
  * @todo Keep Studio-specific patch projection in the canvas/properties owner and extract the generic immutable tree-update primitive to Utility.
  */
 export const updateNodeInTree = (
@@ -663,7 +662,6 @@ export const updateNodeInTree = (
 
 /***
  * Immutably remove a node by id from a UiNode tree and preserve unchanged branches by reference.
- * @utility @ankhorage/utility/tree
  * @todo Move the UiNode wrapper out of `src/index.ts` and parameterize tree accessors for Utility.
  */
 export const removeNodeFromTree = (root: UiNode, nodeId: string): UiNode | null => {
@@ -678,7 +676,6 @@ interface NodeWithParent {
 
 /***
  * Find a node together with its parent and sibling index in a depth-first traversal.
- * @utility @ankhorage/utility/tree
  */
 function findNodeWithParent(root: UiNode, nodeId: string): NodeWithParent | null {
   return findTreeNodeWithParent(root, nodeId, uiNodeTreeAdapter) ?? null;
@@ -686,7 +683,6 @@ function findNodeWithParent(root: UiNode, nodeId: string): NodeWithParent | null
 
 /***
  * Return whether a node tree contains a descendant with the requested id.
- * @utility @ankhorage/utility/tree
  */
 function isDescendantNode(node: UiNode, descendantId: string): boolean {
   return isTreeDescendant(node, node.id, descendantId, uiNodeTreeAdapter);
@@ -694,61 +690,14 @@ function isDescendantNode(node: UiNode, descendantId: string): boolean {
 
 /***
  * Immutably remove one node from a tree and return both the next tree and removed node for move operations.
- * @utility @ankhorage/utility/tree
  */
 function removeNodeForMove(args: { node: UiNode; nodeId: string }): {
   node: UiNode;
   removedNode: UiNode | null;
 } {
-  const { node, nodeId } = args;
-  const children = node.children ?? [];
-  const directIndex = children.findIndex((child) => child.id === nodeId);
-
-  if (directIndex !== -1) {
-    const removedNode = children.at(directIndex);
-    if (!removedNode) {
-      return { node, removedNode: null };
-    }
-
-    return {
-      node: {
-        ...node,
-        children: children.filter((child) => child.id !== nodeId),
-      },
-      removedNode,
-    };
-  }
-
-  const nextChildren: UiNode[] = [];
-  let removedNode: UiNode | null = null;
-
-  for (const child of children) {
-    if (removedNode) {
-      nextChildren.push(child);
-      continue;
-    }
-
-    const { node: nextChild, removedNode: nextRemovedNode } = removeNodeForMove({
-      node: child,
-      nodeId,
-    });
-    if (nextRemovedNode) {
-      removedNode = nextRemovedNode;
-    }
-    nextChildren.push(nextChild);
-  }
-
-  if (!removedNode) {
-    return { node, removedNode: null };
-  }
-
-  return {
-    node: {
-      ...node,
-      children: nextChildren,
-    },
-    removedNode,
-  };
+  if (args.node.id === args.nodeId) return { node: args.node, removedNode: null };
+  const result = removeTreeNodeWithValue(args.node, args.nodeId, uiNodeTreeAdapter);
+  return { node: result.root ?? args.node, removedNode: result.removed ?? null };
 }
 
 /***
@@ -1537,12 +1486,10 @@ export function resolveInsertCatalogEntries(args: {
 
 /***
  * Return whether a value is a non-array record whose values are all strings or numbers.
- * @utility @ankhorage/utility/object
  */
 function isStyleRecord(value: unknown): value is Record<string, string | number> {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
-
-  return Object.values(value).every(
-    (entry) => typeof entry === 'string' || typeof entry === 'number',
+  return isRecordOf(
+    value,
+    (entry): entry is string | number => typeof entry === 'string' || typeof entry === 'number',
   );
 }

@@ -1,1 +1,1 @@
-import '../src/host/smoke/runAuth5NativeOAuthSmokeInfra';
+import '../test/smoke/runAuth5NativeOAuthSmokeInfra';

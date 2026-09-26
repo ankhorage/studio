@@ -23,7 +23,7 @@ export default {
           'src/ui/useStudioAppBarAugmentation.ts',
           'src/utils/treeUtils.ts',
         ],
-        project: ['src/**/*.ts', 'src/**/*.tsx', 'paradox.config.ts'],
+        project: ['src/**/*.ts', 'src/**/*.tsx', 'test/**/*.ts', 'paradox.config.ts'],
         ignoreFiles: ['paradox.config.ts'],
       },
     },

@@ -1,4 +1,6 @@
 import type { SecretPayload, SecretStoreResult } from '@ankhorage/contracts/secrets';
+import { asRecord } from '@ankhorage/utility/object';
+import { isNonEmptyString } from '@ankhorage/utility/string';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import type { ProjectManager } from '../orchestrator/projectManager';
@@ -91,7 +93,7 @@ export function registerProjectSecretRoutes(
   /*** Validate and create one project secret payload. */
   fastify.post('/api/projects/:id/secrets', async (request: FastifyRequest, reply) => {
     const { id } = request.params as { id: string };
-    const body = asRecord(request.body);
+    const body = asRecord(request.body) ?? {};
     const payload = readSecretPayload(body.payload);
     if (!payload || typeof body.ref !== 'string' || typeof body.kind !== 'string') {
       return reply.status(400).send({
@@ -118,7 +120,7 @@ export function registerProjectSecretRoutes(
   /*** Validate and replace one complete project secret payload. */
   fastify.put('/api/projects/:id/secrets', async (request: FastifyRequest, reply) => {
     const { id } = request.params as { id: string };
-    const body = asRecord(request.body);
+    const body = asRecord(request.body) ?? {};
     const payload = readSecretPayload(body.payload);
     if (!payload || typeof body.ref !== 'string') {
       return reply.status(400).send({
@@ -171,7 +173,7 @@ export function registerProjectSecretRoutes(
     '/api/projects/:id/auth/oauth/:providerId',
     async (request: FastifyRequest, reply) => {
       const { id, providerId } = request.params as { id: string; providerId: string };
-      const body = asRecord(request.body);
+      const body = asRecord(request.body) ?? {};
       const payload = readSecretPayload(body.payload);
       if (!payload) {
         return reply.status(400).send({
@@ -244,22 +246,9 @@ function resolveErrorStatus(code: string): number {
   return 400;
 }
 
-/***
- * Convert an unknown value to a record, falling back to an empty record.
- * @utility @ankhorage/utility/object
- */
-function asRecord(value: unknown): Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-    ? (value as Record<string, unknown>)
-    : {};
-}
-
-/***
- * Read a trimmed non-empty string from an unknown value.
- * @utility @ankhorage/utility/string
- */
+/*** Read a trimmed non-empty string from a secret request value. */
 function readOptionalString(value: unknown): string | undefined {
-  return typeof value === 'string' && value.trim().length > 0 ? value.trim() : undefined;
+  return isNonEmptyString(value) ? value.trim() : undefined;
 }
 
 /***
@@ -267,7 +256,7 @@ function readOptionalString(value: unknown): string | undefined {
  * @utility @ankhorage/utility/validation
  */
 function readSecretPayload(value: unknown): SecretPayload | null {
-  const record = asRecord(value);
+  const record = asRecord(value) ?? {};
   const entries = Object.entries(record);
   if (
     entries.length === 0 ||

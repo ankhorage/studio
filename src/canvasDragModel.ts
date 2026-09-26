@@ -1,6 +1,6 @@
 import type { UiNode } from '@ankhorage/contracts';
 import { resolveDropZoneRect } from '@ankhorage/utility/geometry';
-import { readOwnProperty } from '@ankhorage/utility/object';
+import { findOwnPropertyValue } from '@ankhorage/utility/object';
 import { treeContainsId } from '@ankhorage/utility/tree';
 
 import type { CanvasDropZoneResolution, ValidCanvasDropZoneResolution } from './canvasDropZones';
@@ -120,7 +120,6 @@ function findDropZoneByKind(
 
 /***
  * Resolve a before, inside, or after drop-target rectangle from target and dragged rectangles.
- * @utility @ankhorage/utility/geometry
  */
 export function resolveCanvasDropZoneRect(args: {
   readonly kind: PlacementKind;
@@ -132,17 +131,16 @@ export function resolveCanvasDropZoneRect(args: {
 
 /***
  * Read the first useful display string from a preferred property-key list and limit its preview length.
- * @utility @ankhorage/utility/object
  */
 export function resolveCanvasDragPreviewText(
   props: Record<string, unknown> | undefined,
 ): string | null {
   if (!props) return null;
-  for (const key of ['children', 'text', 'title', 'label', 'description']) {
-    const value = readOwnProperty<unknown>(props, key);
-    if (typeof value === 'string' && value.trim().length > 0) {
-      return value.trim().slice(0, 80);
-    }
-  }
-  return null;
+  const value = findOwnPropertyValue(
+    props,
+    ['children', 'text', 'title', 'label', 'description'],
+    (candidate): candidate is string =>
+      typeof candidate === 'string' && candidate.trim().length > 0,
+  );
+  return value === undefined ? null : value.trim().slice(0, 80);
 }

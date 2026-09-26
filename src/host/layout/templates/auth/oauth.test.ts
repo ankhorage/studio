@@ -69,7 +69,7 @@ test('serializes free-form OAuth query parameter names as syntax-safe properties
     ],
   });
 
-  expect(runtime).toContain("queryParams: { 'access-type': 'offline' }");
+  expect(runtime).toContain('queryParams: { "access-type": \'offline\' }');
   const transpiler = new Bun.Transpiler({ loader: 'ts' });
   expect(() => transpiler.transformSync(runtime)).not.toThrow();
 });

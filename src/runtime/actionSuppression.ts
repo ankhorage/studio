@@ -3,7 +3,6 @@ import { invertBoolean } from '@ankhorage/utility/boolean';
 
 /***
  * Invert a preview-mode flag to decide whether runtime actions are suppressed.
- * @utility @ankhorage/utility/boolean
  */
 export const shouldSuppressStudioRuntimeActions = invertBoolean;
 

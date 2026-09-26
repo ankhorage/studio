@@ -90,7 +90,6 @@ export function resolveCanvasDropZones(args: {
 
 /***
  * Filter Studio drop-zone resolutions to only their valid variants.
- * @utility @ankhorage/utility/array
  */
 export function getValidCanvasDropZones(
   zones: readonly CanvasDropZoneResolution[],

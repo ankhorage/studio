@@ -1,17 +1,13 @@
+import { slugifyAscii } from '@ankhorage/utility/string';
+
 export type ExternalApiIdResult =
   { readonly ok: true; readonly apiId: string } | { readonly ok: false; readonly message: string };
 
 /***
  * Normalize user input into the lowercase, hyphenated identifier format used for external APIs.
- * @utility @ankhorage/utility/string
  */
 export function normalizeExternalApiId(value: string): ExternalApiIdResult {
-  const apiId = value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/gu, '-')
-    .replace(/^-+|-+$/gu, '')
-    .slice(0, 64);
+  const apiId = slugifyAscii(value).slice(0, 64);
 
   return apiId.length > 0
     ? { ok: true, apiId }

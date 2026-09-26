@@ -5,7 +5,12 @@ import type {
   PropBinding,
   UiNode,
 } from '@ankhorage/contracts';
-import { deleteOwnProperty, readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
+import {
+  deleteOwnProperty,
+  isEmptyRecord,
+  readOwnProperty,
+  setOwnProperty,
+} from '@ankhorage/utility/object';
 
 /***
  * Add or replace one Studio prop binding for a component node.
@@ -102,10 +107,7 @@ function writeBinding(
 
 /***
  * Test whether a binding has no prop or event entries.
- * @utility @ankhorage/utility/object
  */
 function isEmptyBinding(binding: ComponentDataBinding): boolean {
-  return (
-    Object.keys(binding.props ?? {}).length === 0 && Object.keys(binding.events ?? {}).length === 0
-  );
+  return isEmptyRecord(binding.props ?? {}) && isEmptyRecord(binding.events ?? {});
 }

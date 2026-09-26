@@ -6,8 +6,10 @@ import type {
   MediaAssetRegistry,
   UiNode,
 } from '@ankhorage/contracts';
-import { deleteOwnProperty, readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
+import { filterAndSort } from '@ankhorage/utility/array';
+import { deleteOwnProperty, readOwnProperty, withOwnProperty } from '@ankhorage/utility/object';
 import { slugifyAscii } from '@ankhorage/utility/string';
+import { normalizeCredentialFreeHttpUrl } from '@ankhorage/utility/url';
 
 export interface StudioMediaUsage {
   readonly screenId: string;
@@ -49,17 +51,17 @@ export type StudioUrlMediaAssetResult =
 
 /***
  * List manifest media assets, optionally filter by kind, and sort them by name.
- * @utility @ankhorage/utility/array
  */
 export function listStudioMediaAssets(
   manifest: AppManifest,
   mediaKinds?: readonly MediaAssetKind[],
 ): readonly MediaAsset[] {
   const assets = Object.values(manifest.media?.assets ?? {});
-  const filtered = mediaKinds?.length
-    ? assets.filter((asset) => mediaKinds.includes(asset.kind))
-    : assets;
-  return [...filtered].sort((left, right) => left.name.localeCompare(right.name));
+  return filterAndSort(
+    assets,
+    (asset) => !mediaKinds?.length || mediaKinds.includes(asset.kind),
+    (left, right) => left.name.localeCompare(right.name),
+  );
 }
 
 /***
@@ -104,7 +106,7 @@ export function createStudioUrlMediaAsset(args: {
   readonly kind: MediaAssetKind;
   readonly url: string;
 }): StudioUrlMediaAssetResult {
-  const url = normalizeStableHttpUrl(args.url);
+  const url = normalizeCredentialFreeHttpUrl(args.url);
   if (!url) return { ok: false, error: 'invalid-url' };
   return {
     ok: true,
@@ -119,12 +121,12 @@ export function createStudioUrlMediaAsset(args: {
 
 /***
  * Immutably insert or replace a keyed media asset in a manifest registry.
- * @utility @ankhorage/utility/object
  */
 export function upsertStudioMediaAsset(manifest: AppManifest, asset: MediaAsset): AppManifest {
-  const assets = { ...(manifest.media?.assets ?? {}) };
-  setOwnProperty(assets, asset.id, asset);
-  return { ...manifest, media: { assets } };
+  return {
+    ...manifest,
+    media: { assets: withOwnProperty(manifest.media?.assets ?? {}, asset.id, asset) },
+  };
 }
 
 /***
@@ -208,20 +210,5 @@ function collectValueUsages(
   if (typeof value !== 'object' || value === null) return;
   for (const [key, entry] of Object.entries(value)) {
     collectValueUsages(screenId, nodeId, mediaId, entry, `${propertyPath}.${key}`, usages);
-  }
-}
-
-/***
- * Normalize an HTTP(S) URL and reject credentials or unsupported protocols.
- * @utility @ankhorage/utility/url
- */
-function normalizeStableHttpUrl(value: string): string | null {
-  try {
-    const url = new URL(value.trim());
-    if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
-    if (url.username || url.password) return null;
-    return url.toString();
-  } catch {
-    return null;
   }
 }

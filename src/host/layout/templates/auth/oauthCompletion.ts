@@ -1,4 +1,5 @@
 import type { ExpoRuntimeNativeSchemeMap } from '@ankhorage/expo-runtime/planning';
+import { serializeJavaScriptLiteral } from '@ankhorage/utility/string';
 
 import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
 
@@ -174,8 +175,7 @@ function toTransportOutcome(result: AuthOAuthCompletionResult): GeneratedOAuthTr
 
 /***
  * Serialize an optional native URL scheme for generated TypeScript source.
- * @utility @ankhorage/utility/string
  */
 function serializeOptionalScheme(scheme: string | undefined): string {
-  return scheme === undefined ? 'undefined' : `'${escapeStringLiteral(scheme)}'`;
+  return scheme === undefined ? 'undefined' : serializeJavaScriptLiteral(scheme);
 }

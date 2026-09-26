@@ -2,6 +2,7 @@ import {
   createExpoMediaPickerAdapter,
   type ExpoMediaPickerAdapter,
 } from '@ankhorage/expo-runtime/media-picker';
+import { matchesFileType } from '@ankhorage/utility/media';
 
 /***
  * Pick and validate a PNG or JPEG image for Studio deploy assets.
@@ -29,13 +30,14 @@ export async function pickProjectDeployImage(
   };
 }
 
-/***
- * Validate a filename and optional MIME type against an allowed image-file policy.
- * @utility @ankhorage/utility/media
- */
+/*** Validate a filename and optional MIME type against the deploy image policy. */
 function isDeployImageSelection(filename: string, contentType: string | undefined): boolean {
-  if (!/\.(?:png|jpe?g)$/iu.test(filename)) return false;
-  return contentType === undefined || contentType === 'image/png' || contentType === 'image/jpeg';
+  return matchesFileType({
+    fileName: filename,
+    extensions: ['png', 'jpg', 'jpeg'],
+    contentType,
+    contentTypes: ['image/png', 'image/jpeg'],
+  });
 }
 
 /***

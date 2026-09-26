@@ -1,5 +1,6 @@
 import { type AppManifest, isSerializableValue } from '@ankhorage/contracts';
 import type { ModuleState, Orchestrator } from '@ankhorage/orchestrator';
+import { isRecord } from '@ankhorage/utility/object';
 import path from 'path';
 
 import { createStudioProjectWriterProxy } from '../../features/project-updates/composition/createStudioProjectWriterProxy';
@@ -494,12 +495,4 @@ export class ModuleManager {
     const fullPath = path.join(appPath, PENDING_OPS_FILE);
     if (await this.adapter.exists(fullPath)) await this.adapter.remove(fullPath);
   }
-}
-
-/***
- * Narrow an unknown non-array object to a string-keyed record.
- * @utility @ankhorage/utility/object
- */
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
