@@ -347,7 +347,7 @@ function serializeOAuthIcon(icon: NonNullable<AuthOAuthLayoutPlan['providers'][n
 
 /***
  * Format a JavaScript object-property name for generated source, quoting unsafe identifiers.
- * @utility @ankhorage/utility/string
+ * Utility candidate: @ankhorage/utility/string
  */
 function serializeObjectPropertyName(name: string): string {
   return /^[A-Za-z_$][A-Za-z0-9_$]*$/u.test(name) ? name : `'${escapeStringLiteral(name)}'`;

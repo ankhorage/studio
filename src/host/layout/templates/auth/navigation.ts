@@ -11,7 +11,7 @@ interface GetAuthNavigationTsArgs {
 
 /***
  * Serialize a string list as a compact single-quoted JavaScript array literal.
- * @utility @ankhorage/utility/string
+ * Utility candidate: @ankhorage/utility/string
  */
 function serializeStringArrayLiteral(values: readonly string[]): string {
   return `[${values.map((value) => `'${escapeStringLiteral(value)}'`).join(', ')}]`;

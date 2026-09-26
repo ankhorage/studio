@@ -174,7 +174,7 @@ function toTransportOutcome(result: AuthOAuthCompletionResult): GeneratedOAuthTr
 
 /***
  * Serialize an optional native URL scheme for generated TypeScript source.
- * @utility @ankhorage/utility/string
+ * Utility candidate: @ankhorage/utility/string
  */
 function serializeOptionalScheme(scheme: string | undefined): string {
   return scheme === undefined ? 'undefined' : `'${escapeStringLiteral(scheme)}'`;

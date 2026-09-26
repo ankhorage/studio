@@ -122,7 +122,7 @@ const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
 
 /***
  * Trim, discard empty and join generated module-level declaration blocks with a blank line.
- * @utility @ankhorage/utility/string
+ * Utility candidate: @ankhorage/utility/string
  */
 function mergeRuntimeModuleDeclarations(...declarations: readonly string[]): string {
   return declarations
@@ -133,7 +133,7 @@ function mergeRuntimeModuleDeclarations(...declarations: readonly string[]): str
 
 /***
  * Generate the complete current file set for one Studio-managed app from its manifest, layout mutations and runtime plan.
- * @todo Move generated-app file orchestration out of the generic host/layout bucket into the projects/template generation owner.
+ * TODO: Move generated-app file orchestration out of the generic host/layout bucket into the projects/template generation owner.
  */
 export class GeneratedAppFileGenerator {
   /***
@@ -643,7 +643,7 @@ export default function AnkhAdminRoute() {
 
 /***
  * Normalize a relative filesystem path to forward-slash separators for generated project files.
- * @utility @ankhorage/utility/path
+ * Utility candidate: @ankhorage/utility/path
  */
 function normalizeRel(p: string) {
   return p.replace(/\\/g, '/');
