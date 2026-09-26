@@ -6,7 +6,7 @@ import type { AppCategory, AppManifest } from '@ankhorage/contracts';
 import { getPackageJson } from '../orchestrator/templates';
 
 /*** Write the deterministic standalone Studio-host workspace fixture used by Expo 57 acceptance.
- * @todo Move this fixture writer from src/host/smoke to test/smoke.
+ * TODO: Move this fixture writer from src/host/smoke to test/smoke.
  */
 export async function createExpo57StudioHostFixtureAsync(
   workspaceRoot: string,

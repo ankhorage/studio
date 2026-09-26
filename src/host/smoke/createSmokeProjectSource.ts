@@ -5,7 +5,7 @@ import type { ProjectCreationSource } from '../orchestrator/projectCreationSourc
 
 /***
  * Create one minimal project source for host/smoke scenarios that do not exercise template catalog content.
- * @todo Move this acceptance-fixture builder from production src/host/smoke to test/smoke.
+ * TODO: Move this acceptance-fixture builder from production src/host/smoke to test/smoke.
  */
 export function createSmokeProjectSource(
   category: AppCategory = 'developer_tools',

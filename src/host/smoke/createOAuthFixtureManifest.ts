@@ -9,7 +9,7 @@ interface OAuthFixtureManifestOverrides {
 
 /***
  * Compose a local smoke manifest around the published OAuth fixture without requiring a catalog template.
- * @todo Move this acceptance-fixture composition from production src/host/smoke to test/smoke.
+ * TODO: Move this acceptance-fixture composition from production src/host/smoke to test/smoke.
  */
 export function createOAuthFixtureManifest(args: {
   readonly category: AppCategory;

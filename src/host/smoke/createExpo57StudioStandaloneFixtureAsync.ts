@@ -21,7 +21,7 @@ const STUDIO_CONSUMER_PATHS = [
 ] as const;
 
 /*** Copy the Studio consumer surface into an external standalone acceptance fixture.
- * @todo Move this fixture copier from src/host/smoke to test/smoke.
+ * TODO: Move this fixture copier from src/host/smoke to test/smoke.
  */
 export async function createExpo57StudioStandaloneFixtureAsync(options: {
   readonly fixtureRoot: string;

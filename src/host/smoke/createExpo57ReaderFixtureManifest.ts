@@ -6,7 +6,7 @@ const READER_FORMATS = ['epub', 'pdf'] as const;
 
 /***
  * Build the Expo 57 reader-parity acceptance manifest, including reader screens, bundled media and event bindings for each supported fixture format.
- * @todo Move this acceptance-fixture manifest builder from production src/host/smoke to test/smoke.
+ * TODO: Move this acceptance-fixture manifest builder from production src/host/smoke to test/smoke.
  */
 export function createExpo57ReaderFixtureManifest(): AppManifest {
   const manifest = createOAuthFixtureManifest({
@@ -106,7 +106,7 @@ export function createExpo57ReaderFixtureManifest(): AppManifest {
 
 /***
  * Build one reader fixture screen for the requested format and wire it to the matching bundled media asset.
- * @todo Keep this helper with the reader acceptance fixture when src/host/smoke moves to test/smoke.
+ * TODO: Keep this helper with the reader acceptance fixture when src/host/smoke moves to test/smoke.
  */
 function createReaderScreen(format: (typeof READER_FORMATS)[number]): ScreenSpec {
   return {
@@ -134,7 +134,7 @@ function createReaderScreen(format: (typeof READER_FORMATS)[number]): ScreenSpec
 
 /***
  * Build a contracts event-source binding value for one payload path inside the reader acceptance manifest.
- * @todo Keep this contracts-shaped fixture helper inside test/smoke rather than extracting it as a generic Utility API.
+ * TODO: Keep this contracts-shaped fixture helper inside test/smoke rather than extracting it as a generic Utility API.
  */
 function eventValue(path: string) {
   return { kind: 'source' as const, source: { kind: 'event' as const, path } };

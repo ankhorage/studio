@@ -15,7 +15,7 @@ const EXPO57_CAPABILITY_PERMISSIONS = [
 
 /***
  * Build the generated Expo 57 capability-acceptance manifest with native targets, required permissions and a barcode-scanner screen.
- * @todo Move this acceptance-fixture manifest builder from production src/host/smoke to test/smoke.
+ * TODO: Move this acceptance-fixture manifest builder from production src/host/smoke to test/smoke.
  */
 export function createExpo57CapabilityFixtureManifest(): AppManifest {
   const manifest = createOAuthFixtureManifest({

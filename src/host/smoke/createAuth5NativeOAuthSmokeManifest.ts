@@ -5,7 +5,7 @@ import { createOAuthFixtureManifest } from './createOAuthFixtureManifest';
 
 /***
  * Build the Auth5 native OAuth smoke manifest by layering deployment targets over the shared OAuth fixture manifest.
- * @todo Move this acceptance-fixture manifest builder from production src/host/smoke to test/smoke.
+ * TODO: Move this acceptance-fixture manifest builder from production src/host/smoke to test/smoke.
  */
 export function createAuth5NativeOAuthSmokeManifest(): AppManifest {
   return {

@@ -2,8 +2,8 @@ import path from 'node:path';
 
 /***
  * Serve a generated static export from an ephemeral loopback Bun server for acceptance tests.
- * @utility @ankhorage/utility/bun/http
- * @todo Move the consuming smoke harness out of src/host into test/smoke.
+ * Utility candidate: @ankhorage/utility/bun/http
+ * TODO: Move the consuming smoke harness out of src/host into test/smoke.
  */
 export function createStaticExportServer(
   projectRoot: string,
@@ -31,7 +31,7 @@ export function createStaticExportServer(
 
 /***
  * Resolve static-export URL path candidates using direct files, .html fallback, and directory index fallback.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 function resolveStaticExportPaths(pathname: string): string[] {
   if (pathname === '/') return ['index.html'];
