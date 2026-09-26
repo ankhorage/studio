@@ -3,9 +3,9 @@ import { uniqueSortedStrings } from '@ankhorage/utility/array';
 import { toErrorMessage } from '@ankhorage/utility/error';
 import { createLatestAsyncCoordinator } from '@ankhorage/utility/scheduling';
 import { createCompositeKey, isNonEmptyString } from '@ankhorage/utility/string';
-import { Button, Card, IconButton, Text, useZoraTheme } from '@ankhorage/zora';
+import { Button, Card, Field, IconButton, Text, TextInput, useZoraTheme } from '@ankhorage/zora';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Alert, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, View } from 'react-native';
 
 import {
   createProjectSecret,
@@ -303,12 +303,12 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
     <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
       <Card title={replaceTarget ? 'Rotate secret' : 'Create secret'}>
         <Field label="Environment">
-          <Input value={environment} onChangeText={setEnvironment} />
+          <TextInput value={environment} onChangeText={setEnvironment} />
         </Field>
         <Field label="Logical reference">
-          <Input
+          <TextInput
             value={ref}
-            editable={!replaceTarget}
+            readOnly={replaceTarget !== null}
             autoCapitalize="none"
             placeholder="services/example"
             onChangeText={setRef}
@@ -317,12 +317,16 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
         <View style={styles.columns}>
           <View style={styles.column}>
             <Field label="Kind">
-              <Input value={kind} editable={!replaceTarget} onChangeText={setKind} />
+              <TextInput value={kind} readOnly={replaceTarget !== null} onChangeText={setKind} />
             </Field>
           </View>
           <View style={styles.column}>
             <Field label="Provider (optional)">
-              <Input value={provider} editable={!replaceTarget} onChangeText={setProvider} />
+              <TextInput
+                value={provider}
+                readOnly={replaceTarget !== null}
+                onChangeText={setProvider}
+              />
             </Field>
           </View>
         </View>
@@ -331,16 +335,16 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
         {fields.map((field) => (
           <View key={field.id} style={styles.payloadRow}>
             <View style={styles.payloadName}>
-              <Input
+              <TextInput
                 value={field.name}
-                editable={!replaceTarget}
+                readOnly={replaceTarget !== null}
                 autoCapitalize="none"
                 placeholder="fieldName"
                 onChangeText={(name) => updateField(field.id, { name })}
               />
             </View>
             <View style={styles.grow}>
-              <Input
+              <TextInput
                 value={field.value}
                 secureTextEntry
                 autoCapitalize="none"
@@ -388,7 +392,7 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
         <View style={styles.columns}>
           <View style={styles.column}>
             <Field label="Environment filter">
-              <Input
+              <TextInput
                 value={inventoryEnvironment}
                 autoCapitalize="none"
                 onChangeText={setInventoryEnvironment}
@@ -452,7 +456,7 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
             </View>
           ))}
           <Field label="Type the full logical ref to confirm">
-            <Input
+            <TextInput
               value={pendingDelete.confirmation}
               autoCapitalize="none"
               onChangeText={(confirmation) =>
@@ -514,44 +518,6 @@ function useSecretInventory(projectId: string, environment: string) {
   }, [coordinator, refresh]);
 
   return useMemo(() => ({ items, loading, error, refresh }), [error, items, loading, refresh]);
-}
-
-/***
- * Render a labeled generic field shell used by secret forms.
- * @todo Replace with canonical ZORA FormField.
- */
-function Field(props: { readonly label: string; readonly children: React.ReactNode }) {
-  return (
-    <View style={styles.field}>
-      <Text variant="bodySmall" weight="semiBold">
-        {props.label}
-      </Text>
-      {props.children}
-    </View>
-  );
-}
-
-/***
- * Render a theme-aware generic React Native text input.
- * @todo Replace with canonical ZORA Input.
- */
-function Input(props: React.ComponentProps<typeof TextInput>) {
-  const { theme } = useZoraTheme();
-  return (
-    <TextInput
-      {...props}
-      placeholderTextColor={theme.colors.textMuted}
-      style={[
-        styles.input,
-        {
-          color: theme.colors.text,
-          backgroundColor: theme.colors.background,
-          borderColor: theme.colors.border,
-        },
-        props.style,
-      ]}
-    />
-  );
 }
 
 /*** Render one secret metadata inventory row with usage details and rotate/remove actions. */
@@ -704,14 +670,6 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingBottom: 48,
     gap: 20,
-  },
-  field: { gap: 6 },
-  input: {
-    minHeight: 44,
-    borderWidth: 1,
-    borderRadius: 9,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
   },
   columns: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
   column: { flex: 1, minWidth: 220 },
