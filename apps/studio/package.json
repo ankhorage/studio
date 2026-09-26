@@ -62,7 +62,7 @@
     "@ankhorage/ankh": "^0.10.4",
     "@ankhorage/devtools": "^2.0.0",
     "@ankhorage/utility": "^1.8.1",
-    "@types/bun": "^1.4.1",
+    "@types/bun": "^1.4.2",
     "@types/node": "^24.13.3",
     "@types/react": "~19.2.4",
     "expo-doctor": "1.20.4",
