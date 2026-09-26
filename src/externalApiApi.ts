@@ -15,7 +15,7 @@ import { studioApiBase } from './utils/studioApiBase';
 
 /***
  * Represent an unsuccessful or invalid External API host response with its HTTP status.
- * @todo Rename this error to remove the duplicated `ApiApi` wording when the External API domain is migrated.
+ * TODO: Rename this error to remove the duplicated `ApiApi` wording when the External API domain is migrated.
  */
 class ExternalApiApiError extends Error {
   readonly status: number;
@@ -30,7 +30,7 @@ class ExternalApiApiError extends Error {
 
 /***
  * Ask the Studio host to discover and connect an external API definition.
- * @todo Move External API HTTP access from the source root into the external-apis package-edge adapter.
+ * TODO: Move External API HTTP access from the source root into the external-apis package-edge adapter.
  */
 export function connectExternalApi(
   projectId: string,
@@ -41,7 +41,7 @@ export function connectExternalApi(
 
 /***
  * Create a manually authored REST API definition through the Studio host.
- * @todo Move External API HTTP access from the source root into the external-apis package-edge adapter.
+ * TODO: Move External API HTTP access from the source root into the external-apis package-edge adapter.
  */
 export function createManualRestApi(
   projectId: string,
@@ -68,7 +68,7 @@ export function removeExternalApiConnection(
 
 /***
  * Execute one authored external API operation through the Studio host test endpoint.
- * @todo Move External API operation testing into the external-apis application responsibility.
+ * TODO: Move External API operation testing into the external-apis application responsibility.
  */
 export function testExternalApiOperation(
   projectId: string,
@@ -79,7 +79,7 @@ export function testExternalApiOperation(
 
 /***
  * POST a JSON body to an encoded resource action, decode JSON, permit structured failures, and parse the result.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function requestResult<TResult>(
   projectId: string,
@@ -104,7 +104,7 @@ async function requestResult<TResult>(
 
 /***
  * Decode a Response body as JSON and retain its status when decoding fails.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function readJson(response: Response): Promise<unknown> {
   try {
@@ -160,7 +160,7 @@ function parseTestResult(value: unknown): ExternalApiOperationTestResult {
 
 /***
  * Require a record carrying a boolean `ok` discriminator and preserve its remaining fields.
- * @utility @ankhorage/utility/validation
+ * Utility candidate: @ankhorage/utility/validation
  */
 function requireResultRecord(value: unknown): Record<string, unknown> & { readonly ok: boolean } {
   const record = readRecord(value);
@@ -170,7 +170,7 @@ function requireResultRecord(value: unknown): Record<string, unknown> & { readon
 
 /***
  * Validate DataSourceDiagnostic payloads returned by external API authoring operations.
- * @todo Move reusable DataSourceDiagnostic parsing beside its contracts/data owner.
+ * TODO: Move reusable DataSourceDiagnostic parsing beside its contracts/data owner.
  */
 function parseDiagnostics(value: unknown): readonly DataSourceDiagnostic[] {
   if (!Array.isArray(value)) throw invalidResponse();
@@ -215,7 +215,7 @@ function parseAttempts(value: unknown): readonly ExternalApiDiscoveryAttempt[] {
 
 /***
  * Parse an optional HTTP request summary from an unknown response payload.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 function parseRequestSummary(value: unknown) {
   if (value === undefined) return undefined;
@@ -233,7 +233,7 @@ function parseRequestSummary(value: unknown) {
 
 /***
  * Parse an optional HTTP response status summary from an unknown payload.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 function parseResponseSummary(value: unknown) {
   if (value === undefined) return undefined;
@@ -246,7 +246,7 @@ function parseResponseSummary(value: unknown) {
 
 /***
  * Return whether a response value is a structured result record explicitly marked unsuccessful.
- * @utility @ankhorage/utility/validation
+ * Utility candidate: @ankhorage/utility/validation
  */
 function isStructuredFailure(value: unknown): boolean {
   return readRecord(value)?.ok === false;
@@ -259,7 +259,7 @@ function isConnectedProtocol(value: unknown): value is 'graphql' | 'rest' {
 
 /***
  * Return whether an unknown value is a canonical DataSourceDiagnostic severity.
- * @todo Move this reusable guard beside the contracts/data diagnostic definition.
+ * TODO: Move this reusable guard beside the contracts/data diagnostic definition.
  */
 function isSeverity(value: unknown): value is DataSourceDiagnostic['severity'] {
   return value === 'error' || value === 'info' || value === 'warning';
@@ -267,7 +267,7 @@ function isSeverity(value: unknown): value is DataSourceDiagnostic['severity'] {
 
 /***
  * Validate recursively that a value belongs to the DataContractValue JSON-like value domain.
- * @todo Move this reusable guard beside DataContractValue in the contracts/data owner.
+ * TODO: Move this reusable guard beside DataContractValue in the contracts/data owner.
  */
 function isDataContractValue(value: unknown): value is DataContractValue {
   if (value === null || ['boolean', 'number', 'string'].includes(typeof value)) return true;
@@ -278,7 +278,7 @@ function isDataContractValue(value: unknown): value is DataContractValue {
 
 /***
  * Narrow an unknown value to a strict non-array record or return null.
- * @utility @ankhorage/utility/value
+ * Utility candidate: @ankhorage/utility/value
  */
 function readRecord(value: unknown): Record<string, unknown> | null {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -288,7 +288,7 @@ function readRecord(value: unknown): Record<string, unknown> | null {
 
 /***
  * Narrow an unknown value to a string or return undefined.
- * @utility @ankhorage/utility/value
+ * Utility candidate: @ankhorage/utility/value
  */
 function readString(value: unknown): string | undefined {
   return typeof value === 'string' ? value : undefined;
@@ -296,7 +296,7 @@ function readString(value: unknown): string | undefined {
 
 /***
  * Create a bad-gateway-style error for an invalid upstream response.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 function invalidResponse(): ExternalApiApiError {
   return new ExternalApiApiError('The Studio host returned an invalid external API response.', 502);

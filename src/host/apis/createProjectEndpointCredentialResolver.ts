@@ -9,7 +9,7 @@ import type { ProjectSecretService } from '../secrets/projectSecretService';
 
 /***
  * Adapt one Studio project's secret resolver to the credential lookup contract used by external endpoint tests.
- * @todo Keep this secret/data-source adapter at the external-apis host edge when the Studio domains are reorganized.
+ * TODO: Keep this secret/data-source adapter at the external-apis host edge when the Studio domains are reorganized.
  */
 export function createProjectEndpointCredentialResolver(args: {
   readonly projectId: string;

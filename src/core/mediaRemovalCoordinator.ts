@@ -10,7 +10,7 @@ export interface StudioMediaSourceCleanupResult {
 
 /***
  * Persist removal of a media asset before cleaning up its owned source, restoring the manifest when persistence fails.
- * @todo Move media-removal orchestration out of core into the media application responsibility.
+ * TODO: Move media-removal orchestration out of core into the media application responsibility.
  */
 export async function commitStudioMediaRemoval(args: {
   readonly manifest: AppManifest;
@@ -48,7 +48,7 @@ function cleanupFailure(message: string): StudioMediaDeleteResult {
 
 /***
  * Convert an unknown thrown value into a stable error message.
- * @utility @ankhorage/utility/error
+ * Utility candidate: @ankhorage/utility/error
  */
 function toMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);

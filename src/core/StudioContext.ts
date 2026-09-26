@@ -9,7 +9,7 @@ export const StudioContext = createContext<StudioContextType | undefined>(undefi
 
 /***
  * Read the active Studio context and fail when called outside a StudioProvider.
- * @todo Move package-wide React composition out of core into the app edge.
+ * TODO: Move package-wide React composition out of core into the app edge.
  */
 export const useStudio = () => {
   const context = useContext(StudioContext);
