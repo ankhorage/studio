@@ -121,7 +121,7 @@ export function registerProjectModuleRoutes(
 
 /***
  * Narrow an unknown non-array object to a string-keyed record.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -129,7 +129,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 /***
  * Convert an unknown thrown value to a human-readable message.
- * @utility @ankhorage/utility/error
+ * Utility candidate: @ankhorage/utility/error
  */
 function toMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);

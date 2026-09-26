@@ -234,7 +234,7 @@ function sendSecretRemoveResult(
 
 /***
  * Map secret-store error codes to HTTP status semantics.
- * @todo Keep this mapping beside the SecretStoreResult/error-code contract rather than generic Utility.
+ * TODO: Keep this mapping beside the SecretStoreResult/error-code contract rather than generic Utility.
  */
 function resolveErrorStatus(code: string): number {
   if (code === 'not_found') return 404;
@@ -246,7 +246,7 @@ function resolveErrorStatus(code: string): number {
 
 /***
  * Convert an unknown value to a record, falling back to an empty record.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function asRecord(value: unknown): Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -256,7 +256,7 @@ function asRecord(value: unknown): Record<string, unknown> {
 
 /***
  * Read a trimmed non-empty string from an unknown value.
- * @utility @ankhorage/utility/string
+ * Utility candidate: @ankhorage/utility/string
  */
 function readOptionalString(value: unknown): string | undefined {
   return typeof value === 'string' && value.trim().length > 0 ? value.trim() : undefined;
@@ -264,7 +264,7 @@ function readOptionalString(value: unknown): string | undefined {
 
 /***
  * Parse a non-empty record whose keys and values are non-empty strings and freeze the resulting string record.
- * @utility @ankhorage/utility/validation
+ * Utility candidate: @ankhorage/utility/validation
  */
 function readSecretPayload(value: unknown): SecretPayload | null {
   const record = asRecord(value);

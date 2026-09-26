@@ -31,7 +31,7 @@ const IMPORT_STATEMENT_PATTERN =
 
 /***
  * Parse, merge, validate, sort, and render JavaScript/TypeScript import requirements into canonical generated source.
- * @utility @ankhorage/utility/codegen/imports
+ * Utility candidate: @ankhorage/utility/codegen/imports
  */
 export function composeGeneratedImports(inputs: readonly GeneratedImportInput[]): string {
   const requirements = inputs.flatMap((input) =>
