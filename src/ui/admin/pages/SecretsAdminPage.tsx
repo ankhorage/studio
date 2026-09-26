@@ -1,18 +1,11 @@
 import type { SecretMetadata } from '@ankhorage/contracts/secrets';
 import { uniqueSortedStrings } from '@ankhorage/utility/array';
 import { toErrorMessage } from '@ankhorage/utility/error';
+import { createLatestAsyncCoordinator } from '@ankhorage/utility/scheduling';
 import { createCompositeKey, isNonEmptyString } from '@ankhorage/utility/string';
-import { Heading, IconButton, Text, useZoraTheme } from '@ankhorage/zora';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  View,
-} from 'react-native';
+import { Button, Card, IconButton, Text, useZoraTheme } from '@ankhorage/zora';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
 import {
   createProjectSecret,
@@ -370,18 +363,20 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
 
         <View style={styles.actions}>
           {!replaceTarget ? (
-            <SecondaryButton
-              label="Add field"
+            <Button
+              variant="outline"
               onPress={() => setFields((current) => [...current, createField()])}
-            />
+            >
+              Add field
+            </Button>
           ) : (
-            <SecondaryButton label="Cancel rotation" onPress={resetDraft} />
+            <Button variant="outline" onPress={resetDraft}>
+              Cancel rotation
+            </Button>
           )}
-          <PrimaryButton
-            label={replaceTarget ? 'Rotate secret' : 'Create secret'}
-            loading={saving}
-            onPress={() => void save()}
-          />
+          <Button loading={saving} onPress={() => void save()}>
+            {replaceTarget ? 'Rotate secret' : 'Create secret'}
+          </Button>
         </View>
         {message ? <Message text={message} /> : null}
       </Card>
@@ -466,13 +461,16 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
             />
           </Field>
           <View style={styles.actions}>
-            <SecondaryButton label="Cancel" onPress={() => setPendingDelete(null)} />
-            <PrimaryButton
-              label="Delete and leave references"
+            <Button variant="outline" onPress={() => setPendingDelete(null)}>
+              Cancel
+            </Button>
+            <Button
               loading={deleting}
               disabled={pendingDelete.confirmation !== pendingDelete.metadata.ref}
               onPress={() => void confirmBrokenReferenceDelete()}
-            />
+            >
+              Delete and leave references
+            </Button>
           </View>
         </Card>
       ) : null}
@@ -482,60 +480,40 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
 
 /***
  * Load secret metadata inventory for one project/environment while invalidating stale request generations.
- * @todo The React hook remains a UI adapter; extract/reuse the already identified latest-generation async coordinator for the request race policy.
  */
 function useSecretInventory(projectId: string, environment: string) {
   const [items, setItems] = useState<readonly SecretMetadata[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const requestGeneration = useRef(0);
+  const coordinator = useMemo(createLatestAsyncCoordinator, []);
 
   /*** Refresh secret inventory and apply only the latest request generation. */
   const refresh = useCallback(async () => {
-    const generation = ++requestGeneration.current;
     setItems([]);
     setLoading(true);
     setError(null);
-    try {
-      const nextItems = await listProjectSecrets({ projectId, environment });
-      if (generation !== requestGeneration.current) return;
-      setItems(nextItems);
-    } catch (caught) {
-      if (generation !== requestGeneration.current) return;
-      setItems([]);
-      setError(toMessage(caught));
-    } finally {
-      if (generation === requestGeneration.current) setLoading(false);
-    }
-  }, [environment, projectId]);
+    await coordinator.run({
+      load: () => listProjectSecrets({ projectId, environment }),
+      onValue: (nextItems) => {
+        setItems(nextItems);
+        setLoading(false);
+      },
+      onError: (caught) => {
+        setItems([]);
+        setError(toMessage(caught));
+        setLoading(false);
+      },
+    });
+  }, [coordinator, environment, projectId]);
 
   useEffect(() => {
     void refresh();
     return () => {
-      requestGeneration.current += 1;
+      coordinator.invalidate();
     };
-  }, [refresh]);
+  }, [coordinator, refresh]);
 
   return useMemo(() => ({ items, loading, error, refresh }), [error, items, loading, refresh]);
-}
-
-/***
- * Render a themed generic card shell used by the secrets page.
- * @todo Replace with canonical ZORA Card.
- */
-function Card(props: { readonly title: string; readonly children: React.ReactNode }) {
-  const { theme } = useZoraTheme();
-  return (
-    <View
-      style={[
-        styles.card,
-        { backgroundColor: theme.colors.surface, borderColor: theme.colors.border },
-      ]}
-    >
-      <Heading level={3} text={props.title} />
-      {props.children}
-    </View>
-  );
 }
 
 /***
@@ -639,47 +617,17 @@ function InventoryRow(props: {
           : null}
       </View>
       <View style={styles.rowActions}>
-        <SecondaryButton
-          label={expanded ? 'Hide usage' : 'Usage'}
-          compact
-          onPress={() => setExpanded((current) => !current)}
-        />
-        <SecondaryButton label="Rotate" compact onPress={props.onRotate} />
-        <SecondaryButton label="Remove" compact danger onPress={props.onRemove} />
+        <Button size="s" variant="outline" onPress={() => setExpanded((current) => !current)}>
+          {expanded ? 'Hide usage' : 'Usage'}
+        </Button>
+        <Button size="s" variant="outline" onPress={props.onRotate}>
+          Rotate
+        </Button>
+        <Button color="danger" size="s" variant="outline" onPress={props.onRemove}>
+          Remove
+        </Button>
       </View>
     </View>
-  );
-}
-
-/***
- * Render the secrets page's primary loading/action button.
- * @todo Replace with canonical ZORA Button.
- */
-function PrimaryButton(props: {
-  readonly label: string;
-  readonly loading: boolean;
-  readonly disabled?: boolean;
-  readonly onPress: () => void;
-}) {
-  const { theme } = useZoraTheme();
-  return (
-    <Pressable
-      disabled={props.loading || props.disabled === true}
-      onPress={props.onPress}
-      style={[
-        styles.primaryButton,
-        { backgroundColor: theme.colors.primary },
-        props.disabled ? styles.disabledButton : null,
-      ]}
-    >
-      {props.loading ? (
-        <ActivityIndicator color="#ffffff" />
-      ) : (
-        <Text emphasis="inverse" weight="semiBold">
-          {props.label}
-        </Text>
-      )}
-    </Pressable>
   );
 }
 
@@ -692,46 +640,17 @@ function FilterPills(props: {
   return (
     <View style={styles.filterPills}>
       {props.options.map((option) => (
-        <SecondaryButton
+        <Button
           key={option}
-          label={option}
-          compact
-          selected={props.value === option}
+          color={props.value === option ? 'primary' : 'neutral'}
+          size="s"
+          variant={props.value === option ? 'soft' : 'outline'}
           onPress={() => props.onChange(option)}
-        />
+        >
+          {option}
+        </Button>
       ))}
     </View>
-  );
-}
-
-/***
- * Render the secrets page's secondary action/filter button.
- * @todo Replace with canonical ZORA Button/segmented selection primitive.
- */
-function SecondaryButton(props: {
-  readonly label: string;
-  readonly compact?: boolean;
-  readonly danger?: boolean;
-  readonly selected?: boolean;
-  readonly onPress: () => void;
-}) {
-  const { theme } = useZoraTheme();
-  return (
-    <Pressable
-      onPress={props.onPress}
-      style={[
-        styles.secondaryButton,
-        props.compact ? styles.compactButton : null,
-        {
-          borderColor: props.selected ? theme.colors.primary : theme.colors.border,
-          backgroundColor: props.selected ? theme.colors.surface : 'transparent',
-        },
-      ]}
-    >
-      <Text color={props.danger ? 'danger' : 'neutral'} variant="bodySmall" weight="semiBold">
-        {props.label}
-      </Text>
-    </Pressable>
   );
 }
 
@@ -786,12 +705,6 @@ const styles = StyleSheet.create({
     paddingBottom: 48,
     gap: 20,
   },
-  card: {
-    borderWidth: 1,
-    borderRadius: 14,
-    padding: 18,
-    gap: 14,
-  },
   field: { gap: 6 },
   input: {
     minHeight: 44,
@@ -806,26 +719,6 @@ const styles = StyleSheet.create({
   payloadName: { width: 180 },
   grow: { flex: 1 },
   actions: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 10 },
-  primaryButton: {
-    minHeight: 42,
-    minWidth: 140,
-    borderRadius: 9,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  disabledButton: { opacity: 0.5 },
-  secondaryButton: {
-    minHeight: 42,
-    borderWidth: 1,
-    borderRadius: 9,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  compactButton: { minHeight: 34, paddingHorizontal: 10, paddingVertical: 6 },
   message: { borderWidth: 1, borderRadius: 9, padding: 12 },
   inventoryRow: {
     borderWidth: 1,
