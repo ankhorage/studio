@@ -19,7 +19,7 @@ const KNOWN_ZORA_EXTENSIONS = STUDIO_ZORA_EXTENSION_SOURCES.map(
 
 /***
  * Resolve extension packages from the component types actually used by one manifest.
- * @todo Move ZORA extension discovery from the host edge to project-generation/module ownership; host should consume the resolved extension plan.
+ * TODO: Move ZORA extension discovery from the host edge to project-generation/module ownership; host should consume the resolved extension plan.
  */
 export function resolveZoraExtensionsForManifest(
   manifest: AppManifest,
@@ -35,7 +35,7 @@ export function resolveZoraExtensionsForManifest(
 
 /***
  * Resolve known ZORA extensions from a package dependency record.
- * @todo Keep dependency-to-extension projection with the same project-generation/module owner as manifest extension discovery.
+ * TODO: Keep dependency-to-extension projection with the same project-generation/module owner as manifest extension discovery.
  */
 export function resolveZoraExtensionsFromDependencies(
   dependencies: Readonly<Record<string, string>>,

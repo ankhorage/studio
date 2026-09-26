@@ -5,7 +5,7 @@ const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
 
 /***
  * Resolve the first matching workspace root from a preferred directory and cwd, failing with a descriptive message when none is found.
- * @utility @ankhorage/utility/node/workspace
+ * Utility candidate: @ankhorage/utility/node/workspace
  */
 export function resolveWorkspaceRoot(fromDir: string, cwd = process.cwd()) {
   const candidates = [fromDir, cwd];
@@ -20,7 +20,7 @@ export function resolveWorkspaceRoot(fromDir: string, cwd = process.cwd()) {
 
 /***
  * Walk parent directories until a package root satisfies package-name and required-path markers, tolerating invalid intermediate package.json files.
- * @utility @ankhorage/utility/node/workspace
+ * Utility candidate: @ankhorage/utility/node/workspace
  */
 function findStudioWorkspaceRoot(startPath: string): string | null {
   let current = path.resolve(startPath);

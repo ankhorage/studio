@@ -12,7 +12,7 @@ import { ZORA_COMPONENT_META } from '@ankhorage/zora/metadata';
 /***
  * Infer screen permission/capability requirements by walking authored UiNodes and collecting
  * membership declared by ZORA component metadata.
- * @todo Move this requirements-domain behavior out of generic `host/utils`; it depends directly
+ * TODO: Move this requirements-domain behavior out of generic `host/utils`; it depends directly
  * on shared ScreenRequirements contracts and ZORA metadata and should live with the owning
  * generation/requirements capability.
  */
@@ -46,7 +46,7 @@ export function inferScreenRequirementsFromUi(root: UiNode): ScreenRequirements 
 
 /***
  * Merge inferred and explicit ScreenRequirements membership, with explicit membership retained.
- * @todo This is reusable requirements-domain behavior, but the correct owner is the
+ * TODO: This is reusable requirements-domain behavior, but the correct owner is the
  * ScreenRequirements/contracts capability rather than generic Utility.
  */
 export function mergeScreenRequirements(

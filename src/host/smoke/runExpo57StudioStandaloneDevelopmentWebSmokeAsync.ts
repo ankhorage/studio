@@ -9,7 +9,7 @@ const HTTP_TIMEOUT_MS = 120_000;
 
 /***
  * Launch the standalone Studio development Web app and exercise project/category/detail navigation, pointer hit testing, theme toggling, icon fonts and host-backed project deletion in a real browser.
- * @todo Move this development-Web acceptance smoke from production src/host/smoke to test/smoke.
+ * TODO: Move this development-Web acceptance smoke from production src/host/smoke to test/smoke.
  */
 export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options: {
   readonly apiUrl: string;
@@ -107,7 +107,7 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
 
 /***
  * Collect UTF-8 stdout and stderr chunks from a child process into a shared output buffer.
- * @utility @ankhorage/utility/node/process
+ * Utility candidate: @ankhorage/utility/node/process
  */
 function collectOutput(processToCollect: ChildProcessWithoutNullStreams, output: string[]): void {
   processToCollect.stdout.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
@@ -140,7 +140,7 @@ async function pointerClickAsync(
 
 /***
  * Terminate a detached child-process group and wait briefly for exit without hanging the caller.
- * @utility @ankhorage/utility/node/process
+ * Utility candidate: @ankhorage/utility/node/process
  */
 async function stopProcessAsync(processToStop: ChildProcessWithoutNullStreams): Promise<void> {
   if (!processToStop.pid || processToStop.exitCode !== null) return;
@@ -157,7 +157,7 @@ async function stopProcessAsync(processToStop: ChildProcessWithoutNullStreams): 
 
 /***
  * Poll an HTTP URL while supervising its child process, including recent process output in failures.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function waitForHttpAsync(
   url: string,

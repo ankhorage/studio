@@ -90,7 +90,7 @@ export type {
 } from './types/project-generation';
 
 /***
- * @todo Make `src/index.ts` a public exports-only entrypoint. Package metadata, authoring contracts, tree editing, placement policy, templates and insert-catalog implementations need canonical owner modules and should only be re-exported here.
+ * TODO: Make `src/index.ts` a public exports-only entrypoint. Package metadata, authoring contracts, tree editing, placement policy, templates and insert-catalog implementations need canonical owner modules and should only be re-exported here.
  */
 export const STUDIO_PACKAGE_NAME = '@ankhorage/studio' as const;
 
@@ -595,8 +595,8 @@ export const TPL_SCREEN_EMPTY: UiNode = {
 
 /***
  * Generate a compact time/random identifier with an optional lowercase prefix.
- * @utility @ankhorage/utility/id
- * @todo Move the Studio-facing wrapper out of `src/index.ts`; the reusable identifier primitive belongs in Utility.
+ * Utility candidate: @ankhorage/utility/id
+ * TODO: Move the Studio-facing wrapper out of `src/index.ts`; the reusable identifier primitive belongs in Utility.
  */
 export const generateStudioId: StudioIdGenerator = (prefix?: string): string => {
   return createUtilityCompactId(prefix?.toLowerCase() ?? '', { randomLength: 9 });
@@ -604,8 +604,8 @@ export const generateStudioId: StudioIdGenerator = (prefix?: string): string => 
 
 /***
  * Deep-clone a UiNode tree while assigning fresh identifiers and shallow-cloning node props.
- * @utility @ankhorage/utility/tree
- * @todo `cloneTreeWithNewIds` currently allocates child ids before the root; retain this public pre-order callback contract until Utility supports configurable traversal order.
+ * Utility candidate: @ankhorage/utility/tree
+ * TODO: `cloneTreeWithNewIds` currently allocates child ids before the root; retain this public pre-order callback contract until Utility supports configurable traversal order.
  */
 export const cloneWithNewIds = (
   node: UiNode,
@@ -626,8 +626,8 @@ export const cloneWithNewIds = (
 
 /***
  * Find the first node with a matching id in a depth-first tree traversal.
- * @utility @ankhorage/utility/tree
- * @todo Move the UiNode wrapper out of `src/index.ts`; parameterize id and child accessors for Utility.
+ * Utility candidate: @ankhorage/utility/tree
+ * TODO: Move the UiNode wrapper out of `src/index.ts`; parameterize id and child accessors for Utility.
  */
 export const findNodeById = (root: UiNode, id: string): UiNode | null => {
   return findTreeNode(root, id, uiNodeTreeAdapter) ?? null;
@@ -635,8 +635,8 @@ export const findNodeById = (root: UiNode, id: string): UiNode | null => {
 
 /***
  * Immutably update one UiNode by id while preserving Studio's alias/style versus props patch semantics.
- * @utility @ankhorage/utility/tree
- * @todo Keep Studio-specific patch projection in the canvas/properties owner and extract the generic immutable tree-update primitive to Utility.
+ * Utility candidate: @ankhorage/utility/tree
+ * TODO: Keep Studio-specific patch projection in the canvas/properties owner and extract the generic immutable tree-update primitive to Utility.
  */
 export const updateNodeInTree = (
   root: UiNode,
@@ -663,8 +663,8 @@ export const updateNodeInTree = (
 
 /***
  * Immutably remove a node by id from a UiNode tree and preserve unchanged branches by reference.
- * @utility @ankhorage/utility/tree
- * @todo Move the UiNode wrapper out of `src/index.ts` and parameterize tree accessors for Utility.
+ * Utility candidate: @ankhorage/utility/tree
+ * TODO: Move the UiNode wrapper out of `src/index.ts` and parameterize tree accessors for Utility.
  */
 export const removeNodeFromTree = (root: UiNode, nodeId: string): UiNode | null => {
   return removeTreeNode(root, nodeId, uiNodeTreeAdapter) ?? null;
@@ -678,7 +678,7 @@ interface NodeWithParent {
 
 /***
  * Find a node together with its parent and sibling index in a depth-first traversal.
- * @utility @ankhorage/utility/tree
+ * Utility candidate: @ankhorage/utility/tree
  */
 function findNodeWithParent(root: UiNode, nodeId: string): NodeWithParent | null {
   return findTreeNodeWithParent(root, nodeId, uiNodeTreeAdapter) ?? null;
@@ -686,7 +686,7 @@ function findNodeWithParent(root: UiNode, nodeId: string): NodeWithParent | null
 
 /***
  * Return whether a node tree contains a descendant with the requested id.
- * @utility @ankhorage/utility/tree
+ * Utility candidate: @ankhorage/utility/tree
  */
 function isDescendantNode(node: UiNode, descendantId: string): boolean {
   return isTreeDescendant(node, node.id, descendantId, uiNodeTreeAdapter);
@@ -694,7 +694,7 @@ function isDescendantNode(node: UiNode, descendantId: string): boolean {
 
 /***
  * Immutably remove one node from a tree and return both the next tree and removed node for move operations.
- * @utility @ankhorage/utility/tree
+ * Utility candidate: @ankhorage/utility/tree
  */
 function removeNodeForMove(args: { node: UiNode; nodeId: string }): {
   node: UiNode;
@@ -753,7 +753,7 @@ function removeNodeForMove(args: { node: UiNode; nodeId: string }): {
 
 /***
  * Return whether Studio component metadata permits one child type under a parent type.
- * @todo Move this component-placement policy from `src/index.ts` into the `canvas/` or insert-authoring domain.
+ * TODO: Move this component-placement policy from `src/index.ts` into the `canvas/` or insert-authoring domain.
  */
 export function canAcceptChild(args: {
   parentType: string;
@@ -769,7 +769,7 @@ export function canAcceptChild(args: {
 
 /***
  * Validate one resolved Studio placement against parent existence, child policy, index bounds and sibling-reference invariants.
- * @todo Move placement validation from the public entrypoint into the `canvas/` domain.
+ * TODO: Move placement validation from the public entrypoint into the `canvas/` domain.
  */
 export function validateNodePlacement(args: {
   root: UiNode;
@@ -860,7 +860,7 @@ export function validateNodePlacement(args: {
 
 /***
  * Resolve a requested inside/before/after insertion target to a validated Studio placement.
- * @todo Move insertion-placement policy from `src/index.ts` into the `canvas/`/insert domain.
+ * TODO: Move insertion-placement policy from `src/index.ts` into the `canvas/`/insert domain.
  */
 export function resolveInsertPlacement(args: {
   root: UiNode;
@@ -925,7 +925,7 @@ export function resolveInsertPlacement(args: {
 
 /***
  * Resolve the preferred insertion placement by trying the selected node, its sibling position, then the screen root.
- * @todo Move Studio default insertion policy from `src/index.ts` into the insert/canvas domain.
+ * TODO: Move Studio default insertion policy from `src/index.ts` into the insert/canvas domain.
  */
 export function resolveDefaultInsertPlacement(args: {
   root: UiNode;
@@ -986,7 +986,7 @@ export interface InsertNodeAtPlacementResult {
 
 /***
  * Immutably insert a child at a requested parent/index anywhere in a tree and report whether insertion occurred.
- * @utility @ankhorage/utility/tree
+ * Utility candidate: @ankhorage/utility/tree
  */
 function insertChildAtIndex(args: {
   node: UiNode;
@@ -1035,7 +1035,7 @@ function insertChildAtIndex(args: {
 
 /***
  * Create and insert one Studio node after validating its requested placement.
- * @todo Move Studio insertion orchestration from `src/index.ts` into the insert/canvas domain.
+ * TODO: Move Studio insertion orchestration from `src/index.ts` into the insert/canvas domain.
  */
 export function insertNodeAtPlacement(
   args: InsertNodeAtPlacementArgs,
@@ -1078,7 +1078,7 @@ export interface MoveNodeToPlacementResult {
 
 /***
  * Adjust a target placement for removal-induced index shifts and reject no-op/self-reference moves.
- * @todo Keep this placement-specific policy in the canvas domain.
+ * TODO: Keep this placement-specific policy in the canvas domain.
  */
 function getAdjustedMovePlacement(args: {
   source: NodeWithParent;
@@ -1111,7 +1111,7 @@ function getAdjustedMovePlacement(args: {
 
 /***
  * Validate and resolve a requested Studio node move after accounting for source removal and descendant/no-op invariants.
- * @todo Move node-move policy from `src/index.ts` into the canvas domain.
+ * TODO: Move node-move policy from `src/index.ts` into the canvas domain.
  */
 export function resolveMoveNodePlacement(args: MoveNodeToPlacementArgs): PlacementResolutionResult {
   const { root, nodeId, placement, componentMeta } = args;
@@ -1183,7 +1183,7 @@ export function resolveMoveNodePlacement(args: MoveNodeToPlacementArgs): Placeme
 
 /***
  * Execute a validated Studio node move as immutable removal followed by insertion.
- * @todo Move node-move orchestration from `src/index.ts` into the canvas domain.
+ * TODO: Move node-move orchestration from `src/index.ts` into the canvas domain.
  */
 export function moveNodeToPlacement(
   args: MoveNodeToPlacementArgs,
@@ -1258,7 +1258,7 @@ export const STUDIO_INSERT_RECIPES: readonly InsertRecipe[] = [
 
 /***
  * Resolve Studio's display label for an insert-catalog category, falling back to the raw category id.
- * @todo Move insert-catalog presentation metadata out of `src/index.ts` into the insert domain.
+ * TODO: Move insert-catalog presentation metadata out of `src/index.ts` into the insert domain.
  */
 export function getInsertCatalogCategoryLabel(category: string): string {
   return Object.entries(CATEGORY_LABELS).find(([key]) => key === category)?.[1] ?? category;
@@ -1281,7 +1281,7 @@ function describeInsertRecipeIssue(issue: InsertRecipeIssue): string {
 
 /***
  * Validate an insert recipe recursively against Studio component metadata and allowed-child constraints.
- * @todo Move recipe validation from `src/index.ts` into the insert/templates domain.
+ * TODO: Move recipe validation from `src/index.ts` into the insert/templates domain.
  */
 export function validateInsertRecipe(
   recipe: InsertRecipe,
@@ -1323,7 +1323,7 @@ export function validateInsertRecipe(
 
 /***
  * Materialize a Studio insert-recipe tree into UiNodes using component blueprint defaults and an injected id generator.
- * @todo Move recipe-node creation from `src/index.ts` into the insert/templates domain.
+ * TODO: Move recipe-node creation from `src/index.ts` into the insert/templates domain.
  */
 function createNodeFromRecipe(
   recipe: InsertRecipe,
@@ -1348,7 +1348,7 @@ function createNodeFromRecipe(
 
 /***
  * Materialize one enabled component or recipe catalog entry into a fresh UiNode tree.
- * @todo Move insert-catalog node creation from `src/index.ts` into the insert domain.
+ * TODO: Move insert-catalog node creation from `src/index.ts` into the insert domain.
  */
 export function createNodeFromCatalogEntry(
   entry: InsertCatalogEntry,
@@ -1435,7 +1435,7 @@ function createRecipeEntry(
 
 /***
  * Build and deterministically sort Studio's component/recipe insert catalog from component metadata and recipes.
- * @todo Move insert-catalog construction from `src/index.ts` into the insert domain.
+ * TODO: Move insert-catalog construction from `src/index.ts` into the insert domain.
  */
 export function buildInsertCatalogEntries(args: {
   componentMeta: StudioComponentMetaRegistry;
@@ -1483,7 +1483,7 @@ function resolvePlacementForEntry(args: {
 
 /***
  * Resolve enabled/disabled insert-catalog state against the active screen and selected-node placement context.
- * @todo Move context-sensitive insert catalog projection from `src/index.ts` into the insert/canvas application domain.
+ * TODO: Move context-sensitive insert catalog projection from `src/index.ts` into the insert/canvas application domain.
  */
 export function resolveInsertCatalogEntries(args: {
   entries: readonly InsertCatalogEntry[];
@@ -1537,7 +1537,7 @@ export function resolveInsertCatalogEntries(args: {
 
 /***
  * Return whether a value is a non-array record whose values are all strings or numbers.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function isStyleRecord(value: unknown): value is Record<string, string | number> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;

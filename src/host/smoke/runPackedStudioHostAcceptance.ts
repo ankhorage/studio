@@ -16,7 +16,7 @@ const STUDIO_OWNED_PEERS = {
 } as const;
 
 /*** Pack the current Studio branch and validate its public host and APM subpaths from a cold external consumer.
- * @todo Move this package acceptance harness from src/host/smoke to test/acceptance.
+ * TODO: Move this package acceptance harness from src/host/smoke to test/acceptance.
  */
 export async function runPackedStudioHostAcceptance(
   options: { readonly keepFixture?: boolean } = {},
@@ -243,7 +243,7 @@ async function installConsumerAsync(consumerRoot: string, cacheRoot: string): Pr
 }
 
 /*** Return whether target is equal to or nested beneath parent.
- * @utility @ankhorage/utility/node/path
+ * Utility candidate: @ankhorage/utility/node/path
  */
 function isWithin(target: string, parent: string): boolean {
   const relativePath = path.relative(parent, target);
