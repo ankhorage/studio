@@ -1,6 +1,6 @@
 /***
  * Fail browser acceptance when collected issues contain anything beyond explicitly tolerated React Native Web warnings.
- * @todo Move this browser acceptance policy out of src/host into test/smoke.
+ * TODO: Move this browser acceptance policy out of src/host into test/smoke.
  */
 export function assertNoBrowserErrors(issues: readonly string[], label: string): void {
   const unexpectedIssues = issues.filter((issue) => !isKnownReactNativeWebWarning(issue));

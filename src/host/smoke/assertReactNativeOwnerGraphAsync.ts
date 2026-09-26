@@ -9,7 +9,7 @@ interface InstalledPackageJson {
 
 /***
  * Assert one physical React Native installation and compatible Ankhorage owner/peer ranges in a fixture graph.
- * @todo Move this dependency-graph acceptance policy out of src/host into test/smoke.
+ * TODO: Move this dependency-graph acceptance policy out of src/host into test/smoke.
  */
 export async function assertReactNativeOwnerGraphAsync(options: {
   readonly installationRoot: string;
@@ -105,7 +105,7 @@ export async function assertReactNativeOwnerGraphAsync(options: {
 
 /***
  * Discover all reachable physical node_modules roots, including Bun store and nested package installations.
- * @utility @ankhorage/utility/node/package
+ * Utility candidate: @ankhorage/utility/node/package
  */
 async function listNodeModulesRootsAsync(initialRoot: string): Promise<string[]> {
   const pending = [initialRoot];
@@ -151,7 +151,7 @@ async function listNodeModulesRootsAsync(initialRoot: string): Promise<string[]>
 
 /***
  * Return whether a filesystem target resolves to a directory.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function isDirectoryAsync(target: string): Promise<boolean> {
   return (await lstat(target).catch(() => null))?.isDirectory() ?? false;
@@ -159,7 +159,7 @@ async function isDirectoryAsync(target: string): Promise<boolean> {
 
 /***
  * Return whether a filesystem target exists.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function pathExistsAsync(target: string): Promise<boolean> {
   return (await lstat(target).catch(() => null)) !== null;

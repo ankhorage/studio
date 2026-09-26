@@ -10,7 +10,7 @@ import { satisfiesCaretSemverRange } from '../orchestrator/semverRange';
 
 /***
  * Assert that a smoke fixture resolves an exact registry package version from its own node_modules and lockfile.
- * @todo Move this acceptance helper out of src/host into test/smoke after its generic provenance primitives move to Utility.
+ * TODO: Move this acceptance helper out of src/host into test/smoke after its generic provenance primitives move to Utility.
  */
 export async function assertInstalledRegistryPackageAsync(options: {
   readonly installationRoot: string;

@@ -12,7 +12,7 @@ const STUDIO_WEB_ICON_FONT_FAMILIES = [
 ] as const;
 
 /*** Assert that the Studio web smoke fixture loads and uses the expected icon-font families.
- * @todo Move this browser acceptance assertion from src/host/smoke to test/smoke.
+ * TODO: Move this browser acceptance assertion from src/host/smoke to test/smoke.
  */
 export async function assertStudioWebIconFontsAsync(
   browser: ChromeNavigationSession,

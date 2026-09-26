@@ -16,7 +16,7 @@ export interface Auth5NativeOAuthSmokeFixture {
 
 /***
  * Create and persist the isolated Auth5 native OAuth smoke project, returning the generated project paths and callback route consumed by the acceptance flow.
- * @todo Move this acceptance-fixture orchestration from production src/host/smoke to test/smoke.
+ * TODO: Move this acceptance-fixture orchestration from production src/host/smoke to test/smoke.
  */
 export async function createAuth5NativeOAuthSmokeFixture(
   workspaceRoot: string,

@@ -3,7 +3,7 @@ import path from 'node:path';
 
 /***
  * Assert generated Expo 57 Android/iOS prebuild output contains required capability and platform evidence.
- * @todo Move this native acceptance policy out of src/host into test/smoke.
+ * TODO: Move this native acceptance policy out of src/host into test/smoke.
  */
 export async function assertExpo57GeneratedCapabilityNativePrebuildAsync(
   projectRoot: string,
@@ -68,7 +68,7 @@ export async function assertExpo57GeneratedCapabilityNativePrebuildAsync(
 
 /***
  * Recursively list files beneath a directory.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function listFilesAsync(rootPath: string): Promise<string[]> {
   const entries = await readdir(rootPath, { withFileTypes: true });
