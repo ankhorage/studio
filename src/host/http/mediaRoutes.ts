@@ -5,6 +5,7 @@ import {
   type MediaStorageSource,
 } from '@ankhorage/contracts';
 import { toErrorMessage } from '@ankhorage/utility/error';
+import { isNonEmptyString } from '@ankhorage/utility/string';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import { ProjectBundledMediaService } from '../media/projectBundledMediaService';
@@ -166,10 +167,9 @@ function readStorageSource(value: unknown): MediaStorageSource | null {
 
 /***
  * Read a non-empty string from an unknown value.
- * @utility @ankhorage/utility/string
  */
 function readString(value: unknown) {
-  return typeof value === 'string' && value.length > 0 ? value : undefined;
+  return isNonEmptyString(value) ? value : undefined;
 }
 
 /***
