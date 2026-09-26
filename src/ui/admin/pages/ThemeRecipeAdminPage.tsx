@@ -1,12 +1,17 @@
+import type { ThemeRecipeFieldOverrides } from '@ankhorage/contracts';
 import { Card, Text, useZoraTheme, ZORA_THEME_RECIPE_META } from '@ankhorage/zora';
 import React from 'react';
 
 import { AuthoringEditor } from '../../../features/authoring-engine/adapters/inbound/AuthoringEditor';
 import { resolveZoraThemeRecipeAuthoring } from '../../../features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring';
+import { applyAuthoringMutation } from '../../../features/authoring-engine/application/use-cases/applyAuthoringMutation';
 import { deriveAuthoringModel } from '../../../features/authoring-engine/application/use-cases/deriveAuthoringModel';
 import type { AuthoringMutation } from '../../../types/authoring-engine';
 import { AdminHeader, AdminScroll } from '../adminPagePrimitives';
-import { type ThemeRecipeAuthoringKind, updateThemeRecipeField } from './themeRecipeAuthoringModel';
+import {
+  type ThemeRecipeAuthoringKind,
+  updateThemeRecipeOverrides,
+} from './themeRecipeAuthoringModel';
 import { resolveThemeRecipeTokenOptions } from './themeRecipeTokenOptions';
 import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 
@@ -37,20 +42,17 @@ export function ThemeRecipeAdminPage(props: {
     resolveThemeRecipeTokenOptions(runtimeTheme, family),
   );
   const model = deriveAuthoringModel({ ...authoring, value: overrides });
-  /*** Apply one recipe field override or restore inheritance by removing it from the authored theme. */
-  const updateField = (mutation: AuthoringMutation) => {
-    if (mutation.kind === 'rename-key') return;
-    const [fieldName] = mutation.path;
-    const value = mutation.kind === 'unset' ? undefined : mutation.value;
-    if (!fieldName || mutation.path.length !== 1) return;
-    if (value !== undefined && typeof value !== 'string' && typeof value !== 'boolean') return;
+  /*** Apply one recipe mutation through the central mutation engine before persisting the canonical Theme override object. */
+  const updateRecipe = (mutation: AuthoringMutation) => {
+    const current: ThemeRecipeFieldOverrides = overrides ?? {};
+    const result = applyAuthoringMutation(current, mutation);
+    if (!result.ok) return;
     updateTheme({
-      recipes: updateThemeRecipeField({
+      recipes: updateThemeRecipeOverrides({
         recipes: selection.theme.recipes,
         kind: props.kind,
         recipeName,
-        fieldName,
-        value,
+        fields: result.value,
       }),
     });
   };
@@ -62,7 +64,7 @@ export function ThemeRecipeAdminPage(props: {
         description={meta.description ?? `Edit inherited ${meta.kind} Theme defaults.`}
       />
       <Card title={`${meta.kind === 'component' ? 'Component' : 'Pattern'} recipe`}>
-        <AuthoringEditor model={model} onMutation={updateField} />
+        <AuthoringEditor model={model} onMutation={updateRecipe} />
       </Card>
       <Text color="neutral" emphasis="muted" variant="caption">
         Inherited fields are omitted from the manifest and continue to follow ZORA owner defaults.

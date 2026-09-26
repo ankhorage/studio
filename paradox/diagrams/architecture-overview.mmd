@@ -344,6 +344,7 @@ graph TD
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts["src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.test.ts"]
   package__ankhorage_studio -.-> module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts --> module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_ts
+  module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts --> module_src_features_authoring_engine_application_use_cases_applyAuthoringMutation_ts
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts --> module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_test_ts --> module_src_ui_admin_pages_themeRecipeAuthoringModel_ts
   module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_ts["src/features/authoring-engine/adapters/outbound/resolveZoraThemeRecipeAuthoring.ts"]
@@ -1607,6 +1608,7 @@ graph TD
   module_src_projectDeployApi_ts --> module_src_projectDeployReleaseHistoryRecord_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployRuntimeInput_ts
+  module_src_projectDeployApi_ts --> module_src_types_project_deploy_authoring_ts
   module_src_projectDeployApiError_ts["src/projectDeployApiError.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployApiError_ts
   module_src_projectDeployAssetPicker_test_ts["src/projectDeployAssetPicker.test.ts"]
@@ -1623,6 +1625,7 @@ graph TD
   module_src_projectDeployClient_ts --> module_src_projectDeployRequest_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployRuntimeInput_ts
   module_src_projectDeployClient_ts --> module_src_secretResponseGuard_ts
+  module_src_projectDeployClient_ts --> module_src_types_project_deploy_authoring_ts
   module_src_projectDeployMonetizationInspectionResult_ts["src/projectDeployMonetizationInspectionResult.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployMonetizationInspectionResult_ts
   module_src_projectDeployReleaseExecutionResponse_ts["src/projectDeployReleaseExecutionResponse.ts"]
@@ -1664,9 +1667,6 @@ graph TD
   package__ankhorage_studio -.-> module_src_projectStructureSkill_test_ts
   module_src_projectWorkspaceContracts_ts["src/projectWorkspaceContracts.ts"]
   package__ankhorage_studio -.-> module_src_projectWorkspaceContracts_ts
-  module_src_propertiesAuthoringModel_test_ts["src/propertiesAuthoringModel.test.ts"]
-  package__ankhorage_studio -.-> module_src_propertiesAuthoringModel_test_ts
-  module_src_propertiesAuthoringModel_test_ts --> module_src_propertiesAuthoringModel_ts
   module_src_propertiesAuthoringModel_ts["src/propertiesAuthoringModel.ts"]
   package__ankhorage_studio -.-> module_src_propertiesAuthoringModel_ts
   module_src_removeExternalApi_ts["src/removeExternalApi.ts"]
@@ -1792,6 +1792,8 @@ graph TD
   package__ankhorage_studio -.-> module_src_templateCatalogContracts_ts
   module_src_types_authoring_engine_ts["src/types/authoring-engine.ts"]
   package__ankhorage_studio -.-> module_src_types_authoring_engine_ts
+  module_src_types_project_deploy_authoring_ts["src/types/project-deploy-authoring.ts"]
+  package__ankhorage_studio -.-> module_src_types_project_deploy_authoring_ts
   module_src_types_project_generation_ts["src/types/project-generation.ts"]
   package__ankhorage_studio -.-> module_src_types_project_generation_ts
   module_src_types_project_update_dashboard_ts["src/types/project-update-dashboard.ts"]
@@ -1918,6 +1920,8 @@ graph TD
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_pages_adminAuthSessionModel_ts
   module_src_ui_admin_pages_AuthAdminPlatformSetup_test_ts["src/ui/admin/pages/AuthAdminPlatformSetup.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_AuthAdminPlatformSetup_test_ts
+  module_src_ui_admin_pages_AuthoringEngineConsumerAudit_test_ts["src/ui/admin/pages/AuthoringEngineConsumerAudit.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_AuthoringEngineConsumerAudit_test_ts
   module_src_ui_admin_pages_bindings_bindingAdminStyles_ts["src/ui/admin/pages/bindings/bindingAdminStyles.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_bindings_bindingAdminStyles_ts
   module_src_ui_admin_pages_bindings_BindingDiagnosticsCard_tsx["src/ui/admin/pages/bindings/BindingDiagnosticsCard.tsx"]
@@ -1942,7 +1946,7 @@ graph TD
   module_src_ui_admin_pages_bindings_createBindingLiteralDefaultValue_ts["src/ui/admin/pages/bindings/createBindingLiteralDefaultValue.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_bindings_createBindingLiteralDefaultValue_ts
   module_src_ui_admin_pages_bindings_createBindingLiteralDefaultValue_ts --> module_src_bindingAuthoringModel_ts
-  module_src_ui_admin_pages_bindings_createBindingLiteralDefaultValue_ts --> module_src_types_authoring_engine_ts
+  module_src_ui_admin_pages_bindings_createBindingLiteralDefaultValue_ts --> module_src_features_authoring_engine_application_use_cases_createInitialAuthoringValue_ts
   module_src_ui_admin_pages_bindings_EventBindingComposer_tsx["src/ui/admin/pages/bindings/EventBindingComposer.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_bindings_EventBindingComposer_tsx
   module_src_ui_admin_pages_bindings_EventBindingComposer_tsx --> module_src_bindingAuthoringModel_ts
@@ -1990,6 +1994,7 @@ graph TD
   module_src_ui_admin_pages_deploy_deployDashboardTypes_ts["src/ui/admin/pages/deploy/deployDashboardTypes.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
   module_src_ui_admin_pages_deploy_deployDashboardTypes_ts --> module_src_projectDeployReleaseHistoryRecord_ts
+  module_src_ui_admin_pages_deploy_deployDashboardTypes_ts --> module_src_types_project_deploy_authoring_ts
   module_src_ui_admin_pages_deploy_DeployExecutionResultView_tsx["src/ui/admin/pages/deploy/DeployExecutionResultView.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployExecutionResultView_tsx
   module_src_ui_admin_pages_deploy_DeployExecutionResultView_tsx --> module_src_projectDeployReleaseExecutionResponse_ts
@@ -2002,14 +2007,19 @@ graph TD
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployLifecycleControls_tsx
   module_src_ui_admin_pages_deploy_DeployListingLocaleAuthoringCard_tsx["src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployListingLocaleAuthoringCard_tsx
+  module_src_ui_admin_pages_deploy_DeployListingLocaleAuthoringCard_tsx --> module_src_features_authoring_engine_adapters_outbound_resolveContractsAuthoringStructure_ts
   module_src_ui_admin_pages_deploy_DeployListingLocaleAuthoringCard_tsx --> module_src_projectDeployApi_ts
   module_src_ui_admin_pages_deploy_DeployListingLocaleAuthoringCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployListingLocaleAuthoringCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_DeployListingLocaleAuthoringCard_tsx --> module_src_ui_admin_pages_deploy_DeployOwnerAuthoringEditor_tsx
   module_src_ui_admin_pages_deploy_DeployMonetizationAuthoringCard_tsx["src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployMonetizationAuthoringCard_tsx
+  module_src_ui_admin_pages_deploy_DeployMonetizationAuthoringCard_tsx --> module_src_features_authoring_engine_adapters_outbound_resolveContractsAuthoringStructure_ts
   module_src_ui_admin_pages_deploy_DeployMonetizationAuthoringCard_tsx --> module_src_projectDeployApi_ts
+  module_src_ui_admin_pages_deploy_DeployMonetizationAuthoringCard_tsx --> module_src_types_authoring_engine_ts
   module_src_ui_admin_pages_deploy_DeployMonetizationAuthoringCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployMonetizationAuthoringCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_DeployMonetizationAuthoringCard_tsx --> module_src_ui_admin_pages_deploy_DeployOwnerAuthoringEditor_tsx
   module_src_ui_admin_pages_deploy_DeployMonetizationExecutionView_tsx["src/ui/admin/pages/deploy/DeployMonetizationExecutionView.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployMonetizationExecutionView_tsx
   module_src_ui_admin_pages_deploy_DeployMonetizationExecutionView_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
@@ -2025,15 +2035,26 @@ graph TD
   module_src_ui_admin_pages_deploy_DeployMonetizationSyncCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployMonetizationSyncCard_tsx --> module_src_ui_admin_pages_deploy_DeployMonetizationExecutionView_tsx
   module_src_ui_admin_pages_deploy_DeployMonetizationSyncCard_tsx --> module_src_ui_admin_pages_deploy_DeployMonetizationPlanView_tsx
+  module_src_ui_admin_pages_deploy_DeployOwnerAuthoringEditor_tsx["src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployOwnerAuthoringEditor_tsx
+  module_src_ui_admin_pages_deploy_DeployOwnerAuthoringEditor_tsx --> module_src_features_authoring_engine_adapters_inbound_AuthoringEditor_tsx
+  module_src_ui_admin_pages_deploy_DeployOwnerAuthoringEditor_tsx --> module_src_features_authoring_engine_application_use_cases_applyAuthoringMutationToStructure_ts
+  module_src_ui_admin_pages_deploy_DeployOwnerAuthoringEditor_tsx --> module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
+  module_src_ui_admin_pages_deploy_DeployOwnerAuthoringEditor_tsx --> module_src_types_authoring_engine_ts
+  module_src_ui_admin_pages_deploy_DeployOwnerAuthoringMigration_test_ts["src/ui/admin/pages/deploy/DeployOwnerAuthoringMigration.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployOwnerAuthoringMigration_test_ts
   module_src_ui_admin_pages_deploy_DeployPlanPreview_tsx["src/ui/admin/pages/deploy/DeployPlanPreview.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployPlanPreview_tsx
   module_src_ui_admin_pages_deploy_DeployPlanPreview_tsx --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_ui_admin_pages_deploy_DeployPlanPreview_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployPreparedReleaseAuthoringCard_tsx["src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployPreparedReleaseAuthoringCard_tsx
+  module_src_ui_admin_pages_deploy_DeployPreparedReleaseAuthoringCard_tsx --> module_src_features_authoring_engine_adapters_outbound_resolveContractsAuthoringStructure_ts
   module_src_ui_admin_pages_deploy_DeployPreparedReleaseAuthoringCard_tsx --> module_src_projectDeployApi_ts
+  module_src_ui_admin_pages_deploy_DeployPreparedReleaseAuthoringCard_tsx --> module_src_types_authoring_engine_ts
   module_src_ui_admin_pages_deploy_DeployPreparedReleaseAuthoringCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployPreparedReleaseAuthoringCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_DeployPreparedReleaseAuthoringCard_tsx --> module_src_ui_admin_pages_deploy_DeployOwnerAuthoringEditor_tsx
   module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx["src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx
   module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx --> module_src_canExecuteProjectDeployRelease_ts
@@ -2053,10 +2074,12 @@ graph TD
   module_src_ui_admin_pages_deploy_DeployResumeActions_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
   module_src_ui_admin_pages_deploy_DeployStoreAssetAuthoringCard_tsx["src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployStoreAssetAuthoringCard_tsx
+  module_src_ui_admin_pages_deploy_DeployStoreAssetAuthoringCard_tsx --> module_src_features_authoring_engine_adapters_outbound_resolveContractsAuthoringStructure_ts
   module_src_ui_admin_pages_deploy_DeployStoreAssetAuthoringCard_tsx --> module_src_projectDeployApi_ts
   module_src_ui_admin_pages_deploy_DeployStoreAssetAuthoringCard_tsx --> module_src_projectDeployAssetPicker_ts
   module_src_ui_admin_pages_deploy_DeployStoreAssetAuthoringCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployStoreAssetAuthoringCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_DeployStoreAssetAuthoringCard_tsx --> module_src_ui_admin_pages_deploy_DeployOwnerAuthoringEditor_tsx
   module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx["src/ui/admin/pages/deploy/DeploySummaryGrid.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx
   module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
@@ -2149,10 +2172,9 @@ graph TD
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_core_StudioContext_ts
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_features_authoring_engine_adapters_inbound_AuthoringEditor_tsx
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_features_authoring_engine_adapters_outbound_resolveInstancePropertyAuthoring_ts
+  module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_features_authoring_engine_application_use_cases_applyAuthoringMutation_ts
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_manifestState_ts
-  module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_mediaAuthoringModel_ts
-  module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_propertiesAuthoringModel_ts
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_types_authoring_engine_ts
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_ui_admin_pages_MediaPropertyInput_tsx
@@ -2229,6 +2251,7 @@ graph TD
   package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx
   module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx --> module_src_features_authoring_engine_adapters_inbound_AuthoringEditor_tsx
   module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx --> module_src_features_authoring_engine_adapters_outbound_resolveZoraThemeRecipeAuthoring_ts
+  module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx --> module_src_features_authoring_engine_application_use_cases_applyAuthoringMutation_ts
   module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx --> module_src_features_authoring_engine_application_use_cases_deriveAuthoringModel_ts
   module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx --> module_src_types_authoring_engine_ts
   module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
@@ -2261,6 +2284,8 @@ graph TD
   module_src_ui_admin_pages_useActiveThemeAdmin_ts --> module_src_core_StudioContext_ts
   module_src_ui_admin_pages_useActiveThemeAdmin_ts --> module_src_index_ts
   module_src_ui_admin_pages_useActiveThemeAdmin_ts --> module_src_ui_admin_pages_adminThemeModel_ts
+  module_src_ui_admin_pages_WorkflowRouteAudit_test_ts["src/ui/admin/pages/WorkflowRouteAudit.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_WorkflowRouteAudit_test_ts
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
   package__ankhorage_studio -.-> module_src_ui_AnkhStudio_ts
   module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts

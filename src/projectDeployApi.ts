@@ -1,3 +1,4 @@
+import type { SerializableValue } from '@ankhorage/contracts';
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
 import type {
   MonetizationDesiredState,
@@ -26,6 +27,7 @@ import type { ProjectDeployReleaseExecutionResponse } from './projectDeployRelea
 import type { ProjectDeployReleaseHistoryRecord } from './projectDeployReleaseHistoryRecord';
 import type { ProjectDeployReleaseInspectionResult } from './projectDeployReleaseInspectionResult';
 import type { ProjectDeployRuntimeInput } from './projectDeployRuntimeInput';
+import type { ProjectDeployAuthoringSnapshot } from './types/project-deploy-authoring';
 
 const client = new ProjectDeployClient(createProjectDeployRequest());
 
@@ -70,6 +72,29 @@ export function removeProjectDeployListingAsset(
   location: ProjectStoreListingAssetLocation,
 ): Promise<ProjectStoreListing> {
   return client.removeListingAsset(projectId, location);
+}
+
+/*** Read browser-safe Deploy owner metadata and authoring values through the trusted host. */
+export function readProjectDeployAuthoring(
+  projectId: string,
+): Promise<ProjectDeployAuthoringSnapshot> {
+  return client.readAuthoring(projectId);
+}
+
+/*** Persist a neutral Monetization authoring value through the trusted host owner projection. */
+export function writeProjectDeployMonetizationAuthoring(
+  projectId: string,
+  value: SerializableValue,
+): Promise<MonetizationDesiredState> {
+  return client.writeMonetizationAuthoring(projectId, value);
+}
+
+/*** Persist a neutral Release authoring value through the trusted host owner projection. */
+export function writeProjectDeployReleaseAuthoring(
+  projectId: string,
+  value: SerializableValue,
+): Promise<ReleaseDesiredState> {
+  return client.writeReleaseAuthoring(projectId, value);
 }
 
 /*** Read authored monetization state through the shared deploy client. @todo Move the deploy facade under src/deploy/. */

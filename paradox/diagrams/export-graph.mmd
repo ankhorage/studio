@@ -439,7 +439,6 @@ graph LR
   module_src_projectSecretUsage_ts["src/projectSecretUsage.ts"]
   module_src_projectStructureSkill_test_ts["src/projectStructureSkill.test.ts"]
   module_src_projectWorkspaceContracts_ts["src/projectWorkspaceContracts.ts"]
-  module_src_propertiesAuthoringModel_test_ts["src/propertiesAuthoringModel.test.ts"]
   module_src_propertiesAuthoringModel_ts["src/propertiesAuthoringModel.ts"]
   module_src_removeExternalApi_ts["src/removeExternalApi.ts"]
   module_src_root_test_ts["src/root.test.ts"]
@@ -485,6 +484,7 @@ graph LR
   module_src_studioSelectionModel_ts["src/studioSelectionModel.ts"]
   module_src_templateCatalogContracts_ts["src/templateCatalogContracts.ts"]
   module_src_types_authoring_engine_ts["src/types/authoring-engine.ts"]
+  module_src_types_project_deploy_authoring_ts["src/types/project-deploy-authoring.ts"]
   module_src_types_project_generation_ts["src/types/project-generation.ts"]
   module_src_types_project_update_dashboard_ts["src/types/project-update-dashboard.ts"]
   module_src_types_project_updates_ts["src/types/project-updates.ts"]
@@ -513,6 +513,7 @@ graph LR
   module_src_ui_admin_pages_AuthAdminPage_test_ts["src/ui/admin/pages/AuthAdminPage.test.ts"]
   module_src_ui_admin_pages_AuthAdminPage_tsx["src/ui/admin/pages/AuthAdminPage.tsx"]
   module_src_ui_admin_pages_AuthAdminPlatformSetup_test_ts["src/ui/admin/pages/AuthAdminPlatformSetup.test.ts"]
+  module_src_ui_admin_pages_AuthoringEngineConsumerAudit_test_ts["src/ui/admin/pages/AuthoringEngineConsumerAudit.test.ts"]
   module_src_ui_admin_pages_bindings_bindingAdminStyles_ts["src/ui/admin/pages/bindings/bindingAdminStyles.ts"]
   module_src_ui_admin_pages_bindings_BindingDiagnosticsCard_tsx["src/ui/admin/pages/bindings/BindingDiagnosticsCard.tsx"]
   module_src_ui_admin_pages_bindings_bindingEditorModel_test_ts["src/ui/admin/pages/bindings/bindingEditorModel.test.ts"]
@@ -536,6 +537,8 @@ graph LR
   module_src_ui_admin_pages_deploy_DeployMonetizationExecutionView_tsx["src/ui/admin/pages/deploy/DeployMonetizationExecutionView.tsx"]
   module_src_ui_admin_pages_deploy_DeployMonetizationPlanView_tsx["src/ui/admin/pages/deploy/DeployMonetizationPlanView.tsx"]
   module_src_ui_admin_pages_deploy_DeployMonetizationSyncCard_tsx["src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"]
+  module_src_ui_admin_pages_deploy_DeployOwnerAuthoringEditor_tsx["src/ui/admin/pages/deploy/DeployOwnerAuthoringEditor.tsx"]
+  module_src_ui_admin_pages_deploy_DeployOwnerAuthoringMigration_test_ts["src/ui/admin/pages/deploy/DeployOwnerAuthoringMigration.test.ts"]
   module_src_ui_admin_pages_deploy_DeployPlanPreview_tsx["src/ui/admin/pages/deploy/DeployPlanPreview.tsx"]
   module_src_ui_admin_pages_deploy_DeployPreparedReleaseAuthoringCard_tsx["src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx"]
   module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx["src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"]
@@ -579,6 +582,7 @@ graph LR
   module_src_ui_admin_pages_themeRecipeTokenOptions_ts["src/ui/admin/pages/themeRecipeTokenOptions.ts"]
   module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx["src/ui/admin/pages/ThemeTypographyAdminPage.tsx"]
   module_src_ui_admin_pages_useActiveThemeAdmin_ts["src/ui/admin/pages/useActiveThemeAdmin.ts"]
+  module_src_ui_admin_pages_WorkflowRouteAudit_test_ts["src/ui/admin/pages/WorkflowRouteAudit.test.ts"]
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
   module_src_ui_canvas_canvasDndInteraction_test_ts["src/ui/canvas/canvasDndInteraction.test.ts"]
   module_src_ui_canvas_canvasDndInteraction_ts["src/ui/canvas/canvasDndInteraction.ts"]
@@ -636,9 +640,6 @@ graph LR
   export_createStudioActionInputFields["createStudioActionInputFields"]
   module_src_bindingOperationModel_ts --> export_createStudioActionInputFields
   export_createStudioActionInputFields -.-> export_StudioBindingInputFieldOption
-  export_createStudioInstancePropertyPatch["createStudioInstancePropertyPatch"]
-  module_src_propertiesAuthoringModel_ts --> export_createStudioInstancePropertyPatch
-  export_createStudioInstancePropertyPatch -.-> export_StudioInstancePropertyValue
   export_createStudioMediaAssetId["createStudioMediaAssetId"]
   module_src_mediaAuthoringModel_ts --> export_createStudioMediaAssetId
   export_createStudioMediaAssetReference["createStudioMediaAssetReference"]
@@ -877,8 +878,6 @@ graph LR
   module_src_index_ts --> export_StudioEvent
   export_StudioIdGenerator["StudioIdGenerator"]
   module_src_index_ts --> export_StudioIdGenerator
-  export_StudioInstancePropertyValue["StudioInstancePropertyValue"]
-  module_src_propertiesAuthoringModel_ts --> export_StudioInstancePropertyValue
   export_StudioManifest["StudioManifest"]
   module_src_index_ts --> export_StudioManifest
   export_StudioMediaAssetRemovalResult["StudioMediaAssetRemovalResult"]

@@ -14,11 +14,14 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
 jobs:
   expo-web:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
 
     steps:
       - name: Checkout repository
@@ -46,8 +49,11 @@ jobs:
       - name: Validate generated Close social template Web
         run: bun run test:acceptance:expo57-social-template-web
 
+      - name: Validate generated Studio admin Web
+        run: bun run test:e2e:generated-app-web
+
   studio-standalone:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -72,7 +78,7 @@ jobs:
         run: bun run test:acceptance:expo57-studio-standalone
 
   generated-app:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -97,7 +103,7 @@ jobs:
         run: bun run test:acceptance:expo57-generated-app
 
   generated-navigation:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -122,7 +128,7 @@ jobs:
         run: bun run test:acceptance:expo57-generated-navigation
 
   generated-capabilities:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 

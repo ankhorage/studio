@@ -96,9 +96,6 @@ export default [
     'src/ui/admin/pages/PropertiesAdminPage.tsx',
     'src/ui/admin/pages/SecretsAdminPage.tsx',
     'src/ui/admin/pages/bindings/EventBindingComposer.tsx',
-    'src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx',
-    'src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx',
-    'src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx',
     'src/ui/canvas/StudioCanvasDndOverlay.tsx',
   ]),
   legacyRuleExceptions('react-native/no-unused-styles', [
@@ -140,7 +137,6 @@ export default [
     'src/ui/admin/pages/SecretsAdminPage.tsx',
     'src/ui/admin/pages/ThemeRecipeAdminPage.tsx',
     'src/ui/admin/pages/bindings/PropertyBindingsCard.tsx',
-    'src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx',
     'src/ui/canvas/StudioCanvasDndOverlay.tsx',
   ]),
   legacyRuleExceptions('unused-imports/no-unused-imports', [

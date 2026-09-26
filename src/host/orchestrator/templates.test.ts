@@ -141,6 +141,9 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();
     expect(dependencies['@react-navigation/drawer']).toBeUndefined();
     expect(dependencies['@ankhorage/runtime']).toMatch(SEMVER_PATTERNS.caret);
+    expect(dependencies['@ankhorage/utility']).toBe(
+      studioPackage.dependencies?.['@ankhorage/utility'],
+    );
     expect(dependencies['@ankhorage/studio']).toMatch(SEMVER_PATTERNS.caret);
     expect(dependencies['@ankhorage/zora']).toMatch(SEMVER_PATTERNS.caret);
     expect(dependencies[EXPO_PLATFORM.runtime.expo.name]).toBe(EXPO_PLATFORM.runtime.expo.version);
@@ -367,11 +370,11 @@ describe('generated OAuth scaffold templates', () => {
     expect(androidRun).toContain('const studioApiMapping = includeStudio');
   });
 
-  it('omits auth-specific packages when auth is not generated', () => {
+  it('keeps root-layout Utility while omitting auth-specific packages when auth is not generated', () => {
     const pkg = getPackageJson({ name: 'public-app', targets: WEB_TARGETS });
     const dependencies = pkg.dependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/utility']).toBeUndefined();
+    expect(dependencies['@ankhorage/utility']).toMatch(SEMVER_PATTERNS.caret);
     expect(dependencies['@ankhorage/supabase-auth']).toBeUndefined();
     expect(dependencies['expo-secure-store']).toBeUndefined();
     expect(dependencies['expo-web-browser']).toBeUndefined();

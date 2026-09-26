@@ -143,6 +143,7 @@ test('initializes the Studio provider with the runtime manifest', () => {
     'const activeStudioTheme = resolveManifestActiveTheme(studioRuntimeManifest);',
   );
   expect(generated).not.toContain('themes.find(');
+  expect(generated).toContain("readOwnProperty<AppManifest['themes'][string]>(");
   expect(generated).not.toContain("AppManifest['themes'][number]");
   expect(generated).not.toContain('?? activeTheme');
   expect(generated).toContain(
@@ -150,6 +151,13 @@ test('initializes the Studio provider with the runtime manifest', () => {
   );
   expect(generated).toContain('<ZoraProvider themeConfig={themeConfig} initialMode={initialMode}>');
   expect(generated).not.toContain('function GeneratedZoraThemeConfigSync');
+  expect(generated).toContain("): AppManifest['themes'][string] {");
+  expect(generated).toContain('id: theme.id');
+  expect(generated).toContain('name: theme.name');
+  expect(generated).toContain(
+    "function resolveManifestActiveTheme(manifest: AppManifest): AppManifest['themes'][string] {",
+  );
+  expect(generated).not.toContain('function resolveManifestActiveTheme(\n');
   expect(generated).not.toContain('resolveZoraProviderTheme');
   expect(generated).not.toContain('setThemeConfig');
   expect(generated).not.toContain('useRef(');

@@ -2,7 +2,8 @@ import type { ZoraThemeRecipeMeta } from '@ankhorage/zora/metadata';
 import { ZORA_THEME_RECIPE_META } from '@ankhorage/zora/metadata';
 import { expect, test } from 'bun:test';
 
-import { updateThemeRecipeField } from '../../../../ui/admin/pages/themeRecipeAuthoringModel';
+import { updateThemeRecipeOverrides } from '../../../../ui/admin/pages/themeRecipeAuthoringModel';
+import { applyAuthoringMutation } from '../../application/use-cases/applyAuthoringMutation';
 import { deriveAuthoringModel } from '../../application/use-cases/deriveAuthoringModel';
 import { resolveZoraThemeRecipeAuthoring } from './resolveZoraThemeRecipeAuthoring';
 
@@ -75,12 +76,16 @@ test('keeps invalid overrides visible and resettable while preserving unrelated 
     inheritance: { value: 'default', overridden: true },
     diagnostic: { code: 'invalid-value', path: ['tone'] },
   });
-  const reset = updateThemeRecipeField({
+  const mutation = applyAuthoringMutation(recipes.components.Card, {
+    kind: 'unset',
+    path: ['tone'],
+  });
+  if (!mutation.ok) throw new Error('Expected the central mutation to succeed.');
+  const reset = updateThemeRecipeOverrides({
     recipes,
     kind: 'component',
     recipeName: meta.name,
-    fieldName: 'tone',
-    value: undefined,
+    fields: mutation.value,
   });
   expect(reset).toEqual({ components: { Card: { unrelated: 'keep' } } });
   expect(recipes.components.Card.tone).toBe('removed-choice');

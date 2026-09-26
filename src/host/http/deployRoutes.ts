@@ -3,6 +3,10 @@ import { randomUUID } from 'node:crypto';
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
 import type { MonetizationProduct, ReleaseLifecycleControl, ReleasePlan } from '@ankhorage/deploy';
 import type {
+  DeployMonetizationAuthoringValue,
+  DeployReleaseAuthoringValue,
+} from '@ankhorage/deploy/authoring';
+import type {
   ProjectMonetizationInspection,
   ProjectMonetizationPlan,
   ProjectReleaseInput,
@@ -36,9 +40,30 @@ export function registerProjectDeployRoutes(
     });
 
   registerConfigRoutes(fastify, service);
+  registerAuthoringRoutes(fastify, service);
   registerListingRoutes(fastify, service);
   registerMonetizationRoutes(fastify, service);
   registerReleaseRoutes(fastify, service);
+}
+
+/*** Register browser-safe Deploy authoring metadata/value projection routes. */
+function registerAuthoringRoutes(fastify: FastifyInstance, service: ProjectDeployService): void {
+  fastify.get('/api/projects/:id/deploy/authoring', async (req, reply) =>
+    respond(reply, () => service.readAuthoring(projectId(req))),
+  );
+  fastify.put('/api/projects/:id/deploy/authoring/monetization', async (req, reply) =>
+    respond(reply, () =>
+      service.writeMonetizationAuthoring(
+        projectId(req),
+        req.body as DeployMonetizationAuthoringValue,
+      ),
+    ),
+  );
+  fastify.put('/api/projects/:id/deploy/authoring/release', async (req, reply) =>
+    respond(reply, () =>
+      service.writeReleaseAuthoring(projectId(req), req.body as DeployReleaseAuthoringValue),
+    ),
+  );
 }
 
 /*** Register deployment-config read/write routes. */

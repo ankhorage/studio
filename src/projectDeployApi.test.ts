@@ -13,6 +13,7 @@ import type { ProjectDeployRequest } from './projectDeployRequest';
 
 test('public Deploy API module is import-safe without booting Expo or React Native', async () => {
   const api = await import('./projectDeployApi');
+  expect(typeof api.readProjectDeployAuthoring).toBe('function');
   expect(typeof api.readProjectDeployConfig).toBe('function');
   expect(typeof api.inspectProjectDeployRelease).toBe('function');
   expect(typeof api.executeProjectDeployRelease).toBe('function');
@@ -21,9 +22,11 @@ test('public Deploy API module is import-safe without booting Expo or React Nati
   expect(typeof api.writeProjectDeployListingLocale).toBe('function');
   expect(typeof api.writeProjectDeployListingAsset).toBe('function');
   expect(typeof api.writeProjectDeployMonetization).toBe('function');
+  expect(typeof api.writeProjectDeployMonetizationAuthoring).toBe('function');
   expect(typeof api.inspectProjectDeployMonetization).toBe('function');
   expect(typeof api.executeProjectDeployMonetization).toBe('function');
   expect(typeof api.writeProjectDeployRelease).toBe('function');
+  expect(typeof api.writeProjectDeployReleaseAuthoring).toBe('function');
 });
 
 test('Deploy client consumes canonical owner responses through the request port', async () => {
@@ -40,6 +43,68 @@ test('Deploy client consumes canonical owner responses through the request port'
   expect(await client.readConfig('demo')).toEqual({ targets: { web: { enabled: true } } });
   expect(await client.readListing('demo')).toMatchObject({ revision: 'listing-r1' });
   expect(requests).toEqual(['/projects/demo/deploy/config', '/projects/demo/deploy/listing']);
+});
+
+test('Deploy client transports owner authoring metadata without Deploy runtime imports', async () => {
+  const requests: { readonly path: string; readonly init?: RequestInit }[] = [];
+  const structure = {
+    protocolVersion: 1,
+    packageName: '@ankhorage/deploy',
+    packageVersion: '0.13.1',
+    roots: { monetization: 'Monetization' },
+    descriptors: {
+      Monetization: {
+        id: 'Monetization',
+        descriptor: {
+          kind: 'object',
+          fields: {
+            products: {
+              optional: false,
+              value: { kind: 'scalar', type: 'string' },
+            },
+          },
+        },
+      },
+    },
+  } as const;
+  const request: ProjectDeployRequest = (path, init) => {
+    requests.push({ path, init });
+    if (path.endsWith('/authoring')) {
+      return Promise.resolve(
+        Response.json({
+          structure,
+          monetization: { products: {} },
+          release: { version: '1.0.0', targets: {}, notes: {}, rollout: {} },
+        }),
+      );
+    }
+    if (path.endsWith('/authoring/monetization')) {
+      return Promise.resolve(Response.json({ revision: 'money-r2', products: [] }));
+    }
+    return Promise.resolve(
+      Response.json({
+        revision: 'release-r2',
+        version: '1.0.0',
+        targets: [],
+        notes: [],
+        rollout: {},
+      }),
+    );
+  };
+  const client = new ProjectDeployClient(request);
+
+  const snapshot = await client.readAuthoring('demo');
+  expect(snapshot.structure).toEqual(structure);
+  await client.writeMonetizationAuthoring('demo', snapshot.monetization);
+  await client.writeReleaseAuthoring('demo', snapshot.release);
+
+  expect(requests.map((entry) => entry.path)).toEqual([
+    '/projects/demo/deploy/authoring',
+    '/projects/demo/deploy/authoring/monetization',
+    '/projects/demo/deploy/authoring/release',
+  ]);
+  expect(requests[1]?.init?.body).toBe(JSON.stringify(snapshot.monetization));
+  expect(requests[2]?.init?.body).toBe(JSON.stringify(snapshot.release));
 });
 
 test('Deploy client rejects raw secret-shaped response fields', async () => {
@@ -227,6 +292,52 @@ test('Deploy client authors monetization and prepared release as canonical owner
   expect(requests[0]?.init?.body).toBe(JSON.stringify({ products }));
   expect(requests[1]?.path).toBe('/projects/demo/deploy/release');
   expect(requests[1]?.init?.body).toBe(JSON.stringify(release));
+});
+
+test('Deploy authoring keeps validated descriptor value metadata while rejecting payload secrets', async () => {
+  const structure = {
+    protocolVersion: 1,
+    packageName: '@ankhorage/deploy',
+    packageVersion: '0.13.1',
+    roots: { monetization: 'Monetization' },
+    descriptors: {
+      Monetization: {
+        id: 'Monetization',
+        descriptor: {
+          kind: 'object',
+          fields: {
+            products: {
+              optional: false,
+              value: { kind: 'scalar', type: 'string' },
+            },
+          },
+        },
+      },
+    },
+  } as const;
+  const responses = [
+    Response.json({
+      structure,
+      monetization: { products: [] },
+      release: { version: '1.0.0', targets: {}, notes: {}, rollout: {} },
+    }),
+    Response.json({
+      structure,
+      monetization: { products: [], secret: 'DEP12_SENTINEL_MUST_NOT_CROSS' },
+      release: { version: '1.0.0', targets: {}, notes: {}, rollout: {} },
+    }),
+  ];
+  const client = new ProjectDeployClient(() => {
+    const response = responses.shift();
+    if (!response) throw new Error('Expected another Deploy authoring response fixture.');
+    return Promise.resolve(response);
+  });
+
+  expect((await client.readAuthoring('demo')).structure).toEqual(structure);
+  const error = await captureProjectDeployApiError(() => client.readAuthoring('demo'));
+  expect(error.status).toBe(502);
+  expect(error.message).toContain('forbidden secret-shaped field');
+  expect(error.message).not.toContain('DEP12_SENTINEL_MUST_NOT_CROSS');
 });
 
 test('Deploy authoring responses cannot smuggle secret-shaped fields into browser state', async () => {

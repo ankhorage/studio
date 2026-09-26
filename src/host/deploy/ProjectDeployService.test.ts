@@ -65,6 +65,60 @@ test('Studio host authors deployment state only through released Deploy project 
   }
 });
 
+test('Studio host projects Deploy authoring metadata and round-trips owner values through canonical APIs', async () => {
+  const workspaceRoot = await fs.mkdtemp(path.join(tmpdir(), 'ankh-studio-deploy-authoring-'));
+  try {
+    await createProject(workspaceRoot, 'demo');
+    const service = createService(workspaceRoot);
+
+    await service.writeMonetization('demo', [
+      {
+        id: 'pro',
+        kind: 'non-consumable',
+        localizations: [{ locale: 'en-US', name: 'Pro', description: 'Pro unlock' }],
+        basePrice: { country: 'CH', currency: 'CHF', amount: '4.9' },
+      },
+    ]);
+    await service.writeRelease('demo', {
+      version: '1.0.0',
+      targets: ['web'],
+      notes: [{ locale: 'en-US', text: 'Initial release' }],
+      rollout: { web: { mode: 'immediate' } },
+    });
+
+    const authoring = await service.readAuthoring('demo');
+    expect(authoring.structure.packageName).toBe('@ankhorage/deploy');
+    expect(authoring.structure.roots).toMatchObject({
+      monetization: 'DeployMonetizationAuthoringValue',
+      'prepared-release': 'DeployReleaseAuthoringValue',
+      'store-listing-asset-location': 'ProjectStoreListingAssetLocation',
+      'store-listing-locale': 'StoreListingLocale',
+    });
+    expect(authoring.monetization).toMatchObject({
+      products: { pro: { id: 'pro', kind: 'non-consumable' } },
+    });
+    expect(authoring.release).toMatchObject({
+      version: '1.0.0',
+      targets: { web: true },
+      notes: { 'en-US': { locale: 'en-US', text: 'Initial release' } },
+    });
+
+    await service.writeMonetizationAuthoring('demo', authoring.monetization);
+    await service.writeReleaseAuthoring('demo', authoring.release);
+
+    expect((await service.readMonetization('demo')).products.map((product) => product.id)).toEqual([
+      'pro',
+    ]);
+    expect(await service.readRelease('demo')).toMatchObject({
+      version: '1.0.0',
+      targets: ['web'],
+      notes: [{ locale: 'en-US', text: 'Initial release' }],
+    });
+  } finally {
+    await fs.rm(workspaceRoot, { recursive: true, force: true });
+  }
+});
+
 test('Studio project path validation remains authoritative for Deploy host access', async () => {
   const workspaceRoot = await fs.mkdtemp(path.join(tmpdir(), 'ankh-studio-deploy-path-'));
   try {

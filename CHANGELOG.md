@@ -1,5 +1,35 @@
 # @ankhorage/studio
 
+## 6.0.2
+
+### Patch Changes
+
+- ffc570f: Keep generated Expo apps type-safe and dependency-complete by explicitly typing the generated theme configuration, declaring the Utility runtime import, and running the full generated-app acceptance matrix before merge.
+
+## 6.0.1
+
+### Patch Changes
+
+- c85ac89: Emit formatter-stable generated root layouts and run the responsive Studio administration browser acceptance as a permanent acceptance gate.
+
+## 6.0.0
+
+### Major Changes
+
+- 138e276: Remove the superseded public instance-property patch helper and route the remaining Properties, Theme recipe, and binding literal authoring behavior through the central Authoring Engine mutation and initialization paths.
+
+## 5.12.1
+
+### Patch Changes
+
+- 31e2fb2: Complete the remaining administration workflow audits and replace the External API local field wrapper with canonical ZORA Field composition.
+
+## 5.12.0
+
+### Minor Changes
+
+- b35e1bf: Derive Deploy monetization, prepared release, listing locale, and semantic asset-location authoring from the released Deploy owner structure through the central Authoring Engine.
+
 ## 5.11.2
 
 ### Patch Changes
