@@ -1,13 +1,13 @@
 import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { reserveTcpPort } from '@ankhorage/utility/node/net';
 
 import { startStudioHostServer } from '../../src/host/http/server';
 import { ProjectManager } from '../../src/host/orchestrator/projectManager';
 import { getProjectTemplateSource } from '../../src/host/templates';
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
-import { reserveTcpPortAsync } from './reserveTcpPortAsync';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
@@ -36,15 +36,15 @@ export async function runSocialTemplateWebAcceptanceAsync(): Promise<void> {
 
     await installGeneratedProjectAsync(project.path);
 
-    const studioHostPort = await reserveTcpPortAsync('Close social Studio host');
+    const studioHostPort = await reserveTcpPort('Close social Studio host');
     studioHost = await startStudioHostServer({
       host: '127.0.0.1',
       port: studioHostPort,
       projectRoot: workspaceRoot,
     });
 
-    const expoPort = await reserveTcpPortAsync('Close social Expo Web');
-    const chromePort = await reserveTcpPortAsync('Close social Chrome debug');
+    const expoPort = await reserveTcpPort('Close social Expo Web');
+    const chromePort = await reserveTcpPort('Close social Chrome debug');
     const expoCli = await resolveAppOwnedExpoCliAsync(project.path);
     const output: string[] = [];
     expoProcess = spawn(expoCli, ['start', '--web', '--port', String(expoPort), '--clear'], {

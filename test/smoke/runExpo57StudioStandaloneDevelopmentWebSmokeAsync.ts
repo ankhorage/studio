@@ -1,9 +1,9 @@
 import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
+import { reserveTcpPort } from '@ankhorage/utility/node/net';
 
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { assertStudioWebIconFontsAsync } from './assertStudioWebIconFontsAsync';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
-import { reserveTcpPortAsync } from './reserveTcpPortAsync';
 
 const HTTP_TIMEOUT_MS = 120_000;
 
@@ -17,8 +17,8 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
   readonly fixtureRoot: string;
 }): Promise<void> {
   const [debugPort, expoPort] = await Promise.all([
-    reserveTcpPortAsync('Standalone Studio Chrome'),
-    reserveTcpPortAsync('Standalone Studio Expo Web'),
+    reserveTcpPort('Standalone Studio Chrome'),
+    reserveTcpPort('Standalone Studio Expo Web'),
   ]);
   const output: string[] = [];
   const expoProcess = spawn('bun', ['run', 'web', '--', '--port', String(expoPort), '--clear'], {

@@ -1,5 +1,6 @@
 import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { reserveTcpPort } from '@ankhorage/utility/node/net';
 
 import { ProjectManager } from '../../src/host/orchestrator/projectManager';
 import { assertExpo57GeneratedCapabilityContractAsync } from './assertExpo57GeneratedCapabilityContractAsync';
@@ -11,7 +12,6 @@ import { createExpo57CapabilityFixtureManifest } from './createExpo57CapabilityF
 import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { createStaticExportServer } from './createStaticExportServer';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
-import { reserveTcpPortAsync } from './reserveTcpPortAsync';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
@@ -237,7 +237,7 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
       throw new Error('Capability static server has no TCP port.');
     const rootUrl = `http://127.0.0.1:${staticServer.port}`;
     chrome = await ChromeNavigationSession.createAsync(
-      await reserveTcpPortAsync('capability Chrome debug'),
+      await reserveTcpPort('capability Chrome debug'),
     );
     await chrome.installDateNowOffsetAsync(OAUTH_CLOCK_OFFSET_STORAGE_KEY);
     await chrome.installObservedBodyTextHistoryAsync();

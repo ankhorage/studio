@@ -1,8 +1,9 @@
+import { reserveTcpPort } from '@ankhorage/utility/node/net';
+
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { assertStudioWebIconFontsAsync } from './assertStudioWebIconFontsAsync';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
 import { createStaticExportServer } from './createStaticExportServer';
-import { reserveTcpPortAsync } from './reserveTcpPortAsync';
 
 /*** Run the standalone Studio static-export browser acceptance flow.
  */
@@ -14,7 +15,7 @@ export async function runExpo57StudioStandaloneStaticWebSmokeAsync(
   try {
     if (server.port === undefined) throw new Error('Static Studio server has no TCP port.');
     browser = await ChromeNavigationSession.createAsync(
-      await reserveTcpPortAsync('Standalone Studio static Chrome'),
+      await reserveTcpPort('Standalone Studio static Chrome'),
     );
     const appUrl = `http://127.0.0.1:${server.port}`;
     await browser.navigateAsync(`${appUrl}/`);

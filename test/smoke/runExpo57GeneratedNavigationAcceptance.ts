@@ -2,6 +2,7 @@ import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { reserveTcpPort } from '@ankhorage/utility/node/net';
 
 import { startStudioHostServer } from '../../src/host/http/server';
 import { ProjectManager } from '../../src/host/orchestrator/projectManager';
@@ -12,7 +13,6 @@ import { createExpo57NavigationFixtureManifest } from './createExpo57NavigationF
 import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { createStaticExportServer } from './createStaticExportServer';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
-import { reserveTcpPortAsync } from './reserveTcpPortAsync';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
@@ -34,7 +34,7 @@ export async function runExpo57AuthHiddenRouteDrawerAcceptanceAsync(): Promise<v
     const manager = new ProjectManager(workspaceRoot);
     const project = await createAuthHiddenRouteDrawerStudioAsync(manager);
     const expectedLockfileDigest = await installGeneratedProjectAsync(project);
-    const studioHostPort = await reserveTcpPortAsync('auth hidden-route Drawer Studio host');
+    const studioHostPort = await reserveTcpPort('auth hidden-route Drawer Studio host');
     studioHost = await startStudioHostServer({
       host: '127.0.0.1',
       port: studioHostPort,
@@ -132,7 +132,7 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     await assertGeneratedNavigationContractAsync(studio);
     await runGeneratedProjectChecksAsync(studio);
     await assertReleasedStudioPackageAsync(studio);
-    const studioHostPort = await reserveTcpPortAsync('navigation Studio host');
+    const studioHostPort = await reserveTcpPort('navigation Studio host');
     studioHost = await startStudioHostServer({
       host: '127.0.0.1',
       port: studioHostPort,
@@ -497,8 +497,8 @@ async function runDevelopmentWebAsync(
   env: Readonly<Record<string, string>> = {},
 ): Promise<void> {
   const expoCli = await resolveAppOwnedExpoCliAsync(projectRoot);
-  const expoPort = await reserveTcpPortAsync('navigation smoke');
-  const chromePort = await reserveTcpPortAsync('navigation Chrome debug');
+  const expoPort = await reserveTcpPort('navigation smoke');
+  const chromePort = await reserveTcpPort('navigation Chrome debug');
   const output: string[] = [];
   const expoProcess = spawn(expoCli, ['start', '--web', '--port', String(expoPort), '--clear'], {
     cwd: projectRoot,
@@ -627,7 +627,7 @@ async function runGeneratedProjectChecksAsync(project: NavigationProject): Promi
 
 /*** Exercise the served static navigation export at mobile and desktop widths using real pointer navigation and overflow assertions. */
 async function runStaticExportSmokeAsync(port: number): Promise<void> {
-  const chromePort = await reserveTcpPortAsync('static navigation Chrome debug');
+  const chromePort = await reserveTcpPort('static navigation Chrome debug');
   const chrome = await ChromeNavigationSession.createAsync(chromePort);
   try {
     const rootUrl = `http://127.0.0.1:${port}`;

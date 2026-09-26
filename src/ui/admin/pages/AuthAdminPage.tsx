@@ -11,6 +11,7 @@ import type {
 import { STRUCTURE_DESCRIPTOR } from '@ankhorage/contracts/structure';
 import { upsertBy } from '@ankhorage/utility/array';
 import { toErrorMessage } from '@ankhorage/utility/error';
+import { createLatestAsyncCoordinator } from '@ankhorage/utility/scheduling';
 import {
   getSupabaseOAuthProviderDefinition,
   SUPABASE_OAUTH_PROVIDER_IDS,
@@ -42,7 +43,6 @@ import { resolveProjectOAuthSetupPlan } from '../../../projectOAuthSetup';
 import { configureProjectOAuthProvider } from '../../../projectSecretApi';
 import { syncProjectRuntime } from '../../../studioRuntimeApi';
 import { useAuthAdminSession } from '../AuthAdminSession';
-import { AuthHealthRefreshCoordinator } from './adminAuthHealthFlow';
 import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 import {
   persistStoredOAuthCredentialLinkAndPatchLocalDraft,
@@ -108,7 +108,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   const [message, setMessage] = useState<string | null>(null);
   const canonicalManifestRef = useRef<AppManifest | null>(manifest);
   const initializedDraftFromManifestRef = useRef(manifest !== null);
-  const healthRefreshCoordinatorRef = useRef(new AuthHealthRefreshCoordinator());
+  const healthRefreshCoordinatorRef = useRef(createLatestAsyncCoordinator());
 
   canonicalManifestRef.current = studioManifest ?? manifest;
 
@@ -120,9 +120,9 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
 
   /*** Refresh auth health for the selected environment without allowing stale requests to overwrite newer state. */
   const refreshHealth = useCallback(async () => {
-    await healthRefreshCoordinatorRef.current.refresh({
-      loadHealth: () => getProjectAuthHealth({ projectId, environment }),
-      onHealth: setHealth,
+    await healthRefreshCoordinatorRef.current.run({
+      load: () => getProjectAuthHealth({ projectId, environment }),
+      onValue: setHealth,
       onError: (error) => setMessage(toMessage(error)),
     });
   }, [environment, projectId]);
@@ -130,9 +130,9 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   /*** Reload canonical auth settings and health together, rebasing the local editor draft only from the latest accepted request. */
   const reload = useCallback(async () => {
     setLoading(true);
-    const result = await healthRefreshCoordinatorRef.current.refresh({
-      loadHealth: () => getProjectAuthHealth({ projectId, environment }),
-      onHealth: (loadedHealth) => {
+    const result = await healthRefreshCoordinatorRef.current.run({
+      load: () => getProjectAuthHealth({ projectId, environment }),
+      onValue: (loadedHealth) => {
         const canonicalAuthSettings = canonicalManifestRef.current
           ? readStudioAuthSettings(canonicalManifestRef.current, environment)
           : null;
