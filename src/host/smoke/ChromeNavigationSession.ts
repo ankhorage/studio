@@ -17,7 +17,7 @@ interface HitTestResult {
 
 /***
  * Drive a headless Chrome DevTools Protocol session for Studio web acceptance, including navigation, hydration, hit testing, font assertions and browser-error capture.
- * @todo Move this browser acceptance adapter from production src/host/smoke to test/smoke.
+ * TODO: Move this browser acceptance adapter from production src/host/smoke to test/smoke.
  */
 export class ChromeNavigationSession {
   readonly errors: string[] = [];
@@ -659,7 +659,7 @@ function createRoleHitTestExpression(role: string, name: string, occurrence: num
 
 /***
  * Report whether a filesystem path is accessible to the current process.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function canAccessAsync(filePath: string): Promise<boolean> {
   try {
@@ -672,7 +672,7 @@ async function canAccessAsync(filePath: string): Promise<boolean> {
 
 /***
  * Narrow an unknown value to a non-null object record.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
@@ -721,7 +721,7 @@ async function resolveChromePathAsync(): Promise<string> {
 
 /***
  * Terminate a spawned detached process group, falling back to terminating the direct child when group signaling is unavailable.
- * @utility @ankhorage/utility/node/process
+ * Utility candidate: @ankhorage/utility/node/process
  */
 function stopProcess(processToStop: ChildProcess): void {
   if (!processToStop.pid) return;
@@ -734,7 +734,7 @@ function stopProcess(processToStop: ChildProcess): void {
 
 /***
  * Poll an HTTP endpoint until it responds below the 5xx range or the timeout expires.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function waitForHttpAsync(url: string, timeoutMs: number): Promise<void> {
   const start = Date.now();

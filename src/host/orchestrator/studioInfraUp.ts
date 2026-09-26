@@ -19,7 +19,7 @@ export interface StudioInfraUpResult {
 
 /***
  * Regenerate and reconcile one project's local infrastructure through the provider-neutral Infra lifecycle.
- * @todo Move this Studio Infrastructure-up use case from generic `host/orchestrator` into the projects/infra application edge.
+ * TODO: Move this Studio Infrastructure-up use case from generic `host/orchestrator` into the projects/infra application edge.
  */
 export async function upProjectInfrastructure(args: {
   readonly projectId: string;

@@ -6,7 +6,7 @@ import { syncGeneratedPackagePolicyAsync } from './syncGeneratedPackagePolicyAsy
 
 /***
  * Reconcile one generated app's package policy, install, Devtools concerns, and frozen lockfile entirely inside its package root.
- * @todo Move project package reconciliation from the host adapter area into the projects application boundary.
+ * TODO: Move project package reconciliation from the host adapter area into the projects application boundary.
  */
 export async function reconcileProjectPackageRootAsync(
   projectPath: string,

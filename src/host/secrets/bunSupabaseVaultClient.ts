@@ -10,7 +10,7 @@ export interface BunSupabaseVaultClient extends SupabaseVaultSqlClient {
 }
 
 /***
- * @todo Keep this concrete Bun/PostgreSQL transport at the Secrets host edge; it is an adapter for the Supabase Vault owner, not a generic Utility capability.
+ * TODO: Keep this concrete Bun/PostgreSQL transport at the Secrets host edge; it is an adapter for the Supabase Vault owner, not a generic Utility capability.
  * Create the trusted server-only PostgreSQL client used by the Supabase Vault adapter.
  */
 export function createBunSupabaseVaultClient(databaseUrl: string): BunSupabaseVaultClient {
@@ -57,7 +57,7 @@ export function createBunSupabaseVaultClient(databaseUrl: string): BunSupabaseVa
 }
 
 /***
- * @utility @ankhorage/utility/value
+ * Utility candidate: @ankhorage/utility/value
  * Assert that an unknown database result is an array before exposing it to a typed row boundary.
  */
 function assertRows<TRow extends Record<string, unknown>>(value: unknown): readonly TRow[] {

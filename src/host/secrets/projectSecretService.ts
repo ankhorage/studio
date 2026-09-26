@@ -84,7 +84,7 @@ export class ProjectSecretService {
   private readonly resolveDatabaseUrl: () => Promise<string> | string;
 
   /***
-   * @todo Keep this service in the Secrets application/host boundary; it owns project secret-store lifecycle and trusted Vault access rather than generic persistence.
+   * TODO: Keep this service in the Secrets application/host boundary; it owns project secret-store lifecycle and trusted Vault access rather than generic persistence.
    * Create the project-scoped secret application service with injectable trusted Vault boundaries.
    */
   constructor(options: ProjectSecretServiceOptions) {
@@ -331,7 +331,7 @@ export class ProjectSecretService {
   }
 
   /***
-   * @todo Reassess the duplicate manifest retry when the Projects/Secrets boundary is migrated; the second call currently repeats the same read without changing inputs.
+   * TODO: Reassess the duplicate manifest retry when the Projects/Secrets boundary is migrated; the second call currently repeats the same read without changing inputs.
    * Read the current editable project manifest, retrying the same manager once on failure.
    */
   private async readEditableManifest(projectId: string): Promise<AppManifest> {
@@ -408,7 +408,7 @@ function createUnavailableSecretStoreError(): {
 }
 
 /***
- * @utility @ankhorage/utility/value
+ * Utility candidate: @ankhorage/utility/value
  * Normalize optional user text to a trimmed non-empty string; this collapses to `asNonEmptyString`.
  */
 function normalizeOptionalText(value: string | undefined): string | undefined {
@@ -418,7 +418,7 @@ function normalizeOptionalText(value: string | undefined): string | undefined {
 }
 
 /***
- * @utility @ankhorage/utility/error
+ * Utility candidate: @ankhorage/utility/error
  * Project a structured error to the public `{ code, message }` pair; this collapses to `pickCodeMessage`.
  */
 function toPublicError(error: { readonly code: string; readonly message: string }) {

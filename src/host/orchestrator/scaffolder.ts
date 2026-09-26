@@ -99,7 +99,7 @@ const APP_GITIGNORE_ENTRIES = [
 
 /***
  * Materialize and synchronize generated Expo project scaffold files, dependencies, tooling configuration, assets and target-specific scripts.
- * @todo Move project scaffold generation from host/orchestrator into the projects/templates generation domain; host should invoke it through an adapter boundary.
+ * TODO: Move project scaffold generation from host/orchestrator into the projects/templates generation domain; host should invoke it through an adapter boundary.
  */
 export class ProjectScaffolder {
   /*** Bind scaffold generation to one Studio workspace root. */
@@ -530,7 +530,7 @@ function mergeScripts(
 
 /***
  * Find one named package script in a partial scripts record.
- * @utility @ankhorage/utility/package
+ * Utility candidate: @ankhorage/utility/package
  */
 function findScript(scripts: PartialPackageScripts, scriptName: string): string | undefined {
   return Object.entries(scripts).find(([candidate]) => candidate === scriptName)?.[1];

@@ -5,7 +5,7 @@ import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 
 /***
  * Assert a generated Expo 57 capability fixture's dependency, config, runtime, and source contracts.
- * @todo Move this generated-app acceptance policy out of src/host into test/smoke.
+ * TODO: Move this generated-app acceptance policy out of src/host into test/smoke.
  */
 export async function assertExpo57GeneratedCapabilityContractAsync(
   projectRoot: string,
@@ -159,7 +159,7 @@ async function assertGeneratedSourceContractAsync(projectRoot: string): Promise<
 
 /***
  * Recursively list all files beneath a directory.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function listFilesAsync(rootPath: string): Promise<string[]> {
   const entries = await readdir(rootPath, { withFileTypes: true });
@@ -174,7 +174,7 @@ async function listFilesAsync(rootPath: string): Promise<string[]> {
 
 /***
  * Read and concatenate source-like files from a directory tree using a file predicate.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function readSourceTreeAsync(sourceRoot: string): Promise<string> {
   const sourceFiles = (await listFilesAsync(sourceRoot)).filter((file) =>

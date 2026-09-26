@@ -30,7 +30,7 @@ class TrustedOAuthSecretStoreUnavailableError extends Error {
 }
 
 /***
- * @todo Keep the deferred Secret-store handling in the Secrets/Infra application boundary; it represents Studio OAuth rollout policy rather than a generic error wrapper.
+ * TODO: Keep the deferred Secret-store handling in the Secrets/Infra application boundary; it represents Studio OAuth rollout policy rather than a generic error wrapper.
  * Resolve trusted OAuth environment variables for Infra Up while turning secret-store unavailability into an explicit deferred result.
  */
 export async function resolveTrustedOAuthInfraEnvironmentForUp(args: {
@@ -57,7 +57,7 @@ export async function resolveTrustedOAuthInfraEnvironmentForUp(args: {
 }
 
 /***
- * @todo Keep OAuth-provider credential resolution and GoTrue environment assembly in the Secrets/Auth boundary.
+ * TODO: Keep OAuth-provider credential resolution and GoTrue environment assembly in the Secrets/Auth boundary.
  * Resolve enabled OAuth provider credentials into the trusted GoTrue environment expected by generated Infra.
  */
 export async function resolveTrustedOAuthInfraEnvironment(args: {
@@ -125,7 +125,7 @@ export async function resolveTrustedOAuthInfraEnvironment(args: {
 }
 
 /***
- * @todo This retry belongs to the project-manifest read policy; reassess whether a second identical read remains intentional during the Projects/Secrets migration.
+ * TODO: This retry belongs to the project-manifest read policy; reassess whether a second identical read remains intentional during the Projects/Secrets migration.
  * Read the current project manifest, retrying the same owner once when the first read rejects.
  */
 async function readCurrentManifest(
