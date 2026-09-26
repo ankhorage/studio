@@ -21,7 +21,7 @@ export class ProjectManifestNotFoundError extends Error {
 
 /***
  * Persist and project Studio project manifests under one workspace root.
- * @todo Move project persistence from host/orchestrator into the projects domain and expose filesystem access through a project persistence port/adapter.
+ * TODO: Move project persistence from host/orchestrator into the projects domain and expose filesystem access through a project persistence port/adapter.
  */
 export class ProjectStore {
   /*** Bind project persistence to one Studio workspace root. */

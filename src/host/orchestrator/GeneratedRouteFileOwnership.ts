@@ -30,7 +30,7 @@ interface RouteLedger {
 
 /***
  * Own the current generated-route ledger so Studio deletes only files it generated and still owns.
- * @todo Move generated route-file ownership from generic `host/orchestrator` into the routes/projects generation domain.
+ * TODO: Move generated route-file ownership from generic `host/orchestrator` into the routes/projects generation domain.
  */
 export class GeneratedRouteFileOwnership {
   /*** Require valid route ownership state before an existing generated project can be synchronized. */
@@ -97,7 +97,7 @@ function isRouteLedger(value: unknown): value is RouteLedger {
 
 /***
  * Normalize a filesystem-style relative path to portable POSIX separators and dot-segment semantics.
- * @utility @ankhorage/utility/node/path
+ * Utility candidate: @ankhorage/utility/node/path
  */
 function normalizeRelativePath(filePath: string): string {
   return normalizePortablePath(filePath);
@@ -158,7 +158,7 @@ function resolveGeneratedFile(projectPath: string, relativePath: string): string
 
 /***
  * Resolve a relative path beneath a root and reject absolute, root-self, or escaping paths.
- * @utility @ankhorage/utility/node/path
+ * Utility candidate: @ankhorage/utility/node/path
  */
 function resolveProjectFile(projectPath: string, relativePath: string): string {
   if (path.isAbsolute(relativePath)) {
@@ -175,7 +175,7 @@ function resolveProjectFile(projectPath: string, relativePath: string): string {
 
 /***
  * Atomically persist the generated-route ownership ledger using a same-directory temporary JSON file.
- * @todo Keep the route-ledger wrapper in the routes/projects domain and compose a generic Utility atomic JSON writer.
+ * TODO: Keep the route-ledger wrapper in the routes/projects domain and compose a generic Utility atomic JSON writer.
  */
 async function writeRouteLedger(projectPath: string, ledger: RouteLedger): Promise<void> {
   const ledgerPath = resolveProjectFile(projectPath, ROUTE_LEDGER_REL_PATH);

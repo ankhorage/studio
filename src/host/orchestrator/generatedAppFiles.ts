@@ -21,7 +21,7 @@ const GENERATED_APP_SCAN_FILES = ['package.json', 'tsconfig.json', 'app.config.t
 
 /***
  * Synchronize generated Expo/ZORA runtime files and assert that the resulting standalone app contains no internal `@ankh/*` imports.
- * @todo Move generated-app file composition from generic `host/orchestrator` into the projects/templates generation owner.
+ * TODO: Move generated-app file composition from generic `host/orchestrator` into the projects/templates generation owner.
  */
 export async function syncGeneratedAppFiles(
   targetProjectPath: string,
@@ -136,7 +136,7 @@ export function createGeneratedAppExtensionRegistrySource(args: {
 
 /***
  * Assert that selected project files do not contain a forbidden source pattern.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function assertNoForbiddenSpecifiers(targetProjectPath: string) {
   const filesToCheck = GENERATED_APP_SCAN_FILES.map((file) => path.join(targetProjectPath, file));
@@ -159,7 +159,7 @@ async function assertNoForbiddenSpecifiers(targetProjectPath: string) {
 
 /***
  * Recursively list JavaScript/TypeScript/JSON source files beneath a root, returning an empty list for a missing root.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function listSourceFiles(rootPath: string): Promise<string[]> {
   return (await listFilesRecursive(rootPath)).filter((filePath) =>

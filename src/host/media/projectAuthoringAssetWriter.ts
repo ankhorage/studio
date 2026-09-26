@@ -3,7 +3,7 @@ import path from 'node:path';
 
 /***
  * Write one bundled authoring asset only when its resolved destination stays inside the authoring root.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 export async function writeProjectAuthoringAsset(
   projectPath: string,

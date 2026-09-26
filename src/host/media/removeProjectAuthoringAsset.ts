@@ -5,7 +5,7 @@ import { pruneEmptyDirectories } from '@ankhorage/utility/node/fs';
 
 /***
  * Remove one bundled authoring asset only when its resolved destination stays inside the authoring root, then prune empty parents.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 export async function removeProjectAuthoringAsset(
   projectPath: string,

@@ -38,7 +38,7 @@ const PENDING_OPS_FILE = '.ankh/pending.json';
 
 /***
  * Coordinate Studio's host-side module lifecycle, pending removals, admin runtime, and manifest projection over Orchestrator.
- * @todo Move this manager from generic `host/orchestrator` into the `modules/` application domain and consume an Orchestrator-owned target adapter.
+ * TODO: Move this manager from generic `host/orchestrator` into the `modules/` application domain and consume an Orchestrator-owned target adapter.
  */
 export class ModuleManager {
   private readonly appsRoot: string;
@@ -498,7 +498,7 @@ export class ModuleManager {
 
 /***
  * Narrow an unknown non-array object to a string-keyed record.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
