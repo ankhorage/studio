@@ -6,7 +6,8 @@ import type {
   MediaAssetRegistry,
   UiNode,
 } from '@ankhorage/contracts';
-import { deleteOwnProperty, readOwnProperty, setOwnProperty } from '@ankhorage/utility/object';
+import { filterAndSort } from '@ankhorage/utility/array';
+import { deleteOwnProperty, readOwnProperty, withOwnProperty } from '@ankhorage/utility/object';
 import { slugifyAscii } from '@ankhorage/utility/string';
 import { normalizeCredentialFreeHttpUrl } from '@ankhorage/utility/url';
 
@@ -50,17 +51,17 @@ export type StudioUrlMediaAssetResult =
 
 /***
  * List manifest media assets, optionally filter by kind, and sort them by name.
- * @utility @ankhorage/utility/array
  */
 export function listStudioMediaAssets(
   manifest: AppManifest,
   mediaKinds?: readonly MediaAssetKind[],
 ): readonly MediaAsset[] {
   const assets = Object.values(manifest.media?.assets ?? {});
-  const filtered = mediaKinds?.length
-    ? assets.filter((asset) => mediaKinds.includes(asset.kind))
-    : assets;
-  return [...filtered].sort((left, right) => left.name.localeCompare(right.name));
+  return filterAndSort(
+    assets,
+    (asset) => !mediaKinds?.length || mediaKinds.includes(asset.kind),
+    (left, right) => left.name.localeCompare(right.name),
+  );
 }
 
 /***
@@ -120,12 +121,12 @@ export function createStudioUrlMediaAsset(args: {
 
 /***
  * Immutably insert or replace a keyed media asset in a manifest registry.
- * @utility @ankhorage/utility/object
  */
 export function upsertStudioMediaAsset(manifest: AppManifest, asset: MediaAsset): AppManifest {
-  const assets = { ...(manifest.media?.assets ?? {}) };
-  setOwnProperty(assets, asset.id, asset);
-  return { ...manifest, media: { assets } };
+  return {
+    ...manifest,
+    media: { assets: withOwnProperty(manifest.media?.assets ?? {}, asset.id, asset) },
+  };
 }
 
 /***

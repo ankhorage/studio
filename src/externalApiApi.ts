@@ -1,5 +1,6 @@
 import type { DataContractValue, DataSourceDiagnostic } from '@ankhorage/contracts/data';
 import { asRecord } from '@ankhorage/utility/object';
+import { hasBooleanResultFlag } from '@ankhorage/utility/validation';
 import { asString } from '@ankhorage/utility/value';
 
 import type {
@@ -98,7 +99,7 @@ async function requestResult<TResult>(
     },
   );
   const value = await readJson(response);
-  if (!response.ok && !isStructuredFailure(value)) {
+  if (!response.ok && !(hasBooleanResultFlag(value, 'ok') && value.ok === false)) {
     throw new ExternalApiApiError('The Studio external API request failed.', response.status);
   }
   return parse(value);
@@ -244,14 +245,6 @@ function parseResponseSummary(value: unknown) {
     throw invalidResponse();
   }
   return { status: record.status, ok: record.ok };
-}
-
-/***
- * Return whether a response value is a structured result record explicitly marked unsuccessful.
- * @utility @ankhorage/utility/validation
- */
-function isStructuredFailure(value: unknown): boolean {
-  return readRecord(value)?.ok === false;
 }
 
 /*** Return whether an unknown value is an External API protocol supported by this authoring flow. */
