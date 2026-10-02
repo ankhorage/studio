@@ -4,7 +4,12 @@ import { readFile } from 'node:fs/promises';
 import { registerHooks } from 'node:module';
 import process from 'node:process';
 
-import type { ApmExtensionProjectReadPort, ApmProjectMutation } from '@ankhorage/apm/types';
+import type {
+  ApmExtensionArtifactIdentity,
+  ApmExtensionProjectReadPort,
+  ApmProjectMutation,
+  ApmUpdateExtension,
+} from '@ankhorage/apm/types';
 
 // A headless owner import must not pull in Studio UI or any native peer graph.
 registerHooks({
@@ -26,7 +31,6 @@ const {
   validateUpdateExtensionCapabilities,
 } = await import('@ankhorage/apm');
 const { isRecord, readOwnProperty } = await import('@ankhorage/utility/object');
-const { default: extension } = await import('@ankhorage/studio/apm');
 const entryUrl = import.meta.resolve('@ankhorage/studio/apm');
 const packageJson: unknown = JSON.parse(
   await readFile(new URL('../package.json', entryUrl), 'utf8'),
@@ -48,13 +52,19 @@ const integrity: unknown = process.env.STUDIO_ARTIFACT_INTEGRITY;
 if (typeof integrity !== 'string' || !integrity.startsWith('sha512-')) {
   throw new Error('The harness must supply the exact tarball integrity.');
 }
-const artifact = {
-  role: 'target' as const,
+const artifact: ApmExtensionArtifactIdentity = {
+  role: 'target',
   packageName: '@ankhorage/studio',
   version: packageJson.version,
   integrity,
   descriptorDigest: createHash('sha256').update(descriptorSource).digest('hex'),
 };
+const extensionModule: unknown = await import('@ankhorage/studio/apm');
+if (!isRecord(extensionModule)) throw new Error('Invalid Studio APM module.');
+const extension = requireUpdateExtension(
+  artifact,
+  readOwnProperty(extensionModule, 'default'),
+);
 assert.deepEqual(validateUpdateExtensionBinding(artifact, extension), []);
 assert.deepEqual(validateUpdateExtensionCapabilities(descriptor, artifact, extension), []);
 const path = resolveMigrationPath({
@@ -189,4 +199,17 @@ function applyPackageMutation(mutation: ApmProjectMutation): void {
     'package.json',
     JSON.stringify({ ...current, [section]: { ...fields, [key]: mutation.value } }),
   );
+}
+
+
+/*** Narrow the dynamically loaded Studio owner extension through APM's canonical runtime validator. */
+function requireUpdateExtension(
+  artifact: ApmExtensionArtifactIdentity,
+  value: unknown,
+): ApmUpdateExtension {
+  const blockers = validateUpdateExtensionBinding(artifact, value);
+  if (blockers.length > 0) {
+    throw new Error(`Invalid Studio APM extension: ${JSON.stringify(blockers)}`);
+  }
+  return value as ApmUpdateExtension;
 }
