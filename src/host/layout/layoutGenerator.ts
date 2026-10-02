@@ -665,4 +665,3 @@ export default function AnkhAdminWebRoute() {
 }
 `;
 }
-
