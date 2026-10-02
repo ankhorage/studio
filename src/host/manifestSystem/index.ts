@@ -14,7 +14,7 @@ const SYSTEM_MANIFEST_TEMPLATES: ManifestSystemTemplate[] = [SYSTEM_TEMPLATE_AUT
 
 /***
  * Apply Studio-owned system templates and inferred screen requirements to a canonical manifest.
- * @todo Move manifest enrichment from the host edge into the manifest application domain.
+ * TODO: Move manifest enrichment from the host edge into the manifest application domain.
  */
 export function applySystemTemplates(manifest: AppManifest): AppManifest {
   const enrichedManifest = SYSTEM_MANIFEST_TEMPLATES.reduce((currentManifest, template) => {

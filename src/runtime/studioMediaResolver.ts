@@ -7,7 +7,7 @@ interface ResolvedMediaResponse {
 
 /***
  * Adapt Studio project/API context into the runtime media-asset resolver contract.
- * @todo Move this concrete Studio media HTTP adapter out of generic `runtime/` and beside the media package-edge integration.
+ * TODO: Move this concrete Studio media HTTP adapter out of generic `runtime/` and beside the media package-edge integration.
  */
 export function createStudioMediaAssetResolver(args: {
   readonly apiBase: string;
@@ -19,7 +19,7 @@ export function createStudioMediaAssetResolver(args: {
 
 /***
  * Resolve one Studio storage-backed media asset to its current host URL; non-storage assets and unsuccessful responses resolve to null.
- * @todo Keep Studio media source semantics in the media domain while replacing the inline fetch/JSON transport with the canonical HTTP Utility.
+ * TODO: Keep Studio media source semantics in the media domain while replacing the inline fetch/JSON transport with the canonical HTTP Utility.
  */
 async function resolveStudioMediaAsset(
   args: { readonly apiBase: string; readonly projectId: string },

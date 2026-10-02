@@ -7,7 +7,7 @@ import { readOwnProperty } from '@ankhorage/utility/object';
 
 /***
  * Resolve a requested deploy environment to a canonical environment id with local fallback.
- * @todo Move this reusable deploy-contract resolver to @ankhorage/contracts/deploy or the deploy owner.
+ * TODO: Move this reusable deploy-contract resolver to @ankhorage/contracts/deploy or the deploy owner.
  */
 export function resolveProjectAuthEnvironment(value: string | undefined): AppEnvironmentId {
   return APP_ENVIRONMENT_IDS.find((environment) => environment === value) ?? 'local';
@@ -15,7 +15,7 @@ export function resolveProjectAuthEnvironment(value: string | undefined): AppEnv
 
 /***
  * Read the enabled canonical deploy targets from a project manifest and reject missing generation state.
- * @todo Move project deploy-target resolution under src/deploy/ and expose any reusable contracts primitive from its owner.
+ * TODO: Move project deploy-target resolution under src/deploy/ and expose any reusable contracts primitive from its owner.
  */
 export function resolveProjectEnabledTargets(manifest: AppManifest): readonly AppDeployTargetId[] {
   const targets = manifest.deploy?.targets;
@@ -32,7 +32,7 @@ export function resolveProjectEnabledTargets(manifest: AppManifest): readonly Ap
 
 /***
  * Resolve the Supabase OAuth setup plan for a project's enabled targets and selected environment.
- * @todo Move OAuth setup orchestration under src/auth/ while deploy target resolution stays with src/deploy/.
+ * TODO: Move OAuth setup orchestration under src/auth/ while deploy target resolution stays with src/deploy/.
  */
 export function resolveProjectOAuthSetupPlan(input: {
   readonly manifest: AppManifest;

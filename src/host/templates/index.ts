@@ -26,7 +26,7 @@ const TEMPLATES_PACKAGE_ROOT = dirname(require.resolve('@ankhorage/templates/pac
 
 /***
  * List the published standalone templates grouped by their existing category metadata.
- * @todo Move Studio template catalog projection from host/templates to the top-level templates domain; host should only expose it through adapters.
+ * TODO: Move Studio template catalog projection from host/templates to the top-level templates domain; host should only expose it through adapters.
  */
 export function getTemplateCatalog(): TemplateCatalog {
   const templates = listTemplates();
@@ -52,7 +52,7 @@ export function getTemplateCatalog(): TemplateCatalog {
 
 /***
  * Resolve one published portable template to the source-agnostic input used by project creation.
- * @todo Move portable-template source resolution beside the templates/projects application boundary rather than owning it under host.
+ * TODO: Move portable-template source resolution beside the templates/projects application boundary rather than owning it under host.
  */
 export async function getProjectTemplateSource(
   selection: ProjectTemplateSelection,

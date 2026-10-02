@@ -142,7 +142,7 @@ export const DEFAULT_STUDIO_SCREEN_TEMPLATE: UiNode = {
 
 /***
  * Generate a Studio manifest-state identifier from the current time, randomness, and optional prefix.
- * @todo Move this identifier policy from the src root into the manifest domain or the domain that owns generated authoring IDs.
+ * TODO: Move this identifier policy from the src root into the manifest domain or the domain that owns generated authoring IDs.
  */
 export const generateManifestStateId: StudioIdGenerator = (prefix?: string): string => {
   const timestamp = Date.now().toString(36);
@@ -153,7 +153,7 @@ export const generateManifestStateId: StudioIdGenerator = (prefix?: string): str
 
 /***
  * Serialize the manifest fields used to detect broad Studio authoring-state changes.
- * @todo Move this manifest state projection from the src root into the manifest domain.
+ * TODO: Move this manifest state projection from the src root into the manifest domain.
  */
 export function createStudioManifestFingerprint(manifest: StudioManifest | null): string {
   if (!manifest) return '';
@@ -173,7 +173,7 @@ export function createStudioManifestFingerprint(manifest: StudioManifest | null)
 
 /***
  * Convert a navigator parent path to the stable key used for route grouping.
- * @todo Move this route-path helper from the src root into routes/.
+ * TODO: Move this route-path helper from the src root into routes/.
  */
 export function pathToKey(path: string[]): string {
   return path.length === 0 ? '__root__' : path.join('/');
@@ -181,7 +181,7 @@ export function pathToKey(path: string[]): string {
 
 /***
  * Return whether a route segment represents an Expo Router-style group segment.
- * @todo Move this route semantic helper from the src root into routes/.
+ * TODO: Move this route semantic helper from the src root into routes/.
  */
 export function isRouteGroupSegment(segment: string): boolean {
   return /^\(.*\)$/.test(segment);
@@ -189,7 +189,7 @@ export function isRouteGroupSegment(segment: string): boolean {
 
 /***
  * Recursively collect screen-targeting routes together with their navigator and route paths.
- * @todo Move route traversal from the src root into routes/.
+ * TODO: Move route traversal from the src root into routes/.
  */
 export function collectScreenRouteEntries(
   routes: RouteDefinition[],
@@ -219,7 +219,7 @@ export function collectScreenRouteEntries(
 
 /***
  * Group collected screen routes by the navigator parent path that owns them.
- * @todo Move route grouping from the src root into routes/.
+ * TODO: Move route grouping from the src root into routes/.
  */
 export function groupScreenRouteEntries(entries: ScreenRouteEntry[]): ScreenRouteGroup[] {
   const groups = new Map<string, ScreenRouteGroup>();
@@ -242,7 +242,7 @@ export function groupScreenRouteEntries(entries: ScreenRouteEntry[]): ScreenRout
 
 /***
  * Verify that every screen registry key equals its unique stable ScreenSpec identifier.
- * @todo Move this manifest screen invariant from the src root into the manifest domain.
+ * TODO: Move this manifest screen invariant from the src root into the manifest domain.
  */
 export function hasCanonicalStudioScreenRegistryIdentity(
   screens: StudioManifest['screens'],
@@ -257,7 +257,7 @@ export function hasCanonicalStudioScreenRegistryIdentity(
 
 /***
  * Resolve a screen by stable identifier only when the manifest screen registry satisfies its canonical identity invariant.
- * @todo Move this screen lookup from the src root into the manifest domain.
+ * TODO: Move this screen lookup from the src root into the manifest domain.
  */
 function resolveCanonicalStudioScreen(
   manifest: StudioManifest,
@@ -269,7 +269,7 @@ function resolveCanonicalStudioScreen(
 
 /***
  * Derive the complete screen/navigation authoring model and diagnostics without flattening the navigator tree.
- * @todo Move navigation-model derivation from the src root into routes/.
+ * TODO: Move navigation-model derivation from the src root into routes/.
  */
 export function deriveStudioScreenNavigationModel(
   manifest: StudioManifest,
@@ -339,7 +339,7 @@ export function deriveStudioScreenNavigationModel(
 
 /***
  * Resolve a concrete app pathname only when a screen has one unique, non-dynamic route reference.
- * @todo Move canonical route-path resolution from the src root into routes/.
+ * TODO: Move canonical route-path resolution from the src root into routes/.
  */
 export function resolveStudioScreenAppPath(
   model: StudioScreenNavigationModel,
@@ -368,7 +368,7 @@ export function resolveStudioScreenAppPath(
 
 /***
  * Traverse a navigator tree to collect route references and navigation diagnostics for each screen.
- * @todo Move navigation traversal and diagnostics from the src root into routes/.
+ * TODO: Move navigation traversal and diagnostics from the src root into routes/.
  */
 function collectNavigationModelReferences(args: {
   navigator: NavigatorNode;
@@ -495,7 +495,7 @@ function collectNavigationModelReferences(args: {
 
 /***
  * Append one route's explicit or named path segments to the current runtime route path.
- * @todo Move runtime route-path construction from the src root into routes/.
+ * TODO: Move runtime route-path construction from the src root into routes/.
  */
 function appendRuntimeRoutePath(runtimePathPrefix: string[], route: RouteDefinition): string[] {
   const explicitPath = route.path?.trim();
@@ -506,7 +506,7 @@ function appendRuntimeRoutePath(runtimePathPrefix: string[], route: RouteDefinit
 
 /***
  * Compare two route paths for ordered segment equality.
- * @todo Keep this small comparison helper local to routes/ unless broader reuse is demonstrated.
+ * TODO: Keep this small comparison helper local to routes/ unless broader reuse is demonstrated.
  */
 function pathsEqual(first: readonly string[], second: readonly string[]): boolean {
   return (
@@ -516,7 +516,7 @@ function pathsEqual(first: readonly string[], second: readonly string[]): boolea
 
 /***
  * Format a route parent path for navigation diagnostic messages.
- * @todo Move route diagnostic formatting from the src root into routes/.
+ * TODO: Move route diagnostic formatting from the src root into routes/.
  */
 function formatParentPath(parentPath: readonly string[]): string {
   return parentPath.length === 0 ? '<root>' : parentPath.join('/');
@@ -524,7 +524,7 @@ function formatParentPath(parentPath: readonly string[]): string {
 
 /***
  * List routed screen identifiers in navigator traversal order.
- * @todo Move route ordering behavior from the src root into routes/.
+ * TODO: Move route ordering behavior from the src root into routes/.
  */
 export function listScreenIdsInRouteOrder(routes: RouteDefinition[]): string[] {
   return collectScreenRouteEntries(routes).map((entry) => entry.screenId);
@@ -532,7 +532,7 @@ export function listScreenIdsInRouteOrder(routes: RouteDefinition[]): string[] {
 
 /***
  * Resolve the initial leaf screen selected by a nested navigator tree, falling back to the first usable route.
- * @todo Move initial-route resolution from the src root into routes/.
+ * TODO: Move initial-route resolution from the src root into routes/.
  */
 export function resolveInitialScreenId(
   navigator: NavigatorNode,
@@ -562,7 +562,7 @@ export function resolveInitialScreenId(
 
 /***
  * Resolve the active screen Studio should select when a manifest is first opened.
- * @todo Move initial Studio screen selection out of the src root into routes/ or selection/ according to its caller boundary.
+ * TODO: Move initial Studio screen selection out of the src root into routes/ or selection/ according to its caller boundary.
  */
 export function resolveInitialActiveScreenId(manifest: StudioManifest | null): string | null {
   if (!manifest || !hasCanonicalStudioScreenRegistryIdentity(manifest.screens)) return null;
@@ -574,7 +574,7 @@ export function resolveInitialActiveScreenId(manifest: StudioManifest | null): s
 
 /***
  * Resolve the root UI node for the active canonical screen.
- * @todo Move active-screen root resolution from the src root into the manifest/selection boundary.
+ * TODO: Move active-screen root resolution from the src root into the manifest/selection boundary.
  */
 export function resolveActiveRootNode(
   manifest: StudioManifest | null,
@@ -586,7 +586,7 @@ export function resolveActiveRootNode(
 
 /***
  * Recursively find a UI node by identifier in a manifest-owned UI tree.
- * @todo Move UI-tree traversal from the src root into canvas/.
+ * TODO: Move UI-tree traversal from the src root into canvas/.
  */
 export function findNodeInManifest(root: UiNode, id: string): UiNode | null {
   if (root.id === id) return root;
@@ -601,7 +601,7 @@ export function findNodeInManifest(root: UiNode, id: string): UiNode | null {
 
 /***
  * Keep a selected node identifier only while that node still exists in the active tree.
- * @todo Move selection validity policy from the src root into selection/.
+ * TODO: Move selection validity policy from the src root into selection/.
  */
 export function resolveSafeSelectedNodeId(
   rootNode: UiNode | null,
@@ -613,7 +613,7 @@ export function resolveSafeSelectedNodeId(
 
 /***
  * Find the canonical screen whose UI tree contains a given node identifier.
- * @todo Move screen ownership lookup from the src root into the manifest/canvas boundary.
+ * TODO: Move screen ownership lookup from the src root into the manifest/canvas boundary.
  */
 export function findScreenIdForNode(manifest: StudioManifest, nodeId: string): string | null {
   if (!hasCanonicalStudioScreenRegistryIdentity(manifest.screens)) return null;
@@ -628,7 +628,7 @@ export function findScreenIdForNode(manifest: StudioManifest, nodeId: string): s
 
 /***
  * Update authored properties of one node in the active screen while preserving manifest immutability.
- * @todo Move canvas node mutation from the src root into canvas/.
+ * TODO: Move canvas node mutation from the src root into canvas/.
  */
 export function updateStudioManifestNode(
   manifest: StudioManifest,
@@ -657,7 +657,7 @@ export function updateStudioManifestNode(
 
 /***
  * Delete a non-root node from the active screen and remove data bindings owned by the deleted subtree.
- * @todo Split this canvas mutation and binding cleanup between canvas/ and bindings/ instead of the src root.
+ * TODO: Split this canvas mutation and binding cleanup between canvas/ and bindings/ instead of the src root.
  */
 export function deleteStudioManifestNode(
   manifest: StudioManifest,
@@ -698,7 +698,7 @@ export function deleteStudioManifestNode(
 
 /***
  * Insert a new UI node at a validated canvas placement in the active screen.
- * @todo Move canvas insertion orchestration from the src root into canvas/.
+ * TODO: Move canvas insertion orchestration from the src root into canvas/.
  */
 export function insertStudioManifestNodeAtPlacement(args: {
   manifest: StudioManifest;
@@ -736,7 +736,7 @@ export function insertStudioManifestNodeAtPlacement(args: {
 
 /***
  * Move an existing UI node to a validated canvas placement in the active screen.
- * @todo Move canvas movement orchestration from the src root into canvas/.
+ * TODO: Move canvas movement orchestration from the src root into canvas/.
  */
 export function moveStudioManifestNodeToPlacement(args: {
   manifest: StudioManifest;
@@ -775,7 +775,7 @@ export function moveStudioManifestNodeToPlacement(args: {
 
 /***
  * Replace the manifest component data-binding registry.
- * @todo Move binding-state mutation from the src root into bindings/.
+ * TODO: Move binding-state mutation from the src root into bindings/.
  */
 export function updateStudioManifestDataBindings(
   manifest: StudioManifest,
@@ -786,7 +786,7 @@ export function updateStudioManifestDataBindings(
 
 /***
  * Replace the manifest data-source registry.
- * @todo Resolve data-source authoring ownership with bindings/external APIs and remove this src-root mutation.
+ * TODO: Resolve data-source authoring ownership with bindings/external APIs and remove this src-root mutation.
  */
 export function updateStudioManifestDataSources(
   manifest: StudioManifest,
@@ -797,7 +797,7 @@ export function updateStudioManifestDataSources(
 
 /***
  * Create the default light/dark theme configuration for a newly authored theme.
- * @todo Extract theme authoring from manifestState.ts; the current Studio structure target does not yet name a dedicated theme domain.
+ * TODO: Extract theme authoring from manifestState.ts; the current Studio structure target does not yet name a dedicated theme domain.
  */
 export function createDefaultThemeConfig(
   themeIndex: number,
@@ -819,7 +819,7 @@ export function createDefaultThemeConfig(
 
 /***
  * Append a theme to the manifest, creating a default theme when none is supplied.
- * @todo Extract theme authoring from manifestState.ts into its resolved owner.
+ * TODO: Extract theme authoring from manifestState.ts into its resolved owner.
  */
 export function addStudioManifestTheme(
   manifest: StudioManifest,
@@ -832,7 +832,7 @@ export function addStudioManifestTheme(
 
 /***
  * Merge shared and mode-specific updates into one manifest theme.
- * @todo Extract theme authoring from manifestState.ts into its resolved owner.
+ * TODO: Extract theme authoring from manifestState.ts into its resolved owner.
  */
 export function updateStudioManifestTheme(
   manifest: StudioManifest,
@@ -856,7 +856,7 @@ export function updateStudioManifestTheme(
 
 /***
  * Delete a theme while preserving at least one theme and a valid active-theme identifier.
- * @todo Extract theme authoring from manifestState.ts into its resolved owner.
+ * TODO: Extract theme authoring from manifestState.ts into its resolved owner.
  */
 export function deleteStudioManifestTheme(
   manifest: StudioManifest,
@@ -877,7 +877,7 @@ export function deleteStudioManifestTheme(
 
 /***
  * Set the active theme identifier in the manifest.
- * @todo Extract theme authoring from manifestState.ts into its resolved owner.
+ * TODO: Extract theme authoring from manifestState.ts into its resolved owner.
  */
 export function setStudioManifestActiveThemeId(
   manifest: StudioManifest,
@@ -890,7 +890,7 @@ export function setStudioManifestActiveThemeId(
 
 /***
  * Set the active light/dark theme mode in the manifest.
- * @todo Extract theme authoring from manifestState.ts into its resolved owner.
+ * TODO: Extract theme authoring from manifestState.ts into its resolved owner.
  */
 export function setStudioManifestActiveThemeMode(
   manifest: StudioManifest,
@@ -901,7 +901,7 @@ export function setStudioManifestActiveThemeMode(
 
 /***
  * Replace OAuth providers while preserving or creating the surrounding manifest auth configuration.
- * @todo Move auth policy from the src root into auth/.
+ * TODO: Move auth policy from the src root into auth/.
  */
 export function updateStudioManifestOAuthProviders(
   manifest: StudioManifest,
@@ -942,7 +942,7 @@ export function updateStudioManifestOAuthProviders(
 
 /***
  * Resolve the navigator path Studio treats as the primary application navigator.
- * @todo Move primary-navigator policy from the src root into routes/.
+ * TODO: Move primary-navigator policy from the src root into routes/.
  */
 export function getPrimaryNavigatorPath(routes: RouteDefinition[]): string[] {
   const appGroupRoute = routes.find((route) => route.name === '(app)' && route.navigator?.routes);
@@ -956,7 +956,7 @@ export function getPrimaryNavigatorPath(routes: RouteDefinition[]): string[] {
 
 /***
  * Find the navigator parent path that owns a route targeting the requested screen.
- * @todo Move route traversal from the src root into routes/.
+ * TODO: Move route traversal from the src root into routes/.
  */
 export function findParentPathForScreenId(
   routes: RouteDefinition[],
@@ -983,7 +983,7 @@ export function findParentPathForScreenId(
 
 /***
  * Resolve the direct route collection owned by a navigator parent path.
- * @todo Move navigator path lookup from the src root into routes/.
+ * TODO: Move navigator path lookup from the src root into routes/.
  */
 export function findRoutesAtParentPath(
   routes: RouteDefinition[],
@@ -1003,7 +1003,7 @@ export function findRoutesAtParentPath(
 
 /***
  * Insert a route into the navigator identified by a parent path without mutating the existing tree.
- * @todo Move route-tree mutation from the src root into routes/.
+ * TODO: Move route-tree mutation from the src root into routes/.
  */
 export function insertRouteAtParentPath(
   routes: RouteDefinition[],
@@ -1031,7 +1031,7 @@ export function insertRouteAtParentPath(
 
 /***
  * Resolve a nested navigator by its route-name path.
- * @todo Move navigator lookup from the src root into routes/.
+ * TODO: Move navigator lookup from the src root into routes/.
  */
 export function findNavigatorAtPath(
   navigator: NavigatorNode,
@@ -1051,7 +1051,7 @@ export function findNavigatorAtPath(
 
 /***
  * Immutably update the navigator identified by a route-name path.
- * @todo Move navigator-tree mutation from the src root into routes/.
+ * TODO: Move navigator-tree mutation from the src root into routes/.
  */
 export function updateNavigatorAtPath(
   navigator: NavigatorNode,
@@ -1111,7 +1111,7 @@ function createNavigatorWithType(
 
 /***
  * Change the primary navigator type when the requested navigator type is valid and different.
- * @todo Move navigator authoring policy from the src root into routes/.
+ * TODO: Move navigator authoring policy from the src root into routes/.
  */
 export function setStudioManifestNavigatorType(
   manifest: StudioManifest,
@@ -1141,7 +1141,7 @@ export function setStudioManifestNavigatorType(
 
 /***
  * Change the primary navigator initial route when the requested sibling route is unique.
- * @todo Move navigator authoring policy from the src root into routes/.
+ * TODO: Move navigator authoring policy from the src root into routes/.
  */
 export function setStudioManifestNavigatorInitialRoute(
   manifest: StudioManifest,
@@ -1169,7 +1169,7 @@ export function setStudioManifestNavigatorInitialRoute(
 
 /***
  * Set whether one route is visible in primary navigation while preserving the canonical visible representation.
- * @todo Move route visibility authoring from the src root into routes/.
+ * TODO: Move route visibility authoring from the src root into routes/.
  */
 export function setStudioManifestRoutePrimaryNavigationVisibility(args: {
   manifest: StudioManifest;
@@ -1208,7 +1208,7 @@ export function setStudioManifestRoutePrimaryNavigationVisibility(args: {
 
 /***
  * Reorder one uniquely named route within its navigator parent.
- * @todo Move route ordering authoring from the src root into routes/.
+ * TODO: Move route ordering authoring from the src root into routes/.
  */
 export function moveStudioManifestRoute(args: {
   manifest: StudioManifest;
@@ -1241,7 +1241,7 @@ export function moveStudioManifestRoute(args: {
 
 /***
  * Create a new screen from a template, generate a collision-free route, and make the new screen active.
- * @todo Split screen creation between manifest screen state and routes/ instead of keeping both in one src-root function.
+ * TODO: Split screen creation between manifest screen state and routes/ instead of keeping both in one src-root function.
  */
 export function addStudioManifestScreen(args: {
   manifest: StudioManifest;
@@ -1306,7 +1306,7 @@ export function addStudioManifestScreen(args: {
 
 /***
  * Delete a screen, remove route references and bindings for its subtree, and resolve a safe next active screen.
- * @todo Split this cross-domain operation across manifest, routes/, bindings/, and selection application responsibilities.
+ * TODO: Split this cross-domain operation across manifest, routes/, bindings/, and selection application responsibilities.
  */
 export function deleteStudioManifestScreen(
   manifest: StudioManifest,
@@ -1359,7 +1359,7 @@ export function deleteStudioManifestScreen(
 
 /***
  * Recursively remove a screen target from routes and prune nested navigators that become empty.
- * @todo Move route cleanup from the src root into routes/.
+ * TODO: Move route cleanup from the src root into routes/.
  */
 export function removeScreenIdFromRoutes(
   routes: RouteDefinition[],
@@ -1395,7 +1395,7 @@ export function removeScreenIdFromRoutes(
 
 /***
  * Generate a route name that is unique among sibling routes by appending a numeric suffix when needed.
- * @todo Move route-name generation from the src root into routes/.
+ * TODO: Move route-name generation from the src root into routes/.
  */
 export function makeUniqueSiblingRouteName(base: string, siblingRoutes: RouteDefinition[]): string {
   const normalized = normalizeRouteName(base);
@@ -1412,7 +1412,7 @@ export function makeUniqueSiblingRouteName(base: string, siblingRoutes: RouteDef
 
 /***
  * Convert route path segments to the canonical pathname pattern used by Studio authoring.
- * @todo Move canonical route-pattern logic from the src root into routes/.
+ * TODO: Move canonical route-pattern logic from the src root into routes/.
  */
 export function toCanonicalRoutePattern(routePath: string[]): string {
   const normalized = routePath.filter((segment) => !isRouteGroupSegment(segment));
@@ -1423,7 +1423,7 @@ export function toCanonicalRoutePattern(routePath: string[]): string {
 
 /***
  * Generate a route name that avoids both sibling-name and canonical-path collisions.
- * @todo Move route-name collision policy from the src root into routes/.
+ * TODO: Move route-name collision policy from the src root into routes/.
  */
 export function makeUniqueRouteNameForParent(
   baseRouteName: string,
@@ -1448,7 +1448,7 @@ export function makeUniqueRouteNameForParent(
 
 /***
  * Normalize arbitrary screen text into the lowercase hyphenated route-name form used by Studio.
- * @todo Keep this semantic route-name normalization under routes/ rather than extracting it as a generic slug utility.
+ * TODO: Keep this semantic route-name normalization under routes/ rather than extracting it as a generic slug utility.
  */
 function normalizeRouteName(value: string): string {
   return slugifyAscii(value) || 'screen';
@@ -1456,7 +1456,7 @@ function normalizeRouteName(value: string): string {
 
 /***
  * Collect canonical pathname patterns for every route in a nested navigator tree.
- * @todo Move route-pattern traversal from the src root into routes/.
+ * TODO: Move route-pattern traversal from the src root into routes/.
  */
 function collectCanonicalRoutePatterns(
   routes: RouteDefinition[],
@@ -1475,7 +1475,7 @@ function collectCanonicalRoutePatterns(
 
 /***
  * Deep-clone a UI node tree while assigning fresh identifiers and copying mutable node data.
- * @todo Move UI-tree cloning from the src root into canvas/.
+ * TODO: Move UI-tree cloning from the src root into canvas/.
  */
 function cloneNodeWithNewIds(node: UiNode, createId: StudioIdGenerator): UiNode {
   const clonedNode: UiNode = {
@@ -1493,7 +1493,7 @@ function cloneNodeWithNewIds(node: UiNode, createId: StudioIdGenerator): UiNode 
 
 /***
  * Immutably update alias, style, and props for a node in a UI tree.
- * @todo Move UI-tree mutation from the src root into canvas/ or properties/ according to final authoring ownership.
+ * TODO: Move UI-tree mutation from the src root into canvas/ or properties/ according to final authoring ownership.
  */
 function updateNodeInManifestTree(
   root: UiNode,
@@ -1522,7 +1522,7 @@ function updateNodeInManifestTree(
 
 /***
  * Immutably remove a node from a UI tree while preserving the remaining hierarchy.
- * @todo Move UI-tree mutation from the src root into canvas/.
+ * TODO: Move UI-tree mutation from the src root into canvas/.
  */
 function removeNodeFromManifestTree(root: UiNode, nodeId: string): UiNode | null {
   if (root.id === nodeId) return null;
@@ -1542,7 +1542,7 @@ function removeNodeFromManifestTree(root: UiNode, nodeId: string): UiNode | null
 
 /***
  * Collect every node identifier in a UI subtree.
- * @todo Move UI-tree traversal from the src root into canvas/.
+ * TODO: Move UI-tree traversal from the src root into canvas/.
  */
 function collectNodeIds(root: UiNode): Set<string> {
   const ids = new Set<string>();
@@ -1556,7 +1556,7 @@ function collectNodeIds(root: UiNode): Set<string> {
 
 /***
  * Repair a navigator's initial-route field after route removal while preserving canonical omission when no initial route exists.
- * @todo Move navigator normalization from the src root into routes/.
+ * TODO: Move navigator normalization from the src root into routes/.
  */
 function normalizeNavigatorAfterRouteUpdate(navigator: NavigatorNode): NavigatorNode {
   const nextRoutes = navigator.routes;
@@ -1581,7 +1581,7 @@ function normalizeNavigatorAfterRouteUpdate(navigator: NavigatorNode): Navigator
 
 /***
  * Narrow an unknown node style value to the string-or-number style record accepted by Studio node updates.
- * @todo Keep this semantic style predicate with the canvas/properties authoring logic rather than treating it as a generic record utility.
+ * TODO: Keep this semantic style predicate with the canvas/properties authoring logic rather than treating it as a generic record utility.
  */
 function isStyleRecord(value: unknown): value is Record<string, string | number> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;

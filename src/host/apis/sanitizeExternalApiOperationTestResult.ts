@@ -5,7 +5,7 @@ import type { ExternalApiOperationTestResult } from '../../externalApiAuthoringC
 
 /***
  * Project an endpoint-test result into the Studio authoring response while removing sensitive request details.
- * @todo Keep this external-API response projection with the external-apis application/host boundary.
+ * TODO: Keep this external-API response projection with the external-apis application/host boundary.
  */
 export function sanitizeExternalApiOperationTestResult(
   result: EndpointTestResult,

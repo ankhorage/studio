@@ -1,6 +1,6 @@
 /***
  * Ask the Studio host to synchronize one project's runtime state.
- * @todo Move concrete runtime-sync HTTP access behind the owning runtime/application edge instead of a direct src/ API file.
+ * TODO: Move concrete runtime-sync HTTP access behind the owning runtime/application edge instead of a direct src/ API file.
  */
 export async function syncProjectRuntime(projectId: string, apiBase?: string): Promise<void> {
   const resolvedApiBase = apiBase ?? (await import('./utils/studioApiBase')).studioApiBase;
@@ -16,7 +16,7 @@ export async function syncProjectRuntime(projectId: string, apiBase?: string): P
 
 /***
  * Decode an HTTP response as JSON and throw a labeled error for a non-JSON body.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function readJson(response: Response, label: string): Promise<unknown> {
   try {
@@ -28,7 +28,7 @@ async function readJson(response: Response, label: string): Promise<unknown> {
 
 /***
  * Read a non-empty error string or nested error message from an unknown response payload.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 function readErrorMessage(value: unknown, fallback: string): string {
   if (typeof value !== 'object' || value === null) return fallback;

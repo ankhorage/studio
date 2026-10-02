@@ -103,7 +103,7 @@ export function getRootLayoutImportRequirements(
 
 /***
  * Indent every non-empty line in a generated multiline block while preserving blank lines.
- * @utility @ankhorage/utility/string
+ * Utility candidate: @ankhorage/utility/string
  */
 function indentGeneratedBlock(content: string, indent = '  '): string {
   return content
@@ -114,7 +114,7 @@ function indentGeneratedBlock(content: string, indent = '  '): string {
 
 /***
  * Generate the complete Expo root-layout module by composing manifest navigation, runtime providers, optional auth integration, Studio authoring shell and generated operation infrastructure.
- * @todo Move generated application-shell template ownership out of the generic host/layout bucket into the project/template generation domain.
+ * TODO: Move generated application-shell template ownership out of the generic host/layout bucket into the project/template generation domain.
  */
 export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
   const {

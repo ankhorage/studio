@@ -14,7 +14,7 @@ export interface StudioManifestPersistenceCoordinatorOptions {
 
 /***
  * Serialize persistence of the latest Studio manifest while tracking save status and persisted signatures.
- * @todo Move this application-level persistence coordinator out of core into the manifest domain's application responsibility; keep concrete HTTP/filesystem adapters at package edges.
+ * TODO: Move this application-level persistence coordinator out of core into the manifest domain's application responsibility; keep concrete HTTP/filesystem adapters at package edges.
  */
 export class StudioManifestPersistenceCoordinator {
   private readonly options: StudioManifestPersistenceCoordinatorOptions;

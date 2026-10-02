@@ -8,7 +8,7 @@ export { isAppManifest };
 
 /***
  * Narrow an unknown value to an application category defined by the contracts package.
- * @todo Move this reusable domain guard to @ankhorage/contracts beside APP_CATEGORIES.
+ * TODO: Move this reusable domain guard to @ankhorage/contracts beside APP_CATEGORIES.
  */
 export function isAppCategory(value: unknown): value is AppCategory {
   return typeof value === 'string' && APP_CATEGORY_SET.has(value);
@@ -16,7 +16,7 @@ export function isAppCategory(value: unknown): value is AppCategory {
 
 /***
  * Narrow an unknown value to a color harmony defined by the color-theory package.
- * @todo Move this reusable domain guard to @ankhorage/color-theory beside COLOR_HARMONIES.
+ * TODO: Move this reusable domain guard to @ankhorage/color-theory beside COLOR_HARMONIES.
  */
 export function isColorHarmony(value: unknown): value is ColorHarmony {
   return typeof value === 'string' && COLOR_HARMONY_SET.has(value);

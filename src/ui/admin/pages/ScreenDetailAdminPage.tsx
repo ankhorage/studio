@@ -263,7 +263,7 @@ function formatRouteReferenceSummary(count: number): string {
 
 /***
  * Format a route path segment array as a slash-delimited path label with a configurable root concept.
- * @utility @ankhorage/utility/route
+ * Utility candidate: @ankhorage/utility/route
  */
 function formatRoutePath(routePath: readonly string[]): string {
   return routePath.length === 0 ? 'root' : routePath.join('/');

@@ -7,7 +7,7 @@ import {
 
 /***
  * Resolve the Studio workspace directory containing generated application projects.
- * @todo Move project path policy from generic `host/orchestrator` into the `projects/` domain host edge.
+ * TODO: Move project path policy from generic `host/orchestrator` into the `projects/` domain host edge.
  */
 export function getAppsRoot(rootPath: string) {
   return path.join(rootPath, 'apps');
@@ -15,7 +15,7 @@ export function getAppsRoot(rootPath: string) {
 
 /***
  * Validate the Studio project-id contract before it is used as a filesystem segment.
- * @todo Keep project-id policy with the `projects/` domain rather than generic host orchestration.
+ * TODO: Keep project-id policy with the `projects/` domain rather than generic host orchestration.
  */
 export function assertProjectId(projectId: string) {
   if (
@@ -31,7 +31,7 @@ export function assertProjectId(projectId: string) {
 
 /***
  * Resolve a validated Studio project id beneath the workspace apps root and reject path escape.
- * @todo Move project filesystem location policy into the `projects/` domain host edge; generic bounded-path resolution can use Utility.
+ * TODO: Move project filesystem location policy into the `projects/` domain host edge; generic bounded-path resolution can use Utility.
  */
 export function getProjectPath(rootPath: string, projectId: string) {
   const appsRoot = path.resolve(getAppsRoot(rootPath));

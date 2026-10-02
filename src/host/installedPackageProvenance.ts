@@ -8,7 +8,7 @@ export interface InstalledPackageProvenance {
 
 /***
  * Determine whether one already-resolved filesystem path is strictly contained by another.
- * @utility @ankhorage/utility/node/path
+ * Utility candidate: @ankhorage/utility/node/path
  */
 export function isPathInsideResolved(
   resolvedParentPath: string,
@@ -25,7 +25,7 @@ export function isPathInsideResolved(
 
 /***
  * Resolve workspace and candidate paths through the filesystem so provenance checks compare real locations rather than symlink aliases.
- * @utility @ankhorage/utility/node/path
+ * Utility candidate: @ankhorage/utility/node/path
  */
 export async function resolveInstalledPackageProvenance(
   workspacePath: string,
@@ -44,7 +44,7 @@ export async function resolveInstalledPackageProvenance(
 
 /***
  * Check whether a Bun text lockfile contains the exact package/version tuple used by an installed package provenance check.
- * @utility @ankhorage/utility/bun
+ * Utility candidate: @ankhorage/utility/bun
  */
 export function bunLockfileReferencesPackageVersion(
   lockfile: string,
