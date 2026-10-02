@@ -116,6 +116,13 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
       rootTabs,
       rootDrawer,
     ] as const;
+    const studioCandidate = await packCurrentStudioCandidateAsync(workspaceRoot);
+    for (const project of projects) {
+      if (project.includeStudio) {
+        await assertGeneratedStudioRegistryRangeAsync(project);
+        await installStudioCandidateAsync(project.path, studioCandidate);
+      }
+    }
     const lockfileDigests = new Map<string, string>();
     for (const project of projects) {
       lockfileDigests.set(project.path, await installGeneratedProjectAsync(project));
@@ -131,7 +138,6 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
 
     await assertGeneratedNavigationContractAsync(studio);
     await runGeneratedProjectChecksAsync(studio);
-    await assertReleasedStudioPackageAsync(studio);
     const studioHostPort = await reserveTcpPort('navigation Studio host');
     studioHost = await startStudioHostServer({
       host: '127.0.0.1',
@@ -252,23 +258,52 @@ async function assertGeneratedNavigationContractAsync(project: NavigationProject
   });
 }
 
-/*** Assert that a Studio-enabled generated navigation fixture installs its declared Studio range from the registry. */
-async function assertReleasedStudioPackageAsync(studioProject: NavigationProject): Promise<void> {
+/*** Assert production generation still declares a published Studio range before acceptance swaps in the current packed candidate. */
+async function assertGeneratedStudioRegistryRangeAsync(project: NavigationProject): Promise<void> {
   const generatedPackage = JSON.parse(
-    await readFile(path.join(studioProject.path, 'package.json'), 'utf8'),
+    await readFile(path.join(project.path, 'package.json'), 'utf8'),
   ) as { readonly dependencies?: Readonly<Record<string, string>> };
   const studioRange = generatedPackage.dependencies?.['@ankhorage/studio'];
-  if (studioRange === undefined) {
-    throw new Error(`Studio-enabled navigation fixture resolved unexpected range ${studioRange}.`);
+  if (studioRange === undefined || /^(?:file|link|workspace|git|https?):/u.test(studioRange)) {
+    throw new Error(
+      `${project.id} generated invalid Studio registry range ${String(studioRange)}.`,
+    );
   }
+}
 
-  const projectLock = await readFile(path.join(studioProject.path, 'bun.lock'), 'utf8');
-  await assertInstalledRegistryPackageAsync({
-    installationRoot: studioProject.path,
-    lockfile: projectLock,
-    packageName: '@ankhorage/studio',
-    range: studioRange,
+/*** Pack the current Studio checkout so Studio-enabled navigation fixtures exercise the breaking PR runtime instead of the previous release. */
+async function packCurrentStudioCandidateAsync(workspaceRoot: string): Promise<string> {
+  const artifactRoot = path.join(workspaceRoot, '.ankh', 'acceptance-artifacts');
+  const tarballPath = path.join(artifactRoot, 'studio-candidate.tgz');
+  await mkdir(artifactRoot, { recursive: true });
+  await runAcceptanceCommandAsync({
+    args: ['run', 'build'],
+    command: 'bun',
+    cwd: process.cwd(),
+    label: 'Build current Studio navigation candidate',
+    timeoutMs: COMMAND_TIMEOUT_MS,
   });
+  await runAcceptanceCommandAsync({
+    args: ['pm', 'pack', '--filename', tarballPath, '--ignore-scripts', '--quiet'],
+    command: 'bun',
+    cwd: process.cwd(),
+    label: 'Pack current Studio navigation candidate',
+    timeoutMs: COMMAND_TIMEOUT_MS,
+  });
+  return tarballPath;
+}
+
+/*** Point one generated Studio-enabled acceptance app at the packed current candidate without changing production package policy. */
+async function installStudioCandidateAsync(
+  projectRoot: string,
+  studioCandidate: string,
+): Promise<void> {
+  const packagePath = path.join(projectRoot, 'package.json');
+  const packageJson = JSON.parse(await readFile(packagePath, 'utf8')) as {
+    dependencies: Record<string, string>;
+  };
+  packageJson.dependencies['@ankhorage/studio'] = `file:${studioCandidate}`;
+  await writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`, 'utf8');
 }
 
 /*** Assert that generated Expo Router declarations are non-empty and contain the required navigation route evidence. */

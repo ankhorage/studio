@@ -3,7 +3,12 @@ import type {
   GeneratedPackagePolicy,
 } from '../../../types/project-updates.js';
 
-const OBSOLETE_GENERATED_DEPENDENCIES = new Set(['@react-native-picker/picker']);
+const OBSOLETE_GENERATED_DEPENDENCIES = new Set([
+  '@react-native-picker/picker',
+  '@ankhorage/zora-chess',
+  '@ankhorage/zora-game',
+  '@ankhorage/zora-tabletop',
+]);
 
 /*** Apply one explicit Studio package policy while preserving user-owned package manifest entries outside superseded Studio-managed dependencies. */
 export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
@@ -13,11 +18,6 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
   const baseDependencies = Object.fromEntries(
     Object.entries(packageJson.dependencies).filter(
       ([name]) => !OBSOLETE_GENERATED_DEPENDENCIES.has(name),
-    ),
-  );
-  const zoraExtensionDependencies = Object.fromEntries(
-    Object.entries(policy.dependencies.zoraExtensions).filter(([packageName]) =>
-      Object.hasOwn(packageJson.dependencies, packageName),
     ),
   );
   const dependencies = {
@@ -40,7 +40,6 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
       ? { '@ankhorage/supabase-storage': policy.dependencies.supabaseStorage }
       : {}),
     '@ankhorage/zora': policy.dependencies.zora,
-    ...zoraExtensionDependencies,
     '@react-native-vector-icons/fontawesome': policy.peerDependencies.fontawesome,
     '@react-native-vector-icons/fontawesome5': policy.peerDependencies.fontawesome5,
     '@react-native-vector-icons/fontawesome6': policy.peerDependencies.fontawesome6,

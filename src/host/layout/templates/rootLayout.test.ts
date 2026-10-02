@@ -115,10 +115,8 @@ test('initializes the Studio provider with the runtime manifest', () => {
 
   expect(generated).toContain('initialManifest={runtimeManifest}');
   expect(generated).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
-  expect(generated).toContain('componentMeta={STUDIO_ZORA_PLUGIN_CATALOG.componentMeta}');
-  expect(generated).toContain(
-    'bindableComponentMeta={STUDIO_ZORA_PLUGIN_CATALOG.bindableComponentMeta}',
-  );
+  expect(generated).toContain('componentMeta={ZORA_COMPONENT_META}');
+  expect(generated).toContain('bindableComponentMeta={ZORA_BINDABLE_COMPONENT_META}');
   expect(generated).toContain(
     'activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}',
   );
@@ -225,7 +223,7 @@ test('keeps admin routes outside the root-owned stationary selection composition
   expect(generated).toContain('moveNodeToPlacement');
   expect(generated).toContain('setActiveDragNodeId: setActiveCanvasDragNodeId');
   expect(generated).toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
-  expect(generated).toContain('STUDIO_ZORA_PLUGIN_CATALOG.componentMeta');
+  expect(generated).toContain('componentMeta={ZORA_COMPONENT_META}');
 });
 
 test('keeps non-Studio generated output Studio-independent', () => {

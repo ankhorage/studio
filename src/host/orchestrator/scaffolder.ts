@@ -6,12 +6,6 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 import { applySystemTemplates } from '../manifestSystem';
-import {
-  collectZoraExtensionDependencies,
-  mergeZoraExtensions,
-  resolveZoraExtensionsFromDependencies,
-  type ZoraExtensionDefinition,
-} from '../zoraExtensions';
 import { syncGeneratedAppFiles } from './generatedAppFiles';
 import { createDefaultAppDeployManifest } from './projectTargets';
 import {
@@ -31,7 +25,6 @@ interface ScaffoldProjectOptions {
   authProvider?: GeneratedAuthProvider;
   storageProvider?: GeneratedStorageProvider;
   manifest?: Pick<AppManifest, 'media' | 'splashScreen'>;
-  zoraExtensions?: readonly ZoraExtensionDefinition[];
   runtimePlan?: ExpoRuntimePlan;
   targets?: AppDeployTargets;
 }
@@ -117,7 +110,6 @@ export class ProjectScaffolder {
       authProvider = null,
       storageProvider = null,
       manifest,
-      zoraExtensions = [],
       runtimePlan,
       targets = createDefaultAppDeployManifest(slug).targets,
     } = options;
@@ -131,7 +123,6 @@ export class ProjectScaffolder {
       includeStudio,
       authProvider,
       storageProvider,
-      zoraExtensions,
       runtimePlan,
       targets,
     );
@@ -144,10 +135,7 @@ export class ProjectScaffolder {
     await this.ensurePrettierIgnore(projectPath);
     await this.ensureKnipConfig(projectPath);
     await this.ensureAppGitIgnore(projectPath);
-    await syncGeneratedAppFiles(projectPath, {
-      runtimePlan,
-      zoraExtensions,
-    });
+    await syncGeneratedAppFiles(projectPath, { runtimePlan });
 
     await this.copyDefaultAssets(projectPath);
   }
@@ -173,24 +161,14 @@ export class ProjectScaffolder {
 
     const packageJsonPath = path.join(projectPath, 'package.json');
     const existingPackageJson = await this.readPackageJson(packageJsonPath);
-    const existingZoraExtensions = resolveZoraExtensionsFromDependencies(
-      existingPackageJson?.dependencies ?? {},
-    );
-    const zoraExtensions = mergeZoraExtensions(
-      options.zoraExtensions ?? [],
-      existingZoraExtensions,
-    );
-    const templatePackageJson = withZoraExtensionDependencies(
-      getPackageJson({
-        name: existingPackageJson?.name ?? slug,
-        includeStudio,
-        authProvider,
-        storageProvider,
-        runtimePlan,
-        targets,
-      }),
-      zoraExtensions,
-    );
+    const templatePackageJson = getPackageJson({
+      name: existingPackageJson?.name ?? slug,
+      includeStudio,
+      authProvider,
+      storageProvider,
+      runtimePlan,
+      targets,
+    });
 
     const nextPackageJson = mergePackageJson(existingPackageJson, templatePackageJson, targets);
 
@@ -204,10 +182,7 @@ export class ProjectScaffolder {
     await this.ensurePrettierIgnore(projectPath);
     await this.ensureKnipConfig(projectPath);
     await this.ensureAppGitIgnore(projectPath);
-    await syncGeneratedAppFiles(projectPath, {
-      runtimePlan,
-      zoraExtensions,
-    });
+    await syncGeneratedAppFiles(projectPath, { runtimePlan });
   }
 
   /*** Finalize and persist the canonical project manifest with project-owned identity/category/timestamps and system templates applied. */
@@ -289,28 +264,24 @@ export class ProjectScaffolder {
     await fs.writeFile(scriptPath, getAndroidRunTs({ projectId, includeStudio }), 'utf8');
   }
 
-  /*** Write the generated package.json with canonical owner dependencies plus selected ZORA extension dependencies. */
+  /*** Write the generated package.json with canonical owner dependencies. */
   private async writePackageJson(
     dir: string,
     slug: string,
     includeStudio: boolean,
     authProvider: GeneratedAuthProvider,
     storageProvider: GeneratedStorageProvider,
-    zoraExtensions: readonly ZoraExtensionDefinition[],
     runtimePlan: ExpoRuntimePlan | undefined,
     targets: AppDeployTargets,
   ) {
-    const packageJson = withZoraExtensionDependencies(
-      getPackageJson({
-        name: slug,
-        includeStudio,
-        authProvider,
-        storageProvider,
-        runtimePlan,
-        targets,
-      }),
-      zoraExtensions,
-    );
+    const packageJson = getPackageJson({
+      name: slug,
+      includeStudio,
+      authProvider,
+      storageProvider,
+      runtimePlan,
+      targets,
+    });
     await fs.writeFile(
       path.join(dir, 'package.json'),
       `${JSON.stringify(packageJson, null, 2)}\n`,
@@ -424,20 +395,6 @@ export class ProjectScaffolder {
       }
     }
   }
-}
-
-/*** Add dependency requirements from selected ZORA extensions to a generated package manifest. */
-function withZoraExtensionDependencies(
-  packageJson: PackageJsonShape,
-  zoraExtensions: readonly ZoraExtensionDefinition[],
-): ExtendedPackageJsonShape {
-  return {
-    ...packageJson,
-    dependencies: {
-      ...packageJson.dependencies,
-      ...collectZoraExtensionDependencies(zoraExtensions),
-    },
-  };
 }
 
 /*** Reconcile Studio-managed package dependencies/devDependencies/scripts while preserving unrelated app-owned package metadata. */

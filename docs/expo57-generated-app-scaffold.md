@@ -51,8 +51,9 @@ root package is classified below.
 `@ankhorage/infra@^4.1.3`, `@ankhorage/orchestrator@^0.3.1`,
 `@ankhorage/supabase-auth@^1.2.5`, `@ankhorage/supabase-storage@^0.2.0`,
 `@ankhorage/supabase-vault@^0.2.4`, `@ankhorage/templates@^7.0.0`,
-`@ankhorage/zora-chess@^0.1.2` and `@ankhorage/zora-tabletop@^0.0.5` match their current
-released owner baselines.
+The standalone `@ankhorage/zora-chess`, `@ankhorage/zora-game`, and `@ankhorage/zora-tabletop`
+packages are no longer current generated-app owners. Chess, Game, and Tabletop are owned by core
+`@ankhorage/zora` from the 21.1.0 release line onward.
 
 `apps/studio` has one direct Ankhorage dependency of its own: `@ankhorage/studio@^2.0.24`. That is the
 published package boundary the first-party app exercises without using `latest`; all of its

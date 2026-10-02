@@ -207,8 +207,11 @@ describe('GeneratedAppFileGenerator', () => {
     );
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
     const adminLayout = files.find((file) => file.path === 'src/app/ankh/_layout.tsx')?.content;
-    const adminPage = files.find(
+    const adminNativePage = files.find(
       (file) => file.path === 'src/app/ankh/auth/providers.tsx',
+    )?.content;
+    const adminWebPage = files.find(
+      (file) => file.path === 'src/app/ankh/auth/providers.web.tsx',
     )?.content;
 
     expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
@@ -225,9 +228,23 @@ describe('GeneratedAppFileGenerator', () => {
       '<WorkspaceAccessGate><WorkspaceContent /></WorkspaceAccessGate>',
     );
     expect(adminLayout).not.toContain('AnkhAdminShell');
-    expect(adminPage).toContain('if (!__DEV__)');
-    expect(adminPage).toContain('<Redirect href="/" />');
-    expect(adminPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
+    expect(adminNativePage).toContain('<Redirect href="/" />');
+    expect(adminNativePage).not.toContain('AnkhAdminPage');
+    expect(adminWebPage).toContain('if (!__DEV__)');
+    expect(adminWebPage).toContain('<Redirect href="/" />');
+    expect(adminWebPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
+    expect(adminWebPage).toContain("from '@ankhorage/studio/administration/AnkhAdminPage'");
+    expect(adminLayout).toContain("from '@ankhorage/studio/administration/StudioAdminAccessGate'");
+    expect(adminLayout).toContain(
+      "from '@ankhorage/studio/administration/useStudioAdminWorkspace'",
+    );
+    expect(rootLayout).toContain("from '@ankhorage/studio/core/StudioProvider'");
+    expect(rootLayout).toContain("from '@ankhorage/studio/core/StudioContext'");
+    expect(rootLayout).toContain("from '@ankhorage/studio/ui/AnkhStudio'");
+    expect(rootLayout).toContain("from '@ankhorage/studio/ui/useStudioAppBarAugmentation'");
+    expect(rootLayout).not.toContain("from '@ankhorage/studio';");
+    expect(adminLayout).not.toContain("from '@ankhorage/studio';");
+    expect(adminWebPage).not.toContain("from '@ankhorage/studio';");
   });
 
   test('composes one React import for generated Auth plus Studio root layouts', () => {
@@ -297,7 +314,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('AppShell');
     expect(rootLayout).toContain('ZoraProvider');
     expect(rootLayout).toContain('createComponentRegistry');
-    expect(rootLayout).toContain('STUDIO_ZORA_PLUGIN_CATALOG');
+    expect(rootLayout).not.toContain('STUDIO_ZORA_PLUGIN_CATALOG');
     expect(rootLayout).toContain(
       'APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY',
     );
@@ -305,18 +322,15 @@ describe('GeneratedAppFileGenerator', () => {
       'APP_EXTENSION_INTERACTION_POLICY_SUPPORT as GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT',
     );
     expect(rootLayout).toContain(`const APP_COMPONENT_REGISTRY = createComponentRegistry(
-  STUDIO_ZORA_PLUGIN_CATALOG.componentRegistry,
+  ZORA_COMPONENT_REGISTRY,
   GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
 );`);
     expect(rootLayout).toContain(`const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
-  ...STUDIO_ZORA_PLUGIN_CATALOG.interactionPolicySupportedComponents,
   ...GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
 } as const;`);
     expect(rootLayout).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
-    expect(rootLayout).toContain('componentMeta={STUDIO_ZORA_PLUGIN_CATALOG.componentMeta}');
-    expect(rootLayout).toContain(
-      'bindableComponentMeta={STUDIO_ZORA_PLUGIN_CATALOG.bindableComponentMeta}',
-    );
+    expect(rootLayout).toContain('componentMeta={ZORA_COMPONENT_META}');
+    expect(rootLayout).toContain('bindableComponentMeta={ZORA_BINDABLE_COMPONENT_META}');
     expect(rootLayout).toContain('registry: runtimeComponentRegistry');
     expect(rootLayout).toContain(
       '<GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>',
@@ -348,9 +362,9 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('push: (href) => router.push(href as Href)');
     expect(rootLayout).toContain('function useGeneratedRuntimeAction()');
     expect(rootLayout).toContain('const { executeAction } = useGeneratedRuntimeAction();');
-    expect(rootLayout).toContain('const APP_ZORA_PLUGIN_CATALOG = composeZoraPlugins([');
-    expect(rootLayout).toContain('ZORA_CORE_PLUGIN');
-    expect(rootLayout).toContain('...GENERATED_APP_ZORA_PLUGINS');
+    expect(rootLayout).not.toContain('composeZoraPlugins');
+    expect(rootLayout).not.toContain('ZORA_CORE_PLUGIN');
+    expect(rootLayout).not.toContain('GENERATED_APP_ZORA_PLUGINS');
     expect(rootLayout).toContain('createComponentRegistry');
     expect(rootLayout).not.toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
     expect(rootLayout).not.toContain("from '@ankhorage/studio/runtime'");
@@ -363,7 +377,7 @@ describe('GeneratedAppFileGenerator', () => {
       { encoding: 'utf8' },
     );
 
-    expect(source).toContain('STUDIO_ADMIN_ROUTE_REGISTRY.map');
+    expect(source).toContain('STUDIO_ADMIN_ROUTE_REGISTRY.flatMap');
     expect(source).toContain('resolveStudioAdminRouteFilePath(route.id)');
     expect(source).not.toContain("path.join(appRootRel, 'ankh', 'auth', 'providers.tsx')");
     expect(source).not.toContain('type StudioAdminGeneratedRouteName =');

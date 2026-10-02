@@ -49,13 +49,11 @@ test('derives generated dependency ranges from owner package metadata', async ()
     '@react-native-vector-icons/fontawesome6': policy.peerDependencies.fontawesome6,
     '@react-native-vector-icons/ionicons': policy.peerDependencies.ionicons,
   });
-  expect(policy.dependencies.zoraExtensions).toEqual(
-    Object.fromEntries(
-      Object.entries(studioPackage.dependencies ?? {}).filter(([packageName]) =>
-        packageName.startsWith('@ankhorage/zora-'),
-      ),
+  expect(
+    Object.keys(studioPackage.dependencies ?? {}).filter((packageName) =>
+      packageName.startsWith('@ankhorage/zora-'),
     ),
-  );
+  ).toEqual([]);
   expect(Object.hasOwn(packageJson.dependencies, '@react-native-picker/picker')).toBe(false);
   expect(packageJson.devDependencies).toMatchObject({
     '@ankhorage/ankh': policy.devDependencies.ankh,
@@ -80,31 +78,32 @@ test('does not introduce optional generated dependencies when their capability i
   expect(Object.hasOwn(packageJson.dependencies, '@react-native-picker/picker')).toBe(false);
 });
 
-test('reconciles only ZORA extensions already installed by a generated app', () => {
+test('removes obsolete standalone ZORA plugin dependencies from generated apps', () => {
   const policy = getGeneratedPackagePolicy();
   const basePackageJson = getPackageJson({
     name: 'fixture',
     includeStudio: true,
     targets: WEB_TARGETS,
   });
-  const tabletopRange = Object.entries(policy.dependencies.zoraExtensions).find(
-    ([packageName]) => packageName === '@ankhorage/zora-tabletop',
-  )?.[1];
-  if (tabletopRange === undefined) {
-    throw new Error('Studio package policy is missing @ankhorage/zora-tabletop.');
-  }
 
   const updated = applyGeneratedPackagePolicy(
     {
       ...basePackageJson,
       dependencies: {
         ...basePackageJson.dependencies,
+        '@ankhorage/zora-chess': '^0.0.1',
+        '@ankhorage/zora-game': '^0.0.1',
         '@ankhorage/zora-tabletop': '^0.0.1',
       },
     },
     policy,
   );
 
-  expect(updated.dependencies['@ankhorage/zora-tabletop']).toBe(tabletopRange);
-  expect(Object.hasOwn(updated.dependencies, '@ankhorage/zora-chess')).toBe(false);
+  for (const packageName of [
+    '@ankhorage/zora-chess',
+    '@ankhorage/zora-game',
+    '@ankhorage/zora-tabletop',
+  ]) {
+    expect(Object.hasOwn(updated.dependencies, packageName)).toBe(false);
+  }
 });
