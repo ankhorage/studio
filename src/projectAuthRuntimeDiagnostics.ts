@@ -92,13 +92,14 @@ function resolveRolloutDiagnostic(status: ProjectAuthRuntimeRolloutStatus): Proj
 
 /***
  * Resolve aggregate health from the highest diagnostic severity present.
- * @utility @ankhorage/utility/diagnostics
  */
 function resolveHealthStatus(
   diagnostics: readonly ProjectAuthDiagnostic[],
 ): ProjectAuthHealthStatus {
-  if (diagnostics.some((diagnostic) => diagnostic.severity === 'error')) return 'error';
-  if (diagnostics.some((diagnostic) => diagnostic.severity === 'warning')) return 'warning';
+  const severity = highestSeverity(diagnostics, (value) =>
+    value === 'error' ? 2 : value === 'warning' ? 1 : 0,
+  );
+  if (severity === 'error' || severity === 'warning') return severity;
   return 'healthy';
 }
 
@@ -126,23 +127,20 @@ function sortDiagnostics(
 
 /***
  * Remove duplicate diagnostics using a composite key built from all identity-bearing fields.
- * @utility @ankhorage/utility/array
  */
 function uniqueDiagnostics(
   diagnostics: readonly ProjectAuthDiagnostic[],
 ): readonly ProjectAuthDiagnostic[] {
-  const seen = new Set<string>();
-  return diagnostics.filter((diagnostic) => {
-    const key = [
+  return dedupeBy(diagnostics, (diagnostic) =>
+    [
       diagnostic.code,
       diagnostic.severity,
       diagnostic.message,
       diagnostic.path ?? '',
       diagnostic.providerId ?? '',
       diagnostic.credentialsRef ?? '',
-    ].join('\u0000');
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+    ].join('\u0000'),
+  );
 }
+import { dedupeBy } from '@ankhorage/utility/array';
+import { highestSeverity } from '@ankhorage/utility/diagnostics';

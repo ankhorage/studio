@@ -14,10 +14,10 @@ test('secret inventory exposes an environment filter', () => {
 });
 
 test('secret inventory clears rows and rejects stale environment responses', () => {
-  expect(source).toContain('const generation = ++requestGeneration.current');
+  expect(source).toContain('useMemo(createLatestAsyncCoordinator, [])');
   expect(source).toContain('setItems([]);\n    setLoading(true);');
-  expect(source).toContain('generation !== requestGeneration.current');
-  expect(source).toContain('requestGeneration.current += 1');
+  expect(source).toContain('await coordinator.run({');
+  expect(source).toContain('coordinator.invalidate()');
 });
 
 test('secret usage lookup failures remain unavailable instead of becoming zero usages', () => {

@@ -1,3 +1,5 @@
+import { createCompositeKey } from '@ankhorage/utility/string';
+
 import { isStudioCanvasDragPayload, type StudioCanvasDragPayload } from '../../canvasDragModel';
 export { sortByRectArea as sortCanvasDropTargetsBySpecificity } from '@ankhorage/utility/geometry';
 import type { CanvasDropZoneResolution } from '../../canvasDropZones';
@@ -11,10 +13,9 @@ export interface CanvasDragSessionCallbacks {
 
 /***
  * Build the composite key used to force a fresh draggable instance for one node/revision pair.
- * @utility @ankhorage/utility/string
  */
 export function createCanvasDraggableSessionKey(nodeId: string, revision: number): string {
-  return `${nodeId}:${revision}`;
+  return createCompositeKey([nodeId, revision], ':');
 }
 
 /***

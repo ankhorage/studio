@@ -1,4 +1,5 @@
 import type { ApiDefinitionRegistry } from '@ankhorage/contracts/data';
+import { createCompositeKey, stringifyJson } from '@ankhorage/utility/string';
 import { Button, Card, Text } from '@ankhorage/zora';
 import { useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
@@ -106,19 +107,15 @@ function OperationResult({ result }: { readonly result: ExternalApiOperationTest
   );
 }
 
-/***
- * Build a stable composite key from the identifying fields of an API operation row.
- * @utility @ankhorage/utility/string
- */
+/*** Build a stable composite key from the identifying fields of an API operation row. */
 function operationKey(row: ApiOperationRow): string {
-  return `${row.apiId}:${row.endpointId}:${row.operationId}`;
+  return createCompositeKey([row.apiId, row.endpointId, row.operationId], ':');
 }
 
 /***
  * Pretty-serialize a JSON-compatible value and truncate the resulting text to a configured display budget.
- * @utility @ankhorage/utility/json
  */
 function formatData(value: unknown): string {
-  const serialized = JSON.stringify(value, null, 2);
+  const serialized = stringifyJson(value);
   return serialized.length > 1_500 ? `${serialized.slice(0, 1_500)}…` : serialized;
 }

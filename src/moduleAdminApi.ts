@@ -1,9 +1,10 @@
 import { isStringArray } from '@ankhorage/utility/array';
 import { isRecord } from '@ankhorage/utility/object';
+import { isNonEmptyString } from '@ankhorage/utility/string';
+import { appendEncodedPathSegment } from '@ankhorage/utility/url';
 
 import type {
   StudioModuleAdminContribution,
-  StudioModuleAdminControl,
   StudioModuleOperationResult,
   StudioModuleState,
 } from './moduleAdminContracts';
@@ -178,7 +179,7 @@ function parseAdminContribution(value: unknown): StudioModuleAdminContribution {
         candidate === null ||
         typeof candidate.key !== 'string' ||
         typeof candidate.label !== 'string' ||
-        !isAdminControl(candidate.control) ||
+        !isNonEmptyString(candidate.control) ||
         typeof candidate.required !== 'boolean'
       ) {
         throw invalidResponse('Module admin field was invalid.');
@@ -250,18 +251,17 @@ async function requestJson(path: string, init?: RequestInit): Promise<unknown> {
 
 /***
  * Build the encoded REST path for a project-owned resource identified by two path segments.
- * @utility @ankhorage/utility/url
  */
 export function createProjectModuleApiPath(input: {
   readonly projectId: string;
   readonly moduleId: string;
 }): string {
-  return `/projects/${encodeURIComponent(input.projectId)}/modules/${encodeURIComponent(input.moduleId)}`;
+  const projectPath = appendEncodedPathSegment('/projects', input.projectId);
+  return appendEncodedPathSegment(`${projectPath}/modules`, input.moduleId);
 }
 
 /***
  * Extend an encoded resource path with one required non-empty operation segment.
- * @utility @ankhorage/utility/url
  */
 export function createProjectModuleAdminOperationApiPath(input: {
   readonly projectId: string;
@@ -270,23 +270,14 @@ export function createProjectModuleAdminOperationApiPath(input: {
 }): string {
   const operation = input.operation.trim();
   if (!operation) throw new Error('Module admin operation must not be empty.');
-  return `${createProjectModuleApiPath(input)}/admin/${encodeURIComponent(operation)}`;
+  return appendEncodedPathSegment(`${createProjectModuleApiPath(input)}/admin`, operation);
 }
 
 /***
  * Narrow an unknown value to a strict non-array record or return null.
- * @utility @ankhorage/utility/value
  */
 function asRecord(value: unknown): Record<string, unknown> | null {
   return isRecord(value) ? value : null;
-}
-
-/***
- * Return whether an unknown value is a non-empty string.
- * @utility @ankhorage/utility/string
- */
-function isAdminControl(value: unknown): value is StudioModuleAdminControl {
-  return typeof value === 'string' && value.length > 0;
 }
 
 /***

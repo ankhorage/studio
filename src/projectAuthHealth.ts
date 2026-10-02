@@ -5,6 +5,7 @@ import type { AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type { InfraEnvironmentSpec } from '@ankhorage/contracts/infra';
 import type { SecretMetadata } from '@ankhorage/contracts/secrets';
 import { getSupabaseOAuthProviderDefinition } from '@ankhorage/supabase-auth';
+import { highestSeverity } from '@ankhorage/utility/diagnostics';
 import { readOwnProperty } from '@ankhorage/utility/object';
 
 import { validateStudioAuthSettings } from './authSettings';
@@ -332,13 +333,14 @@ function resolveAuthValidationCode(message: string): string {
 
 /***
  * Resolve aggregate health from the highest diagnostic severity present.
- * @utility @ankhorage/utility/diagnostics
  */
 function resolveHealthStatus(
   diagnostics: readonly ProjectAuthDiagnostic[],
 ): ProjectAuthHealthStatus {
-  if (diagnostics.some((diagnostic) => diagnostic.severity === 'error')) return 'error';
-  if (diagnostics.some((diagnostic) => diagnostic.severity === 'warning')) return 'warning';
+  const severity = highestSeverity(diagnostics, (value) =>
+    value === 'error' ? 2 : value === 'warning' ? 1 : 0,
+  );
+  if (severity === 'error' || severity === 'warning') return severity;
   return 'healthy';
 }
 

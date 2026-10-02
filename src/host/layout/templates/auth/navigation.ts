@@ -1,3 +1,5 @@
+import { serializeJavaScriptLiteral } from '@ankhorage/utility/string';
+
 import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
 import { routeNameToGroupedHref, routeNameToHref } from '../utils/routes';
 
@@ -11,10 +13,9 @@ interface GetAuthNavigationTsArgs {
 
 /***
  * Serialize a string list as a compact single-quoted JavaScript array literal.
- * @utility @ankhorage/utility/string
  */
 function serializeStringArrayLiteral(values: readonly string[]): string {
-  return `[${values.map((value) => `'${escapeStringLiteral(value)}'`).join(', ')}]`;
+  return serializeJavaScriptLiteral(values);
 }
 
 /*** Generate the auth route-guard and authenticated-navigation module for a generated app. */

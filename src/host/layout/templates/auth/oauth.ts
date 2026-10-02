@@ -1,4 +1,5 @@
 import type { ExpoRuntimeNativeSchemeMap } from '@ankhorage/expo-runtime/planning';
+import { formatJavaScriptObjectKey } from '@ankhorage/utility/string';
 
 import type { AuthOAuthLayoutPlan } from '../../auth/resolveAuthLayoutPlan';
 import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
@@ -319,7 +320,7 @@ function serializeOAuthProviders(providers: AuthOAuthLayoutPlan['providers']): s
       .flatMap(([name, value]) =>
         value === undefined
           ? []
-          : [`${serializeObjectPropertyName(name)}: '${escapeStringLiteral(value)}'`],
+          : [`${formatJavaScriptObjectKey(name)}: '${escapeStringLiteral(value)}'`],
       )
       .join(', ');
     const serializedQueryParams = queryParams.length > 0 ? `{ ${queryParams} }` : '{}';
@@ -343,12 +344,4 @@ function serializeOAuthIcon(icon: NonNullable<AuthOAuthLayoutPlan['providers'][n
     return [`${name}: ${serialized}`];
   });
   return `{ ${properties.join(', ')} }`;
-}
-
-/***
- * Format a JavaScript object-property name for generated source, quoting unsafe identifiers.
- * @utility @ankhorage/utility/string
- */
-function serializeObjectPropertyName(name: string): string {
-  return /^[A-Za-z_$][A-Za-z0-9_$]*$/u.test(name) ? name : `'${escapeStringLiteral(name)}'`;
 }

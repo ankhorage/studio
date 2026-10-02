@@ -19,6 +19,7 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "scripts/**/*.ts",
+    "test/**/*.ts",
     "knip.config.ts",
     "paradox.config.ts"
   ],

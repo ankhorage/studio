@@ -1,3 +1,4 @@
+import { toErrorMessage } from '@ankhorage/utility/error';
 import { isRecord } from '@ankhorage/utility/object';
 import { Button, ButtonGroup, Card, Text } from '@ankhorage/zora';
 import { useRouter } from 'expo-router';
@@ -53,7 +54,7 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
       setMessage(null);
     } catch (error) {
       setUnknown(error instanceof StudioModuleApiError && error.status === 404);
-      setMessage(toMessage(error));
+      setMessage(toErrorMessage(error, String(error)));
     } finally {
       setLoading(false);
     }
@@ -82,7 +83,7 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
         );
         await studio.refetchManifest();
       } catch (error) {
-        setMessage(toMessage(error));
+        setMessage(toErrorMessage(error, String(error)));
       } finally {
         setBusy(false);
       }
@@ -124,7 +125,7 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
       setMessage('Module configuration saved through the Orchestrator lifecycle.');
       await studio.refetchManifest();
     } catch (error) {
-      setMessage(toMessage(error));
+      setMessage(toErrorMessage(error, String(error)));
     } finally {
       setBusy(false);
     }
@@ -246,14 +247,6 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
       )}
     </AdminScroll>
   );
-}
-
-/***
- * Normalize an unknown thrown value to a display message.
- * @utility @ankhorage/utility/error
- */
-function toMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
 }
 
 const styles = StyleSheet.create({

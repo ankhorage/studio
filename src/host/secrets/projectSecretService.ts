@@ -15,6 +15,8 @@ import {
   validateSupabaseOAuthSecretPayload,
 } from '@ankhorage/supabase-auth';
 import { createSupabaseVaultAdapter } from '@ankhorage/supabase-vault';
+import { pickCodeMessage } from '@ankhorage/utility/error';
+import { asNonEmptyString } from '@ankhorage/utility/value';
 
 import { findProjectSecretUsages, type ProjectSecretUsageSummary } from '../../projectSecretUsage';
 import type { ProjectManager } from '../orchestrator/projectManager';
@@ -216,7 +218,7 @@ export class ProjectSecretService {
     if (!refResult.ok) {
       return {
         ok: false,
-        error: toPublicError(refResult.error),
+        error: pickCodeMessage(refResult.error),
       };
     }
 
@@ -284,7 +286,7 @@ export class ProjectSecretService {
       return {
         ok: false,
         state: 'secret_write_failed',
-        error: toPublicError(payloadResult.error),
+        error: pickCodeMessage(payloadResult.error),
       };
     }
 
@@ -293,7 +295,7 @@ export class ProjectSecretService {
       return {
         ok: false,
         state: 'secret_write_failed',
-        error: toPublicError(refResult.error),
+        error: pickCodeMessage(refResult.error),
       };
     }
 
@@ -318,7 +320,7 @@ export class ProjectSecretService {
       return {
         ok: false,
         state: 'secret_write_failed',
-        error: toPublicError(secretResult.error),
+        error: pickCodeMessage(secretResult.error),
       };
     }
 
@@ -391,7 +393,7 @@ function createProjectSecretStoreAdapter(
 function createScope(projectId: string, environment = 'local') {
   return {
     projectId,
-    environment: normalizeOptionalText(environment) ?? 'local',
+    environment: asNonEmptyString(environment) ?? 'local',
   };
 }
 
@@ -405,22 +407,4 @@ function createUnavailableSecretStoreError(): {
     message:
       'The project secret store is unavailable. Verify local Supabase is running and ANKH_SECRET_STORE_DATABASE_URL is configured.',
   };
-}
-
-/***
- * @utility @ankhorage/utility/value
- * Normalize optional user text to a trimmed non-empty string; this collapses to `asNonEmptyString`.
- */
-function normalizeOptionalText(value: string | undefined): string | undefined {
-  const normalized = value?.trim();
-  if (!normalized) return undefined;
-  return normalized;
-}
-
-/***
- * @utility @ankhorage/utility/error
- * Project a structured error to the public `{ code, message }` pair; this collapses to `pickCodeMessage`.
- */
-function toPublicError(error: { readonly code: string; readonly message: string }) {
-  return { code: error.code, message: error.message };
 }

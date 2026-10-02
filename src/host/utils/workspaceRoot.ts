@@ -1,6 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
+import { findAncestorDirectory } from '@ankhorage/utility/node/path';
+
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
 
 /***
@@ -20,22 +22,22 @@ export function resolveWorkspaceRoot(fromDir: string, cwd = process.cwd()) {
 
 /***
  * Walk parent directories until a package root satisfies package-name and required-path markers, tolerating invalid intermediate package.json files.
- * @utility @ankhorage/utility/node/workspace
  */
 function findStudioWorkspaceRoot(startPath: string): string | null {
-  let current = path.resolve(startPath);
-  for (;;) {
-    const packageJsonPath = path.join(current, 'package.json');
-    if (existsSync(packageJsonPath) && existsSync(path.join(current, 'apps'))) {
-      try {
-        const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as { name?: unknown };
-        if (packageJson.name === STUDIO_PACKAGE_NAME) return current;
-      } catch {
-        // Continue walking when a parent package.json is not valid JSON.
+  return (
+    findAncestorDirectory(startPath, (current) => {
+      const packageJsonPath = path.join(current, 'package.json');
+      if (existsSync(packageJsonPath) && existsSync(path.join(current, 'apps'))) {
+        try {
+          const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as {
+            name?: unknown;
+          };
+          if (packageJson.name === STUDIO_PACKAGE_NAME) return true;
+        } catch {
+          // Continue walking when a parent package.json is not valid JSON.
+        }
       }
-    }
-    const parent = path.dirname(current);
-    if (parent === current) return null;
-    current = parent;
-  }
+      return false;
+    }) ?? null
+  );
 }

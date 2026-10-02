@@ -152,7 +152,7 @@ jobs:
       - name: Validate focused generated capability contracts
         run: >-
           bun test
-          src/host/smoke/createExpo57CapabilityFixtureManifest.test.ts
+          test/smoke/createExpo57CapabilityFixtureManifest.test.ts
           src/projectDeployAssetPicker.test.ts
 
       - name: Validate generated Expo 57 capabilities

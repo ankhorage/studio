@@ -1,4 +1,7 @@
 import type { DataContractValue, DataSourceDiagnostic } from '@ankhorage/contracts/data';
+import { asRecord } from '@ankhorage/utility/object';
+import { hasBooleanResultFlag } from '@ankhorage/utility/validation';
+import { asString } from '@ankhorage/utility/value';
 
 import type {
   ExternalApiConnectRequest,
@@ -96,7 +99,7 @@ async function requestResult<TResult>(
     },
   );
   const value = await readJson(response);
-  if (!response.ok && !isStructuredFailure(value)) {
+  if (!response.ok && !(hasBooleanResultFlag(value, 'ok') && value.ok === false)) {
     throw new ExternalApiApiError('The Studio external API request failed.', response.status);
   }
   return parse(value);
@@ -188,11 +191,11 @@ function parseDiagnostics(value: unknown): readonly DataSourceDiagnostic[] {
       code: record.code,
       message: record.message,
       severity: record.severity,
-      apiId: readString(record.apiId),
-      endpointId: readString(record.endpointId),
-      operationId: readString(record.operationId),
-      path: readString(record.path),
-      hint: readString(record.hint),
+      apiId: asString(record.apiId),
+      endpointId: asString(record.endpointId),
+      operationId: asString(record.operationId),
+      path: asString(record.path),
+      hint: asString(record.hint),
     };
   });
 }
@@ -244,14 +247,6 @@ function parseResponseSummary(value: unknown) {
   return { status: record.status, ok: record.ok };
 }
 
-/***
- * Return whether a response value is a structured result record explicitly marked unsuccessful.
- * @utility @ankhorage/utility/validation
- */
-function isStructuredFailure(value: unknown): boolean {
-  return readRecord(value)?.ok === false;
-}
-
 /*** Return whether an unknown value is an External API protocol supported by this authoring flow. */
 function isConnectedProtocol(value: unknown): value is 'graphql' | 'rest' {
   return value === 'graphql' || value === 'rest';
@@ -276,22 +271,9 @@ function isDataContractValue(value: unknown): value is DataContractValue {
   return record !== null && Object.values(record).every(isDataContractValue);
 }
 
-/***
- * Narrow an unknown value to a strict non-array record or return null.
- * @utility @ankhorage/utility/value
- */
+/*** Narrow an external API response value to a record or return null. */
 function readRecord(value: unknown): Record<string, unknown> | null {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-    ? (value as Record<string, unknown>)
-    : null;
-}
-
-/***
- * Narrow an unknown value to a string or return undefined.
- * @utility @ankhorage/utility/value
- */
-function readString(value: unknown): string | undefined {
-  return typeof value === 'string' ? value : undefined;
+  return asRecord(value) ?? null;
 }
 
 /***

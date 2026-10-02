@@ -1,4 +1,5 @@
 import type { UiComponentMetaRegistry, UiNode } from '@ankhorage/contracts';
+import { mapRecordEntries } from '@ankhorage/utility/collection';
 
 import type {
   StudioBindableEventOption,
@@ -7,7 +8,6 @@ import type {
 
 /***
  * Convert a component's bindable prop metadata record into labeled authoring options.
- * @utility @ankhorage/utility/collection
  */
 export function resolveStudioBindableProps(
   node: UiNode,
@@ -15,7 +15,7 @@ export function resolveStudioBindableProps(
 ): readonly StudioBindablePropOption[] {
   const props = registry[node.type]?.bindings?.props ?? {};
 
-  return Object.entries(props).map(([name, meta]) => ({
+  return mapRecordEntries(props, ([name, meta]) => ({
     name,
     label: meta.label ?? name,
     meta,
@@ -24,7 +24,6 @@ export function resolveStudioBindableProps(
 
 /***
  * Convert a component's bindable event metadata record into labeled authoring options.
- * @utility @ankhorage/utility/collection
  */
 export function resolveStudioBindableEvents(
   node: UiNode,
@@ -32,7 +31,7 @@ export function resolveStudioBindableEvents(
 ): readonly StudioBindableEventOption[] {
   const events = registry[node.type]?.bindings?.events ?? {};
 
-  return Object.entries(events).map(([name, meta]) => ({
+  return mapRecordEntries(events, ([name, meta]) => ({
     name,
     label: meta.label ?? name,
     meta,

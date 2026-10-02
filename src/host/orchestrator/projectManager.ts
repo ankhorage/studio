@@ -1,6 +1,7 @@
 import type { AppManifest } from '@ankhorage/contracts';
 import { type ExpoRuntimePlan, resolveExpoRuntimePlan } from '@ankhorage/expo-runtime/planning';
 import { connectGitHubRepositoryAsync } from '@ankhorage/repository/github';
+import { pathExists } from '@ankhorage/utility/node/fs';
 import { promises as fs } from 'fs';
 import path from 'path';
 
@@ -89,7 +90,7 @@ export class ProjectManager {
     const projectPath = getProjectPath(this.rootPath, projectId);
     let infraDestroyed = false;
 
-    if (await exists(projectPath)) {
+    if (await pathExists(projectPath)) {
       if (projectId !== 'studio') {
         const manifest = await this.store.readManifest(projectId);
         const hasOwnedResources = await this.dependencies.infraLifecycle.hasOwnedResourcesAsync({
@@ -129,7 +130,7 @@ export class ProjectManager {
 
     const slug = validation.projectId;
     const projectPath = getProjectPath(this.rootPath, slug);
-    if (await exists(projectPath)) {
+    if (await pathExists(projectPath)) {
       throw new ProjectCreationValidationError({
         code: 'project-id-exists',
         message: `Project ID '${slug}' already exists.`,
@@ -484,19 +485,6 @@ function requireProjectDeployTargets(manifest: AppManifest) {
     );
   }
   return targets;
-}
-
-/***
- * Report whether a filesystem path is accessible.
- * @utility @ankhorage/utility/node/fs
- */
-async function exists(filePath: string): Promise<boolean> {
-  try {
-    await fs.access(filePath);
-    return true;
-  } catch {
-    return false;
-  }
 }
 
 /*** Resolve the generated auth-provider mode from the manifest's global auth infrastructure ownership. */

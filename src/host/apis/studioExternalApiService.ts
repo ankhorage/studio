@@ -14,6 +14,7 @@ import {
   testEndpoint,
 } from '@ankhorage/data-sources';
 import { readOwnProperty } from '@ankhorage/utility/object';
+import { asNonEmptyString } from '@ankhorage/utility/value';
 
 import type {
   ExternalApiConnectRequest,
@@ -90,8 +91,8 @@ export class StudioExternalApiService {
     const result = createManualRestApi({
       id: normalized.apiId,
       baseUrl: request.baseUrl,
-      name: clean(request.name),
-      description: clean(request.description),
+      name: asNonEmptyString(request.name),
+      description: asNonEmptyString(request.description),
       credential: request.credential,
       endpoints: [
         {
@@ -134,8 +135,8 @@ export class StudioExternalApiService {
     const updated: ExternalRestApiDefinition = {
       ...api,
       baseUrl,
-      name: clean(request.name),
-      description: clean(request.description),
+      name: asNonEmptyString(request.name),
+      description: asNonEmptyString(request.description),
       credential: request.credential,
     };
     const upsert = upsertExternalApi(manifest.infra.apis ?? {}, updated);
@@ -205,8 +206,8 @@ export class StudioExternalApiService {
       id: request.apiId,
       url: request.url,
       fetch: this.discoveryFetch,
-      name: clean(request.name),
-      description: clean(request.description),
+      name: asNonEmptyString(request.name),
+      description: asNonEmptyString(request.description),
       credential: request.credential,
     });
   }
@@ -222,8 +223,8 @@ export class StudioExternalApiService {
       id: request.apiId,
       endpointUrl: request.url,
       fetch: this.discoveryFetch,
-      name: clean(request.name),
-      description: clean(request.description),
+      name: asNonEmptyString(request.name),
+      description: asNonEmptyString(request.description),
       credential: request.credential,
     });
     return result.ok
@@ -330,13 +331,4 @@ function normalizeExternalApiUrl(value: string): string | null {
   } catch {
     return null;
   }
-}
-
-/***
- * Trim an optional string and normalize blank values to undefined.
- * @utility @ankhorage/utility/value
- */
-function clean(value: string | undefined): string | undefined {
-  const normalized = value?.trim();
-  return normalized === '' ? undefined : normalized;
 }

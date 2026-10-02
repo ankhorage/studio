@@ -1,3 +1,3 @@
-import { runSocialTemplateWebAcceptanceAsync } from '../src/host/smoke/runSocialTemplateWebAcceptanceAsync';
+import { runSocialTemplateWebAcceptanceAsync } from '../test/smoke/runSocialTemplateWebAcceptanceAsync';
 
 await runSocialTemplateWebAcceptanceAsync();

@@ -30,7 +30,6 @@ const uiNodeTreeAdapter: TreeAdapter<UiNode> = {
 
 /***
  * Test whether a selected id exists in a node tree.
- * @utility @ankhorage/utility/tree
  */
 function containsUiNode(rootNode: UiNode | null, selectedNodeId: string | null): boolean {
   if (!rootNode || !selectedNodeId) return false;
@@ -39,7 +38,6 @@ function containsUiNode(rootNode: UiNode | null, selectedNodeId: string | null):
 
 /***
  * Find the parent id of a selected node in a tree while treating the root as parentless.
- * @utility @ankhorage/utility/tree
  */
 export function resolveStudioSelectionParentNodeId(
   rootNode: UiNode | null,
@@ -51,7 +49,6 @@ export function resolveStudioSelectionParentNodeId(
 
 /***
  * Keep a selected id only while that id still exists in the current tree.
- * @utility @ankhorage/utility/tree
  */
 export function resolveStudioSelectedNodeId(
   rootNode: UiNode | null,
@@ -62,7 +59,6 @@ export function resolveStudioSelectedNodeId(
 
 /***
  * Build a selection context containing the valid selected id and its parent relationship.
- * @utility @ankhorage/utility/tree
  */
 export function createStudioSelectionContext(args: {
   readonly rootNode: UiNode | null;
@@ -80,7 +76,6 @@ export function createStudioSelectionContext(args: {
 
 /***
  * Adapt nullable single-selection state to a provider that represents selection as an id array.
- * @utility @ankhorage/utility/selection
  */
 export function createStudioSelectionProviderProps(
   args: CreateStudioSelectionProviderPropsArgs,

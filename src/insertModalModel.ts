@@ -12,7 +12,6 @@ export interface InsertCategoryGroup {
 
 /***
  * Filter catalog entries by a normalized query across selected string fields.
- * @utility @ankhorage/utility/search
  */
 export function filterInsertCatalogEntries(
   entries: InsertCatalogEntry[],
@@ -28,7 +27,6 @@ export function filterInsertCatalogEntries(
 
 /***
  * Group entries by category while preserving first-seen group order and resolving a label per group.
- * @utility @ankhorage/utility/collection
  */
 export function groupInsertEntries(args: {
   entries: InsertCatalogEntry[];

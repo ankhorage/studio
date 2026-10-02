@@ -112,7 +112,6 @@ function invalidResponse(message: string): ProjectAuthApiError {
 
 /***
  * Narrow an unknown value to a strict non-array record or return null.
- * @utility @ankhorage/utility/value
  */
 function asRecord(value: unknown): Record<string, unknown> | null {
   return isRecord(value) ? value : null;

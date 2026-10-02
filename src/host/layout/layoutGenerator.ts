@@ -6,6 +6,7 @@ import {
   resolveExpoRuntimeNativeSchemeMap,
 } from '@ankhorage/expo-runtime/planning';
 import { generateWorkspaceLayout } from '@ankhorage/navigator';
+import { toPortablePath } from '@ankhorage/utility/node/path';
 import path from 'path';
 
 import type { StudioAdminRouteId } from '../../index';
@@ -198,7 +199,7 @@ export class GeneratedAppFileGenerator {
         const fileName = `${route.path === '/' ? 'index' : path.basename(nextRel)}.tsx`;
         const dirRel = path.dirname(nextRel);
         const targetDirRel = dirRel === '.' ? '' : dirRel;
-        const targetPath = normalizeRel(path.join(appRootRel, targetDirRel, fileName));
+        const targetPath = toPortablePath(path.join(appRootRel, targetDirRel, fileName));
 
         if (authLayoutPlan.enabled && authScreenPlansByPath.has(targetPath)) {
           const authScreenPlan = authScreenPlansByPath.get(targetPath);
@@ -282,7 +283,7 @@ export class GeneratedAppFileGenerator {
 
     if (authLayoutPlan.enabled) {
       files.push({
-        path: normalizeRel(path.join('src/app/_layout.tsx')),
+        path: toPortablePath(path.join('src/app/_layout.tsx')),
         content: this.getAuthShellLayoutContent(
           manifest,
           mutations,
@@ -295,7 +296,7 @@ export class GeneratedAppFileGenerator {
       const postSignInHref = routeNameToHref(authLayoutPlan.postSignInRoute);
       if (postSignInHref !== '/') {
         files.push({
-          path: normalizeRel(path.join('src/app/index.tsx')),
+          path: toPortablePath(path.join('src/app/index.tsx')),
           content: getIndexRedirectRouteTsx(postSignInHref),
         });
       }
@@ -321,7 +322,7 @@ export class GeneratedAppFileGenerator {
       }
     } else {
       files.push({
-        path: normalizeRel(path.join('src/app/_layout.tsx')),
+        path: toPortablePath(path.join('src/app/_layout.tsx')),
         content: this.getRootLayoutContent(manifest, mutations, includeStudio, runtimePlan),
       });
 
@@ -598,7 +599,7 @@ export class GeneratedAppFileGenerator {
  */
 function createStudioAdminRouteGeneratedFiles(appRootRel: string): GeneratedFile[] {
   return STUDIO_ADMIN_ROUTE_REGISTRY.map((route) => ({
-    path: normalizeRel(path.join(appRootRel, resolveStudioAdminRouteFilePath(route.id))),
+    path: toPortablePath(path.join(appRootRel, resolveStudioAdminRouteFilePath(route.id))),
     content: getStudioAdminRouteTsx(route.id),
   }));
 }
@@ -639,12 +640,4 @@ export default function AnkhAdminRoute() {
   return <AnkhAdminPage routeId="${routeName}" />;
 }
 `;
-}
-
-/***
- * Normalize a relative filesystem path to forward-slash separators for generated project files.
- * @utility @ankhorage/utility/path
- */
-function normalizeRel(p: string) {
-  return p.replace(/\\/g, '/');
 }

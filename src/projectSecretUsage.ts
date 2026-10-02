@@ -58,7 +58,6 @@ export function findProjectSecretUsages(input: {
 
 /***
  * Compare secret usages by category, path, label, and owner id in stable priority order.
- * @utility @ankhorage/utility/sort
  */
 function compareSecretUsages(left: ProjectSecretUsage, right: ProjectSecretUsage): number {
   return chainComparators<ProjectSecretUsage>([

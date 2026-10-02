@@ -21,6 +21,10 @@ import type {
   StoreListingLocale,
 } from '@ankhorage/deploy/project';
 import { toStandaloneArrayBuffer } from '@ankhorage/utility/binary';
+import { createJsonRequestInit } from '@ankhorage/utility/http';
+import { asRecord as asUtilityRecord } from '@ankhorage/utility/object';
+import { isCodeMessageFailure } from '@ankhorage/utility/validation';
+import { isOneOf } from '@ankhorage/utility/value';
 
 import { ProjectDeployApiError } from './projectDeployApiError';
 import type { ProjectDeployMonetizationInspectionResult } from './projectDeployMonetizationInspectionResult';
@@ -50,7 +54,7 @@ export class ProjectDeployClient {
   writeListingLocale(projectId: string, locale: StoreListingLocale): Promise<ProjectStoreListing> {
     return this.requestJson(
       projectPath(projectId, 'listing/locale'),
-      jsonRequest('PUT', locale),
+      createJsonRequestInit('PUT', locale),
       parseListing,
     );
   }
@@ -110,7 +114,7 @@ export class ProjectDeployClient {
   ): Promise<MonetizationDesiredState> {
     return this.requestJson(
       projectPath(projectId, 'authoring/monetization'),
-      jsonRequest('PUT', value),
+      createJsonRequestInit('PUT', value),
       parseMonetization,
     );
   }
@@ -119,7 +123,7 @@ export class ProjectDeployClient {
   writeReleaseAuthoring(projectId: string, value: SerializableValue): Promise<ReleaseDesiredState> {
     return this.requestJson(
       projectPath(projectId, 'authoring/release'),
-      jsonRequest('PUT', value),
+      createJsonRequestInit('PUT', value),
       parseRelease,
     );
   }
@@ -136,7 +140,7 @@ export class ProjectDeployClient {
   ): Promise<MonetizationDesiredState> {
     return this.requestJson(
       projectPath(projectId, 'monetization'),
-      jsonRequest('PUT', { products }),
+      createJsonRequestInit('PUT', { products }),
       parseMonetization,
     );
   }
@@ -148,7 +152,7 @@ export class ProjectDeployClient {
   }): Promise<ProjectDeployMonetizationInspectionResult> {
     return this.requestJson(
       projectPath(input.projectId, 'monetization/inspect'),
-      jsonRequest('POST', input.runtime),
+      createJsonRequestInit('POST', input.runtime),
       parseMonetizationInspectionResult,
     );
   }
@@ -162,7 +166,7 @@ export class ProjectDeployClient {
   }): Promise<ProjectMonetizationExecutionResult> {
     return this.requestJson(
       projectPath(input.projectId, 'monetization/execute'),
-      jsonRequest('POST', {
+      createJsonRequestInit('POST', {
         runtime: input.runtime,
         inspection: input.inspection,
         plan: input.plan,
@@ -180,7 +184,7 @@ export class ProjectDeployClient {
   writeRelease(projectId: string, release: ProjectReleaseInput): Promise<ReleaseDesiredState> {
     return this.requestJson(
       projectPath(projectId, 'release'),
-      jsonRequest('PUT', release),
+      createJsonRequestInit('PUT', release),
       parseRelease,
     );
   }
@@ -197,11 +201,7 @@ export class ProjectDeployClient {
   }): Promise<ProjectDeployReleaseInspectionResult> {
     return this.requestJson(
       projectPath(input.projectId, 'release/inspect'),
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(input.runtime),
-      },
+      createJsonRequestInit('POST', input.runtime),
       parseInspection,
     );
   }
@@ -261,11 +261,7 @@ export class ProjectDeployClient {
   ): Promise<T> {
     return this.requestJson(
       projectPath(projectId, suffix),
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      },
+      createJsonRequestInit('POST', body),
       parse,
     );
   }
@@ -305,18 +301,6 @@ async function readJson(response: Response): Promise<unknown> {
 /*** Build the Studio deploy endpoint path for one project and suffix. @todo Keep deploy endpoint routing under src/deploy/. */
 function projectPath(projectId: string, suffix: string): string {
   return `/projects/${encodeURIComponent(projectId)}/deploy/${suffix}`;
-}
-
-/***
- * Create a JSON RequestInit with method, content type, and serialized body.
- * @utility @ankhorage/utility/http
- */
-function jsonRequest(method: 'POST' | 'PUT', body: unknown): RequestInit {
-  return {
-    method,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  };
 }
 
 /*** Serialize a deploy listing-asset location into endpoint query parameters. @todo Keep deploy protocol serialization under src/deploy/. */
@@ -418,7 +402,7 @@ function parseMonetizationPlan(value: unknown): void {
   const plan = asRecord(value);
   if (
     plan === null ||
-    !isMonetizationPlanStatus(plan.status) ||
+    !isOneOf(plan.status, ['no-change', 'changes', 'blocked']) ||
     typeof plan.desiredRevision !== 'string' ||
     typeof plan.currentRevision !== 'string' ||
     !Array.isArray(plan.steps) ||
@@ -432,7 +416,7 @@ function parseMonetizationPlan(value: unknown): void {
 /*** Parse a monetization execution result and validate the payload for its status. @todo Keep deploy payload validation under src/deploy/. */
 function parseMonetizationExecutionResult(value: unknown): ProjectMonetizationExecutionResult {
   const result = asRecord(value);
-  if (result === null || !isMonetizationExecutionStatus(result.status)) {
+  if (result === null || !isOneOf(result.status, ['completed', 'action-required', 'failed'])) {
     invalid('Monetization execution');
   }
   if (result.status === 'completed') {
@@ -444,22 +428,6 @@ function parseMonetizationExecutionResult(value: unknown): ProjectMonetizationEx
     parseFailure(result.failure, 'Monetization execution failure');
   }
   return value as ProjectMonetizationExecutionResult;
-}
-
-/***
- * Test whether an unknown value is one of the monetization plan statuses.
- * @utility @ankhorage/utility/value
- */
-function isMonetizationPlanStatus(value: unknown): boolean {
-  return value === 'no-change' || value === 'changes' || value === 'blocked';
-}
-
-/***
- * Test whether an unknown value is one of the monetization execution statuses.
- * @utility @ankhorage/utility/value
- */
-function isMonetizationExecutionStatus(value: unknown): boolean {
-  return value === 'completed' || value === 'action-required' || value === 'failed';
 }
 
 /*** Parse the prepared release desired-state response shape. @todo Keep deploy payload validation under src/deploy/. */
@@ -541,7 +509,7 @@ function parseProjectReleaseExecutionResult(value: unknown): void {
     execution === null ||
     typeof execution.historyRecorded !== 'boolean' ||
     reconcile === null ||
-    !isReconcileStatus(reconcile.status) ||
+    !isOneOf(reconcile.status, ['completed', 'waiting', 'blocked', 'failed', 'drifted']) ||
     typeof reconcile.currentRevision !== 'string' ||
     !Array.isArray(reconcile.executedStepIds)
   ) {
@@ -557,7 +525,7 @@ function parseControlResult(value: unknown): ReleaseControlExecutionResult {
   const result = asRecord(value);
   if (
     result === null ||
-    !isControlStatus(result.status) ||
+    !isOneOf(result.status, ['completed', 'blocked', 'failed']) ||
     typeof result.mutationAttempted !== 'boolean'
   ) {
     invalid('Release lifecycle control');
@@ -570,35 +538,9 @@ function parseControlResult(value: unknown): ReleaseControlExecutionResult {
 
 /***
  * Validate a generic failure payload containing string code and message fields.
- * @utility @ankhorage/utility/validation
  */
 function parseFailure(value: unknown, label: string): void {
-  const failure = asRecord(value);
-  if (failure === null || typeof failure.code !== 'string' || typeof failure.message !== 'string') {
-    invalid(label);
-  }
-}
-
-/***
- * Test whether an unknown value is one of the release reconciliation statuses.
- * @utility @ankhorage/utility/value
- */
-function isReconcileStatus(value: unknown): boolean {
-  return (
-    value === 'completed' ||
-    value === 'waiting' ||
-    value === 'blocked' ||
-    value === 'failed' ||
-    value === 'drifted'
-  );
-}
-
-/***
- * Test whether an unknown value is one of the release lifecycle-control statuses.
- * @utility @ankhorage/utility/value
- */
-function isControlStatus(value: unknown): boolean {
-  return value === 'completed' || value === 'blocked' || value === 'failed';
+  if (!isCodeMessageFailure(value)) invalid(label);
 }
 
 /*** Validate the minimal release-history record shape used by this deploy client. @todo Keep deploy history contract validation under src/deploy/ or its owning package. */
@@ -654,10 +596,7 @@ function invalid(label: string): never {
 
 /***
  * Narrow an unknown non-array object to a string-keyed record.
- * @utility @ankhorage/utility/value
  */
 function asRecord(value: unknown): Record<string, unknown> | null {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-    ? (value as Record<string, unknown>)
-    : null;
+  return asUtilityRecord(value) ?? null;
 }

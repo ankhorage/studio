@@ -1,3 +1,7 @@
+import { unionRects } from '@ankhorage/utility/geometry';
+import { createObservedSetCoordinator } from '@ankhorage/utility/observer';
+import { createKeyedMultiValueRegistry } from '@ankhorage/utility/registry';
+
 import {
   intersectNativeElementRects,
   measureNativeElement,
@@ -67,26 +71,9 @@ export function shouldRenderSelectedNodeChrome(
   return ['android', 'ios', 'web'].includes(platform) && isEditMode && selectedNodeId !== null;
 }
 
-/***
- * Compute the smallest axis-aligned rectangle containing all supplied rectangles, or null for an empty collection.
- * @utility @ankhorage/utility/geometry
- */
-export function unionMeasuredRects(rects: readonly MeasuredRect[]): MeasuredRect | null {
-  if (rects.length === 0) {
-    return null;
-  }
-
-  const left = Math.min(...rects.map((rect) => rect.x));
-  const top = Math.min(...rects.map((rect) => rect.y));
-  const right = Math.max(...rects.map((rect) => rect.x + rect.width));
-  const bottom = Math.max(...rects.map((rect) => rect.y + rect.height));
-
-  return {
-    x: left,
-    y: top,
-    width: right - left,
-    height: bottom - top,
-  };
+/*** Compute the smallest rectangle containing every measured rectangle. */
+function unionMeasuredRects(rects: readonly MeasuredRect[]): MeasuredRect | null {
+  return unionRects(rects);
 }
 
 /*** Adapt a native measurable view into Studio's runtime-node measurement contract. */
@@ -102,44 +89,14 @@ export function createNativeRuntimeNodeMeasurement(
   };
 }
 
-/***
- * Create a keyed multi-value registry with idempotent unregister callbacks and optional change notifications.
- * @utility @ankhorage/utility/registry
- */
+/*** Adapt the shared keyed registry to Studio runtime-node measurements. */
 export function createRuntimeNodeMeasurementRegistry<TResizeTarget = Element>(options?: {
   readonly onChange?: () => void;
 }): RuntimeNodeMeasurementRegistry<TResizeTarget> {
-  const measurements = new Map<string, Set<RuntimeNodeMeasurement<TResizeTarget>>>();
-
-  return {
-    /*** Return the registry's current keyed measurement map. */
-    getMeasurements: () => measurements,
-    /*** Register one value under a key and return an idempotent unregister function. */
-    register(nodeId, measurement) {
-      const nodeMeasurements = measurements.get(nodeId) ?? new Set();
-      nodeMeasurements.add(measurement);
-      measurements.set(nodeId, nodeMeasurements);
-      options?.onChange?.();
-
-      let registered = true;
-      /*** Unregister this exact key/value pair once and remove the key when its set becomes empty. */
-      return () => {
-        if (!registered) {
-          return;
-        }
-        registered = false;
-
-        const registeredMeasurements = measurements.get(nodeId);
-        if (!registeredMeasurements?.delete(measurement)) {
-          return;
-        }
-        if (registeredMeasurements.size === 0) {
-          measurements.delete(nodeId);
-        }
-        options?.onChange?.();
-      };
-    },
-  };
+  const registry = createKeyedMultiValueRegistry<string, RuntimeNodeMeasurement<TResizeTarget>>(
+    options,
+  );
+  return { getMeasurements: registry.getValues, register: registry.register };
 }
 
 /*** Prefer authored-root measurements when present, otherwise keep every runtime measurement for the node. */
@@ -267,52 +224,20 @@ export async function measureRuntimeNodeIndicators<TResizeTarget>(options: {
   return indicators.sort((left, right) => left.nodeId.localeCompare(right.nodeId));
 }
 
-/***
- * Synchronize an observer with the union of resize targets exposed by active measurements plus additional targets.
- * @utility @ankhorage/utility/observer
- */
+/*** Adapt the shared observed-set coordinator to active Studio measurement targets. */
 export function createActiveResizeTargetCoordinator<TResizeTarget>(
   observer: ResizeTargetObserver<TResizeTarget>,
 ): ActiveResizeTargetCoordinator<TResizeTarget> {
-  let observedTargets = new Set<TResizeTarget>();
-  let disconnected = false;
-
+  const coordinator = createObservedSetCoordinator(observer);
   return {
-    /*** Disconnect the underlying observer once and clear tracked targets. */
-    disconnect() {
-      if (disconnected) {
-        return;
-      }
-      disconnected = true;
-      observer.disconnect();
-      observedTargets = new Set();
-    },
-    /*** Return the exact target set currently tracked by the coordinator. */
-    getObservedTargets: () => observedTargets,
-    /*** Diff desired targets against observed targets and issue only required observe/unobserve calls. */
+    disconnect: coordinator.disconnect,
+    getObservedTargets: coordinator.getObservedValues,
     sync(measurements, additionalTargets = []) {
-      if (disconnected) {
-        return;
-      }
-
-      const desiredTargets = new Set<TResizeTarget>(additionalTargets);
+      const targets = new Set<TResizeTarget>(additionalTargets);
       for (const measurement of measurements) {
-        for (const target of measurement.getResizeTargets?.() ?? []) {
-          desiredTargets.add(target);
-        }
+        for (const target of measurement.getResizeTargets?.() ?? []) targets.add(target);
       }
-
-      for (const target of observedTargets) {
-        if (!desiredTargets.has(target)) {
-          observer.unobserve(target);
-        }
-      }
-      for (const target of desiredTargets) {
-        if (!observedTargets.has(target)) {
-          observer.observe(target);
-        }
-      }
-      observedTargets = desiredTargets;
+      coordinator.sync(targets);
     },
   };
 }

@@ -21,7 +21,6 @@ export interface DeleteConfirmationDependencies {
 
 /***
  * Create a confirmation action that uses browser confirm when available and an injected alert otherwise.
- * @utility @ankhorage/utility/interaction
  */
 export function createDeleteConfirmation(dependencies: DeleteConfirmationDependencies) {
   return (name: string, onConfirm: () => void): void => {
@@ -45,7 +44,6 @@ export function createDeleteConfirmation(dependencies: DeleteConfirmationDepende
 
 /***
  * Ask for deletion confirmation using browser globals or an injected alert implementation.
- * @utility @ankhorage/utility/interaction
  */
 export function confirmDelete(
   name: string,
@@ -72,7 +70,6 @@ export function confirmDelete(
 
 /***
  * Open a URL in a new browser tab without granting opener access and report whether opening was attempted.
- * @utility @ankhorage/utility/web
  */
 export function openProjectUrl(url: string): boolean {
   const opener =

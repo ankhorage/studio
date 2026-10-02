@@ -8,9 +8,9 @@ import { promisify } from 'node:util';
 import type { AppManifest } from '@ankhorage/contracts';
 import { expect, test as bunTest } from 'bun:test';
 
+import { createSmokeProjectSource } from '../../test/smoke/createSmokeProjectSource';
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
-import { createSmokeProjectSource } from './smoke/createSmokeProjectSource';
 
 const execFile = promisify(execFileCallback);
 const test = process.env.ANKH_STUDIO_GENERATED_AUTH_RUNTIME_SMOKE === '1' ? bunTest : bunTest.skip;

@@ -1,9 +1,11 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
+import { writeFileWithinRoot } from '@ankhorage/utility/node/fs';
+import { resolvePathWithinRoot } from '@ankhorage/utility/node/path';
+
 /***
  * Write one bundled authoring asset only when its resolved destination stays inside the authoring root.
- * @utility @ankhorage/utility/node/fs
  */
 export async function writeProjectAuthoringAsset(
   projectPath: string,
@@ -12,10 +14,11 @@ export async function writeProjectAuthoringAsset(
 ): Promise<void> {
   const authoringRoot = path.resolve(projectPath, 'assets/authoring');
   const destination = path.resolve(projectPath, relativePath);
-  if (destination !== authoringRoot && !destination.startsWith(`${authoringRoot}${path.sep}`)) {
+  try {
+    resolvePathWithinRoot(authoringRoot, path.relative(authoringRoot, destination));
+  } catch {
     throw new Error('Bundled media path escaped the project authoring assets directory.');
   }
-
-  await fs.mkdir(path.dirname(destination), { recursive: true });
-  await fs.writeFile(destination, body, { flag: 'wx' });
+  await fs.mkdir(authoringRoot, { recursive: true });
+  await writeFileWithinRoot({ rootPath: authoringRoot, filePath: destination, body });
 }

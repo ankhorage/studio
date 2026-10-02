@@ -1,13 +1,14 @@
+import { serializeJavaScriptLiteral } from '@ankhorage/utility/string';
+
 import type { GeneratedOAuthProviderPlan } from '../../auth/resolveAuthLayoutPlan';
 import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
 import { routeNameToGroupedHref } from '../utils/routes';
 
 /***
  * Serialize a string list as a compact single-quoted JavaScript array literal.
- * @utility @ankhorage/utility/string
  */
 function serializeStringArrayLiteral(values: readonly string[]): string {
-  return `[${values.map((value) => `'${escapeStringLiteral(value)}'`).join(', ')}]`;
+  return serializeJavaScriptLiteral(values);
 }
 
 interface AuthScreenControllerTemplateArgs {

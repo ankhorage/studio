@@ -3,6 +3,7 @@ import type {
   SupabaseVaultSqlClient,
   SupabaseVaultSqlExecutor,
 } from '@ankhorage/supabase-vault';
+import { assertArray } from '@ankhorage/utility/value';
 import { SQL } from 'bun';
 
 export interface BunSupabaseVaultClient extends SupabaseVaultSqlClient {
@@ -57,13 +58,12 @@ export function createBunSupabaseVaultClient(databaseUrl: string): BunSupabaseVa
 }
 
 /***
- * @utility @ankhorage/utility/value
  * Assert that an unknown database result is an array before exposing it to a typed row boundary.
  */
 function assertRows<TRow extends Record<string, unknown>>(value: unknown): readonly TRow[] {
-  if (!Array.isArray(value)) {
+  try {
+    return assertArray(value) as readonly TRow[];
+  } catch {
     throw new Error('Supabase Vault query returned an unexpected result shape.');
   }
-
-  return value as readonly TRow[];
 }

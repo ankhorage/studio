@@ -8,6 +8,7 @@ import type {
   UiComponentMetaRegistry,
   UiNode,
 } from '@ankhorage/contracts';
+import { createDiagnostic } from '@ankhorage/utility/diagnostics';
 import { readOwnProperty } from '@ankhorage/utility/object';
 
 import type {
@@ -246,12 +247,11 @@ function toBindableType(type: string): UiBindableValueMeta['type'] {
 
 /***
  * Construct an error diagnostic from a code, message, and optional path.
- * @utility @ankhorage/utility/diagnostics
  */
 function diagnostic(
   code: StudioBindingDiagnostic['code'],
   message: string,
   path?: string,
 ): StudioBindingDiagnostic {
-  return { code, message, severity: 'error', ...(path ? { path } : {}) };
+  return { ...createDiagnostic(code, message, 'error'), ...(path ? { path } : {}) };
 }
