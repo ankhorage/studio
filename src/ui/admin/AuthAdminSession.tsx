@@ -37,7 +37,7 @@ const AuthAdminSessionContext = createContext<AuthAdminSessionValue | null>(null
 
 /***
  * Bridge the imperative auth-admin project session model into React context and keep its snapshot synchronized around every write transaction.
- * @todo Keep this React context adapter at the auth/admin UI edge; durable transaction/busy-state rules belong to the auth application model.
+ * TODO: Keep this React context adapter at the auth/admin UI edge; durable transaction/busy-state rules belong to the auth application model.
  */
 export function AuthAdminSessionProvider(props: {
   readonly projectId: string;

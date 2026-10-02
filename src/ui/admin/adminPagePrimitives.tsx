@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 /***
  * Render scrollable administration page content with Studio's shared page spacing and width constraints.
- * @todo Prefer a canonical ZORA page/scroll layout primitive if this layout is generally useful; Studio should not own a parallel design-system primitive set.
+ * TODO: Prefer a canonical ZORA page/scroll layout primitive if this layout is generally useful; Studio should not own a parallel design-system primitive set.
  */
 export function AdminScroll({ children }: { readonly children: React.ReactNode }) {
   return <ScrollView contentContainerStyle={styles.content}>{children}</ScrollView>;
@@ -12,7 +12,7 @@ export function AdminScroll({ children }: { readonly children: React.ReactNode }
 
 /***
  * Render the common title/description header used by Studio administration pages.
- * @todo Prefer a canonical ZORA page-header pattern instead of maintaining Studio-specific generic UI primitives.
+ * TODO: Prefer a canonical ZORA page-header pattern instead of maintaining Studio-specific generic UI primitives.
  */
 export function AdminHeader(props: { readonly title: string; readonly description: string }) {
   return (
@@ -27,7 +27,7 @@ export function AdminHeader(props: { readonly title: string; readonly descriptio
 
 /***
  * Render a compact labeled metric card for administration dashboards.
- * @todo Promote/consume a ZORA metric/stat pattern rather than owning a generic visual primitive in Studio.
+ * TODO: Promote/consume a ZORA metric/stat pattern rather than owning a generic visual primitive in Studio.
  */
 export function Metric(props: { readonly title: string; readonly value: string }) {
   return (
@@ -39,7 +39,7 @@ export function Metric(props: { readonly title: string; readonly value: string }
 
 /***
  * Render a labeled field wrapper for Studio admin forms.
- * @todo Replace with the canonical ZORA FormField pattern where possible.
+ * TODO: Replace with the canonical ZORA FormField pattern where possible.
  */
 export function Field(props: { readonly label: string; readonly children: React.ReactNode }) {
   return (
@@ -54,7 +54,7 @@ export function Field(props: { readonly label: string; readonly children: React.
 
 /***
  * Render one label/value metadata pair in Studio administration pages.
- * @todo Prefer a canonical ZORA key/value or definition-list pattern if available.
+ * TODO: Prefer a canonical ZORA key/value or definition-list pattern if available.
  */
 export function KeyValue(props: { readonly label: string; readonly value: string }) {
   return (

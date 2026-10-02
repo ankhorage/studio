@@ -16,7 +16,7 @@ export interface ApiOperationRow {
 
 /***
  * Flatten canonical API definitions, endpoints, and operations into administration-table rows with inherited path/origin metadata.
- * @todo Move this external-API administration projection from `ui/` into the external-apis application/presentation model domain.
+ * TODO: Move this external-API administration projection from `ui/` into the external-apis application/presentation model domain.
  */
 export function collectApiOperationRows(apis: ApiDefinitionRegistry): ApiOperationRow[] {
   return Object.values(apis).flatMap((api) =>

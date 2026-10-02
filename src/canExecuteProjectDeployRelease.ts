@@ -2,7 +2,7 @@ import type { ProjectDeployReleaseInspectionResult } from './projectDeployReleas
 
 /***
  * Decide whether a prepared Studio deploy release may execute without pending inspection actions.
- * @todo Move deploy execution-gate policy under src/deploy/.
+ * TODO: Move deploy execution-gate policy under src/deploy/.
  */
 export function canExecuteProjectDeployRelease(
   result: ProjectDeployReleaseInspectionResult,

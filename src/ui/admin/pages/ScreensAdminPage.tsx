@@ -346,7 +346,7 @@ function ScreenRouteReferenceControls(props: {
 
 /***
  * Format a route parent-path segment array as a slash-delimited display label with a root fallback.
- * @utility @ankhorage/utility/route
+ * Utility candidate: @ankhorage/utility/route
  */
 function formatParentPath(parentPath: readonly string[]): string {
   return parentPath.length === 0 ? 'root' : parentPath.join('/');

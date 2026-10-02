@@ -20,7 +20,7 @@ export class ProjectAuthHealthService {
 
   /***
    * Create the Studio host service that combines authored Auth state, secret availability, and provider-neutral Infra diagnostics.
-   * @todo Move this service under the auth domain's host/application boundary.
+   * TODO: Move this service under the auth domain's host/application boundary.
    */
   constructor(options: {
     readonly projectManager: ProjectAuthHealthManager;

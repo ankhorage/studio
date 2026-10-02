@@ -16,7 +16,7 @@ export interface ActiveThemeModeSelection {
 
 /***
  * Resolve the active theme by configured id, then select the requested light/dark mode config.
- * @todo Move active-theme selection policy from admin UI into the theme domain/application model.
+ * TODO: Move active-theme selection policy from admin UI into the theme domain/application model.
  */
 export function resolveActiveThemeModeSelection(args: {
   readonly themes: ThemeRegistry;
@@ -34,7 +34,7 @@ export function resolveActiveThemeModeSelection(args: {
 
 /***
  * Clone the theme and both mode configs before passing it into mutable/derived ZORA surface theme flows.
- * @todo Keep this theme-boundary adapter with theme/ZORA integration ownership.
+ * TODO: Keep this theme-boundary adapter with theme/ZORA integration ownership.
  */
 export function resolveZoraSurfaceThemeConfig(theme: ThemeConfig): ThemeConfig {
   return {

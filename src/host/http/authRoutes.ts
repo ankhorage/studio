@@ -47,7 +47,7 @@ export function registerProjectAuthRoutes(
 
 /***
  * Return a successful `{ok}` result directly or send a failed result with a configured server-error status.
- * @utility @ankhorage/utility/http/fastify
+ * Utility candidate: @ankhorage/utility/http/fastify
  */
 function sendProjectAuthHealthResult(reply: FastifyReply, result: ProjectAuthHealthResult) {
   if (result.ok) return result;

@@ -5,6 +5,7 @@
  *
  * @usage
  * @readme
+ * @title Canvas drag payload
  */
 import {
   createStudioCanvasDragPayload,

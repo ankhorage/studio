@@ -9,7 +9,7 @@ import { createStudioHostServer, type StartStudioHostServerOptions } from './ser
 
 /***
  * Start the trusted Studio host edge with auth, secret, external API, and deploy routes registered.
- * @todo Keep this as host composition only; domain services and policies belong to their owning domains.
+ * TODO: Keep this as host composition only; domain services and policies belong to their owning domains.
  */
 export async function startStudioHostServerWithSecrets(
   options: number | StartStudioHostServerOptions = {},

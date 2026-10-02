@@ -1,6 +1,6 @@
 /***
  * Represent a Studio deploy-host request failure together with its HTTP status code.
- * @todo Keep this feature-specific error type beside the deploy client/adapter owner rather than as a direct root module.
+ * TODO: Keep this feature-specific error type beside the deploy client/adapter owner rather than as a direct root module.
  */
 export class ProjectDeployApiError extends Error {
   readonly status: number;

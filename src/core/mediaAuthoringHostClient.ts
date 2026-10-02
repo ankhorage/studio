@@ -18,7 +18,7 @@ interface IngestStudioMediaSelectionArgs {
 
 /***
  * Send a picked media payload to the Studio host and return the persisted media asset.
- * @todo Move this concrete HTTP adapter out of core and colocate it with the media capability's package-edge adapter. Replace the inline fetch/JSON transport with the shared HTTP utility once extracted.
+ * TODO: Move this concrete HTTP adapter out of core and colocate it with the media capability's package-edge adapter. Replace the inline fetch/JSON transport with the shared HTTP utility once extracted.
  */
 export async function ingestStudioMediaSelection(
   args: IngestStudioMediaSelectionArgs,
@@ -42,7 +42,7 @@ export async function ingestStudioMediaSelection(
 
 /***
  * Request deletion of a Studio-owned media source while treating external URLs as non-owned.
- * @todo Move this concrete HTTP adapter out of core and colocate it with the media capability's package-edge adapter. Replace the inline fetch/JSON transport with the shared HTTP utility once extracted.
+ * TODO: Move this concrete HTTP adapter out of core and colocate it with the media capability's package-edge adapter. Replace the inline fetch/JSON transport with the shared HTTP utility once extracted.
  */
 export async function cleanupStudioMediaSource(
   projectId: string,

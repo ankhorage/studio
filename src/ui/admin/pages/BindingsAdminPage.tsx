@@ -15,7 +15,7 @@ import { PropertyBindingsCard } from './bindings/PropertyBindingsCard';
 
 /***
  * Resolve the requested node into its owning screen and render canonical property/event binding editors plus diagnostics.
- * @todo Keep this React page as the bindings inbound UI edge while node resolution, operation collection, and binding diagnostics remain in the bindings application/domain layer.
+ * TODO: Keep this React page as the bindings inbound UI edge while node resolution, operation collection, and binding diagnostics remain in the bindings application/domain layer.
  */
 export function BindingsAdminPage({ nodeId }: { readonly nodeId: string | null }) {
   const studio = useStudio();

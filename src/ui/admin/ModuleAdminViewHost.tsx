@@ -7,7 +7,7 @@ import type { StudioModuleAdminViewContribution } from './moduleAdminViewRegistr
 
 /***
  * Adapt one package-owned module admin contribution to Studio project context, operation execution, manifest refresh, and error containment.
- * @todo Keep this as the module-admin inbound UI/composition edge; module operation policy remains in the modules application/domain layer.
+ * TODO: Keep this as the module-admin inbound UI/composition edge; module operation policy remains in the modules application/domain layer.
  */
 export function ModuleAdminViewHost(props: {
   readonly moduleId: string;

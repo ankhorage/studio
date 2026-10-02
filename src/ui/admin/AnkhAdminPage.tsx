@@ -43,7 +43,7 @@ type AuthAdminRouteId = AuthAdminPageProps['routeId'];
 
 /***
  * Map each Studio administration route id to the React page adapter that renders that route from current Studio/path context.
- * @todo Keep page selection at the app/admin composition edge while route parsing and route policy remain owned by the routes domain.
+ * TODO: Keep page selection at the app/admin composition edge while route parsing and route policy remain owned by the routes domain.
  */
 const ADMIN_PAGE_RENDERERS = {
   overview: () => <OverviewAdminPage />,

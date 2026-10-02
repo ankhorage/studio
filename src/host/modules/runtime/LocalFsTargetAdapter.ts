@@ -24,7 +24,7 @@ interface FileTargetAdapter {
 
 /***
  * Emit opt-in filesystem trace output for local module target operations.
- * @todo Move this adapter-local tracing with the FileTargetAdapter implementation to the Orchestrator owner.
+ * TODO: Move this adapter-local tracing with the FileTargetAdapter implementation to the Orchestrator owner.
  */
 function trace(op: string, p: string) {
   if (process.env.ANKH_TRACE_FS) {
@@ -35,7 +35,7 @@ function trace(op: string, p: string) {
 
 /***
  * Implement the Orchestrator module target filesystem contract with local Node filesystem/process APIs.
- * @todo Move this concrete FileTargetAdapter out of Studio to the Orchestrator/runtime owner instead of retaining a package-generic adapter under Studio host modules.
+ * TODO: Move this concrete FileTargetAdapter out of Studio to the Orchestrator/runtime owner instead of retaining a package-generic adapter under Studio host modules.
  */
 export class LocalFsTargetAdapter implements FileTargetAdapter {
   /*** Report whether a local target path exists. */

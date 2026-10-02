@@ -13,7 +13,7 @@ interface ActiveThemeAdminState {
 
 /***
  * Compose Studio manifest theme selection with the active ZORA surface mode and expose a mode-scoped theme update adapter.
- * @todo Keep this React/ZORA bridge at the theme-admin UI edge while active-theme policy and mutations move to the theme application domain.
+ * TODO: Keep this React/ZORA bridge at the theme-admin UI edge while active-theme policy and mutations move to the theme application domain.
  */
 export function useActiveThemeAdmin(): ActiveThemeAdminState {
   const studio = useStudio();

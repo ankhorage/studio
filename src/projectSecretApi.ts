@@ -77,7 +77,7 @@ export class ProjectSecretApiError extends Error {
 
 /***
  * Fetch metadata for project secrets filtered by optional environment, kind, and provider.
- * @todo Move project-secret HTTP access from the source root into the secrets package-edge adapter.
+ * TODO: Move project-secret HTTP access from the source root into the secrets package-edge adapter.
  */
 export async function listProjectSecrets(input: {
   readonly projectId: string;
@@ -98,7 +98,7 @@ export async function listProjectSecrets(input: {
 
 /***
  * Create one project secret and return only its browser-safe metadata.
- * @todo Move secret creation orchestration into the secrets application responsibility.
+ * TODO: Move secret creation orchestration into the secrets application responsibility.
  */
 export async function createProjectSecret(
   input: ProjectSecretCreateInput,
@@ -119,7 +119,7 @@ export async function createProjectSecret(
 
 /***
  * Replace one project secret payload and return only its browser-safe metadata.
- * @todo Move secret replacement orchestration into the secrets application responsibility.
+ * TODO: Move secret replacement orchestration into the secrets application responsibility.
  */
 export async function replaceProjectSecret(
   input: ProjectSecretReplaceInput,
@@ -138,7 +138,7 @@ export async function replaceProjectSecret(
 
 /***
  * Fetch all authored usages of one project secret reference.
- * @todo Move secret-usage HTTP access from the source root into the secrets package-edge adapter.
+ * TODO: Move secret-usage HTTP access from the source root into the secrets package-edge adapter.
  */
 export async function getProjectSecretUsages(input: {
   readonly projectId: string;
@@ -154,7 +154,7 @@ export async function getProjectSecretUsages(input: {
 
 /***
  * Remove one project secret, optionally acknowledging broken references, and return its usage summary.
- * @todo Move secret removal orchestration into the secrets application responsibility.
+ * TODO: Move secret removal orchestration into the secrets application responsibility.
  */
 export async function removeProjectSecret(
   input: ProjectSecretRemoveInput,
@@ -173,7 +173,7 @@ export async function removeProjectSecret(
 
 /***
  * Persist OAuth credentials through the secret owner while configuring the matching auth provider.
- * @todo Keep this cross-domain use case at the auth/secrets application boundary rather than the source root.
+ * TODO: Keep this cross-domain use case at the auth/secrets application boundary rather than the source root.
  */
 export async function configureProjectOAuthProvider(
   input: ConfigureProjectOAuthProviderInput,
@@ -270,7 +270,7 @@ export function parseConfigureProjectOAuthProviderResponse(
 
 /***
  * Fetch and decode JSON with optional pass-through of a structured non-success result.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function requestJson(
   path: string,
@@ -296,7 +296,7 @@ async function requestJson(
 
 /***
  * Decode a Response body as JSON while retaining response status on decode failure.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function readJson(response: Response): Promise<unknown> {
   try {
@@ -341,7 +341,7 @@ export function parseProjectSecretHttpErrorResponse(
 
 /***
  * Validate a generic boolean-result envelope and expose its optional data payload.
- * @utility @ankhorage/utility/validation
+ * Utility candidate: @ankhorage/utility/validation
  */
 function readResult(value: unknown): { readonly ok: boolean; readonly data?: unknown } {
   const record = asRecord(value);
@@ -423,7 +423,7 @@ function parseProjectSecretUsage(value: unknown): ProjectSecretUsage {
 
 /***
  * Validate and project the common structured `{ code, message }` error shape.
- * @utility @ankhorage/utility/validation
+ * Utility candidate: @ankhorage/utility/validation
  */
 function parseError(value: unknown): { readonly code: string; readonly message: string } {
   const record = asRecord(value);
@@ -435,7 +435,7 @@ function parseError(value: unknown): { readonly code: string; readonly message: 
 
 /***
  * Serialize defined non-empty string values into an optional URL query string.
- * @utility @ankhorage/utility/url
+ * Utility candidate: @ankhorage/utility/url
  */
 function createQuery(values: Readonly<Record<string, string | undefined>>): string {
   const params = new URLSearchParams();
@@ -449,7 +449,7 @@ function createQuery(values: Readonly<Record<string, string | undefined>>): stri
 
 /***
  * Narrow an unknown value to a strict non-array record or return null.
- * @utility @ankhorage/utility/value
+ * Utility candidate: @ankhorage/utility/value
  */
 function asRecord(value: unknown): Record<string, unknown> | null {
   return isRecord(value) ? value : null;
@@ -457,7 +457,7 @@ function asRecord(value: unknown): Record<string, unknown> | null {
 
 /***
  * Create a typed invalid-upstream-response error with a fixed bad-gateway status.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 function createInvalidResponseError(message: string): ProjectSecretApiError {
   return new ProjectSecretApiError({ code: 'invalid_response', message, status: 502 });
@@ -465,7 +465,7 @@ function createInvalidResponseError(message: string): ProjectSecretApiError {
 
 /***
  * Reject an unknown response when a nested forbidden-key detector reports a match.
- * @utility @ankhorage/utility/validation
+ * Utility candidate: @ankhorage/utility/validation
  */
 function rejectRawSecretResponse(value: unknown, message: string): void {
   const match = findRawSecretResponseKey(value);

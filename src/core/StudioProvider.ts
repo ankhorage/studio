@@ -589,7 +589,7 @@ export const StudioProvider = ({
 
 /***
  * Coordinate initial manifest hydration, debounced persistence, explicit flushes, and save-state reporting for StudioProvider.
- * @todo Move manifest persistence orchestration out of StudioProvider into the dedicated persistence responsibility.
+ * TODO: Move manifest persistence orchestration out of StudioProvider into the dedicated persistence responsibility.
  */
 function useStudioManifestPersistence(args: {
   readonly projectId: string;
@@ -713,7 +713,7 @@ function useStudioManifestPersistence(args: {
 
 /***
  * Fetch and parse the persisted Studio manifest for one project.
- * @todo Group project-manifest HTTP access in a dedicated manifest host client instead of StudioProvider.
+ * TODO: Group project-manifest HTTP access in a dedicated manifest host client instead of StudioProvider.
  */
 async function requestProjectManifest(projectId: string): Promise<StudioManifest> {
   const response = await fetch(
@@ -726,7 +726,7 @@ async function requestProjectManifest(projectId: string): Promise<StudioManifest
 
 /***
  * Persist the complete Studio manifest for one project through the host API.
- * @todo Group project-manifest HTTP access in a dedicated manifest host client instead of StudioProvider.
+ * TODO: Group project-manifest HTTP access in a dedicated manifest host client instead of StudioProvider.
  */
 async function persistProjectManifest(projectId: string, manifest: StudioManifest): Promise<void> {
   const response = await fetch(
@@ -743,7 +743,7 @@ async function persistProjectManifest(projectId: string, manifest: StudioManifes
 
 /***
  * Parse a persistence response body as JSON and convert invalid bodies into an explicit request error.
- * @todo Keep response parsing beside the dedicated project-manifest host client.
+ * TODO: Keep response parsing beside the dedicated project-manifest host client.
  */
 async function readPersistenceJson(response: Response): Promise<unknown> {
   try {
@@ -755,7 +755,7 @@ async function readPersistenceJson(response: Response): Promise<unknown> {
 
 /***
  * Convert an unsuccessful persistence response payload and HTTP status into an Error.
- * @todo Keep persistence response error policy beside the dedicated project-manifest host client.
+ * TODO: Keep persistence response error policy beside the dedicated project-manifest host client.
  */
 function createPersistenceError(value: unknown, status: number): Error {
   const record =

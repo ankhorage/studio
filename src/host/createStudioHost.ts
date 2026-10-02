@@ -10,7 +10,7 @@ export interface CreateStudioHostOptions {
 
 /***
  * Compose the Studio host edge from project, module, update, deploy, and infrastructure lifecycle owners.
- * @todo Keep this as thin host composition while moving domain services out of host-owned folders.
+ * TODO: Keep this as thin host composition while moving domain services out of host-owned folders.
  */
 export function createStudioHost(options: CreateStudioHostOptions) {
   const projectManager = new ProjectManager(options.workspaceRoot);

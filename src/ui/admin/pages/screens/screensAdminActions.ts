@@ -27,7 +27,7 @@ export type ScreensAdminMutationTarget = Pick<
 
 /***
  * Dispatch one typed screens-administration command onto the Studio screen/navigation mutation target.
- * @todo Move this command application from `ui/` into the screens/routes application domain so React only emits actions.
+ * TODO: Move this command application from `ui/` into the screens/routes application domain so React only emits actions.
  */
 export function applyScreensAdminAction(
   target: ScreensAdminMutationTarget,
