@@ -32,7 +32,7 @@
     "prebuild": "expo prebuild --clean --no-install"
   },
   "dependencies": {
-    "@ankhorage/expo-runtime": "^4.0.41",
+    "@ankhorage/expo-runtime": "^4.0.43",
     "@ankhorage/studio": "^6.0.2",
     "@expo/metro-runtime": "~57.0.16",
     "@react-native-vector-icons/fontawesome": "^13.1.4",
@@ -61,7 +61,7 @@
   "devDependencies": {
     "@ankhorage/ankh": "^0.10.72",
     "@ankhorage/devtools": "^2.0.100",
-    "@ankhorage/utility": "^1.9.77",
+    "@ankhorage/utility": "^1.9.79",
     "@types/bun": "^1.4.1",
     "@types/node": "^24.13.3",
     "@types/react": "~19.2.4",
