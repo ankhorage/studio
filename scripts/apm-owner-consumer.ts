@@ -202,7 +202,6 @@ function applyPackageMutation(mutation: ApmProjectMutation): void {
   );
 }
 
-
 /*** Narrow the dynamically loaded Studio owner extension through APM's canonical runtime validator. */
 function isUpdateExtension(
   artifact: ApmExtensionArtifactIdentity,
