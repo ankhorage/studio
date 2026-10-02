@@ -61,10 +61,11 @@ const artifact: ApmExtensionArtifactIdentity = {
 };
 const extensionModule: unknown = await import('@ankhorage/studio/apm');
 if (!isRecord(extensionModule)) throw new Error('Invalid Studio APM module.');
-const extension = requireUpdateExtension(
-  artifact,
-  readOwnProperty(extensionModule, 'default'),
-);
+const extensionValue = readOwnProperty(extensionModule, 'default');
+if (!isUpdateExtension(artifact, extensionValue)) {
+  throw new Error('Invalid Studio APM extension.');
+}
+const extension = extensionValue;
 assert.deepEqual(validateUpdateExtensionBinding(artifact, extension), []);
 assert.deepEqual(validateUpdateExtensionCapabilities(descriptor, artifact, extension), []);
 const path = resolveMigrationPath({
@@ -203,13 +204,9 @@ function applyPackageMutation(mutation: ApmProjectMutation): void {
 
 
 /*** Narrow the dynamically loaded Studio owner extension through APM's canonical runtime validator. */
-function requireUpdateExtension(
+function isUpdateExtension(
   artifact: ApmExtensionArtifactIdentity,
   value: unknown,
-): ApmUpdateExtension {
-  const blockers = validateUpdateExtensionBinding(artifact, value);
-  if (blockers.length > 0) {
-    throw new Error(`Invalid Studio APM extension: ${JSON.stringify(blockers)}`);
-  }
-  return value as ApmUpdateExtension;
+): value is ApmUpdateExtension {
+  return validateUpdateExtensionBinding(artifact, value).length === 0;
 }
