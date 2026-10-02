@@ -63,17 +63,17 @@ function getPackageOwnedRuntimeImports(includeStudio: boolean): string {
 } from '@ankhorage/runtime';
 ${
   includeStudio
-    ? `import {
-  STUDIO_ZORA_PLUGIN_CATALOG,
-  useRuntimeAction,
-} from '@ankhorage/studio/runtime';`
+    ? `import { useRuntimeAction } from '@ankhorage/studio/runtime';`
     : `import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';`
 }
-import {
+${
+  includeStudio
+    ? `import {
   APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
-  ${includeStudio ? 'APP_EXTENSION_INTERACTION_POLICY_SUPPORT as GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,' : ''}
-  ${includeStudio ? '' : 'APP_ZORA_PLUGINS as GENERATED_APP_ZORA_PLUGINS,'}
-} from '@/generated/appExtensionRegistry';`;
+  APP_EXTENSION_INTERACTION_POLICY_SUPPORT as GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+} from '@/generated/appExtensionRegistry';`
+    : `import { APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY } from '@/generated/appExtensionRegistry';`
+}`;
 
   return runtimeImports;
 }
@@ -82,15 +82,19 @@ import {
  * Build generated runtime registry declarations for standalone apps or Studio-enabled authoring apps.
  */
 function getGeneratedRuntimeRegistryDeclarations(includeStudio: boolean): string {
-  if (!includeStudio) {
-    return `const APP_ZORA_PLUGIN_CATALOG = composeZoraPlugins([
-  ZORA_CORE_PLUGIN,
-  ...GENERATED_APP_ZORA_PLUGINS,
-]);
-const APP_COMPONENT_REGISTRY = createComponentRegistry(
-  APP_ZORA_PLUGIN_CATALOG.componentRegistry,
+  const registry = `const APP_COMPONENT_REGISTRY = createComponentRegistry(
+  ZORA_COMPONENT_REGISTRY,
   GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
-);
+);`;
+
+  if (includeStudio) {
+    return `${registry}
+const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
+  ...GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+} as const;`;
+  }
+
+  return `${registry}
 
 function useGeneratedRuntimeAction() {
   const router = useRouter();
@@ -109,16 +113,6 @@ function useGeneratedRuntimeAction() {
   );
   return { executeAction };
 }`;
-  }
-
-  return `const APP_COMPONENT_REGISTRY = createComponentRegistry(
-  STUDIO_ZORA_PLUGIN_CATALOG.componentRegistry,
-  GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
-);
-const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
-  ...STUDIO_ZORA_PLUGIN_CATALOG.interactionPolicySupportedComponents,
-  ...GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
-} as const;`;
 }
 
 /***
@@ -166,11 +160,11 @@ export class GeneratedAppFileGenerator {
       const adminLayout = generateWorkspaceLayout({
         rootDirectory: 'src/app/ankh',
         useWorkspace: {
-          module: '@ankhorage/studio',
+          module: '@ankhorage/studio/administration/useStudioAdminWorkspace',
           exportName: 'useStudioAdminWorkspace',
         },
         accessGate: {
-          module: '@ankhorage/studio',
+          module: '@ankhorage/studio/administration/StudioAdminAccessGate',
           exportName: 'StudioAdminAccessGate',
         },
       });
@@ -380,8 +374,9 @@ export class GeneratedAppFileGenerator {
       `import { ${[
         'AppShell',
         'ZoraProvider',
-        includeStudio ? '' : 'composeZoraPlugins',
-        includeStudio ? '' : 'ZORA_CORE_PLUGIN',
+        'ZORA_COMPONENT_REGISTRY',
+        includeStudio ? 'ZORA_COMPONENT_META' : '',
+        includeStudio ? 'ZORA_BINDABLE_COMPONENT_META' : '',
         'useZoraTheme',
         includeStudio ? 'AppBar' : '',
       ]
@@ -399,7 +394,10 @@ export class GeneratedAppFileGenerator {
       `import { getStoredAuthSession } from '@/auth/session';`,
       getPackageOwnedRuntimeImports(includeStudio),
       includeStudio
-        ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
+        ? `import { useStudio } from '@ankhorage/studio/core/StudioContext';
+import { StudioProvider } from '@ankhorage/studio/core/StudioProvider';
+import { AnkhStudio } from '@ankhorage/studio/ui/AnkhStudio';
+import { useStudioAppBarAugmentation } from '@ankhorage/studio/ui/useStudioAppBarAugmentation';`
         : '',
       includeStudio
         ? `import { isStudioAdminPath, resolveStudioLastNonAdminLocation, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
@@ -454,8 +452,9 @@ export class GeneratedAppFileGenerator {
       `import { ${[
         'AppShell',
         'ZoraProvider',
-        includeStudio ? '' : 'composeZoraPlugins',
-        includeStudio ? '' : 'ZORA_CORE_PLUGIN',
+        'ZORA_COMPONENT_REGISTRY',
+        includeStudio ? 'ZORA_COMPONENT_META' : '',
+        includeStudio ? 'ZORA_BINDABLE_COMPONENT_META' : '',
         'useZoraTheme',
         includeStudio ? 'AppBar' : '',
       ]
@@ -469,7 +468,10 @@ export class GeneratedAppFileGenerator {
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
       getPackageOwnedRuntimeImports(includeStudio),
       includeStudio
-        ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
+        ? `import { useStudio } from '@ankhorage/studio/core/StudioContext';
+import { StudioProvider } from '@ankhorage/studio/core/StudioProvider';
+import { AnkhStudio } from '@ankhorage/studio/ui/AnkhStudio';
+import { useStudioAppBarAugmentation } from '@ankhorage/studio/ui/useStudioAppBarAugmentation';`
         : '',
       includeStudio
         ? `import { isStudioAdminPath, resolveStudioLastNonAdminLocation, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
@@ -598,10 +600,19 @@ export class GeneratedAppFileGenerator {
  * Generate the complete Studio Admin route file set from the canonical Admin route registry.
  */
 function createStudioAdminRouteGeneratedFiles(appRootRel: string): GeneratedFile[] {
-  return STUDIO_ADMIN_ROUTE_REGISTRY.map((route) => ({
-    path: toPortablePath(path.join(appRootRel, resolveStudioAdminRouteFilePath(route.id))),
-    content: getStudioAdminRouteTsx(route.id),
-  }));
+  return STUDIO_ADMIN_ROUTE_REGISTRY.flatMap((route) => {
+    const routePath = resolveStudioAdminRouteFilePath(route.id);
+    return [
+      {
+        path: toPortablePath(path.join(appRootRel, routePath)),
+        content: getStudioAdminNativeRouteTsx(),
+      },
+      {
+        path: toPortablePath(path.join(appRootRel, toWebRouteFilePath(routePath))),
+        content: getStudioAdminWebRouteTsx(route.id),
+      },
+    ];
+  });
 }
 
 /***
@@ -625,14 +636,27 @@ function resolveStudioAdminRouteFilePath(routeId: StudioAdminRouteId): string {
   return path.join('ankh', ...segments.slice(0, -1), fileName);
 }
 
-/***
- * Generate one Studio Admin Expo Router module that development-gates and renders the requested Admin route.
- */
-function getStudioAdminRouteTsx(routeName: StudioAdminRouteId): string {
-  return `import { AnkhAdminPage } from '@ankhorage/studio';
+/*** Convert a generated route file path to Expo Router's web-specific module variant. */
+function toWebRouteFilePath(routePath: string): string {
+  return routePath.replace(/\.tsx$/u, '.web.tsx');
+}
+
+/*** Generate the native fallback for Studio Admin routes without importing Web/host administration modules. */
+function getStudioAdminNativeRouteTsx(): string {
+  return `import { Redirect } from 'expo-router';
+
+export default function AnkhAdminNativeRoute() {
+  return <Redirect href="/" />;
+}
+`;
+}
+
+/*** Generate the Web-only Studio Admin route implementation. */
+function getStudioAdminWebRouteTsx(routeName: StudioAdminRouteId): string {
+  return `import { AnkhAdminPage } from '@ankhorage/studio/administration/AnkhAdminPage';
 import { Redirect } from 'expo-router';
 
-export default function AnkhAdminRoute() {
+export default function AnkhAdminWebRoute() {
   if (!__DEV__) {
     return <Redirect href="/" />;
   }
@@ -641,3 +665,4 @@ export default function AnkhAdminRoute() {
 }
 `;
 }
+

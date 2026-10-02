@@ -38,8 +38,6 @@
     "src/dnd/state.ts",
     "src/runtime/index.ts",
     "src/runtime/actionSuppression.ts",
-    "src/runtime/appExtensionRegistry.ts",
-    "src/runtime/registry.tsx",
     "src/runtime/runtimeActions.ts",
     "src/runtime/useRuntimeAction.ts",
     "src/ui/AnkhStudio.ts",
@@ -65,7 +63,10 @@
     "src/runtimeDiagnosticsModel.ts",
     "src/secretResponseGuard.ts",
     "src/studioAdminRouteModel.ts",
-    "src/studioSelectionModel.ts"
+    "src/studioSelectionModel.ts",
+    "src/features/administration/adapters/inbound/StudioAdminAccessGate.tsx",
+    "src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts",
+    "src/ui/admin/AnkhAdminPage.tsx"
   ],
   "exclude": ["src/**/*.test.ts"]
 }

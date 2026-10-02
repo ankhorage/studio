@@ -23,7 +23,6 @@ describe('generated app extension interaction-policy support', () => {
     const source = createGeneratedAppExtensionRegistrySource({
       usesExpoBarcodeScannerAdapter: true,
       usesExpoReaderSurfaceAdapter: true,
-      zoraExtensions: [],
     });
 
     expect(
@@ -34,47 +33,27 @@ describe('generated app extension interaction-policy support', () => {
       ),
     ).toBe(true);
     expect(source).toContain('ReaderSurface: ExpoReaderSurfaceView');
-  });
-
-  it('emits an explicit support map beside the generated component registry', () => {
-    const source = createGeneratedAppExtensionRegistrySource({
-      usesExpoBarcodeScannerAdapter: false,
-      usesExpoReaderSurfaceAdapter: false,
-      zoraExtensions: [
-        {
-          packageName: '@example/widgets',
-          descriptorExportName: 'EXAMPLE_WIDGETS_PLUGIN',
-          componentTypes: ['DeclaredWidget', 'RegisteredOnlyWidget'],
-        },
-      ],
-    });
-
-    expect(source).toContain("import { EXAMPLE_WIDGETS_PLUGIN } from '@example/widgets';");
-    expect(source).toContain('export const APP_ZORA_PLUGINS = [EXAMPLE_WIDGETS_PLUGIN] as const;');
-    expect(source).not.toContain('DeclaredWidget: DeclaredWidget');
-    expect(source).not.toContain('RegisteredOnlyWidget: RegisteredOnlyWidget');
-    expect(source).toContain('export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {');
-    expect(source).not.toContain('DeclaredWidget: true');
-    expect(source).not.toContain('RegisteredOnlyWidget: true');
-  });
-
-  it('emits an empty declaration instead of inferring support from registry membership', () => {
-    const source = createGeneratedAppExtensionRegistrySource({
-      usesExpoBarcodeScannerAdapter: false,
-      usesExpoReaderSurfaceAdapter: false,
-      zoraExtensions: [
-        {
-          packageName: '@example/widgets',
-          descriptorExportName: 'EXAMPLE_WIDGETS_PLUGIN',
-          componentTypes: ['RegisteredOnlyWidget'],
-        },
-      ],
-    });
-
-    expect(source).toMatch(
-      /export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = \{\s*\} as const;/,
+    expect(source).toContain(
+      'export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {} as const;',
     );
-    expect(source).not.toContain('RegisteredOnlyWidget: true');
+    expect(source).not.toContain('APP_ZORA_PLUGINS');
+    expect(source).not.toContain('PLUGIN');
+  });
+
+  it('emits an empty adapter registry when no Expo bridge is required', () => {
+    const source = createGeneratedAppExtensionRegistrySource({
+      usesExpoBarcodeScannerAdapter: false,
+      usesExpoReaderSurfaceAdapter: false,
+    });
+
+    expect(source).toContain(
+      'export const APP_EXTENSION_COMPONENT_REGISTRY: ComponentRegistry = {};',
+    );
+    expect(source).toContain(
+      'export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {} as const;',
+    );
+    expect(source).not.toContain('@ankhorage/zora-');
+    expect(source).not.toContain('APP_ZORA_PLUGINS');
   });
 });
 

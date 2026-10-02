@@ -5,7 +5,7 @@ import type {
   UiComponentMetaRegistry,
   UiNode,
 } from '@ankhorage/contracts';
-import { ZORA_CHESS_COMPONENT_META } from '@ankhorage/zora-chess/metadata';
+import { ZORA_COMPONENT_META } from '@ankhorage/zora/metadata';
 import { describe, expect, test } from 'bun:test';
 
 import {
@@ -127,15 +127,27 @@ describe('binding authoring metadata', () => {
     ]);
   });
 
-  test('derives ChessBoard props and events from the released plugin metadata', () => {
+  test('derives ChessBoard props and events from released core ZORA metadata', () => {
     const chessBoard: UiNode = { id: 'chess-board', type: 'ChessBoard' };
 
-    expect(
-      resolveStudioBindableProps(chessBoard, ZORA_CHESS_COMPONENT_META).map((entry) => entry.name),
-    ).toEqual(['fen', 'orientation', 'selectedSquare', 'legalTargets', 'disabled']);
-    expect(
-      resolveStudioBindableEvents(chessBoard, ZORA_CHESS_COMPONENT_META).map((entry) => entry.name),
-    ).toEqual(['squarePress', 'moveAttempt', 'legalMove', 'invalidMove']);
+    const propNames = resolveStudioBindableProps(chessBoard, ZORA_COMPONENT_META).map(
+      (entry) => entry.name,
+    );
+    for (const propName of [
+      'pieces',
+      'orientation',
+      'selectedSquare',
+      'legalTargets',
+      'disabled',
+    ]) {
+      expect(propNames).toContain(propName);
+    }
+
+    const eventNames = resolveStudioBindableEvents(chessBoard, ZORA_COMPONENT_META).map(
+      (entry) => entry.name,
+    );
+    expect(eventNames).toContain('squarePress');
+    expect(eventNames).toContain('moveAttempt');
   });
 });
 

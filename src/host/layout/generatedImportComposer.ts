@@ -333,6 +333,7 @@ function renderNamedClause(
   if (entries.length === 0) return '';
   const compact = entries.join(', ');
   const compactClause = `{ ${compact} }`;
+  if (entries.length === 1) return compactClause;
   const completeClause = [defaultImport, compactClause].filter(Boolean).join(', ');
   const completeStatement = `import ${completeClause} from '${source}';`;
   return completeStatement.length > 100 ? `{\n  ${entries.join(',\n  ')},\n}` : compactClause;

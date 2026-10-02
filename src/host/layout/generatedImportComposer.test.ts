@@ -53,16 +53,26 @@ import { bundledMediaRegistry } from '@/generated/bundledMediaRegistry';`);
 
 test('formats a named clause when its complete import statement exceeds the print width', () => {
   const generated = composeGeneratedImports([
-    "import { AppShell, composeZoraPlugins, useZoraTheme, ZORA_CORE_PLUGIN, ZoraProvider } from '@ankhorage/zora';",
+    "import { AppShell, useZoraTheme, ZORA_COMPONENT_META, ZORA_COMPONENT_REGISTRY, ZoraProvider } from '@ankhorage/zora';",
   ]);
 
   expect(generated).toBe(`import {
   AppShell,
-  composeZoraPlugins,
   useZoraTheme,
-  ZORA_CORE_PLUGIN,
+  ZORA_COMPONENT_META,
+  ZORA_COMPONENT_REGISTRY,
   ZoraProvider,
 } from '@ankhorage/zora';`);
+});
+
+test('keeps one long aliased named import on one line', () => {
+  const generated = composeGeneratedImports([
+    "import { APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY } from '@/generated/appExtensionRegistry';",
+  ]);
+
+  expect(generated).toBe(
+    "import { APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY } from '@/generated/appExtensionRegistry';",
+  );
 });
 
 test('rejects conflicting generated local bindings', () => {

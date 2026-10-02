@@ -18,7 +18,6 @@ import { GeneratedAppFileGenerator } from '../layout/layoutGenerator';
 import { applySystemTemplates } from '../manifestSystem';
 import { ProjectBundledMediaService } from '../media/projectBundledMediaService';
 import type { LayoutMutation } from '../modules/layout';
-import { resolveZoraExtensionsForManifest } from '../zoraExtensions';
 import { GeneratedRouteFileOwnership } from './GeneratedRouteFileOwnership';
 import type { ProjectCreationSource } from './projectCreationSource';
 import { getAppsRoot, getProjectPath } from './projectPaths';
@@ -147,7 +146,6 @@ export class ProjectManager {
     const { category } = initializedTemplate.metadata;
     const deploy = initializedTemplate.deploy ?? createDefaultAppDeployManifest(slug);
     const scaffoldManifest = applySystemTemplates({ ...initializedTemplate, deploy });
-    const zoraExtensions = resolveZoraExtensionsForManifest(scaffoldManifest);
     await this.scaffolder.scaffoldProject(projectPath, name, slug, {
       includeStudio,
       authProvider: resolveGeneratedAuthProvider(scaffoldManifest),
@@ -155,7 +153,6 @@ export class ProjectManager {
       runtimePlan: resolveExpoRuntimePlan(scaffoldManifest),
       storageProvider: resolveGeneratedStorageProvider(scaffoldManifest),
       targets: deploy.targets,
-      zoraExtensions,
     });
     await this.generationState.writeStudioInclusionAsync(projectPath, includeStudio);
     const manifest = await this.scaffolder.finalizeManifest(

@@ -85,7 +85,6 @@ function readGeneratedRuntimeDependencies(
     supabaseAuth: readRequiredString(dependencies, '@ankhorage/supabase-auth', 'Studio'),
     supabaseStorage: readRequiredString(dependencies, '@ankhorage/supabase-storage', 'Studio'),
     zora: readRequiredString(dependencies, '@ankhorage/zora', 'Studio'),
-    zoraExtensions: readGeneratedZoraExtensionDependencies(dependencies),
   };
 }
 
@@ -101,18 +100,6 @@ function readGeneratedStudioDependencyRange(ownerVersion: string): string {
   );
   const dependencies = readRequiredSection(selfConsumer, 'dependencies', 'Studio self-consumer');
   return readRequiredString(dependencies, '@ankhorage/studio', 'Studio self-consumer');
-}
-
-/*** Read every installed ZORA extension range from Studio's own dependency contract. */
-function readGeneratedZoraExtensionDependencies(
-  dependencies: Readonly<Record<string, unknown>>,
-): Readonly<Record<string, string>> {
-  return Object.fromEntries(
-    Object.keys(dependencies)
-      .filter((packageName) => packageName.startsWith('@ankhorage/zora-'))
-      .sort()
-      .map((packageName) => [packageName, readRequiredString(dependencies, packageName, 'Studio')]),
-  );
 }
 
 /*** Read generated native peer ranges from Studio's peer dependency contract. */

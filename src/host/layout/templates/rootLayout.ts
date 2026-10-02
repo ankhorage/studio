@@ -363,8 +363,8 @@ const shouldMountAppHeader =
         projectId={ankhConfig.metadata.slug}
         initialManifest={runtimeManifest}
         activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}
-        componentMeta={STUDIO_ZORA_PLUGIN_CATALOG.componentMeta}
-        bindableComponentMeta={STUDIO_ZORA_PLUGIN_CATALOG.bindableComponentMeta}
+        componentMeta={ZORA_COMPONENT_META}
+        bindableComponentMeta={ZORA_BINDABLE_COMPONENT_META}
         mediaPicker={studioMediaPicker}
       >
         <StudioShell

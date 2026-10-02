@@ -9,11 +9,9 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 import { syncProjectBundledMediaRegistry } from '../media/projectBundledMediaRegistry';
-import { type ZoraExtensionDefinition } from '../zoraExtensions';
 
 export interface GeneratedAppFilesOptions {
   runtimePlan?: ExpoRuntimePlan;
-  zoraExtensions?: readonly ZoraExtensionDefinition[];
 }
 
 const FORBIDDEN_SPECIFIER_PATTERN = /['"]@ankh\//;
@@ -27,7 +25,7 @@ export async function syncGeneratedAppFiles(
   targetProjectPath: string,
   options: GeneratedAppFilesOptions = {},
 ) {
-  const { runtimePlan, zoraExtensions = [] } = options;
+  const { runtimePlan } = options;
   const generatedDest = path.join(targetProjectPath, 'src/generated');
   const appExtensionRegistryDest = path.join(generatedDest, 'appExtensionRegistry.ts');
   const expoBarcodeScannerDest = path.join(generatedDest, 'expo/ExpoBarcodeScannerView.tsx');
@@ -58,7 +56,6 @@ export async function syncGeneratedAppFiles(
     createGeneratedAppExtensionRegistrySource({
       usesExpoBarcodeScannerAdapter,
       usesExpoReaderSurfaceAdapter,
-      zoraExtensions,
     }),
     'utf8',
   );
@@ -71,19 +68,9 @@ export async function syncGeneratedAppFiles(
 export function createGeneratedAppExtensionRegistrySource(args: {
   usesExpoBarcodeScannerAdapter: boolean;
   usesExpoReaderSurfaceAdapter: boolean;
-  zoraExtensions: readonly ZoraExtensionDefinition[];
 }): string {
-  const externalImportLines = new Set<string>();
-  const pluginDescriptors = new Set<string>();
   const relativeImportLines = new Set<string>();
   const entries: { componentName: string; exportName: string }[] = [];
-
-  for (const extension of args.zoraExtensions) {
-    externalImportLines.add(
-      `import { ${extension.descriptorExportName} } from '${extension.packageName}';`,
-    );
-    pluginDescriptors.add(extension.descriptorExportName);
-  }
 
   if (args.usesExpoBarcodeScannerAdapter) {
     relativeImportLines.add(
@@ -116,18 +103,13 @@ export function createGeneratedAppExtensionRegistrySource(args: {
     : 'export const APP_EXTENSION_COMPONENT_REGISTRY: ComponentRegistry = {};';
   const interactionPolicySupport =
     'export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {} as const;';
-  const plugins = `export const APP_ZORA_PLUGINS = [${[...pluginDescriptors].sort().join(', ')}] as const;`;
-
   return [
     "import type { ComponentRegistry } from '@ankhorage/runtime';",
-    ...[...externalImportLines].sort(),
     ...(relativeImportLines.size > 0 ? ['', ...[...relativeImportLines].sort()] : []),
     '',
     componentRegistry,
     '',
     interactionPolicySupport,
-    '',
-    plugins,
     '',
   ]
     .filter((line, index, lines) => line.length > 0 || lines[index - 1]?.length !== 0)
