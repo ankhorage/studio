@@ -28,7 +28,7 @@ const DROP_ZONE_KINDS: readonly PlacementKind[] = ['before', 'inside', 'after'];
 
 /***
  * Resolve every Studio canvas placement kind as a valid or invalid drop zone for the dragged node.
- * @todo Move Studio canvas drop-zone behavior under src/canvas/.
+ * TODO: Move Studio canvas drop-zone behavior under src/canvas/.
  */
 export function resolveCanvasDropZones(args: {
   root: UiNode;
