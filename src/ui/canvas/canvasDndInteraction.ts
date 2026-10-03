@@ -20,7 +20,7 @@ export function createCanvasDraggableSessionKey(nodeId: string, revision: number
 
 /***
  * Reset the active Studio canvas drag/drop state and force the draggable adapter to restart.
- * @todo Move this Studio canvas interaction orchestration beside the canvas domain instead of generic UI ownership.
+ * TODO: Move this Studio canvas interaction orchestration beside the canvas domain instead of generic UI ownership.
  */
 export function resetCanvasDragSession(callbacks: CanvasDragSessionCallbacks): void {
   callbacks.setActiveDropZoneId(null);
@@ -30,7 +30,7 @@ export function resetCanvasDragSession(callbacks: CanvasDragSessionCallbacks): v
 
 /***
  * Commit one valid Studio canvas drop by validating the Studio drag payload and forwarding its node to the resolved placement adapter.
- * @todo Move this Studio canvas drop policy beside the canvas domain; UI should invoke the use case rather than own it.
+ * TODO: Move this Studio canvas drop policy beside the canvas domain; UI should invoke the use case rather than own it.
  */
 export function commitCanvasDrop(
   payload: unknown,
@@ -46,7 +46,7 @@ export function commitCanvasDrop(
 
 /***
  * Defer one Studio canvas drop commit until after the DnD adapter callback and always reset drag state afterwards.
- * @todo Keep this adapter-timing orchestration at the canvas/DnD edge, not in a generic UI helper module.
+ * TODO: Keep this adapter-timing orchestration at the canvas/DnD edge, not in a generic UI helper module.
  */
 export function completeCanvasDropAfterAdapter(
   payload: unknown,
