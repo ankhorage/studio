@@ -432,7 +432,10 @@ function applyManagedDriftValues(
 ): Readonly<Record<string, unknown>> {
   const dependencies = { ...readOptionalObject(manifest, 'dependencies') };
   const devDependencies = { ...readOptionalObject(manifest, 'devDependencies') };
-  const updated = drifts.reduce(
+  const updated = drifts.reduce<{
+    readonly dependencies: Readonly<Record<string, unknown>>;
+    readonly devDependencies: Readonly<Record<string, unknown>>;
+  }>(
     (state, drift) => ({
       ...state,
       [drift.section]: {
@@ -612,7 +615,10 @@ async function assertManagedDriftsReconciledAsync(
     drifts.map(async (drift) => {
       const section = readOptionalObject(manifest, drift.section);
       assert.equal(readOwnProperty(section, drift.name), drift.originalRange);
-      assert.notEqual(await installedPackageVersionAsync(projectRoot, drift.name), drift.previousVersion);
+      assert.notEqual(
+        await installedPackageVersionAsync(projectRoot, drift.name),
+        drift.previousVersion,
+      );
     }),
   );
 }
