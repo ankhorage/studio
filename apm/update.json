@@ -125,6 +125,21 @@
           "kind": "json-pointer",
           "path": "package.json",
           "pointer": "/devDependencies/@types~1react"
+        },
+        {
+          "kind": "json-pointer",
+          "path": "package.json",
+          "pointer": "/dependencies/@ankhorage~1zora-chess"
+        },
+        {
+          "kind": "json-pointer",
+          "path": "package.json",
+          "pointer": "/dependencies/@ankhorage~1zora-game"
+        },
+        {
+          "kind": "json-pointer",
+          "path": "package.json",
+          "pointer": "/dependencies/@ankhorage~1zora-tabletop"
         }
       ],
       "requiresExtension": true,
