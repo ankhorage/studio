@@ -15,7 +15,6 @@ import type {
   GeneratedPackageManifest,
   GeneratedPackagePolicy,
 } from '../../../../types/project-updates.js';
-import { STUDIO_OBSOLETE_GENERATED_DEPENDENCIES } from '../../constants.js';
 import { applyGeneratedPackagePolicy } from '../../domain/applyGeneratedPackagePolicy.js';
 import { getGeneratedPackagePolicy } from '../outbound/getGeneratedPackagePolicy.js';
 
@@ -189,12 +188,7 @@ function packagePolicyMutations(
         : [stringMutation(`/${section}/${jsonPointerSegment(key)}`, value, beforeDigest)],
     ),
   );
-  const removalMutations = [...STUDIO_OBSOLETE_GENERATED_DEPENDENCIES].flatMap((name) =>
-    readOwnProperty(manifest.dependencies, name) === undefined
-      ? []
-      : [removeMutation(`/dependencies/${jsonPointerSegment(name)}`, beforeDigest)],
-  );
-  return [...packageManagerMutation, ...dependencyMutations, ...removalMutations];
+  return [...packageManagerMutation, ...dependencyMutations];
 }
 
 /*** Build one reviewed string mutation with the matching narrow JSON-pointer ownership claim. */
@@ -210,21 +204,6 @@ function stringMutation(
     path: 'package.json',
     pointer,
     value,
-    ...(expectedBeforeDigest === undefined ? {} : { expectedBeforeDigest }),
-  };
-}
-
-/*** Build one reviewed removal mutation for a superseded Studio-managed dependency. */
-function removeMutation(
-  pointer: string,
-  expectedBeforeDigest: string | undefined,
-): ApmProjectMutation {
-  return {
-    id: `${projectionId()}:${pointer}:remove`,
-    claim: { kind: 'json-pointer', path: 'package.json', pointer },
-    kind: 'remove-json-pointer',
-    path: 'package.json',
-    pointer,
     ...(expectedBeforeDigest === undefined ? {} : { expectedBeforeDigest }),
   };
 }
