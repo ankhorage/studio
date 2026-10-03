@@ -1,7 +1,4 @@
-import type {
-  SupabaseVaultQueryResult,
-  SupabaseVaultSqlExecutor,
-} from '@ankhorage/supabase-vault';
+import type { SupabaseVaultQueryResult, SupabaseVaultSqlExecutor } from '@ankhorage/supabase-vault';
 import { expect, test } from 'bun:test';
 
 import type { BunSupabaseVaultClient } from './bunSupabaseVaultClient';
@@ -41,7 +38,11 @@ test('closes trusted Vault SQL when an operation fails', async () => {
     createClient: () => client,
   });
 
-  await expect(scoped.query('select broken')).rejects.toThrow('query failed');
+  const outcome = await scoped.query('select broken').then(
+    () => 'resolved',
+    (error: unknown) => error,
+  );
+  expect(outcome).toEqual(new Error('query failed'));
   expect(client.closeCount).toBe(1);
 });
 

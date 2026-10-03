@@ -18,9 +18,7 @@ export function createScopedBunSupabaseVaultClient(
   options: {
     readonly processEnvironment?: Readonly<Record<string, string | undefined>>;
     readonly createClient?: (databaseUrl: string) => BunSupabaseVaultClient;
-    readonly resolveDatabaseUrl?: (
-      input?: ResolveProjectSecretDatabaseUrlInput,
-    ) => string;
+    readonly resolveDatabaseUrl?: (input?: ResolveProjectSecretDatabaseUrlInput) => string;
   } = {},
 ): SupabaseVaultSqlClient {
   const dependencies: ScopedSupabaseVaultClientDependencies = {
@@ -34,9 +32,7 @@ export function createScopedBunSupabaseVaultClient(
       statement: string,
       parameters: readonly unknown[] = [],
     ): Promise<SupabaseVaultQueryResult<TRow>> {
-      return withClientAsync(dependencies, (client) =>
-        client.query<TRow>(statement, parameters),
-      );
+      return withClientAsync(dependencies, (client) => client.query<TRow>(statement, parameters));
     },
     transaction<TResult>(
       operation: (executor: SupabaseVaultSqlExecutor) => Promise<TResult>,
@@ -49,9 +45,7 @@ export function createScopedBunSupabaseVaultClient(
 interface ScopedSupabaseVaultClientDependencies {
   readonly processEnvironment?: Readonly<Record<string, string | undefined>>;
   readonly createClient: (databaseUrl: string) => BunSupabaseVaultClient;
-  readonly resolveDatabaseUrl: (
-    input?: ResolveProjectSecretDatabaseUrlInput,
-  ) => string;
+  readonly resolveDatabaseUrl: (input?: ResolveProjectSecretDatabaseUrlInput) => string;
 }
 
 /*** Resolve trusted connection state for one Vault operation and close it on success or failure. */

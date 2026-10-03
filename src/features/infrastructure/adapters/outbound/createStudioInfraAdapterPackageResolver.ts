@@ -34,7 +34,6 @@ async function loadSupabaseVaultModuleAsync(
   const module = await import('@ankhorage/supabase-vault');
   return {
     infraAdapterDescriptor: module.infraAdapterDescriptor,
-    createInfraAdapter: () =>
-      module.createInfraAdapter(client === undefined ? {} : { client }),
+    createInfraAdapter: () => module.createInfraAdapter(client === undefined ? {} : { client }),
   };
 }

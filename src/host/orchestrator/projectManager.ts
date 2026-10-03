@@ -17,8 +17,8 @@ import {
 import { GeneratedAppFileGenerator } from '../layout/layoutGenerator';
 import { applySystemTemplates } from '../manifestSystem';
 import { ProjectBundledMediaService } from '../media/projectBundledMediaService';
-import { createScopedBunSupabaseVaultClient } from '../secrets/createScopedBunSupabaseVaultClient';
 import type { LayoutMutation } from '../modules/layout';
+import { createScopedBunSupabaseVaultClient } from '../secrets/createScopedBunSupabaseVaultClient';
 import { GeneratedRouteFileOwnership } from './GeneratedRouteFileOwnership';
 import type { ProjectCreationSource } from './projectCreationSource';
 import { getAppsRoot, getProjectPath } from './projectPaths';
