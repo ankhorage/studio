@@ -1,5 +1,52 @@
 # @ankhorage/studio
 
+## 7.0.0
+
+### Major Changes
+
+- 353abe4: refactor: remove ZORA plugin composition and standalone ZORA plugin package ownership in favor of the canonical core ZORA registries
+
+### Minor Changes
+
+- 350676b: Delegate generated authentication presentation to ZORA AuthScreen and lazy-load Studio administration behind the authenticated route boundary so generated apps can reach auth without eagerly initializing admin UI.
+
+### Patch Changes
+
+- 0b693ba: Make the Project Detail APM dashboard decision-oriented by showing only actionable direct dependency updates, summarizing transitive inventory impact, and keeping technical evidence secondary.
+- 83d7bbf: Move smoke acceptance helpers out of the published source tree and reuse shared Utility primitives across Studio.
+- 47de0b9: Keep generated Studio administration routes on the stable published root API and include the generated runtime revision in projection currency so existing apps become stale when generator output changes.
+- 1ba292c: Reconcile existing generated apps through Studio's package-owned APM projection so managed dependency policy, verification, and rollback stay controlled across Studio releases.
+- 7e1b3b3: Restore Studio releases by replacing unsupported Paradox metadata tags in active source and test documentation.
+- 4fb90e1: Update Ankhorage dependencies: `@ankhorage/paradox`, `@ankhorage/templates`, `@ankhorage/utility`.
+- 0f5f3cb: Update Ankhorage dependencies: `@ankhorage/local`.
+- 1930b30: Update Ankhorage dependencies: `@ankhorage/apm`, `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/deploy`, `@ankhorage/expo-runtime`, `@ankhorage/infra`, `@ankhorage/minikube`, `@ankhorage/navigator`, `@ankhorage/orchestrator`, `@ankhorage/paradox`, `@ankhorage/permissions`, `@ankhorage/react-native-reanimated-dnd-web`, `@ankhorage/runtime`, `@ankhorage/supabase-storage`, `@ankhorage/supabase-vault`, `@ankhorage/templates`, `@ankhorage/utility`, `@ankhorage/zora-tabletop`, `@ankhorage/zora`.
+- e167741: Update Renovate-managed workflows.
+- bfe50df: Update dependencies: `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/deploy`, `@ankhorage/expo-runtime`, `@ankhorage/infra`, `@ankhorage/minikube`, `@ankhorage/supabase-storage`, `@ankhorage/templates`, `@ankhorage/zora`.
+- a9dc4ed: Update Renovate-managed workflows.
+- 733e498: Update dependencies: `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/deploy`, `@ankhorage/expo-runtime`, `@ankhorage/infra`, `@ankhorage/minikube`, `@ankhorage/navigator`, `@ankhorage/permissions`, `@ankhorage/runtime`, `@ankhorage/supabase-storage`, `@ankhorage/templates`, `@ankhorage/utility`, `@ankhorage/zora`.
+- 4522de2: Update dependency: `@types/bun`.
+- 51e5b9b: Update Renovate-managed workflows.
+- 438c0da: Update dependencies: `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/deploy`, `@ankhorage/expo-runtime`, `@ankhorage/infra`, `@ankhorage/local`, `@ankhorage/minikube`, `@ankhorage/navigator`, `@ankhorage/orchestrator-module-expo-google-fonts`, `@ankhorage/permissions`, `@ankhorage/runtime`, `@ankhorage/supabase-storage`, `@ankhorage/templates`, `@ankhorage/utility`, `@ankhorage/zora`.
+- 3ab8ef4: Update Renovate-managed workflows.
+- e26a477: Update dependencies: `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/expo-runtime`, `@ankhorage/infra`, `@ankhorage/local`, `@ankhorage/minikube`, `@ankhorage/navigator`, `@ankhorage/orchestrator-module-expo-google-fonts`, `@ankhorage/orchestrator-module-expo-localization`, `@ankhorage/paradox`, `@ankhorage/runtime`, `@ankhorage/supabase-auth`, `@ankhorage/supabase-storage`, `@ankhorage/templates`, `@ankhorage/utility`, `@ankhorage/zora`.
+- b95ffd3: Update dependencies: `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/infra`, `@ankhorage/local`, `@ankhorage/minikube`, `@ankhorage/orchestrator-module-expo-google-fonts`, `@ankhorage/runtime`, `@ankhorage/supabase-auth`, `@ankhorage/templates`, `@ankhorage/zora`.
+- 5b78355: Update dependencies: `@ankhorage/expo-runtime`, `@ankhorage/orchestrator-module-expo-google-fonts`, `@ankhorage/permissions`, `@ankhorage/templates`.
+- 9e581e0: Update dependencies: `@ankhorage/templates`, `@ankhorage/zora`.
+- 1653ce4: Update dependencies: `@ankhorage/repository`.
+- 5572d5c: Update dependencies: `@ankhorage/repository`.
+- 3e89a54: Update dependencies: `@ankhorage/infra`.
+- 1b1b8ce: Update dependencies: `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/infra`, `@ankhorage/local`, `@ankhorage/minikube`, `@ankhorage/paradox`, `@ankhorage/repository`, `@ankhorage/supabase-auth`, `@ankhorage/templates`, `@ankhorage/utility`, `@ankhorage/zora`.
+- d77a01f: Update dependencies: `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/infra`, `@ankhorage/local`, `@ankhorage/minikube`, `@ankhorage/repository`, `@ankhorage/supabase-auth`, `@ankhorage/templates`, `@ankhorage/zora`.
+- 3a68c30: Update dependencies: `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/infra`, `@ankhorage/local`, `@ankhorage/minikube`, `@ankhorage/repository`, `@ankhorage/supabase-auth`, `@ankhorage/templates`, `@ankhorage/utility`, `@ankhorage/zora`.
+- 9edb0b4: Update dependencies: `@ankhorage/infra`, `@ankhorage/templates`, `@ankhorage/zora`.
+- d73bd59: Update dependencies: `@ankhorage/apm`.
+- deeebb9: Update dependencies: `@ankhorage/templates`.
+- f5563e3: Update the Studio CLI and Devtools toolchain to the current managed Ankhorage release.
+- f659bc9: Remove legacy Paradox tag-shaped annotations and complete the canonical README usage metadata so
+  release documentation generation succeeds under the current policy.
+- c8c1e41: Update the Studio toolchain to @ankhorage/devtools 2.0.0 and its canonical Policy-backed
+  repository tooling.
+
 ## 6.0.2
 
 ### Patch Changes

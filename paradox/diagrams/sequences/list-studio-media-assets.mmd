@@ -1,0 +1,5 @@
+sequenceDiagram
+  participant participant_filterAndSort as filterAndSort
+  participant participant_listStudioMediaAssets as listStudioMediaAssets
+  participant_listStudioMediaAssets->>participant_filterAndSort: filterAndSort()
+  participant_filterAndSort-->>participant_listStudioMediaAssets: return

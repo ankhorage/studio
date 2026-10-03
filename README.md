@@ -3,23 +3,36 @@
 
 # @ankhorage/studio
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v6.0.2](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v7.0.0](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![paradox: canonical](././paradox/badges/docs.svg)
 
 Studio authoring package for Ankhorage apps
 
 ## Usage
 
-For local Studio development, run:
+### CLI
 
-```bash
-bun dev
+Ankhorage packages expose their command-line interface through `ankh`. Use `ankh --help` to discover available package commands, or run a package command with `--help` for package-specific usage.
+
+```zsh
+# Install the Ankhorage CLI
+bun add --global @ankhorage/ankh
+
+# Show usage information for studio
+ankh studio --help
 ```
 
-This starts both the local Studio host and the first-party Studio web app.
+### Canvas drag payload
 
-## CLI
+Create and validate the payload used while dragging a Studio canvas node.
 
-Manage Studio development and projects through the Ankh CLI.
+Run with `bun examples/canvas-drag-payload/basic.ts` after building the package.
+
+```ts
+import {
+  createStudioCanvasDragPayload,
+  isStudioCanvasDragPayload,
+} from '@ankhorage/studio/canvasDragModel';
+```
 
 ## Generated documentation
 
@@ -42,12 +55,15 @@ Manage Studio development and projects through the Ankh CLI.
 - [findNodeById sequence](././paradox/diagrams/sequences/find-node-by-id.mmd)
 - [findStudioBindingOperationOption sequence](././paradox/diagrams/sequences/find-studio-binding-operation-option.mmd)
 - [generateStudioId sequence](././paradox/diagrams/sequences/generate-studio-id.mmd)
+- [listStudioMediaAssets sequence](././paradox/diagrams/sequences/list-studio-media-assets.mmd)
 - [removeNodeFromTree sequence](././paradox/diagrams/sequences/remove-node-from-tree.mmd)
 - [removeStudioEventBinding sequence](././paradox/diagrams/sequences/remove-studio-event-binding.mmd)
 - [removeStudioMediaAsset sequence](././paradox/diagrams/sequences/remove-studio-media-asset.mmd)
 - [removeStudioPropBinding sequence](././paradox/diagrams/sequences/remove-studio-prop-binding.mmd)
 - [resolveDefaultInsertPlacement sequence](././paradox/diagrams/sequences/resolve-default-insert-placement.mmd)
 - [resolveInsertPlacement sequence](././paradox/diagrams/sequences/resolve-insert-placement.mmd)
+- [resolveStudioBindableEvents sequence](././paradox/diagrams/sequences/resolve-studio-bindable-events.mmd)
+- [resolveStudioBindableProps sequence](././paradox/diagrams/sequences/resolve-studio-bindable-props.mmd)
 - [updateNodeInTree sequence](././paradox/diagrams/sequences/update-node-in-tree.mmd)
 - [upsertStudioMediaAsset sequence](././paradox/diagrams/sequences/upsert-studio-media-asset.mmd)
 - [upsertStudioPropBinding sequence](././paradox/diagrams/sequences/upsert-studio-prop-binding.mmd)

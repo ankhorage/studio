@@ -1,14 +1,16 @@
 [
   {
     "name": "ACTION_REGISTRY",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 459,
+      "line": 461,
       "column": 14
     },
     "exportPaths": [
@@ -21,14 +23,16 @@
   },
   {
     "name": "ActionDefinition",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 367,
+      "line": 369,
       "column": 1
     },
     "exportPaths": [
@@ -79,14 +83,16 @@
   },
   {
     "name": "appendStudioEventBinding",
-    "description": "Append an event binding to one Studio node/event pair without replacing earlier bindings.\n@todo Move binding mutation behavior under src/bindings/.",
+    "title": null,
+    "description": "Append an event binding to one Studio node/event pair without replacing earlier bindings.\nFollow-up: Move binding mutation behavior under src/bindings/.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/bindingMutationModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingMutationModel.ts",
-      "line": 46,
+      "line": 51,
       "column": 1
     },
     "exportPaths": [
@@ -131,9 +137,11 @@
   },
   {
     "name": "assessStudioBindingCompatibility",
-    "description": "Assess whether an actual bindable value shape can satisfy an expected Studio binding shape.\n@todo Keep binding compatibility policy under src/bindings/.",
+    "title": null,
+    "description": "Assess whether an actual bindable value shape can satisfy an expected Studio binding shape.\nTODO: Keep binding compatibility policy under src/bindings/.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/bindingSchemaModel.ts",
     "sourceLocation": {
@@ -173,14 +181,16 @@
   },
   {
     "name": "buildInsertCatalogEntries",
-    "description": "Build and deterministically sort Studio's component/recipe insert catalog from component metadata and recipes.\n@todo Move insert-catalog construction from `src/index.ts` into the insert domain.",
+    "title": null,
+    "description": "Build and deterministically sort Studio's component/recipe insert catalog from component metadata and recipes.\nFollow-up: Move insert-catalog construction from `src/index.ts` into the insert domain.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1440,
+      "line": 1389,
       "column": 1
     },
     "exportPaths": [
@@ -211,14 +221,16 @@
   },
   {
     "name": "canAcceptChild",
-    "description": "Return whether Studio component metadata permits one child type under a parent type.\n@todo Move this component-placement policy from `src/index.ts` into the `canvas/` or insert-authoring domain.",
+    "title": null,
+    "description": "Return whether Studio component metadata permits one child type under a parent type.\nFollow-up: Move this component-placement policy from `src/index.ts` into the `canvas/` or insert-authoring domain.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 758,
+      "line": 707,
       "column": 1
     },
     "exportPaths": [
@@ -247,14 +259,16 @@
   },
   {
     "name": "cloneWithNewIds",
-    "description": "Deep-clone a UiNode tree while assigning fresh identifiers and shallow-cloning node props.\n@utility @ankhorage/utility/tree\n@todo `cloneTreeWithNewIds` currently allocates child ids before the root; retain this public pre-order callback contract until Utility supports configurable traversal order.",
+    "title": null,
+    "description": "Deep-clone a UiNode tree while assigning fresh identifiers and shallow-cloning node props.\nUtility candidate: @ankhorage/utility/tree\nFollow-up: `cloneTreeWithNewIds` currently allocates child ids before the root; retain this public pre-order callback contract until Utility supports configurable traversal order.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 610,
+      "line": 611,
       "column": 14
     },
     "exportPaths": [
@@ -289,9 +303,11 @@
   },
   {
     "name": "collectStudioBindingOperationOptions",
-    "description": "Collect and alphabetically sort the API operations available for Studio binding authoring.\n@todo Move binding operation catalog behavior under src/bindings/.",
+    "title": null,
+    "description": "Collect and alphabetically sort the API operations available for Studio binding authoring.\nTODO: Move binding operation catalog behavior under src/bindings/.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/bindingOperationModel.ts",
     "sourceLocation": {
@@ -325,14 +341,16 @@
   },
   {
     "name": "collectStudioMediaAssetUsages",
-    "description": "Collect every Studio node-property usage of one media asset across all manifest screens.\n@todo Move media usage analysis under src/media/ while extracting generic deep-value traversal.",
+    "title": null,
+    "description": "Collect every Studio node-property usage of one media asset across all manifest screens.\nFollow-up: Move media usage analysis under src/media/ while extracting generic deep-value traversal.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 134,
+      "line": 136,
       "column": 1
     },
     "exportPaths": [
@@ -367,9 +385,11 @@
   },
   {
     "name": "collectStudioResponsePaths",
-    "description": "Collect response-path options from a schema for Studio binding authoring.\n@todo Move response-path authoring under src/bindings/.",
+    "title": null,
+    "description": "Collect response-path options from a schema for Studio binding authoring.\nTODO: Move response-path authoring under src/bindings/.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/bindingSchemaModel.ts",
     "sourceLocation": {
@@ -409,14 +429,16 @@
   },
   {
     "name": "createNodeFromCatalogEntry",
-    "description": "Materialize one enabled component or recipe catalog entry into a fresh UiNode tree.\n@todo Move insert-catalog node creation from `src/index.ts` into the insert domain.",
+    "title": null,
+    "description": "Materialize one enabled component or recipe catalog entry into a fresh UiNode tree.\nFollow-up: Move insert-catalog node creation from `src/index.ts` into the insert domain.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1353,
+      "line": 1302,
       "column": 1
     },
     "exportPaths": [
@@ -459,9 +481,11 @@
   },
   {
     "name": "createStudioActionInputFields",
-    "description": "Convert an action payload schema into Studio binding input-field options.\n@todo Move action binding-field projection under src/bindings/.",
+    "title": null,
+    "description": "Convert an action payload schema into Studio binding input-field options.\nTODO: Move action binding-field projection under src/bindings/.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/bindingOperationModel.ts",
     "sourceLocation": {
@@ -495,14 +519,16 @@
   },
   {
     "name": "createStudioMediaAssetId",
-    "description": "Create a unique slug-like media id from a name and an existing keyed registry.\n@utility @ankhorage/utility/string",
+    "title": null,
+    "description": "Create a unique slug-like media id from a name and an existing keyed registry.\nUtility candidate: @ankhorage/utility/string",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 89,
+      "line": 91,
       "column": 1
     },
     "exportPaths": [
@@ -535,14 +561,16 @@
   },
   {
     "name": "createStudioMediaAssetReference",
-    "description": "Create the canonical media-reference object for one media id.\n@todo Keep the MediaAssetReference constructor with its contracts/media owner unless a generic single-key reference constructor is extracted.",
+    "title": null,
+    "description": "Create the canonical media-reference object for one media id.\nFollow-up: Keep the MediaAssetReference constructor with its contracts/media owner unless a generic single-key reference constructor is extracted.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 69,
+      "line": 71,
       "column": 1
     },
     "exportPaths": [
@@ -569,14 +597,16 @@
   },
   {
     "name": "createStudioUrlMediaAsset",
-    "description": "Create a URL-backed Studio media asset after validating and normalizing its HTTP URL.\n@todo Move URL-media authoring behavior under src/media/ while reusing generic URL normalization.",
+    "title": null,
+    "description": "Create a URL-backed Studio media asset after validating and normalizing its HTTP URL.\nFollow-up: Move URL-media authoring behavior under src/media/ while reusing generic URL normalization.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 101,
+      "line": 103,
       "column": 1
     },
     "exportPaths": [
@@ -605,14 +635,16 @@
   },
   {
     "name": "deriveProjectId",
-    "description": "Normalize a project name into a lowercase hyphenated identifier.\n@utility @ankhorage/utility/string",
+    "title": null,
+    "description": "Normalize a project name into a lowercase hyphenated identifier.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/projectIdentity.ts",
     "sourceLocation": {
       "filePath": "src/projectIdentity.ts",
-      "line": 17,
+      "line": 16,
       "column": 1
     },
     "exportPaths": [
@@ -639,14 +671,16 @@
   },
   {
     "name": "diagnoseStudioComponentBindings",
-    "description": "Diagnose all authored prop and event bindings for one Studio component node.\n@todo Move binding diagnostics under src/bindings/.",
+    "title": null,
+    "description": "Diagnose all authored prop and event bindings for one Studio component node.\nFollow-up: Move binding diagnostics under src/bindings/.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/bindingDiagnosticsModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingDiagnosticsModel.ts",
-      "line": 25,
+      "line": 26,
       "column": 1
     },
     "exportPaths": [
@@ -676,9 +710,11 @@
   },
   {
     "name": "findNodeById",
-    "description": "Find the first node with a matching id in a depth-first tree traversal.\n@utility @ankhorage/utility/tree\n@todo Move the UiNode wrapper out of `src/index.ts`; parameterize id and child accessors for Utility.",
+    "title": null,
+    "description": "Find the first node with a matching id in a depth-first tree traversal.\nFollow-up: Move the UiNode wrapper out of `src/index.ts`; parameterize id and child accessors for Utility.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/index.ts",
     "sourceLocation": {
@@ -716,9 +752,11 @@
   },
   {
     "name": "findStudioBindingOperationOption",
+    "title": null,
     "description": "Find an option through the canonical keyed array lookup utility.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/bindingOperationModel.ts",
     "sourceLocation": {
@@ -758,14 +796,16 @@
   },
   {
     "name": "generateStudioId",
-    "description": "Generate a compact time/random identifier with an optional lowercase prefix.\n@utility @ankhorage/utility/id\n@todo Move the Studio-facing wrapper out of `src/index.ts`; the reusable identifier primitive belongs in Utility.",
+    "title": null,
+    "description": "Generate a compact time/random identifier with an optional lowercase prefix.\nFollow-up: Move the Studio-facing wrapper out of `src/index.ts`; the reusable identifier primitive belongs in Utility.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 601,
+      "line": 602,
       "column": 14
     },
     "exportPaths": [
@@ -792,14 +832,16 @@
   },
   {
     "name": "getInsertCatalogCategoryLabel",
-    "description": "Resolve Studio's display label for an insert-catalog category, falling back to the raw category id.\n@todo Move insert-catalog presentation metadata out of `src/index.ts` into the insert domain.",
+    "title": null,
+    "description": "Resolve Studio's display label for an insert-catalog category, falling back to the raw category id.\nFollow-up: Move insert-catalog presentation metadata out of `src/index.ts` into the insert domain.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1263,
+      "line": 1212,
       "column": 1
     },
     "exportPaths": [
@@ -826,14 +868,16 @@
   },
   {
     "name": "InsertCatalogComponentEntry",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 345,
+      "line": 347,
       "column": 1
     },
     "exportPaths": [
@@ -921,14 +965,16 @@
   },
   {
     "name": "InsertCatalogDisabledReason",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 327,
+      "line": 329,
       "column": 1
     },
     "exportPaths": [
@@ -966,14 +1012,16 @@
   },
   {
     "name": "InsertCatalogDisabledReasonCode",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 304,
+      "line": 306,
       "column": 1
     },
     "exportPaths": [
@@ -986,14 +1034,16 @@
   },
   {
     "name": "InsertCatalogEntry",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 355,
+      "line": 357,
       "column": 1
     },
     "exportPaths": [
@@ -1006,14 +1056,16 @@
   },
   {
     "name": "InsertCatalogEntryBase",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 333,
+      "line": 335,
       "column": 1
     },
     "exportPaths": [
@@ -1095,14 +1147,16 @@
   },
   {
     "name": "InsertCatalogEntryKind",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 301,
+      "line": 303,
       "column": 1
     },
     "exportPaths": [
@@ -1115,14 +1169,16 @@
   },
   {
     "name": "InsertCatalogEntryStatus",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 302,
+      "line": 304,
       "column": 1
     },
     "exportPaths": [
@@ -1135,14 +1191,16 @@
   },
   {
     "name": "InsertCatalogRecipeEntry",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 350,
+      "line": 352,
       "column": 1
     },
     "exportPaths": [
@@ -1231,14 +1289,16 @@
   },
   {
     "name": "insertNodeAtPlacement",
-    "description": "Create and insert one Studio node after validating its requested placement.\n@todo Move Studio insertion orchestration from `src/index.ts` into the insert/canvas domain.",
+    "title": null,
+    "description": "Create and insert one Studio node after validating its requested placement.\nFollow-up: Move Studio insertion orchestration from `src/index.ts` into the insert/canvas domain.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1040,
+      "line": 989,
       "column": 1
     },
     "exportPaths": [
@@ -1268,14 +1328,16 @@
   },
   {
     "name": "InsertNodeAtPlacementArgs",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 975,
+      "line": 924,
       "column": 1
     },
     "exportPaths": [
@@ -1320,14 +1382,16 @@
   },
   {
     "name": "InsertNodeAtPlacementResult",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 982,
+      "line": 931,
       "column": 1
     },
     "exportPaths": [
@@ -1355,14 +1419,16 @@
   },
   {
     "name": "InsertRecipe",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 312,
+      "line": 314,
       "column": 1
     },
     "exportPaths": [
@@ -1413,14 +1479,16 @@
   },
   {
     "name": "InsertRecipeIssue",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 320,
+      "line": 322,
       "column": 1
     },
     "exportPaths": [
@@ -1462,14 +1530,16 @@
   },
   {
     "name": "InsertRecipeNode",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 307,
+      "line": 309,
       "column": 1
     },
     "exportPaths": [
@@ -1497,14 +1567,16 @@
   },
   {
     "name": "listStudioMediaAssets",
-    "description": "List manifest media assets, optionally filter by kind, and sort them by name.\n@utility @ankhorage/utility/array",
+    "title": null,
+    "description": "List manifest media assets, optionally filter by kind, and sort them by name.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 54,
+      "line": 55,
       "column": 1
     },
     "exportPaths": [
@@ -1537,14 +1609,16 @@
   },
   {
     "name": "moveNodeToPlacement",
-    "description": "Execute a validated Studio node move as immutable removal followed by insertion.\n@todo Move node-move orchestration from `src/index.ts` into the canvas domain.",
+    "title": null,
+    "description": "Execute a validated Studio node move as immutable removal followed by insertion.\nFollow-up: Move node-move orchestration from `src/index.ts` into the canvas domain.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1188,
+      "line": 1137,
       "column": 1
     },
     "exportPaths": [
@@ -1574,14 +1648,16 @@
   },
   {
     "name": "MoveNodeToPlacementArgs",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1067,
+      "line": 1016,
       "column": 1
     },
     "exportPaths": [
@@ -1626,14 +1702,16 @@
   },
   {
     "name": "MoveNodeToPlacementResult",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1074,
+      "line": 1023,
       "column": 1
     },
     "exportPaths": [
@@ -1661,14 +1739,16 @@
   },
   {
     "name": "NodePlacement",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 262,
+      "line": 264,
       "column": 1
     },
     "exportPaths": [
@@ -1712,14 +1792,16 @@
   },
   {
     "name": "PlacementFailureCode",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 269,
+      "line": 271,
       "column": 1
     },
     "exportPaths": [
@@ -1732,14 +1814,16 @@
   },
   {
     "name": "PlacementFailureReason",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 282,
+      "line": 284,
       "column": 1
     },
     "exportPaths": [
@@ -1769,14 +1853,16 @@
   },
   {
     "name": "PlacementKind",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 260,
+      "line": 262,
       "column": 1
     },
     "exportPaths": [
@@ -1789,14 +1875,16 @@
   },
   {
     "name": "PlacementResolutionResult",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 294,
+      "line": 296,
       "column": 1
     },
     "exportPaths": [
@@ -1809,14 +1897,16 @@
   },
   {
     "name": "PlacementValidationResult",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 287,
+      "line": 289,
       "column": 1
     },
     "exportPaths": [
@@ -1829,14 +1919,16 @@
   },
   {
     "name": "ProjectAuthDiagnostic",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/projectAuthHealth.ts",
     "sourceLocation": {
       "filePath": "src/projectAuthHealth.ts",
-      "line": 17,
+      "line": 18,
       "column": 1
     },
     "exportPaths": [
@@ -1894,14 +1986,16 @@
   },
   {
     "name": "ProjectAuthDiagnosticSeverity",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/projectAuthHealth.ts",
     "sourceLocation": {
       "filePath": "src/projectAuthHealth.ts",
-      "line": 15,
+      "line": 16,
       "column": 1
     },
     "exportPaths": [
@@ -1914,14 +2008,16 @@
   },
   {
     "name": "ProjectAuthHealth",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/projectAuthHealth.ts",
     "sourceLocation": {
       "filePath": "src/projectAuthHealth.ts",
-      "line": 40,
+      "line": 41,
       "column": 1
     },
     "exportPaths": [
@@ -1974,14 +2070,16 @@
   },
   {
     "name": "ProjectAuthHealthStatus",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/projectAuthHealth.ts",
     "sourceLocation": {
       "filePath": "src/projectAuthHealth.ts",
-      "line": 13,
+      "line": 14,
       "column": 1
     },
     "exportPaths": [
@@ -1994,9 +2092,11 @@
   },
   {
     "name": "ProjectCreationValidationCode",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/projectWorkspaceContracts.ts",
     "sourceLocation": {
@@ -2014,14 +2114,16 @@
   },
   {
     "name": "ProjectCreationValidationError",
+    "title": null,
     "description": "Represent a failed Studio project-creation validation as an Error carrying its structured reason.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/projectIdentity.ts",
     "sourceLocation": {
       "filePath": "src/projectIdentity.ts",
-      "line": 38,
+      "line": 37,
       "column": 1
     },
     "exportPaths": [
@@ -2034,9 +2136,11 @@
   },
   {
     "name": "ProjectCreationValidationFailure",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/projectWorkspaceContracts.ts",
     "sourceLocation": {
@@ -2071,9 +2175,11 @@
   },
   {
     "name": "ProjectCreationValidationResult",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/projectWorkspaceContracts.ts",
     "sourceLocation": {
@@ -2091,14 +2197,16 @@
   },
   {
     "name": "ProjectOAuthProviderHealth",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/projectAuthHealth.ts",
     "sourceLocation": {
       "filePath": "src/projectAuthHealth.ts",
-      "line": 29,
+      "line": 30,
       "column": 1
     },
     "exportPaths": [
@@ -2170,14 +2278,16 @@
   },
   {
     "name": "ProjectOAuthProviderHealthStatus",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/projectAuthHealth.ts",
     "sourceLocation": {
       "filePath": "src/projectAuthHealth.ts",
-      "line": 26,
+      "line": 27,
       "column": 1
     },
     "exportPaths": [
@@ -2190,9 +2300,11 @@
   },
   {
     "name": "ProjectSecretUsage",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/projectSecretUsage.ts",
     "sourceLocation": {
@@ -2255,9 +2367,11 @@
   },
   {
     "name": "ProjectSecretUsageCategory",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/projectSecretUsage.ts",
     "sourceLocation": {
@@ -2275,9 +2389,11 @@
   },
   {
     "name": "ProjectSecretUsageSummary",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/projectSecretUsage.ts",
     "sourceLocation": {
@@ -2312,9 +2428,11 @@
   },
   {
     "name": "ProjectSortKey",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/projectWorkspaceContracts.ts",
     "sourceLocation": {
@@ -2332,14 +2450,16 @@
   },
   {
     "name": "readStudioMediaAssetReference",
-    "description": "Parse an unknown value as an exact one-key media-reference object.\n@todo Keep MediaAssetReference semantics with media/contracts; implement it from generic object/value utilities.",
+    "title": null,
+    "description": "Parse an unknown value as an exact one-key media-reference object.\nFollow-up: Keep MediaAssetReference semantics with media/contracts; implement it from generic object/value utilities.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 77,
+      "line": 79,
       "column": 1
     },
     "exportPaths": [
@@ -2366,14 +2486,16 @@
   },
   {
     "name": "removeNodeFromTree",
-    "description": "Immutably remove a node by id from a UiNode tree and preserve unchanged branches by reference.\n@utility @ankhorage/utility/tree\n@todo Move the UiNode wrapper out of `src/index.ts` and parameterize tree accessors for Utility.",
+    "title": null,
+    "description": "Immutably remove a node by id from a UiNode tree and preserve unchanged branches by reference.\nFollow-up: Move the UiNode wrapper out of `src/index.ts` and parameterize tree accessors for Utility.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 669,
+      "line": 667,
       "column": 14
     },
     "exportPaths": [
@@ -2406,14 +2528,16 @@
   },
   {
     "name": "removeStudioEventBinding",
-    "description": "Remove one indexed event binding and delete the event entry when no bindings remain.\n@todo Move binding mutation behavior under src/bindings/.",
+    "title": null,
+    "description": "Remove one indexed event binding and delete the event entry when no bindings remain.\nFollow-up: Move binding mutation behavior under src/bindings/.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/bindingMutationModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingMutationModel.ts",
-      "line": 65,
+      "line": 70,
       "column": 1
     },
     "exportPaths": [
@@ -2458,14 +2582,16 @@
   },
   {
     "name": "removeStudioMediaAsset",
-    "description": "Remove an unused media asset from the manifest and reject removal when the asset is missing or referenced.\n@todo Move media removal policy under src/media/.",
+    "title": null,
+    "description": "Remove an unused media asset from the manifest and reject removal when the asset is missing or referenced.\nFollow-up: Move media removal policy under src/media/.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 149,
+      "line": 151,
       "column": 1
     },
     "exportPaths": [
@@ -2500,14 +2626,16 @@
   },
   {
     "name": "removeStudioPropBinding",
-    "description": "Remove one Studio prop binding while leaving unrelated component bindings intact.\n@todo Move binding mutation behavior under src/bindings/.",
+    "title": null,
+    "description": "Remove one Studio prop binding while leaving unrelated component bindings intact.\nFollow-up: Move binding mutation behavior under src/bindings/.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/bindingMutationModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingMutationModel.ts",
-      "line": 30,
+      "line": 35,
       "column": 1
     },
     "exportPaths": [
@@ -2546,14 +2674,16 @@
   },
   {
     "name": "resolveDefaultInsertPlacement",
-    "description": "Resolve the preferred insertion placement by trying the selected node, its sibling position, then the screen root.\n@todo Move Studio default insertion policy from `src/index.ts` into the insert/canvas domain.",
+    "title": null,
+    "description": "Resolve the preferred insertion placement by trying the selected node, its sibling position, then the screen root.\nFollow-up: Move Studio default insertion policy from `src/index.ts` into the insert/canvas domain.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 930,
+      "line": 879,
       "column": 1
     },
     "exportPaths": [
@@ -2583,14 +2713,16 @@
   },
   {
     "name": "resolveInsertCatalogEntries",
-    "description": "Resolve enabled/disabled insert-catalog state against the active screen and selected-node placement context.\n@todo Move context-sensitive insert catalog projection from `src/index.ts` into the insert/canvas application domain.",
+    "title": null,
+    "description": "Resolve enabled/disabled insert-catalog state against the active screen and selected-node placement context.\nFollow-up: Move context-sensitive insert catalog projection from `src/index.ts` into the insert/canvas application domain.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1488,
+      "line": 1437,
       "column": 1
     },
     "exportPaths": [
@@ -2620,14 +2752,16 @@
   },
   {
     "name": "resolveInsertPlacement",
-    "description": "Resolve a requested inside/before/after insertion target to a validated Studio placement.\n@todo Move insertion-placement policy from `src/index.ts` into the `canvas/`/insert domain.",
+    "title": null,
+    "description": "Resolve a requested inside/before/after insertion target to a validated Studio placement.\nFollow-up: Move insertion-placement policy from `src/index.ts` into the `canvas/`/insert domain.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 865,
+      "line": 814,
       "column": 1
     },
     "exportPaths": [
@@ -2658,14 +2792,16 @@
   },
   {
     "name": "resolveMoveNodePlacement",
-    "description": "Validate and resolve a requested Studio node move after accounting for source removal and descendant/no-op invariants.\n@todo Move node-move policy from `src/index.ts` into the canvas domain.",
+    "title": null,
+    "description": "Validate and resolve a requested Studio node move after accounting for source removal and descendant/no-op invariants.\nFollow-up: Move node-move policy from `src/index.ts` into the canvas domain.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1116,
+      "line": 1065,
       "column": 1
     },
     "exportPaths": [
@@ -2695,14 +2831,16 @@
   },
   {
     "name": "resolveStudioBindableEvents",
-    "description": "Convert a component's bindable event metadata record into labeled authoring options.\n@utility @ankhorage/utility/collection",
+    "title": null,
+    "description": "Convert a component's bindable event metadata record into labeled authoring options.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/bindingMetadataModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingMetadataModel.ts",
-      "line": 29,
+      "line": 28,
       "column": 1
     },
     "exportPaths": [
@@ -2737,9 +2875,11 @@
   },
   {
     "name": "resolveStudioBindableProps",
-    "description": "Convert a component's bindable prop metadata record into labeled authoring options.\n@utility @ankhorage/utility/collection",
+    "title": null,
+    "description": "Convert a component's bindable prop metadata record into labeled authoring options.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/bindingMetadataModel.ts",
     "sourceLocation": {
@@ -2779,9 +2919,11 @@
   },
   {
     "name": "resolveStudioSchemaValueMeta",
-    "description": "Project canonical DataSchema authoring semantics into the bindable metadata used by compatibility policy.\n@todo Move binding schema projection under src/bindings/.",
+    "title": null,
+    "description": "Project canonical DataSchema authoring semantics into the bindable metadata used by compatibility policy.\nTODO: Move binding schema projection under src/bindings/.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/bindingSchemaModel.ts",
     "sourceLocation": {
@@ -2825,14 +2967,16 @@
   },
   {
     "name": "STUDIO_INSERT_RECIPES",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1226,
+      "line": 1175,
       "column": 14
     },
     "exportPaths": [
@@ -2870,14 +3014,16 @@
   },
   {
     "name": "STUDIO_PACKAGE_BOUNDARY",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 103,
+      "line": 105,
       "column": 14
     },
     "exportPaths": [
@@ -2890,14 +3036,16 @@
   },
   {
     "name": "STUDIO_PACKAGE_NAME",
-    "description": "@todo Make `src/index.ts` a public exports-only entrypoint. Package metadata, authoring contracts, tree editing, placement policy, templates and insert-catalog implementations need canonical owner modules and should only be re-exported here.",
+    "title": null,
+    "description": "Follow-up: Make `src/index.ts` a public exports-only entrypoint. Package metadata, authoring contracts, tree editing, placement policy, templates and insert-catalog implementations need canonical owner modules and should only be re-exported here.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 95,
+      "line": 97,
       "column": 14
     },
     "exportPaths": [
@@ -2910,14 +3058,16 @@
   },
   {
     "name": "STUDIO_PUBLIC_CONTRACTS",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 137,
+      "line": 139,
       "column": 14
     },
     "exportPaths": [
@@ -2930,14 +3080,16 @@
   },
   {
     "name": "StudioActionPayloadField",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 359,
+      "line": 361,
       "column": 1
     },
     "exportPaths": [
@@ -2974,14 +3126,16 @@
   },
   {
     "name": "StudioActionPayloadPrimitive",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 357,
+      "line": 359,
       "column": 1
     },
     "exportPaths": [
@@ -2994,14 +3148,16 @@
   },
   {
     "name": "StudioActionPayloadSchema",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 365,
+      "line": 367,
       "column": 1
     },
     "exportPaths": [
@@ -3014,14 +3170,16 @@
   },
   {
     "name": "StudioAdminRouteId",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 180,
+      "line": 182,
       "column": 1
     },
     "exportPaths": [
@@ -3034,14 +3192,16 @@
   },
   {
     "name": "StudioAdminRoutePath",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 226,
+      "line": 228,
       "column": 1
     },
     "exportPaths": [
@@ -3054,14 +3214,16 @@
   },
   {
     "name": "StudioAdminStaticRoutePath",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 206,
+      "line": 208,
       "column": 1
     },
     "exportPaths": [
@@ -3074,9 +3236,11 @@
   },
   {
     "name": "StudioAuthoringComponentMeta",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/propertiesAuthoringModel.ts",
     "sourceLocation": {
@@ -3111,9 +3275,11 @@
   },
   {
     "name": "StudioAuthoringMetaRegistry",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/propertiesAuthoringModel.ts",
     "sourceLocation": {
@@ -3131,9 +3297,11 @@
   },
   {
     "name": "StudioAuthoringPropSchema",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/propertiesAuthoringModel.ts",
     "sourceLocation": {
@@ -3201,9 +3369,11 @@
   },
   {
     "name": "StudioBindableEventOption",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/bindingAuthoringContracts.ts",
     "sourceLocation": {
@@ -3243,9 +3413,11 @@
   },
   {
     "name": "StudioBindablePropOption",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/bindingAuthoringContracts.ts",
     "sourceLocation": {
@@ -3285,9 +3457,11 @@
   },
   {
     "name": "StudioBindingCompatibility",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/bindingAuthoringContracts.ts",
     "sourceLocation": {
@@ -3305,9 +3479,11 @@
   },
   {
     "name": "StudioBindingDiagnostic",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/bindingAuthoringContracts.ts",
     "sourceLocation": {
@@ -3354,9 +3530,11 @@
   },
   {
     "name": "StudioBindingInputFieldOption",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/bindingAuthoringContracts.ts",
     "sourceLocation": {
@@ -3410,9 +3588,11 @@
   },
   {
     "name": "StudioBindingOperationOption",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/bindingAuthoringContracts.ts",
     "sourceLocation": {
@@ -3469,9 +3649,11 @@
   },
   {
     "name": "StudioBindingResponsePathOption",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/bindingAuthoringContracts.ts",
     "sourceLocation": {
@@ -3511,14 +3693,16 @@
   },
   {
     "name": "StudioCommand",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 391,
+      "line": 393,
       "column": 1
     },
     "exportPaths": [
@@ -3531,14 +3715,16 @@
   },
   {
     "name": "StudioComponentBlueprint",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 375,
+      "line": 377,
       "column": 1
     },
     "exportPaths": [
@@ -3566,14 +3752,16 @@
   },
   {
     "name": "StudioComponentMeta",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 380,
+      "line": 382,
       "column": 1
     },
     "exportPaths": [
@@ -3617,14 +3805,16 @@
   },
   {
     "name": "StudioComponentMetaRegistry",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 387,
+      "line": 389,
       "column": 1
     },
     "exportPaths": [
@@ -3637,14 +3827,16 @@
   },
   {
     "name": "StudioContextValue",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 406,
+      "line": 408,
       "column": 1
     },
     "exportPaths": [
@@ -4036,14 +4228,16 @@
   },
   {
     "name": "StudioEvent",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 399,
+      "line": 401,
       "column": 1
     },
     "exportPaths": [
@@ -4056,14 +4250,16 @@
   },
   {
     "name": "StudioIdGenerator",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 389,
+      "line": 391,
       "column": 1
     },
     "exportPaths": [
@@ -4076,14 +4272,16 @@
   },
   {
     "name": "StudioManifest",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 235,
+      "line": 237,
       "column": 1
     },
     "exportPaths": [
@@ -4096,14 +4294,16 @@
   },
   {
     "name": "StudioMediaAssetRemovalResult",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 18,
+      "line": 20,
       "column": 1
     },
     "exportPaths": [
@@ -4116,14 +4316,16 @@
   },
   {
     "name": "StudioMediaDeleteResult",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 26,
+      "line": 28,
       "column": 1
     },
     "exportPaths": [
@@ -4136,9 +4338,11 @@
   },
   {
     "name": "StudioMediaIngestResult",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/mediaPickerAuthoring.ts",
     "sourceLocation": {
@@ -4156,9 +4360,11 @@
   },
   {
     "name": "StudioMediaIngestTarget",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/mediaPickerAuthoring.ts",
     "sourceLocation": {
@@ -4176,9 +4382,11 @@
   },
   {
     "name": "StudioMediaPickerAdapter",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/mediaPickerAuthoring.ts",
     "sourceLocation": {
@@ -4207,9 +4415,11 @@
   },
   {
     "name": "StudioMediaPickerFailureReason",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/mediaPickerAuthoring.ts",
     "sourceLocation": {
@@ -4227,9 +4437,11 @@
   },
   {
     "name": "StudioMediaPickerInput",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/mediaPickerAuthoring.ts",
     "sourceLocation": {
@@ -4264,9 +4476,11 @@
   },
   {
     "name": "StudioMediaPickerResult",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/mediaPickerAuthoring.ts",
     "sourceLocation": {
@@ -4284,9 +4498,11 @@
   },
   {
     "name": "StudioMediaPickerSelection",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/mediaPickerAuthoring.ts",
     "sourceLocation": {
@@ -4361,9 +4577,11 @@
   },
   {
     "name": "StudioMediaPickerSource",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/mediaPickerAuthoring.ts",
     "sourceLocation": {
@@ -4381,14 +4599,16 @@
   },
   {
     "name": "StudioMediaUsage",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 12,
+      "line": 14,
       "column": 1
     },
     "exportPaths": [
@@ -4423,9 +4643,11 @@
   },
   {
     "name": "StudioModuleAdminContribution",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/moduleAdminContracts.ts",
     "sourceLocation": {
@@ -4474,9 +4696,11 @@
   },
   {
     "name": "StudioModuleAdminControl",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/moduleAdminContracts.ts",
     "sourceLocation": {
@@ -4494,9 +4718,11 @@
   },
   {
     "name": "StudioModuleAdminField",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/moduleAdminContracts.ts",
     "sourceLocation": {
@@ -4543,14 +4769,16 @@
   },
   {
     "name": "StudioModuleId",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 175,
+      "line": 177,
       "column": 1
     },
     "exportPaths": [
@@ -4563,9 +4791,11 @@
   },
   {
     "name": "StudioModuleOperationResult",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/moduleAdminContracts.ts",
     "sourceLocation": {
@@ -4628,9 +4858,11 @@
   },
   {
     "name": "StudioModuleState",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/moduleAdminContracts.ts",
     "sourceLocation": {
@@ -4749,14 +4981,16 @@
   },
   {
     "name": "StudioNodeId",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 173,
+      "line": 175,
       "column": 1
     },
     "exportPaths": [
@@ -4769,14 +5003,16 @@
   },
   {
     "name": "StudioPackageBoundary",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 97,
+      "line": 99,
       "column": 1
     },
     "exportPaths": [
@@ -4811,14 +5047,16 @@
   },
   {
     "name": "StudioPanelId",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 179,
+      "line": 181,
       "column": 1
     },
     "exportPaths": [
@@ -4831,14 +5069,16 @@
   },
   {
     "name": "StudioProjectId",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 171,
+      "line": 173,
       "column": 1
     },
     "exportPaths": [
@@ -4851,9 +5091,11 @@
   },
   {
     "name": "StudioProjectSummary",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/projectWorkspaceContracts.ts",
     "sourceLocation": {
@@ -4942,14 +5184,16 @@
   },
   {
     "name": "StudioPublicContract",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 169,
+      "line": 171,
       "column": 1
     },
     "exportPaths": [
@@ -4962,9 +5206,11 @@
   },
   {
     "name": "StudioRuntimeProjectionReason",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/types/project-generation.ts",
     "sourceLocation": {
@@ -4982,9 +5228,11 @@
   },
   {
     "name": "StudioRuntimeProjectionState",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/types/project-generation.ts",
     "sourceLocation": {
@@ -5020,9 +5268,11 @@
   },
   {
     "name": "StudioRuntimeProjectionStatus",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/types/project-generation.ts",
     "sourceLocation": {
@@ -5040,14 +5290,16 @@
   },
   {
     "name": "StudioSaveStatus",
+    "title": null,
     "description": "Report canonical manifest persistence only; runtime projection currency is exposed separately by the host project state.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 178,
+      "line": 180,
       "column": 1
     },
     "exportPaths": [
@@ -5060,14 +5312,16 @@
   },
   {
     "name": "StudioScreenId",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 174,
+      "line": 176,
       "column": 1
     },
     "exportPaths": [
@@ -5080,14 +5334,16 @@
   },
   {
     "name": "StudioSelectionState",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 242,
+      "line": 244,
       "column": 1
     },
     "exportPaths": [
@@ -5138,14 +5394,16 @@
   },
   {
     "name": "StudioSessionId",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 172,
+      "line": 174,
       "column": 1
     },
     "exportPaths": [
@@ -5158,14 +5416,16 @@
   },
   {
     "name": "StudioSessionState",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 250,
+      "line": 252,
       "column": 1
     },
     "exportPaths": [
@@ -5230,9 +5490,11 @@
   },
   {
     "name": "studioUpdateExtension",
+    "title": null,
     "description": "Expose Studio's trusted package-policy projection through the public APM extension contract.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/features/project-updates/adapters/inbound/studioUpdateExtension.ts",
     "sourceLocation": {
@@ -5250,14 +5512,16 @@
   },
   {
     "name": "StudioUrlMediaAssetResult",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 46,
+      "line": 48,
       "column": 1
     },
     "exportPaths": [
@@ -5270,9 +5534,11 @@
   },
   {
     "name": "TemplateCatalog",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/templateCatalogContracts.ts",
     "sourceLocation": {
@@ -5300,9 +5566,11 @@
   },
   {
     "name": "TemplateCatalogCategory",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/templateCatalogContracts.ts",
     "sourceLocation": {
@@ -5379,9 +5647,11 @@
   },
   {
     "name": "TemplateCatalogTemplate",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/templateCatalogContracts.ts",
     "sourceLocation": {
@@ -5421,9 +5691,11 @@
   },
   {
     "name": "TemplateEntry",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/templateCatalogContracts.ts",
     "sourceLocation": {
@@ -5441,14 +5713,16 @@
   },
   {
     "name": "ThemeUpdates",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 237,
+      "line": 239,
       "column": 1
     },
     "exportPaths": [
@@ -5461,14 +5735,16 @@
   },
   {
     "name": "TPL_SCREEN_EMPTY",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 551,
+      "line": 553,
       "column": 14
     },
     "exportPaths": [
@@ -5481,14 +5757,16 @@
   },
   {
     "name": "updateNodeInTree",
-    "description": "Immutably update one UiNode by id while preserving Studio's alias/style versus props patch semantics.\n@utility @ankhorage/utility/tree\n@todo Keep Studio-specific patch projection in the canvas/properties owner and extract the generic immutable tree-update primitive to Utility.",
+    "title": null,
+    "description": "Immutably update one UiNode by id while preserving Studio's alias/style versus props patch semantics.\nFollow-up: Keep Studio-specific patch projection in the canvas/properties owner and extract the generic immutable tree-update primitive to Utility.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 641,
+      "line": 640,
       "column": 14
     },
     "exportPaths": [
@@ -5527,14 +5805,16 @@
   },
   {
     "name": "upsertStudioMediaAsset",
-    "description": "Immutably insert or replace a keyed media asset in a manifest registry.\n@utility @ankhorage/utility/object",
+    "title": null,
+    "description": "Immutably insert or replace a keyed media asset in a manifest registry.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 124,
+      "line": 125,
       "column": 1
     },
     "exportPaths": [
@@ -5567,14 +5847,16 @@
   },
   {
     "name": "upsertStudioPropBinding",
-    "description": "Add or replace one Studio prop binding for a component node.\n@todo Move binding mutation behavior under src/bindings/.",
+    "title": null,
+    "description": "Add or replace one Studio prop binding for a component node.\nFollow-up: Move binding mutation behavior under src/bindings/.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/bindingMutationModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingMutationModel.ts",
-      "line": 14,
+      "line": 19,
       "column": 1
     },
     "exportPaths": [
@@ -5619,14 +5901,16 @@
   },
   {
     "name": "validateInsertRecipe",
-    "description": "Validate an insert recipe recursively against Studio component metadata and allowed-child constraints.\n@todo Move recipe validation from `src/index.ts` into the insert/templates domain.",
+    "title": null,
+    "description": "Validate an insert recipe recursively against Studio component metadata and allowed-child constraints.\nFollow-up: Move recipe validation from `src/index.ts` into the insert/templates domain.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1286,
+      "line": 1235,
       "column": 1
     },
     "exportPaths": [
@@ -5663,14 +5947,16 @@
   },
   {
     "name": "validateNodePlacement",
-    "description": "Validate one resolved Studio placement against parent existence, child policy, index bounds and sibling-reference invariants.\n@todo Move placement validation from the public entrypoint into the `canvas/` domain.",
+    "title": null,
+    "description": "Validate one resolved Studio placement against parent existence, child policy, index bounds and sibling-reference invariants.\nFollow-up: Move placement validation from the public entrypoint into the `canvas/` domain.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 774,
+      "line": 723,
       "column": 1
     },
     "exportPaths": [
@@ -5701,14 +5987,16 @@
   },
   {
     "name": "validateProjectCreationInput",
-    "description": "Validate a new Studio project name and derived id against format, reservation, and uniqueness rules.\n@todo Move project creation validation under src/projects/.",
+    "title": null,
+    "description": "Validate a new Studio project name and derived id against format, reservation, and uniqueness rules.\nFollow-up: Move project creation validation under src/projects/.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/projectIdentity.ts",
     "sourceLocation": {
       "filePath": "src/projectIdentity.ts",
-      "line": 50,
+      "line": 49,
       "column": 1
     },
     "exportPaths": [
