@@ -32,7 +32,28 @@ describe('resolveProjectUpdateDashboardPresentation', () => {
         id: 'plan-one',
         complete: false,
         rootPath: '/workspace/apps/project-one',
-        targets: [],
+        targets: [
+          {
+            packageId: 'root::@ankhorage/studio@2.7.1',
+            installRootId: 'root',
+            name: '@ankhorage/studio',
+            direct: true,
+            currentVersion: '2.7.1',
+            targetVersion: '2.8.0',
+            source: 'compatible',
+            reason: 'Compatible direct update.',
+          },
+          {
+            packageId: 'root::transitive-package@1.0.0',
+            installRootId: 'root',
+            name: 'transitive-package',
+            direct: false,
+            currentVersion: '1.0.0',
+            targetVersion: '1.1.0',
+            source: 'compatible',
+            reason: 'Resolved transitive impact.',
+          },
+        ],
         files: [],
         steps: [{ id: 'restart', kind: 'host-restart', reason: 'Restart Studio.', evidence: [] }],
         effects: [{ kind: 'web-redeploy', requirement: 'required', reason: 'Web output changed.' }],
@@ -68,6 +89,9 @@ describe('resolveProjectUpdateDashboardPresentation', () => {
     ]);
     expect(presentation.plan?.hostRestartRequired).toBe(true);
     expect(presentation.plan?.canApply).toBe(false);
+    expect(presentation.plan?.targetSummary).toEqual({ total: 2, direct: 1, transitive: 1 });
+    expect(presentation.plan?.targets.map(({ name }) => name)).toEqual(['@ankhorage/studio']);
+    expect(JSON.stringify(presentation.plan)).not.toContain('transitive-package');
     expect(presentation.plan?.effects).toEqual([
       { kind: 'web-redeploy', state: 'required', reason: 'Web output changed.' },
     ]);
