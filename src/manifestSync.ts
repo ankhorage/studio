@@ -31,8 +31,12 @@ function createRuntimeScreenSignatures(
  * Serialize only the manifest fields that affect generated runtime synchronization.
  * TODO: Move manifest signature behavior from the source root into the manifest domain.
  */
-export function createStudioRuntimeSyncSignature(manifest: StudioManifest): string {
+export function createStudioRuntimeSyncSignature(
+  manifest: StudioManifest,
+  generatorRevision = 'legacy',
+): string {
   return JSON.stringify({
+    generatorRevision,
     navigator: manifest.navigator,
     screens: createRuntimeScreenSignatures(manifest),
     apis: Object.fromEntries(
