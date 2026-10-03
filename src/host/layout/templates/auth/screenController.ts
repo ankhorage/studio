@@ -82,8 +82,7 @@ export interface AuthScreenController {
   loading: boolean;
   mode: AuthMode;
   oauthLoadingProvider: string | null;
-  showSignIn: () => void;
-  showSignUp: () => void;
+  showMode: (nextMode: AuthMode) => void;
   signUpFields: ReturnType<typeof buildSignUpFields>;
 }
 
@@ -116,8 +115,7 @@ export function useAuthScreenController(initialMode: AuthMode): AuthScreenContro
     loading,
     mode,
     oauthLoadingProvider,
-    showSignIn: () => showMode('signIn'),
-    showSignUp: () => showMode('signUp'),
+    showMode,
     signUpFields,
   };
 }

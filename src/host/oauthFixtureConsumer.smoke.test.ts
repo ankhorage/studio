@@ -170,15 +170,15 @@ test('generates the released Google and Apple OAuth fixture through the real hos
       'src/auth/screen-controller.ts',
     );
     expect(signInScreen).toContain('GeneratedAuthScreen');
-    expect(authScreenRuntime).toContain('OAuthProviderList');
+    expect(authScreenRuntime).toContain("import { AuthScreen } from '@ankhorage/zora';");
+    expect(authScreenRuntime).toContain('<AuthScreen');
     expect(authScreenRuntime).toContain('generatedOAuthProviderItems');
-    expect(authScreenRuntime).toContain('KeyboardAvoidingView');
-    expect(authScreenRuntime).toContain(
-      "behavior={Platform.select({ android: 'height', ios: 'padding' })}",
-    );
-    expect(authScreenRuntime).toContain('keyboardShouldPersistTaps="handled"');
+    expect(authScreenRuntime).toContain('oauthProviders={generatedOAuthProviderItems.map');
+    expect(authScreenRuntime).toContain('onModeChange={controller.showMode}');
+    expect(authScreenRuntime).not.toContain('OAuthProviderList');
+    expect(authScreenRuntime).not.toContain('KeyboardAvoidingView');
+    expect(authScreenRuntime).not.toContain('StyleSheet');
     expect(authScreenController).toContain('startOAuthAuthorization(providerId)');
-    expect(authScreenRuntime).toContain('or continue with password');
 
     const session = await readProjectFile(created.path, 'src/auth/session.ts');
     expect(session).toContain("import * as SecureStore from 'expo-secure-store';");

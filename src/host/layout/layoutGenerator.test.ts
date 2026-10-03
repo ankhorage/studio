@@ -223,21 +223,35 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('useGlobalSearchParams');
     expect(rootLayout).toContain('resolveStudioLastNonAdminLocation');
     expect(rootLayout).toContain('!isStudioAdminPath(appPathname) &&');
-    expect(adminLayout).toContain("from '@ankhorage/navigator/workspace'");
+    expect(adminLayout).toContain("import { Redirect, Slot } from 'expo-router';");
+    expect(adminLayout).toContain("import { lazy, Suspense } from 'react';");
+    expect(adminLayout).toContain('<Suspense fallback={<Slot />}>');
+    expect(adminLayout).toContain("import('@ankhorage/navigator/workspace')");
     expect(adminLayout).toContain(
-      '<WorkspaceAccessGate><WorkspaceContent /></WorkspaceAccessGate>',
+      "import('@ankhorage/studio/administration/StudioAdminAccessGate')",
+    );
+    expect(adminLayout).toContain(
+      "import('@ankhorage/studio/administration/useStudioAdminWorkspace')",
+    );
+    expect(adminLayout).toContain('<StudioAdminWorkspace />');
+    expect(adminLayout).not.toContain("from '@ankhorage/navigator/workspace'");
+    expect(adminLayout).not.toContain(
+      "from '@ankhorage/studio/administration/StudioAdminAccessGate'",
+    );
+    expect(adminLayout).not.toContain(
+      "from '@ankhorage/studio/administration/useStudioAdminWorkspace'",
     );
     expect(adminLayout).not.toContain('AnkhAdminShell');
     expect(adminNativePage).toContain('<Redirect href="/" />');
     expect(adminNativePage).not.toContain('AnkhAdminPage');
     expect(adminWebPage).toContain('if (!__DEV__)');
     expect(adminWebPage).toContain('<Redirect href="/" />');
-    expect(adminWebPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
-    expect(adminWebPage).toContain("from '@ankhorage/studio/administration/AnkhAdminPage'");
-    expect(adminLayout).toContain("from '@ankhorage/studio/administration/StudioAdminAccessGate'");
-    expect(adminLayout).toContain(
-      "from '@ankhorage/studio/administration/useStudioAdminWorkspace'",
+    expect(adminWebPage).toContain("import { lazy, Suspense } from 'react';");
+    expect(adminWebPage).toContain(
+      "await import('@ankhorage/studio/administration/AnkhAdminPage')",
     );
+    expect(adminWebPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
+    expect(adminWebPage).not.toContain("from '@ankhorage/studio/administration/AnkhAdminPage'");
     expect(rootLayout).toContain("from '@ankhorage/studio/core/StudioProvider'");
     expect(rootLayout).toContain("from '@ankhorage/studio/core/StudioContext'");
     expect(rootLayout).toContain("from '@ankhorage/studio/ui/AnkhStudio'");
@@ -245,6 +259,44 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).not.toContain("from '@ankhorage/studio';");
     expect(adminLayout).not.toContain("from '@ankhorage/studio';");
     expect(adminWebPage).not.toContain("from '@ankhorage/studio';");
+  });
+
+  test('keeps generated Studio imports backed by public package exports', () => {
+    const files = new GeneratedAppFileGenerator().generateFiles(
+      '/tmp/demo',
+      createOAuthManifest(),
+      [],
+      { includeStudio: true },
+    );
+    const generatedSource = files.map((file) => file.content).join('\n');
+    const packageJson = JSON.parse(
+      readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../../../package.json'), {
+        encoding: 'utf8',
+      }),
+    ) as {
+      readonly exports?: Readonly<Record<string, unknown>>;
+    };
+    const packageExports = packageJson.exports ?? {};
+    const requiredStudioExports = [
+      ...new Set(
+        [
+          ...generatedSource.matchAll(/(?:from\s+|import\()'(@ankhorage\/studio(?:\/[^']+)?)'/gu),
+        ].flatMap((match) => {
+          const [, specifier] = match;
+          if (!specifier) return [];
+          return [
+            specifier === '@ankhorage/studio'
+              ? '.'
+              : `.${specifier.slice('@ankhorage/studio'.length)}`,
+          ];
+        }),
+      ),
+    ];
+
+    expect(requiredStudioExports).toContain('./administration/AnkhAdminPage');
+    expect(requiredStudioExports).toContain('./administration/StudioAdminAccessGate');
+    expect(requiredStudioExports).toContain('./administration/useStudioAdminWorkspace');
+    expect(requiredStudioExports.filter((subpath) => !(subpath in packageExports))).toEqual([]);
   });
 
   test('composes one React import for generated Auth plus Studio root layouts', () => {
@@ -424,9 +476,11 @@ describe('GeneratedAppFileGenerator', () => {
     );
     expect(oauthState).toContain('interface StoredTransportAttempt {\n  attemptId: string;\n}');
     expect(oauth).toContain('GENERATED_OAUTH_PROVIDERS.find');
-    expect(authScreen).toContain('OAuthProviderList');
-    expect(authScreen).toContain('KeyboardAvoidingView');
-    expect(authScreen).toContain('keyboardShouldPersistTaps="handled"');
+    expect(authScreen).toContain("import { AuthScreen } from '@ankhorage/zora';");
+    expect(authScreen).toContain('oauthProviders={generatedOAuthProviderItems.map');
+    expect(authScreen).not.toContain('OAuthProviderList');
+    expect(authScreen).not.toContain('KeyboardAvoidingView');
+    expect(authScreen).not.toContain('StyleSheet');
     expect(authScreenController).toContain('startOAuthAuthorization');
     expect(session).toContain("import * as SecureStore from 'expo-secure-store'");
     expect(session).toContain("Platform.OS === 'ios' || Platform.OS === 'android'");

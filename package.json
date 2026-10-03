@@ -247,7 +247,7 @@
     "@ankhorage/supabase-vault": "^0.3.12",
     "@ankhorage/templates": "^12.0.118",
     "@ankhorage/utility": "^1.9.84",
-    "@ankhorage/zora": "^23.0.0",
+    "@ankhorage/zora": "^23.1.0",
     "@fastify/cors": "^11.3.0",
     "expo-document-picker": "~57.0.3",
     "expo-file-system": "~57.0.7",
