@@ -53,6 +53,10 @@ const DESCRIPTOR_URL = new URL('../../../../apm/update.json', import.meta.url);
 const PACKAGE_POLICY_DESCRIPTOR = readPackagePolicyDescriptor();
 const PACKAGE_POLICY_HANDLER = readPackagePolicyHandler();
 
+interface GeneratedPackagePolicyUpdateOptions {
+  readonly resolveArtifactAsync?: typeof resolveCurrentStudioApmArtifactAsync;
+}
+
 interface StudioSourceBinding {
   readonly packageId: string;
   readonly installRootId: string;
@@ -75,11 +79,13 @@ const EMPTY_PLAN_SLICE: GeneratedPolicyPlanSlice = {
 /*** Compose Studio's generated-package owner projection into the ordinary APM lifecycle. */
 export function createStudioGeneratedPackagePolicyUpdatePorts(
   base: ProjectUpdateServiceOptions = {},
+  options: GeneratedPackagePolicyUpdateOptions = {},
 ): ProjectUpdateServiceOptions {
+  const resolveArtifactAsync = options.resolveArtifactAsync ?? resolveCurrentStudioApmArtifactAsync;
   return {
     ...base,
-    extensions: createExtensionEvidencePort(base.extensions),
-    protocol: createProtocolPort(base.protocol),
+    extensions: createExtensionEvidencePort(base.extensions, resolveArtifactAsync),
+    protocol: createProtocolPort(base.protocol, resolveArtifactAsync),
     applyOwnerStep: createApplyOwnerStepPort(base.applyOwnerStep),
     verifyOwnerStep: createVerifyOwnerStepPort(base.verifyOwnerStep),
   };
@@ -88,6 +94,7 @@ export function createStudioGeneratedPackagePolicyUpdatePorts(
 /*** Compose current Studio package-policy inspection around any existing owner evidence provider. */
 function createExtensionEvidencePort(
   base: ApmStatusExtensionEvidencePort | undefined,
+  resolveArtifactAsync: typeof resolveCurrentStudioApmArtifactAsync,
 ): ApmStatusExtensionEvidencePort {
   return {
     inspectExtensionEvidenceAsync: async (input) => {
@@ -95,7 +102,7 @@ function createExtensionEvidencePort(
         base === undefined
           ? Promise.resolve(emptyExtensionEvidence())
           : base.inspectExtensionEvidenceAsync(input),
-        inspectGeneratedPolicyEvidenceAsync(input.rootPath, input.inventory),
+        inspectGeneratedPolicyEvidenceAsync(input.rootPath, input.inventory, resolveArtifactAsync),
       ]);
       return mergeExtensionEvidence(baseEvidence, policyEvidence);
     },
@@ -106,10 +113,11 @@ function createExtensionEvidencePort(
 async function inspectGeneratedPolicyEvidenceAsync(
   rootPath: string,
   inventory: ApmDependencyInventory,
+  resolveArtifactAsync: typeof resolveCurrentStudioApmArtifactAsync,
 ): Promise<ApmExtensionEvidence> {
   const source = readSourceBindingFromInventory(inventory);
   if (source === undefined) return emptyExtensionEvidence();
-  const artifactResolution = await resolveCurrentStudioApmArtifactAsync(rootPath);
+  const artifactResolution = await resolveArtifactAsync(rootPath);
   if (artifactResolution.state !== 'resolved') {
     return failedExtensionEvidence(
       'studio.generated-package-policy.artifact-unavailable',
@@ -176,7 +184,10 @@ async function inspectGeneratedPolicyEvidenceAsync(
 }
 
 /*** Compose generated-package planning around any existing package-owner protocol provider. */
-function createProtocolPort(base: ApmPlanProtocolPort | undefined): ApmPlanProtocolPort {
+function createProtocolPort(
+  base: ApmPlanProtocolPort | undefined,
+  resolveArtifactAsync: typeof resolveCurrentStudioApmArtifactAsync,
+): ApmPlanProtocolPort {
   return {
     planProtocolAsync: async (input) => {
       const baseResult =
@@ -188,7 +199,7 @@ function createProtocolPort(base: ApmPlanProtocolPort | undefined): ApmPlanProto
       );
       const policySlice =
         observation?.projection === 'stale' && input.policy.repairProjections
-          ? await planGeneratedPolicyAsync(input)
+          ? await planGeneratedPolicyAsync(input, resolveArtifactAsync)
           : EMPTY_PLAN_SLICE;
       const blockers = [...baseResult.blockers, ...policySlice.blockers];
       return {
@@ -208,6 +219,7 @@ function createProtocolPort(base: ApmPlanProtocolPort | undefined): ApmPlanProto
 /*** Plan exact target-owner package policy and feed its dependency floors into APM's fixed-point resolver. */
 async function planGeneratedPolicyAsync(
   input: Parameters<ApmPlanProtocolPort['planProtocolAsync']>[0],
+  resolveArtifactAsync: typeof resolveCurrentStudioApmArtifactAsync,
 ): Promise<GeneratedPolicyPlanSlice> {
   const source = readSourceBindingFromStatus(input.status.dependencies);
   if (source === undefined) {
@@ -222,7 +234,7 @@ async function planGeneratedPolicyAsync(
       ],
     };
   }
-  const artifactResolution = await resolveCurrentStudioApmArtifactAsync(input.status.rootPath);
+  const artifactResolution = await resolveArtifactAsync(input.status.rootPath);
   if (artifactResolution.state !== 'resolved') {
     return {
       ...EMPTY_PLAN_SLICE,
