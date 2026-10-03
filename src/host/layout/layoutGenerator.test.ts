@@ -241,9 +241,7 @@ describe('GeneratedAppFileGenerator', () => {
       "await import('@ankhorage/studio/administration/AnkhAdminPage')",
     );
     expect(adminWebPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
-    expect(adminWebPage).not.toContain(
-      "from '@ankhorage/studio/administration/AnkhAdminPage'",
-    );
+    expect(adminWebPage).not.toContain("from '@ankhorage/studio/administration/AnkhAdminPage'");
     expect(rootLayout).toContain("from '@ankhorage/studio/core/StudioProvider'");
     expect(rootLayout).toContain("from '@ankhorage/studio/core/StudioContext'");
     expect(rootLayout).toContain("from '@ankhorage/studio/ui/AnkhStudio'");
@@ -272,9 +270,7 @@ describe('GeneratedAppFileGenerator', () => {
     const requiredStudioExports = [
       ...new Set(
         [
-          ...generatedSource.matchAll(
-            /(?:from\s+|import\()'(@ankhorage\/studio(?:\/[^']+)?)'/gu,
-          ),
+          ...generatedSource.matchAll(/(?:from\s+|import\()'(@ankhorage\/studio(?:\/[^']+)?)'/gu),
         ].flatMap((match) => {
           const [, specifier] = match;
           if (!specifier) return [];
