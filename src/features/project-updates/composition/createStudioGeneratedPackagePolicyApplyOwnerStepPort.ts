@@ -7,6 +7,10 @@ import type {
   ApmPlanStep,
   ApmProjectMutation,
 } from '@ankhorage/apm/types';
+
+type ProjectionPlanStep = ApmPlanStep & {
+  readonly execution: Extract<ApmPlanStep['execution'], { readonly kind: 'projection' }>;
+};
 import { resolvePathWithinRoot } from '@ankhorage/utility/node/path';
 import { isRecord } from '@ankhorage/utility/object';
 
@@ -102,8 +106,9 @@ async function executePackagePolicyStepAsync(
       `${step.execution.artifact.packageName}@${step.execution.artifact.version}`,
     );
   }
+  const projectionStep: ProjectionPlanStep = { ...step, execution: step.execution };
   try {
-    await materializePackagePolicyAsync(rootPath, step);
+    await materializePackagePolicyAsync(rootPath, projectionStep);
     return {
       state: 'completed',
       evidence: step.execution.plan.mutations.map(({ id }) => id),
@@ -121,7 +126,7 @@ async function executePackagePolicyStepAsync(
 /*** Materialize only mutation IDs frozen into the reviewed Studio projection plan. */
 async function materializePackagePolicyAsync(
   rootPath: string,
-  step: Extract<ApmPlanStep, { readonly execution: { readonly kind: 'projection' } }>,
+  step: ProjectionPlanStep,
 ): Promise<void> {
   const byId = new Map(step.execution.plan.mutations.map((mutation) => [mutation.id, mutation]));
   await readStudioGeneratedPackagePolicyHandler().materializeAsync({
