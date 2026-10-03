@@ -16,7 +16,7 @@ import { ProjectSecretService } from '../secrets/projectSecretService';
 
 /***
  * Register Studio external-API connect/manual/settings/remove/test HTTP adapters around the external API service.
- * @todo Keep this Fastify adapter at the host edge while moving reusable parsing/response primitives to their shared owners.
+ * Follow-up: Keep this Fastify adapter at the host edge while moving reusable parsing/response primitives to their shared owners.
  */
 export function registerProjectApiRoutes(
   fastify: FastifyInstance,
@@ -74,7 +74,7 @@ export function registerProjectApiRoutes(
 
 /***
  * Read one named string route parameter from a Fastify request params object.
- * @utility @ankhorage/utility/http/fastify
+ * Utility candidate: @ankhorage/utility/http/fastify
  */
 function readProjectId(request: FastifyRequest): string {
   return (request.params as { readonly id: string }).id;
@@ -82,7 +82,7 @@ function readProjectId(request: FastifyRequest): string {
 
 /***
  * Return a successful `{ok}` result directly or send failed results with a configurable semantic HTTP status.
- * @utility @ankhorage/utility/http/fastify
+ * Utility candidate: @ankhorage/utility/http/fastify
  */
 function sendResult(reply: FastifyReply, result: { readonly ok: boolean }) {
   return result.ok ? result : reply.status(422).send(result);
@@ -204,7 +204,7 @@ function readCredential(value: unknown) {
 
 /***
  * Parse an optional record whose values satisfy the shared DataContractValue contract.
- * @todo Move this reusable data-contract parser beside `DataContractValue` in `@ankhorage/contracts/data` rather than Utility.
+ * Follow-up: Move this reusable data-contract parser beside `DataContractValue` in `@ankhorage/contracts/data` rather than Utility.
  */
 function readDataValues(value: unknown): Readonly<Record<string, DataContractValue>> | undefined {
   if (value === undefined) return undefined;
@@ -215,7 +215,7 @@ function readDataValues(value: unknown): Readonly<Record<string, DataContractVal
 
 /***
  * Recursively validate the shared DataContractValue union.
- * @todo Move this reusable guard to `@ankhorage/contracts/data`; the same implementation already appears elsewhere in Studio.
+ * Follow-up: Move this reusable guard to `@ankhorage/contracts/data`; the same implementation already appears elsewhere in Studio.
  */
 function isDataContractValue(value: unknown): value is DataContractValue {
   if (value === null || ['boolean', 'number', 'string'].includes(typeof value)) return true;
@@ -226,7 +226,7 @@ function isDataContractValue(value: unknown): value is DataContractValue {
 
 /***
  * Validate the DataOperationIntent literal union.
- * @todo Move this guard beside `DataOperationIntent` in `@ankhorage/contracts/data`.
+ * Follow-up: Move this guard beside `DataOperationIntent` in `@ankhorage/contracts/data`.
  */
 function isIntent(value: unknown): value is DataOperationIntent {
   return (
