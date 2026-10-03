@@ -14,7 +14,7 @@ import {
 
 /***
  * Add or replace one Studio prop binding for a component node.
- * @todo Move binding mutation behavior under src/bindings/.
+ * TODO: Move binding mutation behavior under src/bindings/.
  */
 export function upsertStudioPropBinding(
   registry: ComponentDataBindingRegistry,
@@ -30,7 +30,7 @@ export function upsertStudioPropBinding(
 
 /***
  * Remove one Studio prop binding while leaving unrelated component bindings intact.
- * @todo Move binding mutation behavior under src/bindings/.
+ * TODO: Move binding mutation behavior under src/bindings/.
  */
 export function removeStudioPropBinding(
   registry: ComponentDataBindingRegistry,
@@ -46,7 +46,7 @@ export function removeStudioPropBinding(
 
 /***
  * Append an event binding to one Studio node/event pair without replacing earlier bindings.
- * @todo Move binding mutation behavior under src/bindings/.
+ * TODO: Move binding mutation behavior under src/bindings/.
  */
 export function appendStudioEventBinding(
   registry: ComponentDataBindingRegistry,
@@ -65,7 +65,7 @@ export function appendStudioEventBinding(
 
 /***
  * Remove one indexed event binding and delete the event entry when no bindings remain.
- * @todo Move binding mutation behavior under src/bindings/.
+ * TODO: Move binding mutation behavior under src/bindings/.
  */
 export function removeStudioEventBinding(
   registry: ComponentDataBindingRegistry,
@@ -87,7 +87,7 @@ export function removeStudioEventBinding(
 
 /***
  * Write normalized component identity into a binding registry and remove empty bindings.
- * @todo Keep component-binding normalization under src/bindings/.
+ * TODO: Keep component-binding normalization under src/bindings/.
  */
 function writeBinding(
   registry: ComponentDataBindingRegistry,
