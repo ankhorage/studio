@@ -21,7 +21,7 @@ import { assessStudioBindingCompatibility } from './bindingSchemaModel';
 
 /***
  * Diagnose all authored prop and event bindings for one Studio component node.
- * @todo Move binding diagnostics under src/bindings/.
+ * Follow-up: Move binding diagnostics under src/bindings/.
  */
 export function diagnoseStudioComponentBindings(args: {
   readonly node: UiNode;
@@ -57,7 +57,7 @@ export function diagnoseStudioComponentBindings(args: {
 
 /***
  * Diagnose one prop binding against component metadata and the selected operation response path.
- * @todo Keep prop-binding diagnostics under src/bindings/.
+ * Follow-up: Keep prop-binding diagnostics under src/bindings/.
  */
 function diagnosePropBinding(
   name: string,
@@ -103,7 +103,7 @@ function diagnosePropBinding(
 
 /***
  * Diagnose one indexed event binding against event metadata, actions, operation availability, and inputs.
- * @todo Keep event-binding diagnostics under src/bindings/.
+ * Follow-up: Keep event-binding diagnostics under src/bindings/.
  */
 function diagnoseEventBinding(
   eventName: string,
@@ -139,7 +139,7 @@ function diagnoseEventBinding(
 
 /***
  * Diagnose required and mapped inputs for one event-to-operation binding.
- * @todo Keep event input diagnostics under src/bindings/.
+ * Follow-up: Keep event input diagnostics under src/bindings/.
  */
 function diagnoseEventInputs(
   binding: EventBinding,
@@ -168,7 +168,7 @@ function diagnoseEventInputs(
 
 /***
  * Diagnose one event-source input against the expected operation input field.
- * @todo Keep input compatibility diagnostics under src/bindings/.
+ * Follow-up: Keep input compatibility diagnostics under src/bindings/.
  */
 function diagnoseInputCompatibility(
   input: BindingInputValue,
@@ -197,7 +197,7 @@ function diagnoseInputCompatibility(
 
 /***
  * Resolve an exact or object-parent event field path into bindable value metadata.
- * @todo Keep event-payload path semantics under src/bindings/.
+ * Follow-up: Keep event-payload path semantics under src/bindings/.
  */
 function resolveEventSourceValue(
   path: string,
@@ -216,7 +216,7 @@ function resolveEventSourceValue(
 
 /***
  * Create the Studio diagnostic used when a referenced API operation cannot be resolved.
- * @todo Keep missing-operation diagnostics under src/bindings/.
+ * Follow-up: Keep missing-operation diagnostics under src/bindings/.
  */
 function missingOperationDiagnostic(
   operation: BindingOperationRef,
@@ -230,7 +230,7 @@ function missingOperationDiagnostic(
 
 /***
  * Narrow an event payload type string to the bindable primitive types supported by Studio.
- * @todo Deduplicate bindable-type normalization within src/bindings/.
+ * Follow-up: Deduplicate bindable-type normalization within src/bindings/.
  */
 function toBindableType(type: string): UiBindableValueMeta['type'] {
   if (
