@@ -54,3 +54,11 @@ export interface ProjectUpdateServiceOptions {
   readonly progress?: ApmApplyProgressPort;
   readonly cancellation?: ApmApplyCancellationPort;
 }
+
+/*** Source Studio package identity found in one generated app dependency graph. */
+export interface StudioGeneratedPackagePolicySource {
+  readonly packageId: string;
+  readonly installRootId: string;
+  readonly ownerPath: string;
+  readonly version: string;
+}

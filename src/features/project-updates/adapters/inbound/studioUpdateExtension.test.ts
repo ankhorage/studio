@@ -168,6 +168,14 @@ test('supports the reviewed current-architecture history and rejects unreviewed 
   expect(earliest.supported).toBe(true);
   expect(earliest.noMigrationRequired).toBe(true);
   expect(earliest.migrations).toEqual([]);
+  const recent = resolveMigrationPath({
+    descriptor,
+    sourceVersion: '5.10.13',
+    targetVersion: descriptor.owner.version,
+  });
+  expect(recent.supported).toBe(true);
+  expect(recent.noMigrationRequired).toBe(true);
+  expect(recent.migrations).toEqual([]);
   const unsupported = resolveMigrationPath({
     descriptor,
     sourceVersion: '1.0.0',
