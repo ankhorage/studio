@@ -22,9 +22,7 @@ import {
 import { createStudioGeneratedPackagePolicyExecutionContext } from '../domain/createStudioGeneratedPackagePolicyExecutionContext';
 import { readStudioGeneratedPackagePolicyMutationTarget } from '../domain/readStudioGeneratedPackagePolicyMutationTarget';
 
-type ProjectionPlanStep = ApmPlanStep & {
-  readonly execution: Extract<ApmPlanStep['execution'], { readonly kind: 'projection' }>;
-};
+type ProjectionExecution = Extract<ApmPlanStep['execution'], { readonly kind: 'projection' }>;
 
 /*** Compose exact reviewed Studio package-policy execution around another trusted owner executor. */
 export function createStudioGeneratedPackagePolicyApplyOwnerStepPort(
@@ -108,7 +106,7 @@ async function executePackagePolicyStepAsync(
     );
   }
   try {
-    await materializePackagePolicyAsync(rootPath, step);
+    await materializePackagePolicyAsync(rootPath, step.execution, sourceVersion(step));
     return {
       state: 'completed',
       evidence: step.execution.plan.mutations.map(({ id }) => id),
@@ -126,16 +124,17 @@ async function executePackagePolicyStepAsync(
 /*** Materialize only mutation IDs frozen into the reviewed Studio projection plan. */
 async function materializePackagePolicyAsync(
   rootPath: string,
-  step: ProjectionPlanStep,
+  execution: ProjectionExecution,
+  reviewedSourceVersion: string,
 ): Promise<void> {
-  const byId = new Map(step.execution.plan.mutations.map((mutation) => [mutation.id, mutation]));
+  const byId = new Map(execution.plan.mutations.map((mutation) => [mutation.id, mutation]));
   await readStudioGeneratedPackagePolicyHandler().materializeAsync({
     descriptor: readStudioGeneratedPackagePolicyProjectionDescriptor(),
     context: createStudioGeneratedPackagePolicyExecutionContext(
-      sourceVersion(step),
-      step.execution.artifact,
+      reviewedSourceVersion,
+      execution.artifact,
     ),
-    plan: step.execution.plan,
+    plan: execution.plan,
     project: {
       ...createStudioGeneratedPackagePolicyProjectReadPort(rootPath),
       applyReviewedMutationAsync: async (mutationId) => {
@@ -206,7 +205,7 @@ function sourceVersion(step: ApmPlanStep): string {
 }
 
 /*** Identify only the canonical Studio generated-package-policy projection step. */
-function isPackagePolicyStep(step: ApmPlanStep): step is ProjectionPlanStep {
+function isPackagePolicyStep(step: ApmPlanStep): boolean {
   return (
     step.owner === STUDIO_PACKAGE_NAME &&
     step.execution.kind === 'projection' &&
