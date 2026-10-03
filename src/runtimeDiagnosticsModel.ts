@@ -16,7 +16,7 @@ export const formatRuntimeDiagnostics = formatDiagnostics;
 
 /***
  * Choose the Studio notice color for a diagnostics collection based on whether any error exists.
- * @todo Move Studio diagnostics presentation policy under src/diagnostics/.
+ * TODO: Move Studio diagnostics presentation policy under src/diagnostics/.
  */
 export function resolveRuntimeDiagnosticsNoticeColor(
   diagnostics: readonly DataSourceDiagnostic[],
