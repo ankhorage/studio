@@ -15,9 +15,7 @@ export function readStudioGeneratedPackagePolicyStatusSource(
   );
   const [dependency] = candidates;
   const version = dependency?.lockedVersion ?? dependency?.installed.version;
-  return candidates.length === 1 &&
-    dependency?.declaration !== undefined &&
-    version !== undefined
+  return candidates.length === 1 && dependency?.declaration !== undefined && version !== undefined
     ? {
         packageId: dependency.packageId,
         installRootId: dependency.installRootId,
