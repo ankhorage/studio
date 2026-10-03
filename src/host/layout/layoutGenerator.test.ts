@@ -228,9 +228,6 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminLayout).toContain('<Suspense fallback={<Slot />}>');
     expect(adminLayout).toContain("import('@ankhorage/navigator/workspace')");
     expect(adminLayout).toContain("import('@ankhorage/studio')");
-    expect(adminLayout).toContain(
-      "import('@ankhorage/studio')",
-    );
     expect(adminLayout).toContain('<StudioAdminWorkspace />');
     expect(adminLayout).not.toContain("from '@ankhorage/navigator/workspace'");
     expect(adminLayout).not.toContain(
