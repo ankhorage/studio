@@ -103,7 +103,7 @@ function getWebDescendantResizeTargets(value: unknown): readonly Element[] {
 
 /***
  * Measure a React-Native view in window coordinates across web and native, returning null for a missing view.
- * @utility @ankhorage/utility/react-native/measurement
+ * Utility candidate: @ankhorage/utility/react-native/measurement
  */
 function measureRootView(view: ViewRef | null): Promise<MeasuredRect | null> {
   if (!view) {
@@ -145,7 +145,7 @@ function measureAuthoredWebView(view: ViewRef): Promise<MeasuredRect | null> {
 
 /***
  * Compare ordered indicator-rectangle collections by identity flags and sub-pixel geometry tolerance.
- * @utility @ankhorage/utility/geometry
+ * Utility candidate: @ankhorage/utility/geometry
  */
 function areIndicatorRectsEqual(
   left: readonly RuntimeNodeIndicatorRect[],
@@ -173,7 +173,7 @@ function areIndicatorRectsEqual(
 
 /***
  * Expose the measurement ref/layout callbacks used by Studio-rendered unsupported nodes.
- * @todo Move this Studio React measurement hook to the selection/canvas app edge; it composes reusable measurement primitives but is not generic runtime behavior.
+ * TODO: Move this Studio React measurement hook to the selection/canvas app edge; it composes reusable measurement primitives but is not generic runtime behavior.
  */
 export function useStudioUnsupportedNodeMeasurement(): {
   readonly onLayout: (_event: LayoutChangeEvent) => void;
@@ -212,7 +212,7 @@ export function useStudioUnsupportedNodeMeasurement(): {
 
 /***
  * Wrap one rendered Studio runtime node so pointer/touch interactions and geometry can be recorded for stationary selection and unsupported-node indicators.
- * @todo Keep this React-Native gesture/measurement adapter at the Studio selection/canvas app edge instead of generic `runtime/` ownership.
+ * TODO: Keep this React-Native gesture/measurement adapter at the Studio selection/canvas app edge instead of generic `runtime/` ownership.
  */
 function StudioNodeTouchRecorder(props: {
   readonly nodeId: string | undefined;
@@ -353,7 +353,7 @@ function StudioNodeTouchRecorder(props: {
 
 /***
  * Create Studio's runtime-node wrapper that records stationary selection and unsupported-node measurement around eligible rendered nodes.
- * @todo Move this Studio/ZORA selection wrapper to the selection/canvas app edge; it is package integration rather than generic runtime policy.
+ * TODO: Move this Studio/ZORA selection wrapper to the selection/canvas app edge; it is package integration rather than generic runtime policy.
  */
 export function createStudioStationarySelectionWrapNode(options?: {
   readonly previewMode?: boolean;
@@ -401,7 +401,7 @@ export interface StudioCanvasInteractionAdapter {
 
 /***
  * Coordinate Studio stationary tap selection, drag interaction, node measurement, indicator refresh, and selected/unsupported chrome rendering.
- * @todo Split this large React composition into the Studio selection/canvas app edge; the reusable coordinators and measurement primitives should remain independent owners.
+ * TODO: Split this large React composition into the Studio selection/canvas app edge; the reusable coordinators and measurement primitives should remain independent owners.
  */
 function StationaryTapSelector(props: {
   readonly isEditMode: boolean;
