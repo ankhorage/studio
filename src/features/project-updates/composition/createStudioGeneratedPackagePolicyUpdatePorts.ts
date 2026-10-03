@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 
 import {
@@ -13,6 +14,7 @@ import type {
   ApmExtensionArtifactIdentity,
   ApmExtensionEvidence,
   ApmExtensionExecutionContext,
+  ApmExtensionProjectReadPort,
   ApmPlanBlocker,
   ApmPlanPackageSelection,
   ApmPlanProtocolPort,
@@ -630,7 +632,7 @@ function executionContext(
 }
 
 /*** Build the bounded Node read capabilities required by the Studio projection. */
-function createProjectReadPort(rootPath: string) {
+function createProjectReadPort(rootPath: string): ApmExtensionProjectReadPort {
   return {
     readFileAsync: async (relativePath: string): Promise<ApmProjectFileSnapshot> => {
       const filePath = resolvePathWithinRoot(rootPath, relativePath);
@@ -711,9 +713,7 @@ function readSourceBindingFromStatus(
 
 /*** Read and validate the immutable Studio update descriptor shipped with this package artifact. */
 function readStudioDescriptor() {
-  const descriptor: unknown = JSON.parse(
-    requireDescriptorSource(),
-  );
+  const descriptor: unknown = JSON.parse(readFileSync(DESCRIPTOR_URL, 'utf8'));
   const validation = validateUpdateDescriptor({
     descriptor,
     expectedOwner: {
@@ -727,17 +727,6 @@ function readStudioDescriptor() {
   return validation.descriptor;
 }
 
-/*** Read the static descriptor source from the package artifact without project filesystem access. */
-function requireDescriptorSource(): string {
-  const { readFileSync } = requireNodeFs();
-  return readFileSync(DESCRIPTOR_URL, 'utf8');
-}
-
-/*** Keep synchronous static descriptor loading isolated from project mutation I/O. */
-function requireNodeFs(): typeof import('node:fs') {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  return require('node:fs') as typeof import('node:fs');
-}
 
 /*** Resolve the exact generated package-policy descriptor once from validated static metadata. */
 function readPackagePolicyDescriptor(): ApmProjectionDescriptor {
