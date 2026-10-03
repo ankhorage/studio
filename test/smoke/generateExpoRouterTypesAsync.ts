@@ -8,7 +8,7 @@ import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 
 /***
  * Start an app-owned Expo process until Expo Router emits its generated route types, then tear the process down.
- * @todo Move this Expo acceptance helper out of src/host into test/smoke and consume the canonical Node utilities marked below.
+ * Follow-up: Move this Expo acceptance helper out of src/host into test/smoke and consume the canonical Node utilities marked below.
  */
 export async function generateExpoRouterTypesAsync(options: {
   readonly env?: Readonly<Record<string, string>>;
@@ -54,7 +54,7 @@ export async function generateExpoRouterTypesAsync(options: {
 
 /***
  * Return whether a filesystem path exists while rethrowing non-missing filesystem failures.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function pathExistsAsync(targetPath: string): Promise<boolean> {
   try {
@@ -68,7 +68,7 @@ async function pathExistsAsync(targetPath: string): Promise<boolean> {
 
 /***
  * Stop a detached child-process group with a SIGTERM/SIGKILL fallback lifecycle.
- * @utility @ankhorage/utility/node/process
+ * Utility candidate: @ankhorage/utility/node/process
  */
 async function stopProcessAsync(processToStop: ChildProcessWithoutNullStreams): Promise<void> {
   if (!processToStop.pid || processToStop.exitCode !== null) return;
@@ -82,7 +82,7 @@ async function stopProcessAsync(processToStop: ChildProcessWithoutNullStreams): 
 
 /***
  * Wait for a child process to exit, escalating to SIGKILL after the bounded grace period.
- * @utility @ankhorage/utility/node/process
+ * Utility candidate: @ankhorage/utility/node/process
  */
 function waitForProcessExitAsync(processToWaitFor: ChildProcessWithoutNullStreams): Promise<void> {
   if (processToWaitFor.exitCode !== null) return Promise.resolve();
