@@ -1,5 +1,13 @@
 import type { ApmApplyPermissions, ApmStatusAvailabilityMode } from '@ankhorage/apm/types';
-import { Accordion, AccordionItem, Badge, CheckboxGroup, Heading, Text, useZoraTheme } from '@ankhorage/zora';
+import {
+  Accordion,
+  AccordionItem,
+  Badge,
+  CheckboxGroup,
+  Heading,
+  Text,
+  useZoraTheme,
+} from '@ankhorage/zora';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
