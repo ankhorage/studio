@@ -17,7 +17,7 @@ export interface ProjectAuthRuntimeDiagnostics {
 
 /***
  * Merge runtime rollout evidence into authored project auth health and recompute diagnostics/status.
- * @todo Move auth runtime diagnostic composition under src/auth/.
+ * Follow-up: Move auth runtime diagnostic composition under src/auth/.
  */
 export function applyProjectAuthRuntimeDiagnostics(
   health: ProjectAuthHealth,
@@ -55,7 +55,7 @@ export function applyProjectAuthRuntimeDiagnostics(
 
 /***
  * Convert one auth runtime rollout state to the corresponding Studio diagnostic.
- * @todo Keep auth rollout-state semantics under src/auth/.
+ * Follow-up: Keep auth rollout-state semantics under src/auth/.
  */
 function resolveRolloutDiagnostic(status: ProjectAuthRuntimeRolloutStatus): ProjectAuthDiagnostic {
   switch (status) {
@@ -105,7 +105,7 @@ function resolveHealthStatus(
 
 /***
  * Sort diagnostics by severity rank and stable secondary string keys.
- * @utility @ankhorage/utility/diagnostics
+ * Utility candidate: @ankhorage/utility/diagnostics
  */
 function sortDiagnostics(
   diagnostics: readonly ProjectAuthDiagnostic[],
