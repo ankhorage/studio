@@ -5,14 +5,14 @@ import type {
 } from '@ankhorage/apm/types';
 
 import { createStudioGeneratedPackagePolicyProjectReadPort } from '../adapters/outbound/createStudioGeneratedPackagePolicyProjectReadPort';
+import { readStudioGeneratedPackagePolicyHandler } from '../adapters/outbound/readStudioGeneratedPackagePolicyHandler';
+import { readStudioGeneratedPackagePolicyProjectionDescriptor } from '../adapters/outbound/readStudioGeneratedPackagePolicyProjectionDescriptor';
 import { currentStudioApmArtifactMatchesAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
 import {
   STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID,
   STUDIO_PACKAGE_NAME,
 } from '../constants';
 import { createStudioGeneratedPackagePolicyExecutionContext } from '../domain/createStudioGeneratedPackagePolicyExecutionContext';
-import { readStudioGeneratedPackagePolicyHandler } from '../adapters/outbound/readStudioGeneratedPackagePolicyHandler';
-import { readStudioGeneratedPackagePolicyProjectionDescriptor } from '../adapters/outbound/readStudioGeneratedPackagePolicyProjectionDescriptor';
 
 /*** Compose exact Studio package-policy verification around another trusted owner verifier. */
 export function createStudioGeneratedPackagePolicyVerifyOwnerStepPort(
