@@ -10,15 +10,11 @@ import type {
 
 import type { StudioGeneratedPackagePolicySource } from '../../../types/project-updates';
 import { createStudioGeneratedPackagePolicyProjectReadPort } from '../adapters/outbound/createStudioGeneratedPackagePolicyProjectReadPort';
-import { getGeneratedPackagePolicy } from '../adapters/outbound/getGeneratedPackagePolicy';
 import { readStudioGeneratedPackagePolicyDescriptor } from '../adapters/outbound/readStudioGeneratedPackagePolicyDescriptor';
 import { readStudioGeneratedPackagePolicyHandler } from '../adapters/outbound/readStudioGeneratedPackagePolicyHandler';
 import { readStudioGeneratedPackagePolicyProjectionDescriptor } from '../adapters/outbound/readStudioGeneratedPackagePolicyProjectionDescriptor';
-import { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
-import {
-  STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID,
-  STUDIO_PACKAGE_NAME,
-} from '../constants';
+import type { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
+import { STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID, STUDIO_PACKAGE_NAME } from '../constants';
 import { createStudioGeneratedPackagePolicyExecutionContext } from '../domain/createStudioGeneratedPackagePolicyExecutionContext';
 import { readStudioGeneratedPackagePolicyInventorySource } from '../domain/readStudioGeneratedPackagePolicyInventorySource';
 
@@ -43,7 +39,9 @@ export function createStudioGeneratedPackagePolicyExtensionEvidencePort(
 /*** Resolve source, target artifact and supported history before inspecting Studio projection state. */
 async function inspectPolicyEvidenceAsync(
   rootPath: string,
-  inventory: Parameters<ApmStatusExtensionEvidencePort['inspectExtensionEvidenceAsync']>[0]['inventory'],
+  inventory: Parameters<
+    ApmStatusExtensionEvidencePort['inspectExtensionEvidenceAsync']
+  >[0]['inventory'],
   resolveArtifactAsync: typeof resolveCurrentStudioApmArtifactAsync,
 ): Promise<ApmExtensionEvidence> {
   const source = readStudioGeneratedPackagePolicyInventorySource(inventory);
@@ -110,7 +108,9 @@ function projectionEvidence(
         ],
         ...(inspection.reason === undefined ? {} : { reason: inspection.reason }),
         ...(inspection.state === 'stale'
-          ? { nextAction: 'Apply the reviewed Studio update to reconcile generated package policy.' }
+          ? {
+              nextAction: 'Apply the reviewed Studio update to reconcile generated package policy.',
+            }
           : {}),
       },
     ],
@@ -127,8 +127,7 @@ function unknownProjectionDiagnostic(
     severity: 'error',
     scope: { kind: 'projection', id: STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID },
     evidence: inspection.evidence,
-    reason:
-      inspection.reason ?? 'Studio generated package policy could not be inspected safely.',
+    reason: inspection.reason ?? 'Studio generated package policy could not be inspected safely.',
     nextAction: 'Repair package.json before applying Studio-managed updates.',
   };
 }
@@ -166,8 +165,7 @@ function mergeExtensionEvidence(
   policy: ApmExtensionEvidence,
 ): ApmExtensionEvidence {
   return {
-    state:
-      base.state === 'available' || policy.state === 'available' ? 'available' : 'unavailable',
+    state: base.state === 'available' || policy.state === 'available' ? 'available' : 'unavailable',
     complete: base.complete && policy.complete,
     observations: [...base.observations, ...policy.observations],
     diagnostics: [...base.diagnostics, ...policy.diagnostics],
