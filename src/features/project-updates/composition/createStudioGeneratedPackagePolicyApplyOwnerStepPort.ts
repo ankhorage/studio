@@ -197,10 +197,10 @@ function updateDependencySection(
 
 /*** Read the reviewed source Studio version frozen into projection step evidence. */
 function sourceVersion(step: ApmPlanStep): string {
-  const value = step.evidence.find((item) => item.startsWith('source:'))?.slice(
-    'source:'.length,
-  );
-  if (value === undefined) throw new Error('Reviewed Studio projection step has no source version.');
+  const value = step.evidence.find((item) => item.startsWith('source:'))?.slice('source:'.length);
+  if (value === undefined) {
+    throw new Error('Reviewed Studio projection step has no source version.');
+  }
   return value;
 }
 
