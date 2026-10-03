@@ -51,7 +51,7 @@ export class StudioExternalApiService {
 
   /***
    * Create the Studio host service that owns external-API discovery, testing, and manifest persistence.
-   * @todo Move this service from the generic host subtree to the external-apis domain's host adapter.
+   * TODO: Move this service from the generic host subtree to the external-apis domain's host adapter.
    */
   constructor(options: {
     readonly projectManager: Pick<ProjectManager, 'getProjectManifest' | 'persistProjectManifest'>;

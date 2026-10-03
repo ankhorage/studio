@@ -153,7 +153,7 @@ function createDefaultBindingValue(meta: UiBindableValueMeta): BindingValue {
 
 /***
  * Parse JSON and return it only when an injected/value guard accepts the structured value, otherwise return a caller fallback.
- * @utility @ankhorage/utility/json
+ * Utility candidate: @ankhorage/utility/json
  */
 function parseStructuredValue(input: string, fallback: BindingValue): BindingValue {
   try {
@@ -166,7 +166,7 @@ function parseStructuredValue(input: string, fallback: BindingValue): BindingVal
 
 /***
  * Recursively validate the canonical JSON-like binding value contract.
- * @todo Move this reusable contract guard beside `BindingValue` in `@ankhorage/contracts` rather than Studio UI.
+ * TODO: Move this reusable contract guard beside `BindingValue` in `@ankhorage/contracts` rather than Studio UI.
  */
 function isBindingValue(value: unknown): value is BindingValue {
   if (value === null) return true;

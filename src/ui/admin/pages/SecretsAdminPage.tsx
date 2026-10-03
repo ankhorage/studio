@@ -42,7 +42,7 @@ function createField(name = ''): SecretFieldDraft {
 
 /***
  * Render project secret creation/rotation, metadata inventory, usage analysis, and guarded deletion without exposing stored secret values.
- * @todo This page owns substantial secrets application orchestration; move lifecycle/use-analysis/delete-confirmation use cases into `secrets/` and replace duplicate generic UI primitives with ZORA.
+ * TODO: This page owns substantial secrets application orchestration; move lifecycle/use-analysis/delete-confirmation use cases into `secrets/` and replace duplicate generic UI primitives with ZORA.
  */
 export function SecretsAdminPage({ projectId }: { readonly projectId: string }) {
   const authAdminSession = useAuthAdminSession();
@@ -133,7 +133,7 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
 
   /***
    * Patch one array item selected by an id while preserving all other items; parameterized key/update logic is reusable.
-   * @utility @ankhorage/utility/array
+   * Utility candidate: @ankhorage/utility/array
    */
   const updateField = useCallback(
     (id: number, patch: Partial<Pick<SecretFieldDraft, 'name' | 'value'>>) => {
@@ -202,7 +202,7 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
 
   /***
    * Remove one project secret and reconcile pending local OAuth credential-link recovery under the auth cleanup lock when applicable.
-   * @todo Move this cross-domain secret/auth cleanup use case out of React UI into the secrets/auth application boundary.
+   * TODO: Move this cross-domain secret/auth cleanup use case out of React UI into the secrets/auth application boundary.
    */
   const removeSecretAndReconcilePendingAuth = useCallback(
     async (metadata: SecretMetadata, confirmBrokenReferences = false) => {

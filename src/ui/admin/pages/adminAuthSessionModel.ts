@@ -210,7 +210,7 @@ export function clearPendingCredentialLinksForRemovedProjectSecret(args: {
 
 /***
  * Rebase an editable auth draft onto canonical OAuth credential references while preserving all other draft edits.
- * @todo Move this auth reconciliation policy from `ui/` into the auth application/domain layer.
+ * TODO: Move this auth reconciliation policy from `ui/` into the auth application/domain layer.
  */
 export function rebaseAuthDraftOntoCanonicalCredentialRefs(args: {
   readonly draft: StudioAuthSettings;
