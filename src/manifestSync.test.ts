@@ -84,6 +84,14 @@ describe('manifestSync', () => {
     expect(createStudioRuntimeSyncSignature(first)).toBe(createStudioRuntimeSyncSignature(second));
   });
 
+  test('tracks generator revision changes in runtime signatures', () => {
+    const manifest = createManifest();
+
+    expect(createStudioRuntimeSyncSignature(manifest, '1')).not.toBe(
+      createStudioRuntimeSyncSignature(manifest, '2'),
+    );
+  });
+
   test('tracks canonical infra auth flow changes in runtime signatures', () => {
     const createAuthInfra = (signInRoute: string): StudioManifest['infra'] => ({
       environments: {

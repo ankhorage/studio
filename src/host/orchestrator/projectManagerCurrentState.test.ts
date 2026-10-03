@@ -7,6 +7,7 @@ import { afterEach, describe, expect, it } from 'bun:test';
 
 import { ProjectGenerationStateStore } from '../../features/projects/adapters/outbound/ProjectGenerationStateStore';
 import { createStudioRuntimeSyncSignature } from '../../manifestSync';
+import { GeneratedAppFileGenerator } from '../layout/layoutGenerator';
 import { GeneratedRouteFileOwnership } from './GeneratedRouteFileOwnership';
 import { ProjectManager } from './projectManager';
 
@@ -178,7 +179,7 @@ async function createProjectHarness(
   await generationState.writeStudioInclusionAsync(projectPath, true);
   await generationState.recordRuntimeProjectionSuccessAsync(
     projectPath,
-    createStudioRuntimeSyncSignature(manifest),
+    createStudioRuntimeSyncSignature(manifest, GeneratedAppFileGenerator.runtimeRevision),
   );
   return { manager, manifest, projectPath };
 }
