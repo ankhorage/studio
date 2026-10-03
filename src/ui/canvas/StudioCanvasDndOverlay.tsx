@@ -56,7 +56,7 @@ const MAX_DROP_CAPACITY = Number.MAX_SAFE_INTEGER;
 
 /***
  * Resolve visible canvas drop-zone view models for all measured targets, then order them by geometric specificity.
- * @todo Move drop-zone view-model composition beside the canvas domain; the React overlay should only render resolved zones.
+ * Follow-up: Move drop-zone view-model composition beside the canvas domain; the React overlay should only render resolved zones.
  */
 function resolveDropZoneViews(args: {
   readonly componentMeta: StudioComponentMetaRegistry;
@@ -184,7 +184,7 @@ function CanvasDragPreview(props: {
 
 /***
  * Render and coordinate the Studio canvas drag handle, drag preview, and resolved drop-zone overlay.
- * @todo Keep this component as the canvas inbound UI edge while moving drop/move policy and view-model derivation into the canvas domain/application layer.
+ * Follow-up: Keep this component as the canvas inbound UI edge while moving drop/move policy and view-model derivation into the canvas domain/application layer.
  */
 export function StudioCanvasDndOverlay(
   props: StudioCanvasDndOverlayProps,
