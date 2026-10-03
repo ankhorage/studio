@@ -32,7 +32,28 @@ describe('resolveProjectUpdateDashboardPresentation', () => {
         id: 'plan-one',
         complete: false,
         rootPath: '/workspace/apps/project-one',
-        targets: [],
+        targets: [
+          {
+            packageId: 'root::@ankhorage/studio@2.7.1',
+            installRootId: 'root',
+            name: '@ankhorage/studio',
+            direct: true,
+            currentVersion: '2.7.1',
+            targetVersion: '2.8.0',
+            source: 'compatible',
+            reason: 'Compatible direct update.',
+          },
+          {
+            packageId: 'root::transitive-package@1.0.0',
+            installRootId: 'root',
+            name: 'transitive-package',
+            direct: false,
+            currentVersion: '1.0.0',
+            targetVersion: '1.1.0',
+            source: 'compatible',
+            reason: 'Resolved transitive impact.',
+          },
+        ],
         files: [],
         steps: [{ id: 'restart', kind: 'host-restart', reason: 'Restart Studio.', evidence: [] }],
         effects: [{ kind: 'web-redeploy', requirement: 'required', reason: 'Web output changed.' }],
@@ -48,6 +69,12 @@ describe('resolveProjectUpdateDashboardPresentation', () => {
       },
     });
 
+    expect(presentation.status?.inventory).toEqual({
+      analyzed: 1,
+      direct: 1,
+      transitive: 0,
+      actionable: 1,
+    });
     expect(presentation.status?.dependencies).toEqual([
       {
         packageId: 'root::@ankhorage/studio@2.7.1',
@@ -62,13 +89,25 @@ describe('resolveProjectUpdateDashboardPresentation', () => {
     ]);
     expect(presentation.plan?.hostRestartRequired).toBe(true);
     expect(presentation.plan?.canApply).toBe(false);
+    expect(presentation.plan?.targetSummary).toEqual({ total: 2, direct: 1, transitive: 1 });
+    expect(presentation.plan?.targets.map(({ name }) => name)).toEqual(['@ankhorage/studio']);
+    expect(JSON.stringify(presentation.plan)).not.toContain('transitive-package');
     expect(presentation.plan?.effects).toEqual([
       { kind: 'web-redeploy', state: 'required', reason: 'Web output changed.' },
     ]);
     expect(JSON.stringify(presentation)).not.toContain('/workspace/apps/project-one');
   });
 
-  test('preserves distinct APM package identities when dependency labels are identical', () => {
+  test('summarizes transitive inventory instead of projecting it as action rows', () => {
+    const transitiveDependencies = Array.from({ length: 1_000 }, (_, index) => ({
+      packageId: `root::transitive-${index}@1.0.0`,
+      name: `transitive-${index}`,
+      direct: false,
+      lockedVersion: '1.0.0',
+      installed: { state: 'present', version: '1.0.0' },
+      availability: { state: 'known', compatibleVersion: '1.1.0' },
+      findings: [{ code: 'transitive-update', reason: 'Transitive update available.' }],
+    }));
     const presentation = resolveProjectUpdateDashboardPresentation({
       ...createProjectUpdateDashboardState('project-one'),
       status: {
@@ -77,23 +116,15 @@ describe('resolveProjectUpdateDashboardPresentation', () => {
         currency: 'outdated',
         dependencies: [
           {
-            packageId: 'root::color-name@1.1.3#first',
-            name: 'color-name',
-            direct: false,
-            lockedVersion: '1.1.3',
-            installed: { state: 'present', version: '1.1.3' },
-            availability: { state: 'known', compatibleVersion: '2.1.1' },
-            findings: [],
+            packageId: 'root::@ankhorage/zora@22.1.2',
+            name: '@ankhorage/zora',
+            direct: true,
+            lockedVersion: '22.1.2',
+            installed: { state: 'present', version: '22.1.2' },
+            availability: { state: 'known', compatibleVersion: '22.2.0' },
+            findings: [{ code: 'direct-update', reason: 'Compatible update available.' }],
           },
-          {
-            packageId: 'root::color-name@1.1.3#second',
-            name: 'color-name',
-            direct: false,
-            lockedVersion: '1.1.3',
-            installed: { state: 'present', version: '1.1.3' },
-            availability: { state: 'known', compatibleVersion: '2.1.1' },
-            findings: [],
-          },
+          ...transitiveDependencies,
         ],
         extensions: { observations: [] },
         findings: [],
@@ -101,10 +132,14 @@ describe('resolveProjectUpdateDashboardPresentation', () => {
       },
     });
 
-    expect(presentation.status?.dependencies.map(({ packageId }) => packageId)).toEqual([
-      'root::color-name@1.1.3#first',
-      'root::color-name@1.1.3#second',
-    ]);
+    expect(presentation.status?.inventory).toEqual({
+      analyzed: 1_001,
+      direct: 1,
+      transitive: 1_000,
+      actionable: 1,
+    });
+    expect(presentation.status?.dependencies.map(({ name }) => name)).toEqual(['@ankhorage/zora']);
+    expect(JSON.stringify(presentation.status)).not.toContain('transitive-999');
   });
 
   test('keeps verification follow-up separate from successful project update verification', () => {
