@@ -22,7 +22,7 @@ export class StudioModuleApiError extends Error {
 
 /***
  * Fetch and validate the modules available to one Studio project.
- * @todo Move module HTTP access from the source root into the modules package-edge adapter.
+ * Follow-up: Move module HTTP access from the source root into the modules package-edge adapter.
  */
 export async function listProjectModules(projectId: string): Promise<readonly StudioModuleState[]> {
   const value = await requestJson(`/projects/${encodeURIComponent(projectId)}/modules`);
@@ -32,7 +32,7 @@ export async function listProjectModules(projectId: string): Promise<readonly St
 
 /***
  * Fetch and validate one project module by project and module identifier.
- * @todo Move module HTTP access from the source root into the modules package-edge adapter.
+ * Follow-up: Move module HTTP access from the source root into the modules package-edge adapter.
  */
 export async function getProjectModule(input: {
   readonly projectId: string;
@@ -44,7 +44,7 @@ export async function getProjectModule(input: {
 
 /***
  * Install one module for a project with an optional authored configuration.
- * @todo Move module installation orchestration into the modules application responsibility.
+ * Follow-up: Move module installation orchestration into the modules application responsibility.
  */
 export async function installProjectModule(input: {
   readonly projectId: string;
@@ -60,7 +60,7 @@ export async function installProjectModule(input: {
 
 /***
  * Uninstall one module from a project.
- * @todo Move module removal orchestration into the modules application responsibility.
+ * Follow-up: Move module removal orchestration into the modules application responsibility.
  */
 export async function uninstallProjectModule(input: {
   readonly projectId: string;
@@ -71,7 +71,7 @@ export async function uninstallProjectModule(input: {
 
 /***
  * Replace the authored configuration for one installed project module.
- * @todo Move module configuration mutation into the modules application responsibility.
+ * Follow-up: Move module configuration mutation into the modules application responsibility.
  */
 export async function updateProjectModuleConfig(input: {
   readonly projectId: string;
@@ -88,7 +88,7 @@ export async function updateProjectModuleConfig(input: {
 
 /***
  * Execute one module-owned admin operation and return its successful result payload.
- * @todo Keep module admin-operation semantics in the modules domain while moving concrete HTTP transport to its edge adapter.
+ * Follow-up: Keep module admin-operation semantics in the modules domain while moving concrete HTTP transport to its edge adapter.
  */
 export async function executeProjectModuleAdminOperation(input: {
   readonly projectId: string;
@@ -114,7 +114,7 @@ export async function executeProjectModuleAdminOperation(input: {
 
 /***
  * Validate an unknown module-state response and project it into the canonical Studio module model.
- * @todo Keep module response semantics in the modules domain rather than the source root.
+ * Follow-up: Keep module response semantics in the modules domain rather than the source root.
  */
 export function parseStudioModuleState(value: unknown): StudioModuleState {
   const record = asRecord(value);
@@ -228,7 +228,7 @@ function parseOperationResult(value: unknown): StudioModuleOperationResult {
 
 /***
  * Fetch a path, decode a JSON response, and surface non-success status as a typed HTTP error.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function requestJson(path: string, init?: RequestInit): Promise<unknown> {
   const { studioApiBase } = await import('./utils/studioApiBase');
@@ -282,7 +282,7 @@ function asRecord(value: unknown): Record<string, unknown> | null {
 
 /***
  * Create a typed bad-gateway-style API error for an invalid upstream response.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 function invalidResponse(message: string): StudioModuleApiError {
   return new StudioModuleApiError(message, 502);
