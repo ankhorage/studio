@@ -21,11 +21,8 @@ import type { StudioGeneratedPackagePolicySource } from '../../../types/project-
 import { createStudioGeneratedPackagePolicyProjectReadPort } from '../adapters/outbound/createStudioGeneratedPackagePolicyProjectReadPort';
 import { readStudioGeneratedPackagePolicyHandler } from '../adapters/outbound/readStudioGeneratedPackagePolicyHandler';
 import { readStudioGeneratedPackagePolicyProjectionDescriptor } from '../adapters/outbound/readStudioGeneratedPackagePolicyProjectionDescriptor';
-import { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
-import {
-  STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID,
-  STUDIO_PACKAGE_NAME,
-} from '../constants';
+import type { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
+import { STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID, STUDIO_PACKAGE_NAME } from '../constants';
 import { createStudioGeneratedPackagePolicyExecutionContext } from '../domain/createStudioGeneratedPackagePolicyExecutionContext';
 import { readStudioGeneratedPackagePolicyMutationTarget } from '../domain/readStudioGeneratedPackagePolicyMutationTarget';
 import { readStudioGeneratedPackagePolicyStatusSource } from '../domain/readStudioGeneratedPackagePolicyStatusSource';
@@ -63,10 +60,7 @@ export function createStudioGeneratedPackagePolicyProtocolPort(
       return {
         ...baseResult,
         complete: baseResult.complete && blockers.length === 0,
-        requiredSelections: [
-          ...baseResult.requiredSelections,
-          ...policySlice.requiredSelections,
-        ],
+        requiredSelections: [...baseResult.requiredSelections, ...policySlice.requiredSelections],
         steps: [...baseResult.steps, ...policySlice.steps],
         blockers,
       };
@@ -81,9 +75,7 @@ function needsPackagePolicyPlan(input: ApmPlanProtocolRequest): boolean {
     (observation) =>
       observation.owner === STUDIO_PACKAGE_NAME &&
       observation.projection === 'stale' &&
-      observation.evidence.includes(
-        `projection:${STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID}`,
-      ),
+      observation.evidence.includes(`projection:${STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID}`),
   );
 }
 
@@ -173,9 +165,7 @@ function requiredSelections(
             ? result.selections
             : [...result.selections, resolved.selection],
         blockers:
-          resolved.blocker === undefined
-            ? result.blockers
-            : [...result.blockers, resolved.blocker],
+          resolved.blocker === undefined ? result.blockers : [...result.blockers, resolved.blocker],
       };
     },
     { selections: [], blockers: [] },
