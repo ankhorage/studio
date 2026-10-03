@@ -5,7 +5,6 @@ import {
   resolveExpoRuntimeLayoutIntegration,
   resolveExpoRuntimeNativeSchemeMap,
 } from '@ankhorage/expo-runtime/planning';
-import { generateWorkspaceLayout } from '@ankhorage/navigator';
 import { toPortablePath } from '@ankhorage/utility/node/path';
 import path from 'path';
 
@@ -157,22 +156,10 @@ export class GeneratedAppFileGenerator {
 
     const addStudioAdminRouteFiles = () => {
       if (!includeStudio) return;
-      const adminLayout = generateWorkspaceLayout({
-        rootDirectory: 'src/app/ankh',
-        useWorkspace: {
-          module: '@ankhorage/studio/administration/useStudioAdminWorkspace',
-          exportName: 'useStudioAdminWorkspace',
-        },
-        accessGate: {
-          module: '@ankhorage/studio/administration/StudioAdminAccessGate',
-          exportName: 'StudioAdminAccessGate',
-        },
-      });
-
       files.push(
         {
-          path: adminLayout.path,
-          content: adminLayout.contents,
+          path: toPortablePath(path.join(appRootRel, 'ankh', '_layout.tsx')),
+          content: getStudioAdminLayoutTsx(),
         },
         ...createStudioAdminRouteGeneratedFiles(appRootRel),
       );
@@ -651,17 +638,50 @@ export default function AnkhAdminNativeRoute() {
 `;
 }
 
-/*** Generate the Web-only Studio Admin route implementation. */
+/*** Generate the protected Studio Admin layout that loads administration workspace code only after the route is rendered. */
+function getStudioAdminLayoutTsx(): string {
+  return `import { Redirect } from 'expo-router';
+import { lazy, Suspense } from 'react';
+
+const StudioAdminWorkspaceLayout = lazy(async () => {
+  const module = await import('@ankhorage/studio/administration/StudioAdminWorkspaceLayout');
+  return { default: module.StudioAdminWorkspaceLayout };
+});
+
+export default function AnkhAdminLayout() {
+  if (!__DEV__) {
+    return <Redirect href="/" />;
+  }
+
+  return (
+    <Suspense fallback={null}>
+      <StudioAdminWorkspaceLayout />
+    </Suspense>
+  );
+}
+`;
+}
+
+/*** Generate the Web-only Studio Admin route that loads page presentation only after the protected route renders. */
 function getStudioAdminWebRouteTsx(routeName: StudioAdminRouteId): string {
-  return `import { AnkhAdminPage } from '@ankhorage/studio/administration/AnkhAdminPage';
-import { Redirect } from 'expo-router';
+  return `import { Redirect } from 'expo-router';
+import { lazy, Suspense } from 'react';
+
+const AnkhAdminPage = lazy(async () => {
+  const module = await import('@ankhorage/studio/administration/AnkhAdminPage');
+  return { default: module.AnkhAdminPage };
+});
 
 export default function AnkhAdminWebRoute() {
   if (!__DEV__) {
     return <Redirect href="/" />;
   }
 
-  return <AnkhAdminPage routeId="${routeName}" />;
+  return (
+    <Suspense fallback={null}>
+      <AnkhAdminPage routeId="${routeName}" />
+    </Suspense>
+  );
 }
 `;
 }
