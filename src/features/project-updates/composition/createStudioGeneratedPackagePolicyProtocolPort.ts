@@ -1,7 +1,9 @@
 import type {
+  ApmExtensionArtifactIdentity,
   ApmPlanBlocker,
   ApmPlanPackageSelection,
   ApmPlanProtocolPort,
+  ApmPlanProtocolRequest,
   ApmPlanProtocolResult,
   ApmPlanStep,
   ApmProjectMutation,
@@ -13,11 +15,15 @@ import {
   satisfiesCaretSemverRange,
 } from '@ankhorage/utility/semver';
 
+import type { StudioGeneratedPackagePolicySource } from '../../../types/project-updates';
 import { createStudioGeneratedPackagePolicyProjectReadPort } from '../adapters/outbound/createStudioGeneratedPackagePolicyProjectReadPort';
 import { readStudioGeneratedPackagePolicyHandler } from '../adapters/outbound/readStudioGeneratedPackagePolicyHandler';
 import { readStudioGeneratedPackagePolicyProjectionDescriptor } from '../adapters/outbound/readStudioGeneratedPackagePolicyProjectionDescriptor';
 import { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
-import { STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID, STUDIO_PACKAGE_NAME } from '../constants';
+import {
+  STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID,
+  STUDIO_PACKAGE_NAME,
+} from '../constants';
 import { createStudioGeneratedPackagePolicyExecutionContext } from '../domain/createStudioGeneratedPackagePolicyExecutionContext';
 import { readStudioGeneratedPackagePolicyMutationTarget } from '../domain/readStudioGeneratedPackagePolicyMutationTarget';
 import { readStudioGeneratedPackagePolicyStatusSource } from '../domain/readStudioGeneratedPackagePolicyStatusSource';
@@ -26,6 +32,11 @@ interface GeneratedPolicyPlanSlice {
   readonly requiredSelections: readonly ApmPlanPackageSelection[];
   readonly steps: readonly ApmPlanStep[];
   readonly blockers: readonly ApmPlanBlocker[];
+}
+
+interface SelectionResolution {
+  readonly selection?: ApmPlanPackageSelection;
+  readonly blocker?: ApmPlanBlocker;
 }
 
 const EMPTY_PLAN_SLICE: GeneratedPolicyPlanSlice = {
@@ -43,17 +54,9 @@ export function createStudioGeneratedPackagePolicyProtocolPort(
     planProtocolAsync: async (input) => {
       const baseResult =
         base === undefined ? emptyProtocolResult() : await base.planProtocolAsync(input);
-      const observation = input.status.extensions.observations.find(
-        (candidate) =>
-          candidate.owner === STUDIO_PACKAGE_NAME &&
-          candidate.evidence.includes(
-            `projection:${STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID}`,
-          ),
-      );
-      const policySlice =
-        observation?.projection === 'stale' && input.policy.repairProjections
-          ? await planGeneratedPolicyAsync(input, resolveArtifactAsync)
-          : EMPTY_PLAN_SLICE;
+      const policySlice = needsPackagePolicyPlan(input)
+        ? await planGeneratedPolicyAsync(input, resolveArtifactAsync)
+        : EMPTY_PLAN_SLICE;
       const blockers = [...baseResult.blockers, ...policySlice.blockers];
       return {
         ...baseResult,
@@ -69,9 +72,22 @@ export function createStudioGeneratedPackagePolicyProtocolPort(
   };
 }
 
-/*** Plan target-owner package policy and feed managed dependency ranges into APM fixed-point resolution. */
+/*** Return whether current owner evidence requires generated package-policy repair. */
+function needsPackagePolicyPlan(input: ApmPlanProtocolRequest): boolean {
+  if (!input.policy.repairProjections) return false;
+  return input.status.extensions.observations.some(
+    (observation) =>
+      observation.owner === STUDIO_PACKAGE_NAME &&
+      observation.projection === 'stale' &&
+      observation.evidence.includes(
+        `projection:${STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID}`,
+      ),
+  );
+}
+
+/*** Resolve source and target owner identities before planning the reviewed projection. */
 async function planGeneratedPolicyAsync(
-  input: Parameters<ApmPlanProtocolPort['planProtocolAsync']>[0],
+  input: ApmPlanProtocolRequest,
   resolveArtifactAsync: typeof resolveCurrentStudioApmArtifactAsync,
 ): Promise<GeneratedPolicyPlanSlice> {
   const source = readStudioGeneratedPackagePolicyStatusSource(input.status.dependencies);
@@ -90,47 +106,48 @@ async function planGeneratedPolicyAsync(
       artifactResolution.evidence,
     );
   }
-  const context = createStudioGeneratedPackagePolicyExecutionContext(
-    source.version,
-    artifactResolution.artifact,
-  );
+  return planResolvedPolicyAsync(input, source, artifactResolution.artifact);
+}
+
+/*** Plan exact target-owner policy and derive native dependency selections from reviewed mutations. */
+async function planResolvedPolicyAsync(
+  input: ApmPlanProtocolRequest,
+  source: StudioGeneratedPackagePolicySource,
+  artifact: ApmExtensionArtifactIdentity,
+): Promise<GeneratedPolicyPlanSlice> {
+  const context = createStudioGeneratedPackagePolicyExecutionContext(source.version, artifact);
+  const descriptor = readStudioGeneratedPackagePolicyProjectionDescriptor();
   const plan = await readStudioGeneratedPackagePolicyHandler().planAsync({
-    descriptor: readStudioGeneratedPackagePolicyProjectionDescriptor(),
+    descriptor,
     context,
     project: createStudioGeneratedPackagePolicyProjectReadPort(input.status.rootPath),
   });
-  const selectionResult = requiredSelections(
-    input.status.dependencies,
-    source.installRootId,
-    source.ownerPath,
-    plan.mutations,
-  );
+  const selectionResult = requiredSelections(input.status.dependencies, source, plan.mutations);
   if (selectionResult.blockers.length > 0) {
     return { ...EMPTY_PLAN_SLICE, blockers: selectionResult.blockers };
   }
   return {
     requiredSelections: selectionResult.selections,
-    steps: [
-      {
-        id: `projection:${STUDIO_PACKAGE_NAME}:${STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID}`,
-        kind: 'projection',
-        prerequisites: [],
-        owner: STUDIO_PACKAGE_NAME,
-        reason: 'Reconcile generated package policy to the exact running Studio owner artifact.',
-        evidence: [
-          `source:${source.version}`,
-          `target:${context.targetVersion}`,
-          ...plan.evidence,
-        ],
-        execution: {
-          kind: 'projection',
-          descriptor: readStudioGeneratedPackagePolicyProjectionDescriptor(),
-          artifact: artifactResolution.artifact,
-          plan,
-        },
-      },
-    ],
+    steps: [projectionStep(source, artifact, descriptor, plan)],
     blockers: [],
+  };
+}
+
+/*** Build the reviewed Studio generated-package-policy projection step. */
+function projectionStep(
+  source: StudioGeneratedPackagePolicySource,
+  artifact: ApmExtensionArtifactIdentity,
+  descriptor: ReturnType<typeof readStudioGeneratedPackagePolicyProjectionDescriptor>,
+  plan: Awaited<ReturnType<ReturnType<typeof readStudioGeneratedPackagePolicyHandler>['planAsync']>>,
+): ApmPlanStep {
+  return {
+    id: `projection:${STUDIO_PACKAGE_NAME}:${STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID}`,
+    kind: 'projection',
+    prerequisites: [],
+    owner: STUDIO_PACKAGE_NAME,
+    reason: 'Reconcile generated package policy to the exact running Studio owner artifact.',
+    evidence: [`source:${source.version}`, `target:${artifact.version}`, ...plan.evidence],
+    execution: { kind: 'projection', descriptor, artifact, plan },
   };
 }
 
@@ -142,25 +159,33 @@ interface RequiredSelectionResult {
 /*** Convert reviewed dependency-range mutations into exact safe APM dependency selections. */
 function requiredSelections(
   dependencies: readonly ApmStatusDependency[],
-  installRootId: string,
-  ownerPath: string,
+  source: StudioGeneratedPackagePolicySource,
   mutations: readonly ApmProjectMutation[],
 ): RequiredSelectionResult {
   return mutations.reduce<RequiredSelectionResult>(
-    (result, mutation) =>
-      appendRequiredSelection(result, dependencies, installRootId, ownerPath, mutation),
+    (result, mutation) => {
+      const resolved = selectionForMutation(dependencies, source, mutation);
+      return {
+        selections:
+          resolved.selection === undefined
+            ? result.selections
+            : [...result.selections, resolved.selection],
+        blockers:
+          resolved.blocker === undefined
+            ? result.blockers
+            : [...result.blockers, resolved.blocker],
+      };
+    },
     { selections: [], blockers: [] },
   );
 }
 
-/*** Add one dependency selection when a reviewed package-policy mutation changes its declaration range. */
-function appendRequiredSelection(
-  result: RequiredSelectionResult,
+/*** Resolve one reviewed dependency mutation to a package selection or explicit blocker. */
+function selectionForMutation(
   dependencies: readonly ApmStatusDependency[],
-  installRootId: string,
-  ownerPath: string,
+  source: StudioGeneratedPackagePolicySource,
   mutation: ApmProjectMutation,
-): RequiredSelectionResult {
+): SelectionResolution {
   const target = readStudioGeneratedPackagePolicyMutationTarget(mutation);
   if (
     target === undefined ||
@@ -168,67 +193,78 @@ function appendRequiredSelection(
     mutation.kind !== 'set-json-pointer' ||
     typeof mutation.value !== 'string'
   ) {
-    return result;
+    return {};
   }
-  const matches = dependencies.filter(
-    (dependency) =>
-      dependency.direct &&
-      dependency.installRootId === installRootId &&
-      dependency.name === target.name &&
-      dependency.declaration?.ownerPath === ownerPath,
-  );
+  const matches = matchingDependencies(dependencies, source, target.name);
   const [dependency] = matches;
   if (matches.length !== 1 || dependency?.declaration === undefined) {
     return {
-      selections: result.selections,
-      blockers: [
-        ...result.blockers,
-        protocolPlanBlocker(
-          'protocol.studio-generated-package-policy-dependency-missing',
-          `Studio package policy requires managed dependency ${target.name}, but the current generated app does not expose one unique direct declaration.`,
-          [target.name, `matches:${matches.length}`],
-        ),
-      ],
+      blocker: missingDependencyBlocker(target.name, matches.length),
     };
   }
-  if (dependency.declaration.range === mutation.value) return result;
+  if (dependency.declaration.range === mutation.value) return {};
+  return selectionForRange(dependency, mutation.value);
+}
+
+/*** Find one managed declaration only inside the generated app's Studio install root and owner manifest. */
+function matchingDependencies(
+  dependencies: readonly ApmStatusDependency[],
+  source: StudioGeneratedPackagePolicySource,
+  name: string,
+): readonly ApmStatusDependency[] {
+  return dependencies.filter(
+    (dependency) =>
+      dependency.direct &&
+      dependency.installRootId === source.installRootId &&
+      dependency.name === name &&
+      dependency.declaration?.ownerPath === source.ownerPath,
+  );
+}
+
+/*** Build an exact target selection for one changed managed dependency range. */
+function selectionForRange(
+  dependency: ApmStatusDependency & { readonly declaration: NonNullable<ApmStatusDependency['declaration']> },
+  range: string,
+): SelectionResolution {
   const currentVersion = dependency.lockedVersion ?? dependency.installed.version;
   const targetVersion =
-    currentVersion !== undefined && versionSatisfiesManagedRange(currentVersion, mutation.value)
+    currentVersion !== undefined && versionSatisfiesManagedRange(currentVersion, range)
       ? currentVersion
-      : managedRangeFloor(mutation.value);
+      : managedRangeFloor(range);
   if (targetVersion === undefined) {
     return {
-      selections: result.selections,
-      blockers: [
-        ...result.blockers,
-        protocolPlanBlocker(
-          'protocol.studio-generated-package-policy-range-unsupported',
-          `Studio generated package policy uses an unsupported managed dependency range for ${target.name}.`,
-          [target.name, mutation.value],
-        ),
-      ],
+      blocker: unsupportedRangeBlocker(dependency.name, range),
     };
   }
   return {
-    selections: [
-      ...result.selections,
-      {
-        selector: {
-          name: dependency.name,
-          packageId: dependency.packageId,
-          installRootId: dependency.installRootId,
-          ownerPath: dependency.declaration.ownerPath,
-        },
-        target: {
-          kind: 'version',
-          version: targetVersion,
-          manifestRange: mutation.value,
-        },
+    selection: {
+      selector: {
+        name: dependency.name,
+        packageId: dependency.packageId,
+        installRootId: dependency.installRootId,
+        ownerPath: dependency.declaration.ownerPath,
       },
-    ],
-    blockers: result.blockers,
+      target: { kind: 'version', version: targetVersion, manifestRange: range },
+    },
   };
+}
+
+/*** Explain a managed dependency required by Studio but missing from the generated app declaration set. */
+function missingDependencyBlocker(name: string, matches: number): ApmPlanBlocker {
+  return protocolPlanBlocker(
+    'protocol.studio-generated-package-policy-dependency-missing',
+    `Studio package policy requires managed dependency ${name}, but the current generated app does not expose one unique direct declaration.`,
+    [name, `matches:${matches}`],
+  );
+}
+
+/*** Explain a managed Studio range shape APM cannot safely turn into an exact native target. */
+function unsupportedRangeBlocker(name: string, range: string): ApmPlanBlocker {
+  return protocolPlanBlocker(
+    'protocol.studio-generated-package-policy-range-unsupported',
+    `Studio generated package policy uses an unsupported managed dependency range for ${name}.`,
+    [name, range],
+  );
 }
 
 /*** Return the exact minimum version represented by Studio's managed exact/caret/tilde ranges. */
