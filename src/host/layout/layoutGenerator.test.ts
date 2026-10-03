@@ -474,9 +474,11 @@ describe('GeneratedAppFileGenerator', () => {
     );
     expect(oauthState).toContain('interface StoredTransportAttempt {\n  attemptId: string;\n}');
     expect(oauth).toContain('GENERATED_OAUTH_PROVIDERS.find');
-    expect(authScreen).toContain('OAuthProviderList');
-    expect(authScreen).toContain('KeyboardAvoidingView');
-    expect(authScreen).toContain('keyboardShouldPersistTaps="handled"');
+    expect(authScreen).toContain("import { AuthScreen } from '@ankhorage/zora';");
+    expect(authScreen).toContain('oauthProviders={generatedOAuthProviderItems.map');
+    expect(authScreen).not.toContain('OAuthProviderList');
+    expect(authScreen).not.toContain('KeyboardAvoidingView');
+    expect(authScreen).not.toContain('StyleSheet');
     expect(authScreenController).toContain('startOAuthAuthorization');
     expect(session).toContain("import * as SecureStore from 'expo-secure-store'");
     expect(session).toContain("Platform.OS === 'ios' || Platform.OS === 'android'");
