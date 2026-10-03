@@ -6,15 +6,15 @@ import type {
   ApmUpdateProtocolBlocker,
 } from '@ankhorage/apm/types';
 
-import { STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID, STUDIO_PACKAGE_NAME } from '../constants';
-import { createStudioGeneratedPackagePolicyExecutionContext } from '../domain/createStudioGeneratedPackagePolicyExecutionContext';
-import { readStudioGeneratedPackagePolicyInventorySource } from '../domain/readStudioGeneratedPackagePolicyInventorySource';
 import { createStudioGeneratedPackagePolicyProjectReadPort } from '../adapters/outbound/createStudioGeneratedPackagePolicyProjectReadPort';
 import { getGeneratedPackagePolicy } from '../adapters/outbound/getGeneratedPackagePolicy';
 import { readStudioGeneratedPackagePolicyDescriptor } from '../adapters/outbound/readStudioGeneratedPackagePolicyDescriptor';
 import { readStudioGeneratedPackagePolicyHandler } from '../adapters/outbound/readStudioGeneratedPackagePolicyHandler';
 import { readStudioGeneratedPackagePolicyProjectionDescriptor } from '../adapters/outbound/readStudioGeneratedPackagePolicyProjectionDescriptor';
 import { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
+import { STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID, STUDIO_PACKAGE_NAME } from '../constants';
+import { createStudioGeneratedPackagePolicyExecutionContext } from '../domain/createStudioGeneratedPackagePolicyExecutionContext';
+import { readStudioGeneratedPackagePolicyInventorySource } from '../domain/readStudioGeneratedPackagePolicyInventorySource';
 
 /*** Compose current Studio generated-package-policy inspection around existing owner evidence. */
 export function createStudioGeneratedPackagePolicyExtensionEvidencePort(
