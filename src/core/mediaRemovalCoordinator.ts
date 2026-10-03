@@ -11,7 +11,7 @@ export interface StudioMediaSourceCleanupResult {
 
 /***
  * Persist removal of a media asset before cleaning up its owned source, restoring the manifest when persistence fails.
- * @todo Move media-removal orchestration out of core into the media application responsibility.
+ * Follow-up: Move media-removal orchestration out of core into the media application responsibility.
  */
 export async function commitStudioMediaRemoval(args: {
   readonly manifest: AppManifest;
