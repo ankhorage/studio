@@ -27,7 +27,7 @@ export default function ${safeName}Screen() {
 `;
 }
 
-/*** Generate the shared auth screen runtime component used by sign-in and sign-up route wrappers. */
+/*** Generate the thin application binding between generated auth orchestration and ZORA-owned auth presentation. */
 export function getAuthScreenRuntimeTsx(
   args: Omit<AuthScreenTemplateArgs, 'initialMode' | 'screenName' | 'title'>,
 ) {
@@ -35,30 +35,15 @@ export function getAuthScreenRuntimeTsx(
   const oauthImports = oauthEnabled
     ? `import { generatedOAuthProviderItems } from '@/auth/oauth';\n`
     : '';
-  const oauthZoraImport = oauthEnabled ? '  OAuthProviderList,\n' : '';
-  const oauthView = oauthEnabled ? getOAuthViewSource() : '';
-  const formLoading = oauthEnabled
-    ? 'controller.loading || controller.oauthLoadingProvider !== null'
-    : 'controller.loading';
+  const oauthProps = oauthEnabled ? getOAuthProviderPropsSource() : '';
 
   return `import type { AppManifest } from '@ankhorage/contracts';
 import { ManifestProvider } from '@ankhorage/runtime';
-import {
-  KeyboardAvoidingView,
-${oauthZoraImport}  SignInForm,
-  SignUpForm,
-  Text,
-  useZoraTheme,
-} from '@ankhorage/zora';
+import { AuthScreen } from '@ankhorage/zora';
 import ankhConfig from '@root/ankh.config.json';
 import { Stack } from 'expo-router';
-import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 
-${oauthImports}import {
-  type AuthMode,
-  type AuthScreenController,
-  useAuthScreenController,
-} from '@/auth/screen-controller';
+${oauthImports}import { type AuthMode, useAuthScreenController } from '@/auth/screen-controller';
 
 const fallbackManifest = ankhConfig as unknown as AppManifest;
 
@@ -70,140 +55,37 @@ export function GeneratedAuthScreen({
   title: string;
 }) {
   const controller = useAuthScreenController(initialMode);
-  const { theme } = useZoraTheme();
   return (
     <ManifestProvider manifest={fallbackManifest}>
       <Stack.Screen options={{ title }} />
-      <KeyboardAvoidingView
-        behavior={Platform.select({ android: 'height', ios: 'padding' })}
-        style={[styles.container, { backgroundColor: theme.colors.background }]}
-      >
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          style={styles.scroll}
-        >
-          <View
-            style={[
-              styles.card,
-              { backgroundColor: theme.colors.surface, borderColor: theme.colors.border },
-            ]}
-          >
-            <AuthScreenContent borderColor={theme.colors.border} controller={controller} />
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </ManifestProvider>
-  );
-}
-
-function AuthScreenContent({
-  borderColor,
-  controller,
-}: {
-  borderColor: string;
-  controller: AuthScreenController;
-}) {
-  return (
-    <>
-      <Text variant="lead" weight="semiBold">
-        {controller.mode === 'signIn' ? 'Sign in' : 'Create account'}
-      </Text>
-      <Text emphasis="muted" variant="bodySmall">
-        {controller.identifierField.helper}
-      </Text>${oauthView}
-      <AuthForm controller={controller} />
-      {controller.info ? (
-        <Text color="success" variant="bodySmall">
-          {controller.info}
-        </Text>
-      ) : null}
-    </>
-  );
-}
-
-function AuthForm({ controller }: { controller: AuthScreenController }) {
-  if (controller.mode === 'signIn') {
-    return (
-      <SignInForm
+      <AuthScreen
+        authMode={controller.mode}
+        description={controller.identifierField.helper}
         error={controller.error}
         identifierLabel={controller.identifierField.label}
         identifiers={controller.authIdentifiers}
-        loading={${formLoading}}
-        onSignUp={controller.showSignUp}
-        onSubmit={controller.handleSignInSubmit}
-        signUpLabel="Need an account? Sign up"
-        submitLabel="Sign in"
+        info={controller.info}
+        loading={controller.loading || controller.oauthLoadingProvider !== null}
+        onModeChange={controller.showMode}
+        onOAuthProviderPress={controller.handleOAuthProviderPress}
+        onSignInSubmit={controller.handleSignInSubmit}
+        onSignUpSubmit={controller.handleSignUpSubmit}
+        signUpFields={controller.signUpFields}${oauthProps}
       />
-    );
-  }
-  return (
-    <SignUpForm
-      error={controller.error}
-      fields={controller.signUpFields}
-      loading={${formLoading}}
-      onSignIn={controller.showSignIn}
-      onSubmit={controller.handleSignUpSubmit}
-      signInLabel="Already have an account? Sign in"
-      submitLabel="Create account"
-    />
+    </ManifestProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scroll: {
-    flex: 1,
-    width: '100%',
-  },
-  scrollContent: {
-    alignItems: 'center',
-    flexGrow: 1,
-    justifyContent: 'center',
-    padding: 24,
-  },
-  card: {
-    borderRadius: 24,
-    borderWidth: 1,
-    gap: 16,
-    maxWidth: 560,
-    padding: 24,
-    width: '100%',
-  },
-  separatorLine: {
-    flex: 1,
-    height: StyleSheet.hairlineWidth,
-  },
-  separatorRow: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 12,
-  },
-});
 `;
 }
 
-/*** Render the optional OAuth provider controls injected into the generated shared auth screen. */
-function getOAuthViewSource(): string {
+/*** Render generated OAuth provider state as ZORA AuthScreen input without owning OAuth presentation. */
+function getOAuthProviderPropsSource(): string {
   return `
-      <OAuthProviderList
-        disabled={controller.loading}
-        onProviderPress={controller.handleOAuthProviderPress}
-        providers={generatedOAuthProviderItems.map((provider) => ({
+        oauthProviders={generatedOAuthProviderItems.map((provider) => ({
           ...provider,
           disabled:
             controller.oauthLoadingProvider !== null &&
             controller.oauthLoadingProvider !== provider.id,
           loading: controller.oauthLoadingProvider === provider.id,
-        }))}
-      />
-      <View style={styles.separatorRow}>
-        <View style={[styles.separatorLine, { backgroundColor: borderColor }]} />
-        <Text emphasis="muted" variant="bodySmall">
-          or continue with password
-        </Text>
-        <View style={[styles.separatorLine, { backgroundColor: borderColor }]} />
-      </View>`;
+        }))}`;
 }
