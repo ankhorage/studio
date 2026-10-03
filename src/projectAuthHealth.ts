@@ -54,7 +54,7 @@ export interface ProjectAuthHealth {
 
 /***
  * Analyze authored auth configuration, secret metadata, providers, and deploy setup into project auth health.
- * @todo Move project auth health analysis under src/auth/.
+ * TODO: Move project auth health analysis under src/auth/.
  */
 export function analyzeProjectAuthHealth(input: {
   readonly manifest: AppManifest;
@@ -170,7 +170,7 @@ export function analyzeProjectAuthHealth(input: {
 
 /***
  * Analyze one OAuth provider against definition, setup requirements, secret metadata, and enabled state.
- * @todo Keep provider health policy under src/auth/.
+ * TODO: Keep provider health policy under src/auth/.
  */
 function analyzeProviderHealth(input: {
   readonly provider: AuthOAuthProviderConfig;
@@ -260,7 +260,7 @@ function analyzeProviderHealth(input: {
 
 /***
  * Resolve one OAuth provider's health state from enabled, definition, credential, and required-field state.
- * @todo Keep OAuth provider health semantics under src/auth/.
+ * TODO: Keep OAuth provider health semantics under src/auth/.
  */
 function resolveProviderStatus(input: {
   readonly enabled: boolean;
@@ -278,7 +278,7 @@ function resolveProviderStatus(input: {
 
 /***
  * Add diagnostics for duplicate provider ids and incompatible reuse of credential references.
- * @todo Keep OAuth duplicate/configuration policy under src/auth/.
+ * TODO: Keep OAuth duplicate/configuration policy under src/auth/.
  */
 function addDuplicateDiagnostics(
   providers: readonly AuthOAuthProviderConfig[],
@@ -319,7 +319,7 @@ function addDuplicateDiagnostics(
 
 /***
  * Map known Studio auth validation messages to stable project auth diagnostic codes.
- * @todo Keep auth-validation diagnostic mapping under src/auth/.
+ * TODO: Keep auth-validation diagnostic mapping under src/auth/.
  */
 function resolveAuthValidationCode(message: string): string {
   if (message.includes('callback')) return 'invalid_callback_route';
@@ -346,7 +346,7 @@ function resolveHealthStatus(
 
 /***
  * Sort diagnostics by severity rank and stable secondary string keys.
- * @utility @ankhorage/utility/diagnostics
+ * Utility candidate: @ankhorage/utility/diagnostics
  */
 function sortDiagnostics(
   diagnostics: readonly ProjectAuthDiagnostic[],
