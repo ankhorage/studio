@@ -372,9 +372,14 @@ describe('GeneratedAppFileGenerator', () => {
   });
 
   test('keeps generated Studio imports backed by public package exports', () => {
-    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', createOAuthManifest(), [], {
-      includeStudio: true,
-    });
+    const files = new GeneratedAppFileGenerator().generateFiles(
+      '/tmp/demo',
+      createOAuthManifest(),
+      [],
+      {
+        includeStudio: true,
+      },
+    );
     const generatedSource = files.map((generatedFile) => generatedFile.content).join('\n');
     const packageJson = JSON.parse(
       readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../../../package.json'), {
@@ -388,7 +393,7 @@ describe('GeneratedAppFileGenerator', () => {
       ...new Set(
         [...generatedSource.matchAll(/from '(@ankhorage\/studio(?:\/[^']+)?)'/gu)].flatMap(
           (match) => {
-            const specifier = match[1];
+            const [, specifier] = match;
             if (!specifier) return [];
             return [
               specifier === '@ankhorage/studio'
