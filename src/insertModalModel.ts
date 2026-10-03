@@ -42,7 +42,7 @@ export function groupInsertEntries(args: {
 
 /***
  * Resolve the authored display label for a Studio node using alias, component metadata, type, or fallback.
- * @todo Keep Studio node-label policy with canvas/insert authoring rather than a root model file.
+ * TODO: Keep Studio node-label policy with canvas/insert authoring rather than a root model file.
  */
 export function resolveNodeLabel(args: {
   node: UiNode | null;
@@ -57,7 +57,7 @@ export function resolveNodeLabel(args: {
 
 /***
  * Describe where an enabled insert-catalog entry will be placed relative to its resolved target node.
- * @todo Move insert-placement presentation under src/canvas/ or the owning insert authoring responsibility.
+ * TODO: Move insert-placement presentation under src/canvas/ or the owning insert authoring responsibility.
  */
 export function getPlacementHint(args: {
   entry: InsertCatalogEntry;
