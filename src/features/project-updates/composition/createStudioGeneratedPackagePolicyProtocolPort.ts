@@ -230,11 +230,7 @@ function selectionForRange(
   ownerPath: string,
   range: string,
 ): SelectionResolution {
-  const currentVersion = dependency.lockedVersion ?? dependency.installed.version;
-  const targetVersion =
-    currentVersion !== undefined && versionSatisfiesManagedRange(currentVersion, range)
-      ? currentVersion
-      : managedRangeFloor(range);
+  const targetVersion = newestKnownVersionInRange(dependency, range) ?? managedRangeFloor(range);
   if (targetVersion === undefined) {
     return {
       blocker: unsupportedRangeBlocker(dependency.name, range),
@@ -269,6 +265,26 @@ function unsupportedRangeBlocker(name: string, range: string): ApmPlanBlocker {
     `Studio generated package policy uses an unsupported managed dependency range for ${name}.`,
     [name, range],
   );
+}
+
+/*** Select the highest known current/registry version admitted by the target Studio range. */
+function newestKnownVersionInRange(
+  dependency: ApmStatusDependency,
+  range: string,
+): string | undefined {
+  const candidates = [
+    dependency.availability.latestVersion,
+    dependency.availability.compatibleVersion,
+    dependency.lockedVersion,
+    dependency.installed.version,
+  ].filter((value): value is string => value !== undefined && versionSatisfiesManagedRange(value, range));
+  return candidates.reduce<string | undefined>((selected, candidate) => {
+    if (selected === undefined) return candidate;
+    const left = parseSemanticVersion(selected);
+    const right = parseSemanticVersion(candidate);
+    if (left === null || right === null) return selected;
+    return compareSemanticVersions(right, left) > 0 ? candidate : selected;
+  }, undefined);
 }
 
 /*** Return the exact minimum version represented by Studio's managed exact/caret/tilde ranges. */
