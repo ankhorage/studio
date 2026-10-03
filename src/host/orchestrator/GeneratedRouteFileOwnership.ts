@@ -29,7 +29,7 @@ interface RouteLedger {
 
 /***
  * Own the current generated-route ledger so Studio deletes only files it generated and still owns.
- * @todo Move generated route-file ownership from generic `host/orchestrator` into the routes/projects generation domain.
+ * Follow-up: Move generated route-file ownership from generic `host/orchestrator` into the routes/projects generation domain.
  */
 export class GeneratedRouteFileOwnership {
   /*** Require valid route ownership state before an existing generated project can be synchronized. */
@@ -160,7 +160,7 @@ function resolveProjectFile(projectPath: string, relativePath: string): string {
 
 /***
  * Atomically persist the generated-route ownership ledger using a same-directory temporary JSON file.
- * @todo Keep the route-ledger wrapper in the routes/projects domain and compose a generic Utility atomic JSON writer.
+ * Follow-up: Keep the route-ledger wrapper in the routes/projects domain and compose a generic Utility atomic JSON writer.
  */
 async function writeRouteLedger(projectPath: string, ledger: RouteLedger): Promise<void> {
   const ledgerPath = resolveProjectFile(projectPath, ROUTE_LEDGER_REL_PATH);
