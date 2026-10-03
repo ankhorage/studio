@@ -2,7 +2,13 @@ import type {
   GeneratedPackageManifest,
   GeneratedPackagePolicy,
 } from '../../../types/project-updates.js';
-import { STUDIO_OBSOLETE_GENERATED_DEPENDENCIES } from '../constants.js';
+
+const OBSOLETE_GENERATED_DEPENDENCIES = new Set([
+  '@react-native-picker/picker',
+  '@ankhorage/zora-chess',
+  '@ankhorage/zora-game',
+  '@ankhorage/zora-tabletop',
+]);
 
 /*** Apply one explicit Studio package policy while preserving user-owned package manifest entries outside superseded Studio-managed dependencies. */
 export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
@@ -11,7 +17,7 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
 ): T {
   const baseDependencies = Object.fromEntries(
     Object.entries(packageJson.dependencies).filter(
-      ([name]) => !STUDIO_OBSOLETE_GENERATED_DEPENDENCIES.has(name),
+      ([name]) => !OBSOLETE_GENERATED_DEPENDENCIES.has(name),
     ),
   );
   const dependencies = {
