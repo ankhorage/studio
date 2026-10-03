@@ -46,10 +46,7 @@ test('reconciles an existing generated app to the current Studio owner policy wi
       {},
       { resolveArtifactAsync: () => Promise.resolve(artifactResolution(policy.ownerVersion)) },
     );
-    const extensions = ports.extensions;
-    const protocol = ports.protocol;
-    const applyOwnerStep = ports.applyOwnerStep;
-    const verifyOwnerStep = ports.verifyOwnerStep;
+    const { applyOwnerStep, extensions, protocol, verifyOwnerStep } = ports;
     if (
       extensions === undefined ||
       protocol === undefined ||
@@ -62,13 +59,14 @@ test('reconciles an existing generated app to the current Studio owner policy wi
     const inventory = inventoryFixture(rootPath);
     const evidence = await extensions.inspectExtensionEvidenceAsync({ rootPath, inventory });
     expect(evidence.complete).toBe(true);
-    expect(evidence.observations).toContainEqual(
-      expect.objectContaining({
-        owner: '@ankhorage/studio',
-        projection: 'stale',
-        migration: 'not-applicable',
-      }),
-    );
+    expect(
+      evidence.observations.some(
+        ({ migration, owner, projection }) =>
+          owner === '@ankhorage/studio' &&
+          projection === 'stale' &&
+          migration === 'not-applicable',
+      ),
+    ).toBe(true);
 
     const dependency = studioDependency();
     const status = statusFixture(rootPath, inventory, dependency, evidence);
@@ -107,8 +105,7 @@ test('reconciles an existing generated app to the current Studio owner policy wi
     });
     const step = planned.steps.find(
       ({ execution }) =>
-        execution.kind === 'projection' &&
-        execution.descriptor.id === 'generated-package-policy',
+        execution.kind === 'projection' && execution.descriptor.id === 'generated-package-policy',
     );
     if (step === undefined) throw new Error('Generated package-policy projection step is missing.');
 
@@ -117,9 +114,7 @@ test('reconciles an existing generated app to the current Studio owner policy wi
     expect((await applyOwnerStep.executeAsync({ journal, step })).state).toBe('completed');
     expect((await applyOwnerStep.observeAsync({ journal, step })).state).toBe('satisfied');
 
-    const after: unknown = JSON.parse(
-      await readFile(path.join(rootPath, 'package.json'), 'utf8'),
-    );
+    const after: unknown = JSON.parse(await readFile(path.join(rootPath, 'package.json'), 'utf8'));
     if (!isRecord(after) || !isRecord(after.dependencies)) {
       throw new Error('Updated generated package.json must retain dependency records.');
     }
@@ -132,13 +127,12 @@ test('reconciles an existing generated app to the current Studio owner policy wi
       step,
       status,
     });
-    expect(checks).toContainEqual(
-      expect.objectContaining({
-        id: `verify:${step.id}`,
-        kind: 'projection',
-        status: 'passed',
-      }),
-    );
+    expect(
+      checks.some(
+        ({ id, kind, status: checkStatus }) =>
+          id === `verify:${step.id}` && kind === 'projection' && checkStatus === 'passed',
+      ),
+    ).toBe(true);
     expect((await applyOwnerStep.rollbackAsync({ journal, step })).state).toBe('completed');
   } finally {
     await rm(rootPath, { recursive: true, force: true });
@@ -168,7 +162,12 @@ function inventoryFixture(rootPath: string): ApmDependencyInventory {
         id: '.',
         rootPath,
         packagePaths: [rootPath],
-        manager: { state: 'selected', name: 'bun', version: '1.4.2', source: 'package-manager-field' },
+        manager: {
+          state: 'selected',
+          name: 'bun',
+          version: '1.4.2',
+          source: 'package-manager-field',
+        },
         linker: 'isolated',
         lockfile: {
           state: 'supported',
