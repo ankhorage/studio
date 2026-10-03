@@ -152,10 +152,6 @@
     "./administration/useStudioAdminWorkspace": {
       "types": "./dist/features/administration/adapters/inbound/useStudioAdminWorkspace.d.ts",
       "import": "./dist/features/administration/adapters/inbound/useStudioAdminWorkspace.js"
-    },
-    "./administration/StudioAdminWorkspaceLayout": {
-      "types": "./dist/features/administration/adapters/inbound/StudioAdminWorkspaceLayout.d.ts",
-      "import": "./dist/features/administration/adapters/inbound/StudioAdminWorkspaceLayout.js"
     }
   },
   "ankh": {
