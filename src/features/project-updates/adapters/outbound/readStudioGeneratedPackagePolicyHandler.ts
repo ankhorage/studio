@@ -1,7 +1,7 @@
 import type { ApmProjectionHandler } from '@ankhorage/apm/types';
 
-import { studioUpdateExtension } from '../inbound/studioUpdateExtension';
 import { STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID } from '../../constants';
+import { studioUpdateExtension } from '../inbound/studioUpdateExtension';
 
 /*** Resolve the generated package-policy runtime handler from the current Studio artifact. */
 export function readStudioGeneratedPackagePolicyHandler(): ApmProjectionHandler {
