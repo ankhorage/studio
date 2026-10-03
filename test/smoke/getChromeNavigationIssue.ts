@@ -136,7 +136,7 @@ function formatStackTrace(value: unknown): string {
 
 /***
  * Narrow an unknown value to a non-null object record.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
@@ -144,7 +144,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 /***
  * Read one named property from a record only when its value is a string.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function readString(record: Readonly<Record<string, unknown>>, key: string): string | undefined {
   const value = Object.entries(record).find(([candidate]) => candidate === key)?.[1];
