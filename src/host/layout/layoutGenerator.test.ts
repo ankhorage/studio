@@ -371,6 +371,39 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).not.toContain('STUDIO_ZORA_PLUGIN_CATALOG');
   });
 
+  test('keeps generated Studio imports backed by public package exports', () => {
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', createOAuthManifest(), [], {
+      includeStudio: true,
+    });
+    const generatedSource = files.map((generatedFile) => generatedFile.content).join('\n');
+    const packageJson = JSON.parse(
+      readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../../../package.json'), {
+        encoding: 'utf8',
+      }),
+    ) as {
+      readonly exports?: Readonly<Record<string, unknown>>;
+    };
+    const packageExports = packageJson.exports ?? {};
+    const requiredStudioExports = [
+      ...new Set(
+        [...generatedSource.matchAll(/from '(@ankhorage\/studio(?:\/[^']+)?)'/gu)].flatMap(
+          (match) => {
+            const specifier = match[1];
+            if (!specifier) return [];
+            return [
+              specifier === '@ankhorage/studio'
+                ? '.'
+                : `.${specifier.slice('@ankhorage/studio'.length)}`,
+            ];
+          },
+        ),
+      ),
+    ];
+
+    expect(requiredStudioExports).toContain('./administration/AnkhAdminPage');
+    expect(requiredStudioExports.filter((subpath) => !(subpath in packageExports))).toEqual([]);
+  });
+
   test('derives Studio admin route files from the canonical registry', () => {
     const source = readFileSync(
       join(dirname(fileURLToPath(import.meta.url)), 'layoutGenerator.ts'),
