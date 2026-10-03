@@ -61,7 +61,7 @@ export class ProjectManager {
     this.dependencies = {
       connectGitHubRepositoryAsync,
       reconcileProjectPackageRootAsync,
-      infraLifecycle: createStudioProjectInfraLifecycle(),
+      infraLifecycle: createStudioProjectInfraLifecycle({\n        supabaseVaultClient: createScopedBunSupabaseVaultClient(),\n      }),
       ...dependencies,
     };
     return createStudioProjectWriterProxy(this, {
