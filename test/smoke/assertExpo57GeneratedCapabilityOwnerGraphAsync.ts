@@ -54,7 +54,7 @@ export async function assertExpo57GeneratedCapabilityOwnerGraphAsync(
 
 /***
  * Read and parse a package.json file from disk.
- * @utility @ankhorage/utility/node/package
+ * Utility candidate: @ankhorage/utility/node/package
  */
 async function readPackageJsonAsync(packageJsonPath: string): Promise<PackageJson> {
   return JSON.parse(await readFile(packageJsonPath, 'utf8')) as PackageJson;
@@ -62,7 +62,7 @@ async function readPackageJsonAsync(packageJsonPath: string): Promise<PackageJso
 
 /***
  * Require a string dependency range for one package name from a package manifest.
- * @utility @ankhorage/utility/node/package
+ * Utility candidate: @ankhorage/utility/node/package
  */
 function requireDependencyRange(packageJson: PackageJson, packageName: string): string {
   const range = packageJson.dependencies
