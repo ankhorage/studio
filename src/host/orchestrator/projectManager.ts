@@ -172,7 +172,7 @@ export class ProjectManager {
     await this.dependencies.reconcileProjectPackageRootAsync(projectPath);
     await this.generationState.recordRuntimeProjectionSuccessAsync(
       projectPath,
-      createStudioRuntimeSyncSignature(manifest),
+      createStudioRuntimeSyncSignature(manifest, GeneratedAppFileGenerator.runtimeRevision),
     );
     if (onProjectCreated) await onProjectCreated(slug);
     return { success: true, id: slug, path: projectPath };
@@ -204,7 +204,7 @@ export class ProjectManager {
     const manifest = await this.getProjectManifest(projectId);
     return this.generationState.readRuntimeProjectionStateAsync(
       getProjectPath(this.rootPath, projectId),
-      createStudioRuntimeSyncSignature(manifest),
+      createStudioRuntimeSyncSignature(manifest, GeneratedAppFileGenerator.runtimeRevision),
     );
   }
 
@@ -382,7 +382,10 @@ export class ProjectManager {
     includeStudio: boolean;
     runtimePlan: ExpoRuntimePlan;
   }): Promise<void> {
-    const runtimeSignature = createStudioRuntimeSyncSignature(args.manifest);
+    const runtimeSignature = createStudioRuntimeSyncSignature(
+      args.manifest,
+      GeneratedAppFileGenerator.runtimeRevision,
+    );
     try {
       await this.syncProjectScaffold(
         args.projectPath,

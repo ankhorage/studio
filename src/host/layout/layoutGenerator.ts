@@ -130,6 +130,8 @@ function mergeRuntimeModuleDeclarations(...declarations: readonly string[]): str
  * @todo Move generated-app file orchestration out of the generic host/layout bucket into the projects/template generation owner.
  */
 export class GeneratedAppFileGenerator {
+  static readonly runtimeRevision = '2';
+
   /***
    * Walk the manifest navigators and compose root layouts, nested layouts, screens, auth runtime files and Studio admin routes into the generated project file set.
    */
@@ -644,11 +646,10 @@ function getStudioAdminLayoutTsx(): string {
 import { lazy, Suspense } from 'react';
 
 const StudioAdminWorkspace = lazy(async () => {
-  const [{ WorkspaceNavigator }, { StudioAdminAccessGate }, { useStudioAdminWorkspace }] =
+  const [{ WorkspaceNavigator }, { StudioAdminAccessGate, useStudioAdminWorkspace }] =
     await Promise.all([
       import('@ankhorage/navigator/workspace'),
-      import('@ankhorage/studio/administration/StudioAdminAccessGate'),
-      import('@ankhorage/studio/administration/useStudioAdminWorkspace'),
+      import('@ankhorage/studio'),
     ]);
 
   function StudioAdminWorkspaceContent() {
@@ -683,7 +684,7 @@ function getStudioAdminWebRouteTsx(routeName: StudioAdminRouteId): string {
 import { lazy, Suspense } from 'react';
 
 const AnkhAdminPage = lazy(async () => {
-  const module = await import('@ankhorage/studio/administration/AnkhAdminPage');
+  const module = await import('@ankhorage/studio');
   return { default: module.AnkhAdminPage };
 });
 
