@@ -20,6 +20,7 @@ import {
   type ProjectInfraLifecycle,
   readStoredInfraStateAsync,
 } from '@ankhorage/infra/project';
+import type { SupabaseVaultSqlClient } from '@ankhorage/supabase-vault';
 
 import { createStudioInfraAdapterPackageResolver } from '../adapters/outbound/createStudioInfraAdapterPackageResolver';
 
@@ -47,8 +48,13 @@ export interface StudioProjectInfraLifecycle {
 
 /*** Compose Studio's project infrastructure boundary on top of the provider-neutral Infra lifecycle. */
 export function createStudioProjectInfraLifecycle(
-  lifecycle: ProjectInfraLifecycle = createDefaultStudioProjectInfraLifecycle(),
+  options: {
+    readonly lifecycle?: ProjectInfraLifecycle;
+    readonly supabaseVaultClient?: SupabaseVaultSqlClient;
+  } = {},
 ): StudioProjectInfraLifecycle {
+  const lifecycle =
+    options.lifecycle ?? createDefaultStudioProjectInfraLifecycle(options.supabaseVaultClient);
   return {
     generateAsync: async (request) =>
       requireInfraSuccess(await lifecycle.generateAsync(toInfraRequest(request))),
@@ -85,11 +91,13 @@ export function createStudioProjectInfraLifecycle(
 }
 
 /*** Compose Infra's project lifecycle with Studio's bundled adapter packages and project-scoped credentials. */
-function createDefaultStudioProjectInfraLifecycle(): ProjectInfraLifecycle {
+function createDefaultStudioProjectInfraLifecycle(
+  supabaseVaultClient: SupabaseVaultSqlClient | undefined,
+): ProjectInfraLifecycle {
   return createProjectInfraLifecycle({
     services: {
       createDependencies: (context, scope) => ({
-        adapterResolver: createStudioInfraAdapterPackageResolver(),
+        adapterResolver: createStudioInfraAdapterPackageResolver({ supabaseVaultClient }),
         credentials: createProjectInfraCredentialPort({
           projectPath: scope.projectPath,
           environment: scope.environment,

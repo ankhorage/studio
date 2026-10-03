@@ -76,8 +76,8 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
     await browser.waitForBodyTextAsync('Project Detail');
     await pointerClickAsync(browser, 'button', 'Offline evidence');
     await pointerClickAsync(browser, 'button', 'Inspect updates');
-    await browser.waitForBodyTextAsync('Evidence');
-    await browser.waitForBodyTextAsync('unknown · incomplete');
+    await browser.waitForBodyTextAsync('Available updates');
+    await browser.waitForBodyTextAsync('Review update plan');
 
     await browser.navigateAsync(`${appUrl}/projects/release-monitor?view=details`);
     await browser.waitForLocationAsync({
