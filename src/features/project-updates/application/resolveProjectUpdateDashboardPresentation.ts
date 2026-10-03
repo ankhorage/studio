@@ -32,11 +32,21 @@ function resolveStatus(value: unknown) {
       findings: readReasonRows(dependency.findings),
     };
   });
+  const actionableDependencies = dependencies.filter(
+    ({ direct, findings }) => direct && findings.length > 0,
+  );
+  const directDependencyCount = dependencies.filter(({ direct }) => direct).length;
   const extensions = isRecord(value.extensions) ? value.extensions : {};
   return {
     complete: value.complete === true,
     currency: readString(value.currency, 'unknown'),
-    dependencies,
+    inventory: {
+      analyzed: dependencies.length,
+      direct: directDependencyCount,
+      transitive: dependencies.length - directDependencyCount,
+      actionable: actionableDependencies.length,
+    },
+    dependencies: actionableDependencies,
     observations: readRecords(extensions.observations).map((observation) => ({
       owner:
         readOptionalString(observation.owner) ??
@@ -68,19 +78,26 @@ function resolvePlan(value: unknown) {
   const hostRestartRequired =
     blockers.some((blocker) => blocker.code === 'plan.host-upgrade-required') ||
     steps.some((step) => step.kind === 'host-restart');
+  const targets = readRecords(value.targets).map((target) => ({
+    name: readString(target.name, 'Unknown package'),
+    direct: target.direct === true,
+    currentVersion: readOptionalString(target.currentVersion) ?? 'unknown',
+    targetVersion: readString(target.targetVersion, 'unknown'),
+    reason: readString(target.reason, 'No reason provided.'),
+  }));
+  const directTargets = targets.filter(({ direct }) => direct);
   const complete = value.complete === true;
   return {
     id: readString(value.id, 'unknown-plan'),
     complete,
     hostRestartRequired,
     canApply: complete && !hostRestartRequired,
-    targets: readRecords(value.targets).map((target) => ({
-      name: readString(target.name, 'Unknown package'),
-      direct: target.direct === true,
-      currentVersion: readOptionalString(target.currentVersion) ?? 'unknown',
-      targetVersion: readString(target.targetVersion, 'unknown'),
-      reason: readString(target.reason, 'No reason provided.'),
-    })),
+    targetSummary: {
+      total: targets.length,
+      direct: directTargets.length,
+      transitive: targets.length - directTargets.length,
+    },
+    targets: directTargets,
     files: readRecords(value.files).map((file) => ({
       path: readString(file.path, 'unknown path'),
       kind: readString(file.kind, 'update'),
