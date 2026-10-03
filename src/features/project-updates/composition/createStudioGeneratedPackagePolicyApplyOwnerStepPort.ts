@@ -7,7 +7,6 @@ import type {
   ApmPlanStep,
   ApmProjectMutation,
 } from '@ankhorage/apm/types';
-
 import { resolvePathWithinRoot } from '@ankhorage/utility/node/path';
 import { isRecord } from '@ankhorage/utility/object';
 
@@ -15,10 +14,7 @@ import { createStudioGeneratedPackagePolicyProjectReadPort } from '../adapters/o
 import { readStudioGeneratedPackagePolicyHandler } from '../adapters/outbound/readStudioGeneratedPackagePolicyHandler';
 import { readStudioGeneratedPackagePolicyProjectionDescriptor } from '../adapters/outbound/readStudioGeneratedPackagePolicyProjectionDescriptor';
 import { currentStudioApmArtifactMatchesAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
-import {
-  STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID,
-  STUDIO_PACKAGE_NAME,
-} from '../constants';
+import { STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID, STUDIO_PACKAGE_NAME } from '../constants';
 import { createStudioGeneratedPackagePolicyExecutionContext } from '../domain/createStudioGeneratedPackagePolicyExecutionContext';
 import { readStudioGeneratedPackagePolicyMutationTarget } from '../domain/readStudioGeneratedPackagePolicyMutationTarget';
 
@@ -184,7 +180,7 @@ function updateDependencySection(
   name: string,
   mutation: ApmProjectMutation,
 ): Readonly<Record<string, unknown>> {
-  const current = value[section];
+  const current = section === 'dependencies' ? value.dependencies : value.devDependencies;
   if (!isRecord(current)) {
     throw new Error(`Generated package.json must define object ${section}.`);
   }
@@ -194,12 +190,16 @@ function updateDependencySection(
       : mutation.kind === 'set-json-pointer'
         ? { ...current, [name]: mutation.value }
         : current;
-  return { ...value, [section]: next };
+  return section === 'dependencies'
+    ? { ...value, dependencies: next }
+    : { ...value, devDependencies: next };
 }
 
 /*** Read the reviewed source Studio version frozen into projection step evidence. */
 function sourceVersion(step: ApmPlanStep): string {
-  const value = step.evidence.find((item) => item.startsWith('source:'))?.slice('source:'.length);
+  const value = step.evidence
+    .find((item) => item.startsWith('source:'))
+    ?.slice('source:'.length);
   if (value === undefined) throw new Error('Reviewed Studio projection step has no source version.');
   return value;
 }
@@ -240,9 +240,7 @@ async function delegateExecutionAsync(
       input.step.id,
     );
   }
-  return action === 'executeAsync'
-    ? base.executeAsync(input)
-    : base.rollbackAsync(input);
+  return action === 'executeAsync' ? base.executeAsync(input) : base.rollbackAsync(input);
 }
 
 /*** Build one deterministic failed trusted-owner execution result. */
