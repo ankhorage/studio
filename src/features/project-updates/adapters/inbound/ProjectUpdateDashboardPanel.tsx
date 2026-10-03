@@ -1,5 +1,5 @@
 import type { ApmApplyPermissions, ApmStatusAvailabilityMode } from '@ankhorage/apm/types';
-import { CheckboxGroup, Heading, Text, useZoraTheme } from '@ankhorage/zora';
+import { Accordion, AccordionItem, Badge, CheckboxGroup, Heading, Text, useZoraTheme } from '@ankhorage/zora';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -125,21 +125,49 @@ function StatusSection(props: {
 }) {
   return (
     <View style={styles.section}>
-      <Heading level={4} text="Evidence" />
-      <Text variant="bodySmall" weight="semiBold">
-        {props.status.currency} · {props.status.complete ? 'complete' : 'incomplete'}
-      </Text>
+      <View style={styles.sectionTitle}>
+        <Heading level={4} text="Available updates" />
+        <Text color="neutral" emphasis="muted" variant="bodySmall">
+          Only direct dependencies that need attention are shown as actions.
+        </Text>
+      </View>
+      <View style={styles.badges}>
+        <Badge
+          color={props.status.inventory.actionable > 0 ? 'warning' : 'success'}
+          size="s"
+          variant="soft"
+        >
+          {props.status.inventory.actionable} need attention
+        </Badge>
+        <Badge color="neutral" size="s" variant="soft">
+          {props.status.inventory.direct} direct
+        </Badge>
+        <Badge color="neutral" size="s" variant="soft">
+          {props.status.inventory.transitive} transitive analyzed
+        </Badge>
+      </View>
       <DependencyItems dependencies={props.status.dependencies} />
-      <DetailItems
-        title="Migration & projection evidence"
-        empty="No extension observations are currently reported."
-        items={props.status.observations.map(
-          (observation) =>
-            `${observation.owner} · projection ${observation.projection} · migration ${observation.migration}${observation.reason ? ` · ${observation.reason}` : ''}`,
-        )}
-      />
-      <ReasonItems title="Findings" items={props.status.findings} />
-      <ReasonItems title="Diagnostics" items={props.status.diagnostics} />
+      <Accordion type="single" collapsible>
+        <AccordionItem
+          value="technical-evidence"
+          title="Technical evidence"
+          description={`${props.status.inventory.analyzed} packages analyzed. Raw transitive inventory is retained for planning but hidden from the action view.`}
+        >
+          <Text variant="bodySmall" weight="semiBold">
+            {props.status.currency} · {props.status.complete ? 'complete' : 'incomplete'}
+          </Text>
+          <DetailItems
+            title="Migration & projection evidence"
+            empty="No extension observations are currently reported."
+            items={props.status.observations.map(
+              (observation) =>
+                `${observation.owner} · projection ${observation.projection} · migration ${observation.migration}${observation.reason ? ` · ${observation.reason}` : ''}`,
+            )}
+          />
+          <ReasonItems title="Findings" items={props.status.findings} />
+          <ReasonItems title="Diagnostics" items={props.status.diagnostics} />
+        </AccordionItem>
+      </Accordion>
       <LifecycleAction
         iconName="git-compare-outline"
         label="Review update plan"
@@ -164,12 +192,20 @@ function PlanSection(props: {
       <Text variant="bodySmall" weight="semiBold">
         {props.plan.id} · {props.plan.complete ? 'complete' : 'blocked'}
       </Text>
+      <View style={styles.badges}>
+        <Badge color="primary" size="s" variant="soft">
+          {props.plan.targetSummary.direct} direct targets
+        </Badge>
+        <Badge color="neutral" size="s" variant="soft">
+          {props.plan.targetSummary.transitive} transitive impact
+        </Badge>
+      </View>
       <DetailItems
-        title="Dependency targets"
-        empty="No dependency version changes."
+        title="Direct dependency targets"
+        empty="No direct dependency version changes."
         items={props.plan.targets.map(
           (target) =>
-            `${target.name} · ${target.direct ? 'direct' : 'transitive'} · ${target.currentVersion} → ${target.targetVersion} · ${target.reason}`,
+            `${target.name} · ${target.currentVersion} → ${target.targetVersion} · ${target.reason}`,
         )}
       />
       <DetailItems
@@ -334,17 +370,18 @@ function DependencyItems(props: {
   return (
     <View style={styles.detailList}>
       <Text weight="semiBold" variant="bodySmall">
-        Dependencies
+        Direct dependencies needing attention
       </Text>
       {props.dependencies.length === 0 ? (
         <Text color="neutral" emphasis="muted" variant="caption">
-          No dependency changes are currently reported.
+          No direct dependency changes require attention.
         </Text>
       ) : (
         props.dependencies.map((dependency) => (
           <Text key={dependency.packageId} variant="caption">
             • {dependency.name} · {dependency.direct ? 'direct' : 'transitive'} ·{' '}
             {dependency.currentVersion} → {dependency.availableVersion}
+            {dependency.findings[0]?.reason ? ` · ${dependency.findings[0].reason}` : ''}
           </Text>
         ))
       )}
@@ -433,6 +470,14 @@ const styles = StyleSheet.create({
   },
   section: {
     gap: 10,
+  },
+  sectionTitle: {
+    gap: 4,
+  },
+  badges: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
   },
   detailList: {
     gap: 4,
