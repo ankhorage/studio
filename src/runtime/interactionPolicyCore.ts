@@ -88,7 +88,7 @@ export function composeInteractionPolicyResolver<TNode extends { type: string }>
 ): InteractionPolicyNodePropsResolver<TNode>;
 /***
  * Compose an existing props resolver before a second resolver, or return the second resolver unchanged when no predecessor exists.
- * @utility @ankhorage/utility/function
+ * Utility candidate: @ankhorage/utility/function
  */
 export function composeInteractionPolicyResolver<TNode extends { type: string }>(
   interactionPolicyResolver: InteractionPolicyNodePropsResolver,
