@@ -6,7 +6,7 @@ import { matchesFileType } from '@ankhorage/utility/media';
 
 /***
  * Pick and validate a PNG or JPEG image for Studio deploy assets.
- * @todo Move deploy asset-picking policy under src/deploy/ while reusing generic media/file validation helpers.
+ * TODO: Move deploy asset-picking policy under src/deploy/ while reusing generic media/file validation helpers.
  */
 export async function pickProjectDeployImage(
   mediaPicker: ExpoMediaPickerAdapter = createExpoMediaPickerAdapter(),
@@ -42,7 +42,7 @@ function isDeployImageSelection(filename: string, contentType: string | undefine
 
 /***
  * Map Expo media-picker failure reasons to user-facing failure messages.
- * @todo Move this reusable media-picker reason mapping to @ankhorage/expo-runtime/media-picker or expose it there.
+ * TODO: Move this reusable media-picker reason mapping to @ankhorage/expo-runtime/media-picker or expose it there.
  */
 function pickerFailureMessage(
   reason: 'picker-failed' | 'read-failed' | 'unsupported-kind',
