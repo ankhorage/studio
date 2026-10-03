@@ -102,24 +102,8 @@ async function executePackagePolicyStepAsync(
       `${step.execution.artifact.packageName}@${step.execution.artifact.version}`,
     );
   }
-  const byId = new Map(step.execution.plan.mutations.map((mutation) => [mutation.id, mutation]));
   try {
-    await readStudioGeneratedPackagePolicyHandler().materializeAsync({
-      descriptor: readStudioGeneratedPackagePolicyProjectionDescriptor(),
-      context: createStudioGeneratedPackagePolicyExecutionContext(
-        sourceVersion(step),
-        step.execution.artifact,
-      ),
-      plan: step.execution.plan,
-      project: {
-        ...createStudioGeneratedPackagePolicyProjectReadPort(rootPath),
-        applyReviewedMutationAsync: async (mutationId) => {
-          const mutation = byId.get(mutationId);
-          if (mutation === undefined) throw new Error(`Unreviewed mutation '${mutationId}'.`);
-          await applyReviewedMutationAsync(rootPath, mutation);
-        },
-      },
-    });
+    await materializePackagePolicyAsync(rootPath, step);
     return {
       state: 'completed',
       evidence: step.execution.plan.mutations.map(({ id }) => id),
@@ -132,6 +116,30 @@ async function executePackagePolicyStepAsync(
       step.id,
     );
   }
+}
+
+/*** Materialize only mutation IDs frozen into the reviewed Studio projection plan. */
+async function materializePackagePolicyAsync(
+  rootPath: string,
+  step: Extract<ApmPlanStep, { readonly execution: { readonly kind: 'projection' } }>,
+): Promise<void> {
+  const byId = new Map(step.execution.plan.mutations.map((mutation) => [mutation.id, mutation]));
+  await readStudioGeneratedPackagePolicyHandler().materializeAsync({
+    descriptor: readStudioGeneratedPackagePolicyProjectionDescriptor(),
+    context: createStudioGeneratedPackagePolicyExecutionContext(
+      sourceVersion(step),
+      step.execution.artifact,
+    ),
+    plan: step.execution.plan,
+    project: {
+      ...createStudioGeneratedPackagePolicyProjectReadPort(rootPath),
+      applyReviewedMutationAsync: async (mutationId) => {
+        const mutation = byId.get(mutationId);
+        if (mutation === undefined) throw new Error(`Unreviewed mutation '${mutationId}'.`);
+        await applyReviewedMutationAsync(rootPath, mutation);
+      },
+    },
+  });
 }
 
 /*** Apply one reviewed package-policy mutation while preserving unrelated package manifest fields. */
