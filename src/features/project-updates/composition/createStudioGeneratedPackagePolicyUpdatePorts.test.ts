@@ -62,9 +62,7 @@ test('reconciles an existing generated app to the current Studio owner policy wi
     expect(
       evidence.observations.some(
         ({ migration, owner, projection }) =>
-          owner === '@ankhorage/studio' &&
-          projection === 'stale' &&
-          migration === 'not-applicable',
+          owner === '@ankhorage/studio' && projection === 'stale' && migration === 'not-applicable',
       ),
     ).toBe(true);
 
