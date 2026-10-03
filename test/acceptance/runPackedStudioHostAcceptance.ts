@@ -242,7 +242,7 @@ async function installConsumerAsync(consumerRoot: string, cacheRoot: string): Pr
 }
 
 /*** Return whether target is equal to or nested beneath parent.
- * @utility @ankhorage/utility/node/path
+ * Utility candidate: @ankhorage/utility/node/path
  */
 function isWithin(target: string, parent: string): boolean {
   const relativePath = path.relative(parent, target);
