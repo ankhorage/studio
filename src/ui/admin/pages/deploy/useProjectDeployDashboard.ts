@@ -18,7 +18,7 @@ interface LoadedDashboardState {
 
 /***
  * Load the five deploy-dashboard resources for one project, invalidate stale generations, and expose an explicit refresh trigger.
- * @todo Keep this React adapter at the deploy admin UI edge while dashboard loading/orchestration moves into deploy application ownership.
+ * Follow-up: Keep this React adapter at the deploy admin UI edge while dashboard loading/orchestration moves into deploy application ownership.
  */
 export function useProjectDeployDashboard(projectId: string) {
   const [refreshGeneration, setRefreshGeneration] = useState(0);

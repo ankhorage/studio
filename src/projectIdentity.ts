@@ -19,7 +19,7 @@ export function deriveProjectId(projectName: string): string {
 
 /***
  * Normalize a human-readable name for case-insensitive equality checks.
- * @utility @ankhorage/utility/string
+ * Utility candidate: @ankhorage/utility/string
  */
 function normalizeProjectName(projectName: string): string {
   return projectName.trim().replace(/\s+/g, ' ').toLowerCase();
@@ -27,7 +27,7 @@ function normalizeProjectName(projectName: string): string {
 
 /***
  * Test whether a project id is reserved by the Studio workspace.
- * @todo Move project identity/reserved-id policy under src/projects/.
+ * Follow-up: Move project identity/reserved-id policy under src/projects/.
  */
 function isReservedProjectId(projectId: string): boolean {
   return STUDIO_RESERVED_PROJECT_IDS.has(projectId);
@@ -44,7 +44,7 @@ export class ProjectCreationValidationError extends Error {
 
 /***
  * Validate a new Studio project name and derived id against format, reservation, and uniqueness rules.
- * @todo Move project creation validation under src/projects/.
+ * Follow-up: Move project creation validation under src/projects/.
  */
 export function validateProjectCreationInput(args: {
   name: string;

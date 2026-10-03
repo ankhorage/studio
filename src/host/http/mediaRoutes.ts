@@ -69,7 +69,7 @@ function registerMediaCleanupRoute(
 
 /***
  * Ensure a Fastify instance has an octet-stream parser that exposes uploaded bytes as Buffer.
- * @utility @ankhorage/utility/http/fastify
+ * Utility candidate: @ankhorage/utility/http/fastify
  */
 function ensureBinaryBodyParser(fastify: FastifyInstance) {
   if (fastify.hasContentTypeParser('application/octet-stream')) return;
@@ -132,7 +132,7 @@ function readIngestRequest(req: FastifyRequest) {
 
 /***
  * Parse a managed media cleanup source across canonical storage and bundled source shapes.
- * @todo Move this reusable media-source guard beside the media contracts owner rather than generic Utility.
+ * Follow-up: Move this reusable media-source guard beside the media contracts owner rather than generic Utility.
  */
 function readCleanupSource(value: unknown): MediaBundledSource | MediaStorageSource | null {
   const storage = readStorageSource(value);
@@ -146,7 +146,7 @@ function readCleanupSource(value: unknown): MediaBundledSource | MediaStorageSou
 
 /***
  * Parse a canonical MediaStorageSource from unknown input.
- * @todo Move this guard beside `MediaStorageSource` in the media contracts owner.
+ * Follow-up: Move this guard beside `MediaStorageSource` in the media contracts owner.
  */
 function readStorageSource(value: unknown): MediaStorageSource | null {
   if (!value || typeof value !== 'object') return null;
@@ -174,7 +174,7 @@ function readString(value: unknown) {
 
 /***
  * Parse a non-empty string as a finite non-negative number.
- * @utility @ankhorage/utility/number
+ * Utility candidate: @ankhorage/utility/number
  */
 function readNumber(value: unknown) {
   if (typeof value !== 'string' || value.length === 0) return undefined;

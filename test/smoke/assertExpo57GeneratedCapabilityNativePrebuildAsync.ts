@@ -67,7 +67,7 @@ export async function assertExpo57GeneratedCapabilityNativePrebuildAsync(
 
 /***
  * Recursively list files beneath a directory.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function listFilesAsync(rootPath: string): Promise<string[]> {
   const entries = await readdir(rootPath, { withFileTypes: true });

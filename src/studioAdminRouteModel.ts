@@ -282,7 +282,7 @@ const THEME_PATTERN_ROUTE_PREFIX = '/ankh/theme/patterns/';
 
 /***
  * Resolve a Studio admin-route definition by id and fail when the registry is inconsistent.
- * @todo Move the admin-route registry and lookup policy from root `src/` into the `routes/` domain.
+ * Follow-up: Move the admin-route registry and lookup policy from root `src/` into the `routes/` domain.
  */
 export function getStudioAdminRouteDefinition(
   routeId: StudioAdminRouteId,
@@ -297,7 +297,7 @@ export function getStudioAdminRouteDefinition(
 
 /***
  * Resolve a pathname to the matching Studio admin-route id, including contextual detail routes.
- * @todo Move Studio admin route matching from root `src/` into the `routes/` domain.
+ * Follow-up: Move Studio admin route matching from root `src/` into the `routes/` domain.
  */
 export function resolveStudioAdminRouteId(pathname: string): StudioAdminRouteId | null {
   if (pathname.startsWith(MODULE_ROUTE_PREFIX)) {
@@ -340,7 +340,7 @@ export function resolveStudioAdminRouteId(pathname: string): StudioAdminRouteId 
 
 /***
  * Canonicalize a recognized Studio admin pathname to its typed route path.
- * @todo Move Studio admin route canonicalization into the `routes/` domain.
+ * Follow-up: Move Studio admin route canonicalization into the `routes/` domain.
  */
 export function resolveStudioAdminRoutePath(pathname: string): StudioAdminRoutePath | null {
   const routeId = resolveStudioAdminRouteId(pathname);
@@ -452,7 +452,7 @@ export function createStudioPropertiesRoutePath(nodeId: string): `/ankh/properti
 
 /***
  * Build the concrete Studio admin route path for a static or contextual admin-route id.
- * @todo Move route-construction policy from root `src/` into the `routes/` domain; contextual segment encoding can compose the shared URL primitive.
+ * Follow-up: Move route-construction policy from root `src/` into the `routes/` domain; contextual segment encoding can compose the shared URL primitive.
  */
 export function createStudioAdminRoutePath(args: {
   routeId: StudioAdminRouteId;
@@ -487,7 +487,7 @@ export function createStudioAdminRoutePath(args: {
 
 /***
  * Return whether a contextual Studio admin route has the context needed to open it.
- * @todo Keep this availability policy with the Studio `routes/` domain.
+ * Follow-up: Keep this availability policy with the Studio `routes/` domain.
  */
 export function isStudioAdminRouteAvailable(
   routeId: StudioAdminRouteId,
@@ -513,7 +513,7 @@ export function resolveStudioAdminActiveRouteId(pathname: string): StudioAdminRo
 
 /***
  * Project pathname + persisted admin-route state into the render state consumed by the Studio shell.
- * @todo Move this render-state route policy into the `routes/` application domain.
+ * Follow-up: Move this render-state route policy into the `routes/` application domain.
  */
 export function createStudioAdminRouteRenderState(args: {
   pathname: string;
@@ -553,7 +553,7 @@ export function resolveStudioNavigableLocation(pathname: string): string {
 
 /***
  * Resolve the last navigable non-admin location while excluding Studio admin paths.
- * @todo Keep this Studio navigation-history policy in the `routes/` application domain; browser location reconstruction can use the shared Web utility.
+ * Follow-up: Keep this Studio navigation-history policy in the `routes/` application domain; browser location reconstruction can use the shared Web utility.
  */
 export function resolveStudioLastNonAdminLocation(args: {
   readonly pathname: string;

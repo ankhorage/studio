@@ -83,7 +83,7 @@ export interface AuthAdminPageProps {
 
 /***
  * Render and coordinate Studio authentication authoring, OAuth credential setup, health, routes, and profile configuration.
- * @todo This page currently owns substantial auth application orchestration and generic UI primitives; move auth persistence/provider transaction policy into `auth/` and use canonical ZORA form/action patterns.
+ * Follow-up: This page currently owns substantial auth application orchestration and generic UI primitives; move auth persistence/provider transaction policy into `auth/` and use canonical ZORA form/action patterns.
  */
 export function AuthAdminPage(props: AuthAdminPageProps) {
   const { projectId, manifest, routeId } = props;
@@ -159,7 +159,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
 
   /***
    * Persist one auth draft after rebasing canonical credential refs, flush the manifest, synchronize runtime state, and refresh health.
-   * @todo Move this multi-step auth save use case into the auth application layer.
+   * Follow-up: Move this multi-step auth save use case into the auth application layer.
    */
   const persistAuthDraft = useCallback(
     async (nextDraft: StudioAuthSettings, nextMessage: string) => {
@@ -550,7 +550,7 @@ function PendingCredentialLinkCard(props: {
 
 /***
  * Render one Supabase OAuth provider's setup requirements, credentials, health state, and enablement controls.
- * @todo Provider setup/credential completeness and transaction policy belongs in the auth application domain; this component should render a prepared view model.
+ * Follow-up: Provider setup/credential completeness and transaction policy belongs in the auth application domain; this component should render a prepared view model.
  */
 function OAuthProviderSetting(props: {
   readonly projectId: string;
@@ -764,7 +764,7 @@ function OAuthProviderSetting(props: {
 
 /***
  * Return an immutable object copy without its `signUp` property; parameterized key omission is reusable.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function omitSignUp(settings: StudioAuthSettings): StudioAuthSettings {
   const { signUp: _signUp, ...rest } = settings;
@@ -773,7 +773,7 @@ function omitSignUp(settings: StudioAuthSettings): StudioAuthSettings {
 
 /***
  * Return an immutable object copy without its `profile` property; parameterized key omission is reusable.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function omitProfile(settings: StudioAuthSettings): StudioAuthSettings {
   const { profile: _profile, ...rest } = settings;
@@ -960,7 +960,7 @@ function diagnosticSeverityColor(severity: ProjectAuthHealth['diagnostics'][numb
 
 /***
  * Render a themed generic card shell used throughout this auth page.
- * @todo Replace with the canonical ZORA Card instead of owning a duplicate local primitive.
+ * Follow-up: Replace with the canonical ZORA Card instead of owning a duplicate local primitive.
  */
 function Card(props: { readonly title: string; readonly children: React.ReactNode }) {
   const { theme } = useZoraTheme();
@@ -979,7 +979,7 @@ function Card(props: { readonly title: string; readonly children: React.ReactNod
 
 /***
  * Render a labeled generic field shell used by auth forms.
- * @todo Replace with the canonical ZORA FormField pattern.
+ * Follow-up: Replace with the canonical ZORA FormField pattern.
  */
 function Field(props: { readonly label: string; readonly children: React.ReactNode }) {
   return (
@@ -994,7 +994,7 @@ function Field(props: { readonly label: string; readonly children: React.ReactNo
 
 /***
  * Render a theme-aware generic React Native text input.
- * @todo Replace with canonical ZORA Input rather than duplicating design-system input ownership in Studio.
+ * Follow-up: Replace with canonical ZORA Input rather than duplicating design-system input ownership in Studio.
  */
 function Input(props: React.ComponentProps<typeof TextInput>) {
   const { theme } = useZoraTheme();
@@ -1017,7 +1017,7 @@ function Input(props: React.ComponentProps<typeof TextInput>) {
 
 /***
  * Render a generic title/description/switch setting row.
- * @todo Replace with canonical ZORA SwitchField where its contract fits.
+ * Follow-up: Replace with canonical ZORA SwitchField where its contract fits.
  */
 function SwitchSetting(props: {
   readonly title: string;
@@ -1065,7 +1065,7 @@ function Choice(props: {
 
 /***
  * Render a generic label/value row used in auth administration.
- * @todo Reuse the shared admin/ZORA key-value pattern rather than a second local implementation.
+ * Follow-up: Reuse the shared admin/ZORA key-value pattern rather than a second local implementation.
  */
 function KeyValue(props: { readonly label: string; readonly value: string }) {
   return (
@@ -1080,7 +1080,7 @@ function KeyValue(props: { readonly label: string; readonly value: string }) {
 
 /***
  * Render the auth page's primary loading/action button.
- * @todo Replace with canonical ZORA Button.
+ * Follow-up: Replace with canonical ZORA Button.
  */
 function PrimaryButton(props: {
   readonly label: string;
@@ -1107,7 +1107,7 @@ function PrimaryButton(props: {
 
 /***
  * Render the auth page's secondary action button.
- * @todo Replace with canonical ZORA Button.
+ * Follow-up: Replace with canonical ZORA Button.
  */
 function SecondaryButton(props: { readonly label: string; readonly onPress: () => void }) {
   const { theme } = useZoraTheme();

@@ -34,7 +34,7 @@ interface StoredOAuthCredentialRollback {
 
 /***
  * Persist a newly stored OAuth credential reference into auth settings, rollback the optimistic manifest mutation on flush failure, and refresh health on success.
- * @todo Move this transaction/orchestration from admin UI into the auth application domain.
+ * Follow-up: Move this transaction/orchestration from admin UI into the auth application domain.
  */
 export async function persistStoredOAuthCredentialLink(args: {
   readonly link: StoredOAuthCredentialLink;
@@ -211,7 +211,7 @@ function removeInsertedOrFailedCredentialsRef(
 
 /***
  * Compare two JSON-compatible values by their serialized representation.
- * @utility @ankhorage/utility/equality
+ * Utility candidate: @ankhorage/utility/equality
  */
 function areOAuthProvidersEqual(
   left: AuthOAuthProviderConfig,
@@ -243,7 +243,7 @@ function removeTransactionIntroducedStructure(
 
 /***
  * Return an object copy without one known property; parameterizing the property key yields a reusable immutable omit primitive.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function omitOAuth(settings: StudioAuthSettings): StudioAuthSettings {
   const { oauth: _oauth, ...rest } = settings;

@@ -333,7 +333,7 @@ async function startBrowserOAuthAttemptAsync(
 
 /***
  * Capture every file under a project's src tree as a deterministic relative-path-to-byte-content map.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function snapshotSourceTreeAsync(projectRoot: string): Promise<Map<string, Uint8Array>> {
   const sourceRoot = path.join(projectRoot, 'src');
@@ -349,7 +349,7 @@ async function snapshotSourceTreeAsync(projectRoot: string): Promise<Map<string,
 
 /***
  * Assert that a project's current src tree exactly matches a previously captured byte snapshot.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function assertSourceTreeUnchangedAsync(
   projectRoot: string,

@@ -1,5 +1,5 @@
 /*** Run a Bun child process for acceptance work with deterministic CI/TMPDIR environment, optional output capture, and timeout failure.
- * @utility @ankhorage/utility/bun/process
+ * Utility candidate: @ankhorage/utility/bun/process
  */
 export async function runAcceptanceCommandAsync(options: {
   readonly args: readonly string[];

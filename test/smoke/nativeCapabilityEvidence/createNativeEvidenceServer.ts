@@ -317,7 +317,7 @@ function isEvidenceResult(value: unknown): value is string {
 }
 
 /*** Read an HTTP request JSON body and return a record or an empty record on invalid input.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function readJsonRecordAsync(request: Request): Promise<Readonly<Record<string, unknown>>> {
   try {

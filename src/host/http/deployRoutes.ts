@@ -249,7 +249,7 @@ function executeReleaseControlRequest(service: ProjectDeployService, req: Fastif
 
 /***
  * Ensure a Fastify instance has an octet-stream Buffer body parser.
- * @utility @ankhorage/utility/http/fastify
+ * Utility candidate: @ankhorage/utility/http/fastify
  */
 function ensureBinaryBodyParser(fastify: FastifyInstance): void {
   if (fastify.hasContentTypeParser('application/octet-stream')) return;
@@ -290,7 +290,7 @@ function readAssetLocation(value: unknown): ProjectStoreListingAssetLocation {
 
 /***
  * Read the canonical `id` route parameter from a Fastify request.
- * @utility @ankhorage/utility/http/fastify
+ * Utility candidate: @ankhorage/utility/http/fastify
  */
 function projectId(req: FastifyRequest): string {
   return (req.params as { readonly id: string }).id;
@@ -298,7 +298,7 @@ function projectId(req: FastifyRequest): string {
 
 /***
  * Execute an async Fastify route operation and map thrown failures to a configured HTTP error response.
- * @utility @ankhorage/utility/http/fastify
+ * Utility candidate: @ankhorage/utility/http/fastify
  */
 async function respond(reply: FastifyReply, operation: () => Promise<unknown>): Promise<unknown> {
   try {

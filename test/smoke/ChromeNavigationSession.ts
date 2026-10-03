@@ -659,7 +659,7 @@ function createRoleHitTestExpression(role: string, name: string, occurrence: num
 
 /***
  * Narrow an unknown value to a non-null object record.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
@@ -708,7 +708,7 @@ async function resolveChromePathAsync(): Promise<string> {
 
 /***
  * Poll an HTTP endpoint until it responds below the 5xx range or the timeout expires.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function waitForHttpAsync(url: string, timeoutMs: number): Promise<void> {
   const start = Date.now();

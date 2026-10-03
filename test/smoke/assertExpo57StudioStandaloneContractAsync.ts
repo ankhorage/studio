@@ -219,7 +219,7 @@ function assertRegistryDependencyRanges(packageJson: StandalonePackageJson): voi
 
 /***
  * Report whether a target path is equal to or nested within a parent path.
- * @utility @ankhorage/utility/path
+ * Utility candidate: @ankhorage/utility/path
  */
 function isWithin(target: string, parent: string): boolean {
   const relativePath = path.relative(parent, target);
@@ -228,7 +228,7 @@ function isWithin(target: string, parent: string): boolean {
 
 /***
  * Recursively list filesystem entries under a root while skipping traversal into node_modules.
- * @utility @ankhorage/utility/node/fs
+ * Utility candidate: @ankhorage/utility/node/fs
  */
 async function listFilesAsync(root: string): Promise<string[]> {
   const entries = await readdir(root, { withFileTypes: true });
@@ -281,7 +281,7 @@ async function resolveRequiredReleaseRangesAsync(
 
 /***
  * Read and parse a package.json-compatible manifest from disk.
- * @utility @ankhorage/utility/node/package
+ * Utility candidate: @ankhorage/utility/node/package
  */
 async function readPackageJsonAsync(filePath: string): Promise<StandalonePackageJson> {
   return JSON.parse(await readFile(filePath, 'utf8')) as StandalonePackageJson;
@@ -289,7 +289,7 @@ async function readPackageJsonAsync(filePath: string): Promise<StandalonePackage
 
 /***
  * Require and return one dependency range from a selected package manifest dependency group.
- * @utility @ankhorage/utility/package
+ * Utility candidate: @ankhorage/utility/package
  */
 function requireDependencyRange(
   packageJson: StandalonePackageJson,

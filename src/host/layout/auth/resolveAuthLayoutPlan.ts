@@ -100,7 +100,7 @@ export type AuthLayoutPlan = DisabledAuthLayoutPlan | EnabledAuthLayoutPlan;
 
 /***
  * Derive the generated auth/navigation/file plan for a Studio manifest with global Supabase Auth.
- * @todo Move auth generation planning from the host layout edge into the auth/routes application domain.
+ * Follow-up: Move auth generation planning from the host layout edge into the auth/routes application domain.
  */
 export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLayoutPlan {
   const { manifest } = input;
@@ -261,7 +261,7 @@ function resolveGeneratedOAuthProvider(
 
 /***
  * Normalize and validate a canonical relative application route without query/hash or traversal segments.
- * @utility @ankhorage/utility/route
+ * Utility candidate: @ankhorage/utility/route
  */
 function normalizeCanonicalCallbackRoute(route: string): string {
   const normalized = route.trim().replace(/^\/+/, '').replace(/\/+$/, '');
@@ -279,7 +279,7 @@ function normalizeCanonicalCallbackRoute(route: string): string {
 
 /***
  * Trim values, remove empty entries, and preserve first-occurrence order while deduplicating.
- * @utility @ankhorage/utility/array
+ * Utility candidate: @ankhorage/utility/array
  */
 function uniqueNonEmpty(values: readonly string[]): string[] {
   return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
@@ -592,7 +592,7 @@ function hasRouteName(routes: RouteDefinition[], routeName: string): boolean {
 
 /***
  * Normalize an application route path to its file-based route name, using index for the root route.
- * @utility @ankhorage/utility/route
+ * Utility candidate: @ankhorage/utility/route
  */
 function authFlowPathToRouteName(routePath: string): string {
   const normalized = routePath.trim().replace(/^\/+/, '').replace(/\/+$/, '');

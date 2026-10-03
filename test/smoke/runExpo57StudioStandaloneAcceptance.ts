@@ -121,7 +121,7 @@ function createCommandEnvironment(cacheRoot: string): Readonly<Record<string, st
 
 /***
  * Compute a SHA-256 hex digest for byte content.
- * @utility @ankhorage/utility/crypto
+ * Utility candidate: @ankhorage/utility/crypto
  */
 function hash(value: Uint8Array): string {
   return createHash('sha256').update(value).digest('hex');
