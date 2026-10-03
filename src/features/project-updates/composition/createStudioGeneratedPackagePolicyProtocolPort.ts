@@ -7,6 +7,8 @@ import type {
   ApmPlanProtocolResult,
   ApmPlanStep,
   ApmProjectMutation,
+  ApmProjectionDescriptor,
+  ApmProjectionPlanResult,
   ApmStatusDependency,
 } from '@ankhorage/apm/types';
 import {
@@ -137,8 +139,8 @@ async function planResolvedPolicyAsync(
 function projectionStep(
   source: StudioGeneratedPackagePolicySource,
   artifact: ApmExtensionArtifactIdentity,
-  descriptor: ReturnType<typeof readStudioGeneratedPackagePolicyProjectionDescriptor>,
-  plan: Awaited<ReturnType<ReturnType<typeof readStudioGeneratedPackagePolicyHandler>['planAsync']>>,
+  descriptor: ApmProjectionDescriptor,
+  plan: ApmProjectionPlanResult,
 ): ApmPlanStep {
   return {
     id: `projection:${STUDIO_PACKAGE_NAME}:${STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID}`,
