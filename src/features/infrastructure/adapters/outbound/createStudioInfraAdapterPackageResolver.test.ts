@@ -83,7 +83,9 @@ function createLedger(resources: readonly InfraOwnedResource[]): InfraLedger {
     schemaVersion: 1,
     projectId: 'demo',
     environment: 'local',
+    targets: [],
     resources,
+    outputs: [],
     artifacts: [],
   };
 }
@@ -102,8 +104,10 @@ function createContext(previous: InfraLedger): InfraExecutionContext {
     },
     previous,
     credentials: {
+      findAsync: () => Promise.resolve({ ok: true, value: null, diagnostics: [] }),
       resolveAsync: () =>
         Promise.resolve({ ok: true, value: { token: 'secret-value' }, diagnostics: [] }),
+      persistAsync: () => Promise.resolve({ ok: true, value: null, diagnostics: [] }),
     },
     secrets: {
       resolveAsync: () => Promise.resolve({ ok: true, value: 'secret-value', diagnostics: [] }),
