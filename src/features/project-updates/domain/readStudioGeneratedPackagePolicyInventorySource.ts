@@ -9,15 +9,10 @@ export function readStudioGeneratedPackagePolicyInventorySource(
 ): StudioGeneratedPackagePolicySource | undefined {
   const candidates = inventory.roots.flatMap((root) =>
     root.declarations.flatMap((declaration) => {
-      if (
-        declaration.name !== STUDIO_PACKAGE_NAME ||
-        declaration.resolvedPackageId === undefined
-      ) {
+      if (declaration.name !== STUDIO_PACKAGE_NAME || declaration.resolvedPackageId === undefined) {
         return [];
       }
-      const locked = root.lockedPackages.find(
-        (pkg) => pkg.id === declaration.resolvedPackageId,
-      );
+      const locked = root.lockedPackages.find((pkg) => pkg.id === declaration.resolvedPackageId);
       return locked?.version === undefined
         ? []
         : [
