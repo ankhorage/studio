@@ -228,10 +228,10 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminLayout).toContain('<Suspense fallback={<Slot />}>');
     expect(adminLayout).toContain("import('@ankhorage/navigator/workspace')");
     expect(adminLayout).toContain(
-      "import('@ankhorage/studio/administration/StudioAdminAccessGate')",
+      "import('@ankhorage/studio')",
     );
     expect(adminLayout).toContain(
-      "import('@ankhorage/studio/administration/useStudioAdminWorkspace')",
+      "import('@ankhorage/studio')",
     );
     expect(adminLayout).toContain('<StudioAdminWorkspace />');
     expect(adminLayout).not.toContain("from '@ankhorage/navigator/workspace'");
@@ -248,7 +248,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminWebPage).toContain('<Redirect href="/" />');
     expect(adminWebPage).toContain("import { lazy, Suspense } from 'react';");
     expect(adminWebPage).toContain(
-      "await import('@ankhorage/studio/administration/AnkhAdminPage')",
+      "await import('@ankhorage/studio')",
     );
     expect(adminWebPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
     expect(adminWebPage).not.toContain("from '@ankhorage/studio/administration/AnkhAdminPage'");
@@ -257,8 +257,8 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain("from '@ankhorage/studio/ui/AnkhStudio'");
     expect(rootLayout).toContain("from '@ankhorage/studio/ui/useStudioAppBarAugmentation'");
     expect(rootLayout).not.toContain("from '@ankhorage/studio';");
-    expect(adminLayout).not.toContain("from '@ankhorage/studio';");
-    expect(adminWebPage).not.toContain("from '@ankhorage/studio';");
+    expect(adminLayout).toContain("import('@ankhorage/studio')");
+    expect(adminWebPage).toContain("import('@ankhorage/studio')");
   });
 
   test('keeps generated Studio imports backed by public package exports', () => {
@@ -293,9 +293,10 @@ describe('GeneratedAppFileGenerator', () => {
       ),
     ];
 
-    expect(requiredStudioExports).toContain('./administration/AnkhAdminPage');
-    expect(requiredStudioExports).toContain('./administration/StudioAdminAccessGate');
-    expect(requiredStudioExports).toContain('./administration/useStudioAdminWorkspace');
+    expect(requiredStudioExports).toContain('.');
+    expect(requiredStudioExports).not.toContain('./administration/AnkhAdminPage');
+    expect(requiredStudioExports).not.toContain('./administration/StudioAdminAccessGate');
+    expect(requiredStudioExports).not.toContain('./administration/useStudioAdminWorkspace');
     expect(requiredStudioExports.filter((subpath) => !(subpath in packageExports))).toEqual([]);
   });
 
