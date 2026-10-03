@@ -11,7 +11,7 @@ export interface BunSupabaseVaultClient extends SupabaseVaultSqlClient {
 }
 
 /***
- * @todo Keep this concrete Bun/PostgreSQL transport at the Secrets host edge; it is an adapter for the Supabase Vault owner, not a generic Utility capability.
+ * TODO: Keep this concrete Bun/PostgreSQL transport at the Secrets host edge; it is an adapter for the Supabase Vault owner, not a generic Utility capability.
  * Create the trusted server-only PostgreSQL client used by the Supabase Vault adapter.
  */
 export function createBunSupabaseVaultClient(databaseUrl: string): BunSupabaseVaultClient {
