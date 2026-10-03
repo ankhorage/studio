@@ -17,6 +17,7 @@ import {
 import { GeneratedAppFileGenerator } from '../layout/layoutGenerator';
 import { applySystemTemplates } from '../manifestSystem';
 import { ProjectBundledMediaService } from '../media/projectBundledMediaService';
+import { createScopedBunSupabaseVaultClient } from '../secrets/createScopedBunSupabaseVaultClient';
 import type { LayoutMutation } from '../modules/layout';
 import { GeneratedRouteFileOwnership } from './GeneratedRouteFileOwnership';
 import type { ProjectCreationSource } from './projectCreationSource';
@@ -61,7 +62,9 @@ export class ProjectManager {
     this.dependencies = {
       connectGitHubRepositoryAsync,
       reconcileProjectPackageRootAsync,
-      infraLifecycle: createStudioProjectInfraLifecycle({\n        supabaseVaultClient: createScopedBunSupabaseVaultClient(),\n      }),
+      infraLifecycle: createStudioProjectInfraLifecycle({
+        supabaseVaultClient: createScopedBunSupabaseVaultClient(),
+      }),
       ...dependencies,
     };
     return createStudioProjectWriterProxy(this, {
