@@ -96,7 +96,8 @@ describe('Expo 57 generated navigation acceptance fixture', () => {
     expect(source).toContain('<Stack.Protected');
     expect(source).toContain("from '@ankhorage/studio/core/StudioProvider'");
     expect(source).toContain("from '@ankhorage/studio/ui/AnkhStudio'");
-    expect(source).toContain("from '@ankhorage/studio/administration/AnkhAdminPage'");
+    expect(source).toContain("import('@ankhorage/studio/administration/AnkhAdminPage')");
+    expect(source).not.toContain("from '@ankhorage/studio/administration/AnkhAdminPage'");
     expect(source).not.toContain("from '@ankhorage/studio';");
     expect(source).not.toContain('@react-navigation/');
   });
