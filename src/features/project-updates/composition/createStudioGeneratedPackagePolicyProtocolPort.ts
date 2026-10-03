@@ -204,8 +204,9 @@ function selectionForMutation(
       blocker: missingDependencyBlocker(target.name, matches.length),
     };
   }
-  if (dependency.declaration.range === mutation.value) return {};
-  return selectionForRange(dependency, mutation.value);
+  const { declaration } = dependency;
+  if (declaration.range === mutation.value) return {};
+  return selectionForRange(dependency, declaration.ownerPath, mutation.value);
 }
 
 /*** Find one managed declaration only inside the generated app's Studio install root and owner manifest. */
@@ -225,7 +226,8 @@ function matchingDependencies(
 
 /*** Build an exact target selection for one changed managed dependency range. */
 function selectionForRange(
-  dependency: ApmStatusDependency & { readonly declaration: NonNullable<ApmStatusDependency['declaration']> },
+  dependency: ApmStatusDependency,
+  ownerPath: string,
   range: string,
 ): SelectionResolution {
   const currentVersion = dependency.lockedVersion ?? dependency.installed.version;
@@ -244,7 +246,7 @@ function selectionForRange(
         name: dependency.name,
         packageId: dependency.packageId,
         installRootId: dependency.installRootId,
-        ownerPath: dependency.declaration.ownerPath,
+        ownerPath,
       },
       target: { kind: 'version', version: targetVersion, manifestRange: range },
     },
