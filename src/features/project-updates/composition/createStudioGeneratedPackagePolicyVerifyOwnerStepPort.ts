@@ -1,17 +1,10 @@
-import type {
-  ApmPlanStep,
-  ApmVerifyCheckResult,
-  ApmVerifyStepPort,
-} from '@ankhorage/apm/types';
+import type { ApmPlanStep, ApmVerifyCheckResult, ApmVerifyStepPort } from '@ankhorage/apm/types';
 
 import { createStudioGeneratedPackagePolicyProjectReadPort } from '../adapters/outbound/createStudioGeneratedPackagePolicyProjectReadPort';
 import { readStudioGeneratedPackagePolicyHandler } from '../adapters/outbound/readStudioGeneratedPackagePolicyHandler';
 import { readStudioGeneratedPackagePolicyProjectionDescriptor } from '../adapters/outbound/readStudioGeneratedPackagePolicyProjectionDescriptor';
 import { currentStudioApmArtifactMatchesAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
-import {
-  STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID,
-  STUDIO_PACKAGE_NAME,
-} from '../constants';
+import { STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID, STUDIO_PACKAGE_NAME } from '../constants';
 import { createStudioGeneratedPackagePolicyExecutionContext } from '../domain/createStudioGeneratedPackagePolicyExecutionContext';
 
 /*** Compose exact Studio package-policy verification around another trusted owner verifier. */
@@ -73,7 +66,9 @@ async function verifyPackagePolicyStepAsync(
 
 /*** Read the reviewed source Studio version frozen into projection step evidence. */
 function sourceVersion(step: ApmPlanStep): string {
-  const value = step.evidence.find((item) => item.startsWith('source:'))?.slice('source:'.length);
+  const value = step.evidence
+    .find((item) => item.startsWith('source:'))
+    ?.slice('source:'.length);
   if (value === undefined) throw new Error('Reviewed Studio projection step has no source version.');
   return value;
 }
