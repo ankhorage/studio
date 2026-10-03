@@ -66,7 +66,7 @@ export function listStudioMediaAssets(
 
 /***
  * Create the canonical media-reference object for one media id.
- * @todo Keep the MediaAssetReference constructor with its contracts/media owner unless a generic single-key reference constructor is extracted.
+ * TODO: Keep the MediaAssetReference constructor with its contracts/media owner unless a generic single-key reference constructor is extracted.
  */
 export function createStudioMediaAssetReference(mediaId: string): MediaAssetReference {
   return { mediaId };
@@ -74,7 +74,7 @@ export function createStudioMediaAssetReference(mediaId: string): MediaAssetRefe
 
 /***
  * Parse an unknown value as an exact one-key media-reference object.
- * @todo Keep MediaAssetReference semantics with media/contracts; implement it from generic object/value utilities.
+ * TODO: Keep MediaAssetReference semantics with media/contracts; implement it from generic object/value utilities.
  */
 export function readStudioMediaAssetReference(value: unknown): MediaAssetReference | null {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return null;
@@ -86,7 +86,7 @@ export function readStudioMediaAssetReference(value: unknown): MediaAssetReferen
 
 /***
  * Create a unique slug-like media id from a name and an existing keyed registry.
- * @utility @ankhorage/utility/string
+ * Utility candidate: @ankhorage/utility/string
  */
 export function createStudioMediaAssetId(name: string, registry: MediaAssetRegistry = {}): string {
   const base = slugifyAscii(name) || 'media';
@@ -98,7 +98,7 @@ export function createStudioMediaAssetId(name: string, registry: MediaAssetRegis
 
 /***
  * Create a URL-backed Studio media asset after validating and normalizing its HTTP URL.
- * @todo Move URL-media authoring behavior under src/media/ while reusing generic URL normalization.
+ * TODO: Move URL-media authoring behavior under src/media/ while reusing generic URL normalization.
  */
 export function createStudioUrlMediaAsset(args: {
   readonly id: string;
@@ -131,7 +131,7 @@ export function upsertStudioMediaAsset(manifest: AppManifest, asset: MediaAsset)
 
 /***
  * Collect every Studio node-property usage of one media asset across all manifest screens.
- * @todo Move media usage analysis under src/media/ while extracting generic deep-value traversal.
+ * TODO: Move media usage analysis under src/media/ while extracting generic deep-value traversal.
  */
 export function collectStudioMediaAssetUsages(
   manifest: AppManifest,
@@ -146,7 +146,7 @@ export function collectStudioMediaAssetUsages(
 
 /***
  * Remove an unused media asset from the manifest and reject removal when the asset is missing or referenced.
- * @todo Move media removal policy under src/media/.
+ * TODO: Move media removal policy under src/media/.
  */
 export function removeStudioMediaAsset(
   manifest: AppManifest,
@@ -170,7 +170,7 @@ export function removeStudioMediaAsset(
 
 /***
  * Recursively traverse a UiNode tree and inspect every prop value for media references.
- * @todo Keep UiNode traversal with src/media/ or replace it with canonical tree/value traversal utilities.
+ * TODO: Keep UiNode traversal with src/media/ or replace it with canonical tree/value traversal utilities.
  */
 function collectNodeUsages(
   screenId: string,
@@ -186,7 +186,7 @@ function collectNodeUsages(
 
 /***
  * Walk nested arrays and records while carrying a property path and report values matching a media-reference predicate.
- * @utility @ankhorage/utility/object
+ * Utility candidate: @ankhorage/utility/object
  */
 function collectValueUsages(
   screenId: string,
