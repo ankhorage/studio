@@ -643,9 +643,24 @@ function getStudioAdminLayoutTsx(): string {
   return `import { Redirect } from 'expo-router';
 import { lazy, Suspense } from 'react';
 
-const StudioAdminWorkspaceLayout = lazy(async () => {
-  const module = await import('@ankhorage/studio/administration/StudioAdminWorkspaceLayout');
-  return { default: module.StudioAdminWorkspaceLayout };
+const StudioAdminWorkspace = lazy(async () => {
+  const [{ WorkspaceNavigator }, { StudioAdminAccessGate }, { useStudioAdminWorkspace }] =
+    await Promise.all([
+      import('@ankhorage/navigator/workspace'),
+      import('@ankhorage/studio/administration/StudioAdminAccessGate'),
+      import('@ankhorage/studio/administration/useStudioAdminWorkspace'),
+    ]);
+
+  function StudioAdminWorkspaceContent() {
+    const workspace = useStudioAdminWorkspace();
+    return (
+      <StudioAdminAccessGate>
+        <WorkspaceNavigator {...workspace} />
+      </StudioAdminAccessGate>
+    );
+  }
+
+  return { default: StudioAdminWorkspaceContent };
 });
 
 export default function AnkhAdminLayout() {
@@ -655,7 +670,7 @@ export default function AnkhAdminLayout() {
 
   return (
     <Suspense fallback={null}>
-      <StudioAdminWorkspaceLayout />
+      <StudioAdminWorkspace />
     </Suspense>
   );
 }
