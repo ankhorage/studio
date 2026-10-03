@@ -35,7 +35,7 @@ interface ProjectManagerDependencies {
 
 /***
  * Coordinate Studio project lifecycle operations across persistence, scaffolding, generated routes, bundled media and infrastructure synchronization.
- * @todo Move project application orchestration from host/orchestrator to the projects domain; host should remain an adapter/composition edge.
+ * Follow-up: Move project application orchestration from host/orchestrator to the projects domain; host should remain an adapter/composition edge.
  */
 export class ProjectManager {
   private readonly store: ProjectStore;
@@ -441,7 +441,7 @@ export class ProjectManager {
 
   /***
    * Ensure a text file's parent directory exists and write UTF-8 content.
-   * @utility @ankhorage/utility/node/fs
+   * Utility candidate: @ankhorage/utility/node/fs
    */
   private async writeText(absPath: string, content: string) {
     await fs.mkdir(path.dirname(absPath), { recursive: true });
@@ -475,7 +475,7 @@ export class ProjectManager {
 
 /***
  * Require canonical deploy targets before project generation/synchronization.
- * @todo Move deploy-target validation to the deploy/projects domain boundary rather than host/orchestrator.
+ * Follow-up: Move deploy-target validation to the deploy/projects domain boundary rather than host/orchestrator.
  */
 function requireProjectDeployTargets(manifest: AppManifest) {
   const targets = manifest.deploy?.targets;
