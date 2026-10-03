@@ -35,7 +35,7 @@ import type { ProjectDeployRuntimeInput } from './projectDeployRuntimeInput';
 import { findRawSecretResponseKey } from './secretResponseGuard';
 import type { ProjectDeployAuthoringSnapshot } from './types/project-deploy-authoring';
 
-/*** Execute and validate Studio deploy HTTP operations through an injected request transport. @todo Move this concrete deploy client under src/deploy/ at the package edge. */
+/*** Execute and validate Studio deploy HTTP operations through an injected request transport. TODO: Move this concrete deploy client under src/deploy/ at the package edge. */
 export class ProjectDeployClient {
   /*** Create a deploy client around an injected request transport. */
   constructor(private readonly request: ProjectDeployRequest) {}
@@ -251,7 +251,7 @@ export class ProjectDeployClient {
 
   /***
    * Post a JSON action body to a project release endpoint and parse its response.
-   * @utility @ankhorage/utility/http
+   * Utility candidate: @ankhorage/utility/http
    */
   private postReleaseAction<T>(
     projectId: string,
@@ -268,7 +268,7 @@ export class ProjectDeployClient {
 
   /***
    * Execute a request, decode JSON, run response safety checks, map HTTP errors, and parse the payload.
-   * @utility @ankhorage/utility/http
+   * Utility candidate: @ankhorage/utility/http
    */
   private async requestJson<T>(
     path: string,
@@ -288,7 +288,7 @@ export class ProjectDeployClient {
 
 /***
  * Decode an HTTP response as JSON and convert decoding failure to the client's API error.
- * @utility @ankhorage/utility/http
+ * Utility candidate: @ankhorage/utility/http
  */
 async function readJson(response: Response): Promise<unknown> {
   try {
@@ -298,12 +298,12 @@ async function readJson(response: Response): Promise<unknown> {
   }
 }
 
-/*** Build the Studio deploy endpoint path for one project and suffix. @todo Keep deploy endpoint routing under src/deploy/. */
+/*** Build the Studio deploy endpoint path for one project and suffix. TODO: Keep deploy endpoint routing under src/deploy/. */
 function projectPath(projectId: string, suffix: string): string {
   return `/projects/${encodeURIComponent(projectId)}/deploy/${suffix}`;
 }
 
-/*** Serialize a deploy listing-asset location into endpoint query parameters. @todo Keep deploy protocol serialization under src/deploy/. */
+/*** Serialize a deploy listing-asset location into endpoint query parameters. TODO: Keep deploy protocol serialization under src/deploy/. */
 function withAssetLocation(path: string, location: ProjectStoreListingAssetLocation): string {
   const query = new URLSearchParams();
   query.set('kind', location.kind);
@@ -334,7 +334,7 @@ function parseAuthoring(value: unknown): ProjectDeployAuthoringSnapshot {
   };
 }
 
-/*** Parse the deploy-config response shape. @todo Keep deploy payload validation under src/deploy/ or its owning deploy contract package. */
+/*** Parse the deploy-config response shape. TODO: Keep deploy payload validation under src/deploy/ or its owning deploy contract package. */
 function parseConfig(value: unknown): AppDeployManifest | null {
   if (value === null) return null;
   const record = asRecord(value);
@@ -342,7 +342,7 @@ function parseConfig(value: unknown): AppDeployManifest | null {
   return value as AppDeployManifest;
 }
 
-/*** Parse the project store-listing response shape. @todo Keep deploy payload validation under src/deploy/. */
+/*** Parse the project store-listing response shape. TODO: Keep deploy payload validation under src/deploy/. */
 function parseListing(value: unknown): ProjectStoreListing {
   const record = asRecord(value);
   if (
@@ -356,7 +356,7 @@ function parseListing(value: unknown): ProjectStoreListing {
   return value as ProjectStoreListing;
 }
 
-/*** Parse the monetization desired-state response shape. @todo Keep deploy payload validation under src/deploy/. */
+/*** Parse the monetization desired-state response shape. TODO: Keep deploy payload validation under src/deploy/. */
 function parseMonetization(value: unknown): MonetizationDesiredState {
   const record = asRecord(value);
   if (record === null || typeof record.revision !== 'string' || !Array.isArray(record.products)) {
@@ -365,7 +365,7 @@ function parseMonetization(value: unknown): MonetizationDesiredState {
   return value as MonetizationDesiredState;
 }
 
-/*** Parse a success-or-failure monetization inspection response. @todo Keep deploy payload validation under src/deploy/. */
+/*** Parse a success-or-failure monetization inspection response. TODO: Keep deploy payload validation under src/deploy/. */
 function parseMonetizationInspectionResult(
   value: unknown,
 ): ProjectDeployMonetizationInspectionResult {
@@ -382,7 +382,7 @@ function parseMonetizationInspectionResult(
   return value as ProjectDeployMonetizationInspectionResult;
 }
 
-/*** Validate a monetization inspection payload. @todo Keep deploy payload validation under src/deploy/. */
+/*** Validate a monetization inspection payload. TODO: Keep deploy payload validation under src/deploy/. */
 function parseMonetizationInspection(value: unknown): void {
   const inspection = asRecord(value);
   if (
@@ -397,7 +397,7 @@ function parseMonetizationInspection(value: unknown): void {
   parseMonetization(inspection.desired);
 }
 
-/*** Validate a monetization plan payload. @todo Keep deploy payload validation under src/deploy/. */
+/*** Validate a monetization plan payload. TODO: Keep deploy payload validation under src/deploy/. */
 function parseMonetizationPlan(value: unknown): void {
   const plan = asRecord(value);
   if (
@@ -413,7 +413,7 @@ function parseMonetizationPlan(value: unknown): void {
   }
 }
 
-/*** Parse a monetization execution result and validate the payload for its status. @todo Keep deploy payload validation under src/deploy/. */
+/*** Parse a monetization execution result and validate the payload for its status. TODO: Keep deploy payload validation under src/deploy/. */
 function parseMonetizationExecutionResult(value: unknown): ProjectMonetizationExecutionResult {
   const result = asRecord(value);
   if (result === null || !isOneOf(result.status, ['completed', 'action-required', 'failed'])) {
@@ -430,7 +430,7 @@ function parseMonetizationExecutionResult(value: unknown): ProjectMonetizationEx
   return value as ProjectMonetizationExecutionResult;
 }
 
-/*** Parse the prepared release desired-state response shape. @todo Keep deploy payload validation under src/deploy/. */
+/*** Parse the prepared release desired-state response shape. TODO: Keep deploy payload validation under src/deploy/. */
 function parseRelease(value: unknown): ReleaseDesiredState {
   const record = asRecord(value);
   if (
@@ -446,13 +446,13 @@ function parseRelease(value: unknown): ReleaseDesiredState {
   return value as ReleaseDesiredState;
 }
 
-/*** Parse release history as an array of valid history records. @todo Keep deploy payload validation under src/deploy/. */
+/*** Parse release history as an array of valid history records. TODO: Keep deploy payload validation under src/deploy/. */
 function parseHistory(value: unknown): readonly ProjectReleaseHistoryRecord[] {
   if (!Array.isArray(value) || !value.every(isHistoryRecord)) invalid('Release history');
   return value as readonly ProjectReleaseHistoryRecord[];
 }
 
-/*** Parse a success-or-failure release inspection response. @todo Keep deploy payload validation under src/deploy/. */
+/*** Parse a success-or-failure release inspection response. TODO: Keep deploy payload validation under src/deploy/. */
 function parseInspection(value: unknown): ProjectDeployReleaseInspectionResult {
   const record = asRecord(value);
   if (record === null || typeof record.ok !== 'boolean') invalid('Release inspection');
@@ -485,7 +485,7 @@ function parseInspection(value: unknown): ProjectDeployReleaseInspectionResult {
   return value as ProjectDeployReleaseInspectionResult;
 }
 
-/*** Parse a release execution envelope and its nested execution result. @todo Keep deploy payload validation under src/deploy/. */
+/*** Parse a release execution envelope and its nested execution result. TODO: Keep deploy payload validation under src/deploy/. */
 function parseExecutionResponse(value: unknown): ProjectDeployReleaseExecutionResponse {
   const record = asRecord(value);
   if (record === null || typeof record.executionId !== 'string') {
@@ -495,7 +495,7 @@ function parseExecutionResponse(value: unknown): ProjectDeployReleaseExecutionRe
   return value as ProjectDeployReleaseExecutionResponse;
 }
 
-/*** Validate the nested project release execution result and reconciliation payload. @todo Keep deploy payload validation under src/deploy/. */
+/*** Validate the nested project release execution result and reconciliation payload. TODO: Keep deploy payload validation under src/deploy/. */
 function parseProjectReleaseExecutionResult(value: unknown): void {
   const result = asRecord(value);
   if (result === null || typeof result.ok !== 'boolean') invalid('Release execution result');
@@ -520,7 +520,7 @@ function parseProjectReleaseExecutionResult(value: unknown): void {
   }
 }
 
-/*** Parse one release lifecycle-control execution result. @todo Keep deploy payload validation under src/deploy/. */
+/*** Parse one release lifecycle-control execution result. TODO: Keep deploy payload validation under src/deploy/. */
 function parseControlResult(value: unknown): ReleaseControlExecutionResult {
   const result = asRecord(value);
   if (
@@ -543,7 +543,7 @@ function parseFailure(value: unknown, label: string): void {
   if (!isCodeMessageFailure(value)) invalid(label);
 }
 
-/*** Validate the minimal release-history record shape used by this deploy client. @todo Keep deploy history contract validation under src/deploy/ or its owning package. */
+/*** Validate the minimal release-history record shape used by this deploy client. TODO: Keep deploy history contract validation under src/deploy/ or its owning package. */
 function isHistoryRecord(value: unknown): boolean {
   const record = asRecord(value);
   const result = asRecord(record?.result);
@@ -569,7 +569,7 @@ function assertAuthoringBrowserSafe(value: unknown): void {
   );
 }
 
-/*** Reject deploy responses that expose forbidden secret-shaped fields. @todo Keep deploy response safety policy under src/deploy/ while using generic nested-key scanning. */
+/*** Reject deploy responses that expose forbidden secret-shaped fields. TODO: Keep deploy response safety policy under src/deploy/ while using generic nested-key scanning. */
 function assertBrowserSafe(value: unknown): void {
   const match = findRawSecretResponseKey(value);
   if (!match) return;
@@ -582,14 +582,14 @@ function assertBrowserSafe(value: unknown): void {
 
 /***
  * Read a string error field from an unknown response record or return a fallback message.
- * @utility @ankhorage/utility/error
+ * Utility candidate: @ankhorage/utility/error
  */
 function readError(value: unknown): string {
   const record = asRecord(value);
   return typeof record?.error === 'string' ? record.error : 'The Studio Deploy request failed.';
 }
 
-/*** Throw the deploy client's canonical invalid-response error for a labeled payload. @todo Keep deploy-specific error construction under src/deploy/. */
+/*** Throw the deploy client's canonical invalid-response error for a labeled payload. TODO: Keep deploy-specific error construction under src/deploy/. */
 function invalid(label: string): never {
   throw new ProjectDeployApiError(`${label} response was invalid.`, 502);
 }
