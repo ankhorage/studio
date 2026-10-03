@@ -6,9 +6,9 @@ import type {
   ApmPlanProtocolRequest,
   ApmPlanProtocolResult,
   ApmPlanStep,
-  ApmProjectMutation,
   ApmProjectionDescriptor,
   ApmProjectionPlanResult,
+  ApmProjectMutation,
   ApmStatusDependency,
 } from '@ankhorage/apm/types';
 import {
@@ -267,7 +267,9 @@ function newestKnownVersionInRange(
     dependency.availability.compatibleVersion,
     dependency.lockedVersion,
     dependency.installed.version,
-  ].filter((value): value is string => value !== undefined && versionSatisfiesManagedRange(value, range));
+  ].filter(
+    (value): value is string => value !== undefined && versionSatisfiesManagedRange(value, range),
+  );
   return candidates.reduce<string | undefined>((selected, candidate) => {
     if (selected === undefined) return candidate;
     const left = parseSemanticVersion(selected);
