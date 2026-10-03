@@ -20,7 +20,7 @@ export interface ProjectSecretUsageSummary {
 
 /***
  * Find and summarize manifest usages of one project secret reference.
- * @todo Move project secret usage analysis under src/secrets/.
+ * TODO: Move project secret usage analysis under src/secrets/.
  */
 export function findProjectSecretUsages(input: {
   readonly manifest: AppManifest;
