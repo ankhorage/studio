@@ -10,6 +10,7 @@ import type {
   ApmStatusDependency,
   ApmStatusResult,
 } from '@ankhorage/apm/types';
+import { isRecord } from '@ankhorage/utility/object';
 import { expect, test } from 'bun:test';
 
 import { studioUpdateExtension } from '../adapters/inbound/studioUpdateExtension';
@@ -116,9 +117,12 @@ test('reconciles an existing generated app to the current Studio owner policy wi
     expect((await applyOwnerStep.executeAsync({ journal, step })).state).toBe('completed');
     expect((await applyOwnerStep.observeAsync({ journal, step })).state).toBe('satisfied');
 
-    const after = JSON.parse(await readFile(path.join(rootPath, 'package.json'), 'utf8')) as {
-      readonly dependencies: Readonly<Record<string, string>>;
-    };
+    const after: unknown = JSON.parse(
+      await readFile(path.join(rootPath, 'package.json'), 'utf8'),
+    );
+    if (!isRecord(after) || !isRecord(after.dependencies)) {
+      throw new Error('Updated generated package.json must retain dependency records.');
+    }
     expect(after.dependencies['@ankhorage/studio']).toBe(policy.dependencies.studio);
     expect(after.dependencies['user-owned-package']).toBe('^9.0.0');
 
@@ -287,7 +291,7 @@ function journalFixture(rootPath: string, step: ApmPlanStep): ApmApplyJournal {
       repairProjections: true,
       maxGeneratorIterations: 4,
     },
-    executor: { apmVersion: '0.8.13', runtime: 'node', runtimeVersion: '24.0.0' },
+    executor: { apmVersion: 'fixture', runtime: 'node', runtimeVersion: '24.0.0' },
     inputFingerprint: {
       value: 'generated-app-fixture',
       statusSchemaVersion: 2,
