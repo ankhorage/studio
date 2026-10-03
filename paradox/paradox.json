@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v7.0.0",
+      "value": "v7.0.1",
       "color": "cb3837"
     },
     {
@@ -1254,6 +1254,14 @@
       "exports": [
         "resolveAuthoringUnion"
       ]
+    },
+    {
+      "path": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts"
+      ],
+      "exports": []
     },
     {
       "path": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts",
@@ -3443,6 +3451,7 @@
         "src/host/orchestrator/reconcileProjectPackageRootAsync.ts",
         "src/host/orchestrator/scaffolder.ts",
         "src/host/orchestrator/templates.ts",
+        "src/host/secrets/createScopedBunSupabaseVaultClient.ts",
         "src/manifestSync.ts",
         "src/projectIdentity.ts"
       ],
@@ -3661,6 +3670,26 @@
       "exports": [
         "BunSupabaseVaultClient",
         "createBunSupabaseVaultClient"
+      ]
+    },
+    {
+      "path": "src/host/secrets/createScopedBunSupabaseVaultClient.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/secrets/bunSupabaseVaultClient.ts",
+        "src/host/secrets/createScopedBunSupabaseVaultClient.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/host/secrets/createScopedBunSupabaseVaultClient.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/secrets/bunSupabaseVaultClient.ts",
+        "src/host/secrets/resolveProjectSecretDatabaseUrl.ts"
+      ],
+      "exports": [
+        "createScopedBunSupabaseVaultClient"
       ]
     },
     {
@@ -16312,13 +16341,90 @@
       }
     },
     {
+      "name": "createOwner",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "line": 59,
+        "column": 1
+      }
+    },
+    {
+      "name": "createLedger",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "line": 81,
+        "column": 1
+      }
+    },
+    {
+      "name": "createContext",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "line": 93,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDestroyRequest",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "line": 118,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDestroyAdapter",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "line": 127,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "line": 131,
+        "column": 1
+      }
+    },
+    {
       "name": "createStudioInfraAdapterPackageResolver",
       "description": "Resolve Studio-bundled Infra adapters through literal package imports while retaining generic installed-provider discovery.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts",
-        "line": 7,
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "loadSupabaseVaultModuleAsync",
+      "description": "Bind Studio's trusted SQL boundary into the otherwise parameterless Infra adapter factory.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts",
+        "line": 31,
         "column": 1
       }
     },
@@ -16373,7 +16479,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 49,
+        "line": 50,
         "column": 1
       }
     },
@@ -16384,7 +16490,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 88,
+        "line": 94,
         "column": 1
       }
     },
@@ -16395,7 +16501,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 105,
+        "line": 113,
         "column": 1
       }
     },
@@ -16406,7 +16512,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 118,
+        "line": 126,
         "column": 1
       }
     },
@@ -16417,7 +16523,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 125,
+        "line": 133,
         "column": 1
       }
     },
@@ -16428,7 +16534,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
-        "line": 132,
+        "line": 140,
         "column": 1
       }
     },
@@ -23952,7 +24058,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 480,
+        "line": 483,
         "column": 1
       }
     },
@@ -23963,7 +24069,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 491,
+        "line": 494,
         "column": 1
       }
     },
@@ -23974,7 +24080,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 500,
+        "line": 503,
         "column": 1
       }
     },
@@ -24668,6 +24774,28 @@
       "sourceLocation": {
         "filePath": "src/host/secrets/bunSupabaseVaultClient.ts",
         "line": 63,
+        "column": 1
+      }
+    },
+    {
+      "name": "createScopedBunSupabaseVaultClient",
+      "description": "Create a lazy trusted Vault SQL client that opens and closes one Bun connection per operation.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/secrets/createScopedBunSupabaseVaultClient.ts",
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "withClientAsync",
+      "description": "Resolve trusted connection state for one Vault operation and close it on success or failure.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/secrets/createScopedBunSupabaseVaultClient.ts",
+        "line": 52,
         "column": 1
       }
     },
@@ -35688,6 +35816,11 @@
       },
       {
         "fromPath": "src/host/orchestrator/projectManager.ts",
+        "toPath": "src/host/secrets/createScopedBunSupabaseVaultClient.ts",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectManager.ts",
         "toPath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
@@ -35880,6 +36013,26 @@
         "fromPath": "src/host/orchestrator/templates.ts",
         "toPath": "src/host/orchestrator/templateSources.ts",
         "sourcePath": "src/host/orchestrator/templates.ts"
+      },
+      {
+        "fromPath": "src/host/secrets/createScopedBunSupabaseVaultClient.test.ts",
+        "toPath": "src/host/secrets/bunSupabaseVaultClient.ts",
+        "sourcePath": "src/host/secrets/createScopedBunSupabaseVaultClient.test.ts"
+      },
+      {
+        "fromPath": "src/host/secrets/createScopedBunSupabaseVaultClient.test.ts",
+        "toPath": "src/host/secrets/createScopedBunSupabaseVaultClient.ts",
+        "sourcePath": "src/host/secrets/createScopedBunSupabaseVaultClient.test.ts"
+      },
+      {
+        "fromPath": "src/host/secrets/createScopedBunSupabaseVaultClient.ts",
+        "toPath": "src/host/secrets/bunSupabaseVaultClient.ts",
+        "sourcePath": "src/host/secrets/createScopedBunSupabaseVaultClient.ts"
+      },
+      {
+        "fromPath": "src/host/secrets/createScopedBunSupabaseVaultClient.ts",
+        "toPath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
+        "sourcePath": "src/host/secrets/createScopedBunSupabaseVaultClient.ts"
       },
       {
         "fromPath": "src/host/secrets/projectSecretService.test.ts",
@@ -38100,6 +38253,11 @@
         "fromPath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
         "toPath": "src/features/authoring-engine/utils/resolveAuthoringUnion.ts",
         "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
+      },
+      {
+        "fromPath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "toPath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
       },
       {
         "fromPath": "src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.test.ts",
@@ -61931,6 +62089,12 @@
       },
       {
         "fromSymbol": "ProjectManager",
+        "toSymbol": "createScopedBunSupabaseVaultClient",
+        "callExpression": "createScopedBunSupabaseVaultClient",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "ProjectManager",
         "toSymbol": "createStudioProjectWriterProxy",
         "callExpression": "createStudioProjectWriterProxy",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
@@ -63848,6 +64012,66 @@
         "toSymbol": "assertArray",
         "callExpression": "assertArray",
         "sourcePath": "src/host/secrets/bunSupabaseVaultClient.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/createScopedBunSupabaseVaultClient.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/secrets/createScopedBunSupabaseVaultClient.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/createScopedBunSupabaseVaultClient.test.ts",
+        "toSymbol": "createScopedBunSupabaseVaultClient",
+        "callExpression": "createScopedBunSupabaseVaultClient",
+        "sourcePath": "src/host/secrets/createScopedBunSupabaseVaultClient.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/createScopedBunSupabaseVaultClient.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/secrets/createScopedBunSupabaseVaultClient.test.ts"
+      },
+      {
+        "fromSymbol": "transaction",
+        "toSymbol": "operation",
+        "callExpression": "operation",
+        "sourcePath": "src/host/secrets/createScopedBunSupabaseVaultClient.test.ts"
+      },
+      {
+        "fromSymbol": "query",
+        "toSymbol": "withClientAsync",
+        "callExpression": "withClientAsync",
+        "sourcePath": "src/host/secrets/createScopedBunSupabaseVaultClient.ts"
+      },
+      {
+        "fromSymbol": "transaction",
+        "toSymbol": "withClientAsync",
+        "callExpression": "withClientAsync",
+        "sourcePath": "src/host/secrets/createScopedBunSupabaseVaultClient.ts"
+      },
+      {
+        "fromSymbol": "withClientAsync",
+        "toSymbol": "resolveDatabaseUrl",
+        "callExpression": "dependencies.resolveDatabaseUrl",
+        "sourcePath": "src/host/secrets/createScopedBunSupabaseVaultClient.ts"
+      },
+      {
+        "fromSymbol": "withClientAsync",
+        "toSymbol": "createClient",
+        "callExpression": "dependencies.createClient",
+        "sourcePath": "src/host/secrets/createScopedBunSupabaseVaultClient.ts"
+      },
+      {
+        "fromSymbol": "withClientAsync",
+        "toSymbol": "operation",
+        "callExpression": "operation",
+        "sourcePath": "src/host/secrets/createScopedBunSupabaseVaultClient.ts"
+      },
+      {
+        "fromSymbol": "withClientAsync",
+        "toSymbol": "close",
+        "callExpression": "client.close",
+        "sourcePath": "src/host/secrets/createScopedBunSupabaseVaultClient.ts"
       },
       {
         "fromSymbol": "src/host/secrets/projectSecretService.test.ts",
@@ -73354,9 +73578,81 @@
         "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
       },
       {
+        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "toSymbol": "createOwner",
+        "callExpression": "createOwner",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "toSymbol": "createStudioInfraAdapterPackageResolver",
+        "callExpression": "createStudioInfraAdapterPackageResolver",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "toSymbol": "isDestroyAdapter",
+        "callExpression": "isDestroyAdapter",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "toSymbol": "createContext",
+        "callExpression": "createContext",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "toSymbol": "createLedger",
+        "callExpression": "createLedger",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "toSymbol": "createDestroyRequest",
+        "callExpression": "createDestroyRequest",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
+        "fromSymbol": "transaction",
+        "toSymbol": "operation",
+        "callExpression": "operation",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
+        "fromSymbol": "isDestroyAdapter",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
         "fromSymbol": "createStudioInfraAdapterPackageResolver",
         "toSymbol": "createNodeInfraAdapterPackageResolver",
         "callExpression": "createNodeInfraAdapterPackageResolver",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts"
+      },
+      {
+        "fromSymbol": "loadAsync",
+        "toSymbol": "loadSupabaseVaultModuleAsync",
+        "callExpression": "loadSupabaseVaultModuleAsync",
         "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts"
       },
       {

@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 7.0.1
+
+### Patch Changes
+
+- b2ec381: Wire Studio's trusted Supabase Vault SQL client into Infra provider resolution so confirmed project deletion can remove the owned Vault namespace before deleting project files.
+
 ## 7.0.0
 
 ### Major Changes
