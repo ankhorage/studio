@@ -11,10 +11,7 @@ export type StudioGeneratedPackagePolicyMutationTarget =
 export function readStudioGeneratedPackagePolicyMutationTarget(
   mutation: ApmProjectMutation,
 ): StudioGeneratedPackagePolicyMutationTarget | undefined {
-  if (
-    mutation.kind !== 'set-json-pointer' &&
-    mutation.kind !== 'remove-json-pointer'
-  ) {
+  if (mutation.kind !== 'set-json-pointer' && mutation.kind !== 'remove-json-pointer') {
     return undefined;
   }
   if (mutation.path !== 'package.json') return undefined;
@@ -22,10 +19,7 @@ export function readStudioGeneratedPackagePolicyMutationTarget(
   const match = /^\/(dependencies|devDependencies)\/([^/]+)$/u.exec(mutation.pointer);
   const section = match?.[1];
   const encodedName = match?.[2];
-  if (
-    (section !== 'dependencies' && section !== 'devDependencies') ||
-    encodedName === undefined
-  ) {
+  if ((section !== 'dependencies' && section !== 'devDependencies') || encodedName === undefined) {
     return undefined;
   }
   return {
