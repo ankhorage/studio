@@ -2,7 +2,7 @@ import type {
   GeneratedPackageManifest,
   GeneratedPackagePolicy,
 } from '../../../types/project-updates.js';
-import { STUDIO_STUDIO_OBSOLETE_GENERATED_DEPENDENCIES } from '../constants.js';
+import { STUDIO_OBSOLETE_GENERATED_DEPENDENCIES } from '../constants.js';
 
 /*** Apply one explicit Studio package policy while preserving user-owned package manifest entries outside superseded Studio-managed dependencies. */
 export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
