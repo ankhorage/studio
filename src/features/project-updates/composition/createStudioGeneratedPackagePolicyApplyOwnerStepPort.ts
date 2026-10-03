@@ -8,9 +8,6 @@ import type {
   ApmProjectMutation,
 } from '@ankhorage/apm/types';
 
-type ProjectionPlanStep = ApmPlanStep & {
-  readonly execution: Extract<ApmPlanStep['execution'], { readonly kind: 'projection' }>;
-};
 import { resolvePathWithinRoot } from '@ankhorage/utility/node/path';
 import { isRecord } from '@ankhorage/utility/object';
 
@@ -24,6 +21,10 @@ import {
 } from '../constants';
 import { createStudioGeneratedPackagePolicyExecutionContext } from '../domain/createStudioGeneratedPackagePolicyExecutionContext';
 import { readStudioGeneratedPackagePolicyMutationTarget } from '../domain/readStudioGeneratedPackagePolicyMutationTarget';
+
+type ProjectionPlanStep = ApmPlanStep & {
+  readonly execution: Extract<ApmPlanStep['execution'], { readonly kind: 'projection' }>;
+};
 
 /*** Compose exact reviewed Studio package-policy execution around another trusted owner executor. */
 export function createStudioGeneratedPackagePolicyApplyOwnerStepPort(
@@ -106,9 +107,8 @@ async function executePackagePolicyStepAsync(
       `${step.execution.artifact.packageName}@${step.execution.artifact.version}`,
     );
   }
-  const projectionStep: ProjectionPlanStep = { ...step, execution: step.execution };
   try {
-    await materializePackagePolicyAsync(rootPath, projectionStep);
+    await materializePackagePolicyAsync(rootPath, step);
     return {
       state: 'completed',
       evidence: step.execution.plan.mutations.map(({ id }) => id),
@@ -206,7 +206,7 @@ function sourceVersion(step: ApmPlanStep): string {
 }
 
 /*** Identify only the canonical Studio generated-package-policy projection step. */
-function isPackagePolicyStep(step: ApmPlanStep): boolean {
+function isPackagePolicyStep(step: ApmPlanStep): step is ProjectionPlanStep {
   return (
     step.owner === STUDIO_PACKAGE_NAME &&
     step.execution.kind === 'projection' &&
