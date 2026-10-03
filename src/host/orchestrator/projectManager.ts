@@ -382,7 +382,10 @@ export class ProjectManager {
     includeStudio: boolean;
     runtimePlan: ExpoRuntimePlan;
   }): Promise<void> {
-    const runtimeSignature = createStudioRuntimeSyncSignature(args.manifest, GeneratedAppFileGenerator.runtimeRevision);
+    const runtimeSignature = createStudioRuntimeSyncSignature(
+      args.manifest,
+      GeneratedAppFileGenerator.runtimeRevision,
+    );
     try {
       await this.syncProjectScaffold(
         args.projectPath,
