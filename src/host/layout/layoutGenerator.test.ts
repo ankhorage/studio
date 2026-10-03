@@ -224,13 +224,21 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('resolveStudioLastNonAdminLocation');
     expect(rootLayout).toContain('!isStudioAdminPath(appPathname) &&');
     expect(adminLayout).toContain("import { lazy, Suspense } from 'react';");
+    expect(adminLayout).toContain("import('@ankhorage/navigator/workspace')");
     expect(adminLayout).toContain(
-      "await import('@ankhorage/studio/administration/StudioAdminWorkspaceLayout')",
+      "import('@ankhorage/studio/administration/StudioAdminAccessGate')",
     );
-    expect(adminLayout).toContain('<StudioAdminWorkspaceLayout />');
+    expect(adminLayout).toContain(
+      "import('@ankhorage/studio/administration/useStudioAdminWorkspace')",
+    );
+    expect(adminLayout).toContain('<StudioAdminWorkspace />');
     expect(adminLayout).not.toContain("from '@ankhorage/navigator/workspace'");
-    expect(adminLayout).not.toContain('StudioAdminAccessGate');
-    expect(adminLayout).not.toContain('useStudioAdminWorkspace');
+    expect(adminLayout).not.toContain(
+      "from '@ankhorage/studio/administration/StudioAdminAccessGate'",
+    );
+    expect(adminLayout).not.toContain(
+      "from '@ankhorage/studio/administration/useStudioAdminWorkspace'",
+    );
     expect(adminLayout).not.toContain('AnkhAdminShell');
     expect(adminNativePage).toContain('<Redirect href="/" />');
     expect(adminNativePage).not.toContain('AnkhAdminPage');
@@ -284,7 +292,8 @@ describe('GeneratedAppFileGenerator', () => {
     ];
 
     expect(requiredStudioExports).toContain('./administration/AnkhAdminPage');
-    expect(requiredStudioExports).toContain('./administration/StudioAdminWorkspaceLayout');
+    expect(requiredStudioExports).toContain('./administration/StudioAdminAccessGate');
+    expect(requiredStudioExports).toContain('./administration/useStudioAdminWorkspace');
     expect(requiredStudioExports.filter((subpath) => !(subpath in packageExports))).toEqual([]);
   });
 
