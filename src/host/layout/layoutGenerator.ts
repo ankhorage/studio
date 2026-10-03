@@ -640,7 +640,7 @@ export default function AnkhAdminNativeRoute() {
 
 /*** Generate the protected Studio Admin layout that loads administration workspace code only after the route is rendered. */
 function getStudioAdminLayoutTsx(): string {
-  return `import { Redirect } from 'expo-router';
+  return `import { Redirect, Slot } from 'expo-router';
 import { lazy, Suspense } from 'react';
 
 const StudioAdminWorkspace = lazy(async () => {
@@ -669,7 +669,7 @@ export default function AnkhAdminLayout() {
   }
 
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<Slot />}>
       <StudioAdminWorkspace />
     </Suspense>
   );
