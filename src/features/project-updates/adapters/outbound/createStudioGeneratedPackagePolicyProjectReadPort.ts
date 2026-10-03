@@ -1,10 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 
-import type {
-  ApmExtensionProjectReadPort,
-  ApmProjectFileSnapshot,
-} from '@ankhorage/apm/types';
+import type { ApmExtensionProjectReadPort, ApmProjectFileSnapshot } from '@ankhorage/apm/types';
 import { isMissingPathError } from '@ankhorage/utility/node/fs';
 import { resolvePathWithinRoot } from '@ankhorage/utility/node/path';
 
