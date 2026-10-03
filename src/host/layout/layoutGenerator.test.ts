@@ -223,7 +223,9 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('useGlobalSearchParams');
     expect(rootLayout).toContain('resolveStudioLastNonAdminLocation');
     expect(rootLayout).toContain('!isStudioAdminPath(appPathname) &&');
+    expect(adminLayout).toContain("import { Redirect, Slot } from 'expo-router';");
     expect(adminLayout).toContain("import { lazy, Suspense } from 'react';");
+    expect(adminLayout).toContain('<Suspense fallback={<Slot />}>');
     expect(adminLayout).toContain("import('@ankhorage/navigator/workspace')");
     expect(adminLayout).toContain(
       "import('@ankhorage/studio/administration/StudioAdminAccessGate')",
