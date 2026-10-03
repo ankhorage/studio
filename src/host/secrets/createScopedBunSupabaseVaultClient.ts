@@ -9,8 +9,8 @@ import {
   createBunSupabaseVaultClient,
 } from './bunSupabaseVaultClient';
 import {
-  type ResolveProjectSecretDatabaseUrlInput,
   resolveProjectSecretDatabaseUrl,
+  type ResolveProjectSecretDatabaseUrlInput,
 } from './resolveProjectSecretDatabaseUrl';
 
 /*** Create a lazy trusted Vault SQL client that opens and closes one Bun connection per operation. */
