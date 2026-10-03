@@ -1,18 +1,24 @@
 import { resolveMigrationPath } from '@ankhorage/apm';
 import type {
+  ApmExtensionArtifactIdentity,
   ApmExtensionEvidence,
+  ApmProjectionInspectionResult,
   ApmStatusDiagnostic,
   ApmStatusExtensionEvidencePort,
   ApmUpdateProtocolBlocker,
 } from '@ankhorage/apm/types';
 
+import type { StudioGeneratedPackagePolicySource } from '../../../types/project-updates';
 import { createStudioGeneratedPackagePolicyProjectReadPort } from '../adapters/outbound/createStudioGeneratedPackagePolicyProjectReadPort';
 import { getGeneratedPackagePolicy } from '../adapters/outbound/getGeneratedPackagePolicy';
 import { readStudioGeneratedPackagePolicyDescriptor } from '../adapters/outbound/readStudioGeneratedPackagePolicyDescriptor';
 import { readStudioGeneratedPackagePolicyHandler } from '../adapters/outbound/readStudioGeneratedPackagePolicyHandler';
 import { readStudioGeneratedPackagePolicyProjectionDescriptor } from '../adapters/outbound/readStudioGeneratedPackagePolicyProjectionDescriptor';
 import { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
-import { STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID, STUDIO_PACKAGE_NAME } from '../constants';
+import {
+  STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID,
+  STUDIO_PACKAGE_NAME,
+} from '../constants';
 import { createStudioGeneratedPackagePolicyExecutionContext } from '../domain/createStudioGeneratedPackagePolicyExecutionContext';
 import { readStudioGeneratedPackagePolicyInventorySource } from '../domain/readStudioGeneratedPackagePolicyInventorySource';
 
@@ -34,7 +40,7 @@ export function createStudioGeneratedPackagePolicyExtensionEvidencePort(
   };
 }
 
-/*** Inspect one generated app against the exact package policy owned by the running Studio artifact. */
+/*** Resolve source, target artifact and supported history before inspecting Studio projection state. */
 async function inspectPolicyEvidenceAsync(
   rootPath: string,
   inventory: Parameters<ApmStatusExtensionEvidencePort['inspectExtensionEvidenceAsync']>[0]['inventory'],
@@ -53,25 +59,40 @@ async function inspectPolicyEvidenceAsync(
   const migration = resolveMigrationPath({
     descriptor: readStudioGeneratedPackagePolicyDescriptor(),
     sourceVersion: source.version,
-    targetVersion: getGeneratedPackagePolicy().ownerVersion,
+    targetVersion: artifactResolution.artifact.version,
   });
-  if (!migration.supported) {
-    return {
-      state: 'available',
-      complete: false,
-      observations: [],
-      diagnostics: migration.blockers.map(protocolBlockerDiagnostic),
-    };
-  }
-  const context = createStudioGeneratedPackagePolicyExecutionContext(
-    source.version,
+  if (!migration.supported) return unsupportedHistoryEvidence(migration.blockers);
+  return inspectResolvedPolicyAsync(
+    rootPath,
+    source,
     artifactResolution.artifact,
+    migration.noMigrationRequired,
   );
+}
+
+/*** Inspect package policy using only the exact reviewed current Studio artifact. */
+async function inspectResolvedPolicyAsync(
+  rootPath: string,
+  source: StudioGeneratedPackagePolicySource,
+  artifact: ApmExtensionArtifactIdentity,
+  noMigrationRequired: boolean,
+): Promise<ApmExtensionEvidence> {
+  const context = createStudioGeneratedPackagePolicyExecutionContext(source.version, artifact);
   const inspection = await readStudioGeneratedPackagePolicyHandler().inspectAsync({
     descriptor: readStudioGeneratedPackagePolicyProjectionDescriptor(),
     context,
     project: createStudioGeneratedPackagePolicyProjectReadPort(rootPath),
   });
+  return projectionEvidence(source, artifact.version, noMigrationRequired, inspection);
+}
+
+/*** Convert one Studio projection inspection into stable APM owner evidence. */
+function projectionEvidence(
+  source: StudioGeneratedPackagePolicySource,
+  targetVersion: string,
+  noMigrationRequired: boolean,
+  inspection: ApmProjectionInspectionResult,
+): ApmExtensionEvidence {
   return {
     state: 'available',
     complete: inspection.state !== 'unknown',
@@ -80,11 +101,11 @@ async function inspectPolicyEvidenceAsync(
         packageId: source.packageId,
         owner: STUDIO_PACKAGE_NAME,
         projection: inspection.state,
-        migration: migration.noMigrationRequired ? 'not-applicable' : 'pending',
+        migration: noMigrationRequired ? 'not-applicable' : 'pending',
         evidence: [
           `projection:${STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID}`,
           `source:${source.version}`,
-          `target:${context.targetVersion}`,
+          `target:${targetVersion}`,
           ...inspection.evidence,
         ],
         ...(inspection.reason === undefined ? {} : { reason: inspection.reason }),
@@ -93,21 +114,34 @@ async function inspectPolicyEvidenceAsync(
           : {}),
       },
     ],
-    diagnostics:
-      inspection.state === 'unknown'
-        ? [
-            {
-              code: 'studio.generated-package-policy.unknown',
-              severity: 'error',
-              scope: { kind: 'projection', id: STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID },
-              evidence: inspection.evidence,
-              reason:
-                inspection.reason ??
-                'Studio generated package policy could not be inspected safely.',
-              nextAction: 'Repair package.json before applying Studio-managed updates.',
-            },
-          ]
-        : [],
+    diagnostics: inspection.state === 'unknown' ? [unknownProjectionDiagnostic(inspection)] : [],
+  };
+}
+
+/*** Describe an unknown projection state without treating it as current. */
+function unknownProjectionDiagnostic(
+  inspection: ApmProjectionInspectionResult,
+): ApmStatusDiagnostic {
+  return {
+    code: 'studio.generated-package-policy.unknown',
+    severity: 'error',
+    scope: { kind: 'projection', id: STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID },
+    evidence: inspection.evidence,
+    reason:
+      inspection.reason ?? 'Studio generated package policy could not be inspected safely.',
+    nextAction: 'Repair package.json before applying Studio-managed updates.',
+  };
+}
+
+/*** Preserve unsupported source-history blockers as incomplete Studio owner evidence. */
+function unsupportedHistoryEvidence(
+  blockers: readonly ApmUpdateProtocolBlocker[],
+): ApmExtensionEvidence {
+  return {
+    state: 'available',
+    complete: false,
+    observations: [],
+    diagnostics: blockers.map(protocolBlockerDiagnostic),
   };
 }
 
