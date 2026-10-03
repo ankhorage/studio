@@ -227,9 +227,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminLayout).toContain("import { lazy, Suspense } from 'react';");
     expect(adminLayout).toContain('<Suspense fallback={<Slot />}>');
     expect(adminLayout).toContain("import('@ankhorage/navigator/workspace')");
-    expect(adminLayout).toContain(
-      "import('@ankhorage/studio')",
-    );
+    expect(adminLayout).toContain("import('@ankhorage/studio')");
     expect(adminLayout).toContain(
       "import('@ankhorage/studio')",
     );
@@ -247,9 +245,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminWebPage).toContain('if (!__DEV__)');
     expect(adminWebPage).toContain('<Redirect href="/" />');
     expect(adminWebPage).toContain("import { lazy, Suspense } from 'react';");
-    expect(adminWebPage).toContain(
-      "await import('@ankhorage/studio')",
-    );
+    expect(adminWebPage).toContain("await import('@ankhorage/studio')");
     expect(adminWebPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
     expect(adminWebPage).not.toContain("from '@ankhorage/studio/administration/AnkhAdminPage'");
     expect(rootLayout).toContain("from '@ankhorage/studio/core/StudioProvider'");
