@@ -379,8 +379,7 @@ function DependencyItems(props: {
       ) : (
         props.dependencies.map((dependency) => (
           <Text key={dependency.packageId} variant="caption">
-            • {dependency.name} · {dependency.direct ? 'direct' : 'transitive'} ·{' '}
-            {dependency.currentVersion} → {dependency.availableVersion}
+            • {dependency.name} · {dependency.currentVersion} → {dependency.availableVersion}
             {dependency.findings[0]?.reason ? ` · ${dependency.findings[0].reason}` : ''}
           </Text>
         ))
