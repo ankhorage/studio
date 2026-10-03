@@ -194,8 +194,14 @@ describe('generated auth root bootstrap', () => {
       expect(paths).not.toContain('src/auth/navigation.ts');
       expect(rootLayout).not.toContain('useGeneratedAuthNavigation');
       expect(rootLayout).not.toContain('GeneratedAuthNavigationState');
-      expect(adminLayout).toContain("from '@ankhorage/navigator/workspace'");
-      expect(adminLayout).toContain('WorkspaceAccessGate');
+      expect(adminLayout).toContain("import('@ankhorage/navigator/workspace')");
+      expect(adminLayout).toContain(
+        "import('@ankhorage/studio/administration/StudioAdminAccessGate')",
+      );
+      expect(adminLayout).toContain(
+        "import('@ankhorage/studio/administration/useStudioAdminWorkspace')",
+      );
+      expect(adminLayout).not.toContain("from '@ankhorage/navigator/workspace'");
       expect(adminLayout).not.toContain('AnkhAdminShell');
     },
   );
