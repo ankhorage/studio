@@ -70,6 +70,7 @@ test('plans only Studio-owned package fields and preserves user dependencies', a
     dependencies: {
       '@ankhorage/contracts': '^0.0.1',
       '@ankhorage/studio': '^0.0.1',
+      '@ankhorage/zora-game': '^0.8.0',
       'user-owned-package': '^9.0.0',
     },
     devDependencies: {
@@ -96,6 +97,12 @@ test('plans only Studio-owned package fields and preserves user dependencies', a
   expect(plan.mutations.every(({ claim }) => descriptorOwnsClaim(claim))).toBe(true);
   expect(plan.mutations.some(({ id }) => id.includes('user-owned-package'))).toBe(false);
   expect(plan.mutations.some(({ id }) => id.includes('user-owned-dev-package'))).toBe(false);
+  expect(plan.mutations).toContainEqual(
+    expect.objectContaining({
+      kind: 'remove-json-pointer',
+      pointer: '/dependencies/@ankhorage~1zora-game',
+    }),
+  );
   const studioMutation = plan.mutations.find(
     (mutation) =>
       mutation.kind === 'set-json-pointer' &&
