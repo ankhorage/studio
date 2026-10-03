@@ -86,7 +86,7 @@ export class ProjectSecretService {
   private readonly resolveDatabaseUrl: () => Promise<string> | string;
 
   /***
-   * @todo Keep this service in the Secrets application/host boundary; it owns project secret-store lifecycle and trusted Vault access rather than generic persistence.
+   * Follow-up: Keep this service in the Secrets application/host boundary; it owns project secret-store lifecycle and trusted Vault access rather than generic persistence.
    * Create the project-scoped secret application service with injectable trusted Vault boundaries.
    */
   constructor(options: ProjectSecretServiceOptions) {
@@ -333,7 +333,7 @@ export class ProjectSecretService {
   }
 
   /***
-   * @todo Reassess the duplicate manifest retry when the Projects/Secrets boundary is migrated; the second call currently repeats the same read without changing inputs.
+   * Follow-up: Reassess the duplicate manifest retry when the Projects/Secrets boundary is migrated; the second call currently repeats the same read without changing inputs.
    * Read the current editable project manifest, retrying the same manager once on failure.
    */
   private async readEditableManifest(projectId: string): Promise<AppManifest> {
