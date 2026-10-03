@@ -346,6 +346,7 @@ async function introduceGeneratedPolicyDriftAsync(
   projectRoot: string,
 ): Promise<readonly ManagedDependencyDrift[]> {
   const packagePath = path.join(projectRoot, 'package.json');
+  await runCommandAsync('bun', ['install', '--frozen-lockfile', '--ignore-scripts'], projectRoot);
   const manifest = await readJsonObjectAsync(packagePath);
   const candidates = await Promise.all(
     MANAGED_DEPENDENCY_CANDIDATES.map((candidate) =>
