@@ -24,6 +24,7 @@ import { readStudioGeneratedPackagePolicyProjectionDescriptor } from '../adapter
 import type { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
 import { STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID, STUDIO_PACKAGE_NAME } from '../constants';
 import { createStudioGeneratedPackagePolicyExecutionContext } from '../domain/createStudioGeneratedPackagePolicyExecutionContext';
+import { readManagedPackageRangeFloor } from '../domain/readManagedPackageRangeFloor';
 import { readStudioGeneratedPackagePolicyMutationTarget } from '../domain/readStudioGeneratedPackagePolicyMutationTarget';
 import { readStudioGeneratedPackagePolicyStatusSource } from '../domain/readStudioGeneratedPackagePolicyStatusSource';
 
@@ -220,7 +221,8 @@ function selectionForRange(
   ownerPath: string,
   range: string,
 ): SelectionResolution {
-  const targetVersion = newestKnownVersionInRange(dependency, range) ?? managedRangeFloor(range);
+  const targetVersion =
+    newestKnownVersionInRange(dependency, range) ?? readManagedPackageRangeFloor(range);
   if (targetVersion === undefined) {
     return {
       blocker: unsupportedRangeBlocker(dependency.name, range),
@@ -277,12 +279,6 @@ function newestKnownVersionInRange(
     if (left === null || right === null) return selected;
     return compareSemanticVersions(right, left) > 0 ? candidate : selected;
   }, undefined);
-}
-
-/*** Return the exact minimum version represented by Studio's managed exact/caret/tilde ranges. */
-function managedRangeFloor(range: string): string | undefined {
-  const exact = range.startsWith('^') || range.startsWith('~') ? range.slice(1) : range;
-  return parseSemanticVersion(exact) === null ? undefined : exact;
 }
 
 /*** Test current versions against exact/caret/tilde range shapes emitted by Studio policy. */

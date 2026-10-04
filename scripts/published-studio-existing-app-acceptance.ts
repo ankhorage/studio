@@ -8,7 +8,11 @@ import process from 'node:process';
 import { promisify } from 'node:util';
 
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
-import { SEMVER_PATTERNS } from '@ankhorage/utility/semver';
+import {
+  compareSemanticVersions,
+  parseSemanticVersion,
+  SEMVER_PATTERNS,
+} from '@ankhorage/utility/semver';
 
 const execFileAsync = promisify(execFile);
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
@@ -19,6 +23,14 @@ const INITIAL_DEPENDENCY_VERSION = '7.7.1';
 const DEPENDENCY_RANGE = '^7.7.1';
 const USER_FILE_NAME = 'USER_NOTES.md';
 const USER_FILE_CONTENT = '# User-owned note\n\nAPM must preserve this file.\n';
+const MANAGED_DEPENDENCY_CANDIDATES = [
+  { name: '@ankhorage/contracts', section: 'dependencies' },
+  { name: '@ankhorage/data-sources', section: 'dependencies' },
+  { name: '@ankhorage/utility', section: 'dependencies' },
+  { name: '@ankhorage/supabase-auth', section: 'dependencies' },
+  { name: '@ankhorage/supabase-storage', section: 'dependencies' },
+  { name: '@ankhorage/devtools', section: 'devDependencies' },
+] as const;
 
 const repositoryRoot = process.cwd();
 const fixtureRoot = await mkdtemp(path.join(tmpdir(), 'ankh-published-studio-update-'));
@@ -41,7 +53,7 @@ try {
   const host = await startPublishedStudioHostAsync();
   try {
     await waitForHostAsync(host);
-    const projectId = await createExistingProjectAsync();
+    const projectId = await createExistingProjectAsync('Published Studio Existing App');
     const projectRoot = path.join(workspaceRoot, 'apps', projectId);
     await introduceSupportedDependencyDriftAsync(projectRoot);
     await writeFile(path.join(projectRoot, USER_FILE_NAME), USER_FILE_CONTENT, 'utf8');
@@ -67,6 +79,22 @@ try {
     );
     assert.equal(await readFile(path.join(projectRoot, USER_FILE_NAME), 'utf8'), USER_FILE_CONTENT);
 
+    const managedProjectId = await createExistingProjectAsync('Published Studio Managed Update');
+    const managedProjectRoot = path.join(workspaceRoot, 'apps', managedProjectId);
+    await writeFile(path.join(managedProjectRoot, USER_FILE_NAME), USER_FILE_CONTENT, 'utf8');
+    const managedDrifts = await introduceGeneratedPolicyDriftAsync(managedProjectRoot);
+    const managedBefore = await readMutationSentinelsAsync(managedProjectRoot);
+    const managed = await runStudioManagedLifecycleAsync(
+      managedProjectId,
+      managedProjectRoot,
+      managedDrifts,
+    );
+    assert.deepEqual(managed.readOnlySentinels, managedBefore);
+    assert.equal(
+      await readFile(path.join(managedProjectRoot, USER_FILE_NAME), 'utf8'),
+      USER_FILE_CONTENT,
+    );
+
     console.log(
       JSON.stringify(
         {
@@ -82,6 +110,19 @@ try {
             targets: studio.planTargets.length,
             planEffects: studio.planEffects.length,
             followUp: studio.followUp.length,
+          },
+          managedOwnerUpdate: {
+            projectId: managedProjectId,
+            drifted: managedDrifts.map(({ name, previousVersion }) => ({
+              name,
+              previousVersion,
+            })),
+            targets: managed.planTargets.map(({ name, currentVersion, targetVersion }) => ({
+              name,
+              currentVersion,
+              targetVersion,
+            })),
+            verified: managed.verified,
           },
           omittedPlatformEvidence: [
             'No cloud/store deployment is performed; shipment work is compared as structured APM follow-up evidence.',
@@ -129,6 +170,24 @@ interface LifecycleEvidence {
 
 interface StudioLifecycleEvidence extends LifecycleEvidence {
   readonly readOnlySentinels: Readonly<Record<string, string>>;
+}
+
+type ManagedDependencySection = 'dependencies' | 'devDependencies';
+
+interface ManagedDependencyDrift {
+  readonly name: string;
+  readonly section: ManagedDependencySection;
+  readonly originalRange: string;
+  readonly staleRange: string;
+  readonly currentVersion: string;
+  readonly previousVersion: string;
+}
+
+interface ManagedLifecycleEvidence {
+  readonly readOnlySentinels: Readonly<Record<string, string>>;
+  readonly planTargets: readonly PlanTargetEvidence[];
+  readonly operationStatus: string;
+  readonly verified: boolean;
 }
 
 interface PresentationFinding {
@@ -241,7 +300,7 @@ async function waitForHostAsync(host: ReturnType<typeof spawn>): Promise<void> {
   throw new Error('Published Studio host did not become ready.');
 }
 
-async function createExistingProjectAsync(): Promise<string> {
+async function createExistingProjectAsync(name: string): Promise<string> {
   const catalog = await requestJsonAsync('/api/templates');
   const categories = readArray(catalog, 'categories').filter(isRecord);
   const category = categories.find((candidate) => readArray(candidate, 'templates').length > 0);
@@ -251,7 +310,7 @@ async function createExistingProjectAsync(): Promise<string> {
   const created = await requestJsonAsync('/api/projects', {
     method: 'POST',
     body: JSON.stringify({
-      name: 'Published Studio Existing App',
+      name,
       category: readRequiredString(category, 'id'),
       slug: readRequiredString(template, 'slug'),
       includeStudio: true,
@@ -280,6 +339,112 @@ async function introduceSupportedDependencyDriftAsync(projectRoot: string): Prom
     },
   });
   assert.equal(await installedDependencyVersionAsync(projectRoot), INITIAL_DEPENDENCY_VERSION);
+}
+
+/*** Materialize previous released versions for Studio-managed dependencies while keeping stale reviewed ranges. */
+async function introduceGeneratedPolicyDriftAsync(
+  projectRoot: string,
+): Promise<readonly ManagedDependencyDrift[]> {
+  const packagePath = path.join(projectRoot, 'package.json');
+  await runCommandAsync('bun', ['install', '--frozen-lockfile', '--ignore-scripts'], projectRoot);
+  const manifest = await readJsonObjectAsync(packagePath);
+  const candidates = await Promise.all(
+    MANAGED_DEPENDENCY_CANDIDATES.map((candidate) =>
+      resolveManagedDependencyDriftAsync(projectRoot, manifest, candidate),
+    ),
+  );
+  const drifts = candidates.filter(
+    (candidate): candidate is ManagedDependencyDrift => candidate !== undefined,
+  );
+  assert.ok(drifts.length >= 4, 'Expected at least four generated managed dependencies to drift.');
+
+  await writeJsonAsync(packagePath, applyManagedDriftValues(manifest, drifts, 'exact'));
+  await runCommandAsync('bun', ['install', '--ignore-scripts'], projectRoot);
+  const installedManifest = await readJsonObjectAsync(packagePath);
+  await writeJsonAsync(packagePath, applyManagedDriftValues(installedManifest, drifts, 'range'));
+
+  await Promise.all(
+    drifts.map(async ({ name, previousVersion }) => {
+      assert.equal(await installedPackageVersionAsync(projectRoot, name), previousVersion);
+    }),
+  );
+  return drifts;
+}
+
+/*** Resolve one previous-patch drift candidate from the generated manifest and installed graph. */
+async function resolveManagedDependencyDriftAsync(
+  projectRoot: string,
+  manifest: Readonly<Record<string, unknown>>,
+  candidate: (typeof MANAGED_DEPENDENCY_CANDIDATES)[number],
+): Promise<ManagedDependencyDrift | undefined> {
+  const section = readOptionalObject(manifest, candidate.section);
+  const originalRange = readOwnProperty(section, candidate.name);
+  if (typeof originalRange !== 'string') return undefined;
+  const currentVersion = await installedPackageVersionAsync(projectRoot, candidate.name);
+  const previousVersion = await resolvePreviousPatchVersionAsync(candidate.name, currentVersion);
+  if (previousVersion === undefined) return undefined;
+  return {
+    name: candidate.name,
+    section: candidate.section,
+    originalRange,
+    staleRange: `^${previousVersion}`,
+    currentVersion,
+    previousVersion,
+  };
+}
+
+/*** Resolve the immediately preceding stable patch release for one installed package. */
+async function resolvePreviousPatchVersionAsync(
+  packageName: string,
+  currentVersion: string,
+): Promise<string | undefined> {
+  const current = parseSemanticVersion(currentVersion);
+  if (current === null) throw new Error(`Installed ${packageName} version is not stable semver.`);
+  const { stdout } = await execFileAsync('npm', ['view', packageName, 'versions', '--json'], {
+    encoding: 'utf8',
+    maxBuffer: 4 * 1024 * 1024,
+    timeout: COMMAND_TIMEOUT_MS,
+  });
+  const value: unknown = JSON.parse(stdout);
+  if (!Array.isArray(value)) throw new Error(`npm versions for ${packageName} is not an array.`);
+  const candidates = value.flatMap((entry) => {
+    if (typeof entry !== 'string' || !SEMVER_PATTERNS.exact.test(entry)) return [];
+    const parsed = parseSemanticVersion(entry);
+    if (
+      parsed?.major !== current.major ||
+      parsed.minor !== current.minor ||
+      compareSemanticVersions(parsed, current) >= 0
+    ) {
+      return [];
+    }
+    return [{ version: entry, parsed }];
+  });
+  return candidates.sort((left, right) => compareSemanticVersions(left.parsed, right.parsed)).at(-1)
+    ?.version;
+}
+
+/*** Apply exact previous versions or stale reviewed ranges without changing unrelated package metadata. */
+function applyManagedDriftValues(
+  manifest: Readonly<Record<string, unknown>>,
+  drifts: readonly ManagedDependencyDrift[],
+  mode: 'exact' | 'range',
+): Readonly<Record<string, unknown>> {
+  const dependencies = { ...readOptionalObject(manifest, 'dependencies') };
+  const devDependencies = { ...readOptionalObject(manifest, 'devDependencies') };
+  const updated = drifts.reduce<{
+    readonly dependencies: Readonly<Record<string, unknown>>;
+    readonly devDependencies: Readonly<Record<string, unknown>>;
+  }>(
+    (state, drift) => ({
+      ...state,
+      [drift.section]: {
+        ...state[drift.section],
+        [drift.name]: mode === 'exact' ? drift.previousVersion : drift.staleRange,
+      },
+    }),
+    { dependencies, devDependencies },
+  );
+  return { ...manifest, ...updated };
 }
 
 async function copyProjectBaselineAsync(source: string, target: string): Promise<void> {
@@ -343,6 +508,118 @@ async function runStudioLifecycleAsync(
     ...lifecycleEvidence(status, plan, verify, targetVersion, operationStatus),
     readOnlySentinels,
   };
+}
+
+/*** Exercise Studio's package-owned generated-app projection through reviewed apply and verification. */
+async function runStudioManagedLifecycleAsync(
+  projectId: string,
+  projectRoot: string,
+  drifts: readonly ManagedDependencyDrift[],
+): Promise<ManagedLifecycleEvidence> {
+  const encodedId = encodeURIComponent(projectId);
+  const status = await requestJsonAsync(
+    `/api/projects/${encodedId}/updates/status?availability=refresh`,
+  );
+  assertManagedProjectionStale(status);
+  const afterStatus = await readMutationSentinelsAsync(projectRoot);
+  const plan = await requestJsonAsync(`/api/projects/${encodedId}/updates/plan`, {
+    method: 'POST',
+    body: JSON.stringify({ availability: 'refresh' }),
+  });
+  assertCompleteManagedPlan(plan);
+  const readOnlySentinels = await readMutationSentinelsAsync(projectRoot);
+  assert.deepEqual(readOnlySentinels, afterStatus);
+  const planTargets = normalizePlanTargets(readArray(plan, 'targets'));
+  assertManagedTargets(drifts, planTargets);
+
+  const { operationStatus, verified } = await applyAndVerifyStudioPlanAsync(encodedId, plan);
+  await assertManagedDriftsReconciledAsync(projectRoot, drifts);
+  return { readOnlySentinels, planTargets, operationStatus, verified };
+}
+
+/*** Require current Studio owner evidence to report the generated package policy as stale. */
+function assertManagedProjectionStale(status: Readonly<Record<string, unknown>>): void {
+  assert.equal(readOwnProperty(status, 'complete'), true);
+  const extensions = readObject(status, 'extensions');
+  const observations = readArray(extensions, 'observations').filter(isRecord);
+  assert.ok(
+    observations.some(
+      (observation) =>
+        readOwnProperty(observation, 'owner') === STUDIO_PACKAGE_NAME &&
+        readOwnProperty(observation, 'projection') === 'stale',
+    ),
+    'Expected generated package policy projection to be stale.',
+  );
+}
+
+/*** Fail with bounded APM evidence when the real generated-app owner plan is incomplete. */
+function assertCompleteManagedPlan(plan: Readonly<Record<string, unknown>>): void {
+  if (readOwnProperty(plan, 'complete') === true) return;
+  throw new Error(
+    `Generated owner plan is incomplete: ${JSON.stringify(
+      {
+        blockers: readOwnProperty(plan, 'blockers'),
+        diagnostics: readOwnProperty(plan, 'diagnostics'),
+      },
+      null,
+      2,
+    )}`,
+  );
+}
+
+/*** Require every deliberately drifted managed package to be selected away from its previous version. */
+function assertManagedTargets(
+  drifts: readonly ManagedDependencyDrift[],
+  targets: readonly PlanTargetEvidence[],
+): void {
+  for (const drift of drifts) {
+    const target = targets.find(({ name }) => name === drift.name);
+    assert.ok(target, `Missing reviewed target for ${drift.name}.`);
+    assert.equal(target.currentVersion, drift.previousVersion);
+    assert.notEqual(target.targetVersion, drift.previousVersion);
+  }
+}
+
+/*** Apply one reviewed Studio plan and run the separate durable verification pass. */
+async function applyAndVerifyStudioPlanAsync(
+  encodedProjectId: string,
+  plan: Readonly<Record<string, unknown>>,
+): Promise<{ readonly operationStatus: string; readonly verified: boolean }> {
+  const apply = await requestJsonAsync(`/api/projects/${encodedProjectId}/updates/apply`, {
+    method: 'POST',
+    body: JSON.stringify({
+      plan,
+      permissions: { ownerCode: true, lifecycleScripts: true, externalEffects: true },
+    }),
+  });
+  const operationStatus = readRequiredString(apply, 'status');
+  assert.equal(operationStatus, 'completed');
+  const operationId = readRequiredString(apply, 'operationId');
+  const verify = await requestJsonAsync(`/api/projects/${encodedProjectId}/updates/verify`, {
+    method: 'POST',
+    body: JSON.stringify({ operationId }),
+  });
+  const verified = readOwnProperty(verify, 'verified') === true;
+  assert.equal(verified, true);
+  return { operationStatus, verified };
+}
+
+/*** Confirm owner policy restored reviewed ranges and no drifted package remains on its previous version. */
+async function assertManagedDriftsReconciledAsync(
+  projectRoot: string,
+  drifts: readonly ManagedDependencyDrift[],
+): Promise<void> {
+  const manifest = await readJsonObjectAsync(path.join(projectRoot, 'package.json'));
+  await Promise.all(
+    drifts.map(async (drift) => {
+      const section = readOptionalObject(manifest, drift.section);
+      assert.equal(readOwnProperty(section, drift.name), drift.originalRange);
+      assert.notEqual(
+        await installedPackageVersionAsync(projectRoot, drift.name),
+        drift.previousVersion,
+      );
+    }),
+  );
 }
 
 async function installPublishedApmCliAsync(apmVersion: string): Promise<void> {
@@ -413,10 +690,15 @@ function assertLifecycleParity(studio: LifecycleEvidence, cli: LifecycleEvidence
   assert.equal(studio.operationStatus, cli.operationStatus);
   assert.equal(studio.verified, cli.verified);
   assert.deepEqual(
-    studio.statusFindings.filter(({ code }) => code !== 'host-update'),
+    studio.statusFindings.filter(
+      ({ code }) => code !== 'host-update' && code !== 'projection-stale',
+    ),
     cli.statusFindings,
   );
-  assert.deepEqual(studio.planTargets, cli.planTargets);
+  assert.deepEqual(
+    studio.planTargets.filter(({ name }) => name === DEPENDENCY_NAME),
+    cli.planTargets.filter(({ name }) => name === DEPENDENCY_NAME),
+  );
   assert.deepEqual(studio.planEffects, cli.planEffects);
   assert.deepEqual(studio.verificationFindings, cli.verificationFindings);
   assert.deepEqual(studio.followUp, cli.followUp);
@@ -469,8 +751,16 @@ async function readMutationSentinelsAsync(
 }
 
 async function installedDependencyVersionAsync(projectRoot: string): Promise<string> {
+  return installedPackageVersionAsync(projectRoot, DEPENDENCY_NAME);
+}
+
+/*** Read one installed package version from the generated app's physical node_modules graph. */
+async function installedPackageVersionAsync(
+  projectRoot: string,
+  packageName: string,
+): Promise<string> {
   const manifest = await readJsonObjectAsync(
-    path.join(projectRoot, 'node_modules', DEPENDENCY_NAME, 'package.json'),
+    path.join(projectRoot, 'node_modules', ...packageName.split('/'), 'package.json'),
   );
   return readRequiredString(manifest, 'version');
 }
