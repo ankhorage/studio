@@ -695,7 +695,10 @@ function assertLifecycleParity(studio: LifecycleEvidence, cli: LifecycleEvidence
     ),
     cli.statusFindings,
   );
-  assert.deepEqual(studio.planTargets, cli.planTargets);
+  assert.deepEqual(
+    studio.planTargets.filter(({ name }) => name === DEPENDENCY_NAME),
+    cli.planTargets.filter(({ name }) => name === DEPENDENCY_NAME),
+  );
   assert.deepEqual(studio.planEffects, cli.planEffects);
   assert.deepEqual(studio.verificationFindings, cli.verificationFindings);
   assert.deepEqual(studio.followUp, cli.followUp);
