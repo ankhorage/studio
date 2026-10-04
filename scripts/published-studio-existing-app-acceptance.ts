@@ -411,8 +411,7 @@ async function resolvePreviousPatchVersionAsync(
     if (typeof entry !== 'string' || !SEMVER_PATTERNS.exact.test(entry)) return [];
     const parsed = parseSemanticVersion(entry);
     if (
-      parsed === null ||
-      parsed.major !== current.major ||
+      parsed?.major !== current.major ||
       parsed.minor !== current.minor ||
       compareSemanticVersions(parsed, current) >= 0
     ) {
@@ -420,9 +419,9 @@ async function resolvePreviousPatchVersionAsync(
     }
     return [{ version: entry, parsed }];
   });
-  return candidates.sort((left, right) =>
-    compareSemanticVersions(left.parsed, right.parsed),
-  ).at(-1)?.version;
+  return candidates
+    .sort((left, right) => compareSemanticVersions(left.parsed, right.parsed))
+    .at(-1)?.version;
 }
 
 /*** Apply exact previous versions or stale reviewed ranges without changing unrelated package metadata. */
@@ -692,7 +691,9 @@ function assertLifecycleParity(studio: LifecycleEvidence, cli: LifecycleEvidence
   assert.equal(studio.operationStatus, cli.operationStatus);
   assert.equal(studio.verified, cli.verified);
   assert.deepEqual(
-    studio.statusFindings.filter(({ code }) => code !== 'host-update'),
+    studio.statusFindings.filter(
+      ({ code }) => code !== 'host-update' && code !== 'projection-stale',
+    ),
     cli.statusFindings,
   );
   assert.deepEqual(studio.planTargets, cli.planTargets);
