@@ -25,13 +25,13 @@ const INITIAL_DEPENDENCY_VERSION = '7.7.1';
 const DEPENDENCY_RANGE = '^7.7.1';
 const USER_FILE_NAME = 'USER_NOTES.md';
 const USER_FILE_CONTENT = '# User-owned note\n\nAPM must preserve this file.\n';
+// Devtools owns its own package.json range; Studio must preserve it, not test it as Studio-owned drift.
 const MANAGED_DEPENDENCY_CANDIDATES = [
   { name: '@ankhorage/contracts', section: 'dependencies' },
   { name: '@ankhorage/data-sources', section: 'dependencies' },
   { name: '@ankhorage/utility', section: 'dependencies' },
   { name: '@ankhorage/supabase-auth', section: 'dependencies' },
   { name: '@ankhorage/supabase-storage', section: 'dependencies' },
-  { name: '@ankhorage/devtools', section: 'devDependencies' },
 ] as const;
 
 const repositoryRoot = process.cwd();
