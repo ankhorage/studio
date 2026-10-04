@@ -221,7 +221,8 @@ function selectionForRange(
   ownerPath: string,
   range: string,
 ): SelectionResolution {
-  const targetVersion = newestKnownVersionInRange(dependency, range) ?? readManagedPackageRangeFloor(range);
+  const targetVersion =
+    newestKnownVersionInRange(dependency, range) ?? readManagedPackageRangeFloor(range);
   if (targetVersion === undefined) {
     return {
       blocker: unsupportedRangeBlocker(dependency.name, range),
