@@ -16,6 +16,8 @@ import {
 
 const execFileAsync = promisify(execFile);
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
+const PACKED_OWNER_UPGRADE_MODE = process.argv.includes('--packed-owner-upgrade');
+const PACKED_STUDIO_TARBALL = process.env.ANKH_STUDIO_PACKAGE_TARBALL;
 const COMMAND_TIMEOUT_MS = 300_000;
 const STUDIO_VERSION = await resolveLatestPublishedStudioVersionAsync();
 const DEPENDENCY_NAME = 'semver';
@@ -48,90 +50,16 @@ try {
     mkdir(cliToolRoot, { recursive: true }),
     mkdir(cacheRoot, { recursive: true }),
   ]);
-  await installPublishedStudioAsync();
-  const versions = await assertPublishedStudioConsumerAsync();
+  await installStudioUnderTestAsync();
+  const versions = await assertStudioConsumerAsync();
   const host = await startPublishedStudioHostAsync();
   try {
     await waitForHostAsync(host);
-    const projectId = await createExistingProjectAsync('Published Studio Existing App');
-    const projectRoot = path.join(workspaceRoot, 'apps', projectId);
-    await introduceSupportedDependencyDriftAsync(projectRoot);
-    await writeFile(path.join(projectRoot, USER_FILE_NAME), USER_FILE_CONTENT, 'utf8');
-    await copyProjectBaselineAsync(projectRoot, cliProjectRoot);
-    await installProjectAsync(cliProjectRoot);
-
-    const before = await readMutationSentinelsAsync(projectRoot);
-    const studio = await runStudioLifecycleAsync(projectId, projectRoot);
-    assert.deepEqual(studio.readOnlySentinels, before);
-
-    await installPublishedApmCliAsync(versions.apmVersion);
-    const cli = await runCliLifecycleAsync(cliProjectRoot);
-    assertLifecycleParity(studio, cli);
-
-    const studioInstalled = await installedDependencyVersionAsync(projectRoot);
-    const cliInstalled = await installedDependencyVersionAsync(cliProjectRoot);
-    assert.equal(studioInstalled, studio.targetVersion);
-    assert.equal(cliInstalled, cli.targetVersion);
-    assert.equal(studioInstalled, cliInstalled);
-    assert.equal(
-      await readFile(path.join(projectRoot, 'bun.lock'), 'utf8'),
-      await readFile(path.join(cliProjectRoot, 'bun.lock'), 'utf8'),
-    );
-    assert.equal(await readFile(path.join(projectRoot, USER_FILE_NAME), 'utf8'), USER_FILE_CONTENT);
-
-    const managedProjectId = await createExistingProjectAsync('Published Studio Managed Update');
-    const managedProjectRoot = path.join(workspaceRoot, 'apps', managedProjectId);
-    await writeFile(path.join(managedProjectRoot, USER_FILE_NAME), USER_FILE_CONTENT, 'utf8');
-    const managedDrifts = await introduceGeneratedPolicyDriftAsync(managedProjectRoot);
-    const managedBefore = await readMutationSentinelsAsync(managedProjectRoot);
-    const managed = await runStudioManagedLifecycleAsync(
-      managedProjectId,
-      managedProjectRoot,
-      managedDrifts,
-    );
-    assert.deepEqual(managed.readOnlySentinels, managedBefore);
-    assert.equal(
-      await readFile(path.join(managedProjectRoot, USER_FILE_NAME), 'utf8'),
-      USER_FILE_CONTENT,
-    );
-
-    console.log(
-      JSON.stringify(
-        {
-          studioVersion: versions.studioVersion,
-          apmVersion: versions.apmVersion,
-          packageManager: 'bun',
-          projectId,
-          dependency: DEPENDENCY_NAME,
-          from: INITIAL_DEPENDENCY_VERSION,
-          to: studio.targetVersion,
-          parity: {
-            findings: studio.statusFindings.length,
-            targets: studio.planTargets.length,
-            planEffects: studio.planEffects.length,
-            followUp: studio.followUp.length,
-          },
-          managedOwnerUpdate: {
-            projectId: managedProjectId,
-            drifted: managedDrifts.map(({ name, previousVersion }) => ({
-              name,
-              previousVersion,
-            })),
-            targets: managed.planTargets.map(({ name, currentVersion, targetVersion }) => ({
-              name,
-              currentVersion,
-              targetVersion,
-            })),
-            verified: managed.verified,
-          },
-          omittedPlatformEvidence: [
-            'No cloud/store deployment is performed; shipment work is compared as structured APM follow-up evidence.',
-          ],
-        },
-        null,
-        2,
-      ),
-    );
+    if (PACKED_OWNER_UPGRADE_MODE) {
+      await runManagedOwnerUpgradeAcceptanceAsync(versions);
+    } else {
+      await runPublishedParityAcceptanceAsync(versions);
+    }
   } finally {
     await stopHostAsync(host);
   }
@@ -205,17 +133,132 @@ interface PlanTargetEvidence {
   readonly reason: string;
 }
 
-async function installPublishedStudioAsync(): Promise<void> {
+/*** Exercise the long-standing published Studio lifecycle and standalone APM CLI parity scenario. */
+async function runPublishedParityAcceptanceAsync(versions: {
+  readonly studioVersion: string;
+  readonly apmVersion: string;
+}): Promise<void> {
+  const projectId = await createExistingProjectAsync('Published Studio Existing App');
+  const projectRoot = path.join(workspaceRoot, 'apps', projectId);
+  await introduceSupportedDependencyDriftAsync(projectRoot);
+  await writeFile(path.join(projectRoot, USER_FILE_NAME), USER_FILE_CONTENT, 'utf8');
+  await copyProjectBaselineAsync(projectRoot, cliProjectRoot);
+  await installProjectAsync(cliProjectRoot);
+
+  const before = await readMutationSentinelsAsync(projectRoot);
+  const studio = await runStudioLifecycleAsync(projectId, projectRoot);
+  assert.deepEqual(studio.readOnlySentinels, before);
+
+  await installPublishedApmCliAsync(versions.apmVersion);
+  const cli = await runCliLifecycleAsync(cliProjectRoot);
+  assertLifecycleParity(studio, cli);
+
+  const studioInstalled = await installedDependencyVersionAsync(projectRoot);
+  const cliInstalled = await installedDependencyVersionAsync(cliProjectRoot);
+  assert.equal(studioInstalled, studio.targetVersion);
+  assert.equal(cliInstalled, cli.targetVersion);
+  assert.equal(studioInstalled, cliInstalled);
+  assert.equal(
+    await readFile(path.join(projectRoot, 'bun.lock'), 'utf8'),
+    await readFile(path.join(cliProjectRoot, 'bun.lock'), 'utf8'),
+  );
+  assert.equal(await readFile(path.join(projectRoot, USER_FILE_NAME), 'utf8'), USER_FILE_CONTENT);
+
+  console.log(
+    JSON.stringify(
+      {
+        studioVersion: versions.studioVersion,
+        apmVersion: versions.apmVersion,
+        packageManager: 'bun',
+        projectId,
+        dependency: DEPENDENCY_NAME,
+        from: INITIAL_DEPENDENCY_VERSION,
+        to: studio.targetVersion,
+        parity: {
+          findings: studio.statusFindings.length,
+          targets: studio.planTargets.length,
+          planEffects: studio.planEffects.length,
+          followUp: studio.followUp.length,
+        },
+        omittedPlatformEvidence: [
+          'No cloud/store deployment is performed; shipment work is compared as structured APM follow-up evidence.',
+        ],
+      },
+      null,
+      2,
+    ),
+  );
+}
+
+/*** Exercise the generated-owner upgrade exclusively against the packed pull-request Studio artifact. */
+async function runManagedOwnerUpgradeAcceptanceAsync(versions: {
+  readonly studioVersion: string;
+  readonly apmVersion: string;
+}): Promise<void> {
+  const managedProjectId = await createExistingProjectAsync('Packed Studio Managed Update');
+  const managedProjectRoot = path.join(workspaceRoot, 'apps', managedProjectId);
+  await writeFile(path.join(managedProjectRoot, USER_FILE_NAME), USER_FILE_CONTENT, 'utf8');
+  const managedDrifts = await introduceGeneratedPolicyDriftAsync(managedProjectRoot);
+  const managedBefore = await readMutationSentinelsAsync(managedProjectRoot);
+  const managed = await runStudioManagedLifecycleAsync(
+    managedProjectId,
+    managedProjectRoot,
+    managedDrifts,
+  );
+  assert.deepEqual(managed.readOnlySentinels, managedBefore);
+  assert.equal(
+    await readFile(path.join(managedProjectRoot, USER_FILE_NAME), 'utf8'),
+    USER_FILE_CONTENT,
+  );
+
+  console.log(
+    JSON.stringify(
+      {
+        studioVersion: versions.studioVersion,
+        apmVersion: versions.apmVersion,
+        packageManager: 'bun',
+        managedOwnerUpdate: {
+          projectId: managedProjectId,
+          drifted: managedDrifts.map(({ name, previousVersion }) => ({
+            name,
+            previousVersion,
+          })),
+          targets: managed.planTargets.map(({ name, currentVersion, targetVersion }) => ({
+            name,
+            currentVersion,
+            targetVersion,
+          })),
+          verified: managed.verified,
+        },
+      },
+      null,
+      2,
+    ),
+  );
+}
+
+async function installStudioUnderTestAsync(): Promise<void> {
+  const dependencySpec = PACKED_OWNER_UPGRADE_MODE
+    ? resolvePackedStudioPackageSpec()
+    : STUDIO_VERSION;
   await writeJsonAsync(path.join(studioToolRoot, 'package.json'), {
     name: 'published-studio-existing-app-consumer',
     private: true,
     type: 'module',
-    dependencies: { [STUDIO_PACKAGE_NAME]: STUDIO_VERSION },
+    dependencies: { [STUDIO_PACKAGE_NAME]: dependencySpec },
   });
   await runCommandAsync('bun', ['install', '--ignore-scripts'], studioToolRoot);
 }
 
-async function assertPublishedStudioConsumerAsync(): Promise<{
+/*** Resolve the packed PR artifact as an explicit local package spec for the owner-upgrade gate. */
+function resolvePackedStudioPackageSpec(): string {
+  if (PACKED_STUDIO_TARBALL === undefined || PACKED_STUDIO_TARBALL.length === 0) {
+    throw new Error('Packed owner-upgrade acceptance requires ANKH_STUDIO_PACKAGE_TARBALL.');
+  }
+  return `file:${path.resolve(PACKED_STUDIO_TARBALL)}`;
+}
+
+async function assertStudioConsumerAsync(): Promise<{
   readonly studioVersion: string;
   readonly apmVersion: string;
 }> {
@@ -243,9 +286,15 @@ async function assertPublishedStudioConsumerAsync(): Promise<{
   if (isWithin(path.dirname(studioPackagePath), repositoryRoot)) {
     throw new Error('Published Studio acceptance resolved Studio from the repository checkout.');
   }
-  assert.equal(readOwnProperty(studioPackage, 'version'), STUDIO_VERSION);
+  const studioVersion = readRequiredString(studioPackage, 'version');
+  if (PACKED_OWNER_UPGRADE_MODE) {
+    const repositoryPackage = await readJsonObjectAsync(path.join(repositoryRoot, 'package.json'));
+    assert.equal(studioVersion, readRequiredString(repositoryPackage, 'version'));
+  } else {
+    assert.equal(studioVersion, STUDIO_VERSION);
+  }
   return {
-    studioVersion: readRequiredString(studioPackage, 'version'),
+    studioVersion,
     apmVersion: readRequiredString(apmPackage, 'version'),
   };
 }

@@ -43,5 +43,17 @@ jobs:
       - name: Validate published Studio existing-app lifecycle and CLI parity
         run: bun scripts/published-studio-existing-app-acceptance.ts
 
+      - name: Pack PR Studio artifact
+        run: |
+          bun run build
+          mkdir -p "$RUNNER_TEMP/studio-pack"
+          bun pm pack --destination "$RUNNER_TEMP/studio-pack" --quiet
+          tarball="$(find "$RUNNER_TEMP/studio-pack" -maxdepth 1 -type f -name '*.tgz' -print -quit)"
+          test -n "$tarball"
+          printf 'ANKH_STUDIO_PACKAGE_TARBALL=%s\n' "$tarball" >> "$GITHUB_ENV"
+
+      - name: Validate packed PR generated-owner upgrade
+        run: bun scripts/published-studio-existing-app-acceptance.ts --packed-owner-upgrade
+
       - name: Validate published Studio host restart boundary
         run: bun scripts/published-studio-restart-boundary-acceptance.ts
