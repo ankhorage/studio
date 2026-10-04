@@ -2,4 +2,4 @@
 '@ankhorage/studio': patch
 ---
 
-Permanently verify that a previously generated app with stale Studio-managed dependency policy can be planned, applied, and verified through the published Studio/APM update lifecycle without regeneration or loss of user-owned files.
+Keep generated-app Ankhorage dependency ranges monotonic so Studio owner reconciliation can raise stale floors but never lower already-newer internal package ranges, and permanently verify the published generated-app update lifecycle in place.
