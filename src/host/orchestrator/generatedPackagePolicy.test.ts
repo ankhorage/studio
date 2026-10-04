@@ -1,3 +1,4 @@
+import { parseSemanticVersion } from '@ankhorage/utility/semver';
 import { expect, test } from 'bun:test';
 
 import { getGeneratedPackagePolicy } from '../../features/project-updates/adapters/outbound/getGeneratedPackagePolicy';
@@ -78,6 +79,54 @@ test('does not introduce optional generated dependencies when their capability i
   expect(Object.hasOwn(packageJson.dependencies, '@react-native-picker/picker')).toBe(false);
 });
 
+test('never lowers already-newer Ankhorage dependency floors', () => {
+  const policy = getGeneratedPackagePolicy();
+  const basePackageJson = getPackageJson({
+    name: 'fixture',
+    includeStudio: true,
+    authProvider: 'supabase',
+    storageProvider: 'supabase',
+    targets: WEB_TARGETS,
+  });
+  const newerContracts = nextMinorCaretRange(policy.dependencies.contracts);
+  const newerDevtools = nextMinorCaretRange(policy.devDependencies.devtools);
+
+  const updated = applyGeneratedPackagePolicy(
+    {
+      ...basePackageJson,
+      dependencies: {
+        ...basePackageJson.dependencies,
+        '@ankhorage/contracts': newerContracts,
+      },
+      devDependencies: {
+        ...basePackageJson.devDependencies,
+        '@ankhorage/devtools': newerDevtools,
+      },
+    },
+    policy,
+  );
+
+  expect(updated.dependencies['@ankhorage/contracts']).toBe(newerContracts);
+  expect(updated.devDependencies['@ankhorage/devtools']).toBe(newerDevtools);
+
+  const raised = applyGeneratedPackagePolicy(
+    {
+      ...basePackageJson,
+      dependencies: {
+        ...basePackageJson.dependencies,
+        '@ankhorage/contracts': '^0.0.1',
+      },
+      devDependencies: {
+        ...basePackageJson.devDependencies,
+        '@ankhorage/devtools': '^0.0.1',
+      },
+    },
+    policy,
+  );
+  expect(raised.dependencies['@ankhorage/contracts']).toBe(policy.dependencies.contracts);
+  expect(raised.devDependencies['@ankhorage/devtools']).toBe(policy.devDependencies.devtools);
+});
+
 test('removes obsolete standalone ZORA plugin dependencies from generated apps', () => {
   const policy = getGeneratedPackagePolicy();
   const basePackageJson = getPackageJson({
@@ -107,3 +156,12 @@ test('removes obsolete standalone ZORA plugin dependencies from generated apps',
     expect(Object.hasOwn(updated.dependencies, packageName)).toBe(false);
   }
 });
+
+
+/*** Create a caret range whose semantic-version floor is newer than the supplied managed range. */
+function nextMinorCaretRange(range: string): string {
+  const exact = range.startsWith('^') || range.startsWith('~') ? range.slice(1) : range;
+  const parsed = parseSemanticVersion(exact);
+  if (parsed === null) throw new Error(`Expected managed semver range, received ${range}.`);
+  return `^${parsed.major}.${parsed.minor + 1}.0`;
+}
