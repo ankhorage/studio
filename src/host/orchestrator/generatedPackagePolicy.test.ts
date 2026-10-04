@@ -157,7 +157,6 @@ test('removes obsolete standalone ZORA plugin dependencies from generated apps',
   }
 });
 
-
 /*** Create a caret range whose semantic-version floor is newer than the supplied managed range. */
 function nextMinorCaretRange(range: string): string {
   const exact = range.startsWith('^') || range.startsWith('~') ? range.slice(1) : range;
