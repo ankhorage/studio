@@ -17,7 +17,7 @@ import {
 const execFileAsync = promisify(execFile);
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
 const PACKED_OWNER_UPGRADE_MODE = process.argv.includes('--packed-owner-upgrade');
-const PACKED_STUDIO_TARBALL = process.env.ANKH_STUDIO_PACKAGE_TARBALL;
+const PACKED_STUDIO_TARBALL: unknown = process.env.ANKH_STUDIO_PACKAGE_TARBALL;
 const COMMAND_TIMEOUT_MS = 300_000;
 const STUDIO_VERSION = await resolveLatestPublishedStudioVersionAsync();
 const DEPENDENCY_NAME = 'semver';
@@ -252,7 +252,7 @@ async function installStudioUnderTestAsync(): Promise<void> {
 
 /*** Resolve the packed PR artifact as an explicit local package spec for the owner-upgrade gate. */
 function resolvePackedStudioPackageSpec(): string {
-  if (PACKED_STUDIO_TARBALL === undefined || PACKED_STUDIO_TARBALL.length === 0) {
+  if (typeof PACKED_STUDIO_TARBALL !== 'string' || PACKED_STUDIO_TARBALL.length === 0) {
     throw new Error('Packed owner-upgrade acceptance requires ANKH_STUDIO_PACKAGE_TARBALL.');
   }
   return `file:${path.resolve(PACKED_STUDIO_TARBALL)}`;
