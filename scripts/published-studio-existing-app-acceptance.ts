@@ -419,9 +419,9 @@ async function resolvePreviousPatchVersionAsync(
     }
     return [{ version: entry, parsed }];
   });
-  return candidates.sort((left, right) =>
-    compareSemanticVersions(left.parsed, right.parsed),
-  ).at(-1)?.version;
+  return candidates
+    .sort((left, right) => compareSemanticVersions(left.parsed, right.parsed))
+    .at(-1)?.version;
 }
 
 /*** Apply exact previous versions or stale reviewed ranges without changing unrelated package metadata. */
