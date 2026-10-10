@@ -32,7 +32,7 @@
     "prebuild": "expo prebuild --clean --no-install"
   },
   "dependencies": {
-    "@ankhorage/expo-runtime": "^4.0.49",
+    "@ankhorage/expo-runtime": "^6.0.0",
     "@ankhorage/studio": "^7.0.1",
     "@expo/metro-runtime": "~57.0.16",
     "@react-native-vector-icons/fontawesome": "^13.1.4",
