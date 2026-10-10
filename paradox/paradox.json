@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v7.0.1",
+      "value": "v7.0.2",
       "color": "cb3837"
     },
     {
@@ -1653,6 +1653,7 @@
         "src/features/project-updates/adapters/outbound/resolveCurrentStudioApmArtifactAsync.ts",
         "src/features/project-updates/constants.ts",
         "src/features/project-updates/domain/createStudioGeneratedPackagePolicyExecutionContext.ts",
+        "src/features/project-updates/domain/readManagedPackageRangeFloor.ts",
         "src/features/project-updates/domain/readStudioGeneratedPackagePolicyMutationTarget.ts",
         "src/features/project-updates/domain/readStudioGeneratedPackagePolicyStatusSource.ts",
         "src/types/project-updates.ts"
@@ -1855,6 +1856,7 @@
       "path": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/project-updates/domain/readManagedPackageRangeFloor.ts",
         "src/types/project-updates.ts"
       ],
       "exports": [
@@ -1891,6 +1893,14 @@
       "exports": [
         "readReviewedPendingModuleStep",
         "ReviewedPendingModuleStep"
+      ]
+    },
+    {
+      "path": "src/features/project-updates/domain/readManagedPackageRangeFloor.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "readManagedPackageRangeFloor"
       ]
     },
     {
@@ -18151,7 +18161,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 48,
+        "line": 49,
         "column": 1
       }
     },
@@ -18162,7 +18172,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 72,
+        "line": 73,
         "column": 1
       }
     },
@@ -18173,7 +18183,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 83,
+        "line": 84,
         "column": 1
       }
     },
@@ -18184,7 +18194,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 107,
+        "line": 108,
         "column": 1
       }
     },
@@ -18195,7 +18205,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 131,
+        "line": 132,
         "column": 1
       }
     },
@@ -18206,7 +18216,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 154,
+        "line": 155,
         "column": 1
       }
     },
@@ -18217,7 +18227,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 176,
+        "line": 177,
         "column": 1
       }
     },
@@ -18228,7 +18238,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 203,
+        "line": 204,
         "column": 1
       }
     },
@@ -18239,7 +18249,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 218,
+        "line": 219,
         "column": 1
       }
     },
@@ -18250,7 +18260,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 243,
+        "line": 245,
         "column": 1
       }
     },
@@ -18261,7 +18271,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 252,
+        "line": 254,
         "column": 1
       }
     },
@@ -18272,18 +18282,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 261,
-        "column": 1
-      }
-    },
-    {
-      "name": "managedRangeFloor",
-      "description": "Return the exact minimum version represented by Studio's managed exact/caret/tilde ranges.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 283,
+        "line": 263,
         "column": 1
       }
     },
@@ -18294,7 +18293,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 289,
+        "line": 285,
         "column": 1
       }
     },
@@ -18305,7 +18304,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 303,
+        "line": 299,
         "column": 1
       }
     },
@@ -18316,7 +18315,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 315,
+        "line": 311,
         "column": 1
       }
     },
@@ -18327,7 +18326,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
-        "line": 329,
+        "line": 325,
         "column": 1
       }
     },
@@ -18998,7 +18997,18 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts",
-        "line": 14,
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "monotonicAnkhorageRange",
+      "description": "Preserve an already-higher Ankhorage dependency floor while still allowing Studio policy to raise stale floors.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts",
+        "line": 112,
         "column": 1
       }
     },
@@ -19098,6 +19108,17 @@
       "sourceLocation": {
         "filePath": "src/features/project-updates/domain/pendingModulePlanStep.ts",
         "line": 31,
+        "column": 1
+      }
+    },
+    {
+      "name": "readManagedPackageRangeFloor",
+      "description": "Return the exact semantic-version floor represented by Studio-managed exact/caret/tilde ranges.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/project-updates/domain/readManagedPackageRangeFloor.ts",
+        "line": 4,
         "column": 1
       }
     },
@@ -23894,6 +23915,17 @@
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
         "line": 230,
+        "column": 1
+      }
+    },
+    {
+      "name": "nextMinorCaretRange",
+      "description": "Create a caret range whose semantic-version floor is newer than the supplied managed range.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/generatedPackagePolicy.test.ts",
+        "line": 161,
         "column": 1
       }
     },
@@ -36641,6 +36673,11 @@
       },
       {
         "fromPath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
+        "toPath": "src/features/project-updates/domain/readManagedPackageRangeFloor.ts",
+        "sourcePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
         "toPath": "src/features/project-updates/domain/readStudioGeneratedPackagePolicyMutationTarget.ts",
         "sourcePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts"
       },
@@ -36922,6 +36959,11 @@
       {
         "fromPath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts",
         "toPath": "src/types/project-updates.ts",
+        "sourcePath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts"
+      },
+      {
+        "fromPath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts",
+        "toPath": "src/features/project-updates/domain/readManagedPackageRangeFloor.ts",
         "sourcePath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts"
       },
       {
@@ -39289,14 +39331,14 @@
       },
       {
         "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "installPublishedStudioAsync",
-        "callExpression": "installPublishedStudioAsync",
+        "toSymbol": "installStudioUnderTestAsync",
+        "callExpression": "installStudioUnderTestAsync",
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
       },
       {
         "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "assertPublishedStudioConsumerAsync",
-        "callExpression": "assertPublishedStudioConsumerAsync",
+        "toSymbol": "assertStudioConsumerAsync",
+        "callExpression": "assertStudioConsumerAsync",
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
       },
       {
@@ -39313,74 +39355,14 @@
       },
       {
         "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "createExistingProjectAsync",
-        "callExpression": "createExistingProjectAsync",
+        "toSymbol": "runManagedOwnerUpgradeAcceptanceAsync",
+        "callExpression": "runManagedOwnerUpgradeAcceptanceAsync",
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
       },
       {
         "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "introduceSupportedDependencyDriftAsync",
-        "callExpression": "introduceSupportedDependencyDriftAsync",
-        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
-      },
-      {
-        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "writeFile",
-        "callExpression": "writeFile",
-        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
-      },
-      {
-        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "copyProjectBaselineAsync",
-        "callExpression": "copyProjectBaselineAsync",
-        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
-      },
-      {
-        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "installProjectAsync",
-        "callExpression": "installProjectAsync",
-        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
-      },
-      {
-        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "readMutationSentinelsAsync",
-        "callExpression": "readMutationSentinelsAsync",
-        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
-      },
-      {
-        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "runStudioLifecycleAsync",
-        "callExpression": "runStudioLifecycleAsync",
-        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
-      },
-      {
-        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "installPublishedApmCliAsync",
-        "callExpression": "installPublishedApmCliAsync",
-        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
-      },
-      {
-        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "runCliLifecycleAsync",
-        "callExpression": "runCliLifecycleAsync",
-        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
-      },
-      {
-        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "assertLifecycleParity",
-        "callExpression": "assertLifecycleParity",
-        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
-      },
-      {
-        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "installedDependencyVersionAsync",
-        "callExpression": "installedDependencyVersionAsync",
-        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
-      },
-      {
-        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
+        "toSymbol": "runPublishedParityAcceptanceAsync",
+        "callExpression": "runPublishedParityAcceptanceAsync",
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
       },
       {
@@ -39402,43 +39384,151 @@
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
       },
       {
-        "fromSymbol": "installPublishedStudioAsync",
+        "fromSymbol": "runPublishedParityAcceptanceAsync",
+        "toSymbol": "createExistingProjectAsync",
+        "callExpression": "createExistingProjectAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runPublishedParityAcceptanceAsync",
+        "toSymbol": "introduceSupportedDependencyDriftAsync",
+        "callExpression": "introduceSupportedDependencyDriftAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runPublishedParityAcceptanceAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runPublishedParityAcceptanceAsync",
+        "toSymbol": "copyProjectBaselineAsync",
+        "callExpression": "copyProjectBaselineAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runPublishedParityAcceptanceAsync",
+        "toSymbol": "installProjectAsync",
+        "callExpression": "installProjectAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runPublishedParityAcceptanceAsync",
+        "toSymbol": "readMutationSentinelsAsync",
+        "callExpression": "readMutationSentinelsAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runPublishedParityAcceptanceAsync",
+        "toSymbol": "runStudioLifecycleAsync",
+        "callExpression": "runStudioLifecycleAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runPublishedParityAcceptanceAsync",
+        "toSymbol": "installPublishedApmCliAsync",
+        "callExpression": "installPublishedApmCliAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runPublishedParityAcceptanceAsync",
+        "toSymbol": "runCliLifecycleAsync",
+        "callExpression": "runCliLifecycleAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runPublishedParityAcceptanceAsync",
+        "toSymbol": "assertLifecycleParity",
+        "callExpression": "assertLifecycleParity",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runPublishedParityAcceptanceAsync",
+        "toSymbol": "installedDependencyVersionAsync",
+        "callExpression": "installedDependencyVersionAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runPublishedParityAcceptanceAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runManagedOwnerUpgradeAcceptanceAsync",
+        "toSymbol": "createExistingProjectAsync",
+        "callExpression": "createExistingProjectAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runManagedOwnerUpgradeAcceptanceAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runManagedOwnerUpgradeAcceptanceAsync",
+        "toSymbol": "introduceGeneratedPolicyDriftAsync",
+        "callExpression": "introduceGeneratedPolicyDriftAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runManagedOwnerUpgradeAcceptanceAsync",
+        "toSymbol": "readMutationSentinelsAsync",
+        "callExpression": "readMutationSentinelsAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runManagedOwnerUpgradeAcceptanceAsync",
+        "toSymbol": "runStudioManagedLifecycleAsync",
+        "callExpression": "runStudioManagedLifecycleAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runManagedOwnerUpgradeAcceptanceAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "installStudioUnderTestAsync",
+        "toSymbol": "resolvePackedStudioPackageSpec",
+        "callExpression": "resolvePackedStudioPackageSpec",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "installStudioUnderTestAsync",
         "toSymbol": "writeJsonAsync",
         "callExpression": "writeJsonAsync",
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
       },
       {
-        "fromSymbol": "installPublishedStudioAsync",
+        "fromSymbol": "installStudioUnderTestAsync",
         "toSymbol": "runCommandAsync",
         "callExpression": "runCommandAsync",
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
       },
       {
-        "fromSymbol": "assertPublishedStudioConsumerAsync",
+        "fromSymbol": "assertStudioConsumerAsync",
         "toSymbol": "readJsonObjectAsync",
         "callExpression": "readJsonObjectAsync",
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
       },
       {
-        "fromSymbol": "assertPublishedStudioConsumerAsync",
+        "fromSymbol": "assertStudioConsumerAsync",
         "toSymbol": "readObject",
         "callExpression": "readObject",
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
       },
       {
-        "fromSymbol": "assertPublishedStudioConsumerAsync",
+        "fromSymbol": "assertStudioConsumerAsync",
         "toSymbol": "isWithin",
         "callExpression": "isWithin",
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
       },
       {
-        "fromSymbol": "assertPublishedStudioConsumerAsync",
-        "toSymbol": "readOwnProperty",
-        "callExpression": "readOwnProperty",
-        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
-      },
-      {
-        "fromSymbol": "assertPublishedStudioConsumerAsync",
+        "fromSymbol": "assertStudioConsumerAsync",
         "toSymbol": "readRequiredString",
         "callExpression": "readRequiredString",
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
@@ -39534,6 +39624,96 @@
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
       },
       {
+        "fromSymbol": "introduceGeneratedPolicyDriftAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "introduceGeneratedPolicyDriftAsync",
+        "toSymbol": "readJsonObjectAsync",
+        "callExpression": "readJsonObjectAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "resolveManagedDependencyDriftAsync",
+        "callExpression": "resolveManagedDependencyDriftAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "introduceGeneratedPolicyDriftAsync",
+        "toSymbol": "writeJsonAsync",
+        "callExpression": "writeJsonAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "introduceGeneratedPolicyDriftAsync",
+        "toSymbol": "applyManagedDriftValues",
+        "callExpression": "applyManagedDriftValues",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "installedPackageVersionAsync",
+        "callExpression": "installedPackageVersionAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "resolveManagedDependencyDriftAsync",
+        "toSymbol": "readOptionalObject",
+        "callExpression": "readOptionalObject",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "resolveManagedDependencyDriftAsync",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "resolveManagedDependencyDriftAsync",
+        "toSymbol": "installedPackageVersionAsync",
+        "callExpression": "installedPackageVersionAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "resolveManagedDependencyDriftAsync",
+        "toSymbol": "resolvePreviousPatchVersionAsync",
+        "callExpression": "resolvePreviousPatchVersionAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "resolvePreviousPatchVersionAsync",
+        "toSymbol": "parseSemanticVersion",
+        "callExpression": "parseSemanticVersion",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "resolvePreviousPatchVersionAsync",
+        "toSymbol": "execFileAsync",
+        "callExpression": "execFileAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "parseSemanticVersion",
+        "callExpression": "parseSemanticVersion",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "compareSemanticVersions",
+        "callExpression": "compareSemanticVersions",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "applyManagedDriftValues",
+        "toSymbol": "readOptionalObject",
+        "callExpression": "readOptionalObject",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
         "fromSymbol": "copyProjectBaselineAsync",
         "toSymbol": "cp",
         "callExpression": "cp",
@@ -39579,6 +39759,120 @@
         "fromSymbol": "runStudioLifecycleAsync",
         "toSymbol": "lifecycleEvidence",
         "callExpression": "lifecycleEvidence",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioManagedLifecycleAsync",
+        "toSymbol": "requestJsonAsync",
+        "callExpression": "requestJsonAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioManagedLifecycleAsync",
+        "toSymbol": "assertManagedProjectionStale",
+        "callExpression": "assertManagedProjectionStale",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioManagedLifecycleAsync",
+        "toSymbol": "readMutationSentinelsAsync",
+        "callExpression": "readMutationSentinelsAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioManagedLifecycleAsync",
+        "toSymbol": "assertCompleteManagedPlan",
+        "callExpression": "assertCompleteManagedPlan",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioManagedLifecycleAsync",
+        "toSymbol": "normalizePlanTargets",
+        "callExpression": "normalizePlanTargets",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioManagedLifecycleAsync",
+        "toSymbol": "readArray",
+        "callExpression": "readArray",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioManagedLifecycleAsync",
+        "toSymbol": "assertManagedTargets",
+        "callExpression": "assertManagedTargets",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioManagedLifecycleAsync",
+        "toSymbol": "applyAndVerifyStudioPlanAsync",
+        "callExpression": "applyAndVerifyStudioPlanAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "runStudioManagedLifecycleAsync",
+        "toSymbol": "assertManagedDriftsReconciledAsync",
+        "callExpression": "assertManagedDriftsReconciledAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertManagedProjectionStale",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertManagedProjectionStale",
+        "toSymbol": "readObject",
+        "callExpression": "readObject",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertManagedProjectionStale",
+        "toSymbol": "readArray",
+        "callExpression": "readArray",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertCompleteManagedPlan",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "applyAndVerifyStudioPlanAsync",
+        "toSymbol": "requestJsonAsync",
+        "callExpression": "requestJsonAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "applyAndVerifyStudioPlanAsync",
+        "toSymbol": "readRequiredString",
+        "callExpression": "readRequiredString",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "applyAndVerifyStudioPlanAsync",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "assertManagedDriftsReconciledAsync",
+        "toSymbol": "readJsonObjectAsync",
+        "callExpression": "readJsonObjectAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
+        "toSymbol": "readOptionalObject",
+        "callExpression": "readOptionalObject",
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
       },
       {
@@ -39666,12 +39960,6 @@
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
       },
       {
-        "fromSymbol": "scripts/published-studio-existing-app-acceptance.ts",
-        "toSymbol": "readOwnProperty",
-        "callExpression": "readOwnProperty",
-        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
-      },
-      {
         "fromSymbol": "normalizeStatusFindings",
         "toSymbol": "normalizeFindings",
         "callExpression": "normalizeFindings",
@@ -39685,12 +39973,18 @@
       },
       {
         "fromSymbol": "installedDependencyVersionAsync",
+        "toSymbol": "installedPackageVersionAsync",
+        "callExpression": "installedPackageVersionAsync",
+        "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "installedPackageVersionAsync",
         "toSymbol": "readJsonObjectAsync",
         "callExpression": "readJsonObjectAsync",
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
       },
       {
-        "fromSymbol": "installedDependencyVersionAsync",
+        "fromSymbol": "installedPackageVersionAsync",
         "toSymbol": "readRequiredString",
         "callExpression": "readRequiredString",
         "sourcePath": "scripts/published-studio-existing-app-acceptance.ts"
@@ -61141,8 +61435,20 @@
       },
       {
         "fromSymbol": "src/host/orchestrator/generatedPackagePolicy.test.ts",
+        "toSymbol": "nextMinorCaretRange",
+        "callExpression": "nextMinorCaretRange",
+        "sourcePath": "src/host/orchestrator/generatedPackagePolicy.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/generatedPackagePolicy.test.ts",
         "toSymbol": "applyGeneratedPackagePolicy",
         "callExpression": "applyGeneratedPackagePolicy",
+        "sourcePath": "src/host/orchestrator/generatedPackagePolicy.test.ts"
+      },
+      {
+        "fromSymbol": "nextMinorCaretRange",
+        "toSymbol": "parseSemanticVersion",
+        "callExpression": "parseSemanticVersion",
         "sourcePath": "src/host/orchestrator/generatedPackagePolicy.test.ts"
       },
       {
@@ -67027,8 +67333,8 @@
       },
       {
         "fromSymbol": "selectionForRange",
-        "toSymbol": "managedRangeFloor",
-        "callExpression": "managedRangeFloor",
+        "toSymbol": "readManagedPackageRangeFloor",
+        "callExpression": "readManagedPackageRangeFloor",
         "sourcePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts"
       },
       {
@@ -67065,12 +67371,6 @@
         "fromSymbol": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts",
         "toSymbol": "compareSemanticVersions",
         "callExpression": "compareSemanticVersions",
-        "sourcePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts"
-      },
-      {
-        "fromSymbol": "managedRangeFloor",
-        "toSymbol": "parseSemanticVersion",
-        "callExpression": "parseSemanticVersion",
         "sourcePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyProtocolPort.ts"
       },
       {
@@ -67962,6 +68262,30 @@
         "sourcePath": "src/features/project-updates/composition/runWithStudioProjectWriterLockAsync.ts"
       },
       {
+        "fromSymbol": "applyGeneratedPackagePolicy",
+        "toSymbol": "monotonicAnkhorageRange",
+        "callExpression": "monotonicAnkhorageRange",
+        "sourcePath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts"
+      },
+      {
+        "fromSymbol": "monotonicAnkhorageRange",
+        "toSymbol": "readManagedPackageRangeFloor",
+        "callExpression": "readManagedPackageRangeFloor",
+        "sourcePath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts"
+      },
+      {
+        "fromSymbol": "monotonicAnkhorageRange",
+        "toSymbol": "parseSemanticVersion",
+        "callExpression": "parseSemanticVersion",
+        "sourcePath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts"
+      },
+      {
+        "fromSymbol": "monotonicAnkhorageRange",
+        "toSymbol": "compareSemanticVersions",
+        "callExpression": "compareSemanticVersions",
+        "sourcePath": "src/features/project-updates/domain/applyGeneratedPackagePolicy.ts"
+      },
+      {
         "fromSymbol": "parsePendingModuleLifecycleState",
         "toSymbol": "parseJson",
         "callExpression": "parseJson",
@@ -67984,6 +68308,12 @@
         "toSymbol": "readEvidenceDigest",
         "callExpression": "readEvidenceDigest",
         "sourcePath": "src/features/project-updates/domain/pendingModulePlanStep.ts"
+      },
+      {
+        "fromSymbol": "readManagedPackageRangeFloor",
+        "toSymbol": "parseSemanticVersion",
+        "callExpression": "parseSemanticVersion",
+        "sourcePath": "src/features/project-updates/domain/readManagedPackageRangeFloor.ts"
       },
       {
         "fromSymbol": "readProjectUpdateOperationId",
