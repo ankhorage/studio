@@ -248,7 +248,7 @@
     "@ankhorage/templates": "^12.0.122",
     "@ankhorage/utility": "^1.9.85",
     "@ankhorage/zora": "^23.2.2",
-    "@fastify/cors": "^11.3.0",
+    "@fastify/cors": "^11.3.1",
     "expo-document-picker": "~57.0.3",
     "expo-file-system": "~57.0.7",
     "expo-image-picker": "~57.0.20",
