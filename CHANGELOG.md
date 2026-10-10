@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 7.0.3
+
+### Patch Changes
+
+- 67c1512: Update dependencies: `@fastify/cors`.
+
 ## 7.0.2
 
 ### Patch Changes
