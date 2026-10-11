@@ -31,7 +31,7 @@ const MANAGED_DEPENDENCY_CANDIDATES = [
   { name: '@ankhorage/data-sources', section: 'dependencies' },
   { name: '@ankhorage/utility', section: 'dependencies' },
   { name: '@ankhorage/supabase-auth', section: 'dependencies' },
-  { name: '@ankhorage/supabase-storage', section: 'dependencies' },
+  { name: '@ankhorage/storage-supabase', section: 'dependencies' },
 ] as const;
 
 const repositoryRoot = process.cwd();

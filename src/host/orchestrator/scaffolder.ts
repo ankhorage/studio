@@ -64,7 +64,7 @@ export default createKnipConfig({
     '@ankhorage/ankh',
     '@ankhorage/data-sources',
     '@ankhorage/navigator',
-    '@ankhorage/supabase-storage',
+    '@ankhorage/storage-supabase',
     '@types/culori',
     'expo-updates',
   ],

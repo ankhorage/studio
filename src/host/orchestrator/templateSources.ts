@@ -22,7 +22,7 @@ const NAVIGATOR_VERSION = '^3.2.6';
 const STUDIO_VERSION = '^2.0.20';
 const UTILITY_VERSION = '^0.6.0';
 const SUPABASE_AUTH_VERSION = '^1.2.5';
-const SUPABASE_STORAGE_VERSION = '^0.2.0';
+const STORAGE_SUPABASE_VERSION = '^1.0.0';
 const ZORA_VERSION = '^4.0.0';
 const EXPO_RUNTIME_VERSION = '^3.2.4';
 const ANKH_VERSION = '^0.8.11';
@@ -979,7 +979,7 @@ export function getPackageJson(args: {
           }
         : {}),
       ...(storageProvider === 'supabase'
-        ? { '@ankhorage/supabase-storage': SUPABASE_STORAGE_VERSION }
+        ? { '@ankhorage/storage-supabase': STORAGE_SUPABASE_VERSION }
         : {}),
       '@ankhorage/zora': ZORA_VERSION,
       '@react-native-vector-icons/fontawesome': '^13.1.3',

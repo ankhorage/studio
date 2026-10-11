@@ -43,7 +43,7 @@ test('derives generated dependency ranges from owner package metadata', async ()
     '@ankhorage/studio': policy.dependencies.studio,
     '@ankhorage/utility': policy.dependencies.utility,
     '@ankhorage/supabase-auth': policy.dependencies.supabaseAuth,
-    '@ankhorage/supabase-storage': policy.dependencies.supabaseStorage,
+    '@ankhorage/storage-supabase': policy.dependencies.storageSupabase,
     '@ankhorage/zora': policy.dependencies.zora,
     '@react-native-vector-icons/fontawesome': policy.peerDependencies.fontawesome,
     '@react-native-vector-icons/fontawesome5': policy.peerDependencies.fontawesome5,
@@ -75,8 +75,28 @@ test('does not introduce optional generated dependencies when their capability i
   expect(packageJson.dependencies['@ankhorage/studio']).toBeUndefined();
   expect(packageJson.dependencies['@ankhorage/utility']).toBeDefined();
   expect(packageJson.dependencies['@ankhorage/supabase-auth']).toBeUndefined();
-  expect(packageJson.dependencies['@ankhorage/supabase-storage']).toBeUndefined();
+  expect(packageJson.dependencies['@ankhorage/storage-supabase']).toBeUndefined();
   expect(Object.hasOwn(packageJson.dependencies, '@react-native-picker/picker')).toBe(false);
+});
+
+test('migrates existing generated storage apps to the canonical provider package', () => {
+  const policy = getGeneratedPackagePolicy();
+  const legacyDependencies: Record<string, string> = {
+    '@ankhorage/supabase-storage': '^0.2.108',
+  };
+  const updated = applyGeneratedPackagePolicy(
+    {
+      packageManager: policy.packageManager,
+      dependencies: legacyDependencies,
+      devDependencies: {},
+    },
+    policy,
+  );
+
+  expect(updated.dependencies['@ankhorage/supabase-storage']).toBeUndefined();
+  expect(updated.dependencies['@ankhorage/storage-supabase']).toBe(
+    policy.dependencies.storageSupabase,
+  );
 });
 
 test('never lowers already-newer Ankhorage dependency floors', () => {
