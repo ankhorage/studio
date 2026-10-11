@@ -7,6 +7,7 @@ import type {
 import { readManagedPackageRangeFloor } from './readManagedPackageRangeFloor.js';
 
 const OBSOLETE_GENERATED_DEPENDENCIES = new Set([
+  '@ankhorage/supabase-storage',
   '@react-native-picker/picker',
   '@ankhorage/zora-chess',
   '@ankhorage/zora-game',
@@ -18,6 +19,9 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
   packageJson: T,
   policy: GeneratedPackagePolicy,
 ): T {
+  const requiresStorageSupabase =
+    '@ankhorage/storage-supabase' in packageJson.dependencies ||
+    '@ankhorage/supabase-storage' in packageJson.dependencies;
   const baseDependencies = Object.fromEntries(
     Object.entries(packageJson.dependencies).filter(
       ([name]) => !OBSOLETE_GENERATED_DEPENDENCIES.has(name),
@@ -69,11 +73,11 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
           ),
         }
       : {}),
-    ...('@ankhorage/supabase-storage' in packageJson.dependencies
+    ...(requiresStorageSupabase
       ? {
-          '@ankhorage/supabase-storage': monotonicAnkhorageRange(
-            packageJson.dependencies['@ankhorage/supabase-storage'],
-            policy.dependencies.supabaseStorage,
+          '@ankhorage/storage-supabase': monotonicAnkhorageRange(
+            packageJson.dependencies['@ankhorage/storage-supabase'],
+            policy.dependencies.storageSupabase,
           ),
         }
       : {}),
