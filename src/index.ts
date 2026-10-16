@@ -1,5 +1,4 @@
 import type {
-  ActionType,
   AppManifest,
   AuthOAuthProviderConfig,
   ComponentDataBindingRegistry,
@@ -142,7 +141,6 @@ export const STUDIO_PUBLIC_CONTRACTS = [
   'StudioSelectionState',
   'NodePlacement',
   'InsertCatalogEntry',
-  'ActionDefinition',
   'StudioCommand',
   'StudioEvent',
   'StudioComponentMetaRegistry',
@@ -153,7 +151,7 @@ export const STUDIO_PUBLIC_CONTRACTS = [
   'StudioMediaPickerAdapter',
   'resolveStudioBindableProps',
   'resolveStudioBindableEvents',
-  'collectStudioBindingOperationOptions',
+  'collectStudioBindingCapabilityOptions',
   'ProjectAuthHealth',
   'ProjectSecretUsageSummary',
   'StudioAdminRouteId',
@@ -162,7 +160,6 @@ export const STUDIO_PUBLIC_CONTRACTS = [
   'StudioModuleOperationResult',
   'StudioModuleState',
   'StudioRuntimeProjectionState',
-  'ACTION_REGISTRY',
   'TPL_SCREEN_EMPTY',
   'resolveDefaultInsertPlacement',
   'buildInsertCatalogEntries',
@@ -356,24 +353,6 @@ export interface InsertCatalogRecipeEntry extends InsertCatalogEntryBase {
 
 export type InsertCatalogEntry = InsertCatalogComponentEntry | InsertCatalogRecipeEntry;
 
-export type StudioActionPayloadPrimitive = 'string' | 'number' | 'boolean' | 'object';
-
-export interface StudioActionPayloadField {
-  type: StudioActionPayloadPrimitive;
-  label: string;
-  required?: boolean;
-}
-
-export type StudioActionPayloadSchema = Record<string, StudioActionPayloadField>;
-
-export interface ActionDefinition {
-  type: ActionType;
-  label: string;
-  description: string;
-  requiresPayload: boolean;
-  payloadSchema?: StudioActionPayloadSchema;
-}
-
 export interface StudioComponentBlueprint {
   label?: string;
   defaultProps?: Record<string, unknown>;
@@ -457,98 +436,6 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   refetchManifest: () => Promise<void>;
   flushManifest: () => Promise<void>;
 }
-
-export const ACTION_REGISTRY: Record<ActionType, ActionDefinition> = {
-  navigate: {
-    type: 'navigate',
-    label: 'Navigate',
-    description: 'Navigate to another screen or route',
-    requiresPayload: true,
-    payloadSchema: {
-      route: {
-        type: 'string',
-        label: 'Route',
-        required: true,
-      },
-      params: {
-        type: 'object',
-        label: 'Parameters',
-      },
-    },
-  },
-  alert: {
-    type: 'alert',
-    label: 'Alert',
-    description: 'Show an alert dialog',
-    requiresPayload: false,
-    payloadSchema: {
-      message: {
-        type: 'string',
-        label: 'Message',
-      },
-    },
-  },
-  console: {
-    type: 'console',
-    label: 'Console Log',
-    description: 'Log a message to the console',
-    requiresPayload: false,
-  },
-  toggleDarkMode: {
-    type: 'toggleDarkMode',
-    label: 'Toggle Dark Mode',
-    description: 'Toggle between light and dark theme modes',
-    requiresPayload: false,
-  },
-  setLanguage: {
-    type: 'setLanguage',
-    label: 'Set Language',
-    description: 'Change the application language',
-    requiresPayload: true,
-    payloadSchema: {
-      locale: {
-        type: 'string',
-        label: 'Locale',
-        required: true,
-      },
-    },
-  },
-  search: {
-    type: 'search',
-    label: 'Search',
-    description: 'Search for content by text and metadata',
-    requiresPayload: true,
-    payloadSchema: {
-      query: {
-        type: 'string',
-        label: 'Search Query',
-        required: true,
-      },
-      scope: {
-        type: 'string',
-        label: 'Search Scope',
-      },
-    },
-  },
-  filter: {
-    type: 'filter',
-    label: 'Filter',
-    description: 'Filter content by key-value pairs',
-    requiresPayload: true,
-    payloadSchema: {
-      filterKey: {
-        type: 'string',
-        label: 'Filter Key',
-        required: true,
-      },
-      filterValue: {
-        type: 'string',
-        label: 'Filter Value',
-        required: true,
-      },
-    },
-  },
-};
 
 export const TPL_SCREEN_EMPTY: UiNode = {
   id: 'tpl-screen-empty',
