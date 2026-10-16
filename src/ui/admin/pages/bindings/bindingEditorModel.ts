@@ -36,7 +36,7 @@ export function createStudioPropBindingForSource(
   kind: StudioBindingSourceKind,
   value: UiBindableValueMeta,
   capabilities: readonly StudioBindingCapabilityOption[],
-): PropBinding {
+): PropBinding | undefined {
   if (kind === 'literal') return { value: { kind, value: createDefaultBindingValue(value) } };
   if (kind === 'state' || kind === 'context') return { value: { capability: `${kind}.` } };
 
@@ -48,7 +48,7 @@ export function createStudioPropBindingForSource(
           path: capability.responsePaths[0]?.path,
         },
       }
-    : { value: { capability: 'context.' } };
+    : undefined;
 }
 
 /*** Build an event binding target and optional input map from the current Studio event-input drafts. */

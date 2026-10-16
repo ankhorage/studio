@@ -70,6 +70,7 @@ function diagnosePropBinding(
     return [diagnostic('unknown-prop', `Property '${name}' is not bindable.`, `props.${name}`)];
   }
   if (!isCapabilityReference(binding.value)) return [];
+  if (isRuntimeValueReference(binding.value.capability)) return [];
 
   const capability = findStudioBindingCapabilityOption(args.capabilities, binding.value.capability);
   if (!capability) {
@@ -178,7 +179,16 @@ function diagnoseInputCompatibility(
   path: string,
 ): readonly StudioBindingDiagnostic[] {
   const eventReference = unwrapEventCapabilityReference(input);
-  if (!eventReference || eventReference.capability !== eventMeta.payload?.eventType) return [];
+  if (!eventReference) return [];
+  if (eventReference.capability !== eventMeta.payload?.eventType) {
+    return [
+      diagnostic(
+        'incompatible-input',
+        `Event capability '${eventReference.capability}' does not match '${eventMeta.payload?.eventType ?? '<none>'}'.`,
+        path,
+      ),
+    ];
+  }
   const eventValue = resolveEventSourceValue(
     eventReference.path ?? '',
     eventMeta.payload?.fields ?? [],
@@ -235,6 +245,11 @@ function isCapabilityReference(
   expression: BindingExpression,
 ): expression is Extract<BindingExpression, { readonly capability: string }> {
   return 'capability' in expression;
+}
+
+/*** Recognize property-value references resolved by the generated runtime rather than executable capabilities. */
+function isRuntimeValueReference(capability: string): boolean {
+  return capability.startsWith('state.') || capability.startsWith('context.');
 }
 
 /*** Unwrap the event reference preserved by the binding editor through optional transforms. */
