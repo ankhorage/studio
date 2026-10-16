@@ -20,6 +20,7 @@ import { ProjectBundledMediaService } from '../media/projectBundledMediaService'
 import type { LayoutMutation } from '../modules/layout';
 import { createScopedBunSupabaseVaultClient } from '../secrets/createScopedBunSupabaseVaultClient';
 import { GeneratedRouteFileOwnership } from './GeneratedRouteFileOwnership';
+import { GeneratedRuntimeArtifactOwnership } from './GeneratedRuntimeArtifactOwnership';
 import type { ProjectCreationSource } from './projectCreationSource';
 import { getAppsRoot, getProjectPath } from './projectPaths';
 import { ProjectStore, type ProjectSummary } from './projectStore';
@@ -43,6 +44,7 @@ export class ProjectManager {
   private readonly scaffolder: ProjectScaffolder;
   private readonly appFiles: GeneratedAppFileGenerator;
   private readonly generatedRouteFiles: GeneratedRouteFileOwnership;
+  private readonly generatedRuntimeArtifacts: GeneratedRuntimeArtifactOwnership;
   private readonly bundledMedia: ProjectBundledMediaService;
   private readonly dependencies: ProjectManagerDependencies;
   private readonly generationState = createProjectGenerationStateStore();
@@ -58,6 +60,7 @@ export class ProjectManager {
     this.scaffolder = new ProjectScaffolder(rootPath);
     this.appFiles = new GeneratedAppFileGenerator();
     this.generatedRouteFiles = new GeneratedRouteFileOwnership();
+    this.generatedRuntimeArtifacts = new GeneratedRuntimeArtifactOwnership();
     this.bundledMedia = new ProjectBundledMediaService(rootPath);
     this.dependencies = {
       connectGitHubRepositoryAsync,
@@ -416,7 +419,7 @@ export class ProjectManager {
     }
   }
 
-  /*** Generate current app files, write them to disk and initialize or reconcile generated-route ownership. */
+  /*** Generate current app files, write them to disk and reconcile route and Runtime artifact ownership independently. */
   private async writeGeneratedFiles(
     projectPath: string,
     manifest: AppManifest,
@@ -432,13 +435,22 @@ export class ProjectManager {
       runtimePlan: options.runtimePlan,
     });
     const generatedPaths = generated.map((file) => file.path);
+    const generatedRoutePaths = generatedPaths.filter(
+      (generatedPath) =>
+        !GeneratedRuntimeArtifactOwnership.isGeneratedRuntimeArtifactPath(generatedPath),
+    );
+    const generatedRuntimeArtifactPaths = generatedPaths.filter((generatedPath) =>
+      GeneratedRuntimeArtifactOwnership.isGeneratedRuntimeArtifactPath(generatedPath),
+    );
     for (const file of generated) {
       await this.writeText(path.join(projectPath, file.path), file.content);
     }
     if (options.operation === 'create') {
-      await this.generatedRouteFiles.initialize(projectPath, generatedPaths);
+      await this.generatedRouteFiles.initialize(projectPath, generatedRoutePaths);
+      await this.generatedRuntimeArtifacts.initialize(projectPath, generatedRuntimeArtifactPaths);
     } else {
-      await this.generatedRouteFiles.reconcile(projectPath, generatedPaths);
+      await this.generatedRouteFiles.reconcile(projectPath, generatedRoutePaths);
+      await this.generatedRuntimeArtifacts.reconcile(projectPath, generatedRuntimeArtifactPaths);
     }
   }
 
