@@ -80,6 +80,7 @@ function readGeneratedRuntimeDependencies(
     expoRuntime: readRequiredString(dependencies, '@ankhorage/expo-runtime', 'Studio'),
     navigator: readRequiredString(dependencies, '@ankhorage/navigator', 'Studio'),
     runtime: readRequiredString(dependencies, '@ankhorage/runtime', 'Studio'),
+    surface: readRequiredString(dependencies, '@ankhorage/surface', 'Studio'),
     studio: studioDependencyRange,
     utility: readRequiredString(dependencies, '@ankhorage/utility', 'Studio'),
     supabaseAuth: readRequiredString(dependencies, '@ankhorage/supabase-auth', 'Studio'),

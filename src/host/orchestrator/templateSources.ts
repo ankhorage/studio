@@ -25,7 +25,7 @@ const SUPABASE_AUTH_VERSION = '^1.2.5';
 const STORAGE_SUPABASE_VERSION = '^1.0.0';
 const ZORA_VERSION = '^4.0.0';
 const EXPO_RUNTIME_VERSION = '^3.2.4';
-const ANKH_VERSION = '^0.8.11';
+const ANKH_VERSION = '^0.13.1';
 const DEVTOOLS_VERSION = '^1.12.0';
 
 function serializeStringLiteral(value: string): string {
