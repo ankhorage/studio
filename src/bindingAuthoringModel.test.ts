@@ -1,6 +1,7 @@
 import type {
   ApiDefinitionRegistry,
   ComponentDataBindingRegistry,
+  EventBinding,
   PropBinding,
   UiComponentMetaRegistry,
   UiNode,
@@ -45,7 +46,7 @@ const componentMeta: UiComponentMetaRegistry = {
       events: {
         press: {
           label: 'Press',
-          payload: { eventType: 'button.press', fields: [] },
+          payload: { eventType: 'button.press', fields: [{ path: 'value', type: 'string' }] },
         },
       },
     },
@@ -273,6 +274,27 @@ describe('binding operations and schemas', () => {
 });
 
 describe('binding diagnostics', () => {
+  test('accepts runtime state and context property references without resolving executable capabilities', () => {
+    const registry = {
+      [button.id]: {
+        componentId: button.id,
+        props: {
+          children: { value: { capability: 'state.draft.name' } },
+          disabled: { value: { capability: 'context.session.controls.disabled' } },
+        },
+      },
+    } satisfies ComponentDataBindingRegistry;
+
+    expect(
+      diagnoseStudioComponentBindings({
+        node: button,
+        registry,
+        componentMeta,
+        capabilities: collectStudioBindingCapabilityOptions({}),
+      }),
+    ).toEqual([]);
+  });
+
   test('diagnoses missing operations and incompatible response paths', () => {
     const capabilities = collectStudioBindingCapabilityOptions(apis);
     const missingRegistry = upsertStudioPropBinding({}, button, 'children', {
@@ -303,5 +325,31 @@ describe('binding diagnostics', () => {
         capabilities,
       })[0]?.code,
     ).toBe('incompatible-response');
+  });
+
+  test('validates event capability ownership and payload paths', () => {
+    const capabilities = collectStudioBindingCapabilityOptions({});
+    const diagnostics = (input: EventBinding['target']['input']) =>
+      diagnoseStudioComponentBindings({
+        node: button,
+        registry: {
+          [button.id]: {
+            componentId: button.id,
+            events: {
+              press: [{ target: { capability: 'navigator.navigate', input } }],
+            },
+          },
+        },
+        componentMeta,
+        capabilities,
+      });
+
+    expect(diagnostics({ route: { capability: 'button.press', path: 'value' } })).toEqual([]);
+    expect(
+      diagnostics({ route: { capability: 'button.release', path: 'value' } })[0],
+    ).toMatchObject({ code: 'incompatible-input', path: 'events.press.0.target.input.route' });
+    expect(
+      diagnostics({ route: { capability: 'button.press', path: 'unknown.path' } })[0],
+    ).toMatchObject({ code: 'incompatible-input', path: 'events.press.0.target.input.route' });
   });
 });

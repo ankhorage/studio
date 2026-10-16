@@ -32,6 +32,9 @@ export function PropertyBindingEditor(props: {
     value: entry.capability.id,
     label: entry.label,
   }));
+  const sourceOptions = STUDIO_BINDING_SOURCE_OPTIONS.filter(
+    (source) => source.value !== 'api' || apiCapabilities.length > 0,
+  );
   const sourceKind = resolveStudioBindingSourceKind(binding);
 
   return (
@@ -41,10 +44,15 @@ export function PropertyBindingEditor(props: {
           <Field label={`${option.label} · ${option.meta.value.type}`}>
             <Select
               value={sourceKind}
-              options={STUDIO_BINDING_SOURCE_OPTIONS}
-              onValueChange={(kind: StudioBindingSourceKind) =>
-                onChange(createStudioPropBindingForSource(kind, option.meta.value, capabilities))
-              }
+              options={sourceOptions}
+              onValueChange={(kind: StudioBindingSourceKind) => {
+                const nextBinding = createStudioPropBindingForSource(
+                  kind,
+                  option.meta.value,
+                  capabilities,
+                );
+                if (nextBinding) onChange(nextBinding);
+              }}
             />
           </Field>
         </View>
@@ -65,9 +73,14 @@ export function PropertyBindingEditor(props: {
       ) : (
         <Button
           variant="soft"
-          onPress={() =>
-            onChange(createStudioPropBindingForSource('literal', option.meta.value, capabilities))
-          }
+          onPress={() => {
+            const nextBinding = createStudioPropBindingForSource(
+              'literal',
+              option.meta.value,
+              capabilities,
+            );
+            if (nextBinding) onChange(nextBinding);
+          }}
         >
           Add binding
         </Button>
