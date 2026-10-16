@@ -41,6 +41,10 @@
       "types": "./dist/cli/index.d.ts",
       "import": "./dist/cli/index.js"
     },
+    "./capabilities": {
+      "types": "./dist/capabilities/index.d.ts",
+      "import": "./dist/capabilities/index.js"
+    },
     "./runtime": {
       "types": "./dist/runtime/index.d.ts",
       "import": "./dist/runtime/index.js"
@@ -158,10 +162,66 @@
     "category": "studio",
     "provider": "./dist/cli/index.js",
     "capabilities": [
-      "studio.dev",
-      "studio.projects.list",
-      "studio.projects.create",
-      "studio.projects.delete"
+      {
+        "id": "studio.dev",
+        "owner": "@ankhorage/studio",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Start Studio development",
+        "description": "Start the local Studio host and first-party Studio app."
+      },
+      {
+        "id": "studio.projects.list",
+        "owner": "@ankhorage/studio",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "List Studio projects",
+        "description": "List projects in the Studio workspace."
+      },
+      {
+        "id": "studio.projects.create",
+        "owner": "@ankhorage/studio",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Create Studio project",
+        "description": "Create a Studio project from a template."
+      },
+      {
+        "id": "studio.projects.delete",
+        "owner": "@ankhorage/studio",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Delete Studio project",
+        "description": "Delete a Studio project."
+      }
     ],
     "apm": {
       "protocolVersion": 1,
@@ -225,6 +285,7 @@
   ],
   "dependencies": {
     "@ankhorage/apm": "^0.8.14",
+    "@ankhorage/capability": "^0.2.1",
     "@ankhorage/color-theory": "^0.3.1",
     "@ankhorage/contracts": "^26.0.0",
     "@ankhorage/data-sources": "^2.0.34",
@@ -277,7 +338,7 @@
   },
   "devDependencies": {
     "@ankhorage/ankh": "^0.13.1",
-    "@ankhorage/devtools": "^2.0.100",
+    "@ankhorage/devtools": "^2.3.18",
     "@ankhorage/paradox": "^0.2.28",
     "@types/bun": "^1.4.2",
     "@types/node": "^24.13.3",

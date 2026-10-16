@@ -8,41 +8,35 @@ import { fileURLToPath } from 'node:url';
 
 import type { AnkhCommandHandler, AnkhRuntimeCommandProvider } from '@ankhorage/ankh';
 
+import { CAPABILITIES } from '../capabilities';
 import type { ProjectTemplateSelection } from '../host/templates';
 
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
 const STUDIO_COMMAND_CATEGORY = 'studio';
 const STUDIO_PACKAGE_VERSION = '0.0.21';
 
-const STUDIO_CAPABILITIES = [
-  'studio.dev',
-  'studio.projects.list',
-  'studio.projects.create',
-  'studio.projects.delete',
-] as const;
-
 const COMMANDS = [
   {
     path: ['dev'],
-    capability: 'studio.dev',
+    capability: CAPABILITIES[0].id,
     summary: 'Start the local Studio host and first-party Studio app.',
     examples: ['ankh studio dev'],
   },
   {
     path: ['projects', 'list'],
-    capability: 'studio.projects.list',
+    capability: CAPABILITIES[1].id,
     summary: 'List projects in the Studio workspace.',
     examples: ['ankh studio projects list'],
   },
   {
     path: ['projects', 'create'],
-    capability: 'studio.projects.create',
+    capability: CAPABILITIES[2].id,
     summary: 'Create a Studio project from a template.',
     examples: ['ankh studio projects create --name Shop --category commerce --template shop'],
   },
   {
     path: ['projects', 'delete'],
-    capability: 'studio.projects.delete',
+    capability: CAPABILITIES[3].id,
     summary: 'Delete a Studio project.',
     examples: ['ankh studio projects delete shop'],
   },
@@ -66,7 +60,7 @@ const provider = {
   id: STUDIO_PACKAGE_NAME,
   category: STUDIO_COMMAND_CATEGORY,
   version: STUDIO_PACKAGE_VERSION,
-  capabilities: [...STUDIO_CAPABILITIES],
+  capabilities: CAPABILITIES,
   commands: COMMANDS,
   handlers,
 } satisfies AnkhRuntimeCommandProvider;
