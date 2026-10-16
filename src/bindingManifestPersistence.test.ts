@@ -48,13 +48,15 @@ describe('binding manifest persistence', () => {
         componentId: 'button-1',
         componentType: 'Button',
         props: {
-          children: { source: { kind: 'context', path: 'session.user.name' } },
+          children: { value: { capability: 'context.session.user.name' } },
         },
         events: {
           press: [
             {
-              target: { kind: 'action', type: 'navigate' },
-              input: { route: { kind: 'literal', value: '/done' } },
+              target: {
+                capability: 'navigator.navigate',
+                input: { route: { kind: 'literal', value: '/done' } },
+              },
             },
           ],
         },
