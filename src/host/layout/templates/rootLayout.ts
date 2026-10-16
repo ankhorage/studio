@@ -49,14 +49,10 @@ export function getRootLayoutImportRequirements(
         ...(!includeStudio ? [{ imported: 'useCallback' }] : []),
       ],
     },
-    ...(includeStudio
-      ? [
-          {
-            source: 'react-native',
-            namedImports: [],
-          },
-        ]
-      : []),
+    {
+      source: 'react-native',
+      namedImports: !includeStudio ? [{ imported: 'Alert' }] : [],
+    },
     {
       source: '@ankhorage/expo-runtime/bundled-media',
       namedImports: [{ imported: 'createExpoBundledMediaResolver' }],
@@ -127,7 +123,7 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
     authRuntime,
     initialRouteNameOverride,
     runtimeModuleDeclarations,
-    runtimeCapabilityExecutorHookName = 'useStudioRuntimeCapabilityExecutor',
+    runtimeCapabilityExecutorHookName,
     runtimeProviderEnd = [],
     runtimeProviderStart = [],
     useStoredAuthSessionCredentialResolver = false,
@@ -136,6 +132,11 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
   const moduleProvidersStart = mutations.flatMap((m) => m.providerStart);
   const moduleProvidersEnd = mutations.flatMap((m) => m.providerEnd).reverse();
   const innerThemeHook = innerNavigation.usesTheme ? '  const { theme } = useZoraTheme();\n' : '';
+  const resolvedRuntimeCapabilityExecutorHookName =
+    runtimeCapabilityExecutorHookName ??
+    (includeStudio
+      ? 'useStudioRuntimeCapabilityExecutor'
+      : 'useGeneratedRuntimeCapabilityExecutor');
 
   const providersStart = [...runtimeProviderStart, ...moduleProvidersStart].join('\n    ');
   const providersEnd = [...moduleProvidersEnd, ...runtimeProviderEnd].join('\n    ');
@@ -292,7 +293,20 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     : ''
 }
 `;
-  const runtimeContentDeclaration = `const { executeCapability: executeApplicationCapability } = ${runtimeCapabilityExecutorHookName}();
+  const runtimeContentDeclaration = `const runtimeContent = (
+    <GeneratedRuntimeContent runtimeManifest={runtimeManifest}>
+      {appContent}
+    </GeneratedRuntimeContent>
+  );`;
+  const generatedRuntimeContent = `
+function GeneratedRuntimeContent({
+  children,
+  runtimeManifest,
+}: {
+  children: ReactNode;
+  runtimeManifest: AppManifest;
+}) {
+  const { executeCapability: executeApplicationCapability } = ${resolvedRuntimeCapabilityExecutorHookName}();
   const executeCapability = useMemo(
     () =>
       composeRuntimeCapabilityExecutor({
@@ -315,11 +329,12 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     [executeCapability, runtimeManifest.media?.assets],
   );
 
-  const runtimeContent = (
+  return (
     <RuntimeRendererConfigProvider value={generatedRuntimeConfig}>
-      {appContent}
+      {children}
     </RuntimeRendererConfigProvider>
-  );`;
+  );
+}`;
   const outputDeclaration = includeStudio
     ? `${runtimeContentDeclaration}
   const output = __DEV__ ? (
@@ -598,6 +613,8 @@ function StudioAppHeader({ appHeaderTitle }: { appHeaderTitle: string }) {
 }`
       : ''
   }
+
+${generatedRuntimeContent}
 
 function GeneratedZoraProvider({
   children,
