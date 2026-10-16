@@ -42,6 +42,11 @@
         {
           "kind": "json-pointer",
           "path": "package.json",
+          "pointer": "/dependencies/@ankhorage~1surface"
+        },
+        {
+          "kind": "json-pointer",
+          "path": "package.json",
           "pointer": "/dependencies/@ankhorage~1studio"
         },
         {

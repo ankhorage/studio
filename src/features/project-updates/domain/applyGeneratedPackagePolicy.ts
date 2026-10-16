@@ -49,6 +49,10 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
       packageJson.dependencies['@ankhorage/runtime'],
       policy.dependencies.runtime,
     ),
+    '@ankhorage/surface': monotonicAnkhorageRange(
+      packageJson.dependencies['@ankhorage/surface'],
+      policy.dependencies.surface,
+    ),
     ...('@ankhorage/studio' in packageJson.dependencies
       ? {
           '@ankhorage/studio': monotonicAnkhorageRange(

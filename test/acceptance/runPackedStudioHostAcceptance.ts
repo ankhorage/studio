@@ -170,6 +170,10 @@ async function createConsumerAsync(consumerRoot: string, tarballPath: string): P
       "await import('@ankhorage/studio/host');\n",
     ),
     writeFile(
+      path.join(consumerRoot, 'surface-capabilities-import.mjs'),
+      "const { CAPABILITIES } = await import('@ankhorage/surface/capabilities');\nif (!CAPABILITIES.some(({ id }) => id === 'theme.setMode')) throw new Error('Surface capability catalog is unavailable.');\n",
+    ),
+    writeFile(
       path.join(consumerRoot, 'apm-import.ts'),
       await readFile(new URL('../../scripts/apm-owner-consumer.ts', import.meta.url), 'utf8'),
     ),
@@ -179,7 +183,7 @@ async function createConsumerAsync(consumerRoot: string, tarballPath: string): P
     ),
     writeFile(
       path.join(consumerRoot, 'package.json'),
-      `${JSON.stringify(createConsumerPackageJson(tarballPath), null, 2)}\n`,
+      `${JSON.stringify(await createConsumerPackageJsonAsync(tarballPath), null, 2)}\n`,
     ),
     writeFile(
       path.join(consumerRoot, 'tsconfig.json'),
@@ -188,14 +192,24 @@ async function createConsumerAsync(consumerRoot: string, tarballPath: string): P
   ]);
 }
 
-/*** Create the package manifest for the packed-host acceptance consumer. */
-function createConsumerPackageJson(tarballPath: string) {
+/*** Create the package manifest for the packed-host consumer with the generated direct Surface policy. */
+async function createConsumerPackageJsonAsync(tarballPath: string) {
+  const studioPackage = JSON.parse(
+    await readFile(new URL('../../package.json', import.meta.url), 'utf8'),
+  ) as { readonly dependencies?: Readonly<Record<string, string>> };
+  const surfaceRange = studioPackage.dependencies?.['@ankhorage/surface'];
+  if (surfaceRange === undefined) {
+    throw new Error('Studio package policy must declare @ankhorage/surface directly.');
+  }
   return {
     name: 'packed-studio-host-consumer',
     private: true,
     type: 'module',
     scripts: { typecheck: 'tsc --noEmit -p tsconfig.json' },
-    dependencies: { '@ankhorage/studio': `file:${tarballPath}` },
+    dependencies: {
+      '@ankhorage/studio': `file:${tarballPath}`,
+      '@ankhorage/surface': surfaceRange,
+    },
     devDependencies: {
       '@types/node': '^24.13.3',
       typescript: '~6.0.3',
@@ -249,7 +263,7 @@ function isWithin(target: string, parent: string): boolean {
   return relativePath === '' || (!relativePath.startsWith('..') && !path.isAbsolute(relativePath));
 }
 
-/*** Import and typecheck the packed Studio host and APM boundaries from the external consumer fixture. */
+/*** Import and typecheck packed Studio plus its generated Surface capability boundary externally. */
 async function runConsumerChecksAsync(
   consumerRoot: string,
   cacheRoot: string,
@@ -265,6 +279,11 @@ async function runConsumerChecksAsync(
     ...options,
     args: ['host-import.mjs'],
     label: 'Import packed Studio host',
+  });
+  await runAcceptanceCommandAsync({
+    ...options,
+    args: ['surface-capabilities-import.mjs'],
+    label: 'Import direct Surface capability catalog from packed consumer',
   });
   await runAcceptanceCommandAsync({
     ...options,
