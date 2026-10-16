@@ -30,10 +30,7 @@ export async function syncGeneratedAppFiles(
   const usesExpoBarcodeScannerAdapter =
     runtimePlan?.runtimeAdapters.includes('ExpoBarcodeScannerAdapter') ?? false;
 
-  await Promise.all([
-    removePath(appExtensionRegistryDest),
-    removePath(generatedExpoDest),
-  ]);
+  await Promise.all([removePath(appExtensionRegistryDest), removePath(generatedExpoDest)]);
   await fs.mkdir(generatedDest, { recursive: true });
 
   if (usesExpoBarcodeScannerAdapter) {
