@@ -79,6 +79,30 @@ describe('generated Expo adapter bridges', () => {
     expect(await pathExists(obsoleteReaderSurfacePath)).toBe(false);
   });
 
+  it('preserves independent files while removing owned Expo adapter bridges', async () => {
+    const projectPath = await createProjectRoot();
+    const independentFilePath = path.join(
+      projectPath,
+      'src/generated/expo/IndependentExtension.ts',
+    );
+    const obsoleteReaderSurfacePath = path.join(
+      projectPath,
+      'src/generated/expo/ExpoReaderSurfaceView.tsx',
+    );
+    await fs.mkdir(path.dirname(independentFilePath), { recursive: true });
+    await Promise.all([
+      fs.writeFile(independentFilePath, 'export const independent = true;\n'),
+      fs.writeFile(obsoleteReaderSurfacePath, 'obsolete bridge\n'),
+    ]);
+
+    await syncGeneratedAppFiles(projectPath, { runtimePlan: createRuntimePlan([]) });
+
+    expect(await fs.readFile(independentFilePath, 'utf8')).toBe(
+      'export const independent = true;\n',
+    );
+    expect(await pathExists(obsoleteReaderSurfacePath)).toBe(false);
+  });
+
   it('removes stale capability bridges when the runtime plan changes', async () => {
     const projectPath = await createProjectRoot();
     await syncGeneratedAppFiles(projectPath, {
