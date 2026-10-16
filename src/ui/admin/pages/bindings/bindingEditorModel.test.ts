@@ -52,9 +52,9 @@ describe('binding editor model', () => {
   test('persists typed literal drafts without reparsing DataSchema-backed values', () => {
     const binding = createStudioEventBinding({
       target: {
-        kind: 'operation',
-        operation: { apiId: 'api', endpointId: 'profile', operationId: 'profile.update' },
+        capability: 'api.api.profile.update',
       },
+      eventCapability: 'profile.submit',
       fields: [requiredObjectField],
       drafts: {
         profile: {
@@ -65,7 +65,7 @@ describe('binding editor model', () => {
       },
     });
 
-    expect(binding.input?.profile).toEqual({
+    expect(binding.target.input?.profile).toEqual({
       kind: 'literal',
       value: { name: 'Ada', enabled: true },
     });

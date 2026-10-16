@@ -10,7 +10,7 @@ import {
   removeStudioPropBinding,
   resolveStudioBindableProps,
   upsertStudioPropBinding,
-  type StudioBindingOperationOption,
+  type StudioBindingCapabilityOption,
 } from '../../../../bindingAuthoringModel';
 import { bindingAdminStyles } from './bindingAdminStyles';
 import { PropertyBindingEditor } from './PropertyBindingEditor';
@@ -20,7 +20,7 @@ export function PropertyBindingsCard(props: {
   readonly componentMeta: UiComponentMetaRegistry;
   readonly node: UiNode;
   readonly registry: ComponentDataBindingRegistry;
-  readonly operations: readonly StudioBindingOperationOption[];
+  readonly capabilities: readonly StudioBindingCapabilityOption[];
   readonly onChange: (registry: ComponentDataBindingRegistry) => void;
 }) {
   const options = resolveStudioBindableProps(props.node, props.componentMeta);
@@ -31,14 +31,14 @@ export function PropertyBindingsCard(props: {
       <View style={bindingAdminStyles.stack}>
         <Text color="neutral" emphasis="muted" variant="bodySmall">
           Bind only properties explicitly exposed by ZORA metadata to literals, state, context, or
-          canonical operation responses.
+          canonical capability references.
         </Text>
         {options.map((option) => (
           <View key={option.name} style={bindingAdminStyles.stack}>
             <PropertyBindingEditor
               option={option}
               binding={current[option.name]}
-              operations={props.operations}
+              capabilities={props.capabilities}
               onChange={(binding) =>
                 props.onChange(
                   upsertStudioPropBinding(props.registry, props.node, option.name, binding),

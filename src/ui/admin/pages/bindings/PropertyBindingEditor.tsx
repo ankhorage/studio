@@ -5,14 +5,13 @@ import { View } from 'react-native';
 import {
   assessStudioBindingCompatibility,
   type StudioBindablePropOption,
-  type StudioBindingOperationOption,
+  type StudioBindingCapabilityOption,
 } from '../../../../bindingAuthoringModel';
 import { Field } from '../../adminPagePrimitives';
 import { bindingAdminStyles } from './bindingAdminStyles';
 import {
-  createStudioOperationKey,
   createStudioPropBindingForSource,
-  findStudioOperationByKey,
+  findStudioBindingCapabilityById,
   formatStudioBindingLiteral,
   parseStudioBindingLiteral,
   STUDIO_BINDING_SOURCE_OPTIONS,
@@ -23,16 +22,17 @@ import {
 export function PropertyBindingEditor(props: {
   readonly option: StudioBindablePropOption;
   readonly binding: PropBinding | undefined;
-  readonly operations: readonly StudioBindingOperationOption[];
+  readonly capabilities: readonly StudioBindingCapabilityOption[];
   readonly onChange: (binding: PropBinding) => void;
   readonly onRemove: () => void;
 }) {
-  const { binding, onChange, onRemove, option, operations } = props;
-  const operationOptions = operations.map((operation) => ({
-    value: createStudioOperationKey(operation.operation),
-    label: operation.label,
+  const { binding, capabilities, onChange, onRemove, option } = props;
+  const apiCapabilities = capabilities.filter((entry) => entry.capability.id.startsWith('api.'));
+  const capabilityOptions = apiCapabilities.map((entry) => ({
+    value: entry.capability.id,
+    label: entry.label,
   }));
-  const sourceKind = binding?.source.kind ?? 'literal';
+  const sourceKind = resolveStudioBindingSourceKind(binding);
 
   return (
     <View style={bindingAdminStyles.stack}>
@@ -43,7 +43,7 @@ export function PropertyBindingEditor(props: {
               value={sourceKind}
               options={STUDIO_BINDING_SOURCE_OPTIONS}
               onValueChange={(kind: StudioBindingSourceKind) =>
-                onChange(createStudioPropBindingForSource(kind, option.meta.value, operations))
+                onChange(createStudioPropBindingForSource(kind, option.meta.value, capabilities))
               }
             />
           </Field>
@@ -58,15 +58,15 @@ export function PropertyBindingEditor(props: {
         <PropertyBindingSourceFields
           binding={binding}
           expected={option.meta.value}
-          operations={operations}
-          operationOptions={operationOptions}
+          capabilities={apiCapabilities}
+          capabilityOptions={capabilityOptions}
           onChange={onChange}
         />
       ) : (
         <Button
           variant="soft"
           onPress={() =>
-            onChange(createStudioPropBindingForSource('literal', option.meta.value, operations))
+            onChange(createStudioPropBindingForSource('literal', option.meta.value, capabilities))
           }
         >
           Add binding
@@ -80,60 +80,58 @@ export function PropertyBindingEditor(props: {
 function PropertyBindingSourceFields(props: {
   readonly binding: PropBinding;
   readonly expected: StudioBindablePropOption['meta']['value'];
-  readonly operations: readonly StudioBindingOperationOption[];
-  readonly operationOptions: readonly { readonly value: string; readonly label: string }[];
+  readonly capabilities: readonly StudioBindingCapabilityOption[];
+  readonly capabilityOptions: readonly { readonly value: string; readonly label: string }[];
   readonly onChange: (binding: PropBinding) => void;
 }) {
-  const { binding, expected, onChange, operationOptions, operations } = props;
-  const { source } = binding;
+  const { binding, capabilities, capabilityOptions, expected, onChange } = props;
+  const { value } = binding;
 
-  if (source.kind === 'literal') {
+  if (isLiteralExpression(value)) {
     if (expected.type === 'boolean') {
       return (
         <Select
-          value={String(source.value === true)}
+          value={String(value.value === true)}
           options={[
             { value: 'false', label: 'False' },
             { value: 'true', label: 'True' },
           ]}
-          onValueChange={(value: string) =>
-            onChange({ ...binding, source: { kind: 'literal', value: value === 'true' } })
+          onValueChange={(nextValue: string) =>
+            onChange({ ...binding, value: { kind: 'literal', value: nextValue === 'true' } })
           }
         />
       );
     }
     return (
       <TextInput
-        value={formatStudioBindingLiteral(source.value)}
+        value={formatStudioBindingLiteral(value.value)}
         onChangeText={(value) =>
           onChange({
             ...binding,
-            source: { kind: 'literal', value: parseStudioBindingLiteral(value, expected) },
+            value: { kind: 'literal', value: parseStudioBindingLiteral(value, expected) },
           })
         }
       />
     );
   }
 
-  if (source.kind === 'state' || source.kind === 'context') {
+  if (!isCapabilityReference(value)) {
+    return <Text color="danger">This expression cannot be edited as a property reference.</Text>;
+  }
+
+  if (value.capability.startsWith('state.') || value.capability.startsWith('context.')) {
+    const kind = value.capability.startsWith('state.') ? 'state' : 'context';
     return (
       <TextInput
-        value={source.path}
-        placeholder={source.kind === 'state' ? 'draft.customer.name' : 'session.user.name'}
-        onChangeText={(path) => onChange({ ...binding, source: { ...source, path } })}
+        value={value.capability.slice(`${kind}.`.length)}
+        placeholder={kind === 'state' ? 'draft.customer.name' : 'session.user.name'}
+        onChangeText={(path) => onChange({ ...binding, value: { capability: `${kind}.${path}` } })}
       />
     );
   }
 
-  if (source.kind === 'event') {
-    return (
-      <Text color="danger">Event sources are not available for persistent property bindings.</Text>
-    );
-  }
-
-  const operationKey = createStudioOperationKey(source.operation);
-  const operation = findStudioOperationByKey(operations, operationKey);
-  const responseOptions = (operation?.responsePaths ?? []).map((response) => {
+  const capability = findStudioBindingCapabilityById(capabilities, value.capability);
+  const responseOptions = (capability?.responsePaths ?? []).map((response) => {
     const compatibility = assessStudioBindingCompatibility(expected, response.value);
     return {
       value: response.path,
@@ -143,18 +141,17 @@ function PropertyBindingSourceFields(props: {
 
   return (
     <View style={bindingAdminStyles.stack}>
-      <Field label="Operation">
+      <Field label="API capability">
         <Select
-          value={operationKey}
-          options={operationOptions}
-          onValueChange={(key: string) => {
-            const selected = findStudioOperationByKey(operations, key);
+          value={value.capability}
+          options={capabilityOptions}
+          onValueChange={(id: string) => {
+            const selected = findStudioBindingCapabilityById(capabilities, id);
             if (!selected) return;
             onChange({
               ...binding,
-              source: {
-                kind: 'operation',
-                operation: selected.operation,
+              value: {
+                capability: selected.capability.id,
                 path: selected.responsePaths[0]?.path,
               },
             });
@@ -163,14 +160,37 @@ function PropertyBindingSourceFields(props: {
       </Field>
       <Field label="Response path">
         <Select
-          value={source.path ?? ''}
+          value={value.path ?? ''}
           options={responseOptions}
-          onValueChange={(path: string) => onChange({ ...binding, source: { ...source, path } })}
+          onValueChange={(path: string) => onChange({ ...binding, value: { ...value, path } })}
         />
       </Field>
       <Text color="neutral" emphasis="muted" variant="bodySmall">
-        {operation?.apiLabel ?? 'The referenced operation is currently unavailable.'}
+        {capability?.apiLabel ?? 'The referenced capability is currently unavailable.'}
       </Text>
     </View>
   );
+}
+
+/*** Classify the current expression for the property binding source picker. */
+function resolveStudioBindingSourceKind(binding: PropBinding | undefined): StudioBindingSourceKind {
+  if (!binding || isLiteralExpression(binding.value)) return 'literal';
+  if (!isCapabilityReference(binding.value)) return 'literal';
+  if (binding.value.capability.startsWith('state.')) return 'state';
+  if (binding.value.capability.startsWith('context.')) return 'context';
+  return 'api';
+}
+
+/*** Narrow a binding expression to the literal variant rendered by this editor. */
+function isLiteralExpression(
+  value: PropBinding['value'],
+): value is Extract<PropBinding['value'], { readonly kind: 'literal' }> {
+  return 'kind' in value && value.kind === 'literal';
+}
+
+/*** Narrow a binding expression to the capability-reference form owned by this editor. */
+function isCapabilityReference(
+  value: PropBinding['value'],
+): value is Extract<PropBinding['value'], { readonly capability: string }> {
+  return 'capability' in value;
 }

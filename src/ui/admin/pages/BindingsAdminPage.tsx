@@ -2,11 +2,10 @@ import { Card, Text } from '@ankhorage/zora';
 import React from 'react';
 
 import {
-  collectStudioBindingOperationOptions,
+  collectStudioBindingCapabilityOptions,
   diagnoseStudioComponentBindings,
 } from '../../../bindingAuthoringModel';
 import { useStudio } from '../../../core/StudioContext';
-import { ACTION_REGISTRY } from '../../../index';
 import { findNodeInManifest, findScreenIdForNode } from '../../../manifestState';
 import { AdminHeader, AdminScroll, KeyValue } from '../adminPagePrimitives';
 import { BindingDiagnosticsCard } from './bindings/BindingDiagnosticsCard';
@@ -47,13 +46,12 @@ export function BindingsAdminPage({ nodeId }: { readonly nodeId: string | null }
   }
 
   const registry = studio.manifest.dataBindings ?? {};
-  const operations = collectStudioBindingOperationOptions(studio.manifest.infra.apis ?? {});
+  const capabilities = collectStudioBindingCapabilityOptions(studio.manifest.infra.apis ?? {});
   const diagnostics = diagnoseStudioComponentBindings({
     node,
     registry,
     componentMeta: studio.bindableComponentMeta,
-    operations,
-    actionTypes: Object.keys(ACTION_REGISTRY),
+    capabilities,
   });
 
   return (
@@ -71,14 +69,14 @@ export function BindingsAdminPage({ nodeId }: { readonly nodeId: string | null }
         componentMeta={studio.bindableComponentMeta}
         node={node}
         registry={registry}
-        operations={operations}
+        capabilities={capabilities}
         onChange={studio.updateDataBindings}
       />
       <EventBindingsCard
         componentMeta={studio.bindableComponentMeta}
         node={node}
         registry={registry}
-        operations={operations}
+        capabilities={capabilities}
         onChange={studio.updateDataBindings}
       />
       <BindingDiagnosticsCard diagnostics={diagnostics} />

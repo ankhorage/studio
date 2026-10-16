@@ -4,15 +4,17 @@ import path from 'node:path';
 
 import type {
   AppManifest,
-  BindingOperationRef,
+  BindingExpression,
   DataSourceDiagnostic,
   UiNode,
 } from '@ankhorage/contracts';
 import type { ApiDefinition } from '@ankhorage/contracts/data';
+import type { Capability } from '@ankhorage/contracts/capability';
 import type { EndpointTestFetch, EndpointTestFetchInit } from '@ankhorage/data-sources';
 import {
-  createRuntimeApiOperationExecutor,
-  resolveRuntimeBindingValue,
+  createRuntimeApiCapabilityExecutor,
+  executeRuntimeBindingInvocation,
+  resolveRuntimeBindingExpression,
 } from '@ankhorage/runtime/bindings';
 import { composeCategoryAppManifest } from '@ankhorage/templates';
 import { readOwnProperty } from '@ankhorage/utility/object';
@@ -32,21 +34,8 @@ const PRODUCTS_GRID_ID = `${ID_PREFIX}-products-grid`;
 const SCANNER_ID = `${ID_PREFIX}-scan-scanner`;
 const PRODUCT = { id: 'product-1', barcode: BARCODE, name: 'Acceptance Product' } as const;
 
-const PRODUCTS_LIST_OPERATION = {
-  apiId: 'nutrition',
-  endpointId: 'products',
-  operationId: 'products.list',
-} as const satisfies BindingOperationRef;
-const BARCODE_OPERATION = {
-  apiId: 'nutrition',
-  endpointId: 'products',
-  operationId: 'products.getByBarcode',
-} as const satisfies BindingOperationRef;
-
-type OperationRepeatSource = Extract<
-  NonNullable<NonNullable<UiNode['repeat']>['source']>,
-  { readonly kind: 'operation' }
->;
+const PRODUCTS_LIST_CAPABILITY = 'api.nutrition.products.list' as const;
+const BARCODE_CAPABILITY = 'api.nutrition.products.getByBarcode' as const;
 
 interface RecordedRequest {
   readonly url: string;
@@ -110,7 +99,7 @@ function createNutritionApiFixtureManifest(): AppManifest {
               id: PRODUCTS_GRID_ID,
               type: 'Grid',
               repeat: {
-                source: { kind: 'operation', operation: PRODUCTS_LIST_OPERATION, path: 'products' },
+                source: { capability: PRODUCTS_LIST_CAPABILITY, path: 'products' },
                 itemAlias: 'item',
                 keyPath: 'id',
               },
@@ -209,12 +198,14 @@ function createNutritionApiFixtureManifest(): AppManifest {
         events: {
           barcodeScanned: [
             {
-              target: { kind: 'operation', operation: BARCODE_OPERATION },
-              input: {
-                barcode: {
-                  kind: 'source',
-                  source: { kind: 'event', path: 'payload.value' },
-                  transforms: ['trim'],
+              target: {
+                capability: BARCODE_CAPABILITY,
+                input: {
+                  barcode: {
+                    kind: 'transform',
+                    value: { capability: 'barcode.scanned', path: 'payload.value' },
+                    transforms: ['trim'],
+                  },
                 },
               },
             },
@@ -237,7 +228,7 @@ async function createWorkspaceRoot(): Promise<string> {
 
 function assertCanonicalNutritionManifest(
   manifest: Awaited<ReturnType<ProjectManager['getProjectManifest']>>,
-): OperationRepeatSource {
+): BindingExpression {
   expect(Object.keys(manifest.infra.apis ?? {})).toHaveLength(1);
   const nutrition = manifest.infra.apis
     ? readOwnProperty<ApiDefinition>(manifest.infra.apis, 'nutrition')
@@ -258,39 +249,39 @@ function assertCanonicalNutritionManifest(
   if (!screen) throw new Error('Generated Nutrition manifest is missing the catalog screen.');
   const grid = findNode(screen.root, PRODUCTS_GRID_ID);
   const source = grid?.repeat?.source;
-  if (source?.kind !== 'operation') {
+  if (!source || !('capability' in source)) {
     throw new Error('Generated Nutrition products grid is missing its canonical operation source.');
   }
-  expect(source.operation).toEqual(PRODUCTS_LIST_OPERATION);
+  expect(source).toEqual({ capability: PRODUCTS_LIST_CAPABILITY, path: 'products' });
   return source;
 }
 
 function assertBarcodeOperation(
   manifest: Awaited<ReturnType<ProjectManager['getProjectManifest']>>,
-): BindingOperationRef {
+): Capability['id'] {
   const scannerBinding = Object.values(manifest.dataBindings ?? {}).find(
     ({ componentId }) => componentId === SCANNER_ID,
   );
   const eventBinding = scannerBinding?.events?.barcodeScanned?.find(
-    ({ target }) => target.kind === 'operation',
+    ({ target }) => target.capability === BARCODE_CAPABILITY,
   );
-  if (eventBinding?.target.kind !== 'operation') {
+  if (!eventBinding) {
     throw new Error('Generated Nutrition scanner is missing its barcode lookup operation.');
   }
-  expect(eventBinding.target.operation).toEqual(BARCODE_OPERATION);
-  expect(eventBinding.input).toMatchObject({
+  expect(eventBinding.target.capability).toBe(BARCODE_CAPABILITY);
+  expect(eventBinding.target.input).toMatchObject({
     barcode: {
-      kind: 'source',
-      source: { kind: 'event', path: 'payload.value' },
+      kind: 'transform',
+      value: { capability: 'barcode.scanned', path: 'payload.value' },
       transforms: ['trim'],
     },
   });
-  return eventBinding.target.operation;
+  return eventBinding.target.capability;
 }
 
 async function assertGeneratedRuntimeSource(projectPath: string): Promise<void> {
   const rootLayout = await readFile(path.join(projectPath, 'src', 'app', '_layout.tsx'), 'utf8');
-  expect(rootLayout).toContain('createRuntimeApiOperationExecutor');
+  expect(rootLayout).toContain('createRuntimeApiCapabilityExecutor');
   expect(rootLayout).toContain('fetch: runtimeApiFetch');
   expect(rootLayout).not.toContain('EXPO_PUBLIC_SUPABASE_URL');
   expect(rootLayout).not.toContain('/rest/v1/');
@@ -299,13 +290,18 @@ async function assertGeneratedRuntimeSource(projectPath: string): Promise<void> 
 
 async function executeGeneratedRuntimeBinding(
   apis: Awaited<ReturnType<ProjectManager['getProjectManifest']>>['infra']['apis'],
-  source: OperationRepeatSource,
+  source: BindingExpression,
   endpointFetch: EndpointTestFetch,
 ): Promise<void> {
   const diagnostics: DataSourceDiagnostic[] = [];
-  const value = await resolveRuntimeBindingValue(
-    { source },
-    { apis, executeOperation: createRuntimeApiOperationExecutor({ fetch: endpointFetch }) },
+  const value = await resolveRuntimeBindingExpression(
+    source,
+    {
+      executeCapability: createRuntimeApiCapabilityExecutor({
+        apis: apis ?? {},
+        fetch: endpointFetch,
+      }),
+    },
     diagnostics,
   );
   expect(diagnostics).toEqual([]);
@@ -314,25 +310,20 @@ async function executeGeneratedRuntimeBinding(
 
 async function executeGeneratedBarcodeLookup(
   apis: Awaited<ReturnType<ProjectManager['getProjectManifest']>>['infra']['apis'],
-  operation: BindingOperationRef,
+  capability: Capability['id'],
   endpointFetch: EndpointTestFetch,
 ): Promise<void> {
-  const api = apis ? readOwnProperty<ApiDefinition>(apis, operation.apiId) : undefined;
-  const endpoint = api
-    ? Object.values(api.endpoints).find(({ id }) => id === operation.endpointId)
-    : undefined;
-  if (!api || !endpoint) {
-    throw new Error('Generated Nutrition barcode API selection is incomplete.');
-  }
-
-  const result = await createRuntimeApiOperationExecutor({ fetch: endpointFetch })({
-    api,
-    endpoint,
-    operation,
-    input: { barcode: BARCODE },
-  });
-  expect(result.ok).toBe(true);
-  if (result.ok) expect(result.data).toEqual({ product: PRODUCT });
+  const result = await executeRuntimeBindingInvocation(
+    { capability, input: { barcode: { kind: 'literal', value: BARCODE } } },
+    {
+      executeCapability: createRuntimeApiCapabilityExecutor({
+        apis: apis ?? {},
+        fetch: endpointFetch,
+      }),
+    },
+  );
+  expect(result?.ok).toBe(true);
+  if (result?.ok) expect(result.data).toEqual({ product: PRODUCT });
 }
 
 async function executeStudioApiOperation(

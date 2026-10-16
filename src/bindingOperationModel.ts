@@ -1,59 +1,66 @@
 import type {
   ApiDefinition,
   ApiDefinitionRegistry,
-  BindingOperationRef,
   DataOperationConfig,
   DataSchema,
-  UiBindableValueMeta,
 } from '@ankhorage/contracts';
+import type { Capability } from '@ankhorage/contracts/capability';
+import { CAPABILITIES as EXPO_RUNTIME_CAPABILITIES } from '@ankhorage/expo-runtime/capabilities';
+import { CAPABILITIES as NAVIGATOR_CAPABILITIES } from '@ankhorage/navigator/capabilities';
+import { CAPABILITIES as SURFACE_CAPABILITIES } from '@ankhorage/surface/capabilities';
 import { findByKey } from '@ankhorage/utility/array';
 import { readOwnProperty } from '@ankhorage/utility/object';
 
 import type {
   StudioBindingInputFieldOption,
-  StudioBindingOperationOption,
+  StudioBindingCapabilityOption,
 } from './bindingAuthoringContracts';
 import { collectStudioResponsePaths, resolveStudioSchemaValueMeta } from './bindingSchemaModel';
 import { resolveDataSchemaAuthoringStructure } from './features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure';
+
+const STUDIO_HOSTED_CAPABILITY_IDS = [
+  'navigator.navigate',
+  'expo.alert',
+  'theme.setMode',
+] as const satisfies readonly Capability['id'][];
 
 /***
  * Collect and alphabetically sort the API operations available for Studio binding authoring.
  * TODO: Move binding operation catalog behavior under src/bindings/.
  */
-export function collectStudioBindingOperationOptions(
+export function collectStudioBindingCapabilityOptions(
   apis: ApiDefinitionRegistry,
-): readonly StudioBindingOperationOption[] {
-  return Object.values(apis)
-    .flatMap((api) => collectApiOperations(api))
-    .sort((left, right) => left.label.localeCompare(right.label));
+): readonly StudioBindingCapabilityOption[] {
+  return [
+    ...collectStudioStaticBindingCapabilities(),
+    ...Object.values(apis).flatMap((api) => collectApiOperations(api)),
+  ].sort((left, right) => left.label.localeCompare(right.label));
 }
 
 /***
  * Find an option through the canonical keyed array lookup utility.
  */
-export function findStudioBindingOperationOption(
-  options: readonly StudioBindingOperationOption[],
-  ref: BindingOperationRef,
-): StudioBindingOperationOption | undefined {
-  return findByKey(options, toOperationKey(ref), (option) => toOperationKey(option.operation));
-}
-
-/*** Create a stable key for a Studio binding-operation reference. */
-function toOperationKey(reference: BindingOperationRef): string {
-  return `${reference.apiId}:${reference.endpointId}:${reference.operationId}`;
+export function findStudioBindingCapabilityOption(
+  options: readonly StudioBindingCapabilityOption[],
+  capability: Capability['id'],
+): StudioBindingCapabilityOption | undefined {
+  return findByKey(options, capability, (option) => option.capability.id);
 }
 
 /***
  * Project all endpoint operations from one API definition into Studio binding options.
  * TODO: Keep API-to-binding option projection under src/bindings/.
  */
-function collectApiOperations(api: ApiDefinition): StudioBindingOperationOption[] {
+function collectApiOperations(api: ApiDefinition): StudioBindingCapabilityOption[] {
   return Object.values(api.endpoints).flatMap((endpoint) =>
     Object.values(endpoint.operations).map((operation) => ({
-      operation: {
-        apiId: api.id,
-        endpointId: endpoint.id,
-        operationId: operation.id,
+      capability: {
+        id: `api.${api.id}.${operation.id}`,
+        owner: '@ankhorage/runtime',
+        access: ['invoke'],
+        binding: { kind: 'api', bindableAs: ['source', 'target'] },
+        input: operation.request,
+        output: operation.response,
       },
       label: `${api.name ?? api.id} · ${operation.name ?? operation.id}`,
       apiLabel: describeApi(api),
@@ -64,6 +71,38 @@ function collectApiOperations(api: ApiDefinition): StudioBindingOperationOption[
       ),
     })),
   );
+}
+
+/*** Collect the released capabilities hosted by the generated Studio runtime. */
+function collectStudioStaticBindingCapabilities(): readonly StudioBindingCapabilityOption[] {
+  return [...NAVIGATOR_CAPABILITIES, ...EXPO_RUNTIME_CAPABILITIES, ...SURFACE_CAPABILITIES]
+    .filter(isStudioHostedCapability)
+    .map((capability) => ({
+      capability,
+      label: capability.id,
+      apiLabel: capability.owner,
+      inputFields: collectCapabilityInputFields(capability),
+      responsePaths: [],
+    }));
+}
+
+/*** Project a released capability's declared object input into Studio authoring fields. */
+function collectCapabilityInputFields(
+  capability: Capability,
+): readonly StudioBindingInputFieldOption[] {
+  const schema = capability.input?.schema;
+  if (!schema || schema.type !== 'object') return [];
+  return Object.entries(schema.properties ?? {}).map(([name, field]) => ({
+    name,
+    label: field.title ?? name,
+    value: resolveStudioSchemaValueMeta(field, undefined),
+    required: schema?.required?.includes(name) ?? false,
+  }));
+}
+
+/*** Restrict released catalogs to the capability executors hosted by the generated Studio app. */
+function isStudioHostedCapability(capability: Capability): boolean {
+  return STUDIO_HOSTED_CAPABILITY_IDS.some((id) => id === capability.id);
 }
 
 /***
@@ -123,37 +162,4 @@ function resolveSlotSchema(
  */
 function describeApi(api: ApiDefinition): string {
   return `${api.id} · ${api.origin} · ${api.protocol}`;
-}
-
-/***
- * Convert an action payload schema into Studio binding input-field options.
- * TODO: Move action binding-field projection under src/bindings/.
- */
-export function createStudioActionInputFields(
-  payloadSchema:
-    | Readonly<
-        Record<
-          string,
-          { readonly label: string; readonly type: string; readonly required?: boolean }
-        >
-      >
-    | undefined,
-): readonly StudioBindingInputFieldOption[] {
-  return Object.entries(payloadSchema ?? {}).map(([name, field]) => ({
-    name,
-    label: field.label,
-    value: { type: toBindableType(field.type) },
-    required: field.required ?? false,
-  }));
-}
-
-/***
- * Narrow an arbitrary payload type string to the primitive types supported by bindable values.
- * TODO: Keep bindable-type semantics under src/bindings/.
- */
-function toBindableType(type: string): UiBindableValueMeta['type'] {
-  if (type === 'string' || type === 'number' || type === 'boolean' || type === 'object') {
-    return type;
-  }
-  return 'unknown';
 }
