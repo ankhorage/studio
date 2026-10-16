@@ -253,15 +253,11 @@ describe('generated OAuth scaffold templates', () => {
     );
   });
 
-  it('adds reader dependencies without camera or permissions for an ebook-only plan', () => {
+  it('adds the standalone Reader dependency without camera, permissions or Expo adapters', () => {
     const runtimePlan: ExpoRuntimePlan = {
       capabilities: [{ capability: 'ebookReader' }],
       dependencies: [
-        { name: '@ankhorage/expo-runtime', reasons: ['capability:ebookReader'], version: '^3.2.4' },
-        { name: '@readium/navigator', reasons: ['capability:ebookReader'], version: '2.8.2' },
-        { name: '@readium/shared', reasons: ['capability:ebookReader'], version: '2.4.0' },
-        { name: '@zip.js/zip.js', reasons: ['capability:ebookReader'], version: '2.9.0' },
-        { name: 'pdfjs-dist', reasons: ['capability:ebookReader'], version: '6.3.289' },
+        { name: '@ankhorage/reader', reasons: ['capability:ebookReader'], version: '^0.1.0' },
       ],
       diagnostics: [],
       impliedPermissions: [],
@@ -269,7 +265,7 @@ describe('generated OAuth scaffold templates', () => {
       needsPermissionsProvider: false,
       permissions: [],
       providers: [],
-      runtimeAdapters: ['ExpoReaderSurfaceAdapter'],
+      runtimeAdapters: [],
       usesExpoRuntimeRegistry: true,
     };
     const dependencies = getPackageJson({
@@ -278,10 +274,11 @@ describe('generated OAuth scaffold templates', () => {
       targets: WEB_TARGETS,
     }).dependencies as Record<string, string>;
 
-    expect(dependencies['@readium/navigator']).toBe('2.8.2');
-    expect(dependencies['@readium/shared']).toBe('2.4.0');
-    expect(dependencies['@zip.js/zip.js']).toBe('2.9.0');
-    expect(dependencies['pdfjs-dist']).toBe('6.3.289');
+    expect(dependencies['@ankhorage/reader']).toBe('^0.1.0');
+    expect(dependencies['@readium/navigator']).toBeUndefined();
+    expect(dependencies['@readium/shared']).toBeUndefined();
+    expect(dependencies['@zip.js/zip.js']).toBeUndefined();
+    expect(dependencies['pdfjs-dist']).toBeUndefined();
     expect(dependencies['@ankhorage/permissions']).toBeUndefined();
     expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBeUndefined();
   });

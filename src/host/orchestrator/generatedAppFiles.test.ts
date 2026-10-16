@@ -19,20 +19,19 @@ afterEach(async () => {
 });
 
 describe('generated app extension interaction-policy support', () => {
-  it('separates generated relative adapters from package imports', () => {
+  it('separates the generated scanner adapter from package imports', () => {
     const source = createGeneratedAppExtensionRegistrySource({
       usesExpoBarcodeScannerAdapter: true,
-      usesExpoReaderSurfaceAdapter: true,
     });
 
     expect(
       source.startsWith(
         "import type { ComponentRegistry } from '@ankhorage/runtime';\n\n" +
-          "import { ExpoBarcodeScannerView } from './expo/ExpoBarcodeScannerView';\n" +
-          "import { ExpoReaderSurfaceView } from './expo/ExpoReaderSurfaceView';\n\n",
+          "import { ExpoBarcodeScannerView } from './expo/ExpoBarcodeScannerView';\n\n",
       ),
     ).toBe(true);
-    expect(source).toContain('ReaderSurface: ExpoReaderSurfaceView');
+    expect(source).toContain('BarcodeScannerView: ExpoBarcodeScannerView');
+    expect(source).not.toContain('ReaderSurface');
     expect(source).toContain(
       'export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {} as const;',
     );
@@ -43,7 +42,6 @@ describe('generated app extension interaction-policy support', () => {
   it('emits an empty adapter registry when no Expo bridge is required', () => {
     const source = createGeneratedAppExtensionRegistrySource({
       usesExpoBarcodeScannerAdapter: false,
-      usesExpoReaderSurfaceAdapter: false,
     });
 
     expect(source).toContain(
@@ -58,42 +56,40 @@ describe('generated app extension interaction-policy support', () => {
 });
 
 describe('generated Expo adapter bridges', () => {
-  it('installs only the ReaderSurface bridge for an ebook reader plan', async () => {
+  it('uses the normal ZORA Reader without an Expo bridge', async () => {
     const projectPath = await createProjectRoot();
+    const obsoleteReaderSurfacePath = path.join(
+      projectPath,
+      'src/generated/expo/ExpoReaderSurfaceView.tsx',
+    );
+    await fs.mkdir(path.dirname(obsoleteReaderSurfacePath), { recursive: true });
+    await fs.writeFile(obsoleteReaderSurfacePath, 'obsolete bridge\n');
 
     await syncGeneratedAppFiles(projectPath, {
-      runtimePlan: createRuntimePlan(['ExpoReaderSurfaceAdapter']),
+      runtimePlan: createRuntimePlan([]),
     });
 
-    const readerBridge = await fs.readFile(
-      path.join(projectPath, 'src/generated/expo/ExpoReaderSurfaceView.tsx'),
-      'utf8',
-    );
     const registry = await fs.readFile(
       path.join(projectPath, 'src/generated/appExtensionRegistry.ts'),
       'utf8',
     );
-    expect(readerBridge).toBe(
-      "export { ExpoReaderSurfaceAdapter as ExpoReaderSurfaceView } from '@ankhorage/expo-runtime/reader';\n",
-    );
-    expect(registry).toContain('ReaderSurface: ExpoReaderSurfaceView');
+    expect(registry).toContain('APP_EXTENSION_COMPONENT_REGISTRY: ComponentRegistry = {};');
+    expect(registry).not.toContain('ReaderSurface');
     expect(registry).not.toContain('BarcodeScannerView');
-    expect(
-      await pathExists(path.join(projectPath, 'src/generated/expo/ExpoBarcodeScannerView.tsx')),
-    ).toBe(false);
+    expect(await pathExists(obsoleteReaderSurfacePath)).toBe(false);
   });
 
   it('removes stale capability bridges when the runtime plan changes', async () => {
     const projectPath = await createProjectRoot();
     await syncGeneratedAppFiles(projectPath, {
-      runtimePlan: createRuntimePlan(['ExpoBarcodeScannerAdapter', 'ExpoReaderSurfaceAdapter']),
+      runtimePlan: createRuntimePlan(['ExpoBarcodeScannerAdapter']),
     });
 
     await syncGeneratedAppFiles(projectPath, { runtimePlan: createRuntimePlan([]) });
 
-    for (const fileName of ['ExpoBarcodeScannerView.tsx', 'ExpoReaderSurfaceView.tsx']) {
-      expect(await pathExists(path.join(projectPath, 'src/generated/expo', fileName))).toBe(false);
-    }
+    expect(
+      await pathExists(path.join(projectPath, 'src/generated/expo/ExpoBarcodeScannerView.tsx')),
+    ).toBe(false);
   });
 });
 
