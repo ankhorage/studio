@@ -38,7 +38,7 @@
         "fastify": "^5.12.5",
       },
       "devDependencies": {
-        "@ankhorage/ankh": "^0.10.72",
+        "@ankhorage/ankh": "^0.13.1",
         "@ankhorage/devtools": "^2.0.100",
         "@ankhorage/paradox": "^0.2.28",
         "@types/bun": "^1.4.2",
@@ -71,7 +71,7 @@
     "@ankhorage/contracts": "^26.0.0",
   },
   "packages": {
-    "@ankhorage/ankh": ["@ankhorage/ankh@0.10.72", "", { "dependencies": { "@ankhorage/contracts": "^22.0.1", "yaml": "^2.9.1" }, "bin": { "ankh": "dist/bin.js" } }, "sha512-8mA5WPJjNmDR/BJndQc1S7bn+yKLmQ+IVnJ9Ez/tlNU9C5CcUhNSCTIuVdrHU+fq/Aq3L3iP7ekkGfVO4PSLTQ=="],
+    "@ankhorage/ankh": ["@ankhorage/ankh@0.13.1", "", { "dependencies": { "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^25.0.0", "yaml": "^2.9.1" }, "bin": { "ankh": "dist/bin.js" } }, "sha512-z95oi3TZ6S9UxSaY7Ti9Q4XzTb1ECars9zpi0WkpO1P/8ORahEMk4XM2DE1z+p4HjHFUMGEmuKhbta3a1gKr6Q=="],
 
     "@ankhorage/apm": ["@ankhorage/apm@0.8.14", "", { "dependencies": { "@ankhorage/project-detector": "^0.1.0", "@ankhorage/utility": "^1.4.0", "jsonc-parser": "^3.3.1", "semver": "^7.8.5", "yaml": "^2.9.1" }, "peerDependencies": { "@ankhorage/ankh": "^0.10.4" }, "optionalPeers": ["@ankhorage/ankh"], "bin": { "apm": "dist/cli/runAsync.js" } }, "sha512-2y3ZJzSPwWEhhKS+c5kAYwQoeDDGkqfmtqikw0bd/not+6vdICQBIuCumH86FwKoRKz/o3FpbznoIxscu42n2g=="],
 
@@ -2044,8 +2044,6 @@
     "@ankhorage/runtime/@ankhorage/data-sources": ["@ankhorage/data-sources@2.1.1", "", { "dependencies": { "@ankhorage/contracts": "^26.0.0" } }, "sha512-BjmJ8poeUfDMpkaMFdqx+BXyNRH3O/AL1qvTUkXtIvuV/mFWcLp36tgTtiS2gBhffTys+1fBeznrCBH2cTOnQA=="],
 
     "@ankhorage/storage/@ankhorage/capability": ["@ankhorage/capability@0.2.2", "", { "dependencies": { "@ankhorage/contracts": "^26.0.0", "@ankhorage/utility": "^1.9.85" } }, "sha512-n0cR0HJUuejinPL5AJROilHkSLI9EyaS9n3gi2xithx2bk5cTENSKWDNIihMb0N6aVPWrTXHVWTfrCWkkqszVw=="],
-
-    "@ankhorage/zora/@ankhorage/ankh": ["@ankhorage/ankh@0.13.1", "", { "dependencies": { "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^25.0.0", "yaml": "^2.9.1" }, "bin": { "ankh": "dist/bin.js" } }, "sha512-z95oi3TZ6S9UxSaY7Ti9Q4XzTb1ECars9zpi0WkpO1P/8ORahEMk4XM2DE1z+p4HjHFUMGEmuKhbta3a1gKr6Q=="],
 
     "@babel/core/semver": ["semver@6.3.1", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA=="],
 

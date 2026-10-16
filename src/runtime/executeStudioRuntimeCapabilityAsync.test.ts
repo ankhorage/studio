@@ -58,6 +58,69 @@ test('preserves owner invalid-input diagnostics with Runtime severity', async ()
   });
 });
 
+test('rejects missing Navigator routes before the host callback', async () => {
+  const navigations: unknown[] = [];
+  const executeCapability = createStudioRuntimeCapabilityExecutor({
+    navigate: (input) => navigations.push(input),
+  });
+
+  expect(await executeCapability({ capability: 'navigator.navigate', input: {} })).toEqual({
+    diagnostics: [
+      {
+        code: 'invalid-capability-input',
+        message:
+          "Capability 'navigator.navigate' received input that does not satisfy its published owner schema.",
+        severity: 'error',
+      },
+    ],
+    ok: false,
+  });
+  expect(navigations).toEqual([]);
+});
+
+test('rejects invalid Surface theme modes before the host callback', async () => {
+  const modes: unknown[] = [];
+  const executeCapability = createStudioRuntimeCapabilityExecutor({
+    setThemeMode: (input) => modes.push(input),
+  });
+
+  expect(
+    await executeCapability({ capability: 'theme.setMode', input: { mode: 'system' } }),
+  ).toEqual({
+    diagnostics: [
+      {
+        code: 'invalid-capability-input',
+        message:
+          "Capability 'theme.setMode' received input that does not satisfy its published owner schema.",
+        severity: 'error',
+      },
+    ],
+    ok: false,
+  });
+  expect(modes).toEqual([]);
+});
+
+test('reports a failing Navigator host callback without treating it as successful', async () => {
+  const executeCapability = createStudioRuntimeCapabilityExecutor({
+    navigate: () => {
+      throw new Error('router is unavailable');
+    },
+  });
+
+  expect(
+    await executeCapability({ capability: 'navigator.navigate', input: { route: '/settings' } }),
+  ).toEqual({
+    diagnostics: [
+      {
+        code: 'capability-handler-failed',
+        message: "The handler for 'navigator.navigate' failed: router is unavailable",
+        severity: 'error',
+      },
+    ],
+    ok: false,
+  });
+});
+
 test('reports missing host handlers and unknown capabilities as Runtime failures', async () => {
   const executeCapability = createStudioRuntimeCapabilityExecutor({});
 
