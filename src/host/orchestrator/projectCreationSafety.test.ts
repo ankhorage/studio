@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, readFile, stat, writeFile } from 'node:fs/promises';
+import { access, mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -49,11 +49,68 @@ test('project creation rejects duplicate and reserved IDs before mutation', asyn
   expect(await stat(path.join(workspaceRoot, 'apps', 'studio'))).toBeDefined();
 });
 
+test('owns the standalone Runtime executor outside the route ledger across creation and reconciliation', async () => {
+  const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'studio-runtime-artifact-lifecycle-'));
+  await mkdir(path.join(workspaceRoot, 'apps', 'studio'), { recursive: true });
+  await writeFile(
+    path.join(workspaceRoot, 'package.json'),
+    JSON.stringify({ name: '@ankhorage/studio', private: true }),
+  );
+  const manager = new ProjectManager(workspaceRoot, {
+    reconcileProjectPackageRootAsync: async () => {
+      await Promise.resolve();
+    },
+  });
+
+  try {
+    const created = await manager.createProject(
+      'Standalone',
+      createProjectCreationTestSource(),
+      undefined,
+      {
+        includeStudio: false,
+      },
+    );
+    const routeLedger = await readLedger(created.path, 'route-ledger.json');
+    const runtimeLedger = await readLedger(created.path, 'runtime-artifact-ledger.json');
+    const runtimeExecutorPath = path.join(
+      created.path,
+      'src/generated/runtimeCapabilityExecutor.ts',
+    );
+
+    expect(routeLedger).not.toContain('src/generated/runtimeCapabilityExecutor.ts');
+    expect(runtimeLedger).toContain('src/generated/runtimeCapabilityExecutor.ts');
+    expect(await pathExists(runtimeExecutorPath)).toBe(true);
+
+    await manager.syncProjectRuntime({ includeStudio: true, mutations: [], projectId: created.id });
+
+    expect(await pathExists(runtimeExecutorPath)).toBe(false);
+    expect(await readLedger(created.path, 'runtime-artifact-ledger.json')).not.toContain(
+      'src/generated/runtimeCapabilityExecutor.ts',
+    );
+  } finally {
+    await rm(workspaceRoot, { force: true, recursive: true });
+  }
+});
+
 async function catchError(promise: Promise<unknown>): Promise<unknown> {
   try {
     await promise;
     return null;
   } catch (caught) {
     return caught;
+  }
+}
+
+async function readLedger(projectPath: string, ledgerName: string): Promise<string> {
+  return await readFile(path.join(projectPath, '.ankh', ledgerName), 'utf8');
+}
+
+async function pathExists(filePath: string): Promise<boolean> {
+  try {
+    await access(filePath);
+    return true;
+  } catch {
+    return false;
   }
 }
