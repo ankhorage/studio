@@ -21,29 +21,32 @@ test('merges multiple declarations supplied in one generated import fragment', (
   createComponentRegistry,
   RuntimeRendererConfigProvider,
 } from '@ankhorage/runtime';
-import { useRuntimeAction } from '@ankhorage/studio/runtime';`,
-    "import { createRuntimeDataSourceOperationExecutor } from '@ankhorage/runtime';",
+import { useStudioRuntimeCapabilityExecutor } from '@ankhorage/studio/runtime';`,
+    "import { createRuntimeApiCapabilityExecutor } from '@ankhorage/runtime';",
   ]);
 
   expect(generated.match(/from '@ankhorage\/runtime';/gu)?.length).toBe(1);
   expect(generated).toContain('createComponentRegistry');
-  expect(generated).toContain('createRuntimeDataSourceOperationExecutor');
+  expect(generated).toContain('createRuntimeApiCapabilityExecutor');
   expect(generated).toContain('RuntimeRendererConfigProvider');
-  expect(generated).toContain("import { useRuntimeAction } from '@ankhorage/studio/runtime';");
+  expect(generated).toContain(
+    "import { useStudioRuntimeCapabilityExecutor } from '@ankhorage/studio/runtime';",
+  );
 });
 
 test('renders generated imports in app lint order and formats long named clauses', () => {
   const generated = composeGeneratedImports([
-    "import { useOptionalManifestContext, createRuntimeApiOperationExecutor, RuntimeRendererConfigProvider, type RuntimeActionExecutor } from '@ankhorage/runtime';",
+    "import { composeRuntimeCapabilityExecutor, useOptionalManifestContext, createRuntimeApiCapabilityExecutor, RuntimeRendererConfigProvider, type RuntimeCapabilityExecutor } from '@ankhorage/runtime';",
     "import { bundledMediaRegistry } from '@/generated/bundledMediaRegistry';",
-    "import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';",
+    "import { executeExpoRuntimeCapabilityAsync } from '@ankhorage/expo-runtime/capability-bridge';",
   ]);
 
   expect(generated)
-    .toBe(`import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';
+    .toBe(`import { executeExpoRuntimeCapabilityAsync } from '@ankhorage/expo-runtime/capability-bridge';
 import {
-  createRuntimeApiOperationExecutor,
-  type RuntimeActionExecutor,
+  composeRuntimeCapabilityExecutor,
+  createRuntimeApiCapabilityExecutor,
+  type RuntimeCapabilityExecutor,
   RuntimeRendererConfigProvider,
   useOptionalManifestContext,
 } from '@ankhorage/runtime';

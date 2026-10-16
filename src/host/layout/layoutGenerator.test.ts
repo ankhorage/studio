@@ -394,20 +394,22 @@ describe('GeneratedAppFileGenerator', () => {
     expect(screen).toContain('useGlobalSearchParams<SearchParams>()');
   });
 
-  test('binds standalone runtime actions through the released Expo Runtime owner', () => {
+  test('binds standalone runtime capabilities through the released Expo Runtime owner', () => {
     const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', createManifest(), [], {
       includeStudio: false,
     });
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
 
     expect(rootLayout).toContain(
-      "import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';",
+      "import { executeExpoRuntimeCapabilityAsync } from '@ankhorage/expo-runtime/capability-bridge';",
     );
-    expect(rootLayout).toContain("import { type Href, Slot, useRouter } from 'expo-router';");
     expect(rootLayout).not.toContain('eslint-disable');
-    expect(rootLayout).toContain('push: (href) => router.push(href as Href)');
-    expect(rootLayout).toContain('function useGeneratedRuntimeAction()');
-    expect(rootLayout).toContain('const { executeAction } = useGeneratedRuntimeAction();');
+    expect(rootLayout).toContain('function useGeneratedRuntimeCapabilityExecutor()');
+    expect(rootLayout).toContain(
+      'const { executeCapability: executeApplicationCapability } = useGeneratedRuntimeCapabilityExecutor();',
+    );
+    expect(rootLayout).toContain('composeRuntimeCapabilityExecutor');
+    expect(rootLayout).toContain('createRuntimeApiCapabilityExecutor');
     expect(rootLayout).not.toContain('composeZoraPlugins');
     expect(rootLayout).not.toContain('ZORA_CORE_PLUGIN');
     expect(rootLayout).not.toContain('GENERATED_APP_ZORA_PLUGINS');

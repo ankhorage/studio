@@ -28,7 +28,7 @@ interface GetRootLayoutTsxArgs {
   authRuntime?: RootLayoutAuthRuntimeConfig;
   initialRouteNameOverride?: string;
   runtimeModuleDeclarations?: string;
-  runtimeActionHookName?: string;
+  runtimeCapabilityExecutorHookName?: string;
   runtimeProviderEnd?: string[];
   runtimeProviderStart?: string[];
   useStoredAuthSessionCredentialResolver?: boolean;
@@ -127,7 +127,7 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
     authRuntime,
     initialRouteNameOverride,
     runtimeModuleDeclarations,
-    runtimeActionHookName = 'useRuntimeAction',
+    runtimeCapabilityExecutorHookName = 'useStudioRuntimeCapabilityExecutor',
     runtimeProviderEnd = [],
     runtimeProviderStart = [],
     useStoredAuthSessionCredentialResolver = false,
@@ -249,6 +249,9 @@ const { authState, handleInnerContentReady } = useGeneratedAuthNavigation();
   }
 `
     : '';
+  const runtimeCredentialResolver = useStoredAuthSessionCredentialResolver
+    ? '\n        credentialResolver: resolveRuntimeOperationCredential,'
+    : '';
   const runtimeOperationHelpers = `
 async function runtimeApiFetch(
   url: string,
@@ -289,17 +292,27 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     : ''
 }
 `;
-  const runtimeContentDeclaration = `const { executeAction } = ${runtimeActionHookName}();
+  const runtimeContentDeclaration = `const { executeCapability: executeApplicationCapability } = ${runtimeCapabilityExecutorHookName}();
+  const executeCapability = useMemo(
+    () =>
+      composeRuntimeCapabilityExecutor({
+        apiCapabilityExecutor: createRuntimeApiCapabilityExecutor({
+          apis: runtimeManifest.infra.apis ?? {},
+          fetch: runtimeApiFetch,${runtimeCredentialResolver}
+        }),
+        capabilityExecutor: executeApplicationCapability,
+      }),
+    [executeApplicationCapability, runtimeManifest.infra.apis],
+  );
 
   const generatedRuntimeConfig = useMemo(
     () => ({
-      executeAction,
+      executeCapability,
       registry: runtimeComponentRegistry,
-      executeOperation,
       mediaAssets: runtimeManifest.media?.assets,
       resolveMediaAsset: bundledMediaResolver,
     }),
-    [executeAction, executeOperation, runtimeManifest.media?.assets],
+    [executeCapability, runtimeManifest.media?.assets],
   );
 
   const runtimeContent = (
@@ -391,9 +404,6 @@ const shouldMountAppHeader =
       : `<AppShell>
           ${finalJsx}
         </AppShell>`;
-  const runtimeCredentialResolver = useStoredAuthSessionCredentialResolver
-    ? '\n        credentialResolver: resolveRuntimeOperationCredential,'
-    : '';
   const runtimeComponentRegistryDeclaration =
     'const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;';
   return `
@@ -451,13 +461,6 @@ ${indentedRootHookBlock}  const manifestContext = useOptionalManifestContext();
   const runtimeManifest = manifestContext?.manifest ?? fallbackManifest;${indentedStudioRuntimeLines}
   const activeTheme = resolveManifestActiveTheme(runtimeManifest);
   const activeThemeMode = resolveThemeMode(runtimeManifest.activeThemeMode, 'light');
-  const executeOperation = useMemo(
-    () =>
-      createRuntimeApiOperationExecutor({
-        fetch: runtimeApiFetch,${runtimeCredentialResolver}
-      }),
-    [],
-  );
 ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContentNode};
 
   ${outputDeclaration}
