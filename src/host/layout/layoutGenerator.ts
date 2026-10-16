@@ -54,16 +54,18 @@ export interface GeneratedAppFileGenerationOptions {
  */
 function getPackageOwnedRuntimeImports(includeStudio: boolean): string {
   const runtimeImports = `import {
+  composeRuntimeCapabilityExecutor,
   createComponentRegistry,
-  createRuntimeApiOperationExecutor,
-  ${includeStudio ? '' : 'type RuntimeActionExecutor,\n  '}
+  createRuntimeApiCapabilityExecutor,
+  ${includeStudio ? '' : 'type RuntimeCapabilityExecutor,\n  '}
   RuntimeRendererConfigProvider,
   useOptionalManifestContext,
 } from '@ankhorage/runtime';
 ${
   includeStudio
-    ? `import { useRuntimeAction } from '@ankhorage/studio/runtime';`
-    : `import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';`
+    ? `import { useStudioRuntimeCapabilityExecutor } from '@ankhorage/studio/runtime';`
+    : `import { executeExpoRuntimeCapabilityAsync } from '@ankhorage/expo-runtime/capability-bridge';
+import { CAPABILITIES as EXPO_RUNTIME_CAPABILITIES } from '@ankhorage/expo-runtime/capabilities';`
 }
 ${
   includeStudio
@@ -95,22 +97,31 @@ const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
 
   return `${registry}
 
-function useGeneratedRuntimeAction() {
-  const router = useRouter();
-  const { mode, setMode } = useZoraTheme();
-  const executeAction = useCallback<RuntimeActionExecutor>(
-    ({ action }) =>
-      executeExpoRuntimeAction({
-        action,
-        router: {
-          push: (href) => router.push(href as Href),
-        },
-        mode,
-        setMode,
-      }),
-    [mode, router, setMode],
-  );
-  return { executeAction };
+function useGeneratedRuntimeCapabilityExecutor() {
+  const executeCapability = useCallback<RuntimeCapabilityExecutor>(async ({ capability, input }) => {
+    const expoCapability = EXPO_RUNTIME_CAPABILITIES.find((candidate) => candidate.id === capability);
+    if (!expoCapability) {
+      return {
+        diagnostics: [
+          {
+            code: 'missing-operation',
+            message: \`Capability '\${capability}' has no generated application executor.\`,
+            severity: 'error',
+          },
+        ],
+        ok: false,
+      };
+    }
+
+    await executeExpoRuntimeCapabilityAsync({
+      alertImpl: globalThis.alert,
+      capability: expoCapability,
+      input,
+    });
+    return { data: null, ok: true };
+  }, []);
+
+  return { executeCapability };
 }`;
 }
 
@@ -408,7 +419,9 @@ import { useStudioAppBarAugmentation } from '@ankhorage/studio/ui/useStudioAppBa
       includeStudio,
       authRuntime: authLayoutPlan,
       initialRouteNameOverride: '(app)',
-      runtimeActionHookName: includeStudio ? undefined : 'useGeneratedRuntimeAction',
+      runtimeCapabilityExecutorHookName: includeStudio
+        ? undefined
+        : 'useGeneratedRuntimeCapabilityExecutor',
       runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(
         getGeneratedRuntimeRegistryDeclarations(includeStudio),
         ...runtimeLayoutIntegration.moduleDeclarations,
@@ -488,7 +501,9 @@ import { useStudioAppBarAugmentation } from '@ankhorage/studio/ui/useStudioAppBa
       innerNavigation,
       includeStudio,
       initialRouteNameOverride: '(app)',
-      runtimeActionHookName: includeStudio ? undefined : 'useGeneratedRuntimeAction',
+      runtimeCapabilityExecutorHookName: includeStudio
+        ? undefined
+        : 'useGeneratedRuntimeCapabilityExecutor',
       runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(
         getGeneratedRuntimeRegistryDeclarations(includeStudio),
         ...runtimeLayoutIntegration.moduleDeclarations,

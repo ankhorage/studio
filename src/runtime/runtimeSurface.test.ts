@@ -7,8 +7,12 @@ const runtimeIndexSource = readFileSync(join(import.meta.dir, 'index.ts'), 'utf8
 
 describe('Studio runtime surface', () => {
   it('keeps the public runtime entrypoint limited to current Studio-owned modules', () => {
-    expect(runtimeIndexSource).toContain("export * from './runtimeActions.js';");
-    expect(runtimeIndexSource).toContain("export * from './useRuntimeAction.js';");
+    expect(runtimeIndexSource).toContain(
+      "export * from './executeStudioRuntimeCapabilityAsync.js';",
+    );
+    expect(runtimeIndexSource).toContain(
+      "export * from './useStudioRuntimeCapabilityExecutor.js';",
+    );
     expect(runtimeIndexSource).not.toContain('appExtensionRegistry');
     expect(runtimeIndexSource).not.toContain("export * from './registry.js';");
     expect(runtimeIndexSource).not.toContain('STUDIO_ZORA_PLUGIN_CATALOG');
