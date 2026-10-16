@@ -49,6 +49,7 @@ describe('binding manifest persistence', () => {
         componentType: 'Button',
         props: {
           children: { value: { capability: 'context.session.user.name' } },
+          disabled: { value: { capability: 'state.form.disabled' } },
         },
         events: {
           press: [
