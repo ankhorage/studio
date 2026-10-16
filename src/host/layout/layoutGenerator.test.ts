@@ -400,9 +400,15 @@ describe('GeneratedAppFileGenerator', () => {
     });
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
 
-    expect(rootLayout).toContain(
-      "import { executeExpoRuntimeCapabilityAsync } from '@ankhorage/expo-runtime/capability-bridge';",
-    );
+    expect(rootLayout).toContain('executeExpoRuntimeCapabilityAsync');
+    expect(rootLayout).toContain('CAPABILITIES as NAVIGATOR_CAPABILITIES');
+    expect(rootLayout).toContain('CAPABILITIES as SURFACE_CAPABILITIES');
+    expect(rootLayout).toContain("capabilityId: 'navigator.navigate'");
+    expect(rootLayout).toContain("capabilityId: 'theme.setMode'");
+    expect(rootLayout).toContain('router.navigate({ params, pathname: route });');
+    expect(rootLayout).toContain("setMode((value as { mode: 'dark' | 'light' }).mode)");
+    expect(rootLayout).toContain('alertImpl: (message) => Alert.alert(message)');
+    expect(rootLayout).toContain("severity: 'error'");
     expect(rootLayout).not.toContain('eslint-disable');
     expect(rootLayout).toContain('function useGeneratedRuntimeCapabilityExecutor()');
     expect(rootLayout).toContain(

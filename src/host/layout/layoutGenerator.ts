@@ -65,7 +65,10 @@ ${
   includeStudio
     ? `import { useStudioRuntimeCapabilityExecutor } from '@ankhorage/studio/runtime';`
     : `import { executeExpoRuntimeCapabilityAsync } from '@ankhorage/expo-runtime/capability-bridge';
-import { CAPABILITIES as EXPO_RUNTIME_CAPABILITIES } from '@ankhorage/expo-runtime/capabilities';`
+import type { ExpoRuntimeCapabilityHandlerArgs } from '@ankhorage/expo-runtime/capability-bridge';
+import { CAPABILITIES as EXPO_RUNTIME_CAPABILITIES } from '@ankhorage/expo-runtime/capabilities';
+import { CAPABILITIES as NAVIGATOR_CAPABILITIES } from '@ankhorage/navigator/capabilities';
+import { CAPABILITIES as SURFACE_CAPABILITIES } from '@ankhorage/surface/capabilities';`
 }
 ${
   includeStudio
@@ -98,9 +101,15 @@ const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
   return `${registry}
 
 function useGeneratedRuntimeCapabilityExecutor() {
+  const router = useRouter();
+  const { setMode } = useZoraTheme();
   const executeCapability = useCallback<RuntimeCapabilityExecutor>(async ({ capability, input }) => {
-    const expoCapability = EXPO_RUNTIME_CAPABILITIES.find((candidate) => candidate.id === capability);
-    if (!expoCapability) {
+    const ownerCapability = [
+      ...EXPO_RUNTIME_CAPABILITIES,
+      ...NAVIGATOR_CAPABILITIES,
+      ...SURFACE_CAPABILITIES,
+    ].find((candidate) => candidate.id === capability);
+    if (!ownerCapability) {
       return {
         diagnostics: [
           {
@@ -113,13 +122,32 @@ function useGeneratedRuntimeCapabilityExecutor() {
       };
     }
 
-    await executeExpoRuntimeCapabilityAsync({
-      alertImpl: globalThis.alert,
-      capability: expoCapability,
+    const result = await executeExpoRuntimeCapabilityAsync({
+      alertImpl: (message) => Alert.alert(message),
+      capability: ownerCapability,
+      capabilityHandlers: [
+        {
+          capabilityId: 'navigator.navigate',
+          execute: ({ input: value }: ExpoRuntimeCapabilityHandlerArgs) => {
+            const { params, route } = value as { route: string; params?: Record<string, string> };
+            router.navigate({ params, pathname: route });
+          },
+        },
+        {
+          capabilityId: 'theme.setMode',
+          execute: ({ input: value }: ExpoRuntimeCapabilityHandlerArgs) =>
+            setMode((value as { mode: 'dark' | 'light' }).mode),
+        },
+      ],
       input,
     });
-    return { data: null, ok: true };
-  }, []);
+    return result.ok
+      ? { data: null, ok: true }
+      : {
+          diagnostics: result.diagnostics.map((diagnostic) => ({ ...diagnostic, severity: 'error' })),
+          ok: false,
+        };
+  }, [router, setMode]);
 
   return { executeCapability };
 }`;
@@ -383,7 +411,7 @@ export class GeneratedAppFileGenerator {
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
-      `import { Stack, ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'type Href, useRouter'} } from 'expo-router';`,
+      `import { Stack, ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'useRouter'} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import { useEffect, useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
@@ -463,7 +491,7 @@ import { useStudioAppBarAugmentation } from '@ankhorage/studio/ui/useStudioAppBa
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
-      `import { Slot${includeStudio ? ', useGlobalSearchParams, usePathname' : ', type Href, useRouter'} } from 'expo-router';`,
+      `import { Slot${includeStudio ? ', useGlobalSearchParams, usePathname' : ', useRouter'} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import React, { ${includeStudio ? 'useEffect, ' : ''}useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
