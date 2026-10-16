@@ -1,6 +1,6 @@
 import { parseAppManifest } from '@ankhorage/contracts';
 import { resolveExpoRuntimePlan } from '@ankhorage/expo-runtime/planning';
-import type { ReaderSurfaceProps } from '@ankhorage/zora';
+import type { ReaderProps } from '@ankhorage/zora';
 import { ZORA_COMPONENT_META } from '@ankhorage/zora/metadata';
 import { describe, expect, it } from 'bun:test';
 
@@ -18,19 +18,13 @@ describe('createExpo57ReaderFixtureManifest', () => {
     expect(JSON.parse(JSON.stringify(manifest))).toEqual(manifest);
   });
 
-  it('plans the released reader adapter and document dependencies without permissions', () => {
+  it('plans the released standalone Reader dependency without permissions or Expo adapters', () => {
     const plan = resolveExpoRuntimePlan(createExpo57ReaderFixtureManifest());
 
     expect(plan.diagnostics).toEqual([]);
     expect(plan.permissions).toEqual([]);
-    expect(plan.runtimeAdapters).toEqual(['ExpoReaderSurfaceAdapter']);
-    expect(plan.dependencies.map(({ name }) => name)).toEqual([
-      '@ankhorage/expo-runtime',
-      '@readium/navigator',
-      '@readium/shared',
-      '@zip.js/zip.js',
-      'pdfjs-dist',
-    ]);
+    expect(plan.runtimeAdapters).toEqual([]);
+    expect(plan.dependencies.map(({ name }) => name)).toEqual(['@ankhorage/reader']);
   });
 
   it('uses the public manifest node, file media reference, and normalized event bindings', () => {
@@ -38,34 +32,38 @@ describe('createExpo57ReaderFixtureManifest', () => {
     const reader = manifest.screens.epub?.root.children?.[0];
     const binding = manifest.dataBindings?.['reader-epub'];
 
-    expect(ZORA_COMPONENT_META.ReaderSurface).toMatchObject({
+    expect(ZORA_COMPONENT_META.Reader).toMatchObject({
       directManifestNode: true,
       requirements: { capabilities: { ebookReader: true } },
     });
     expect(reader).toMatchObject({
       id: 'reader-epub',
       props: { format: 'epub', source: { mediaId: 'reader-epub' } },
-      type: 'ReaderSurface',
+      type: 'Reader',
     });
-    expect(binding?.events?.locationChange?.[0]?.input).toMatchObject({
-      locator: { kind: 'source', source: { kind: 'event', path: 'payload.locator' } },
-      trigger: { kind: 'source', source: { kind: 'event', path: 'payload.trigger' } },
+    expect(binding?.events?.locationChange?.[0]?.target).toMatchObject({
+      capability: 'action.console',
+      input: {
+        locator: { capability: 'event.reader.locationChange', path: 'payload.locator' },
+        trigger: { capability: 'event.reader.locationChange', path: 'payload.trigger' },
+      },
     });
-    expect(binding?.events?.readerError?.[0]?.input).toMatchObject({
-      code: { kind: 'source', source: { kind: 'event', path: 'payload.code' } },
-      message: { kind: 'source', source: { kind: 'event', path: 'payload.message' } },
+    expect(binding?.events?.readerError?.[0]?.target).toMatchObject({
+      capability: 'action.console',
+      input: {
+        code: { capability: 'event.reader.error', path: 'payload.code' },
+        message: { capability: 'event.reader.error', path: 'payload.message' },
+      },
     });
   });
 
   it('uses the standard ZORA interaction policy contract', () => {
-    const editProps: Pick<ReaderSurfaceProps, 'interactionPolicy'> = {
-      interactionPolicy: 'passive',
-    };
-    const previewProps: Pick<ReaderSurfaceProps, 'interactionPolicy'> = {
-      interactionPolicy: 'enabled',
+    const props: Pick<ReaderProps, 'format' | 'source'> = {
+      format: 'epub',
+      source: { uri: 'https://example.test/reader.epub' },
     };
 
-    expect(editProps.interactionPolicy).toBe('passive');
-    expect(previewProps.interactionPolicy).toBe('enabled');
+    expect(props.format).toBe('epub');
+    expect(props.source).toEqual({ uri: 'https://example.test/reader.epub' });
   });
 });

@@ -30,27 +30,31 @@ export function createExpo57ReaderFixtureManifest(): AppManifest {
         `reader-${format}`,
         {
           componentId: `reader-${format}`,
-          componentType: 'ReaderSurface',
+          componentType: 'Reader',
           events: {
             locationChange: [
               {
-                target: { kind: 'action', type: 'console' },
-                input: {
-                  format: eventValue('payload.format'),
-                  locator: eventValue('payload.locator'),
-                  page: eventValue('payload.page'),
-                  progression: eventValue('payload.progression'),
-                  trigger: eventValue('payload.trigger'),
+                target: {
+                  capability: 'action.console',
+                  input: {
+                    format: eventValue('event.reader.locationChange', 'payload.format'),
+                    locator: eventValue('event.reader.locationChange', 'payload.locator'),
+                    page: eventValue('event.reader.locationChange', 'payload.page'),
+                    progression: eventValue('event.reader.locationChange', 'payload.progression'),
+                    trigger: eventValue('event.reader.locationChange', 'payload.trigger'),
+                  },
                 },
               },
             ],
             readerError: [
               {
-                target: { kind: 'action', type: 'console' },
-                input: {
-                  code: eventValue('payload.code'),
-                  format: eventValue('payload.format'),
-                  message: eventValue('payload.message'),
+                target: {
+                  capability: 'action.console',
+                  input: {
+                    code: eventValue('event.reader.error', 'payload.code'),
+                    format: eventValue('event.reader.error', 'payload.format'),
+                    message: eventValue('event.reader.error', 'payload.message'),
+                  },
                 },
               },
             ],
@@ -118,7 +122,7 @@ function createReaderScreen(format: (typeof READER_FORMATS)[number]): ScreenSpec
       children: [
         {
           id: `reader-${format}`,
-          type: 'ReaderSurface',
+          type: 'Reader',
           props: {
             format,
             source: { mediaId: `reader-${format}` },
@@ -133,6 +137,6 @@ function createReaderScreen(format: (typeof READER_FORMATS)[number]): ScreenSpec
 /***
  * Build a contracts event-source binding value for one payload path inside the reader acceptance manifest.
  */
-function eventValue(path: string) {
-  return { kind: 'source' as const, source: { kind: 'event' as const, path } };
+function eventValue(capability: `event.${string}`, path: string) {
+  return { capability, path };
 }
