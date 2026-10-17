@@ -13,8 +13,8 @@ import { findByKey } from '@ankhorage/utility/array';
 import { stringifyJson } from '@ankhorage/utility/string';
 
 import type {
-  StudioBindingInputFieldOption,
   StudioBindingCapabilityOption,
+  StudioBindingInputFieldOption,
 } from '../../../../bindingAuthoringModel';
 import { createBindingLiteralDefaultValue } from './createBindingLiteralDefaultValue';
 

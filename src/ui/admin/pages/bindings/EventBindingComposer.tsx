@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import {
-  type StudioBindingInputFieldOption,
   type StudioBindingCapabilityOption,
+  type StudioBindingInputFieldOption,
 } from '../../../../bindingAuthoringModel';
 import { Field } from '../../adminPagePrimitives';
 import { bindingAdminStyles } from './bindingAdminStyles';

@@ -8,8 +8,8 @@ import type {
   DataSourceDiagnostic,
   UiNode,
 } from '@ankhorage/contracts';
-import type { ApiDefinition } from '@ankhorage/contracts/data';
 import type { Capability } from '@ankhorage/contracts/capability';
+import type { ApiDefinition } from '@ankhorage/contracts/data';
 import type { EndpointTestFetch, EndpointTestFetchInit } from '@ankhorage/data-sources';
 import {
   createRuntimeApiCapabilityExecutor,

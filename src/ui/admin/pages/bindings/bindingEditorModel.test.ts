@@ -1,6 +1,5 @@
-import { describe, expect, test } from 'bun:test';
-
 import type { ApiDefinitionRegistry } from '@ankhorage/contracts';
+import { describe, expect, test } from 'bun:test';
 
 import {
   collectStudioBindingCapabilityOptions,
@@ -36,6 +35,15 @@ const requiredObjectField: StudioBindingInputFieldOption = {
 };
 
 describe('binding editor model', () => {
+  test('starts state and context source switches with an explicit path placeholder', () => {
+    expect(createStudioPropBindingForSource('state', { type: 'string' }, [])).toEqual({
+      value: { capability: 'state.' },
+    });
+    expect(createStudioPropBindingForSource('context', { type: 'string' }, [])).toEqual({
+      value: { capability: 'context.' },
+    });
+  });
+
   test('does not create a property binding when API result has no configured API', () => {
     expect(createStudioPropBindingForSource('api', { type: 'string' }, [])).toBeUndefined();
   });

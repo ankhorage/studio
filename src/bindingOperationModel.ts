@@ -12,8 +12,8 @@ import { findByKey } from '@ankhorage/utility/array';
 import { readOwnProperty } from '@ankhorage/utility/object';
 
 import type {
-  StudioBindingInputFieldOption,
   StudioBindingCapabilityOption,
+  StudioBindingInputFieldOption,
 } from './bindingAuthoringContracts';
 import { collectStudioResponsePaths, resolveStudioSchemaValueMeta } from './bindingSchemaModel';
 import { resolveDataSchemaAuthoringStructure } from './features/authoring-engine/adapters/outbound/resolveDataSchemaAuthoringStructure';
@@ -91,12 +91,12 @@ function collectCapabilityInputFields(
   capability: Capability,
 ): readonly StudioBindingInputFieldOption[] {
   const schema = capability.input?.schema;
-  if (!schema || schema.type !== 'object') return [];
+  if (schema?.type !== 'object') return [];
   return Object.entries(schema.properties ?? {}).map(([name, field]) => ({
     name,
     label: field.title ?? name,
     value: resolveStudioSchemaValueMeta(field, undefined),
-    required: schema?.required?.includes(name) ?? false,
+    required: schema.required?.includes(name) ?? false,
   }));
 }
 
