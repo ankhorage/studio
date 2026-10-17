@@ -189,16 +189,26 @@ function diagnoseInputCompatibility(
 ): readonly StudioBindingDiagnostic[] {
   const eventReference = unwrapEventCapabilityReference(input);
   if (!eventReference) return [];
-  if (eventReference.capability !== eventMeta.payload.eventType) {
+  const { payload } = eventMeta;
+  if (!payload) {
     return [
       diagnostic(
-        'incompatible-input',
-        `Event capability '${eventReference.capability}' does not match '${eventMeta.payload.eventType}'.`,
+        'missing-event-payload-meta',
+        'This event exposes no payload metadata for event input bindings.',
         path,
       ),
     ];
   }
-  const eventValue = resolveEventSourceValue(eventReference.path ?? '', eventMeta.payload.fields);
+  if (eventReference.capability !== payload.eventType) {
+    return [
+      diagnostic(
+        'incompatible-input',
+        `Event capability '${eventReference.capability}' does not match '${payload.eventType}'.`,
+        path,
+      ),
+    ];
+  }
+  const eventValue = resolveEventSourceValue(eventReference.path ?? '', payload.fields ?? []);
   if (!eventValue) {
     return [
       diagnostic(
