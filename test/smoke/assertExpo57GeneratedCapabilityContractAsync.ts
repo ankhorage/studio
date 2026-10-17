@@ -106,10 +106,17 @@ async function assertGeneratedRuntimesAsync(projectRoot: string): Promise<void> 
     path.join(projectRoot, 'src', 'auth', 'oauth-state.ts'),
     'utf8',
   );
-  for (const expected of ['WebBrowser.openAuthSessionAsync(', 'oauth.completeAuthorization({']) {
+  for (const expected of [
+    'WebBrowser.openAuthSessionAsync(',
+    'authAdapter.startAuthorization({',
+    'authAdapter.completeAuthorization({',
+  ]) {
     if (!oauthRuntime.includes(expected)) {
       throw new Error(`Generated capability OAuth runtime is missing ${expected}.`);
     }
+  }
+  if (oauthRuntime.includes('oauth.completeAuthorization(')) {
+    throw new Error('Generated capability OAuth runtime calls the retired OAuth adapter.');
   }
   for (const expected of [
     "import { getRandomBytes } from 'expo-crypto';",

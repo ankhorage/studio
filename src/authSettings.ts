@@ -1,8 +1,8 @@
+import { getSupabaseOAuthProviderDefinition } from '@ankhorage/auth-supabase';
 import { type AppManifest, DEFAULT_AUTH_FLOW } from '@ankhorage/contracts';
 import type { AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type { InfraEnvironmentSpec } from '@ankhorage/contracts/infra';
 import { normalizeSecretRef } from '@ankhorage/contracts/secrets';
-import { getSupabaseOAuthProviderDefinition } from '@ankhorage/auth-supabase';
 import { hasOnlyKeys, isRecord, readOwnProperty } from '@ankhorage/utility/object';
 
 type ManifestAuth = NonNullable<InfraEnvironmentSpec['auth']>;
