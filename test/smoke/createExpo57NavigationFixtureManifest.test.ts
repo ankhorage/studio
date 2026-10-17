@@ -118,11 +118,11 @@ describe('Expo 57 generated navigation acceptance fixture', () => {
     )?.content;
 
     expect(rootLayout).toBeDefined();
-    expect(rootLayout).toContain("import { type Href, Slot, useRouter } from 'expo-router';");
+    expect(rootLayout).toContain("import { Slot, useRouter } from 'expo-router';");
     expect(navigatorLayout).toContain(
       rootNavigator === 'tabs' ? "from '@ankhorage/navigator/tabs'" : "from 'expo-router/drawer'",
     );
-    expect(rootLayout).toContain('push: (href) => router.push(href as Href)');
+    expect(rootLayout).toContain('router.navigate({ params, pathname: route });');
     expect(navigatorLayout).not.toContain('ZoraTabBar');
     expect(navigatorLayout).not.toContain('ZoraDrawerContent');
     expect(rootLayout).not.toContain('@react-navigation/');
