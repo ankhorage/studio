@@ -49,7 +49,7 @@ root package is classified below.
 `@ankhorage/color-theory@^0.0.8`, `@ankhorage/contracts@^8.0.0`,
 `@ankhorage/data-sources@^2.0.0`, `@ankhorage/deploy@^0.12.0`,
 `@ankhorage/infra@^4.1.3`, `@ankhorage/orchestrator@^0.3.1`,
-`@ankhorage/supabase-auth@^1.2.5`, `@ankhorage/supabase-storage@^0.2.0`,
+`@ankhorage/supabase-auth@^1.2.5`, `@ankhorage/storage-supabase@^1.0.0`,
 `@ankhorage/supabase-vault@^0.2.4`, `@ankhorage/templates@^7.0.0`,
 The standalone `@ankhorage/zora-chess`, `@ankhorage/zora-game`, and `@ankhorage/zora-tabletop`
 packages are no longer current generated-app owners. Chess, Game, and Tabletop are owned by core
