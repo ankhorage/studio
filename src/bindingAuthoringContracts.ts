@@ -49,6 +49,7 @@ export interface StudioBindingDiagnostic {
     | 'incompatible-response'
     | 'missing-capability'
     | 'missing-binding-meta'
+    | 'missing-event-payload-meta'
     | 'missing-input'
     | 'missing-capability-reference'
     | 'missing-response-path'
