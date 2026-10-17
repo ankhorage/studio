@@ -32,7 +32,7 @@
     "prebuild": "expo prebuild --clean --no-install"
   },
   "dependencies": {
-    "@ankhorage/expo-runtime": "^6.0.3",
+    "@ankhorage/expo-runtime": "^7.0.1",
     "@ankhorage/navigator": "^3.5.4",
     "@ankhorage/studio": "^7.0.3",
     "@ankhorage/surface": "^9.4.6",
