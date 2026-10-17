@@ -305,7 +305,6 @@
     "@ankhorage/repository": "^0.5.4",
     "@ankhorage/runtime": "^5.0.2",
     "@ankhorage/supabase": "^0.5.14",
-    "@ankhorage/supabase-auth": "^1.2.34",
     "@ankhorage/storage": "^0.2.2",
     "@ankhorage/storage-supabase": "^1.0.0",
     "@ankhorage/surface": "^9.4.6",
