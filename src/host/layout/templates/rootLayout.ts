@@ -251,7 +251,7 @@ const { authState, handleInnerContentReady } = useGeneratedAuthNavigation();
 `
     : '';
   const runtimeCredentialResolver = useStoredAuthSessionCredentialResolver
-    ? '\n        credentialResolver: resolveRuntimeOperationCredential,'
+    ? '\n          credentialResolver: resolveRuntimeOperationCredential,'
     : '';
   const runtimeOperationHelpers = `
 async function runtimeApiFetch(
@@ -298,15 +298,15 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
       {appContent}
     </GeneratedRuntimeContent>
   );`;
-  const generatedRuntimeContent = `
-function GeneratedRuntimeContent({
+  const generatedRuntimeContent = `function GeneratedRuntimeContent({
   children,
   runtimeManifest,
 }: {
   children: ReactNode;
   runtimeManifest: AppManifest;
 }) {
-  const { executeCapability: executeApplicationCapability } = ${resolvedRuntimeCapabilityExecutorHookName}();
+  const { executeCapability: executeApplicationCapability } =
+    ${resolvedRuntimeCapabilityExecutorHookName}();
   const executeCapability = useMemo(
     () =>
       composeRuntimeCapabilityExecutor({
