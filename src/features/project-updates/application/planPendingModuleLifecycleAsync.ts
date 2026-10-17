@@ -13,10 +13,6 @@ import type { AppManifest } from '@ankhorage/contracts';
 
 import { isAppManifest } from '../../../contractGuards';
 import {
-  digestProjectUpdateText,
-  readPendingModuleLifecycleStateAsync,
-} from '../adapters/outbound/readPendingModuleLifecycleStateAsync';
-import {
   STUDIO_PENDING_MODULE_LIFECYCLE_FILE,
   STUDIO_PENDING_MODULE_LIFECYCLE_PROJECTION_ID,
 } from '../constants';
@@ -25,6 +21,8 @@ import {
   removeReviewedPendingModules,
   serializePendingModuleLifecycleState,
 } from '../domain/pendingModuleLifecycleState';
+import { digestProjectUpdateText } from '../utils/digestProjectUpdateText';
+import type { PendingModuleLifecycleStatePort } from './ports/outbound/PendingModuleLifecycleStatePort';
 
 const STUDIO_MANIFEST_FILE = 'ankh.config.json';
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
@@ -45,9 +43,12 @@ export async function planPendingModuleLifecycleAsync(input: {
   readonly resolveArtifactAsync: (
     rootPath: string,
   ) => Promise<ApmExtensionArtifactIdentityResolution>;
+  readonly pendingModuleLifecycleState: PendingModuleLifecycleStatePort;
   readonly nowIso: () => string;
 }): Promise<PendingModuleLifecyclePlanSlice> {
-  const pending = await readPendingModuleLifecycleStateAsync(input.rootPath);
+  const pending = await input.pendingModuleLifecycleState.readPendingModuleLifecycleStateAsync(
+    input.rootPath,
+  );
   if (pending.state !== 'valid') return blockedPendingState(input.rootPath, pending.state);
   if (pending.digest !== input.expectedPendingDigest) {
     return blockedDigest(input.rootPath, input.expectedPendingDigest, pending.digest);

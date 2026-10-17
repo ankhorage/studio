@@ -216,6 +216,7 @@ async function createPlanFixtureAsync(): Promise<PlanFixture> {
     expectedPendingDigest: pendingState.digest,
     resolveArtifactAsync: () =>
       Promise.resolve({ state: 'resolved', artifact, evidence: ['fixture-artifact'] }),
+    pendingModuleLifecycleState: { readPendingModuleLifecycleStateAsync },
     nowIso: () => FIXED_NOW,
   });
   const step = slice.steps.find(({ execution }) => execution.kind === 'projection');

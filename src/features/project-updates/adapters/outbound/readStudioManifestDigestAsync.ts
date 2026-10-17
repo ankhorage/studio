@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import { digestProjectUpdateText } from './readPendingModuleLifecycleStateAsync';
+import { digestProjectUpdateText } from '../../utils/digestProjectUpdateText';
 
 const STUDIO_MANIFEST_FILE = 'ankh.config.json';
 
