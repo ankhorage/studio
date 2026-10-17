@@ -83,7 +83,8 @@ function readGeneratedRuntimeDependencies(
     surface: readRequiredString(dependencies, '@ankhorage/surface', 'Studio'),
     studio: studioDependencyRange,
     utility: readRequiredString(dependencies, '@ankhorage/utility', 'Studio'),
-    supabaseAuth: readRequiredString(dependencies, '@ankhorage/supabase-auth', 'Studio'),
+    auth: readRequiredString(dependencies, '@ankhorage/auth', 'Studio'),
+    authSupabase: readRequiredString(dependencies, '@ankhorage/auth-supabase', 'Studio'),
     storageSupabase: readRequiredString(dependencies, '@ankhorage/storage-supabase', 'Studio'),
     zora: readRequiredString(dependencies, '@ankhorage/zora', 'Studio'),
   };

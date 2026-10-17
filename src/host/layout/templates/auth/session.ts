@@ -1,6 +1,7 @@
 /*** Generate the cross-platform auth-session persistence, bootstrap, refresh, and subscription module for a generated app. */
 export function getAuthSessionTs() {
-  return `import type { AuthAdapter, AuthSession, AuthUser } from '@ankhorage/contracts/auth';
+  return `import type { AuthPort } from '@ankhorage/auth';
+import type { AuthSession, AuthUser } from '@ankhorage/contracts/auth';
 import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
 
@@ -107,7 +108,7 @@ export function bootstrapAuthSession(): Promise<AuthSession | null> {
 }
 
 export function refreshAuthSessionIfNeeded(
-  authAdapter: Pick<AuthAdapter, 'refreshSession'>,
+  authAdapter: Pick<AuthPort, 'refreshSession'>,
 ): Promise<AuthSession | null> {
   refreshPromise ??= refreshAuthSession(authAdapter).finally(() => {
     refreshPromise = null;
@@ -116,17 +117,13 @@ export function refreshAuthSessionIfNeeded(
 }
 
 async function refreshAuthSession(
-  authAdapter: Pick<AuthAdapter, 'refreshSession'>,
+  authAdapter: Pick<AuthPort, 'refreshSession'>,
 ): Promise<AuthSession | null> {
   const session = memorySession ?? (await bootstrapAuthSession());
   if (!session) return null;
 
   if (!shouldRefreshAuthSession(session)) {
     return session;
-  }
-
-  if (!authAdapter.refreshSession) {
-    return handleRefreshFailure(session);
   }
 
   try {
