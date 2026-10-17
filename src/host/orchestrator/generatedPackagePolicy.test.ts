@@ -104,10 +104,14 @@ test('migrates existing generated storage apps to the canonical provider package
 
 test('migrates existing generated auth apps to canonical auth owners without adding auth to disabled apps', () => {
   const policy = getGeneratedPackagePolicy();
+  const legacyAuthDependencies: Record<string, string> = {
+    '@ankhorage/supabase-auth': '^1.2.34',
+  };
+  const disabledDependencies: Record<string, string> = {};
   const updated = applyGeneratedPackagePolicy(
     {
       packageManager: policy.packageManager,
-      dependencies: { '@ankhorage/supabase-auth': '^1.2.34' },
+      dependencies: legacyAuthDependencies,
       devDependencies: {},
     },
     policy,
@@ -118,7 +122,11 @@ test('migrates existing generated auth apps to canonical auth owners without add
   expect(updated.dependencies['@ankhorage/auth-supabase']).toBe(policy.dependencies.authSupabase);
   expect(
     applyGeneratedPackagePolicy(
-      { packageManager: policy.packageManager, dependencies: {}, devDependencies: {} },
+      {
+        packageManager: policy.packageManager,
+        dependencies: disabledDependencies,
+        devDependencies: {},
+      },
       policy,
     ).dependencies['@ankhorage/auth-supabase'],
   ).toBeUndefined();

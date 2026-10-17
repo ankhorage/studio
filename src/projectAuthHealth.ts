@@ -1,10 +1,10 @@
+import { getSupabaseOAuthProviderDefinition } from '@ankhorage/auth-supabase';
 import type { AppManifest, AuthOAuthProviderConfig } from '@ankhorage/contracts';
 import type { AuthOAuthSetupFieldRequirement } from '@ankhorage/contracts/auth';
 import type { AppDeployTargetId } from '@ankhorage/contracts/deploy';
 import type { AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type { InfraEnvironmentSpec } from '@ankhorage/contracts/infra';
 import type { SecretMetadata } from '@ankhorage/contracts/secrets';
-import { getSupabaseOAuthProviderDefinition } from '@ankhorage/auth-supabase';
 import { highestSeverity } from '@ankhorage/utility/diagnostics';
 import { readOwnProperty } from '@ankhorage/utility/object';
 

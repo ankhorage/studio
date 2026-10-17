@@ -17,7 +17,13 @@ export function getAuthAdapterTs(options: AuthAdapterTemplateOptions = {}) {
     oauthProviders.length > 0 ? '\n        oauthRandomBytes: getRandomBytes,' : '';
 
   return `import type { AuthPort } from '@ankhorage/auth';
-import type { AuthOAuthCompletionResult, AuthOAuthStartResult, AuthResult, AuthSession, AuthUser } from '@ankhorage/contracts/auth';
+import type {
+  AuthOAuthCompletionResult,
+  AuthOAuthStartResult,
+  AuthResult,
+  AuthSession,
+  AuthUser,
+} from '@ankhorage/contracts/auth';
 import { createSupabaseAuthAdapter } from '@ankhorage/auth-supabase';
 ${oauthRandomBytesImport}
 
@@ -57,7 +63,8 @@ function createMissingSupabaseAuthAdapter(): AuthPort {
     ok: false,
     error: {
       code: 'oauth_unavailable',
-      message: 'Supabase OAuth is unavailable because the public Supabase Auth environment is missing.',
+      message:
+        'Supabase OAuth is unavailable because the public Supabase Auth environment is missing.',
       stage: 'start',
       recoverable: true,
     },
@@ -67,7 +74,8 @@ function createMissingSupabaseAuthAdapter(): AuthPort {
     status: 'error',
     error: {
       code: 'oauth_unavailable',
-      message: 'Supabase OAuth is unavailable because the public Supabase Auth environment is missing.',
+      message:
+        'Supabase OAuth is unavailable because the public Supabase Auth environment is missing.',
       stage: 'callback',
       recoverable: true,
     },
