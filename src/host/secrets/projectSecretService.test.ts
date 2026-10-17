@@ -315,7 +315,7 @@ function createService(createClient: () => RecordingVaultClient | FailingVaultCl
 class RecordingVaultClient {
   closeCount = 0;
 
-  constructor(private readonly existing: boolean = true) {}
+  constructor(private readonly existing = true) {}
 
   query(statement: string): Promise<{ rows: Record<string, unknown>[] }> {
     if (statement.includes('vault.decrypted_secrets')) {

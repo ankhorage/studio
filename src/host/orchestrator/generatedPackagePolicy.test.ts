@@ -112,21 +112,42 @@ test('migrates existing generated auth apps to canonical auth owners without add
   };
   const disabledDependencies: Record<string, string> = {};
   const updated = applyGeneratedPackagePolicy(
-    { packageManager: policy.packageManager, dependencies: legacyAuthDependencies, devDependencies: {} },
+    {
+      packageManager: policy.packageManager,
+      dependencies: legacyAuthDependencies,
+      devDependencies: {},
+    },
     policy,
   );
 
   expect(updated.dependencies['@ankhorage/supabase-auth']).toBeUndefined();
   expect(updated.dependencies['@ankhorage/auth']).toBe(policy.dependencies.auth);
   expect(updated.dependencies['@ankhorage/auth-supabase']).toBe(policy.dependencies.authSupabase);
-  expect(applyGeneratedPackagePolicy({ packageManager: policy.packageManager, dependencies: disabledDependencies, devDependencies: {} }, policy).dependencies['@ankhorage/auth-supabase']).toBeUndefined();
+  expect(
+    applyGeneratedPackagePolicy(
+      {
+        packageManager: policy.packageManager,
+        dependencies: disabledDependencies,
+        devDependencies: {},
+      },
+      policy,
+    ).dependencies['@ankhorage/auth-supabase'],
+  ).toBeUndefined();
 });
 
 test('does not add server-only secret-store packages while reconciling an existing generated app', () => {
   const policy = getGeneratedPackagePolicy();
-  const existing = getPackageJson({ name: 'existing-app', includeStudio: true, targets: WEB_TARGETS });
+  const existing = getPackageJson({
+    name: 'existing-app',
+    includeStudio: true,
+    targets: WEB_TARGETS,
+  });
   const updated = applyGeneratedPackagePolicy(
-    { ...existing, dependencies: { ...existing.dependencies }, devDependencies: { ...existing.devDependencies } },
+    {
+      ...existing,
+      dependencies: { ...existing.dependencies },
+      devDependencies: { ...existing.devDependencies },
+    },
     policy,
   );
 
