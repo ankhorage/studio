@@ -43,11 +43,7 @@ export function getRootLayoutImportRequirements(
   return [
     {
       source: 'react',
-      namedImports: [
-        { imported: 'ReactNode', typeOnly: true },
-        { imported: 'useEffect' },
-        ...(!includeStudio ? [{ imported: 'useCallback' }] : []),
-      ],
+      namedImports: [{ imported: 'ReactNode', typeOnly: true }, { imported: 'useEffect' }],
     },
     {
       source: 'react-native',
