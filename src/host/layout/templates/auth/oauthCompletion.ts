@@ -67,8 +67,6 @@ export function completeOAuthCallback(
 async function completeOAuthCallbackAsync(
   callbackUrl: string,
 ): Promise<GeneratedOAuthTransportOutcome> {
-  const { oauth } = authAdapter;
-  if (!oauth) return createUnavailableOAuthOutcome();
   const attempt = await readTransportAttempt();
   if (!attempt) {
     return {
@@ -80,7 +78,7 @@ async function completeOAuthCallbackAsync(
 
   let completed: AuthOAuthCompletionResult;
   try {
-    completed = await oauth.completeAuthorization({
+    completed = await authAdapter.completeAuthorization({
       attemptId: attempt.attemptId,
       response: { type: 'callback', url: callbackUrl },
     });
@@ -107,14 +105,6 @@ export function resolveOAuthRedirectUri(): string {
         : undefined;
   if (!nativeScheme) throw new Error('Native OAuth requires a configured application scheme.');
   return Linking.createURL(callbackPath, { scheme: nativeScheme });
-}
-
-function createUnavailableOAuthOutcome(): GeneratedOAuthTransportOutcome {
-  return {
-    status: 'error',
-    message: 'OAuth is not available in this app configuration.',
-    recoverable: true,
-  };
 }
 
 function getBrowserLocation(): Readonly<Record<string, unknown>> | null {

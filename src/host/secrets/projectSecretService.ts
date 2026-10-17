@@ -13,7 +13,7 @@ import {
 import {
   getSupabaseOAuthProviderDefinition,
   validateSupabaseOAuthSecretPayload,
-} from '@ankhorage/supabase-auth';
+} from '@ankhorage/auth-supabase';
 import { createSupabaseVaultAdapter } from '@ankhorage/supabase-vault';
 import { pickCodeMessage } from '@ankhorage/utility/error';
 import { asNonEmptyString } from '@ankhorage/utility/value';

@@ -6,7 +6,7 @@ import {
   resolveAuthFlow,
   type RouteDefinition,
 } from '@ankhorage/contracts';
-import { getSupabaseOAuthProviderDefinition } from '@ankhorage/supabase-auth';
+import { getSupabaseOAuthProviderDefinition } from '@ankhorage/auth-supabase';
 import { toPortablePath } from '@ankhorage/utility/node/path';
 import path from 'path';
 

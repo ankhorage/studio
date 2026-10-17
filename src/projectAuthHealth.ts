@@ -4,7 +4,7 @@ import type { AppDeployTargetId } from '@ankhorage/contracts/deploy';
 import type { AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type { InfraEnvironmentSpec } from '@ankhorage/contracts/infra';
 import type { SecretMetadata } from '@ankhorage/contracts/secrets';
-import { getSupabaseOAuthProviderDefinition } from '@ankhorage/supabase-auth';
+import { getSupabaseOAuthProviderDefinition } from '@ankhorage/auth-supabase';
 import { highestSeverity } from '@ankhorage/utility/diagnostics';
 import { readOwnProperty } from '@ankhorage/utility/object';
 
