@@ -2,7 +2,7 @@ import type {
   SupabaseVaultQueryResult,
   SupabaseVaultSqlClient,
   SupabaseVaultSqlExecutor,
-} from '@ankhorage/supabase-vault';
+} from '@ankhorage/secrets-supabase-vault';
 import { assertArray } from '@ankhorage/utility/value';
 import { SQL } from 'bun';
 

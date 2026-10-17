@@ -76,7 +76,10 @@ if (handler === undefined || projectionDescriptor === undefined)
 const original = {
   name: 'existing-consumer',
   packageManager: 'bun@0.0.1',
-  dependencies: { '@ankhorage/contracts': '^0.0.1', 'user-owned': '^1.0.0' },
+  dependencies: {
+    '@ankhorage/contracts': '^0.0.1',
+    'user-owned': '^1.0.0',
+  },
   devDependencies: { 'user-dev-owned': '^1.0.0' },
   scripts: { custom: 'preserve me' },
 };
@@ -151,6 +154,9 @@ assert.ok(isRecord(result.dependencies));
 assert.equal(result.dependencies['user-owned'], original.dependencies['user-owned']);
 assert.equal(result.dependencies['@ankhorage/studio'], undefined);
 assert.equal(result.dependencies['@ankhorage/supabase-auth'], undefined);
+assert.equal(result.dependencies['@ankhorage/secrets'], undefined);
+assert.equal(result.dependencies['@ankhorage/secrets-supabase-vault'], undefined);
+assert.equal(result.dependencies['@ankhorage/supabase-vault'], undefined);
 assert.ok(isRecord(result.devDependencies));
 assert.equal(result.devDependencies['user-dev-owned'], original.devDependencies['user-dev-owned']);
 console.log(

@@ -1,4 +1,4 @@
-import type { SecretPayload, SecretStoreResult } from '@ankhorage/contracts/secrets';
+import type { SecretPayload, SecretStoreResult } from '@ankhorage/secrets/port';
 import { expect, test } from 'bun:test';
 
 import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig';
