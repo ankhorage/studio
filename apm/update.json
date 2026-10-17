@@ -57,7 +57,12 @@
         {
           "kind": "json-pointer",
           "path": "package.json",
-          "pointer": "/dependencies/@ankhorage~1supabase-auth"
+          "pointer": "/dependencies/@ankhorage~1auth"
+        },
+        {
+          "kind": "json-pointer",
+          "path": "package.json",
+          "pointer": "/dependencies/@ankhorage~1auth-supabase"
         },
         {
           "kind": "json-pointer",

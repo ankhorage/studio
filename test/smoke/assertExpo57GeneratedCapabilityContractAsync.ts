@@ -15,7 +15,8 @@ export async function assertExpo57GeneratedCapabilityContractAsync(
   const dependencies = packageJson.dependencies ?? {};
   const expectedDependencies = [
     '@ankhorage/permissions',
-    '@ankhorage/supabase-auth',
+    '@ankhorage/auth',
+    '@ankhorage/auth-supabase',
     EXPO_PLATFORM.packages.audio.name,
     EXPO_PLATFORM.packages.camera.name,
     EXPO_PLATFORM.packages.crypto.name,

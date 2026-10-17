@@ -44,7 +44,8 @@ test('derives generated dependency ranges from owner package metadata', async ()
     '@ankhorage/surface': policy.dependencies.surface,
     '@ankhorage/studio': policy.dependencies.studio,
     '@ankhorage/utility': policy.dependencies.utility,
-    '@ankhorage/supabase-auth': policy.dependencies.supabaseAuth,
+    '@ankhorage/auth': policy.dependencies.auth,
+    '@ankhorage/auth-supabase': policy.dependencies.authSupabase,
     '@ankhorage/storage-supabase': policy.dependencies.storageSupabase,
     '@ankhorage/zora': policy.dependencies.zora,
     '@react-native-vector-icons/fontawesome': policy.peerDependencies.fontawesome,
@@ -80,7 +81,8 @@ test('does not introduce optional generated dependencies when their capability i
 
   expect(packageJson.dependencies['@ankhorage/studio']).toBeUndefined();
   expect(packageJson.dependencies['@ankhorage/utility']).toBeDefined();
-  expect(packageJson.dependencies['@ankhorage/supabase-auth']).toBeUndefined();
+  expect(packageJson.dependencies['@ankhorage/auth']).toBeUndefined();
+  expect(packageJson.dependencies['@ankhorage/auth-supabase']).toBeUndefined();
   expect(packageJson.dependencies['@ankhorage/storage-supabase']).toBeUndefined();
   expect(Object.hasOwn(packageJson.dependencies, '@react-native-picker/picker')).toBe(false);
 });
@@ -136,6 +138,36 @@ test('never lowers already-newer Ankhorage dependency floors', () => {
   expect(raised.dependencies['@ankhorage/contracts']).toBe(policy.dependencies.contracts);
   expect(raised.devDependencies['@ankhorage/ankh']).toBe(policy.devDependencies.ankh);
   expect(raised.devDependencies['@ankhorage/devtools']).toBe(policy.devDependencies.devtools);
+});
+
+test('removes obsolete standalone ZORA plugin dependencies from generated apps', () => {
+  const policy = getGeneratedPackagePolicy();
+  const basePackageJson = getPackageJson({
+    name: 'fixture',
+    includeStudio: true,
+    targets: WEB_TARGETS,
+  });
+
+  const updated = applyGeneratedPackagePolicy(
+    {
+      ...basePackageJson,
+      dependencies: {
+        ...basePackageJson.dependencies,
+        '@ankhorage/zora-chess': '^0.0.1',
+        '@ankhorage/zora-game': '^0.0.1',
+        '@ankhorage/zora-tabletop': '^0.0.1',
+      },
+    },
+    policy,
+  );
+
+  for (const packageName of [
+    '@ankhorage/zora-chess',
+    '@ankhorage/zora-game',
+    '@ankhorage/zora-tabletop',
+  ]) {
+    expect(Object.hasOwn(updated.dependencies, packageName)).toBe(false);
+  }
 });
 
 /*** Create a caret range whose semantic-version floor is newer than the supplied managed range. */

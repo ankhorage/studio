@@ -16,8 +16,9 @@ export function getAuthAdapterTs(options: AuthAdapterTemplateOptions = {}) {
   const oauthRandomBytesProperty =
     oauthProviders.length > 0 ? '\n        oauthRandomBytes: getRandomBytes,' : '';
 
-  return `import type { AuthAdapter, AuthResult, AuthSession, AuthUser } from '@ankhorage/contracts/auth';
-import { createSupabaseAuthAdapter } from '@ankhorage/supabase-auth';
+  return `import type { AuthPort } from '@ankhorage/auth';
+import type { AuthOAuthCompletionResult, AuthOAuthStartResult, AuthResult, AuthSession, AuthUser } from '@ankhorage/contracts/auth';
+import { createSupabaseAuthAdapter } from '@ankhorage/auth-supabase';
 ${oauthRandomBytesImport}
 
 import { AUTH_SESSION_STORAGE_KEY, authSessionStorage } from './session';
@@ -32,7 +33,7 @@ declare const process: {
 ${oauthProviderDeclaration}const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL?.trim() ?? '';
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY?.trim() ?? '';
 
-export const authAdapter: AuthAdapter =
+export const authAdapter: AuthPort =
   supabaseUrl.length > 0 && supabaseAnonKey.length > 0
     ? createSupabaseAuthAdapter({
         url: supabaseUrl,
@@ -42,7 +43,7 @@ export const authAdapter: AuthAdapter =
       })
     : createMissingSupabaseAuthAdapter();
 
-function createMissingSupabaseAuthAdapter(): AuthAdapter {
+function createMissingSupabaseAuthAdapter(): AuthPort {
   const createError = <TData>(): AuthResult<TData> => ({
     ok: false,
     error: {
@@ -52,19 +53,35 @@ function createMissingSupabaseAuthAdapter(): AuthAdapter {
     },
   });
 
-  return {
-    capabilities: {
-      signInIdentifiers: ['email'],
-      supportsSignUp: true,
-      supportsPasswordReset: false,
-      supportsOtp: false,
-      supportsSessionRefresh: false,
+  const createOAuthStartError = (): AuthOAuthStartResult => ({
+    ok: false,
+    error: {
+      code: 'oauth_unavailable',
+      message: 'Supabase OAuth is unavailable because the public Supabase Auth environment is missing.',
+      stage: 'start',
+      recoverable: true,
     },
+  });
+  const createOAuthCompletionError = (): AuthOAuthCompletionResult => ({
+    ok: false,
+    status: 'error',
+    error: {
+      code: 'oauth_unavailable',
+      message: 'Supabase OAuth is unavailable because the public Supabase Auth environment is missing.',
+      stage: 'callback',
+      recoverable: true,
+    },
+  });
+  return {
     signIn: () => Promise.resolve(createError<AuthSession>()),
     signUp: () => Promise.resolve(createError<AuthSession | AuthUser>()),
     signOut: () => Promise.resolve(createError()),
     getSession: () => Promise.resolve(createError<AuthSession | null>()),
     refreshSession: () => Promise.resolve(createError<AuthSession | null>()),
+    requestPasswordReset: () => Promise.resolve(createError()),
+    verifyOtp: () => Promise.resolve(createError<AuthSession>()),
+    startAuthorization: () => Promise.resolve(createOAuthStartError()),
+    completeAuthorization: () => Promise.resolve(createOAuthCompletionError()),
   };
 }
 `;

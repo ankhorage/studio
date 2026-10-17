@@ -54,11 +54,15 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
           ),
         }
       : {}),
-    ...('@ankhorage/supabase-auth' in packageJson.dependencies
+    ...('@ankhorage/auth-supabase' in packageJson.dependencies
       ? {
-          '@ankhorage/supabase-auth': monotonicAnkhorageRange(
-            packageJson.dependencies['@ankhorage/supabase-auth'],
-            policy.dependencies.supabaseAuth,
+          '@ankhorage/auth': monotonicAnkhorageRange(
+            packageJson.dependencies['@ankhorage/auth'],
+            policy.dependencies.auth,
+          ),
+          '@ankhorage/auth-supabase': monotonicAnkhorageRange(
+            packageJson.dependencies['@ankhorage/auth-supabase'],
+            policy.dependencies.authSupabase,
           ),
         }
       : {}),

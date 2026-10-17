@@ -102,7 +102,7 @@ test('preflights native OAuth before the adapter creates an authorization attemp
   const preflight = runtime.indexOf(
     'const runtimeReadiness = resolveExpoOAuthBrowserRuntimeReadiness();',
   );
-  const adapterStart = runtime.indexOf('const started = await context.oauth.startAuthorization({');
+  const adapterStart = runtime.indexOf('const started = await authAdapter.startAuthorization({');
 
   expect(runtime).toContain("if (Platform.OS !== 'web') {");
   expect(preflight).toBeGreaterThan(-1);

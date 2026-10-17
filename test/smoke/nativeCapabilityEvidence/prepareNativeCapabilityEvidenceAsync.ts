@@ -28,7 +28,8 @@ const EXPECTED_GENERATED_OWNER_VERSIONS = {
   '@ankhorage/expo-runtime': '3.2.4',
   '@ankhorage/permissions': '0.2.3',
   '@ankhorage/runtime': '2.2.1',
-  '@ankhorage/supabase-auth': '1.2.6',
+  '@ankhorage/auth': '0.1.3',
+  '@ankhorage/auth-supabase': '2.0.0',
   '@ankhorage/surface': '3.0.2',
   '@ankhorage/zora': '3.3.1',
 } as const;
@@ -51,7 +52,8 @@ export async function prepareNativeCapabilityEvidenceAsync(workspaceRoot: string
     '@ankhorage/expo-runtime': EXPECTED_EXPO_RUNTIME_VERSION,
     '@ankhorage/permissions': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/permissions'],
     '@ankhorage/studio': NATIVE_EVIDENCE_STUDIO_VERSION,
-    '@ankhorage/supabase-auth': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/supabase-auth'],
+    '@ankhorage/auth': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/auth'],
+    '@ankhorage/auth-supabase': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/auth-supabase'],
     '@ankhorage/templates': templateRange,
   });
   await createLockfileAndColdInstallAsync(generatorRoot, commandEnv, 'released generator');
@@ -59,7 +61,8 @@ export async function prepareNativeCapabilityEvidenceAsync(workspaceRoot: string
     '@ankhorage/expo-runtime': EXPECTED_EXPO_RUNTIME_VERSION,
     '@ankhorage/permissions': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/permissions'],
     '@ankhorage/studio': NATIVE_EVIDENCE_STUDIO_VERSION,
-    '@ankhorage/supabase-auth': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/supabase-auth'],
+    '@ankhorage/auth': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/auth'],
+    '@ankhorage/auth-supabase': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/auth-supabase'],
   });
 
   await writeFile(
@@ -593,7 +596,8 @@ async function writeBaselineEvidenceAsync(args: {
     '@ankhorage/devtools',
     '@ankhorage/expo-runtime',
     '@ankhorage/permissions',
-    '@ankhorage/supabase-auth',
+    '@ankhorage/auth',
+    '@ankhorage/auth-supabase',
     'expo',
     'expo-crypto',
     'expo-dev-client',
