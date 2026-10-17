@@ -3,6 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
+import { readOwnProperty } from '@ankhorage/utility/object';
 import { afterEach, describe, expect, it } from 'bun:test';
 
 import { ProjectScaffolder } from './scaffolder';
@@ -256,7 +257,11 @@ function expectStudioAuthoringDependencies(
 
 /*** Require generated Expo clients to remain free of trusted server secret-store packages. */
 function expectServerSecretDependenciesAbsent(dependencies: Record<string, string>) {
-  expect(dependencies['@ankhorage/secrets']).toBeUndefined();
-  expect(dependencies['@ankhorage/secrets-supabase-vault']).toBeUndefined();
-  expect(dependencies['@ankhorage/supabase-vault']).toBeUndefined();
+  for (const packageName of [
+    '@ankhorage/secrets',
+    '@ankhorage/secrets-supabase-vault',
+    '@ankhorage/supabase-vault',
+  ]) {
+    expect(readOwnProperty(dependencies, packageName)).toBeUndefined();
+  }
 }
