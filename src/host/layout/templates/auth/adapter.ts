@@ -17,6 +17,7 @@ export function getAuthAdapterTs(options: AuthAdapterTemplateOptions = {}) {
     oauthProviders.length > 0 ? '\n        oauthRandomBytes: getRandomBytes,' : '';
 
   return `import type { AuthPort } from '@ankhorage/auth';
+import { createSupabaseAuthAdapter } from '@ankhorage/auth-supabase';
 import type {
   AuthOAuthCompletionResult,
   AuthOAuthStartResult,
@@ -24,7 +25,6 @@ import type {
   AuthSession,
   AuthUser,
 } from '@ankhorage/contracts/auth';
-import { createSupabaseAuthAdapter } from '@ankhorage/auth-supabase';
 ${oauthRandomBytesImport}
 
 import { AUTH_SESSION_STORAGE_KEY, authSessionStorage } from './session';
