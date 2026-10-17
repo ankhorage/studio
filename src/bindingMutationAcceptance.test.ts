@@ -6,48 +6,50 @@ import { appendStudioEventBinding, upsertStudioPropBinding } from './bindingAuth
 const button: UiNode = { id: 'button-1', type: 'Button' };
 
 describe('binding mutation acceptance', () => {
-  test('authors literal, state, context, and operation property sources', () => {
+  test('authors literal, state, context, and API capability property references', () => {
     const literal = upsertStudioPropBinding({}, button, 'children', {
-      source: { kind: 'literal', value: 'Save' },
+      value: { kind: 'literal', value: 'Save' },
     });
     const state = upsertStudioPropBinding(literal, button, 'children', {
-      source: { kind: 'state', path: 'draft.label' },
+      value: { capability: 'state.draft.label' },
     });
     const context = upsertStudioPropBinding(state, button, 'children', {
-      source: { kind: 'context', path: 'session.label' },
+      value: { capability: 'context.session.label' },
     });
     const operation = upsertStudioPropBinding(context, button, 'children', {
-      source: {
-        kind: 'operation',
-        operation: { apiId: 'catalog', endpointId: 'items', operationId: 'items.read' },
+      value: {
+        capability: 'api.catalog.items.read',
         path: 'title',
       },
     });
 
-    expect(literal[button.id]?.props?.children?.source.kind).toBe('literal');
-    expect(state[button.id]?.props?.children?.source.kind).toBe('state');
-    expect(context[button.id]?.props?.children?.source.kind).toBe('context');
-    expect(operation[button.id]?.props?.children?.source.kind).toBe('operation');
+    expect(literal[button.id]?.props?.children?.value).toEqual({ kind: 'literal', value: 'Save' });
+    expect(state[button.id]?.props?.children?.value).toEqual({ capability: 'state.draft.label' });
+    expect(context[button.id]?.props?.children?.value).toEqual({
+      capability: 'context.session.label',
+    });
+    expect(operation[button.id]?.props?.children?.value).toEqual({
+      capability: 'api.catalog.items.read',
+      path: 'title',
+    });
   });
 
-  test('authors action and operation event targets', () => {
+  test('authors static and dynamic capability event targets', () => {
     const withAction = appendStudioEventBinding({}, button, 'press', {
-      target: { kind: 'action', type: 'navigate' },
-      input: { route: { kind: 'literal', value: '/done' } },
+      target: {
+        capability: 'navigator.navigate',
+        input: { route: { kind: 'literal', value: '/done' } },
+      },
     });
     const withOperation = appendStudioEventBinding(withAction, button, 'press', {
       target: {
-        kind: 'operation',
-        operation: { apiId: 'catalog', endpointId: 'items', operationId: 'items.create' },
-      },
-      input: {
-        name: { kind: 'source', source: { kind: 'event', path: 'value' } },
+        capability: 'api.catalog.items.create',
+        input: { name: { capability: 'button.press', path: 'value' } },
       },
     });
 
-    expect(withOperation[button.id]?.events?.press?.map((binding) => binding.target.kind)).toEqual([
-      'action',
-      'operation',
-    ]);
+    expect(
+      withOperation[button.id]?.events?.press?.map((binding) => binding.target.capability),
+    ).toEqual(['navigator.navigate', 'api.catalog.items.create']);
   });
 });

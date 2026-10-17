@@ -42,19 +42,40 @@ function createManifest(): StudioManifest {
 }
 
 describe('binding manifest persistence', () => {
+  test('preserves incomplete State and Context source switches for authoring diagnostics', () => {
+    const registry: ComponentDataBindingRegistry = {
+      'button-1': {
+        componentId: 'button-1',
+        props: {
+          children: { value: { capability: 'state.' } },
+          disabled: { value: { capability: 'context.' } },
+        },
+      },
+    };
+
+    const serialized = JSON.parse(
+      JSON.stringify(updateStudioManifestDraftDataBindings(createManifest(), registry)),
+    ) as StudioManifest;
+
+    expect(serialized.dataBindings).toEqual(registry);
+  });
+
   test('round-trips canonical data bindings through the manifest draft and signature', () => {
     const registry: ComponentDataBindingRegistry = {
       'button-1': {
         componentId: 'button-1',
         componentType: 'Button',
         props: {
-          children: { source: { kind: 'context', path: 'session.user.name' } },
+          children: { value: { capability: 'context.session.user.name' } },
+          disabled: { value: { capability: 'state.form.disabled' } },
         },
         events: {
           press: [
             {
-              target: { kind: 'action', type: 'navigate' },
-              input: { route: { kind: 'literal', value: '/done' } },
+              target: {
+                capability: 'navigator.navigate',
+                input: { route: { kind: 'literal', value: '/done' } },
+              },
             },
           ],
         },

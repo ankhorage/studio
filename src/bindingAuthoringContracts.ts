@@ -1,9 +1,9 @@
 import type {
-  BindingOperationRef,
   UiBindableEventMeta,
   UiBindablePropMeta,
   UiBindableValueMeta,
 } from '@ankhorage/contracts';
+import type { Capability } from '@ankhorage/contracts/capability';
 
 import type { AuthoringStructure } from './types/authoring-engine';
 
@@ -35,8 +35,8 @@ export interface StudioBindingResponsePathOption {
   readonly value: UiBindableValueMeta;
 }
 
-export interface StudioBindingOperationOption {
-  readonly operation: BindingOperationRef;
+export interface StudioBindingCapabilityOption {
+  readonly capability: Capability;
   readonly label: string;
   readonly apiLabel: string;
   readonly inputFields: readonly StudioBindingInputFieldOption[];
@@ -47,10 +47,11 @@ export interface StudioBindingDiagnostic {
   readonly code:
     | 'incompatible-input'
     | 'incompatible-response'
-    | 'missing-action'
+    | 'missing-capability'
     | 'missing-binding-meta'
+    | 'missing-event-payload-meta'
     | 'missing-input'
-    | 'missing-operation'
+    | 'missing-capability-reference'
     | 'missing-response-path'
     | 'unknown-event'
     | 'unknown-prop';

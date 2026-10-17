@@ -4,18 +4,15 @@ import { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import {
-  createStudioActionInputFields,
+  type StudioBindingCapabilityOption,
   type StudioBindingInputFieldOption,
-  type StudioBindingOperationOption,
 } from '../../../../bindingAuthoringModel';
-import { ACTION_REGISTRY } from '../../../../index';
 import { Field } from '../../adminPagePrimitives';
 import { bindingAdminStyles } from './bindingAdminStyles';
 import {
   createStudioEventBinding,
   createStudioEventInputDrafts,
-  createStudioOperationKey,
-  findStudioOperationByKey,
+  findStudioBindingCapabilityById,
   formatStudioBindingLiteral,
   parseStudioBindingLiteral,
   type StudioEventInputDraft,
@@ -24,38 +21,22 @@ import {
 import { BindingLiteralAuthoringEditor } from './BindingLiteralAuthoringEditor';
 import { createBindingLiteralDefaultValue } from './createBindingLiteralDefaultValue';
 
-const TARGET_OPTIONS = [
-  { value: 'action', label: 'Action' },
-  { value: 'operation', label: 'API operation' },
-] as const;
 const INPUT_SOURCE_OPTIONS: readonly { value: StudioEventInputSourceKind; label: string }[] = [
   { value: 'event', label: 'Event payload' },
   { value: 'literal', label: 'Literal' },
 ];
-const ACTION_OPTIONS = Object.values(ACTION_REGISTRY).map((action) => ({
-  value: action.type,
-  label: action.label,
-}));
-
-/*** Compose a new event binding by selecting an action/API target and authoring its input mappings from event payload or literal values. */
+/*** Compose a canonical capability invocation from component event payload or literal inputs. */
 export function EventBindingComposer(props: {
   readonly eventMeta: UiBindableEventMeta;
-  readonly operations: readonly StudioBindingOperationOption[];
+  readonly capabilities: readonly StudioBindingCapabilityOption[];
   readonly onAdd: (binding: EventBinding) => void;
 }) {
-  const { eventMeta, onAdd, operations } = props;
-  const [targetKind, setTargetKind] = useState<'action' | 'operation'>('action');
-  const [actionType, setActionType] = useState(ACTION_OPTIONS[0]?.value ?? 'navigate');
-  const [operationKey, setOperationKey] = useState(
-    operations[0] ? createStudioOperationKey(operations[0].operation) : '',
-  );
-  const selectedOperation = findStudioOperationByKey(operations, operationKey);
+  const { capabilities, eventMeta, onAdd } = props;
+  const [capabilityId, setCapabilityId] = useState(capabilities[0]?.capability.id ?? '');
+  const selectedCapability = findStudioBindingCapabilityById(capabilities, capabilityId);
   const fields = useMemo(
-    () =>
-      targetKind === 'action'
-        ? createStudioActionInputFields(ACTION_REGISTRY[actionType]?.payloadSchema)
-        : (selectedOperation?.inputFields ?? []),
-    [actionType, selectedOperation?.inputFields, targetKind],
+    () => selectedCapability?.inputFields ?? [],
+    [selectedCapability?.inputFields],
   );
   const eventFields = useMemo(() => eventMeta.payload?.fields ?? [], [eventMeta.payload?.fields]);
   const [drafts, setDrafts] = useState<Readonly<Record<string, StudioEventInputDraft>>>({});
@@ -66,46 +47,36 @@ export function EventBindingComposer(props: {
 
   /*** Build and emit the current event binding when its selected target can be resolved. */
   const add = () => {
-    const target =
-      targetKind === 'action'
-        ? ({ kind: 'action', type: actionType } as const)
-        : selectedOperation
-          ? ({ kind: 'operation', operation: selectedOperation.operation } as const)
-          : null;
-    if (!target) return;
-    onAdd(createStudioEventBinding({ target, fields, drafts }));
+    if (!selectedCapability || !isCapabilityId(eventMeta.payload?.eventType)) return;
+    onAdd(
+      createStudioEventBinding({
+        target: { capability: selectedCapability.capability.id },
+        eventCapability: eventMeta.payload.eventType,
+        fields,
+        drafts,
+      }),
+    );
   };
 
   return (
     <View style={bindingAdminStyles.stack}>
       <View style={bindingAdminStyles.row}>
         <View style={bindingAdminStyles.grow}>
-          <Field label="Target kind">
-            <Select value={targetKind} options={TARGET_OPTIONS} onValueChange={setTargetKind} />
+          <Field label="Capability">
+            <Select
+              value={capabilityId}
+              options={capabilities.map((capability) => ({
+                value: capability.capability.id,
+                label: capability.label,
+              }))}
+              onValueChange={setCapabilityId}
+            />
           </Field>
         </View>
-        <View style={bindingAdminStyles.grow}>
-          {targetKind === 'action' ? (
-            <Field label="Action">
-              <Select value={actionType} options={ACTION_OPTIONS} onValueChange={setActionType} />
-            </Field>
-          ) : (
-            <Field label="Operation">
-              <Select
-                value={operationKey}
-                options={operations.map((operation) => ({
-                  value: createStudioOperationKey(operation.operation),
-                  label: operation.label,
-                }))}
-                onValueChange={setOperationKey}
-              />
-            </Field>
-          )}
-        </View>
       </View>
-      {targetKind === 'operation' && selectedOperation ? (
+      {selectedCapability ? (
         <Text color="neutral" emphasis="muted" variant="bodySmall">
-          {selectedOperation.apiLabel}
+          {selectedCapability.apiLabel}
         </Text>
       ) : null}
       <EventInputDrafts
@@ -114,11 +85,19 @@ export function EventBindingComposer(props: {
         drafts={drafts}
         onChange={setDrafts}
       />
-      <Button disabled={targetKind === 'operation' && !selectedOperation} onPress={add}>
+      <Button
+        disabled={!selectedCapability || !isCapabilityId(eventMeta.payload?.eventType)}
+        onPress={add}
+      >
         Add binding
       </Button>
     </View>
   );
+}
+
+/*** Confirm that component metadata supplies a Contracts capability identifier. */
+function isCapabilityId(value: string | undefined): value is `${string}.${string}` {
+  return value?.includes('.') ?? false;
 }
 
 /*** Render editors for each declared target input and let each input choose event-payload or literal sourcing. */

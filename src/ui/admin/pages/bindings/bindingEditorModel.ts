@@ -1,22 +1,24 @@
 import type {
+  BindingCapabilityReference,
+  BindingExpression,
   BindingInputMap,
-  BindingOperationRef,
   BindingValue,
   EventBinding,
   PropBinding,
   UiBindableValueMeta,
   UiComponentEventPayloadFieldMeta,
 } from '@ankhorage/contracts';
+import type { Capability } from '@ankhorage/contracts/capability';
 import { findByKey } from '@ankhorage/utility/array';
-import { createCompositeKey, stringifyJson } from '@ankhorage/utility/string';
+import { stringifyJson } from '@ankhorage/utility/string';
 
 import type {
+  StudioBindingCapabilityOption,
   StudioBindingInputFieldOption,
-  StudioBindingOperationOption,
 } from '../../../../bindingAuthoringModel';
 import { createBindingLiteralDefaultValue } from './createBindingLiteralDefaultValue';
 
-export type StudioBindingSourceKind = PropBinding['source']['kind'];
+export type StudioBindingSourceKind = 'api' | 'context' | 'literal' | 'state';
 export type StudioEventInputSourceKind = 'event' | 'literal';
 
 export const STUDIO_BINDING_SOURCE_OPTIONS: readonly {
@@ -26,35 +28,43 @@ export const STUDIO_BINDING_SOURCE_OPTIONS: readonly {
   { value: 'literal', label: 'Literal' },
   { value: 'state', label: 'State' },
   { value: 'context', label: 'Context' },
-  { value: 'operation', label: 'Operation result' },
+  { value: 'api', label: 'API result' },
 ];
 
 /*** Create the default property-binding shape for one selected Studio binding source kind and value metadata. */
 export function createStudioPropBindingForSource(
   kind: StudioBindingSourceKind,
   value: UiBindableValueMeta,
-  operations: readonly StudioBindingOperationOption[],
-): PropBinding {
-  if (kind === 'literal') return { source: { kind, value: createDefaultBindingValue(value) } };
-  if (kind === 'state' || kind === 'context') return { source: { kind, path: '' } };
-  if (kind === 'event') return { source: { kind, path: '' } };
+  capabilities: readonly StudioBindingCapabilityOption[],
+): PropBinding | undefined {
+  if (kind === 'literal') return { value: { kind, value: createDefaultBindingValue(value) } };
+  if (kind === 'state' || kind === 'context') return { value: { capability: `${kind}.` } };
 
-  const [operation] = operations;
-  return operation
-    ? { source: { kind, operation: operation.operation, path: operation.responsePaths[0]?.path } }
-    : { source: { kind: 'context', path: '' } };
+  const [capability] = capabilities.filter((option) => option.capability.id.startsWith('api.'));
+  return capability
+    ? {
+        value: {
+          capability: capability.capability.id,
+          path: capability.responsePaths[0]?.path,
+        },
+      }
+    : undefined;
 }
 
 /*** Build an event binding target and optional input map from the current Studio event-input drafts. */
 export function createStudioEventBinding(args: {
-  readonly target:
-    | { readonly kind: 'action'; readonly type: string }
-    | { readonly kind: 'operation'; readonly operation: StudioBindingOperationOption['operation'] };
+  readonly target: { readonly capability: Capability['id'] };
   readonly fields: readonly StudioBindingInputFieldOption[];
+  readonly eventCapability: Capability['id'];
   readonly drafts: Readonly<Record<string, StudioEventInputDraft>>;
 }): EventBinding {
-  const input = createStudioEventInputMap(args.fields, args.drafts);
-  return { target: args.target, ...(Object.keys(input).length > 0 ? { input } : {}) };
+  const input = createStudioEventInputMap(args.fields, args.drafts, args.eventCapability);
+  return {
+    target: {
+      capability: args.target.capability,
+      ...(Object.keys(input).length > 0 ? { input } : {}),
+    },
+  };
 }
 
 export type StudioEventInputDraft =
@@ -107,28 +117,19 @@ export function formatStudioBindingLiteral(value: BindingValue): string {
   return typeof value === 'string' ? value : stringifyJson(value, { space: 0 });
 }
 
-/***
- * Build a stable composite key from a multi-part operation identity.
- */
-export function createStudioOperationKey(operation: BindingOperationRef): string {
-  const { apiId, endpointId, operationId } = operation;
-  return createCompositeKey([apiId, endpointId ?? '', operationId], '::');
-}
-
-/***
- * Find the first array item whose projected composite key equals a requested key.
- */
-export function findStudioOperationByKey(
-  operations: readonly StudioBindingOperationOption[],
-  key: string,
-): StudioBindingOperationOption | undefined {
-  return findByKey(operations, key, (option) => createStudioOperationKey(option.operation));
+/*** Find one authorable capability through its canonical capability id. */
+export function findStudioBindingCapabilityById(
+  capabilities: readonly StudioBindingCapabilityOption[],
+  id: string,
+): StudioBindingCapabilityOption | undefined {
+  return findByKey(capabilities, id, (option) => option.capability.id);
 }
 
 /*** Convert event-input drafts into the canonical binding input map, omitting untouched optional literal inputs. */
 function createStudioEventInputMap(
   fields: readonly StudioBindingInputFieldOption[],
   drafts: Readonly<Record<string, StudioEventInputDraft>>,
+  eventCapability: Capability['id'],
 ): BindingInputMap {
   return Object.fromEntries(
     fields.flatMap((field): readonly BindingInputEntry[] => {
@@ -136,12 +137,20 @@ function createStudioEventInputMap(
       if (!draft) return [];
       if (draft.kind === 'event') {
         if (!draft.value && !field.required) return [];
-        return [[field.name, { kind: 'source', source: { kind: 'event', path: draft.value } }]];
+        return [[field.name, createEventCapabilityExpression(draft.value, eventCapability)]];
       }
       if (draft.value === undefined || (!draft.included && !field.required)) return [];
       return [[field.name, { kind: 'literal', value: draft.value }]];
     }),
   );
+}
+
+/*** Create the canonical reference to the selected component event payload. */
+function createEventCapabilityExpression(
+  path: string,
+  capability: Capability['id'],
+): BindingExpression {
+  return { capability, path } satisfies BindingCapabilityReference;
 }
 
 type BindingInputEntry = readonly [string, BindingInputMap[string]];

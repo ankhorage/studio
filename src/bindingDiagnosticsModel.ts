@@ -1,9 +1,9 @@
 import type {
-  BindingInputValue,
-  BindingOperationRef,
+  BindingExpression,
   ComponentDataBindingRegistry,
   EventBinding,
   PropBinding,
+  UiBindableEventMeta,
   UiBindableValueMeta,
   UiComponentMetaRegistry,
   UiNode,
@@ -12,11 +12,11 @@ import { createDiagnostic } from '@ankhorage/utility/diagnostics';
 import { readOwnProperty } from '@ankhorage/utility/object';
 
 import type {
+  StudioBindingCapabilityOption,
   StudioBindingDiagnostic,
   StudioBindingInputFieldOption,
-  StudioBindingOperationOption,
 } from './bindingAuthoringContracts';
-import { findStudioBindingOperationOption } from './bindingOperationModel';
+import { findStudioBindingCapabilityOption } from './bindingOperationModel';
 import { assessStudioBindingCompatibility } from './bindingSchemaModel';
 
 /***
@@ -27,8 +27,7 @@ export function diagnoseStudioComponentBindings(args: {
   readonly node: UiNode;
   readonly registry: ComponentDataBindingRegistry;
   readonly componentMeta: UiComponentMetaRegistry;
-  readonly operations: readonly StudioBindingOperationOption[];
-  readonly actionTypes: readonly string[];
+  readonly capabilities: readonly StudioBindingCapabilityOption[];
 }): readonly StudioBindingDiagnostic[] {
   const binding = readOwnProperty<ComponentDataBindingRegistry[string]>(
     args.registry,
@@ -70,15 +69,25 @@ function diagnosePropBinding(
   if (!propMeta) {
     return [diagnostic('unknown-prop', `Property '${name}' is not bindable.`, `props.${name}`)];
   }
-  if (binding.source.kind !== 'operation') return [];
+  if (!isCapabilityReference(binding.value)) return [];
+  if (isIncompleteRuntimeValueReference(binding.value.capability)) {
+    return [
+      diagnostic(
+        'missing-capability-reference',
+        `Runtime reference '${binding.value.capability}' requires a non-empty path.`,
+        `props.${name}`,
+      ),
+    ];
+  }
+  if (isRuntimeValueReference(binding.value.capability)) return [];
 
-  const operation = findStudioBindingOperationOption(args.operations, binding.source.operation);
-  if (!operation) {
-    return [missingOperationDiagnostic(binding.source.operation, `props.${name}`)];
+  const capability = findStudioBindingCapabilityOption(args.capabilities, binding.value.capability);
+  if (!capability) {
+    return [missingCapabilityDiagnostic(binding.value.capability, `props.${name}`)];
   }
 
-  const path = binding.source.path ?? '';
-  const response = operation.responsePaths.find((candidate) => candidate.path === path);
+  const path = binding.value.path ?? '';
+  const response = capability.responsePaths.find((candidate) => candidate.path === path);
   if (!response) {
     return [
       diagnostic(
@@ -123,18 +132,15 @@ function diagnoseEventBinding(
     return [diagnostic('unknown-event', `Event '${eventName}' is not bindable.`, path)];
   }
 
-  if (binding.target.kind === 'action') {
-    return args.actionTypes.includes(binding.target.type)
-      ? []
-      : [diagnostic('missing-action', `Action '${binding.target.type}' is unavailable.`, path)];
+  const capability = findStudioBindingCapabilityOption(
+    args.capabilities,
+    binding.target.capability,
+  );
+  if (!capability) {
+    return [missingCapabilityDiagnostic(binding.target.capability, path)];
   }
 
-  const operation = findStudioBindingOperationOption(args.operations, binding.target.operation);
-  if (!operation) {
-    return [missingOperationDiagnostic(binding.target.operation, path)];
-  }
-
-  return diagnoseEventInputs(binding, operation.inputFields, eventMeta.payload?.fields ?? [], path);
+  return diagnoseEventInputs(binding, capability.inputFields, eventMeta, path);
 }
 
 /***
@@ -144,12 +150,12 @@ function diagnoseEventBinding(
 function diagnoseEventInputs(
   binding: EventBinding,
   fields: readonly StudioBindingInputFieldOption[],
-  eventFields: readonly { readonly path: string; readonly type: string }[],
+  eventMeta: UiBindableEventMeta,
   path: string,
 ): readonly StudioBindingDiagnostic[] {
   return fields.flatMap((field) => {
-    const input = binding.input
-      ? readOwnProperty<BindingInputValue>(binding.input, field.name)
+    const input = binding.target.input
+      ? readOwnProperty<BindingExpression>(binding.target.input, field.name)
       : undefined;
     if (!input) {
       return field.required
@@ -157,12 +163,17 @@ function diagnoseEventInputs(
             diagnostic(
               'missing-input',
               `Required input '${field.name}' is not mapped.`,
-              `${path}.input.${field.name}`,
+              `${path}.target.input.${field.name}`,
             ),
           ]
         : [];
     }
-    return diagnoseInputCompatibility(input, field, eventFields, `${path}.input.${field.name}`);
+    return diagnoseInputCompatibility(
+      input,
+      field,
+      eventMeta,
+      `${path}.target.input.${field.name}`,
+    );
   });
 }
 
@@ -171,16 +182,40 @@ function diagnoseEventInputs(
  * Follow-up: Keep input compatibility diagnostics under src/bindings/.
  */
 function diagnoseInputCompatibility(
-  input: BindingInputValue,
+  input: BindingExpression,
   field: StudioBindingInputFieldOption,
-  eventFields: readonly { readonly path: string; readonly type: string }[],
+  eventMeta: UiBindableEventMeta,
   path: string,
 ): readonly StudioBindingDiagnostic[] {
-  if (input.kind !== 'source' || input.source.kind !== 'event') return [];
-  const eventValue = resolveEventSourceValue(input.source.path, eventFields);
+  const eventReference = unwrapEventCapabilityReference(input);
+  if (!eventReference) return [];
+  const { payload } = eventMeta;
+  if (!payload) {
+    return [
+      diagnostic(
+        'missing-event-payload-meta',
+        'This event exposes no payload metadata for event input bindings.',
+        path,
+      ),
+    ];
+  }
+  if (eventReference.capability !== payload.eventType) {
+    return [
+      diagnostic(
+        'incompatible-input',
+        `Event capability '${eventReference.capability}' does not match '${payload.eventType}'.`,
+        path,
+      ),
+    ];
+  }
+  const eventValue = resolveEventSourceValue(eventReference.path ?? '', payload.fields ?? []);
   if (!eventValue) {
     return [
-      diagnostic('incompatible-input', `Event path '${input.source.path}' is unavailable.`, path),
+      diagnostic(
+        'incompatible-input',
+        `Event path '${eventReference.path ?? ''}' is unavailable.`,
+        path,
+      ),
     ];
   }
   const compatibility = assessStudioBindingCompatibility(field.value, eventValue);
@@ -188,7 +223,7 @@ function diagnoseInputCompatibility(
     ? [
         diagnostic(
           'incompatible-input',
-          `Event path '${input.source.path}' is incompatible with ${field.value.type}.`,
+          `Event path '${eventReference.path ?? ''}' is incompatible with ${field.value.type}.`,
           path,
         ),
       ]
@@ -215,17 +250,48 @@ function resolveEventSourceValue(
 }
 
 /***
- * Create the Studio diagnostic used when a referenced API operation cannot be resolved.
- * Follow-up: Keep missing-operation diagnostics under src/bindings/.
+ * Create the Studio diagnostic used when a referenced capability cannot be resolved.
  */
-function missingOperationDiagnostic(
-  operation: BindingOperationRef,
-  path: string,
-): StudioBindingDiagnostic {
-  const ref = [operation.apiId, operation.endpointId, operation.operationId]
-    .filter((part): part is string => part !== undefined)
-    .join(' · ');
-  return diagnostic('missing-operation', `Operation '${ref}' is unavailable.`, path);
+function missingCapabilityDiagnostic(capability: string, path: string): StudioBindingDiagnostic {
+  return diagnostic('missing-capability', `Capability '${capability}' is unavailable.`, path);
+}
+
+/*** Recognize an untransformed capability reference expression. */
+function isCapabilityReference(
+  expression: BindingExpression,
+): expression is Extract<BindingExpression, { readonly capability: string }> {
+  return 'capability' in expression;
+}
+
+/*** Recognize property-value references resolved by the generated runtime rather than executable capabilities. */
+function isRuntimeValueReference(capability: string): boolean {
+  return (
+    hasRuntimeReferencePath(capability, 'state') || hasRuntimeReferencePath(capability, 'context')
+  );
+}
+
+/*** Recognize a State or Context reference that has not yet been given a meaningful path. */
+function isIncompleteRuntimeValueReference(capability: string): boolean {
+  return (
+    (capability.startsWith('state.') && !hasRuntimeReferencePath(capability, 'state')) ||
+    (capability.startsWith('context.') && !hasRuntimeReferencePath(capability, 'context'))
+  );
+}
+
+/*** Confirm that a runtime value reference contains a non-whitespace path after its owner prefix. */
+function hasRuntimeReferencePath(capability: string, owner: 'state' | 'context'): boolean {
+  const prefix = `${owner}.`;
+  return capability.startsWith(prefix) && capability.slice(prefix.length).trim().length > 0;
+}
+
+/*** Unwrap the event reference preserved by the binding editor through optional transforms. */
+function unwrapEventCapabilityReference(
+  expression: BindingExpression,
+): Extract<BindingExpression, { readonly capability: string }> | null {
+  if (isCapabilityReference(expression)) return expression;
+  return expression.kind === 'transform' && isCapabilityReference(expression.value)
+    ? expression.value
+    : null;
 }
 
 /***
