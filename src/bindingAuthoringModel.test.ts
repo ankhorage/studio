@@ -382,4 +382,47 @@ describe('binding diagnostics', () => {
       diagnostics({ route: { capability: 'button.press', path: 'unknown.path' } })[0],
     ).toMatchObject({ code: 'incompatible-input', path: 'events.press.0.target.input.route' });
   });
+
+  test('diagnoses event input bindings when the event has no payload metadata', () => {
+    const buttonMeta = componentMeta.Button;
+    if (!buttonMeta) throw new Error('Button metadata fixture is missing.');
+    const componentMetaWithoutEventPayload: UiComponentMetaRegistry = {
+      ...componentMeta,
+      Button: {
+        ...buttonMeta,
+        bindings: {
+          ...buttonMeta.bindings,
+          events: { press: { label: 'Press' } },
+        },
+      },
+    };
+
+    expect(
+      diagnoseStudioComponentBindings({
+        node: button,
+        registry: {
+          [button.id]: {
+            componentId: button.id,
+            events: {
+              press: [
+                {
+                  target: {
+                    capability: 'navigator.navigate',
+                    input: { route: { capability: 'button.press', path: 'value' } },
+                  },
+                },
+              ],
+            },
+          },
+        },
+        componentMeta: componentMetaWithoutEventPayload,
+        capabilities: collectStudioBindingCapabilityOptions({}),
+      }),
+    ).toEqual([
+      expect.objectContaining({
+        code: 'missing-event-payload-meta',
+        path: 'events.press.0.target.input.route',
+      }),
+    ]);
+  });
 });
