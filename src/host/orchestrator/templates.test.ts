@@ -3,6 +3,7 @@ import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { parseSemanticVersion, SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 import { describe, expect, it } from 'bun:test';
 
+import { getGeneratedPackagePolicy } from '../../features/project-updates/adapters/outbound/getGeneratedPackagePolicy';
 import {
   getAndroidRunTs,
   getAppConfigTs,
@@ -125,6 +126,7 @@ describe('generated OAuth scaffold templates', () => {
     });
     const dependencies = pkg.dependencies as Record<string, string>;
     const devDependencies = pkg.devDependencies as Record<string, string>;
+    const policy = getGeneratedPackagePolicy();
     expect(pkg.private).toBe(true);
 
     expectCompatibleCaretRanges(
@@ -167,6 +169,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['babel-preset-expo']).toBeUndefined();
     expect(devDependencies['@ankhorage/devtools']).toMatch(SEMVER_PATTERNS.caret);
     expect(devDependencies['@ankhorage/ankh']).toMatch(SEMVER_PATTERNS.caret);
+    expect(devDependencies['@ankhorage/ankh']).toBe(policy.devDependencies.ankh);
     expect(devDependencies['@types/bun']).toMatch(SEMVER_PATTERNS.caret);
     expect(pkg.packageManager.startsWith('bun@')).toBe(true);
     expect(pkg.packageManager.slice('bun@'.length)).toMatch(SEMVER_PATTERNS.exact);
