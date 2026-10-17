@@ -256,11 +256,7 @@ function expectStudioAuthoringDependencies(
 
 /*** Require generated Expo clients to remain free of trusted server secret-store packages. */
 function expectServerSecretDependenciesAbsent(dependencies: Record<string, string>) {
-  for (const packageName of [
-    '@ankhorage/secrets',
-    '@ankhorage/secrets-supabase-vault',
-    '@ankhorage/supabase-vault',
-  ]) {
-    expect(dependencies[packageName]).toBeUndefined();
-  }
+  expect(dependencies['@ankhorage/secrets']).toBeUndefined();
+  expect(dependencies['@ankhorage/secrets-supabase-vault']).toBeUndefined();
+  expect(dependencies['@ankhorage/supabase-vault']).toBeUndefined();
 }
