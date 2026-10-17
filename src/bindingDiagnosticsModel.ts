@@ -12,9 +12,9 @@ import { createDiagnostic } from '@ankhorage/utility/diagnostics';
 import { readOwnProperty } from '@ankhorage/utility/object';
 
 import type {
+  StudioBindingCapabilityOption,
   StudioBindingDiagnostic,
   StudioBindingInputFieldOption,
-  StudioBindingCapabilityOption,
 } from './bindingAuthoringContracts';
 import { findStudioBindingCapabilityOption } from './bindingOperationModel';
 import { assessStudioBindingCompatibility } from './bindingSchemaModel';
@@ -70,6 +70,15 @@ function diagnosePropBinding(
     return [diagnostic('unknown-prop', `Property '${name}' is not bindable.`, `props.${name}`)];
   }
   if (!isCapabilityReference(binding.value)) return [];
+  if (isIncompleteRuntimeValueReference(binding.value.capability)) {
+    return [
+      diagnostic(
+        'missing-capability-reference',
+        `Runtime reference '${binding.value.capability}' requires a non-empty path.`,
+        `props.${name}`,
+      ),
+    ];
+  }
   if (isRuntimeValueReference(binding.value.capability)) return [];
 
   const capability = findStudioBindingCapabilityOption(args.capabilities, binding.value.capability);
@@ -180,19 +189,16 @@ function diagnoseInputCompatibility(
 ): readonly StudioBindingDiagnostic[] {
   const eventReference = unwrapEventCapabilityReference(input);
   if (!eventReference) return [];
-  if (eventReference.capability !== eventMeta.payload?.eventType) {
+  if (eventReference.capability !== eventMeta.payload.eventType) {
     return [
       diagnostic(
         'incompatible-input',
-        `Event capability '${eventReference.capability}' does not match '${eventMeta.payload?.eventType ?? '<none>'}'.`,
+        `Event capability '${eventReference.capability}' does not match '${eventMeta.payload.eventType}'.`,
         path,
       ),
     ];
   }
-  const eventValue = resolveEventSourceValue(
-    eventReference.path ?? '',
-    eventMeta.payload?.fields ?? [],
-  );
+  const eventValue = resolveEventSourceValue(eventReference.path ?? '', eventMeta.payload.fields);
   if (!eventValue) {
     return [
       diagnostic(
@@ -249,7 +255,23 @@ function isCapabilityReference(
 
 /*** Recognize property-value references resolved by the generated runtime rather than executable capabilities. */
 function isRuntimeValueReference(capability: string): boolean {
-  return capability.startsWith('state.') || capability.startsWith('context.');
+  return (
+    hasRuntimeReferencePath(capability, 'state') || hasRuntimeReferencePath(capability, 'context')
+  );
+}
+
+/*** Recognize a State or Context reference that has not yet been given a meaningful path. */
+function isIncompleteRuntimeValueReference(capability: string): boolean {
+  return (
+    (capability.startsWith('state.') && !hasRuntimeReferencePath(capability, 'state')) ||
+    (capability.startsWith('context.') && !hasRuntimeReferencePath(capability, 'context'))
+  );
+}
+
+/*** Confirm that a runtime value reference contains a non-whitespace path after its owner prefix. */
+function hasRuntimeReferencePath(capability: string, owner: 'state' | 'context'): boolean {
+  const prefix = `${owner}.`;
+  return capability.startsWith(prefix) && capability.slice(prefix.length).trim().length > 0;
 }
 
 /*** Unwrap the event reference preserved by the binding editor through optional transforms. */
