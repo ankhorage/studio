@@ -54,16 +54,16 @@ export interface GeneratedAppFileGenerationOptions {
  */
 function getPackageOwnedRuntimeImports(includeStudio: boolean): string {
   const runtimeImports = `import {
+  composeRuntimeCapabilityExecutor,
   createComponentRegistry,
-  createRuntimeApiOperationExecutor,
-  ${includeStudio ? '' : 'type RuntimeActionExecutor,\n  '}
+  createRuntimeApiCapabilityExecutor,
   RuntimeRendererConfigProvider,
   useOptionalManifestContext,
 } from '@ankhorage/runtime';
 ${
   includeStudio
-    ? `import { useRuntimeAction } from '@ankhorage/studio/runtime';`
-    : `import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';`
+    ? `import { useStudioRuntimeCapabilityExecutor } from '@ankhorage/studio/runtime';`
+    : `import { createGeneratedRuntimeCapabilityExecutor } from '@/generated/runtimeCapabilityExecutor';`
 }
 ${
   includeStudio
@@ -94,24 +94,175 @@ const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
   }
 
   return `${registry}
-
-function useGeneratedRuntimeAction() {
+const useGeneratedRuntimeCapabilityExecutor = () => {
   const router = useRouter();
-  const { mode, setMode } = useZoraTheme();
-  const executeAction = useCallback<RuntimeActionExecutor>(
-    ({ action }) =>
-      executeExpoRuntimeAction({
-        action,
-        router: {
-          push: (href) => router.push(href as Href),
+  const { setMode } = useZoraTheme();
+  const executeCapability = useMemo(
+    () =>
+      createGeneratedRuntimeCapabilityExecutor({
+        alert: (message) => Alert.alert(message),
+        navigate: (input) => {
+          const { params, route } = input as { route: string; params?: Record<string, string> };
+          router.navigate({ params, pathname: route });
         },
-        mode,
-        setMode,
+        setThemeMode: (input) => setMode((input as { mode: 'dark' | 'light' }).mode),
       }),
-    [mode, router, setMode],
+    [router, setMode],
   );
-  return { executeAction };
-}`;
+
+  return { executeCapability };
+};`;
+}
+
+/*** Generate the standalone application's capability executor from published owner descriptors. */
+function getGeneratedRuntimeCapabilityExecutorTs(): string {
+  return `import { CAPABILITIES as EXPO_RUNTIME_CAPABILITIES } from '@ankhorage/expo-runtime/capabilities';
+import type {
+  ExpoRuntimeCapabilityHandler,
+  ExpoRuntimeCapabilityHandlerArgs,
+} from '@ankhorage/expo-runtime/capability-bridge';
+import { executeExpoRuntimeCapabilityAsync } from '@ankhorage/expo-runtime/capability-bridge';
+import { CAPABILITIES as NAVIGATOR_CAPABILITIES } from '@ankhorage/navigator/capabilities';
+import type {
+  RuntimeCapabilityExecutionResult,
+  RuntimeCapabilityExecutor,
+} from '@ankhorage/runtime';
+import { CAPABILITIES as SURFACE_CAPABILITIES } from '@ankhorage/surface/capabilities';
+
+type GeneratedRuntimeHostCapability =
+  | (typeof NAVIGATOR_CAPABILITIES)[number]
+  | (typeof SURFACE_CAPABILITIES)[number]
+  | (typeof EXPO_RUNTIME_CAPABILITIES)[number];
+
+export interface GeneratedRuntimeCapabilityHost {
+  readonly alert?: (message: string) => void;
+  readonly navigate?: (input: unknown) => void;
+  readonly setThemeMode?: (input: unknown) => void;
+}
+
+/*** Create the generated app executor from the published Expo Runtime, Navigator and Surface capability descriptors. */
+export function createGeneratedRuntimeCapabilityExecutor(
+  host: GeneratedRuntimeCapabilityHost,
+): RuntimeCapabilityExecutor {
+  return async ({ capability, input }): Promise<RuntimeCapabilityExecutionResult> => {
+    const ownerCapability = findGeneratedRuntimeOwnerCapability(capability);
+    if (!ownerCapability) return missingGeneratedRuntimeCapability(capability);
+    if (!isGeneratedRuntimeHostInputValid(ownerCapability, input)) {
+      return invalidGeneratedRuntimeHostInput(ownerCapability.id);
+    }
+
+    const result = await executeExpoRuntimeCapabilityAsync({
+      alertImpl: host.alert,
+      capability: ownerCapability,
+      capabilityHandlers: createGeneratedRuntimeCapabilityHandlers(host),
+      input,
+    });
+
+    return result.ok
+      ? { data: null, ok: true }
+      : {
+          diagnostics: result.diagnostics.map((diagnostic) => ({
+            ...diagnostic,
+            severity: 'error' as const,
+          })),
+          ok: false,
+        };
+  };
+}
+
+/*** Resolve a capability descriptor from its published Expo Runtime, Navigator or Surface owner. */
+function findGeneratedRuntimeOwnerCapability(
+  capability: string,
+): GeneratedRuntimeHostCapability | undefined {
+  return [...EXPO_RUNTIME_CAPABILITIES, ...NAVIGATOR_CAPABILITIES, ...SURFACE_CAPABILITIES].find(
+    (candidate) => candidate.id === capability,
+  );
+}
+
+/*** Validate host input with the schema semantics published by Navigator and Surface. */
+function isGeneratedRuntimeHostInputValid(
+  capability: GeneratedRuntimeHostCapability,
+  input: unknown,
+): boolean {
+  if (capability.id === 'navigator.navigate') return isNavigatorNavigateInput(input);
+  if (capability.id === 'theme.setMode') return isThemeSetModeInput(input);
+  return true;
+}
+
+/*** Validate Navigator's published navigator.navigate object schema before the Router host runs. */
+function isNavigatorNavigateInput(input: unknown): boolean {
+  if (!isPlainRecord(input) || typeof input.route !== 'string') return false;
+  return input.params === undefined || isPlainRecord(input.params);
+}
+
+/*** Validate Surface's published theme.setMode object schema before the theme host runs. */
+function isThemeSetModeInput(input: unknown): boolean {
+  return (
+    isPlainRecord(input) &&
+    Object.keys(input).length === 1 &&
+    (input.mode === 'dark' || input.mode === 'light')
+  );
+}
+
+/*** Identify serializable object input without accepting arrays or inherited host values. */
+function isPlainRecord(input: unknown): input is Readonly<Record<string, unknown>> {
+  return typeof input === 'object' && input !== null && !Array.isArray(input);
+}
+
+/*** Create the Expo Runtime handler list from the generated app's available host callbacks. */
+function createGeneratedRuntimeCapabilityHandlers(
+  host: GeneratedRuntimeCapabilityHost,
+): readonly ExpoRuntimeCapabilityHandler[] {
+  return [
+    ...(host.navigate === undefined
+      ? []
+      : [
+          {
+            capabilityId: 'navigator.navigate' as const,
+            execute: ({ input }: ExpoRuntimeCapabilityHandlerArgs) => host.navigate?.(input),
+          },
+        ]),
+    ...(host.setThemeMode === undefined
+      ? []
+      : [
+          {
+            capabilityId: 'theme.setMode' as const,
+            execute: ({ input }: ExpoRuntimeCapabilityHandlerArgs) => host.setThemeMode?.(input),
+          },
+        ]),
+  ];
+}
+
+/*** Report a capability that has no generated runtime-host executor. */
+function missingGeneratedRuntimeCapability(capability: string): RuntimeCapabilityExecutionResult {
+  return {
+    diagnostics: [
+      {
+        code: 'missing-operation',
+        message: \`Capability '\${capability}' has no generated application executor.\`,
+        severity: 'error',
+      },
+    ],
+    ok: false,
+  };
+}
+
+/*** Report input rejected at the published Navigator or Surface schema boundary. */
+function invalidGeneratedRuntimeHostInput(
+  capability: string,
+): RuntimeCapabilityExecutionResult {
+  return {
+    diagnostics: [
+      {
+        code: 'invalid-capability-input',
+        message: \`Capability '\${capability}' received input that does not satisfy its published owner schema.\`,
+        severity: 'error',
+      },
+    ],
+    ok: false,
+  };
+}
+`;
 }
 
 /***
@@ -149,6 +300,12 @@ export class GeneratedAppFileGenerator {
     }
     const files: GeneratedFile[] = [];
     const { includeStudio = true, runtimePlan } = options;
+    if (!includeStudio) {
+      files.push({
+        path: 'src/generated/runtimeCapabilityExecutor.ts',
+        content: getGeneratedRuntimeCapabilityExecutorTs(),
+      });
+    }
     const authLayoutPlan = resolveAuthLayoutPlan({ manifest });
     const authScreenPlansByPath = new Map(
       authLayoutPlan.authScreenFiles.map((file) => [file.path, file] as const),
@@ -372,7 +529,7 @@ export class GeneratedAppFileGenerator {
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
-      `import { Stack, ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'type Href, useRouter'} } from 'expo-router';`,
+      `import { Stack, ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'useRouter'} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import { useEffect, useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
@@ -408,7 +565,9 @@ import { useStudioAppBarAugmentation } from '@ankhorage/studio/ui/useStudioAppBa
       includeStudio,
       authRuntime: authLayoutPlan,
       initialRouteNameOverride: '(app)',
-      runtimeActionHookName: includeStudio ? undefined : 'useGeneratedRuntimeAction',
+      runtimeCapabilityExecutorHookName: includeStudio
+        ? undefined
+        : 'useGeneratedRuntimeCapabilityExecutor',
       runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(
         getGeneratedRuntimeRegistryDeclarations(includeStudio),
         ...runtimeLayoutIntegration.moduleDeclarations,
@@ -450,7 +609,7 @@ import { useStudioAppBarAugmentation } from '@ankhorage/studio/ui/useStudioAppBa
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
-      `import { Slot${includeStudio ? ', useGlobalSearchParams, usePathname' : ', type Href, useRouter'} } from 'expo-router';`,
+      `import { Slot${includeStudio ? ', useGlobalSearchParams, usePathname' : ', useRouter'} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import React, { ${includeStudio ? 'useEffect, ' : ''}useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
@@ -488,7 +647,9 @@ import { useStudioAppBarAugmentation } from '@ankhorage/studio/ui/useStudioAppBa
       innerNavigation,
       includeStudio,
       initialRouteNameOverride: '(app)',
-      runtimeActionHookName: includeStudio ? undefined : 'useGeneratedRuntimeAction',
+      runtimeCapabilityExecutorHookName: includeStudio
+        ? undefined
+        : 'useGeneratedRuntimeCapabilityExecutor',
       runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(
         getGeneratedRuntimeRegistryDeclarations(includeStudio),
         ...runtimeLayoutIntegration.moduleDeclarations,

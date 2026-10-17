@@ -40,6 +40,7 @@ test('derives generated dependency ranges from owner package metadata', async ()
     '@ankhorage/expo-runtime': policy.dependencies.expoRuntime,
     '@ankhorage/navigator': policy.dependencies.navigator,
     '@ankhorage/runtime': policy.dependencies.runtime,
+    '@ankhorage/surface': policy.dependencies.surface,
     '@ankhorage/studio': policy.dependencies.studio,
     '@ankhorage/utility': policy.dependencies.utility,
     '@ankhorage/supabase-auth': policy.dependencies.supabaseAuth,

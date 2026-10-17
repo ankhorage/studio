@@ -18,7 +18,7 @@ The scaffold consumes these released owners:
 | `@ankhorage/orchestrator-module-expo-localization` | `^0.6.0`                  | localization module host/admin contribution                                      |
 | `@ankhorage/orchestrator-module-expo-google-fonts` | `^0.2.1`                  | Google Fonts module host contribution                                            |
 | `@ankhorage/devtools`                              | `^1.12.0`                 | generated app-owned quality tooling                                              |
-| `@ankhorage/ankh`                                  | `^0.8.11`                 | app-owned Devtools CLI                                                           |
+| `@ankhorage/ankh`                                  | `^0.13.1`                 | app-owned Devtools CLI                                                           |
 
 No generated dependency uses `workspace:`, `link:`, `file:`, a Git branch or a sibling-source path.
 Standalone output omits `@ankhorage/studio` and binds actions through Expo Runtime 3's public action
@@ -61,7 +61,7 @@ remaining Ankhorage owners come through the released dependency graph audited be
 
 ### Separate owner or roadmap step
 
-- `@ankhorage/ankh@^0.8.1` admits the current `0.8.2` patch; changing the tooling floor is not a
+- `@ankhorage/ankh@^0.13.1` admits compatible newer `0.13.x` patches; changing the tooling floor is not a
   navigation-owner requirement.
 - `@ankhorage/paradox@^0.1.21` admits the current `0.1.22` patch; changing the docs-tooling floor is
   independent of generated navigation.

@@ -49,13 +49,13 @@
       "types": "./dist/runtime/actionSuppression.d.ts",
       "import": "./dist/runtime/actionSuppression.js"
     },
-    "./runtime/runtimeActions": {
-      "types": "./dist/runtime/runtimeActions.d.ts",
-      "import": "./dist/runtime/runtimeActions.js"
+    "./runtime/executeStudioRuntimeCapabilityAsync": {
+      "types": "./dist/runtime/executeStudioRuntimeCapabilityAsync.d.ts",
+      "import": "./dist/runtime/executeStudioRuntimeCapabilityAsync.js"
     },
-    "./runtime/useRuntimeAction": {
-      "types": "./dist/runtime/useRuntimeAction.d.ts",
-      "import": "./dist/runtime/useRuntimeAction.js"
+    "./runtime/useStudioRuntimeCapabilityExecutor": {
+      "types": "./dist/runtime/useStudioRuntimeCapabilityExecutor.d.ts",
+      "import": "./dist/runtime/useStudioRuntimeCapabilityExecutor.js"
     },
     "./core/StudioContext": {
       "types": "./dist/core/StudioContext.d.ts",
@@ -226,29 +226,30 @@
   "dependencies": {
     "@ankhorage/apm": "^0.8.14",
     "@ankhorage/color-theory": "^0.3.1",
-    "@ankhorage/contracts": "^22.8.102",
+    "@ankhorage/contracts": "^26.0.0",
     "@ankhorage/data-sources": "^2.0.34",
     "@ankhorage/deploy": "^0.13.102",
-    "@ankhorage/expo-runtime": "^4.0.49",
+    "@ankhorage/expo-runtime": "^7.0.1",
     "@ankhorage/infra": "^7.1.105",
     "@ankhorage/local": "^0.3.11",
     "@ankhorage/minikube": "^0.4.113",
-    "@ankhorage/navigator": "^3.3.72",
+    "@ankhorage/navigator": "^3.5.4",
     "@ankhorage/orchestrator": "^0.3.5",
     "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.14",
     "@ankhorage/orchestrator-module-expo-localization": "^0.6.10",
     "@ankhorage/permissions": "^0.2.64",
     "@ankhorage/react-native-reanimated-dnd-web": "^0.4.4",
     "@ankhorage/repository": "^0.5.4",
-    "@ankhorage/runtime": "^3.0.59",
+    "@ankhorage/runtime": "^5.0.2",
     "@ankhorage/supabase": "^0.5.14",
     "@ankhorage/supabase-auth": "^1.2.34",
     "@ankhorage/storage": "^0.2.2",
     "@ankhorage/storage-supabase": "^1.0.0",
+    "@ankhorage/surface": "^9.4.6",
     "@ankhorage/supabase-vault": "^0.3.12",
-    "@ankhorage/templates": "^12.0.122",
+    "@ankhorage/templates": "^12.1.5",
     "@ankhorage/utility": "^1.9.85",
-    "@ankhorage/zora": "^23.2.2",
+    "@ankhorage/zora": "^25.8.7",
     "@fastify/cors": "^11.3.1",
     "expo-document-picker": "~57.0.3",
     "expo-file-system": "~57.0.7",
@@ -260,9 +261,9 @@
     "@react-native-vector-icons/fontawesome5": "^13.1.4",
     "@react-native-vector-icons/fontawesome6": "^13.1.4",
     "@react-native-vector-icons/ionicons": "^13.1.4",
-    "expo": "57.0.26",
-    "expo-constants": "~57.0.20",
-    "expo-router": "~57.0.24",
+    "expo": "57.0.30",
+    "expo-constants": "~57.0.22",
+    "expo-router": "~57.0.28",
     "expo-status-bar": "~57.0.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -275,7 +276,7 @@
     "react-native-worklets": "0.10.1"
   },
   "devDependencies": {
-    "@ankhorage/ankh": "^0.10.72",
+    "@ankhorage/ankh": "^0.13.1",
     "@ankhorage/devtools": "^2.0.100",
     "@ankhorage/paradox": "^0.2.28",
     "@types/bun": "^1.4.2",

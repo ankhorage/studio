@@ -141,6 +141,9 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();
     expect(dependencies['@react-navigation/drawer']).toBeUndefined();
     expect(dependencies['@ankhorage/runtime']).toMatch(SEMVER_PATTERNS.caret);
+    expect(dependencies['@ankhorage/surface']).toBe(
+      studioPackage.dependencies?.['@ankhorage/surface'],
+    );
     expect(dependencies['@ankhorage/utility']).toBe(
       studioPackage.dependencies?.['@ankhorage/utility'],
     );

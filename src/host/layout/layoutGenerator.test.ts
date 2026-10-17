@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -394,20 +395,34 @@ describe('GeneratedAppFileGenerator', () => {
     expect(screen).toContain('useGlobalSearchParams<SearchParams>()');
   });
 
-  test('binds standalone runtime actions through the released Expo Runtime owner', () => {
+  test('binds standalone runtime capabilities through the released Expo Runtime owner', () => {
     const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', createManifest(), [], {
       includeStudio: false,
     });
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const executor = files.find(
+      (file) => file.path === 'src/generated/runtimeCapabilityExecutor.ts',
+    )?.content;
 
-    expect(rootLayout).toContain(
-      "import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';",
-    );
-    expect(rootLayout).toContain("import { type Href, Slot, useRouter } from 'expo-router';");
+    expect(executor).toContain('executeExpoRuntimeCapabilityAsync');
+    expect(executor).toContain('CAPABILITIES as NAVIGATOR_CAPABILITIES');
+    expect(executor).toContain('CAPABILITIES as SURFACE_CAPABILITIES');
+    expect(executor).toContain("capabilityId: 'navigator.navigate'");
+    expect(executor).toContain("capabilityId: 'theme.setMode'");
+    expect(executor).toContain('isGeneratedRuntimeHostInputValid');
+    expect(executor).toContain('isNavigatorNavigateInput');
+    expect(executor).toContain('isThemeSetModeInput');
+    expect(executor).not.toContain("from '@ankhorage/studio");
+    expect(rootLayout).toContain('createGeneratedRuntimeCapabilityExecutor');
+    expect(rootLayout).toContain('router.navigate({ params, pathname: route });');
+    expect(rootLayout).toContain("setMode((input as { mode: 'dark' | 'light' }).mode)");
     expect(rootLayout).not.toContain('eslint-disable');
-    expect(rootLayout).toContain('push: (href) => router.push(href as Href)');
-    expect(rootLayout).toContain('function useGeneratedRuntimeAction()');
-    expect(rootLayout).toContain('const { executeAction } = useGeneratedRuntimeAction();');
+    expect(rootLayout).toContain('const useGeneratedRuntimeCapabilityExecutor = () =>');
+    expect(rootLayout).toContain(
+      'const { executeCapability: executeApplicationCapability } = useGeneratedRuntimeCapabilityExecutor();',
+    );
+    expect(rootLayout).toContain('composeRuntimeCapabilityExecutor');
+    expect(rootLayout).toContain('createRuntimeApiCapabilityExecutor');
     expect(rootLayout).not.toContain('composeZoraPlugins');
     expect(rootLayout).not.toContain('ZORA_CORE_PLUGIN');
     expect(rootLayout).not.toContain('GENERATED_APP_ZORA_PLUGINS');
@@ -415,6 +430,80 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).not.toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
     expect(rootLayout).not.toContain("from '@ankhorage/studio/runtime'");
     expect(rootLayout).not.toContain('STUDIO_ZORA_PLUGIN_CATALOG');
+  });
+
+  test('executes the generated standalone capability executor with owner-valid inputs only', async () => {
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', createManifest(), [], {
+      includeStudio: false,
+    });
+    const executor = files.find(
+      (file) => file.path === 'src/generated/runtimeCapabilityExecutor.ts',
+    );
+    if (!executor) throw new Error('Expected the standalone executor to be generated.');
+
+    const temporaryDirectory = await mkdtemp(join(process.cwd(), '.standalone-runtime-'));
+    const executorPath = join(temporaryDirectory, 'runtimeCapabilityExecutor.ts');
+    await writeFile(executorPath, executor.content, 'utf8');
+
+    try {
+      const module = (await import(executorPath)) as {
+        createGeneratedRuntimeCapabilityExecutor: (host: {
+          readonly navigate?: (input: unknown) => void;
+          readonly setThemeMode?: (input: unknown) => void;
+        }) => (request: {
+          readonly capability: string;
+          readonly input?: unknown;
+        }) => Promise<unknown>;
+      };
+      const navigations: unknown[] = [];
+      const modes: unknown[] = [];
+      const executeCapability = module.createGeneratedRuntimeCapabilityExecutor({
+        navigate: (input) => navigations.push(input),
+        setThemeMode: (input) => modes.push(input),
+      });
+
+      expect(
+        await executeCapability({ capability: 'navigator.navigate', input: {} }),
+      ).toMatchObject({
+        ok: false,
+      });
+      expect(
+        await executeCapability({ capability: 'theme.setMode', input: { mode: 'system' } }),
+      ).toMatchObject({ ok: false });
+      expect(navigations).toEqual([]);
+      expect(modes).toEqual([]);
+
+      expect(
+        await executeCapability({
+          capability: 'navigator.navigate',
+          input: { params: { tab: 'settings' }, route: '/settings' },
+        }),
+      ).toEqual({ data: null, ok: true });
+      expect(
+        await executeCapability({ capability: 'theme.setMode', input: { mode: 'dark' } }),
+      ).toEqual({ data: null, ok: true });
+      expect(navigations).toEqual([{ params: { tab: 'settings' }, route: '/settings' }]);
+      expect(modes).toEqual([{ mode: 'dark' }]);
+
+      const failingExecutor = module.createGeneratedRuntimeCapabilityExecutor({
+        navigate: () => {
+          throw new Error('router is unavailable');
+        },
+      });
+      expect(
+        await failingExecutor({ capability: 'navigator.navigate', input: { route: '/settings' } }),
+      ).toMatchObject({
+        diagnostics: [
+          {
+            code: 'capability-handler-failed',
+            severity: 'error',
+          },
+        ],
+        ok: false,
+      });
+    } finally {
+      await rm(temporaryDirectory, { force: true, recursive: true });
+    }
   });
 
   test('derives Studio admin route files from the canonical registry', () => {
