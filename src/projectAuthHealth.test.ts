@@ -1,5 +1,5 @@
 import type { AppManifest } from '@ankhorage/contracts';
-import type { SecretMetadata } from '@ankhorage/contracts/secrets';
+import type { SecretMetadata } from '@ankhorage/secrets/port';
 import { describe, expect, test } from 'bun:test';
 
 import { analyzeProjectAuthHealth } from './projectAuthHealth';

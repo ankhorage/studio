@@ -1,8 +1,4 @@
-import type {
-  SecretMetadata,
-  SecretPayload,
-  SecretStoreResult,
-} from '@ankhorage/contracts/secrets';
+import type { SecretMetadata, SecretPayload, SecretStoreResult } from '@ankhorage/secrets/port';
 
 /*** Minimal secret-store port required by Studio's host-side Deploy integration. */
 export interface ProjectDeploySecretStore {
