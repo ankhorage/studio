@@ -1,8 +1,5 @@
 import type { ExpoRuntimePlan } from '@ankhorage/expo-runtime/planning';
-import {
-  getExpoBarcodeScannerViewSource,
-  getExpoReaderSurfaceViewSource,
-} from '@ankhorage/expo-runtime/planning';
+import { getExpoBarcodeScannerViewSource } from '@ankhorage/expo-runtime/planning';
 import { isMissingPathError, listFilesRecursive, removePath } from '@ankhorage/utility/node/fs';
 import { formatJavaScriptObjectKey } from '@ankhorage/utility/string';
 import { promises as fs } from 'fs';
@@ -32,8 +29,6 @@ export async function syncGeneratedAppFiles(
   const expoReaderSurfaceDest = path.join(generatedDest, 'expo/ExpoReaderSurfaceView.tsx');
   const usesExpoBarcodeScannerAdapter =
     runtimePlan?.runtimeAdapters.includes('ExpoBarcodeScannerAdapter') ?? false;
-  const usesExpoReaderSurfaceAdapter =
-    runtimePlan?.runtimeAdapters.includes('ExpoReaderSurfaceAdapter') ?? false;
 
   await Promise.all([
     removePath(appExtensionRegistryDest),
@@ -46,16 +41,10 @@ export async function syncGeneratedAppFiles(
     await fs.mkdir(path.dirname(expoBarcodeScannerDest), { recursive: true });
     await fs.writeFile(expoBarcodeScannerDest, getExpoBarcodeScannerViewSource(), 'utf8');
   }
-  if (usesExpoReaderSurfaceAdapter) {
-    await fs.mkdir(path.dirname(expoReaderSurfaceDest), { recursive: true });
-    await fs.writeFile(expoReaderSurfaceDest, getExpoReaderSurfaceViewSource(), 'utf8');
-  }
-
   await fs.writeFile(
     appExtensionRegistryDest,
     createGeneratedAppExtensionRegistrySource({
       usesExpoBarcodeScannerAdapter,
-      usesExpoReaderSurfaceAdapter,
     }),
     'utf8',
   );
@@ -67,7 +56,6 @@ export async function syncGeneratedAppFiles(
 /*** Generate the standalone app-extension component registry and interaction-policy support source. */
 export function createGeneratedAppExtensionRegistrySource(args: {
   usesExpoBarcodeScannerAdapter: boolean;
-  usesExpoReaderSurfaceAdapter: boolean;
 }): string {
   const relativeImportLines = new Set<string>();
   const entries: { componentName: string; exportName: string }[] = [];
@@ -81,16 +69,6 @@ export function createGeneratedAppExtensionRegistrySource(args: {
       exportName: 'ExpoBarcodeScannerView',
     });
   }
-  if (args.usesExpoReaderSurfaceAdapter) {
-    relativeImportLines.add(
-      "import { ExpoReaderSurfaceView } from './expo/ExpoReaderSurfaceView';",
-    );
-    entries.unshift({
-      componentName: 'ReaderSurface',
-      exportName: 'ExpoReaderSurfaceView',
-    });
-  }
-
   const registryEntries = entries
     .map(
       ({ componentName, exportName }) =>

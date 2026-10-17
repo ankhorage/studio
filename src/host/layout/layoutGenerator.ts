@@ -103,7 +103,8 @@ const useGeneratedRuntimeCapabilityExecutor = () => {
         alert: (message) => Alert.alert(message),
         navigate: (input) => {
           const { params, route } = input as { route: string; params?: Record<string, string> };
-          router.navigate({ params, pathname: route });
+          const { resolvedPath, unusedParams } = resolveExpoRuntimeRoutePath(route, params);
+          router.navigate({ params: unusedParams, pathname: resolvedPath } as Href);
         },
         setThemeMode: (input) => setMode((input as { mode: 'dark' | 'light' }).mode),
       }),
@@ -248,9 +249,7 @@ function missingGeneratedRuntimeCapability(capability: string): RuntimeCapabilit
 }
 
 /*** Report input rejected at the published Navigator or Surface schema boundary. */
-function invalidGeneratedRuntimeHostInput(
-  capability: string,
-): RuntimeCapabilityExecutionResult {
+function invalidGeneratedRuntimeHostInput(capability: string): RuntimeCapabilityExecutionResult {
   return {
     diagnostics: [
       {
@@ -516,6 +515,9 @@ export class GeneratedAppFileGenerator {
     const allImports = composeGeneratedImports([
       ...getRootLayoutImportRequirements(includeStudio),
       `import type { AppManifest${includeStudio ? ', NavigatorNode, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
+      includeStudio
+        ? ''
+        : `import { resolveExpoRuntimeRoutePath } from '@ankhorage/expo-runtime/capability-bridge';`,
       ...runtimeLayoutIntegration.imports,
       `import { ${[
         'AppShell',
@@ -529,7 +531,9 @@ export class GeneratedAppFileGenerator {
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
-      `import { Stack, ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'useRouter'} } from 'expo-router';`,
+      `import { Stack, ${
+        includeStudio ? 'useGlobalSearchParams, usePathname' : 'type Href, useRouter'
+      } } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import { useEffect, useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
@@ -596,6 +600,9 @@ import { useStudioAppBarAugmentation } from '@ankhorage/studio/ui/useStudioAppBa
 
     const coreImports = [
       `import type { AppManifest${includeStudio ? ', NavigatorNode, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
+      includeStudio
+        ? ''
+        : `import { resolveExpoRuntimeRoutePath } from '@ankhorage/expo-runtime/capability-bridge';`,
       ...runtimeLayoutIntegration.imports,
       `import { ${[
         'AppShell',
@@ -609,7 +616,9 @@ import { useStudioAppBarAugmentation } from '@ankhorage/studio/ui/useStudioAppBa
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
-      `import { Slot${includeStudio ? ', useGlobalSearchParams, usePathname' : ', useRouter'} } from 'expo-router';`,
+      `import { Slot${
+        includeStudio ? ', useGlobalSearchParams, usePathname' : ', type Href, useRouter'
+      } } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import React, { ${includeStudio ? 'useEffect, ' : ''}useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,

@@ -414,12 +414,21 @@ describe('GeneratedAppFileGenerator', () => {
     expect(executor).toContain('isThemeSetModeInput');
     expect(executor).not.toContain("from '@ankhorage/studio");
     expect(rootLayout).toContain('createGeneratedRuntimeCapabilityExecutor');
-    expect(rootLayout).toContain('router.navigate({ params, pathname: route });');
+    expect(rootLayout).toContain(
+      "import { resolveExpoRuntimeRoutePath } from '@ankhorage/expo-runtime/capability-bridge';",
+    );
+    expect(rootLayout).toContain('type Href');
+    expect(rootLayout).toContain(
+      'const { resolvedPath, unusedParams } = resolveExpoRuntimeRoutePath(route, params);',
+    );
+    expect(rootLayout).toContain(
+      'router.navigate({ params: unusedParams, pathname: resolvedPath } as Href);',
+    );
     expect(rootLayout).toContain("setMode((input as { mode: 'dark' | 'light' }).mode)");
     expect(rootLayout).not.toContain('eslint-disable');
     expect(rootLayout).toContain('const useGeneratedRuntimeCapabilityExecutor = () =>');
     expect(rootLayout).toContain(
-      'const { executeCapability: executeApplicationCapability } = useGeneratedRuntimeCapabilityExecutor();',
+      'const { executeCapability: executeApplicationCapability } =\n    useGeneratedRuntimeCapabilityExecutor();',
     );
     expect(rootLayout).toContain('composeRuntimeCapabilityExecutor');
     expect(rootLayout).toContain('createRuntimeApiCapabilityExecutor');

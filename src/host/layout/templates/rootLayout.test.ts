@@ -6,11 +6,7 @@ import { getRootLayoutImportRequirements, getRootLayoutTsx } from './rootLayout'
 test('keeps the native splash visible until generated content is ready', () => {
   expect(getRootLayoutImportRequirements(false)).toContainEqual({
     source: 'react',
-    namedImports: [
-      { imported: 'ReactNode', typeOnly: true },
-      { imported: 'useEffect' },
-      { imported: 'useCallback' },
-    ],
+    namedImports: [{ imported: 'ReactNode', typeOnly: true }, { imported: 'useEffect' }],
   });
   expect(getRootLayoutImportRequirements(false)).toContainEqual({
     source: 'expo-splash-screen',
