@@ -229,7 +229,7 @@
     "@ankhorage/contracts": "^26.0.0",
     "@ankhorage/data-sources": "^2.0.34",
     "@ankhorage/deploy": "^0.13.102",
-    "@ankhorage/expo-runtime": "^6.0.3",
+    "@ankhorage/expo-runtime": "^7.0.1",
     "@ankhorage/infra": "^7.1.105",
     "@ankhorage/local": "^0.3.11",
     "@ankhorage/minikube": "^0.4.113",
