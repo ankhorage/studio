@@ -42,6 +42,24 @@ function createManifest(): StudioManifest {
 }
 
 describe('binding manifest persistence', () => {
+  test('preserves incomplete State and Context source switches for authoring diagnostics', () => {
+    const registry: ComponentDataBindingRegistry = {
+      'button-1': {
+        componentId: 'button-1',
+        props: {
+          children: { value: { capability: 'state.' } },
+          disabled: { value: { capability: 'context.' } },
+        },
+      },
+    };
+
+    const serialized = JSON.parse(
+      JSON.stringify(updateStudioManifestDraftDataBindings(createManifest(), registry)),
+    ) as StudioManifest;
+
+    expect(serialized.dataBindings).toEqual(registry);
+  });
+
   test('round-trips canonical data bindings through the manifest draft and signature', () => {
     const registry: ComponentDataBindingRegistry = {
       'button-1': {

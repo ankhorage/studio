@@ -295,6 +295,36 @@ describe('binding diagnostics', () => {
     ).toEqual([]);
   });
 
+  test('diagnoses incomplete state and context property references before their paths are authored', () => {
+    const registry = {
+      [button.id]: {
+        componentId: button.id,
+        props: {
+          children: { value: { capability: 'state.' } },
+          disabled: { value: { capability: 'context. ' } },
+        },
+      },
+    } satisfies ComponentDataBindingRegistry;
+
+    expect(
+      diagnoseStudioComponentBindings({
+        node: button,
+        registry,
+        componentMeta,
+        capabilities: collectStudioBindingCapabilityOptions({}),
+      }),
+    ).toEqual([
+      expect.objectContaining({
+        code: 'missing-capability-reference',
+        path: 'props.children',
+      }),
+      expect.objectContaining({
+        code: 'missing-capability-reference',
+        path: 'props.disabled',
+      }),
+    ]);
+  });
+
   test('diagnoses missing operations and incompatible response paths', () => {
     const capabilities = collectStudioBindingCapabilityOptions(apis);
     const missingRegistry = upsertStudioPropBinding({}, button, 'children', {
