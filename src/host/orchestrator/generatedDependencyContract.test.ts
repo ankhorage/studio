@@ -3,6 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
+import { readOwnProperty } from '@ankhorage/utility/object';
 import { afterEach, describe, expect, it } from 'bun:test';
 
 import { ProjectScaffolder } from './scaffolder';
@@ -261,6 +262,6 @@ function expectServerSecretDependenciesAbsent(dependencies: Record<string, strin
     '@ankhorage/secrets-supabase-vault',
     '@ankhorage/supabase-vault',
   ]) {
-    expect(dependencies[packageName]).toBeUndefined();
+    expect(readOwnProperty(dependencies, packageName)).toBeUndefined();
   }
 }

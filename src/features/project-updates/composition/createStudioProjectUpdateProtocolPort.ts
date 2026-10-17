@@ -7,8 +7,8 @@ import type {
   ApmStatusHostPackageResult,
 } from '@ankhorage/apm/types';
 
-import { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
 import { readPendingModuleLifecycleStateAsync } from '../adapters/outbound/readPendingModuleLifecycleStateAsync';
+import { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
 import { planPendingModuleLifecycleAsync } from '../application/planPendingModuleLifecycleAsync';
 import {
   STUDIO_PENDING_MODULE_LIFECYCLE_EVIDENCE,
