@@ -243,7 +243,7 @@
     "@ankhorage/runtime": "^3.0.59",
     "@ankhorage/supabase": "^0.5.14",
     "@ankhorage/supabase-auth": "^1.2.34",
-    "@ankhorage/storage": "^0.2.1",
+    "@ankhorage/storage": "^0.2.2",
     "@ankhorage/storage-supabase": "^1.0.0",
     "@ankhorage/supabase-vault": "^0.3.12",
     "@ankhorage/templates": "^12.0.122",
