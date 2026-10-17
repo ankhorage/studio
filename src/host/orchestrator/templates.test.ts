@@ -208,7 +208,8 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/utility']).toBe(
       studioPackage.dependencies?.['@ankhorage/utility'],
     );
-    expect(dependencies['@ankhorage/supabase-auth']).toMatch(SEMVER_PATTERNS.caret);
+    expect(dependencies['@ankhorage/auth']).toMatch(SEMVER_PATTERNS.caret);
+    expect(dependencies['@ankhorage/auth-supabase']).toMatch(SEMVER_PATTERNS.caret);
     expect(dependencies['@ankhorage/storage-supabase']).toMatch(SEMVER_PATTERNS.caret);
     expect(dependencies[EXPO_PLATFORM.packages.crypto.name]).toBe(
       EXPO_PLATFORM.packages.crypto.version,
@@ -375,7 +376,8 @@ describe('generated OAuth scaffold templates', () => {
     const dependencies = pkg.dependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/utility']).toMatch(SEMVER_PATTERNS.caret);
-    expect(dependencies['@ankhorage/supabase-auth']).toBeUndefined();
+    expect(dependencies['@ankhorage/auth']).toBeUndefined();
+    expect(dependencies['@ankhorage/auth-supabase']).toBeUndefined();
     expect(dependencies['expo-secure-store']).toBeUndefined();
     expect(dependencies['expo-web-browser']).toBeUndefined();
   });

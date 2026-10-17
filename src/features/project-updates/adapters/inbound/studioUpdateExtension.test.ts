@@ -244,7 +244,8 @@ test('preserves disabled capabilities and verifies the exact reviewed generator'
   const plan = await projection.planAsync(input);
   expect(plan.mutations).toEqual([]);
   expect(current.dependencies['@ankhorage/studio']).toBeUndefined();
-  expect(current.dependencies['@ankhorage/supabase-auth']).toBeUndefined();
+  expect(current.dependencies['@ankhorage/auth']).toBeUndefined();
+  expect(current.dependencies['@ankhorage/auth-supabase']).toBeUndefined();
   expect(current.dependencies['@ankhorage/storage-supabase']).toBeUndefined();
   expect((await projection.verifyAsync({ ...input, plan })).valid).toBe(true);
   const changed = { ...plan, generatorFingerprint: 'not-the-reviewed-generator' };

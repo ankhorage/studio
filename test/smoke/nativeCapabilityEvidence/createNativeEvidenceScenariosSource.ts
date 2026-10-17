@@ -204,8 +204,8 @@ async function reportPermissionAsync(scenario: string, state: PermissionState): 
 
 async function resetAuthStateAsync(): Promise<void> {
   const attempt = await readTransportAttempt();
-  if (attempt && authAdapter.oauth) {
-    await authAdapter.oauth.completeAuthorization({
+  if (attempt) {
+    await authAdapter.completeAuthorization({
       attemptId: attempt.attemptId,
       response: { type: 'cancelled', reason: 'user_cancelled' },
     });

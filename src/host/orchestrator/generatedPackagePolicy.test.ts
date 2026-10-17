@@ -43,7 +43,8 @@ test('derives generated dependency ranges from owner package metadata', async ()
     '@ankhorage/surface': policy.dependencies.surface,
     '@ankhorage/studio': policy.dependencies.studio,
     '@ankhorage/utility': policy.dependencies.utility,
-    '@ankhorage/supabase-auth': policy.dependencies.supabaseAuth,
+    '@ankhorage/auth': policy.dependencies.auth,
+    '@ankhorage/auth-supabase': policy.dependencies.authSupabase,
     '@ankhorage/storage-supabase': policy.dependencies.storageSupabase,
     '@ankhorage/zora': policy.dependencies.zora,
     '@react-native-vector-icons/fontawesome': policy.peerDependencies.fontawesome,
@@ -75,7 +76,8 @@ test('does not introduce optional generated dependencies when their capability i
 
   expect(packageJson.dependencies['@ankhorage/studio']).toBeUndefined();
   expect(packageJson.dependencies['@ankhorage/utility']).toBeDefined();
-  expect(packageJson.dependencies['@ankhorage/supabase-auth']).toBeUndefined();
+  expect(packageJson.dependencies['@ankhorage/auth']).toBeUndefined();
+  expect(packageJson.dependencies['@ankhorage/auth-supabase']).toBeUndefined();
   expect(packageJson.dependencies['@ankhorage/storage-supabase']).toBeUndefined();
   expect(Object.hasOwn(packageJson.dependencies, '@react-native-picker/picker')).toBe(false);
 });
@@ -98,6 +100,36 @@ test('migrates existing generated storage apps to the canonical provider package
   expect(updated.dependencies['@ankhorage/storage-supabase']).toBe(
     policy.dependencies.storageSupabase,
   );
+});
+
+test('migrates existing generated auth apps to canonical auth owners without adding auth to disabled apps', () => {
+  const policy = getGeneratedPackagePolicy();
+  const legacyAuthDependencies: Record<string, string> = {
+    '@ankhorage/supabase-auth': '^1.2.34',
+  };
+  const disabledDependencies: Record<string, string> = {};
+  const updated = applyGeneratedPackagePolicy(
+    {
+      packageManager: policy.packageManager,
+      dependencies: legacyAuthDependencies,
+      devDependencies: {},
+    },
+    policy,
+  );
+
+  expect(updated.dependencies['@ankhorage/supabase-auth']).toBeUndefined();
+  expect(updated.dependencies['@ankhorage/auth']).toBe(policy.dependencies.auth);
+  expect(updated.dependencies['@ankhorage/auth-supabase']).toBe(policy.dependencies.authSupabase);
+  expect(
+    applyGeneratedPackagePolicy(
+      {
+        packageManager: policy.packageManager,
+        dependencies: disabledDependencies,
+        devDependencies: {},
+      },
+      policy,
+    ).dependencies['@ankhorage/auth-supabase'],
+  ).toBeUndefined();
 });
 
 test('never lowers already-newer Ankhorage dependency floors', () => {

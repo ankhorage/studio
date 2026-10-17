@@ -21,7 +21,8 @@ const RUNTIME_VERSION = '^2.2.0';
 const NAVIGATOR_VERSION = '^3.2.6';
 const STUDIO_VERSION = '^2.0.20';
 const UTILITY_VERSION = '^0.6.0';
-const SUPABASE_AUTH_VERSION = '^1.2.5';
+const AUTH_VERSION = '^0.1.3';
+const AUTH_SUPABASE_VERSION = '^2.0.0';
 const STORAGE_SUPABASE_VERSION = '^1.0.0';
 const ZORA_VERSION = '^4.0.0';
 const EXPO_RUNTIME_VERSION = '^3.2.4';
@@ -970,7 +971,8 @@ export function getPackageJson(args: {
       ...(includeStudio ? { '@ankhorage/studio': STUDIO_VERSION } : {}),
       ...(authProvider === 'supabase'
         ? {
-            '@ankhorage/supabase-auth': SUPABASE_AUTH_VERSION,
+            '@ankhorage/auth': AUTH_VERSION,
+            '@ankhorage/auth-supabase': AUTH_SUPABASE_VERSION,
             ...createPlatformDependencyMap([
               EXPO_PLATFORM.packages.crypto,
               EXPO_PLATFORM.packages.secureStore,

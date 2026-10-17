@@ -30,7 +30,8 @@ const MANAGED_DEPENDENCY_CANDIDATES = [
   { name: '@ankhorage/contracts', section: 'dependencies' },
   { name: '@ankhorage/data-sources', section: 'dependencies' },
   { name: '@ankhorage/utility', section: 'dependencies' },
-  { name: '@ankhorage/supabase-auth', section: 'dependencies' },
+  { name: '@ankhorage/auth', section: 'dependencies' },
+  { name: '@ankhorage/auth-supabase', section: 'dependencies' },
   { name: '@ankhorage/storage-supabase', section: 'dependencies' },
 ] as const;
 

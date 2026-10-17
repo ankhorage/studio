@@ -326,7 +326,7 @@ async function writeDocument(documentRoot: string): Promise<void> {
     ),
     writeFile(
       path.join(documentRoot, 'adapter.ts'),
-      `import { createSupabaseAuthAdapter } from '@ankhorage/supabase-auth';\n` +
+      `import { createSupabaseAuthAdapter } from '@ankhorage/auth-supabase';\n` +
         `import { fetchCalls } from '../state.ts';\n` +
         `import { AUTH_SESSION_STORAGE_KEY, authSessionStorage } from './session.ts';\n\n` +
         `export const authAdapter = createSupabaseAuthAdapter({\n` +

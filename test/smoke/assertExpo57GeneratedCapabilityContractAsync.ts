@@ -15,7 +15,8 @@ export async function assertExpo57GeneratedCapabilityContractAsync(
   const dependencies = packageJson.dependencies ?? {};
   const expectedDependencies = [
     '@ankhorage/permissions',
-    '@ankhorage/supabase-auth',
+    '@ankhorage/auth',
+    '@ankhorage/auth-supabase',
     EXPO_PLATFORM.packages.audio.name,
     EXPO_PLATFORM.packages.camera.name,
     EXPO_PLATFORM.packages.crypto.name,
@@ -105,10 +106,17 @@ async function assertGeneratedRuntimesAsync(projectRoot: string): Promise<void> 
     path.join(projectRoot, 'src', 'auth', 'oauth-state.ts'),
     'utf8',
   );
-  for (const expected of ['WebBrowser.openAuthSessionAsync(', 'oauth.completeAuthorization({']) {
+  for (const expected of [
+    'WebBrowser.openAuthSessionAsync(',
+    'authAdapter.startAuthorization({',
+    'authAdapter.completeAuthorization({',
+  ]) {
     if (!oauthRuntime.includes(expected)) {
       throw new Error(`Generated capability OAuth runtime is missing ${expected}.`);
     }
+  }
+  if (oauthRuntime.includes('oauth.completeAuthorization(')) {
+    throw new Error('Generated capability OAuth runtime calls the retired OAuth adapter.');
   }
   for (const expected of [
     "import { getRandomBytes } from 'expo-crypto';",
