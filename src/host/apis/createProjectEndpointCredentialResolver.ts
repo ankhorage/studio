@@ -1,9 +1,9 @@
 import type { CredentialRef } from '@ankhorage/contracts/data';
-import type { SecretPayload } from '@ankhorage/secrets/port';
 import type {
   EndpointTestCredential,
   EndpointTestCredentialResolver,
 } from '@ankhorage/data-sources';
+import type { SecretPayload } from '@ankhorage/secrets/port';
 
 import type { ProjectSecretService } from '../secrets/projectSecretService';
 
