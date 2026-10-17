@@ -419,7 +419,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).not.toContain('eslint-disable');
     expect(rootLayout).toContain('const useGeneratedRuntimeCapabilityExecutor = () =>');
     expect(rootLayout).toContain(
-      'const { executeCapability: executeApplicationCapability } = useGeneratedRuntimeCapabilityExecutor();',
+      'const { executeCapability: executeApplicationCapability } =\n    useGeneratedRuntimeCapabilityExecutor();',
     );
     expect(rootLayout).toContain('composeRuntimeCapabilityExecutor');
     expect(rootLayout).toContain('createRuntimeApiCapabilityExecutor');
