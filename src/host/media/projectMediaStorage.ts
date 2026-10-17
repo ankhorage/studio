@@ -1,11 +1,11 @@
 import type { InfraOutput } from '@ankhorage/contracts/infra';
-import type { MediaStorageAdapter } from '@ankhorage/contracts/storage';
-import { createContractsSupabaseStorageAdapter } from '@ankhorage/supabase-storage/contracts';
+import type { StoragePort } from '@ankhorage/storage';
+import { createSupabaseStorageAdapter } from '@ankhorage/storage-supabase';
 
 import type { ProjectManager } from '../orchestrator/projectManager';
 
 export interface ProjectMediaStorageContext {
-  readonly adapter: MediaStorageAdapter;
+  readonly adapter: StoragePort;
   readonly bucket: string;
 }
 
@@ -37,7 +37,7 @@ export async function resolveProjectMediaStorage(args: {
   const anonKey = readPublicEnvironmentOutput(outputs.outputs, 'EXPO_PUBLIC_SUPABASE_ANON_KEY');
   if (!url || !anonKey) throw new Error('Run Infra Up before importing media.');
 
-  return { adapter: createContractsSupabaseStorageAdapter({ url, anonKey, bucket }), bucket };
+  return { adapter: createSupabaseStorageAdapter({ url, anonKey, bucket }), bucket };
 }
 
 /*** Read one non-empty public Infra output by its application environment-variable name. */

@@ -206,7 +206,7 @@ describe('generated OAuth scaffold templates', () => {
       studioPackage.dependencies?.['@ankhorage/utility'],
     );
     expect(dependencies['@ankhorage/supabase-auth']).toMatch(SEMVER_PATTERNS.caret);
-    expect(dependencies['@ankhorage/supabase-storage']).toMatch(SEMVER_PATTERNS.caret);
+    expect(dependencies['@ankhorage/storage-supabase']).toMatch(SEMVER_PATTERNS.caret);
     expect(dependencies[EXPO_PLATFORM.packages.crypto.name]).toBe(
       EXPO_PLATFORM.packages.crypto.version,
     );

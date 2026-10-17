@@ -1,10 +1,11 @@
-import type { MediaStorageAdapter, StorageUploadInput } from '@ankhorage/contracts/storage';
+import type { StorageUploadInput } from '@ankhorage/contracts/storage';
+import type { StoragePort } from '@ankhorage/storage';
 import { describe, expect, test } from 'bun:test';
 
 import { ProjectManager } from '../orchestrator/projectManager';
 import { createAuthoringMediaPath, ProjectMediaService } from './projectMediaService';
 
-function createStorageAdapter(onUpload: (input: StorageUploadInput) => void): MediaStorageAdapter {
+function createStorageAdapter(onUpload: (input: StorageUploadInput) => void): StoragePort {
   return {
     upload(input) {
       onUpload(input);
@@ -14,7 +15,6 @@ function createStorageAdapter(onUpload: (input: StorageUploadInput) => void): Me
       });
     },
     remove: () => Promise.resolve({ ok: true }),
-    publicUrl: () => Promise.resolve({ ok: true, data: { publicUrl: 'https://example.test/a' } }),
     list: () => Promise.resolve({ ok: true, data: { objects: [] } }),
     resolve(input) {
       return Promise.resolve({
