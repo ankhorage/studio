@@ -1,4 +1,4 @@
-import type { SecretMetadata } from '@ankhorage/contracts/secrets';
+import type { SecretMetadata } from '@ankhorage/secrets/port';
 import { uniqueSortedStrings } from '@ankhorage/utility/array';
 import { toErrorMessage } from '@ankhorage/utility/error';
 import { createLatestAsyncCoordinator } from '@ankhorage/utility/scheduling';

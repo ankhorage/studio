@@ -1,4 +1,7 @@
-import type { SupabaseVaultQueryResult, SupabaseVaultSqlExecutor } from '@ankhorage/supabase-vault';
+import type {
+  SupabaseVaultQueryResult,
+  SupabaseVaultSqlExecutor,
+} from '@ankhorage/secrets-supabase-vault';
 import { expect, test } from 'bun:test';
 
 import type { BunSupabaseVaultClient } from './bunSupabaseVaultClient';

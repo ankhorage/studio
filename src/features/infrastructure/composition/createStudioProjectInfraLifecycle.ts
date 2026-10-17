@@ -20,7 +20,7 @@ import {
   type ProjectInfraLifecycle,
   readStoredInfraStateAsync,
 } from '@ankhorage/infra/project';
-import type { SupabaseVaultSqlClient } from '@ankhorage/supabase-vault';
+import type { SupabaseVaultSqlClient } from '@ankhorage/secrets-supabase-vault';
 
 import { createStudioInfraAdapterPackageResolver } from '../adapters/outbound/createStudioInfraAdapterPackageResolver';
 

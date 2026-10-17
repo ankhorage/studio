@@ -27,6 +27,7 @@ describe('generated app dependency contract', () => {
 
     expectRuntimePeers(dependencies);
     expect(dependencies['@ankhorage/utility']).toBeDefined();
+    expectServerSecretDependenciesAbsent(dependencies);
     expectStudioAuthoringDependencies(dependencies, undefined);
   });
 
@@ -39,6 +40,7 @@ describe('generated app dependency contract', () => {
 
     expectRuntimePeers(dependencies);
     expectStudioAuthoringDependencies(dependencies, 'defined');
+    expectServerSecretDependenciesAbsent(dependencies);
   });
 
   it('retains runtime peers and removes authoring dependencies when Studio is disabled', async () => {
@@ -55,6 +57,7 @@ describe('generated app dependency contract', () => {
 
     const dependencies = await readGeneratedDependencies(projectPath);
     expectRuntimePeers(dependencies);
+    expectServerSecretDependenciesAbsent(dependencies);
     expectStudioAuthoringDependencies(dependencies, undefined);
   });
 
@@ -74,6 +77,7 @@ describe('generated app dependency contract', () => {
     const studioDependencies = await readGeneratedDependencies(projectPath);
 
     expectRuntimePeers(studioDependencies, standaloneDependencies);
+    expectServerSecretDependenciesAbsent(studioDependencies);
     expectStudioAuthoringDependencies(studioDependencies, 'defined');
   });
 
@@ -248,4 +252,15 @@ function expectStudioAuthoringDependencies(
   expect(documentPicker).toBeUndefined();
   expect(fileSystem).toBeUndefined();
   expect(imagePicker).toBeUndefined();
+}
+
+/*** Require generated Expo clients to remain free of trusted server secret-store packages. */
+function expectServerSecretDependenciesAbsent(dependencies: Record<string, string>) {
+  for (const packageName of [
+    '@ankhorage/secrets',
+    '@ankhorage/secrets-supabase-vault',
+    '@ankhorage/supabase-vault',
+  ]) {
+    expect(dependencies[packageName]).toBeUndefined();
+  }
 }

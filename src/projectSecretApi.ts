@@ -1,5 +1,5 @@
 import type { AuthOAuthProviderId } from '@ankhorage/contracts';
-import type { SecretMetadata, SecretPayload } from '@ankhorage/contracts/secrets';
+import type { SecretMetadata, SecretPayload } from '@ankhorage/secrets/port';
 import { isStringArray } from '@ankhorage/utility/array';
 import { isRecord } from '@ankhorage/utility/object';
 

@@ -25,10 +25,11 @@
         "@ankhorage/react-native-reanimated-dnd-web": "^0.4.4",
         "@ankhorage/repository": "^0.5.4",
         "@ankhorage/runtime": "^5.0.2",
+        "@ankhorage/secrets": "^0.3.1",
+        "@ankhorage/secrets-supabase-vault": "^1.0.0",
         "@ankhorage/storage": "^0.2.2",
         "@ankhorage/storage-supabase": "^1.0.0",
         "@ankhorage/supabase": "^0.5.14",
-        "@ankhorage/supabase-vault": "^0.3.12",
         "@ankhorage/surface": "^9.4.6",
         "@ankhorage/templates": "^12.1.5",
         "@ankhorage/utility": "^1.9.85",
@@ -140,6 +141,10 @@
     "@ankhorage/rules-repository": ["@ankhorage/rules-repository@0.2.0", "", { "dependencies": { "@ankhorage/rules": "^0.2.0" } }, "sha512-ugJq6urUXGpexwcJAERSfauHJAUtWN2ZkogsAMYUX9dMCH8wXcQrdWOuYHjL5G7wB6f0IX2Ebjri7091AuF1XQ=="],
 
     "@ankhorage/runtime": ["@ankhorage/runtime@5.0.2", "", { "dependencies": { "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^26.0.0", "@ankhorage/data-sources": "^2.1.1", "@ankhorage/utility": "^1.9.85" }, "peerDependencies": { "react": ">=19.2.0 <20", "react-native": ">=0.86.0 <0.88", "react-native-web": "~0.21.3" }, "optionalPeers": ["react-native-web"] }, "sha512-suX8HB08ou6T57fzerE5a6iUH904uriyvslDiAJPW/vUVfdcr3sz2NyWfPu6Jnq26bUO/pcU5W03RAXZ+BheLg=="],
+
+    "@ankhorage/secrets": ["@ankhorage/secrets@0.3.1", "", { "dependencies": { "@ankhorage/capability": "^0.2.2", "@ankhorage/contracts": "^26.0.0" } }, "sha512-ER/H7dv1nbBk7FYyNxth/IKepC7MyDUvVoBn0NiVijHHo7VqmkgTEYuJyBBJ+dIzJC7654cXTpq4LTTF+APoLQ=="],
+
+    "@ankhorage/secrets-supabase-vault": ["@ankhorage/secrets-supabase-vault@1.0.0", "", { "dependencies": { "@ankhorage/contracts": "^25.1.0", "@ankhorage/secrets": "^0.3.0" } }, "sha512-0M/3S4TZQ6LCGMVEuUsPICUqa5de/xarKFXIRJFmTsSiAVC+DVxiJzg6rCqntGH3pFh44n8RwfJcLPf8LSoqIA=="],
 
     "@ankhorage/storage": ["@ankhorage/storage@0.2.2", "", { "dependencies": { "@ankhorage/capability": "0.2.2", "@ankhorage/contracts": "26.0.0" } }, "sha512-fCVnFEz3jb+f6I3h/mjDW7HYWAaMtYqPjKWMwU3zrXWhiEPtdzOGfg552URzxME3qe5i2J6daNIMCOPVqi2XpQ=="],
 
@@ -2048,6 +2053,8 @@
     "@ankhorage/project-detector/@ankhorage/utility": ["@ankhorage/utility@0.8.0", "", {}, "sha512-0ywzdqu1pO+n9yNhbJE5+JD4CeUQ1GEvMGbh8pccr8ieLFlYgTKMFWxH3XUk0Mw6P2ngelQU+PHC+kjJ/xL8Uw=="],
 
     "@ankhorage/runtime/@ankhorage/data-sources": ["@ankhorage/data-sources@2.1.1", "", { "dependencies": { "@ankhorage/contracts": "^26.0.0" } }, "sha512-BjmJ8poeUfDMpkaMFdqx+BXyNRH3O/AL1qvTUkXtIvuV/mFWcLp36tgTtiS2gBhffTys+1fBeznrCBH2cTOnQA=="],
+
+    "@ankhorage/secrets/@ankhorage/capability": ["@ankhorage/capability@0.2.2", "", { "dependencies": { "@ankhorage/contracts": "^26.0.0", "@ankhorage/utility": "^1.9.85" } }, "sha512-n0cR0HJUuejinPL5AJROilHkSLI9EyaS9n3gi2xithx2bk5cTENSKWDNIihMb0N6aVPWrTXHVWTfrCWkkqszVw=="],
 
     "@ankhorage/storage/@ankhorage/capability": ["@ankhorage/capability@0.2.2", "", { "dependencies": { "@ankhorage/contracts": "^26.0.0", "@ankhorage/utility": "^1.9.85" } }, "sha512-n0cR0HJUuejinPL5AJROilHkSLI9EyaS9n3gi2xithx2bk5cTENSKWDNIihMb0N6aVPWrTXHVWTfrCWkkqszVw=="],
 
