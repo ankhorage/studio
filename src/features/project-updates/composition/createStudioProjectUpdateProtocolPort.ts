@@ -8,6 +8,7 @@ import type {
 } from '@ankhorage/apm/types';
 
 import { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
+import { readPendingModuleLifecycleStateAsync } from '../adapters/outbound/readPendingModuleLifecycleStateAsync';
 import { planPendingModuleLifecycleAsync } from '../application/planPendingModuleLifecycleAsync';
 import {
   STUDIO_PENDING_MODULE_LIFECYCLE_EVIDENCE,
@@ -138,6 +139,7 @@ async function planPendingObservationAsync(
     rootPath,
     expectedPendingDigest,
     resolveArtifactAsync: options.resolveArtifactAsync ?? resolveCurrentStudioApmArtifactAsync,
+    pendingModuleLifecycleState: { readPendingModuleLifecycleStateAsync },
     nowIso: options.nowIso ?? (() => new Date().toISOString()),
   });
 }
