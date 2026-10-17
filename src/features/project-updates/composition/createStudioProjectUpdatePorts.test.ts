@@ -10,11 +10,11 @@ import type {
 } from '@ankhorage/apm/types';
 import { expect, test } from 'bun:test';
 
-import { digestProjectUpdateText } from '../adapters/outbound/readPendingModuleLifecycleStateAsync';
 import {
   STUDIO_PENDING_MODULE_LIFECYCLE_EVIDENCE,
   STUDIO_PENDING_MODULE_LIFECYCLE_FILE,
 } from '../constants';
+import { digestProjectUpdateText } from '../utils/digestProjectUpdateText';
 import { createStudioProjectUpdateExtensionEvidencePort } from './createStudioProjectUpdateExtensionEvidencePort';
 import { createStudioProjectUpdateProtocolPort } from './createStudioProjectUpdateProtocolPort';
 
