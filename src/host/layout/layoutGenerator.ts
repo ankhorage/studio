@@ -248,9 +248,7 @@ function missingGeneratedRuntimeCapability(capability: string): RuntimeCapabilit
 }
 
 /*** Report input rejected at the published Navigator or Surface schema boundary. */
-function invalidGeneratedRuntimeHostInput(
-  capability: string,
-): RuntimeCapabilityExecutionResult {
+function invalidGeneratedRuntimeHostInput(capability: string): RuntimeCapabilityExecutionResult {
   return {
     diagnostics: [
       {
