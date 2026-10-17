@@ -1,4 +1,4 @@
-import type { SecretMetadata } from '@ankhorage/contracts/secrets';
+import type { SecretMetadata } from '@ankhorage/secrets/port';
 import type { DeploymentCredentialReference } from '@ankhorage/deploy';
 import type { ProjectReleaseAccess } from '@ankhorage/deploy/project';
 

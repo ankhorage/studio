@@ -4,7 +4,7 @@ import type { AuthOAuthSetupFieldRequirement } from '@ankhorage/contracts/auth';
 import type { AppDeployTargetId } from '@ankhorage/contracts/deploy';
 import type { AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type { InfraEnvironmentSpec } from '@ankhorage/contracts/infra';
-import type { SecretMetadata } from '@ankhorage/contracts/secrets';
+import type { SecretMetadata } from '@ankhorage/secrets/port';
 import { highestSeverity } from '@ankhorage/utility/diagnostics';
 import { readOwnProperty } from '@ankhorage/utility/object';
 

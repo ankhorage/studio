@@ -1,4 +1,4 @@
-import type { SecretPayload } from '@ankhorage/contracts/secrets';
+import type { SecretPayload } from '@ankhorage/secrets/port';
 import type { DeploymentCredentialReference } from '@ankhorage/deploy';
 import { asNonEmptyString } from '@ankhorage/utility/value';
 

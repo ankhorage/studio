@@ -8,7 +8,7 @@ import type {
   SupabaseVaultQueryResult,
   SupabaseVaultSqlClient,
   SupabaseVaultSqlExecutor,
-} from '@ankhorage/supabase-vault';
+} from '@ankhorage/secrets-supabase-vault';
 import { expect, test } from 'bun:test';
 
 import { createStudioInfraAdapterPackageResolver } from './createStudioInfraAdapterPackageResolver';
@@ -17,7 +17,7 @@ test('injects Studio trusted SQL access into the Supabase Vault Infra adapter', 
   const owner = createOwner();
   const client = new RecordingVaultClient();
   const resolver = createStudioInfraAdapterPackageResolver({ supabaseVaultClient: client });
-  const loaded = await resolver.loadAsync('@ankhorage/supabase-vault');
+  const loaded = await resolver.loadAsync('@ankhorage/secrets-supabase-vault');
   if (!isRecord(loaded)) throw new Error('Expected a Supabase Vault Infra module.');
   const createInfraAdapter = Reflect.get(loaded, 'createInfraAdapter');
   if (typeof createInfraAdapter !== 'function') {

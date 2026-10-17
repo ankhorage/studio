@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import type { AppManifest } from '@ankhorage/contracts';
-import type { SecretPayload, SecretStoreResult } from '@ankhorage/contracts/secrets';
+import type { SecretPayload, SecretStoreResult } from '@ankhorage/secrets/port';
 
 import { ProjectManager } from '../../src/host/orchestrator/projectManager';
 import { getProjectPath } from '../../src/host/orchestrator/projectPaths';

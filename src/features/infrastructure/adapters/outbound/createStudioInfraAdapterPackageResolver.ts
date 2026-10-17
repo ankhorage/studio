@@ -2,7 +2,7 @@ import {
   createNodeInfraAdapterPackageResolver,
   type InfraAdapterPackageResolver,
 } from '@ankhorage/infra';
-import type { SupabaseVaultSqlClient } from '@ankhorage/supabase-vault';
+import type { SupabaseVaultSqlClient } from '@ankhorage/secrets-supabase-vault';
 
 /*** Resolve Studio-bundled Infra adapters through literal package imports while retaining generic installed-provider discovery. */
 export function createStudioInfraAdapterPackageResolver(
@@ -18,7 +18,7 @@ export function createStudioInfraAdapterPackageResolver(
           return import('@ankhorage/minikube');
         case '@ankhorage/supabase':
           return import('@ankhorage/supabase');
-        case '@ankhorage/supabase-vault':
+        case '@ankhorage/secrets-supabase-vault':
           return loadSupabaseVaultModuleAsync(options.supabaseVaultClient);
         default:
           return fallback.loadAsync(packageName);
@@ -31,7 +31,7 @@ export function createStudioInfraAdapterPackageResolver(
 async function loadSupabaseVaultModuleAsync(
   client: SupabaseVaultSqlClient | undefined,
 ): Promise<unknown> {
-  const module = await import('@ankhorage/supabase-vault');
+  const module = await import('@ankhorage/secrets-supabase-vault');
   return {
     infraAdapterDescriptor: module.infraAdapterDescriptor,
     createInfraAdapter: () => module.createInfraAdapter(client === undefined ? {} : { client }),

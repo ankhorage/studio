@@ -13,8 +13,8 @@ import {
   type SecretResolveInput,
   type SecretStoreAdapter,
   type SecretStoreResult,
-} from '@ankhorage/contracts/secrets';
-import { createSupabaseVaultAdapter } from '@ankhorage/supabase-vault';
+} from '@ankhorage/secrets/port';
+import { createSupabaseVaultAdapter } from '@ankhorage/secrets-supabase-vault';
 import { pickCodeMessage } from '@ankhorage/utility/error';
 import { asNonEmptyString } from '@ankhorage/utility/value';
 
