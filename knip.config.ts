@@ -25,6 +25,7 @@ export default {
           'src/utils/treeUtils.ts',
         ],
         project: ['src/**/*.ts', 'src/**/*.tsx', 'test/**/*.ts', 'paradox.config.ts'],
+        ignoreDependencies: ['@ankhorage/auth'],
         ignoreFiles: ['paradox.config.ts'],
       },
     },
