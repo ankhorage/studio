@@ -300,7 +300,6 @@
     "@ankhorage/orchestrator-module-expo-localization": "^0.6.10",
     "@ankhorage/permissions": "^0.2.64",
     "@ankhorage/react-native-reanimated-dnd-web": "^0.4.4",
-    "@ankhorage/reader": "^0.1.0",
     "@ankhorage/repository": "^0.5.4",
     "@ankhorage/runtime": "^5.0.2",
     "@ankhorage/supabase": "^0.5.14",
