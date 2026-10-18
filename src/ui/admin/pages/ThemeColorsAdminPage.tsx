@@ -1,5 +1,5 @@
 import { parseHexColorOrThrow } from '@ankhorage/color-theory';
-import { Card, TextInput } from '@ankhorage/zora';
+import { Card, TextInput } from '@ankhorage/zora/reader-free';
 import React from 'react';
 
 import {

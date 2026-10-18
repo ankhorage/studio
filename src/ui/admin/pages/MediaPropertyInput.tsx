@@ -1,5 +1,5 @@
 import type { AppManifest, MediaAssetKind, MediaAssetReference } from '@ankhorage/contracts';
-import { Button, Select, Text } from '@ankhorage/zora';
+import { Button, Select, Text } from '@ankhorage/zora/reader-free';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';

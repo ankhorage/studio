@@ -1,4 +1,4 @@
-import { Card, Text } from '@ankhorage/zora';
+import { Card, Text } from '@ankhorage/zora/reader-free';
 import { View } from 'react-native';
 
 import type { StudioBindingDiagnostic } from '../../../../bindingAuthoringModel';

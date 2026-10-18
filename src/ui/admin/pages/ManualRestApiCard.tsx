@@ -1,5 +1,13 @@
 import type { DataOperationIntent } from '@ankhorage/contracts/data';
-import { Button, ButtonGroup, Card, Field, Select, Text, TextInput } from '@ankhorage/zora';
+import {
+  Button,
+  ButtonGroup,
+  Card,
+  Field,
+  Select,
+  Text,
+  TextInput,
+} from '@ankhorage/zora/reader-free';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 

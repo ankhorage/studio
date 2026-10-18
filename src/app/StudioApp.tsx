@@ -1,4 +1,10 @@
-import { Icon, type IconProps, Text, useZoraTheme, ZoraProvider } from '@ankhorage/zora';
+import {
+  Icon,
+  type IconProps,
+  Text,
+  useZoraTheme,
+  ZoraProvider,
+} from '@ankhorage/zora/reader-free';
 import { router, Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';

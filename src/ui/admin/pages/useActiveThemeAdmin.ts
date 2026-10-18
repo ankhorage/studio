@@ -1,4 +1,4 @@
-import { useZoraTheme } from '@ankhorage/zora';
+import { useZoraTheme } from '@ankhorage/zora/reader-free';
 
 import { useStudio } from '../../../core/StudioContext';
 import type { ThemeUpdates } from '../../../index';

@@ -4,7 +4,7 @@ import type {
   ReleaseControlExecutionResult,
   ReleaseLifecycleControl,
 } from '@ankhorage/deploy';
-import { Button, Card, Dialog, Select, Text, View } from '@ankhorage/zora';
+import { Button, Card, Dialog, Select, Text, View } from '@ankhorage/zora/reader-free';
 import React, { useRef, useState } from 'react';
 
 import { canExecuteProjectDeployRelease } from '../../../../canExecuteProjectDeployRelease';

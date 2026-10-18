@@ -1,6 +1,6 @@
 import type { ApiDefinitionRegistry } from '@ankhorage/contracts/data';
 import { createCompositeKey, stringifyJson } from '@ankhorage/utility/string';
-import { Button, Card, Text } from '@ankhorage/zora';
+import { Button, Card, Text } from '@ankhorage/zora/reader-free';
 import { useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 

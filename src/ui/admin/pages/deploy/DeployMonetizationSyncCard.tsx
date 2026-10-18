@@ -1,6 +1,6 @@
 import { APP_ENVIRONMENT_IDS, type AppEnvironmentId } from '@ankhorage/contracts/environments';
 import type { ProjectMonetizationExecutionResult } from '@ankhorage/deploy/project';
-import { Button, Card, Dialog, Select, Text, View } from '@ankhorage/zora';
+import { Button, Card, Dialog, Select, Text, View } from '@ankhorage/zora/reader-free';
 import React, { useRef, useState } from 'react';
 
 import {
