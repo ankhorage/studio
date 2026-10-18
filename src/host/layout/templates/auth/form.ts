@@ -3,7 +3,11 @@ export function getAuthFormTs(args: { zoraEntrypoint?: string } = {}) {
   const { zoraEntrypoint = '@ankhorage/zora' } = args;
   return `import type { AuthIdentifier, AuthSession } from '@ankhorage/contracts/auth';
 import { isEmail, isPhone, isUsername } from '@ankhorage/utility/regex';
-import type { AuthIdentifierKind, SignUpFormField, SignUpFormValues } from '${zoraEntrypoint}';
+import type {
+  AuthIdentifierKind,
+  SignUpFormField,
+  SignUpFormValues,
+} from '${zoraEntrypoint}';
 
 export interface AuthSubmitValues {
   mode: 'signIn' | 'signUp';

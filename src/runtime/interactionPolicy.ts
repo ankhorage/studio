@@ -1,5 +1,4 @@
-import { type RuntimeNodePropsResolver } from '@ankhorage/runtime';
-import { ZORA_COMPONENT_REGISTRY } from '@ankhorage/zora';
+import { type ComponentRegistry, type RuntimeNodePropsResolver } from '@ankhorage/runtime';
 
 import type { ThirdPartyComponentSupport } from './interactionPolicyCore.js';
 import {
@@ -8,6 +7,7 @@ import {
 } from './interactionPolicyCore.js';
 
 export interface StudioInteractionPolicyResolverArgs {
+  readonly componentRegistry: ComponentRegistry;
   readonly previewMode: boolean;
   readonly thirdPartySupport?: ThirdPartyComponentSupport;
   readonly existingResolver?: RuntimeNodePropsResolver;
@@ -20,14 +20,14 @@ export interface StudioInteractionPolicyResolverArgs {
 export function createStudioInteractionPolicyResolver(
   args: StudioInteractionPolicyResolverArgs,
 ): RuntimeNodePropsResolver {
-  const { previewMode, thirdPartySupport, existingResolver } = args;
+  const { componentRegistry, previewMode, thirdPartySupport, existingResolver } = args;
 
   const resolver = createInteractionPolicyResolver({
     previewMode,
     thirdPartySupport,
     /*** Return whether a node type exists as an own property of the ZORA component registry. */
     isSupportedNodeType: (nodeType) =>
-      Object.prototype.hasOwnProperty.call(ZORA_COMPONENT_REGISTRY, nodeType),
+      Object.prototype.hasOwnProperty.call(componentRegistry, nodeType),
   });
 
   return existingResolver

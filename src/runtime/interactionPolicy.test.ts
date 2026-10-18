@@ -216,12 +216,11 @@ describe('interactionPolicy production adapter', () => {
   const sourcePath = join(import.meta.dir, 'interactionPolicy.ts');
   const source = readFileSync(sourcePath, 'utf8');
 
-  it('derives support from the actual ZORA_COMPONENT_REGISTRY', () => {
-    expect(source).toContain("from '@ankhorage/zora'");
-    expect(source).toContain('ZORA_COMPONENT_REGISTRY');
-    expect(source).toContain(
-      'Object.prototype.hasOwnProperty.call(ZORA_COMPONENT_REGISTRY, nodeType)',
-    );
+  it('derives support from the generated runtime component registry', () => {
+    expect(source).toContain('type ComponentRegistry');
+    expect(source).toContain('readonly componentRegistry: ComponentRegistry');
+    expect(source).toContain('Object.prototype.hasOwnProperty.call(componentRegistry, nodeType)');
+    expect(source).not.toContain("from '@ankhorage/zora'");
   });
 
   it('delegates classification to the pure core', () => {
