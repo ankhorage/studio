@@ -2,11 +2,15 @@ import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
 import { routeNameToGroupedHref } from '../utils/routes';
 
 /*** Generate the OAuth callback screen for a generated app using canonical auth and post-sign-in route targets. */
-export function getAuthOAuthCallbackTsx(args: { signInRoute: string; postSignInRoute: string }) {
+export function getAuthOAuthCallbackTsx(args: {
+  signInRoute: string;
+  postSignInRoute: string;
+  zoraEntrypoint?: string;
+}) {
   const signInTarget = escapeStringLiteral(routeNameToGroupedHref(args.signInRoute, 'auth'));
   const postSignInTarget = escapeStringLiteral(routeNameToGroupedHref(args.postSignInRoute, 'app'));
 
-  return `import { Text, useZoraTheme } from '@ankhorage/zora';
+  return `import { Text, useZoraTheme } from '${args.zoraEntrypoint ?? '@ankhorage/zora'}';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';

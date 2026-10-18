@@ -1,6 +1,6 @@
 /*** Generate the sign-out route component used by generated authenticated apps. */
-export function getSignOutScreenTsx() {
-  return `import { useZoraTheme } from '@ankhorage/zora';
+export function getSignOutScreenTsx(args: { zoraEntrypoint?: string } = {}) {
+  return `import { useZoraTheme } from '${args.zoraEntrypoint ?? '@ankhorage/zora'}';
 import { Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';

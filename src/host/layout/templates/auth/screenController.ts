@@ -20,10 +20,12 @@ interface AuthScreenControllerTemplateArgs {
   signUpOptionalFields: string[];
   signUpPolicy: 'autoSignIn' | 'requireVerification';
   oauthProviders?: readonly GeneratedOAuthProviderPlan[];
+  zoraEntrypoint?: string;
 }
 
 /*** Generate the stateful auth-screen controller module for a generated app. */
 export function getAuthScreenControllerTs(args: AuthScreenControllerTemplateArgs) {
+  const zoraEntrypoint = args.zoraEntrypoint ?? '@ankhorage/zora';
   const oauthEnabled = (args.oauthProviders?.length ?? 0) > 0;
   const oauthImport = oauthEnabled
     ? `import { startOAuthAuthorization } from '@/auth/oauth';\n`
@@ -45,7 +47,7 @@ export function getAuthScreenControllerTs(args: AuthScreenControllerTemplateArgs
 `
       : '';
 
-  return `import { type SignInFormValues, type SignUpFormValues } from '@ankhorage/zora';
+  return `import { type SignInFormValues, type SignUpFormValues } from '${zoraEntrypoint}';
 import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 

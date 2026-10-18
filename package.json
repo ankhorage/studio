@@ -312,7 +312,7 @@
     "@ankhorage/secrets-supabase-vault": "^1.0.0",
     "@ankhorage/templates": "^12.1.5",
     "@ankhorage/utility": "^1.9.85",
-    "@ankhorage/zora": "^25.8.7",
+    "@ankhorage/zora": "^25.8.15",
     "@fastify/cors": "^11.3.1",
     "expo-document-picker": "~57.0.3",
     "expo-file-system": "~57.0.7",

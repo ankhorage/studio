@@ -6,11 +6,13 @@ import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
 
 interface AuthOAuthRuntimeTemplateArgs extends AuthOAuthLayoutPlan {
   readonly nativeSchemes: ExpoRuntimeNativeSchemeMap;
+  readonly zoraEntrypoint?: string;
 }
 
 /*** Generate the OAuth transport/runtime module for configured providers in a generated app. */
 export function getAuthOAuthRuntimeTs(args: AuthOAuthRuntimeTemplateArgs) {
   const providers = serializeOAuthProviders(args.providers);
+  const zoraEntrypoint = args.zoraEntrypoint ?? '@ankhorage/zora';
 
   return `import type {
   AuthOAuthCompletionResult,
@@ -21,7 +23,7 @@ import {
   resolveExpoOAuthBrowserResult,
 } from '@ankhorage/expo-runtime/oauth-browser';
 import { resolveExpoOAuthBrowserRuntimeReadiness } from '@ankhorage/expo-runtime/oauth-browser-runtime';
-import type { OAuthProviderIconSpec } from '@ankhorage/zora';
+import type { OAuthProviderIconSpec } from '${zoraEntrypoint}';
 import * as WebBrowser from 'expo-web-browser';
 import { Platform } from 'react-native';
 

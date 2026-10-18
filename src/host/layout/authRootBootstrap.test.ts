@@ -79,6 +79,10 @@ function generateAuthFiles(postSignInRoute: 'index' | 'products') {
   );
 }
 
+function getReaderFreeGeneratedImports(files: ReturnType<typeof generateAuthFiles>): string[] {
+  return files.map((file) => file.content).filter((content) => content.includes('@ankhorage/zora'));
+}
+
 function generateScopeFiles(scope: 'integrated' | 'none') {
   const base = createAuthManifest('index');
   const { auth } = base.infra.environments.local;
@@ -104,6 +108,16 @@ function generateScopeFiles(scope: 'integrated' | 'none') {
 }
 
 describe('generated auth root bootstrap', () => {
+  test('uses the Reader-free ZORA entrypoint across authenticated generated modules', () => {
+    const imports = getReaderFreeGeneratedImports(generateAuthFiles('index'));
+
+    expect(imports.length).toBeGreaterThan(0);
+    expect(imports.every((content) => !content.includes("from '@ankhorage/zora';"))).toBe(true);
+    expect(imports.some((content) => content.includes("from '@ankhorage/zora/reader-free';"))).toBe(
+      true,
+    );
+  });
+
   test('keeps the router unmounted while bootstrap resolves and protects Studio with a session', () => {
     const files = generateAuthFiles('index');
     const paths = files.map((file) => file.path);
