@@ -1,4 +1,4 @@
-import { Card, Heading, Text } from '@ankhorage/zora';
+import { Card, Heading, Text } from '@ankhorage/zora/reader-free';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 

@@ -1,5 +1,5 @@
 import type { SerializableValue } from '@ankhorage/contracts';
-import { Button, Card, Text } from '@ankhorage/zora';
+import { Button, Card, Text } from '@ankhorage/zora/reader-free';
 import React, { useState } from 'react';
 
 import { resolveContractsAuthoringStructure } from '../../../../features/authoring-engine/adapters/outbound/resolveContractsAuthoringStructure';

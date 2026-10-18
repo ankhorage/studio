@@ -1,6 +1,6 @@
 import type { ApiDefinition } from '@ankhorage/contracts/data';
 import { readOwnProperty } from '@ankhorage/utility/object';
-import { Button, Dialog, Text, View as ZoraView } from '@ankhorage/zora';
+import { Button, Dialog, Text, View as ZoraView } from '@ankhorage/zora/reader-free';
 import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
 

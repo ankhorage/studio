@@ -1,4 +1,5 @@
 import type { UiNode } from '@ankhorage/contracts';
+import type { ComponentRegistry } from '@ankhorage/runtime';
 import { toRect } from '@ankhorage/utility/geometry';
 import { resolveWebResizeTarget } from '@ankhorage/utility/react-native/web';
 import {
@@ -7,7 +8,6 @@ import {
   measureNonZeroWebElement,
   measureWebDescendantUnion,
 } from '@ankhorage/utility/web';
-import type { ComponentRegistry } from '@ankhorage/runtime';
 import React from 'react';
 import {
   AppState,

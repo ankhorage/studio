@@ -3,7 +3,7 @@ import type {
   UiComponentMetaRegistry,
   UiNode,
 } from '@ankhorage/contracts';
-import { Card, Text } from '@ankhorage/zora';
+import { Card, Text } from '@ankhorage/zora/reader-free';
 import { View } from 'react-native';
 
 import {

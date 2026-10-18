@@ -1,5 +1,5 @@
 import { toErrorMessage } from '@ankhorage/utility/error';
-import { Card, Text } from '@ankhorage/zora';
+import { Card, Text } from '@ankhorage/zora/reader-free';
 import React from 'react';
 
 interface ModuleAdminViewBoundaryProps {

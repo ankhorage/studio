@@ -1,4 +1,4 @@
-import { Text } from '@ankhorage/zora';
+import { Text } from '@ankhorage/zora/reader-free';
 import React from 'react';
 
 import { AuthoringEditor } from '../../../../features/authoring-engine/adapters/inbound/AuthoringEditor';

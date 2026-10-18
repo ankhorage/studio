@@ -1,5 +1,5 @@
 import { toErrorMessage } from '@ankhorage/utility/error';
-import { Button, ButtonGroup, Card, Text } from '@ankhorage/zora';
+import { Button, ButtonGroup, Card, Text } from '@ankhorage/zora/reader-free';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';

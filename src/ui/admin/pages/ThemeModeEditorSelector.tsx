@@ -1,4 +1,4 @@
-import { Text, useZoraTheme } from '@ankhorage/zora';
+import { Text, useZoraTheme } from '@ankhorage/zora/reader-free';
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 

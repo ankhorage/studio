@@ -1,5 +1,5 @@
 import type { PropBinding } from '@ankhorage/contracts';
-import { Button, Select, Text, TextInput } from '@ankhorage/zora';
+import { Button, Select, Text, TextInput } from '@ankhorage/zora/reader-free';
 import { View } from 'react-native';
 
 import {

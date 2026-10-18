@@ -1,5 +1,12 @@
 import type { UiNode } from '@ankhorage/contracts';
-import { Button, Dialog, ListItem, ListSection, TextInput, View } from '@ankhorage/zora';
+import {
+  Button,
+  Dialog,
+  ListItem,
+  ListSection,
+  TextInput,
+  View,
+} from '@ankhorage/zora/reader-free';
 import React from 'react';
 import { ScrollView } from 'react-native';
 

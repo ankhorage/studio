@@ -1,4 +1,4 @@
-import { Button, Dialog, View } from '@ankhorage/zora';
+import { Button, Dialog, View } from '@ankhorage/zora/reader-free';
 import React from 'react';
 
 export interface StudioDeleteDialogProps {
