@@ -33,6 +33,7 @@ jobs:
           owner: ankhorage
           repositories: ${{ github.event.repository.name }}
           permission-contents: write
+          permission-workflows: write
 
       - name: Diagnose unavailable scoped release token
         if: steps.release-token.outcome == 'failure'
@@ -66,7 +67,7 @@ jobs:
         run: npm install -g npm@latest
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
 
       - name: Build package
         run: |
@@ -76,9 +77,87 @@ jobs:
             echo "No build script found; skipping."
           fi
 
+      - name: Synchronize package capability metadata
+        run: |
+          if node -e "const p=require('./package.json'); process.exit(p.ankh === undefined ? 1 : 0)"; then
+            if node -e "const p=require('./package.json'); process.exit(p.name === '@ankhorage/devtools' ? 0 : 1)"; then
+              bun ./dist/cli/bin/repository.js package sync .
+              bun ./dist/cli/bin/repository.js package status .
+            else
+              bunx --bun --no-install ankhorage-repository package sync .
+              bunx --bun --no-install ankhorage-repository package status .
+            fi
+          else
+            echo "No Ankh package metadata found; skipping capability materialization."
+          fi
+
+      - name: Verify npm release baseline
+        id: release-baseline
+        if: hashFiles('.changeset/config.json') != ''
+        run: |
+          package_name="$(node -p "require('./package.json').name")"
+          current_version="$(node -p "require('./package.json').version")"
+          registry_evidence="${RUNNER_TEMP}/npm-release-versions.json"
+          registry_error="${RUNNER_TEMP}/npm-release-versions.error"
+
+          if npm view "$package_name" versions --json > "$registry_evidence" 2> "$registry_error"; then
+            highest_published_version="$(node -e '
+              const raw = JSON.parse(require("node:fs").readFileSync(process.argv[1], "utf8"));
+              const parse = (value) => /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/u.exec(value)?.slice(1).map(Number);
+              const compare = (left, right) => {
+                const index = left.findIndex((part, candidate) => part !== right[candidate]);
+                return index === -1 ? 0 : left[index] - right[index];
+              };
+              const versions = Array.isArray(raw) ? raw : typeof raw === "string" ? [raw] : undefined;
+              if (versions === undefined || versions.length === 0 || versions.some((value) => typeof value !== "string")) {
+                throw new Error("npm registry returned an invalid version list.");
+              }
+              const stable = versions.filter((value) => parse(value));
+              if (stable.length === 0) throw new Error("npm registry returned no stable published version.");
+              stable.sort((left, right) => compare(parse(left), parse(right)));
+              process.stdout.write(stable.at(-1) ?? "");
+            ' "$registry_evidence")"
+          elif node -e '
+            const { readFileSync } = require("node:fs");
+            const error = readFileSync(process.argv[1], "utf8");
+            const packageNotFound =
+              /^npm error code E404$/mu.test(error) &&
+              /^npm error 404 Not Found - GET https:\/\/registry\.npmjs\.org\/.+ - Not found$/mu.test(error) &&
+              /^npm error 404 .+ is not in this registry\.$/mu.test(error);
+            process.exit(packageNotFound ? 0 : 1);
+          ' "$registry_error"; then
+            highest_published_version=""
+          else
+            echo "::error title=npm release baseline unavailable::Could not determine the highest published version for $package_name. Refusing to version or publish without registry evidence."
+            exit 1
+          fi
+
+          if [ -n "$highest_published_version" ]; then
+            CURRENT_VERSION="$current_version" HIGHEST_PUBLISHED_VERSION="$highest_published_version" node -e '
+              const parse = (value) => value.split(".").map(Number);
+              const current = parse(process.env.CURRENT_VERSION);
+              const highest = parse(process.env.HIGHEST_PUBLISHED_VERSION);
+              const index = current.findIndex((part, candidate) => part !== highest[candidate]);
+              if (index !== -1 && current[index] < highest[index]) {
+                throw new Error(`Package version rollback: ${process.env.CURRENT_VERSION} is lower than published npm version ${process.env.HIGHEST_PUBLISHED_VERSION}. Restore main to the published baseline before applying pending Changesets.`);
+              }
+            '
+          fi
+          echo "highest_published_version=$highest_published_version" >> "$GITHUB_OUTPUT"
+
+      - name: Validate release contract
+        run: |
+          if node -e "const p=require('./package.json'); process.exit(p.name === '@ankhorage/doctor' ? 0 : 1)"; then
+            bun ./dist/cli/standalone.js validate .
+          else
+            BUN_INSTALL_CACHE_DIR="${RUNNER_TEMP}/doctor-cache" bunx @ankhorage/doctor@0.14.13 validate .
+          fi
+
       - name: Version packages directly on main
         id: release
         if: hashFiles('.changeset/config.json') != ''
+        env:
+          HIGHEST_PUBLISHED_VERSION: ${{ steps.release-baseline.outputs.highest_published_version }}
         run: |
           if [ -z "$(find .changeset -maxdepth 1 -type f -name '*.md' ! -name README.md -print -quit)" ]; then
             current_version="$(node -p "require('./package.json').version")"
@@ -96,7 +175,19 @@ jobs:
             done
 
             if [ -n "$release_sha" ]; then
-              echo "Recovering canonical release commit $release_sha for version $current_version without another version bump."
+              release_tag="v$current_version"
+              tagged_sha="$(git rev-parse -q --verify "refs/tags/${release_tag}^{commit}" 2>/dev/null || true)"
+              if [ -n "$tagged_sha" ] && [ "$tagged_sha" != "$release_sha" ]; then
+                echo "::error title=Release tag mismatch::${release_tag} points to ${tagged_sha}, expected ${release_sha}."
+                exit 1
+              fi
+
+              if [ -n "$tagged_sha" ]; then
+                echo "Release tag ${release_tag} already points to ${release_sha}; resuming idempotent finalization."
+              else
+                echo "Recovering canonical release commit $release_sha for version $current_version without another version bump."
+              fi
+              git checkout --detach "$release_sha"
               echo "versioned=true" >> "$GITHUB_OUTPUT"
               echo "package_name=$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
               echo "package_version=$current_version" >> "$GITHUB_OUTPUT"
@@ -112,6 +203,18 @@ jobs:
             ./node_modules/.bin/ankhorage-apm-release sync .
           fi
           after_version="$(node -p "require('./package.json').version")"
+
+          if [ -n "$HIGHEST_PUBLISHED_VERSION" ]; then
+            CANDIDATE_VERSION="$after_version" HIGHEST_PUBLISHED_VERSION="$HIGHEST_PUBLISHED_VERSION" node -e '
+              const parse = (value) => value.split(".").map(Number);
+              const candidate = parse(process.env.CANDIDATE_VERSION);
+              const highest = parse(process.env.HIGHEST_PUBLISHED_VERSION);
+              const index = candidate.findIndex((part, candidateIndex) => part !== highest[candidateIndex]);
+              if (index === -1 || candidate[index] < highest[index]) {
+                throw new Error(`Release version ${process.env.CANDIDATE_VERSION} must be strictly greater than published npm version ${process.env.HIGHEST_PUBLISHED_VERSION}. Refusing to create a duplicate or rollback release.`);
+              }
+            '
+          fi
 
           if [ "$before_version" != "$after_version" ]; then
             if node -e "const p=require('./package.json'); process.exit(p.ankh?.structure === undefined ? 1 : 0)"; then
@@ -148,6 +251,194 @@ jobs:
             echo "release_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Verify standalone packed install
+        if: steps.release.outputs.versioned == 'true'
+        run: |
+          set -euo pipefail
+          bun install --ignore-scripts
+          if node -e "const p=require('./package.json'); process.exit(p.scripts?.build?0:1)"; then
+            bun run build
+          fi
+          pack_dir="$(mktemp -d "${RUNNER_TEMP}/standalone-pack.XXXXXX")"
+          install_dir="$(mktemp -d "${RUNNER_TEMP}/standalone-install.XXXXXX")"
+          npm pack --ignore-scripts --pack-destination "$pack_dir" >/dev/null
+          artifact="$(find "$pack_dir" -maxdepth 1 -type f -name '*.tgz' -print -quit)"
+          if [ -z "$artifact" ]; then
+            echo "::error title=Standalone pack failed::npm pack did not produce a package artifact."
+            exit 1
+          fi
+          printf '{"name":"standalone-consumer","private":true,"version":"0.0.0"}\n' > "$install_dir/package.json"
+          package_name="$(node -p "require('./package.json').name")"
+          capability_module_path="$(node --input-type=module -e "import { createRequire } from 'node:module'; console.log(createRequire(import.meta.resolve('@ankhorage/devtools/cli')).resolve('@ankhorage/capability'))")"
+          (
+            cd "$install_dir"
+            bun add "$artifact" --ignore-scripts
+
+            PACKAGE_NAME="$package_name" node - <<'NODE' > runtime-entrypoints.txt
+          const { readFileSync } = require('node:fs');
+          const { join } = require('node:path');
+          const name = process.env.PACKAGE_NAME;
+          const packageDir = join(process.cwd(), 'node_modules', ...name.split('/'));
+          const pkg = JSON.parse(readFileSync(join(packageDir, 'package.json'), 'utf8'));
+          const importConditions = new Set(['bun', 'default', 'import', 'node']);
+          const requireConditions = new Set(['default', 'node', 'require']);
+          const platformConditions = new Set(['browser', 'react-native']);
+          const explicitServerConditions = new Set(['bun', 'node']);
+          const supportsLoader = (target, conditions) => {
+            if (typeof target === 'string') return true;
+            if (Array.isArray(target)) return target.some((value) => supportsLoader(value, conditions));
+            if (!target || typeof target !== 'object') return false;
+            return Object.entries(target).some(
+              ([condition, value]) =>
+                conditions.has(condition) && supportsLoader(value, conditions),
+            );
+          };
+          const declaresCondition = (target, conditions) => {
+            if (Array.isArray(target)) {
+              return target.some((value) => declaresCondition(value, conditions));
+            }
+            if (!target || typeof target !== 'object') return false;
+            return Object.entries(target).some(
+              ([condition, value]) =>
+                conditions.has(condition) || declaresCondition(value, conditions),
+            );
+          };
+          const isPlatformOnlyRuntimeTarget = (target) =>
+            declaresCondition(target, platformConditions) &&
+            !declaresCondition(target, explicitServerConditions);
+          const selectLoader = (target) => {
+            if (isPlatformOnlyRuntimeTarget(target)) return undefined;
+            if (supportsLoader(target, importConditions)) return 'import';
+            if (supportsLoader(target, requireConditions)) return 'require';
+            return undefined;
+          };
+          const records = [];
+          const addEntrypoint = (specifier, target) => {
+            const loader = selectLoader(target);
+            if (loader !== undefined) records.push(`${loader}|${specifier}`);
+          };
+          const exportsMap = pkg.exports;
+          if (exportsMap === undefined) {
+            if (typeof pkg.main === 'string' || typeof pkg.module === 'string') {
+              records.push(`import|${name}`);
+            }
+          } else if (
+            typeof exportsMap === 'string' ||
+            Array.isArray(exportsMap) ||
+            (exportsMap &&
+              typeof exportsMap === 'object' &&
+              !Object.keys(exportsMap).some((key) => key.startsWith('.')))
+          ) {
+            addEntrypoint(name, exportsMap);
+          } else if (exportsMap && typeof exportsMap === 'object') {
+            for (const [key, target] of Object.entries(exportsMap)) {
+              if (!key.startsWith('.') || key === './package.json' || key.includes('*')) continue;
+              addEntrypoint(key === '.' ? name : `${name}/${key.slice(2)}`, target);
+            }
+          }
+          const output = records.sort();
+          process.stdout.write(output.length === 0 ? '' : `${output.join('\n')}\n`);
+          NODE
+
+            PACKAGE_NAME="$package_name" CAPABILITY_MODULE_PATH="$capability_module_path" node --input-type=module - <<'NODE'
+          import { readFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          import { pathToFileURL } from 'node:url';
+          const name = process.env.PACKAGE_NAME;
+          const packageDir = join(process.cwd(), 'node_modules', ...name.split('/'));
+          const manifest = JSON.parse(readFileSync(join(packageDir, 'package.json'), 'utf8'));
+          if (
+            !manifest.ankh ||
+            typeof manifest.ankh !== 'object' ||
+            !Object.hasOwn(manifest.ankh, 'capabilities')
+          ) process.exit(0);
+          const capabilityPath = process.env.CAPABILITY_MODULE_PATH;
+          if (typeof capabilityPath !== 'string' || capabilityPath.length === 0) {
+            throw new Error('The release capability validator module path is required.');
+          }
+          const { areCapabilitiesEqual, isCapability, normalizeCapability } = await import(pathToFileURL(capabilityPath).href);
+          const { CAPABILITIES } = await import(`${name}/capabilities`);
+          const metadata = manifest.ankh.capabilities;
+          if (!Array.isArray(CAPABILITIES) || !Array.isArray(metadata) ||
+              !CAPABILITIES.every(isCapability) || !metadata.every(isCapability) ||
+              CAPABILITIES.length !== metadata.length ||
+              !CAPABILITIES.every((capability, index) => areCapabilitiesEqual(normalizeCapability(capability), metadata[index]))) {
+            throw new Error('Packed package.json ankh.capabilities must exactly match the public CAPABILITIES catalog.');
+          }
+          NODE
+
+            while IFS='|' read -r loader specifier; do
+              if [ -z "$specifier" ]; then
+                continue
+              fi
+              case "$loader" in
+                import)
+                  PACKAGE_SPECIFIER="$specifier" bun -e 'await import(process.env.PACKAGE_SPECIFIER)'
+                  ;;
+                require)
+                  PACKAGE_SPECIFIER="$specifier" node -e 'require(process.env.PACKAGE_SPECIFIER)'
+                  ;;
+                *)
+                  echo "::error title=Unsupported packed entrypoint loader::Unexpected loader '$loader' for $specifier."
+                  exit 1
+                  ;;
+              esac
+            done < runtime-entrypoints.txt
+
+            PACKAGE_NAME="$package_name" node - <<'NODE' > binary-paths.txt
+          const { readFileSync } = require('node:fs');
+          const { join, resolve } = require('node:path');
+          const name = process.env.PACKAGE_NAME;
+          const packageDir = join(process.cwd(), 'node_modules', ...name.split('/'));
+          const pkg = JSON.parse(readFileSync(join(packageDir, 'package.json'), 'utf8'));
+          const binaries =
+            typeof pkg.bin === 'string'
+              ? [pkg.bin]
+              : pkg.bin && typeof pkg.bin === 'object'
+                ? Object.values(pkg.bin)
+                : [];
+          const paths = binaries
+            .filter((value) => typeof value === 'string')
+            .map((value) => resolve(packageDir, value))
+            .sort();
+          process.stdout.write(paths.length === 0 ? '' : `${paths.join('\n')}\n`);
+          NODE
+
+            while IFS= read -r binary_path; do
+              if [ -z "$binary_path" ]; then
+                continue
+              fi
+
+              binary_build_dir="$(mktemp -d "${RUNNER_TEMP}/standalone-bin-build.XXXXXX")"
+              bun build "$binary_path" --target=bun --outdir "$binary_build_dir" >/dev/null
+
+              binary_log="$(mktemp "${RUNNER_TEMP}/standalone-bin-smoke.XXXXXX")"
+              set +e
+              timeout 5s bun "$binary_path" </dev/null >"$binary_log" 2>&1
+              binary_status=$?
+              set -e
+
+              if [ "$binary_status" -eq 124 ]; then
+                echo "Declared binary $binary_path started successfully and remained active until the smoke timeout."
+                continue
+              fi
+
+              if grep -Eiq 'Cannot find (package|module)|ERR_MODULE_NOT_FOUND|MODULE_NOT_FOUND|Could not resolve' "$binary_log"; then
+                cat "$binary_log"
+                echo "::error title=Packed binary runtime dependency missing::$binary_path could not resolve a runtime dependency."
+                exit 1
+              fi
+
+              if [ "$binary_status" -eq 126 ] || [ "$binary_status" -eq 127 ]; then
+                cat "$binary_log"
+                echo "::error title=Packed binary failed to start::$binary_path exited with status $binary_status."
+                exit 1
+              fi
+
+              echo "Declared binary $binary_path started without a missing-runtime-dependency failure (exit $binary_status)."
+            done < binary-paths.txt
+          )
+
       - name: Publish unpublished packages
         if: hashFiles('.changeset/config.json') != ''
         run: |
@@ -183,7 +474,7 @@ jobs:
           else
             # Authentication/network errors must never be treated as an unpublished version.
             node -e "const p=require(process.argv[1]); if(p.error?.code !== 'E404') process.exit(1)" "$registry_evidence"
-            bun install --frozen-lockfile --ignore-scripts
+            bun install --ignore-scripts
             bun run build
             bun run test:apm
             artifact="$(mktemp -d "${RUNNER_TEMP}/apm-publish.XXXXXX")/candidate.tgz"
@@ -335,7 +626,8 @@ jobs:
             };
             if (
               !/^@ankhorage\/[a-z0-9][a-z0-9-]*$/.test(release.name ?? '') ||
-              !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(release.version ?? '') ||
+              typeof release.version !== 'string' ||
+              release.version.length === 0 ||
               !/^ankhorage\/[a-z0-9-]+$/.test(release.sourceRepository ?? '')
             ) {
               throw new Error(
