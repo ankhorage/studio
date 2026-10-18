@@ -7,7 +7,7 @@ import {
   measureNonZeroWebElement,
   measureWebDescendantUnion,
 } from '@ankhorage/utility/web';
-import { useZoraTheme, ZORA_COMPONENT_REGISTRY } from '@ankhorage/zora';
+import type { ComponentRegistry } from '@ankhorage/runtime';
 import React from 'react';
 import {
   AppState,
@@ -355,7 +355,8 @@ function StudioNodeTouchRecorder(props: {
  * Create Studio's runtime-node wrapper that records stationary selection and unsupported-node measurement around eligible rendered nodes.
  * Follow-up: Move this Studio/ZORA selection wrapper to the selection/canvas app edge; it is package integration rather than generic runtime policy.
  */
-export function createStudioStationarySelectionWrapNode(options?: {
+export function createStudioStationarySelectionWrapNode(options: {
+  readonly componentRegistry: ComponentRegistry;
   readonly previewMode?: boolean;
   readonly thirdPartySupport?: Readonly<Record<string, true>>;
 }): (args: {
@@ -363,7 +364,7 @@ export function createStudioStationarySelectionWrapNode(options?: {
   readonly rendered: React.ReactNode;
   readonly isRoot: boolean;
 }) => React.ReactNode {
-  const { previewMode, thirdPartySupport } = options ?? {};
+  const { componentRegistry, previewMode, thirdPartySupport } = options;
   const isEditMode = previewMode !== true;
 
   /*** Wrap one eligible rendered node while preserving unsupported/root nodes that should not be instrumented. */
@@ -377,7 +378,7 @@ export function createStudioStationarySelectionWrapNode(options?: {
     }
 
     const isSupported =
-      Object.prototype.hasOwnProperty.call(ZORA_COMPONENT_REGISTRY, args.node.type) ||
+      Object.prototype.hasOwnProperty.call(componentRegistry, args.node.type) ||
       (thirdPartySupport != null &&
         Object.prototype.hasOwnProperty.call(thirdPartySupport, args.node.type) &&
         thirdPartySupport[args.node.type] === true);
@@ -405,12 +406,12 @@ export interface StudioCanvasInteractionAdapter {
  */
 function StationaryTapSelector(props: {
   readonly isEditMode: boolean;
+  readonly selectionColor: string;
   readonly selectedNodeId: string | null;
   readonly selectNode: (id: string | null) => void;
   readonly canvasInteraction?: StudioCanvasInteractionAdapter;
   readonly children: React.ReactNode;
 }): React.JSX.Element {
-  const { theme } = useZoraTheme();
   const { canvasInteraction } = props;
   const coordinatorRef = React.useRef<StationarySelectionCoordinator | null>(null);
   const rootViewRef = React.useRef<ViewRef | null>(null);
@@ -953,7 +954,7 @@ function StationaryTapSelector(props: {
             key: `selected:${rect.nodeId}`,
             nativeID: `studio-selected-indicator-${encodeURIComponent(rect.nodeId)}`,
             testID: `studio-selected-indicator-${rect.nodeId}`,
-            ...createSelectedIndicatorViewProps(rect, theme.semantics.action.primary.base),
+            ...createSelectedIndicatorViewProps(rect, props.selectionColor),
           }),
         ),
       ),

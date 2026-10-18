@@ -75,6 +75,23 @@ describe('Expo 57 generated navigation acceptance fixture', () => {
     expect(source).not.toContain('<ZoraDrawerContent');
     expect(source).not.toContain('@react-navigation/');
     expect(source).not.toContain('Parameters<typeof Zora');
+    expect(manifest.screens['navigation-home']?.root.children?.[1]?.props?.onPress).toBeUndefined();
+    expect(manifest.dataBindings?.['home-profile']).toEqual({
+      componentId: 'home-profile',
+      events: {
+        press: [
+          {
+            target: {
+              capability: 'navigator.navigate',
+              input: {
+                route: { kind: 'literal', value: 'profile/[id]' },
+                params: { kind: 'literal', value: { id: 'ada', source: 'internal' } },
+              },
+            },
+          },
+        ],
+      },
+    });
   });
 
   test('covers released Studio inclusion and protected auth route groups', () => {
