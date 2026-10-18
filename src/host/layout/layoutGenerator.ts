@@ -2,9 +2,9 @@ import type { AppManifest, NavigatorNode, RouteDefinition } from '@ankhorage/con
 import type { AppDeployTargets } from '@ankhorage/contracts/deploy';
 import {
   type ExpoRuntimePlan,
-  resolveExpoRuntimePlan,
   resolveExpoRuntimeLayoutIntegration,
   resolveExpoRuntimeNativeSchemeMap,
+  resolveExpoRuntimePlan,
 } from '@ankhorage/expo-runtime/planning';
 import { toPortablePath } from '@ankhorage/utility/node/path';
 import path from 'path';
