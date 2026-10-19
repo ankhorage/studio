@@ -756,10 +756,13 @@ async function loadEditor(): Promise<{
       {
         name: 'inert-authoring-controls',
         setup(builder) {
-          builder.onResolve({ filter: /^(@ankhorage\/zora(?:\/reader-free)?|react-native)$/u }, ({ path }) => ({
-            path,
-            namespace: 'inert-controls',
-          }));
+          builder.onResolve(
+            { filter: /^(@ankhorage\/zora(?:\/reader-free)?|react-native)$/u },
+            ({ path }) => ({
+              path,
+              namespace: 'inert-controls',
+            }),
+          );
           builder.onLoad({ filter: /.*/u, namespace: 'inert-controls' }, () => ({
             loader: 'js',
             contents: `export const Button='Button', Field='Field', Select='Select',
