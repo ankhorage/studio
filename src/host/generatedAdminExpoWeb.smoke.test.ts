@@ -1,5 +1,5 @@
 import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
-import { mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readdir, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import {
   createServer as createHttpServer,
   type IncomingMessage,
@@ -2074,11 +2074,12 @@ async function packLocalStudioPackageAsync(workspaceRoot: string): Promise<strin
   if (exitCode !== 0) {
     throw new Error(`Studio package packing failed.\n${stdout}\n${stderr}`);
   }
-  const artifactPath = stdout.trim();
-  if (!path.isAbsolute(artifactPath)) {
-    throw new Error(`Studio package packing returned no artifact path.\n${stdout}`);
+  const artifacts = (await readdir(artifactRoot)).filter((artifact) => artifact.endsWith('.tgz'));
+  const [artifact] = artifacts;
+  if (artifacts.length !== 1 || !artifact) {
+    throw new Error(`Studio package packing produced no single artifact.\n${stdout}`);
   }
-  return artifactPath;
+  return path.join(artifactRoot, artifact);
 }
 
 async function writeSmokeRuntimeExtensions(projectRoot: string): Promise<void> {
