@@ -339,7 +339,9 @@ test('scopes Studio runtime selection config below StudioProvider', () => {
   expect(studioShellSource).toContain('const studioRuntimeConfig = useMemo(');
   expect(studioShellSource).toContain('const studioWrapNode = useMemo(');
   expect(studioShellSource).toContain('createStudioStationarySelectionWrapNode');
-  expect(studioShellSource).toContain('componentRegistry: runtimeComponentRegistry');
+  expect(studioShellSource).toContain(
+    'builtInComponentRegistry: studioInteractionPolicyComponentRegistry',
+  );
   expect(studioShellSource).toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
   expect(studioShellSource).toContain('const studioResolveNodeProps = useMemo(');
   expect(studioShellSource).toContain('createStudioInteractionPolicyResolver');

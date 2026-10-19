@@ -377,6 +377,9 @@ describe('GeneratedAppFileGenerator', () => {
   ZORA_BASE_COMPONENT_REGISTRY,
   GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
 );`);
+    expect(rootLayout).toContain(
+      'const studioInteractionPolicyComponentRegistry = ZORA_BASE_COMPONENT_REGISTRY;',
+    );
     expect(rootLayout).toContain(`const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
   ...GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
 } as const;`);
@@ -429,6 +432,23 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('ZORA_COMPONENT_REGISTRY');
     expect(rootLayout).not.toContain('ZORA_BASE_COMPONENT_REGISTRY');
     expect(screen).toContain("from '@ankhorage/zora';");
+  });
+
+  test('uses the complete Reader-enabled ZORA registry for Studio interaction-policy classification', () => {
+    const manifest = createManifest();
+    const indexScreen = manifest.screens.index;
+    if (!indexScreen) throw new Error('Test manifest is missing the index screen.');
+    indexScreen.requires = { capabilities: { ebookReader: true } };
+
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', manifest, [], {
+      includeStudio: true,
+    });
+    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+
+    expect(rootLayout).toContain(
+      'const studioInteractionPolicyComponentRegistry = ZORA_COMPONENT_REGISTRY;',
+    );
+    expect(rootLayout).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
   });
 
   test('binds standalone runtime capabilities through the released Expo Runtime owner', () => {

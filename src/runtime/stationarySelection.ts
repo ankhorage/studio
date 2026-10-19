@@ -356,7 +356,7 @@ function StudioNodeTouchRecorder(props: {
  * Follow-up: Move this Studio/ZORA selection wrapper to the selection/canvas app edge; it is package integration rather than generic runtime policy.
  */
 export function createStudioStationarySelectionWrapNode(options: {
-  readonly componentRegistry: ComponentRegistry;
+  readonly builtInComponentRegistry: ComponentRegistry;
   readonly previewMode?: boolean;
   readonly thirdPartySupport?: Readonly<Record<string, true>>;
 }): (args: {
@@ -364,7 +364,7 @@ export function createStudioStationarySelectionWrapNode(options: {
   readonly rendered: React.ReactNode;
   readonly isRoot: boolean;
 }) => React.ReactNode {
-  const { componentRegistry, previewMode, thirdPartySupport } = options;
+  const { builtInComponentRegistry, previewMode, thirdPartySupport } = options;
   const isEditMode = previewMode !== true;
 
   /*** Wrap one eligible rendered node while preserving unsupported/root nodes that should not be instrumented. */
@@ -378,7 +378,7 @@ export function createStudioStationarySelectionWrapNode(options: {
     }
 
     const isSupported =
-      Object.prototype.hasOwnProperty.call(componentRegistry, args.node.type) ||
+      Object.prototype.hasOwnProperty.call(builtInComponentRegistry, args.node.type) ||
       (thirdPartySupport != null &&
         Object.prototype.hasOwnProperty.call(thirdPartySupport, args.node.type) &&
         thirdPartySupport[args.node.type] === true);
