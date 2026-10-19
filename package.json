@@ -252,13 +252,13 @@
     "expo-document-picker": "~57.0.3",
     "expo-file-system": "~57.0.7",
     "expo-image-picker": "~57.0.20",
-    "fastify": "^5.12.5"
+    "fastify": "^5.12.7"
   },
   "peerDependencies": {
-    "@react-native-vector-icons/fontawesome": "^13.1.4",
-    "@react-native-vector-icons/fontawesome5": "^13.1.4",
-    "@react-native-vector-icons/fontawesome6": "^13.1.4",
-    "@react-native-vector-icons/ionicons": "^13.1.4",
+    "@react-native-vector-icons/fontawesome": "^13.1.4 || ^14.0.0",
+    "@react-native-vector-icons/fontawesome5": "^13.1.4 || ^14.0.0",
+    "@react-native-vector-icons/fontawesome6": "^13.1.4 || ^14.0.0",
+    "@react-native-vector-icons/ionicons": "^13.1.4 || ^14.0.0",
     "expo": "57.0.26",
     "expo-constants": "~57.0.20",
     "expo-router": "~57.0.24",
