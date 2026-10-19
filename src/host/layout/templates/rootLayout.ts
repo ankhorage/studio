@@ -527,20 +527,20 @@ function StudioShell({
   const studioWrapNode = useMemo(
     () =>
       createStudioStationarySelectionWrapNode({
-        componentRegistry: runtimeComponentRegistry,
+        builtInComponentRegistry: studioInteractionPolicyComponentRegistry,
         previewMode,
         thirdPartySupport: APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
       }),
-    [previewMode, runtimeComponentRegistry],
+    [previewMode],
   );
   const studioResolveNodeProps = useMemo(
     () =>
       createStudioInteractionPolicyResolver({
-        componentRegistry: runtimeComponentRegistry,
+        builtInComponentRegistry: studioInteractionPolicyComponentRegistry,
         previewMode,
         thirdPartySupport: APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
       }),
-    [previewMode, runtimeComponentRegistry],
+    [previewMode],
   );
   const appHeaderTitle = resolveStudioAppHeaderTitle({
     runtimeManifest,

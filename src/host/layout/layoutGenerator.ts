@@ -92,6 +92,7 @@ function getGeneratedRuntimeRegistryDeclarations(
 
   if (includeStudio) {
     return `${registry}
+const studioInteractionPolicyComponentRegistry = ${zoraComponentRegistry};
 const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
   ...GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
 } as const;`;
