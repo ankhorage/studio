@@ -103,6 +103,22 @@ const SMOKE_NAVIGATION_PROBE_SOURCE = `export function SmokeNavigationProbe() {
   return null;
 }`;
 
+bunTest('writes the Studio smoke extension without the root facade', async () => {
+  const projectRoot = await mkdtemp(path.join(tmpdir(), 'studio-smoke-extension-'));
+  const generatedRoot = path.join(projectRoot, 'src', 'generated');
+  await mkdir(generatedRoot, { recursive: true });
+
+  try {
+    await writeSmokeRuntimeExtensions(projectRoot);
+    const source = await readFile(path.join(generatedRoot, 'SmokeStudioComponents.tsx'), 'utf8');
+
+    expect(source).toContain("from '@ankhorage/studio/core/StudioContext'");
+    expect(source).not.toContain("from '@ankhorage/studio';");
+  } finally {
+    await rm(projectRoot, { recursive: true, force: true });
+  }
+});
+
 function createAdminSmokeManifest(): AppManifest {
   const nutritionManifest = createAdminSmokeBaseManifest();
   const expo57RouteIcons: Readonly<Record<string, string>> = {
@@ -2030,9 +2046,9 @@ async function writeSmokeRuntimeExtensions(projectRoot: string): Promise<void> {
   const generatedRoot = path.join(projectRoot, 'src', 'generated');
   await writeFile(
     path.join(generatedRoot, 'SmokeStudioComponents.tsx'),
-    `import { useStudio } from '@ankhorage/studio';
+    `import { useStudio } from '@ankhorage/studio/core/StudioContext';
 import { useStudioUnsupportedNodeMeasurement } from '@ankhorage/studio/runtime';
-import { Text } from '@ankhorage/zora';
+import { Text } from '@ankhorage/zora/reader-free';
 import { usePathname, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
