@@ -1,5 +1,5 @@
 import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
-import { cp, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import {
   createServer as createHttpServer,
   type IncomingMessage,
@@ -2032,7 +2032,7 @@ async function installGeneratedProjectDependencies(
     throw new Error('Generated smoke project has no dependency map.');
   }
   generatedPackage.dependencies['@ankhorage/studio'] =
-    `file:${await stageLocalStudioPackage(workspaceRoot)}`;
+    `file:${await packLocalStudioPackageAsync(workspaceRoot)}`;
   const navigatorTarball = readEnvString('ANKH_STUDIO_NAVIGATOR_TARBALL');
   if (navigatorTarball) {
     generatedPackage.dependencies['@ankhorage/navigator'] = `file:${navigatorTarball}`;
@@ -2058,33 +2058,27 @@ async function installGeneratedProjectDependencies(
   }
 }
 
-async function stageLocalStudioPackage(workspaceRoot: string): Promise<string> {
-  const sourcePackage = JSON.parse(
-    await readFile(path.join(process.cwd(), 'package.json'), 'utf8'),
-  ) as Record<string, unknown>;
-  const packageRoot = path.join(workspaceRoot, 'packages', 'studio');
-  await mkdir(packageRoot, { recursive: true });
-  await cp(path.join(process.cwd(), 'dist'), path.join(packageRoot, 'dist'), {
-    recursive: true,
+async function packLocalStudioPackageAsync(workspaceRoot: string): Promise<string> {
+  const artifactRoot = path.join(workspaceRoot, 'artifacts');
+  await mkdir(artifactRoot, { recursive: true });
+  const pack = Bun.spawn(['bun', 'pm', 'pack', '--destination', artifactRoot], {
+    cwd: process.cwd(),
+    stdout: 'pipe',
+    stderr: 'pipe',
   });
-  await writeFile(
-    path.join(packageRoot, 'package.json'),
-    `${JSON.stringify(
-      {
-        name: sourcePackage.name,
-        version: sourcePackage.version,
-        type: sourcePackage.type,
-        main: sourcePackage.main,
-        exports: sourcePackage.exports,
-        dependencies: sourcePackage.dependencies,
-        peerDependencies: sourcePackage.peerDependencies,
-      },
-      null,
-      2,
-    )}\n`,
-    'utf8',
-  );
-  return packageRoot;
+  const [exitCode, stdout, stderr] = await Promise.all([
+    pack.exited,
+    new Response(pack.stdout).text(),
+    new Response(pack.stderr).text(),
+  ]);
+  if (exitCode !== 0) {
+    throw new Error(`Studio package packing failed.\n${stdout}\n${stderr}`);
+  }
+  const artifactPath = stdout.trim();
+  if (!path.isAbsolute(artifactPath)) {
+    throw new Error(`Studio package packing returned no artifact path.\n${stdout}`);
+  }
+  return artifactPath;
 }
 
 async function writeSmokeRuntimeExtensions(projectRoot: string): Promise<void> {
