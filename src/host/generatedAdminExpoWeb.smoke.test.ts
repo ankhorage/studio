@@ -205,7 +205,6 @@ function createAdminSmokeManifest(): AppManifest {
               type: 'Button',
               props: {
                 children: 'Open scanner in Preview',
-                onPress: { type: 'navigate', payload: { route: '/scan' } },
                 testID: 'nutrition-preview-navigation-action',
               },
             },
@@ -219,8 +218,54 @@ function createAdminSmokeManifest(): AppManifest {
         root: createScrollableRuntimeScreenRoot(),
       },
     },
+    dataBindings: {
+      ...nutritionManifest.dataBindings,
+      'nutrition-preview-navigation-action': {
+        componentId: 'nutrition-preview-navigation-action',
+        events: {
+          press: [
+            {
+              target: {
+                capability: 'navigator.navigate',
+                input: {
+                  route: { kind: 'literal', value: '/scan' },
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
   };
 }
+
+bunTest('uses canonical event bindings for generated Admin Preview navigation', () => {
+  const manifest = createAdminSmokeManifest();
+  const action = manifest.screens['food_drink-nutrition-catalog-scan-catalog']?.root.children?.find(
+    (node) => node.id === 'nutrition-preview-navigation-action',
+  );
+
+  expect(action?.props).toEqual({
+    children: 'Open scanner in Preview',
+    testID: 'nutrition-preview-navigation-action',
+  });
+  expect(action?.props).not.toHaveProperty('onPress');
+  expect(manifest.dataBindings?.['nutrition-preview-navigation-action']).toEqual({
+    componentId: 'nutrition-preview-navigation-action',
+    events: {
+      press: [
+        {
+          target: {
+            capability: 'navigator.navigate',
+            input: {
+              route: { kind: 'literal', value: '/scan' },
+            },
+          },
+        },
+      ],
+    },
+  });
+});
 
 function createScrollableRuntimeScreenRoot(): UiNode {
   return {
