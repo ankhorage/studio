@@ -74,23 +74,30 @@ jobs:
           const infra = await Bun.file(infraPath).json();
           const supabasePath = fileURLToPath(import.meta.resolve("@ankhorage/supabase/package.json"));
           const supabase = await Bun.file(supabasePath).json();
-          const vaultPath = fileURLToPath(import.meta.resolve("@ankhorage/supabase-vault/package.json"));
+          const secretsPath = fileURLToPath(import.meta.resolve("@ankhorage/secrets/package.json"));
+          const secrets = await Bun.file(secretsPath).json();
+          const vaultPath = fileURLToPath(import.meta.resolve("@ankhorage/secrets-supabase-vault/package.json"));
           const vault = await Bun.file(vaultPath).json();
           const infraRange = packageJson.dependencies?.["@ankhorage/infra"];
           const supabaseRange = packageJson.dependencies?.["@ankhorage/supabase"];
-          const vaultRange = packageJson.dependencies?.["@ankhorage/supabase-vault"];
+          const secretsRange = packageJson.dependencies?.["@ankhorage/secrets"];
+          const vaultRange = packageJson.dependencies?.["@ankhorage/secrets-supabase-vault"];
           if (typeof infraRange !== "string" || !Bun.semver.satisfies(infra.version, infraRange)) {
             throw new Error(`Resolved Infra ${infra.version} does not satisfy ${infraRange ?? "<missing>"}.`);
           }
           if (typeof supabaseRange !== "string" || !Bun.semver.satisfies(supabase.version, supabaseRange)) {
             throw new Error(`Resolved Supabase ${supabase.version} does not satisfy ${supabaseRange ?? "<missing>"}.`);
           }
+          if (typeof secretsRange !== "string" || !Bun.semver.satisfies(secrets.version, secretsRange)) {
+            throw new Error(`Resolved Secrets ${secrets.version} does not satisfy ${secretsRange ?? "<missing>"}.`);
+          }
           if (typeof vaultRange !== "string" || !Bun.semver.satisfies(vault.version, vaultRange)) {
-            throw new Error(`Resolved Supabase Vault ${vault.version} does not satisfy ${vaultRange ?? "<missing>"}.`);
+            throw new Error(`Resolved Secrets Supabase Vault ${vault.version} does not satisfy ${vaultRange ?? "<missing>"}.`);
           }
           console.log(`Infra: ${infra.version} (${infraRange})`);
           console.log(`Supabase: ${supabase.version} (${supabaseRange})`);
-          console.log(`Supabase Vault: ${vault.version} (${vaultRange})`);
+          console.log(`Secrets: ${secrets.version} (${secretsRange})`);
+          console.log(`Secrets Supabase Vault: ${vault.version} (${vaultRange})`);
           '
 
       - name: Verify image-seeded Minikube runtime

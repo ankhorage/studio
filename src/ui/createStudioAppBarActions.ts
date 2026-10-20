@@ -1,4 +1,4 @@
-import { IconButton, type IconButtonProps } from '@ankhorage/zora';
+import { IconButton, type IconButtonProps } from '@ankhorage/zora/reader-free';
 import React from 'react';
 
 import { resolveStudioAppBarModeAction, type StudioAppBarContextAction } from './studioAppBarModel';

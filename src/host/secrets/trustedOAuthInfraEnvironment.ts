@@ -1,5 +1,5 @@
 import type { AppManifest } from '@ankhorage/contracts';
-import type { SecretPayload, SecretStoreResult } from '@ankhorage/contracts/secrets';
+import type { SecretPayload, SecretStoreResult } from '@ankhorage/secrets/port';
 
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { ProjectSecretService } from './projectSecretService';

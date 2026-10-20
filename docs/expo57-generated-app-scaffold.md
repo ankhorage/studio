@@ -18,7 +18,7 @@ The scaffold consumes these released owners:
 | `@ankhorage/orchestrator-module-expo-localization` | `^0.6.0`                  | localization module host/admin contribution                                      |
 | `@ankhorage/orchestrator-module-expo-google-fonts` | `^0.2.1`                  | Google Fonts module host contribution                                            |
 | `@ankhorage/devtools`                              | `^1.12.0`                 | generated app-owned quality tooling                                              |
-| `@ankhorage/ankh`                                  | `^0.8.11`                 | app-owned Devtools CLI                                                           |
+| `@ankhorage/ankh`                                  | `^0.13.1`                 | app-owned Devtools CLI                                                           |
 
 No generated dependency uses `workspace:`, `link:`, `file:`, a Git branch or a sibling-source path.
 Standalone output omits `@ankhorage/studio` and binds actions through Expo Runtime 3's public action
@@ -49,7 +49,7 @@ root package is classified below.
 `@ankhorage/color-theory@^0.0.8`, `@ankhorage/contracts@^8.0.0`,
 `@ankhorage/data-sources@^2.0.0`, `@ankhorage/deploy@^0.12.0`,
 `@ankhorage/infra@^4.1.3`, `@ankhorage/orchestrator@^0.3.1`,
-`@ankhorage/supabase-auth@^1.2.5`, `@ankhorage/supabase-storage@^0.2.0`,
+`@ankhorage/supabase-auth@^1.2.5`, `@ankhorage/storage-supabase@^1.0.0`,
 `@ankhorage/supabase-vault@^0.2.4`, `@ankhorage/templates@^7.0.0`,
 The standalone `@ankhorage/zora-chess`, `@ankhorage/zora-game`, and `@ankhorage/zora-tabletop`
 packages are no longer current generated-app owners. Chess, Game, and Tabletop are owned by core
@@ -61,7 +61,7 @@ remaining Ankhorage owners come through the released dependency graph audited be
 
 ### Separate owner or roadmap step
 
-- `@ankhorage/ankh@^0.8.1` admits the current `0.8.2` patch; changing the tooling floor is not a
+- `@ankhorage/ankh@^0.13.1` admits compatible newer `0.13.x` patches; changing the tooling floor is not a
   navigation-owner requirement.
 - `@ankhorage/paradox@^0.1.21` admits the current `0.1.22` patch; changing the docs-tooling floor is
   independent of generated navigation.

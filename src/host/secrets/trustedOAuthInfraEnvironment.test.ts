@@ -1,5 +1,5 @@
 import type { AppManifest } from '@ankhorage/contracts';
-import type { SecretPayload, SecretStoreResult } from '@ankhorage/contracts/secrets';
+import type { SecretPayload, SecretStoreResult } from '@ankhorage/secrets/port';
 import { expect, test } from 'bun:test';
 
 import {

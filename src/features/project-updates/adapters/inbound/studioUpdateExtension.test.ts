@@ -2,7 +2,6 @@ import { readFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 
 import {
-  resolveMigrationPath,
   validatePackageUpdateMetadata,
   validateUpdateDescriptor,
   validateUpdateExtensionBinding,
@@ -153,38 +152,6 @@ test('reports current policy and materializes only reviewed mutation ids', async
   expect(applied).toEqual(plan.mutations.map(({ id }) => id));
 });
 
-test('supports the reviewed current-architecture history and rejects unreviewed old states', () => {
-  const descriptorJson: unknown = JSON.parse(readFileSync(DESCRIPTOR_URL, 'utf8'));
-  const validation = validateUpdateDescriptor({ descriptor: descriptorJson });
-  if (!validation.valid || validation.descriptor === undefined) {
-    throw new Error('Studio descriptor must pass canonical validation.');
-  }
-  const { descriptor } = validation;
-  const earliest = resolveMigrationPath({
-    descriptor,
-    sourceVersion: '2.5.7',
-    targetVersion: descriptor.owner.version,
-  });
-  expect(earliest.supported).toBe(true);
-  expect(earliest.noMigrationRequired).toBe(true);
-  expect(earliest.migrations).toEqual([]);
-  const recent = resolveMigrationPath({
-    descriptor,
-    sourceVersion: '5.10.13',
-    targetVersion: descriptor.owner.version,
-  });
-  expect(recent.supported).toBe(true);
-  expect(recent.noMigrationRequired).toBe(true);
-  expect(recent.migrations).toEqual([]);
-  const unsupported = resolveMigrationPath({
-    descriptor,
-    sourceVersion: '1.0.0',
-    targetVersion: descriptor.owner.version,
-  });
-  expect(unsupported.supported).toBe(false);
-  expect(unsupported.blockers.length).toBeGreaterThan(0);
-});
-
 test('does not accept malformed source state as an empty successful plan', async () => {
   const projection = requirePackagePolicyProjection();
   const input = {
@@ -244,8 +211,9 @@ test('preserves disabled capabilities and verifies the exact reviewed generator'
   const plan = await projection.planAsync(input);
   expect(plan.mutations).toEqual([]);
   expect(current.dependencies['@ankhorage/studio']).toBeUndefined();
-  expect(current.dependencies['@ankhorage/supabase-auth']).toBeUndefined();
-  expect(current.dependencies['@ankhorage/supabase-storage']).toBeUndefined();
+  expect(current.dependencies['@ankhorage/auth']).toBeUndefined();
+  expect(current.dependencies['@ankhorage/auth-supabase']).toBeUndefined();
+  expect(current.dependencies['@ankhorage/storage-supabase']).toBeUndefined();
   expect((await projection.verifyAsync({ ...input, plan })).valid).toBe(true);
   const changed = { ...plan, generatorFingerprint: 'not-the-reviewed-generator' };
   expect((await projection.verifyAsync({ ...input, plan: changed })).valid).toBe(false);

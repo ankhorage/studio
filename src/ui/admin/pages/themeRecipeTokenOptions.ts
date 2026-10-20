@@ -1,4 +1,4 @@
-import type { ZoraThemeTokenFamily } from '@ankhorage/zora';
+import type { ZoraThemeTokenFamily } from '@ankhorage/zora/reader-free';
 
 interface ThemeRecipeTokenSource {
   readonly colors: object;

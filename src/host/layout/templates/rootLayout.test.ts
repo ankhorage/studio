@@ -6,11 +6,7 @@ import { getRootLayoutImportRequirements, getRootLayoutTsx } from './rootLayout'
 test('keeps the native splash visible until generated content is ready', () => {
   expect(getRootLayoutImportRequirements(false)).toContainEqual({
     source: 'react',
-    namedImports: [
-      { imported: 'ReactNode', typeOnly: true },
-      { imported: 'useEffect' },
-      { imported: 'useCallback' },
-    ],
+    namedImports: [{ imported: 'ReactNode', typeOnly: true }, { imported: 'useEffect' }],
   });
   expect(getRootLayoutImportRequirements(false)).toContainEqual({
     source: 'expo-splash-screen',
@@ -343,9 +339,13 @@ test('scopes Studio runtime selection config below StudioProvider', () => {
   expect(studioShellSource).toContain('const studioRuntimeConfig = useMemo(');
   expect(studioShellSource).toContain('const studioWrapNode = useMemo(');
   expect(studioShellSource).toContain('createStudioStationarySelectionWrapNode');
+  expect(studioShellSource).toContain(
+    'builtInComponentRegistry: studioInteractionPolicyComponentRegistry',
+  );
   expect(studioShellSource).toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
   expect(studioShellSource).toContain('const studioResolveNodeProps = useMemo(');
   expect(studioShellSource).toContain('createStudioInteractionPolicyResolver');
+  expect(studioShellSource).toContain('selectionColor={theme.semantics.action.primary.base}');
   expect(studioShellSource).toContain('createStudioActionSuppressionConfig(previewMode)');
   expect(studioShellSource).toContain('wrapNode: studioWrapNode');
   expect(studioShellSource).not.toContain('registry: create');
@@ -357,6 +357,7 @@ test('scopes Studio runtime selection config below StudioProvider', () => {
   );
   expect(studioShellSource).toContain('const studioOutput = isStudioAdminPath(appPathname) ? (');
   expect(studioShellSource).toContain('[previewMode, studioWrapNode, studioResolveNodeProps]');
+  expect(studioShellSource).not.toContain('runtimeConfig={generatedRuntimeConfig}');
 });
 
 test('keeps generated apps Studio-independent when includeStudio is false', () => {

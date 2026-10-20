@@ -1,5 +1,5 @@
 import type { DataSourceDiagnostic } from '@ankhorage/contracts/data';
-import { Text } from '@ankhorage/zora';
+import { Text } from '@ankhorage/zora/reader-free';
 import { StyleSheet, View } from 'react-native';
 
 import type { ExternalApiDiscoveryAttempt } from '../../../externalApiAuthoringContracts';

@@ -99,7 +99,8 @@ test('generates the released Google and Apple OAuth fixture through the real hos
       dependencies?: Record<string, string>;
     };
     expect(packageJson.dependencies?.['@ankhorage/contracts']).toMatch(SEMVER_PATTERNS.caret);
-    expect(packageJson.dependencies?.['@ankhorage/supabase-auth']).toMatch(SEMVER_PATTERNS.caret);
+    expect(packageJson.dependencies?.['@ankhorage/auth']).toMatch(SEMVER_PATTERNS.caret);
+    expect(packageJson.dependencies?.['@ankhorage/auth-supabase']).toMatch(SEMVER_PATTERNS.caret);
     expect(packageJson.dependencies?.[EXPO_PLATFORM.packages.crypto.name]).toBe(
       EXPO_PLATFORM.packages.crypto.version,
     );

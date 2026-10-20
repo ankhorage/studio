@@ -1,5 +1,5 @@
 import type { ThemeRecipeFieldOverrides } from '@ankhorage/contracts';
-import { Card, Text, useZoraTheme, ZORA_THEME_RECIPE_META } from '@ankhorage/zora';
+import { Card, Text, useZoraTheme, ZORA_THEME_RECIPE_META } from '@ankhorage/zora/reader-free';
 import React from 'react';
 
 import { AuthoringEditor } from '../../../features/authoring-engine/adapters/inbound/AuthoringEditor';

@@ -20,7 +20,8 @@ test('accepts newer capability owners within generated and owner-declared ranges
     '@ankhorage/expo-runtime': '3.2.4',
     '@ankhorage/permissions': '0.2.4',
     '@ankhorage/runtime': '2.2.2',
-    '@ankhorage/supabase-auth': '1.2.7',
+    '@ankhorage/auth': '0.1.3',
+    '@ankhorage/auth-supabase': '2.0.0',
     '@ankhorage/surface': '3.0.2',
     '@ankhorage/zora': '3.3.1',
   });
@@ -35,7 +36,8 @@ test('rejects a capability owner below its generated range', async () => {
     '@ankhorage/expo-runtime': '3.1.9',
     '@ankhorage/permissions': '0.2.3',
     '@ankhorage/runtime': '2.2.1',
-    '@ankhorage/supabase-auth': '1.2.6',
+    '@ankhorage/auth': '0.1.3',
+    '@ankhorage/auth-supabase': '2.0.0',
     '@ankhorage/surface': '3.0.1',
     '@ankhorage/zora': '3.3.0',
   });
@@ -54,7 +56,8 @@ async function createCapabilityGraphAsync(
     '@ankhorage/expo-runtime': '^3.2.4',
     '@ankhorage/permissions': '^0.2.3',
     '@ankhorage/runtime': '^2.2.0',
-    '@ankhorage/supabase-auth': '^1.2.5',
+    '@ankhorage/auth': '^0.1.3',
+    '@ankhorage/auth-supabase': '^2.0.0',
     '@ankhorage/zora': '^3.3.1',
   } as const;
   await writeFile(

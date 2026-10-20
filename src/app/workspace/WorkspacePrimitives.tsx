@@ -1,5 +1,5 @@
 import type { AppCategory } from '@ankhorage/contracts';
-import { Heading, Icon, type IconProps, Text, useZoraTheme } from '@ankhorage/zora';
+import { Heading, Icon, type IconProps, Text, useZoraTheme } from '@ankhorage/zora/reader-free';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,

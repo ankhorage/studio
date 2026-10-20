@@ -1,5 +1,5 @@
 import { MEDIA_ASSET_KINDS, type MediaAsset, type MediaAssetKind } from '@ankhorage/contracts';
-import { Button, Card, Select, Text, TextInput } from '@ankhorage/zora';
+import { Button, Card, Select, Text, TextInput } from '@ankhorage/zora/reader-free';
 import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 

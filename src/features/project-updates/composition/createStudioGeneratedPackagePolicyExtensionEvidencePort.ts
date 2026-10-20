@@ -1,16 +1,13 @@
-import { resolveMigrationPath } from '@ankhorage/apm';
 import type {
   ApmExtensionArtifactIdentity,
   ApmExtensionEvidence,
   ApmProjectionInspectionResult,
   ApmStatusDiagnostic,
   ApmStatusExtensionEvidencePort,
-  ApmUpdateProtocolBlocker,
 } from '@ankhorage/apm/types';
 
 import type { StudioGeneratedPackagePolicySource } from '../../../types/project-updates';
 import { createStudioGeneratedPackagePolicyProjectReadPort } from '../adapters/outbound/createStudioGeneratedPackagePolicyProjectReadPort';
-import { readStudioGeneratedPackagePolicyDescriptor } from '../adapters/outbound/readStudioGeneratedPackagePolicyDescriptor';
 import { readStudioGeneratedPackagePolicyHandler } from '../adapters/outbound/readStudioGeneratedPackagePolicyHandler';
 import { readStudioGeneratedPackagePolicyProjectionDescriptor } from '../adapters/outbound/readStudioGeneratedPackagePolicyProjectionDescriptor';
 import type { resolveCurrentStudioApmArtifactAsync } from '../adapters/outbound/resolveCurrentStudioApmArtifactAsync';
@@ -36,7 +33,7 @@ export function createStudioGeneratedPackagePolicyExtensionEvidencePort(
   };
 }
 
-/*** Resolve source, target artifact and supported history before inspecting Studio projection state. */
+/*** Resolve source and target artifact before inspecting Studio projection state. */
 async function inspectPolicyEvidenceAsync(
   rootPath: string,
   inventory: Parameters<
@@ -54,18 +51,7 @@ async function inspectPolicyEvidenceAsync(
       artifactResolution.evidence,
     );
   }
-  const migration = resolveMigrationPath({
-    descriptor: readStudioGeneratedPackagePolicyDescriptor(),
-    sourceVersion: source.version,
-    targetVersion: artifactResolution.artifact.version,
-  });
-  if (!migration.supported) return unsupportedHistoryEvidence(migration.blockers);
-  return inspectResolvedPolicyAsync(
-    rootPath,
-    source,
-    artifactResolution.artifact,
-    migration.noMigrationRequired,
-  );
+  return inspectResolvedPolicyAsync(rootPath, source, artifactResolution.artifact);
 }
 
 /*** Inspect package policy using only the exact reviewed current Studio artifact. */
@@ -73,7 +59,6 @@ async function inspectResolvedPolicyAsync(
   rootPath: string,
   source: StudioGeneratedPackagePolicySource,
   artifact: ApmExtensionArtifactIdentity,
-  noMigrationRequired: boolean,
 ): Promise<ApmExtensionEvidence> {
   const context = createStudioGeneratedPackagePolicyExecutionContext(source.version, artifact);
   const inspection = await readStudioGeneratedPackagePolicyHandler().inspectAsync({
@@ -81,14 +66,13 @@ async function inspectResolvedPolicyAsync(
     context,
     project: createStudioGeneratedPackagePolicyProjectReadPort(rootPath),
   });
-  return projectionEvidence(source, artifact.version, noMigrationRequired, inspection);
+  return projectionEvidence(source, artifact.version, inspection);
 }
 
 /*** Convert one Studio projection inspection into stable APM owner evidence. */
 function projectionEvidence(
   source: StudioGeneratedPackagePolicySource,
   targetVersion: string,
-  noMigrationRequired: boolean,
   inspection: ApmProjectionInspectionResult,
 ): ApmExtensionEvidence {
   return {
@@ -99,7 +83,7 @@ function projectionEvidence(
         packageId: source.packageId,
         owner: STUDIO_PACKAGE_NAME,
         projection: inspection.state,
-        migration: noMigrationRequired ? 'not-applicable' : 'pending',
+        migration: 'not-applicable',
         evidence: [
           `projection:${STUDIO_GENERATED_PACKAGE_POLICY_PROJECTION_ID}`,
           `source:${source.version}`,
@@ -129,33 +113,6 @@ function unknownProjectionDiagnostic(
     evidence: inspection.evidence,
     reason: inspection.reason ?? 'Studio generated package policy could not be inspected safely.',
     nextAction: 'Repair package.json before applying Studio-managed updates.',
-  };
-}
-
-/*** Preserve unsupported source-history blockers as incomplete Studio owner evidence. */
-function unsupportedHistoryEvidence(
-  blockers: readonly ApmUpdateProtocolBlocker[],
-): ApmExtensionEvidence {
-  return {
-    state: 'available',
-    complete: false,
-    observations: [],
-    diagnostics: blockers.map(protocolBlockerDiagnostic),
-  };
-}
-
-/*** Convert protocol validation blockers into ordinary status diagnostics without losing evidence. */
-function protocolBlockerDiagnostic(blocker: ApmUpdateProtocolBlocker): ApmStatusDiagnostic {
-  return {
-    code: blocker.code,
-    severity: 'error',
-    scope: {
-      kind: 'migration',
-      ...(blocker.scope.id === undefined ? {} : { id: blocker.scope.id }),
-    },
-    evidence: blocker.evidence,
-    reason: blocker.reason,
-    ...(blocker.nextAction === undefined ? {} : { nextAction: blocker.nextAction }),
   };
 }
 

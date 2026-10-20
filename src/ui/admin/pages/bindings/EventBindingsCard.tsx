@@ -4,14 +4,14 @@ import type {
   UiComponentMetaRegistry,
   UiNode,
 } from '@ankhorage/contracts';
-import { Button, Card, Text } from '@ankhorage/zora';
+import { Button, Card, Text } from '@ankhorage/zora/reader-free';
 import { View } from 'react-native';
 
 import {
   appendStudioEventBinding,
   removeStudioEventBinding,
   resolveStudioBindableEvents,
-  type StudioBindingOperationOption,
+  type StudioBindingCapabilityOption,
 } from '../../../../bindingAuthoringModel';
 import { bindingAdminStyles } from './bindingAdminStyles';
 import { EventBindingComposer } from './EventBindingComposer';
@@ -21,7 +21,7 @@ export function EventBindingsCard(props: {
   readonly componentMeta: UiComponentMetaRegistry;
   readonly node: UiNode;
   readonly registry: ComponentDataBindingRegistry;
-  readonly operations: readonly StudioBindingOperationOption[];
+  readonly capabilities: readonly StudioBindingCapabilityOption[];
   readonly onChange: (registry: ComponentDataBindingRegistry) => void;
 }) {
   const options = resolveStudioBindableEvents(props.node, props.componentMeta);
@@ -31,8 +31,8 @@ export function EventBindingsCard(props: {
     <Card title="Event / action bindings">
       <View style={bindingAdminStyles.stack}>
         <Text color="neutral" emphasis="muted" variant="bodySmall">
-          Component events come from ZORA metadata. Bind them to canonical actions or API
-          operations; Runtime remains responsible for execution.
+          Component events come from ZORA metadata. Bind them to canonical capabilities; Runtime
+          remains responsible for execution.
         </Text>
         {options.map((option) => (
           <View key={option.name} style={bindingAdminStyles.stack}>
@@ -43,7 +43,7 @@ export function EventBindingsCard(props: {
                 <View style={bindingAdminStyles.grow}>
                   <Text variant="bodySmall">{describeEventBinding(binding)}</Text>
                   <Text color="neutral" emphasis="muted" variant="bodySmall">
-                    {describeBindingInput(binding.input)}
+                    {describeBindingInput(binding.target.input)}
                   </Text>
                 </View>
                 <Button
@@ -61,7 +61,7 @@ export function EventBindingsCard(props: {
             ))}
             <EventBindingComposer
               eventMeta={option.meta}
-              operations={props.operations}
+              capabilities={props.capabilities}
               onAdd={(binding) =>
                 props.onChange(
                   appendStudioEventBinding(props.registry, props.node, option.name, binding),
@@ -100,13 +100,11 @@ function EventPayloadSummary(props: {
 
 /*** Format one canonical event binding target for administration display. */
 function describeEventBinding(binding: EventBinding): string {
-  if (binding.target.kind === 'action') return `Action · ${binding.target.type}`;
-  const { apiId, endpointId, operationId } = binding.target.operation;
-  return `API operation · ${apiId} · ${endpointId ?? '<auto>'} · ${operationId}`;
+  return `Capability · ${binding.target.capability}`;
 }
 
 /*** Format the keys of an event binding's input map for administration display. */
-function describeBindingInput(input: EventBinding['input']): string {
+function describeBindingInput(input: EventBinding['target']['input']): string {
   const keys = Object.keys(input ?? {});
   return keys.length > 0 ? `Inputs: ${keys.join(', ')}` : 'No mapped inputs';
 }

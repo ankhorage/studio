@@ -1,5 +1,5 @@
 import type { ProjectStoreListingAssetLocation } from '@ankhorage/deploy/project';
-import { Button, Card, Dialog, Text, View as ZoraView } from '@ankhorage/zora';
+import { Button, Card, Dialog, Text, View as ZoraView } from '@ankhorage/zora/reader-free';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 

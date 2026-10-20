@@ -149,8 +149,9 @@ describe('stationarySelection RN integration', () => {
 
     expect(selectedIndicatorStart).toBeGreaterThan(-1);
     expect(selectedIndicatorBlock).toContain(
-      '...createSelectedIndicatorViewProps(rect, theme.semantics.action.primary.base)',
+      '...createSelectedIndicatorViewProps(rect, props.selectionColor)',
     );
+    expect(source).not.toContain("from '@ankhorage/zora'");
     expect(source).toContain(
       'shouldRenderSelectedNodeChrome(\n    Platform.OS,\n    props.isEditMode,\n    props.selectedNodeId,\n  )',
     );

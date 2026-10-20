@@ -1,6 +1,7 @@
 import type {
   ApiDefinitionRegistry,
   ComponentDataBindingRegistry,
+  EventBinding,
   PropBinding,
   UiComponentMetaRegistry,
   UiNode,
@@ -11,7 +12,7 @@ import { describe, expect, test } from 'bun:test';
 import {
   appendStudioEventBinding,
   assessStudioBindingCompatibility,
-  collectStudioBindingOperationOptions,
+  collectStudioBindingCapabilityOptions,
   diagnoseStudioComponentBindings,
   removeStudioEventBinding,
   removeStudioPropBinding,
@@ -45,7 +46,7 @@ const componentMeta: UiComponentMetaRegistry = {
       events: {
         press: {
           label: 'Press',
-          payload: { eventType: 'button.press', fields: [] },
+          payload: { eventType: 'button.press', fields: [{ path: 'value', type: 'string' }] },
         },
       },
     },
@@ -153,18 +154,20 @@ describe('binding authoring metadata', () => {
 
 describe('binding registry mutations', () => {
   test('round-trips property and event bindings through the canonical registry', () => {
-    const prop: PropBinding = { source: { kind: 'state', path: 'draft.name' } };
+    const prop: PropBinding = { value: { capability: 'state.draft.name' } };
     const withProp = upsertStudioPropBinding({}, button, 'children', prop);
     const withEvent = appendStudioEventBinding(withProp, button, 'press', {
-      target: { kind: 'action', type: 'navigate' },
-      input: { route: { kind: 'literal', value: '/done' } },
+      target: {
+        capability: 'navigator.navigate',
+        input: { route: { kind: 'literal', value: '/done' } },
+      },
     });
     const serialized = JSON.parse(JSON.stringify(withEvent)) as ComponentDataBindingRegistry;
 
     expect(serialized[button.id]?.props?.children).toEqual(prop);
     expect(serialized[button.id]?.events?.press?.[0]?.target).toEqual({
-      kind: 'action',
-      type: 'navigate',
+      capability: 'navigator.navigate',
+      input: { route: { kind: 'literal', value: '/done' } },
     });
     expect(
       removeStudioEventBinding(
@@ -179,13 +182,17 @@ describe('binding registry mutations', () => {
 
 describe('binding operations and schemas', () => {
   test('enumerates canonical API operations without data-source projection', () => {
-    const options = collectStudioBindingOperationOptions(apis);
-    expect(options.map((option) => option.operation.operationId).sort()).toEqual([
-      'items.create',
-      'profile.read',
-    ]);
-    const inventory = options.find((option) => option.operation.operationId === 'items.create');
-    const external = options.find((option) => option.operation.operationId === 'profile.read');
+    const options = collectStudioBindingCapabilityOptions(apis);
+    expect(
+      options
+        .filter((option) => option.capability.id.startsWith('api.'))
+        .map((option) => option.capability.id)
+        .sort(),
+    ).toEqual(['api.external.profile.read', 'api.inventory.items.create']);
+    const inventory = options.find(
+      (option) => option.capability.id === 'api.inventory.items.create',
+    );
+    const external = options.find((option) => option.capability.id === 'api.external.profile.read');
 
     expect(inventory?.inputFields).toMatchObject([
       { name: 'name', required: true, value: { type: 'string' } },
@@ -238,7 +245,9 @@ describe('binding operations and schemas', () => {
       },
     };
 
-    const [operation] = collectStudioBindingOperationOptions(listApis);
+    const operation = collectStudioBindingCapabilityOptions(listApis).find(
+      (option) => option.capability.id === 'api.poker.tasks.list',
+    );
 
     expect(operation?.responsePaths.map((entry) => entry.path)).toEqual([
       '',
@@ -265,18 +274,67 @@ describe('binding operations and schemas', () => {
 });
 
 describe('binding diagnostics', () => {
+  test('accepts runtime state and context property references without resolving executable capabilities', () => {
+    const registry = {
+      [button.id]: {
+        componentId: button.id,
+        props: {
+          children: { value: { capability: 'state.draft.name' } },
+          disabled: { value: { capability: 'context.session.controls.disabled' } },
+        },
+      },
+    } satisfies ComponentDataBindingRegistry;
+
+    expect(
+      diagnoseStudioComponentBindings({
+        node: button,
+        registry,
+        componentMeta,
+        capabilities: collectStudioBindingCapabilityOptions({}),
+      }),
+    ).toEqual([]);
+  });
+
+  test('diagnoses incomplete state and context property references before their paths are authored', () => {
+    const registry = {
+      [button.id]: {
+        componentId: button.id,
+        props: {
+          children: { value: { capability: 'state.' } },
+          disabled: { value: { capability: 'context. ' } },
+        },
+      },
+    } satisfies ComponentDataBindingRegistry;
+
+    expect(
+      diagnoseStudioComponentBindings({
+        node: button,
+        registry,
+        componentMeta,
+        capabilities: collectStudioBindingCapabilityOptions({}),
+      }),
+    ).toEqual([
+      expect.objectContaining({
+        code: 'missing-capability-reference',
+        path: 'props.children',
+      }),
+      expect.objectContaining({
+        code: 'missing-capability-reference',
+        path: 'props.disabled',
+      }),
+    ]);
+  });
+
   test('diagnoses missing operations and incompatible response paths', () => {
-    const operations = collectStudioBindingOperationOptions(apis);
+    const capabilities = collectStudioBindingCapabilityOptions(apis);
     const missingRegistry = upsertStudioPropBinding({}, button, 'children', {
-      source: {
-        kind: 'operation',
-        operation: { apiId: 'missing', endpointId: 'x', operationId: 'x.read' },
+      value: {
+        capability: 'api.missing.x.read',
       },
     });
     const incompatibleRegistry = upsertStudioPropBinding({}, button, 'children', {
-      source: {
-        kind: 'operation',
-        operation: { apiId: 'external', endpointId: 'profile', operationId: 'profile.read' },
+      value: {
+        capability: 'api.external.profile.read',
         path: 'age',
       },
     });
@@ -286,18 +344,85 @@ describe('binding diagnostics', () => {
         node: button,
         registry: missingRegistry,
         componentMeta,
-        operations,
-        actionTypes: ['navigate'],
+        capabilities,
       })[0]?.code,
-    ).toBe('missing-operation');
+    ).toBe('missing-capability');
     expect(
       diagnoseStudioComponentBindings({
         node: button,
         registry: incompatibleRegistry,
         componentMeta,
-        operations,
-        actionTypes: ['navigate'],
+        capabilities,
       })[0]?.code,
     ).toBe('incompatible-response');
+  });
+
+  test('validates event capability ownership and payload paths', () => {
+    const capabilities = collectStudioBindingCapabilityOptions({});
+    const diagnostics = (input: EventBinding['target']['input']) =>
+      diagnoseStudioComponentBindings({
+        node: button,
+        registry: {
+          [button.id]: {
+            componentId: button.id,
+            events: {
+              press: [{ target: { capability: 'navigator.navigate', input } }],
+            },
+          },
+        },
+        componentMeta,
+        capabilities,
+      });
+
+    expect(diagnostics({ route: { capability: 'button.press', path: 'value' } })).toEqual([]);
+    expect(
+      diagnostics({ route: { capability: 'button.release', path: 'value' } })[0],
+    ).toMatchObject({ code: 'incompatible-input', path: 'events.press.0.target.input.route' });
+    expect(
+      diagnostics({ route: { capability: 'button.press', path: 'unknown.path' } })[0],
+    ).toMatchObject({ code: 'incompatible-input', path: 'events.press.0.target.input.route' });
+  });
+
+  test('diagnoses event input bindings when the event has no payload metadata', () => {
+    const buttonMeta = componentMeta.Button;
+    if (!buttonMeta) throw new Error('Button metadata fixture is missing.');
+    const componentMetaWithoutEventPayload: UiComponentMetaRegistry = {
+      ...componentMeta,
+      Button: {
+        ...buttonMeta,
+        bindings: {
+          ...buttonMeta.bindings,
+          events: { press: { label: 'Press' } },
+        },
+      },
+    };
+
+    expect(
+      diagnoseStudioComponentBindings({
+        node: button,
+        registry: {
+          [button.id]: {
+            componentId: button.id,
+            events: {
+              press: [
+                {
+                  target: {
+                    capability: 'navigator.navigate',
+                    input: { route: { capability: 'button.press', path: 'value' } },
+                  },
+                },
+              ],
+            },
+          },
+        },
+        componentMeta: componentMetaWithoutEventPayload,
+        capabilities: collectStudioBindingCapabilityOptions({}),
+      }),
+    ).toEqual([
+      expect.objectContaining({
+        code: 'missing-event-payload-meta',
+        path: 'events.press.0.target.input.route',
+      }),
+    ]);
   });
 });

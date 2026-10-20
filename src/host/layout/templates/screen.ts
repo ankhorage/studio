@@ -7,8 +7,12 @@ import { toSafeComponentName } from './utils/strings';
  * Generate an Expo Router screen module that resolves the active manifest screen, injects route params into runtime bindings and renders a missing-screen fallback when needed.
  * TODO: Keep generated screen-module policy with the routes/project-generation owner rather than a generic host layout bucket.
  */
-export function getScreenTsx(args: { screenId: string; screenDef: ScreenSpec }) {
-  const { screenId, screenDef } = args;
+export function getScreenTsx(args: {
+  screenId: string;
+  screenDef: ScreenSpec;
+  zoraEntrypoint?: '@ankhorage/zora' | '@ankhorage/zora/reader-free';
+}) {
+  const { screenId, screenDef, zoraEntrypoint = '@ankhorage/zora' } = args;
   const safeName = toSafeComponentName(screenDef.name);
 
   return `import type { AppManifest } from '@ankhorage/contracts';
@@ -19,7 +23,7 @@ import {
   useOptionalManifestContext,
   useRuntimeRendererConfig,
 } from '@ankhorage/runtime';
-import { Text, useZoraTheme } from '@ankhorage/zora';
+import { Text, useZoraTheme } from '${zoraEntrypoint}';
 import ankhConfig from '@root/ankh.config.json';
 import { useGlobalSearchParams, useLocalSearchParams } from 'expo-router';
 import { useMemo } from 'react';

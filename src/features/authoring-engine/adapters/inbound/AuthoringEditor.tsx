@@ -1,4 +1,4 @@
-import { Button, Field, Select, Switch, Text, TextInput } from '@ankhorage/zora';
+import { Button, Field, Select, Switch, Text, TextInput } from '@ankhorage/zora/reader-free';
 import React, { type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 

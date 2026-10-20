@@ -1,4 +1,4 @@
-import { Button, Text } from '@ankhorage/zora';
+import { Button, Text } from '@ankhorage/zora/reader-free';
 import React from 'react';
 import { View } from 'react-native';
 

@@ -3,7 +3,6 @@ import { ZORA_COMPONENT_META } from '@ankhorage/zora/metadata';
 import { describe, expect, test } from 'bun:test';
 
 import {
-  ACTION_REGISTRY,
   buildInsertCatalogEntries,
   cloneWithNewIds,
   createNodeFromCatalogEntry,
@@ -126,9 +125,9 @@ describe('@ankhorage/studio', () => {
     expect(usages.ref).toBe('auth/oauth/google');
   });
 
-  test('exports package-neutral action definitions', () => {
-    expect(ACTION_REGISTRY.navigate.payloadSchema?.route?.required).toBe(true);
-    expect(ACTION_REGISTRY.toggleDarkMode.requiresPayload).toBe(false);
+  test('does not expose retired action contracts', () => {
+    expect(STUDIO_PUBLIC_CONTRACTS).not.toContain('ActionDefinition');
+    expect(STUDIO_PUBLIC_CONTRACTS).not.toContain('ACTION_REGISTRY');
   });
 
   test('resolves default insertion placement inside the selected node', () => {

@@ -1,5 +1,5 @@
-import type { SecretPayload } from '@ankhorage/contracts/secrets';
 import type { DeploymentCredentialReference } from '@ankhorage/deploy';
+import type { SecretPayload } from '@ankhorage/secrets/port';
 import { asNonEmptyString } from '@ankhorage/utility/value';
 
 /*** Serialize one Deploy credential payload using provider-specific token semantics when required. */

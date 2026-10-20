@@ -16,8 +16,8 @@ import {
   getSupabaseOAuthProviderDefinition,
   SUPABASE_OAUTH_PROVIDER_IDS,
   type SupabaseOAuthProviderId,
-} from '@ankhorage/supabase-auth';
-import { Heading, Text, useZoraTheme } from '@ankhorage/zora';
+} from '@ankhorage/auth-supabase';
+import { Heading, Text, useZoraTheme } from '@ankhorage/zora/reader-free';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {

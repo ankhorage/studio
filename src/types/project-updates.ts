@@ -24,10 +24,12 @@ export interface GeneratedPackagePolicy {
     readonly expoRuntime: string;
     readonly navigator: string;
     readonly runtime: string;
+    readonly surface: string;
     readonly studio: string;
     readonly utility: string;
-    readonly supabaseAuth: string;
-    readonly supabaseStorage: string;
+    readonly auth: string;
+    readonly authSupabase: string;
+    readonly storageSupabase: string;
     readonly zora: string;
   };
   readonly devDependencies: {

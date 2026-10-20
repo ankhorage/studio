@@ -8,7 +8,7 @@ Studio authoring media crosses explicit platform and trusted-host boundaries bef
 
 ## Managed storage target
 
-For managed storage, the host resolves the project's configured storage provider and uploads through the provider-neutral `MediaStorageAdapter` contract. The manifest receives only a canonical storage source (`storageId?`, `bucket`, `path`).
+For managed storage, the host resolves the project's configured storage provider and performs storage operations through the provider-neutral `StoragePort`. The manifest receives only a canonical storage source (`storageId?`, `bucket`, `path`).
 
 The trusted host resolves `infra.storage.provider = auto` to Supabase when the project's auth or database provider is Supabase, matching the existing local-infrastructure behavior. S3 and R2 remain unsupported by the current local infrastructure adapter and fail explicitly instead of silently falling back.
 
@@ -32,6 +32,6 @@ Runtime/user-generated uploads remain a separate logical pool. Managed app-autho
 
 ## Deletion lifecycle
 
-Deletion uses a manifest-first trusted lifecycle. Studio first removes an unused asset from the canonical manifest and flushes that save. Only after persistence succeeds may the host remove a managed storage object through `MediaStorageAdapter.remove()` or remove a bundled file below `assets/authoring` and regenerate the Metro registry. Stable URL sources have no physical cleanup operation.
+Deletion uses a manifest-first trusted lifecycle. Studio first removes an unused asset from the canonical manifest and flushes that save. Only after persistence succeeds may the host remove a managed storage object through `StoragePort.remove()` or remove a bundled file below `assets/authoring` and regenerate the Metro registry. Stable URL sources have no physical cleanup operation.
 
 A failed manifest save rolls the local mutation back and never touches the physical source. A later provider/filesystem cleanup failure can therefore leave only an orphaned authoring source, never a manifest reference to a prematurely deleted object.

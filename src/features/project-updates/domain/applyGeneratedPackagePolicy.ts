@@ -6,25 +6,14 @@ import type {
 } from '../../../types/project-updates.js';
 import { readManagedPackageRangeFloor } from './readManagedPackageRangeFloor.js';
 
-const OBSOLETE_GENERATED_DEPENDENCIES = new Set([
-  '@react-native-picker/picker',
-  '@ankhorage/zora-chess',
-  '@ankhorage/zora-game',
-  '@ankhorage/zora-tabletop',
-]);
-
 /*** Apply one explicit Studio package policy while preserving user-owned package manifest entries outside superseded Studio-managed dependencies. */
 export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
   packageJson: T,
   policy: GeneratedPackagePolicy,
 ): T {
-  const baseDependencies = Object.fromEntries(
-    Object.entries(packageJson.dependencies).filter(
-      ([name]) => !OBSOLETE_GENERATED_DEPENDENCIES.has(name),
-    ),
-  );
+  const requiresStorageSupabase = '@ankhorage/storage-supabase' in packageJson.dependencies;
   const dependencies = {
-    ...baseDependencies,
+    ...packageJson.dependencies,
     '@ankhorage/contracts': monotonicAnkhorageRange(
       packageJson.dependencies['@ankhorage/contracts'],
       policy.dependencies.contracts,
@@ -45,6 +34,10 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
       packageJson.dependencies['@ankhorage/runtime'],
       policy.dependencies.runtime,
     ),
+    '@ankhorage/surface': monotonicAnkhorageRange(
+      packageJson.dependencies['@ankhorage/surface'],
+      policy.dependencies.surface,
+    ),
     ...('@ankhorage/studio' in packageJson.dependencies
       ? {
           '@ankhorage/studio': monotonicAnkhorageRange(
@@ -61,19 +54,23 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
           ),
         }
       : {}),
-    ...('@ankhorage/supabase-auth' in packageJson.dependencies
+    ...('@ankhorage/auth-supabase' in packageJson.dependencies
       ? {
-          '@ankhorage/supabase-auth': monotonicAnkhorageRange(
-            packageJson.dependencies['@ankhorage/supabase-auth'],
-            policy.dependencies.supabaseAuth,
+          '@ankhorage/auth': monotonicAnkhorageRange(
+            packageJson.dependencies['@ankhorage/auth'],
+            policy.dependencies.auth,
+          ),
+          '@ankhorage/auth-supabase': monotonicAnkhorageRange(
+            packageJson.dependencies['@ankhorage/auth-supabase'],
+            policy.dependencies.authSupabase,
           ),
         }
       : {}),
-    ...('@ankhorage/supabase-storage' in packageJson.dependencies
+    ...(requiresStorageSupabase
       ? {
-          '@ankhorage/supabase-storage': monotonicAnkhorageRange(
-            packageJson.dependencies['@ankhorage/supabase-storage'],
-            policy.dependencies.supabaseStorage,
+          '@ankhorage/storage-supabase': monotonicAnkhorageRange(
+            packageJson.dependencies['@ankhorage/storage-supabase'],
+            policy.dependencies.storageSupabase,
           ),
         }
       : {}),

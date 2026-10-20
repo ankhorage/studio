@@ -1,6 +1,13 @@
 import type { ScreenMetadataSpec, ScreenSpec } from '@ankhorage/contracts';
 import { STRUCTURE_DESCRIPTOR } from '@ankhorage/contracts/structure';
-import { Button, ButtonGroup, Card, ListItem, ListSection, Text } from '@ankhorage/zora';
+import {
+  Button,
+  ButtonGroup,
+  Card,
+  ListItem,
+  ListSection,
+  Text,
+} from '@ankhorage/zora/reader-free';
 import { useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';

@@ -1,9 +1,17 @@
-import type { SecretMetadata } from '@ankhorage/contracts/secrets';
+import type { SecretMetadata } from '@ankhorage/secrets/port';
 import { uniqueSortedStrings } from '@ankhorage/utility/array';
 import { toErrorMessage } from '@ankhorage/utility/error';
 import { createLatestAsyncCoordinator } from '@ankhorage/utility/scheduling';
 import { createCompositeKey, isNonEmptyString } from '@ankhorage/utility/string';
-import { Button, Card, Field, IconButton, Text, TextInput, useZoraTheme } from '@ankhorage/zora';
+import {
+  Button,
+  Card,
+  Field,
+  IconButton,
+  Text,
+  TextInput,
+  useZoraTheme,
+} from '@ankhorage/zora/reader-free';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Alert, ScrollView, StyleSheet, View } from 'react-native';
 

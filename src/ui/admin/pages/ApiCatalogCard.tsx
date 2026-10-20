@@ -1,5 +1,13 @@
 import type { ApiDefinition, ApiDefinitionRegistry } from '@ankhorage/contracts/data';
-import { Badge, Button, ButtonGroup, Card, ListItem, ListSection, Text } from '@ankhorage/zora';
+import {
+  Badge,
+  Button,
+  ButtonGroup,
+  Card,
+  ListItem,
+  ListSection,
+  Text,
+} from '@ankhorage/zora/reader-free';
 import { View } from 'react-native';
 
 import { externalApiAdminStyles } from './ExternalApiAdminPrimitives';

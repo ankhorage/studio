@@ -3,6 +3,7 @@ import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { parseSemanticVersion, SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 import { describe, expect, it } from 'bun:test';
 
+import { getGeneratedPackagePolicy } from '../../features/project-updates/adapters/outbound/getGeneratedPackagePolicy';
 import {
   getAndroidRunTs,
   getAppConfigTs,
@@ -125,6 +126,7 @@ describe('generated OAuth scaffold templates', () => {
     });
     const dependencies = pkg.dependencies as Record<string, string>;
     const devDependencies = pkg.devDependencies as Record<string, string>;
+    const policy = getGeneratedPackagePolicy();
     expect(pkg.private).toBe(true);
 
     expectCompatibleCaretRanges(
@@ -141,6 +143,9 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();
     expect(dependencies['@react-navigation/drawer']).toBeUndefined();
     expect(dependencies['@ankhorage/runtime']).toMatch(SEMVER_PATTERNS.caret);
+    expect(dependencies['@ankhorage/surface']).toBe(
+      studioPackage.dependencies?.['@ankhorage/surface'],
+    );
     expect(dependencies['@ankhorage/utility']).toBe(
       studioPackage.dependencies?.['@ankhorage/utility'],
     );
@@ -164,6 +169,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['babel-preset-expo']).toBeUndefined();
     expect(devDependencies['@ankhorage/devtools']).toMatch(SEMVER_PATTERNS.caret);
     expect(devDependencies['@ankhorage/ankh']).toMatch(SEMVER_PATTERNS.caret);
+    expect(devDependencies['@ankhorage/ankh']).toBe(policy.devDependencies.ankh);
     expect(devDependencies['@types/bun']).toMatch(SEMVER_PATTERNS.caret);
     expect(pkg.packageManager.startsWith('bun@')).toBe(true);
     expect(pkg.packageManager.slice('bun@'.length)).toMatch(SEMVER_PATTERNS.exact);
@@ -205,8 +211,9 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/utility']).toBe(
       studioPackage.dependencies?.['@ankhorage/utility'],
     );
-    expect(dependencies['@ankhorage/supabase-auth']).toMatch(SEMVER_PATTERNS.caret);
-    expect(dependencies['@ankhorage/supabase-storage']).toMatch(SEMVER_PATTERNS.caret);
+    expect(dependencies['@ankhorage/auth']).toMatch(SEMVER_PATTERNS.caret);
+    expect(dependencies['@ankhorage/auth-supabase']).toMatch(SEMVER_PATTERNS.caret);
+    expect(dependencies['@ankhorage/storage-supabase']).toMatch(SEMVER_PATTERNS.caret);
     expect(dependencies[EXPO_PLATFORM.packages.crypto.name]).toBe(
       EXPO_PLATFORM.packages.crypto.version,
     );
@@ -250,15 +257,11 @@ describe('generated OAuth scaffold templates', () => {
     );
   });
 
-  it('adds reader dependencies without camera or permissions for an ebook-only plan', () => {
+  it('adds the standalone Reader dependency without camera, permissions or Expo adapters', () => {
     const runtimePlan: ExpoRuntimePlan = {
       capabilities: [{ capability: 'ebookReader' }],
       dependencies: [
-        { name: '@ankhorage/expo-runtime', reasons: ['capability:ebookReader'], version: '^3.2.4' },
-        { name: '@readium/navigator', reasons: ['capability:ebookReader'], version: '2.8.2' },
-        { name: '@readium/shared', reasons: ['capability:ebookReader'], version: '2.4.0' },
-        { name: '@zip.js/zip.js', reasons: ['capability:ebookReader'], version: '2.9.0' },
-        { name: 'pdfjs-dist', reasons: ['capability:ebookReader'], version: '6.3.289' },
+        { name: '@ankhorage/reader', reasons: ['capability:ebookReader'], version: '^0.1.0' },
       ],
       diagnostics: [],
       impliedPermissions: [],
@@ -266,7 +269,7 @@ describe('generated OAuth scaffold templates', () => {
       needsPermissionsProvider: false,
       permissions: [],
       providers: [],
-      runtimeAdapters: ['ExpoReaderSurfaceAdapter'],
+      runtimeAdapters: [],
       usesExpoRuntimeRegistry: true,
     };
     const dependencies = getPackageJson({
@@ -275,10 +278,11 @@ describe('generated OAuth scaffold templates', () => {
       targets: WEB_TARGETS,
     }).dependencies as Record<string, string>;
 
-    expect(dependencies['@readium/navigator']).toBe('2.8.2');
-    expect(dependencies['@readium/shared']).toBe('2.4.0');
-    expect(dependencies['@zip.js/zip.js']).toBe('2.9.0');
-    expect(dependencies['pdfjs-dist']).toBe('6.3.289');
+    expect(dependencies['@ankhorage/reader']).toBe('^0.1.0');
+    expect(dependencies['@readium/navigator']).toBeUndefined();
+    expect(dependencies['@readium/shared']).toBeUndefined();
+    expect(dependencies['@zip.js/zip.js']).toBeUndefined();
+    expect(dependencies['pdfjs-dist']).toBeUndefined();
     expect(dependencies['@ankhorage/permissions']).toBeUndefined();
     expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBeUndefined();
   });
@@ -375,7 +379,8 @@ describe('generated OAuth scaffold templates', () => {
     const dependencies = pkg.dependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/utility']).toMatch(SEMVER_PATTERNS.caret);
-    expect(dependencies['@ankhorage/supabase-auth']).toBeUndefined();
+    expect(dependencies['@ankhorage/auth']).toBeUndefined();
+    expect(dependencies['@ankhorage/auth-supabase']).toBeUndefined();
     expect(dependencies['expo-secure-store']).toBeUndefined();
     expect(dependencies['expo-web-browser']).toBeUndefined();
   });

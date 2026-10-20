@@ -1,4 +1,5 @@
-import type { MediaStorageAdapter, StorageRemoveInput } from '@ankhorage/contracts/storage';
+import type { StorageRemoveInput } from '@ankhorage/contracts/storage';
+import type { StoragePort } from '@ankhorage/storage';
 import { expect, test } from 'bun:test';
 
 import { ProjectManager } from '../orchestrator/projectManager';
@@ -29,7 +30,7 @@ test('managed media cleanup stays inside the configured authoring pool', async (
   expect(removed).toHaveLength(1);
 });
 
-function createStorageAdapter(onRemove: (input: StorageRemoveInput) => void): MediaStorageAdapter {
+function createStorageAdapter(onRemove: (input: StorageRemoveInput) => void): StoragePort {
   return {
     upload: (input) =>
       Promise.resolve({ ok: true, data: { asset: { bucket: input.bucket, path: input.path } } }),
@@ -37,7 +38,6 @@ function createStorageAdapter(onRemove: (input: StorageRemoveInput) => void): Me
       onRemove(input);
       return Promise.resolve({ ok: true });
     },
-    publicUrl: () => Promise.resolve({ ok: true, data: { publicUrl: 'https://example.test/a' } }),
     list: () => Promise.resolve({ ok: true, data: { objects: [] } }),
     resolve: (input) =>
       Promise.resolve({

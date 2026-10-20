@@ -17,7 +17,8 @@ export async function assertExpo57GeneratedCapabilityOwnerGraphAsync(
   const requiredDirectOwners = [
     '@ankhorage/expo-runtime',
     '@ankhorage/permissions',
-    '@ankhorage/supabase-auth',
+    '@ankhorage/auth',
+    '@ankhorage/auth-supabase',
   ] as const;
   for (const packageName of requiredDirectOwners) {
     const range = requireDependencyRange(projectPackage, packageName);

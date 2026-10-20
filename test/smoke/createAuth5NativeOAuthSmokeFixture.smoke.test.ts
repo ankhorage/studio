@@ -80,7 +80,8 @@ test('prepares a secret-free real generated app for Auth 5 native smoke validati
     expect(authAdapter).toContain('oauthRandomBytes: getRandomBytes');
     expect(oauthRuntime).toContain('resolveExpoOAuthBrowserRuntimeReadiness()');
     expect(oauthRuntime).toContain('WebBrowser.openAuthSessionAsync(');
-    expect(oauthRuntime).toContain('oauth.completeAuthorization({');
+    expect(oauthRuntime).toContain('authAdapter.completeAuthorization({');
+    expect(oauthRuntime).not.toContain('oauth.completeAuthorization({');
     expect(oauthRuntime).not.toContain('setSession(');
     expect(oauthRuntime).not.toContain('access_token');
     expect(JSON.stringify(manifest)).not.toContain('clientSecret');

@@ -1,4 +1,4 @@
-import { Card, useZoraTheme } from '@ankhorage/zora';
+import { Card, useZoraTheme } from '@ankhorage/zora/reader-free';
 import React from 'react';
 
 import { AuthoringEditor } from '../../../features/authoring-engine/adapters/inbound/AuthoringEditor';

@@ -74,6 +74,6 @@ Studio now provides:
 
 Media deletion is usage-aware and manifest-first. Studio removes the unused asset from the canonical manifest and flushes that manifest successfully before the trusted host may touch a physical source. A failed manifest save rolls the local mutation back and leaves the source untouched.
 
-After a successful manifest save, managed storage sources are removed through the provider-neutral `MediaStorageAdapter.remove()` boundary and bundled sources are removed only below `assets/authoring` before the static Metro registry is regenerated. Stable external URL sources have no physical cleanup operation.
+After a successful manifest save, managed storage sources are removed through the provider-neutral `StoragePort.remove()` boundary and bundled sources are removed only below `assets/authoring` before the static Metro registry is regenerated. Stable external URL sources have no physical cleanup operation.
 
 If post-save physical cleanup fails, Studio keeps the manifest safely reference-free and reports that an orphaned authoring source may remain. It never restores a manifest reference to a source whose cleanup outcome is uncertain.

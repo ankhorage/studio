@@ -26,6 +26,7 @@ test('derives generated dependency ranges from owner package metadata', async ()
     storageProvider: 'supabase',
     targets: WEB_TARGETS,
   });
+  const generatedDependencies = packageJson.dependencies as Record<string, string>;
 
   const selfConsumerStudioRange = selfConsumerPackage.dependencies?.['@ankhorage/studio'];
   if (!selfConsumerStudioRange) {
@@ -40,10 +41,12 @@ test('derives generated dependency ranges from owner package metadata', async ()
     '@ankhorage/expo-runtime': policy.dependencies.expoRuntime,
     '@ankhorage/navigator': policy.dependencies.navigator,
     '@ankhorage/runtime': policy.dependencies.runtime,
+    '@ankhorage/surface': policy.dependencies.surface,
     '@ankhorage/studio': policy.dependencies.studio,
     '@ankhorage/utility': policy.dependencies.utility,
-    '@ankhorage/supabase-auth': policy.dependencies.supabaseAuth,
-    '@ankhorage/supabase-storage': policy.dependencies.supabaseStorage,
+    '@ankhorage/auth': policy.dependencies.auth,
+    '@ankhorage/auth-supabase': policy.dependencies.authSupabase,
+    '@ankhorage/storage-supabase': policy.dependencies.storageSupabase,
     '@ankhorage/zora': policy.dependencies.zora,
     '@react-native-vector-icons/fontawesome': policy.peerDependencies.fontawesome,
     '@react-native-vector-icons/fontawesome5': policy.peerDependencies.fontawesome5,
@@ -63,6 +66,10 @@ test('derives generated dependency ranges from owner package metadata', async ()
     '@types/culori': policy.devDependencies.typesCulori,
     '@types/react': policy.devDependencies.typesReact,
   });
+  expect(selfConsumerPackage.dependencies['@ankhorage/navigator']).toBeUndefined();
+  expect(selfConsumerPackage.dependencies['@ankhorage/surface']).toBeUndefined();
+  expect(generatedDependencies['@ankhorage/navigator']).toBe(policy.dependencies.navigator);
+  expect(generatedDependencies['@ankhorage/surface']).toBe(policy.dependencies.surface);
 });
 
 test('does not introduce optional generated dependencies when their capability is disabled', () => {
@@ -74,8 +81,9 @@ test('does not introduce optional generated dependencies when their capability i
 
   expect(packageJson.dependencies['@ankhorage/studio']).toBeUndefined();
   expect(packageJson.dependencies['@ankhorage/utility']).toBeDefined();
-  expect(packageJson.dependencies['@ankhorage/supabase-auth']).toBeUndefined();
-  expect(packageJson.dependencies['@ankhorage/supabase-storage']).toBeUndefined();
+  expect(packageJson.dependencies['@ankhorage/auth']).toBeUndefined();
+  expect(packageJson.dependencies['@ankhorage/auth-supabase']).toBeUndefined();
+  expect(packageJson.dependencies['@ankhorage/storage-supabase']).toBeUndefined();
   expect(Object.hasOwn(packageJson.dependencies, '@react-native-picker/picker')).toBe(false);
 });
 
@@ -89,6 +97,7 @@ test('never lowers already-newer Ankhorage dependency floors', () => {
     targets: WEB_TARGETS,
   });
   const newerContracts = nextMinorCaretRange(policy.dependencies.contracts);
+  const newerAnkh = nextMinorCaretRange(policy.devDependencies.ankh);
   const newerDevtools = nextMinorCaretRange(policy.devDependencies.devtools);
 
   const updated = applyGeneratedPackagePolicy(
@@ -100,6 +109,7 @@ test('never lowers already-newer Ankhorage dependency floors', () => {
       },
       devDependencies: {
         ...basePackageJson.devDependencies,
+        '@ankhorage/ankh': newerAnkh,
         '@ankhorage/devtools': newerDevtools,
       },
     },
@@ -107,6 +117,7 @@ test('never lowers already-newer Ankhorage dependency floors', () => {
   );
 
   expect(updated.dependencies['@ankhorage/contracts']).toBe(newerContracts);
+  expect(updated.devDependencies['@ankhorage/ankh']).toBe(newerAnkh);
   expect(updated.devDependencies['@ankhorage/devtools']).toBe(newerDevtools);
 
   const raised = applyGeneratedPackagePolicy(
@@ -118,43 +129,15 @@ test('never lowers already-newer Ankhorage dependency floors', () => {
       },
       devDependencies: {
         ...basePackageJson.devDependencies,
+        '@ankhorage/ankh': '^0.0.1',
         '@ankhorage/devtools': '^0.0.1',
       },
     },
     policy,
   );
   expect(raised.dependencies['@ankhorage/contracts']).toBe(policy.dependencies.contracts);
+  expect(raised.devDependencies['@ankhorage/ankh']).toBe(policy.devDependencies.ankh);
   expect(raised.devDependencies['@ankhorage/devtools']).toBe(policy.devDependencies.devtools);
-});
-
-test('removes obsolete standalone ZORA plugin dependencies from generated apps', () => {
-  const policy = getGeneratedPackagePolicy();
-  const basePackageJson = getPackageJson({
-    name: 'fixture',
-    includeStudio: true,
-    targets: WEB_TARGETS,
-  });
-
-  const updated = applyGeneratedPackagePolicy(
-    {
-      ...basePackageJson,
-      dependencies: {
-        ...basePackageJson.dependencies,
-        '@ankhorage/zora-chess': '^0.0.1',
-        '@ankhorage/zora-game': '^0.0.1',
-        '@ankhorage/zora-tabletop': '^0.0.1',
-      },
-    },
-    policy,
-  );
-
-  for (const packageName of [
-    '@ankhorage/zora-chess',
-    '@ankhorage/zora-game',
-    '@ankhorage/zora-tabletop',
-  ]) {
-    expect(Object.hasOwn(updated.dependencies, packageName)).toBe(false);
-  }
 });
 
 /*** Create a caret range whose semantic-version floor is newer than the supplied managed range. */

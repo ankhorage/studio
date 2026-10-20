@@ -28,7 +28,7 @@ interface GetRootLayoutTsxArgs {
   authRuntime?: RootLayoutAuthRuntimeConfig;
   initialRouteNameOverride?: string;
   runtimeModuleDeclarations?: string;
-  runtimeActionHookName?: string;
+  runtimeCapabilityExecutorHookName?: string;
   runtimeProviderEnd?: string[];
   runtimeProviderStart?: string[];
   useStoredAuthSessionCredentialResolver?: boolean;
@@ -43,20 +43,12 @@ export function getRootLayoutImportRequirements(
   return [
     {
       source: 'react',
-      namedImports: [
-        { imported: 'ReactNode', typeOnly: true },
-        { imported: 'useEffect' },
-        ...(!includeStudio ? [{ imported: 'useCallback' }] : []),
-      ],
+      namedImports: [{ imported: 'ReactNode', typeOnly: true }, { imported: 'useEffect' }],
     },
-    ...(includeStudio
-      ? [
-          {
-            source: 'react-native',
-            namedImports: [],
-          },
-        ]
-      : []),
+    {
+      source: 'react-native',
+      namedImports: !includeStudio ? [{ imported: 'Alert' }] : [],
+    },
     {
       source: '@ankhorage/expo-runtime/bundled-media',
       namedImports: [{ imported: 'createExpoBundledMediaResolver' }],
@@ -127,7 +119,7 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
     authRuntime,
     initialRouteNameOverride,
     runtimeModuleDeclarations,
-    runtimeActionHookName = 'useRuntimeAction',
+    runtimeCapabilityExecutorHookName,
     runtimeProviderEnd = [],
     runtimeProviderStart = [],
     useStoredAuthSessionCredentialResolver = false,
@@ -136,6 +128,11 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
   const moduleProvidersStart = mutations.flatMap((m) => m.providerStart);
   const moduleProvidersEnd = mutations.flatMap((m) => m.providerEnd).reverse();
   const innerThemeHook = innerNavigation.usesTheme ? '  const { theme } = useZoraTheme();\n' : '';
+  const resolvedRuntimeCapabilityExecutorHookName =
+    runtimeCapabilityExecutorHookName ??
+    (includeStudio
+      ? 'useStudioRuntimeCapabilityExecutor'
+      : 'useGeneratedRuntimeCapabilityExecutor');
 
   const providersStart = [...runtimeProviderStart, ...moduleProvidersStart].join('\n    ');
   const providersEnd = [...moduleProvidersEnd, ...runtimeProviderEnd].join('\n    ');
@@ -249,6 +246,9 @@ const { authState, handleInnerContentReady } = useGeneratedAuthNavigation();
   }
 `
     : '';
+  const runtimeCredentialResolver = useStoredAuthSessionCredentialResolver
+    ? '\n          credentialResolver: resolveRuntimeOperationCredential,'
+    : '';
   const runtimeOperationHelpers = `
 async function runtimeApiFetch(
   url: string,
@@ -289,24 +289,48 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     : ''
 }
 `;
-  const runtimeContentDeclaration = `const { executeAction } = ${runtimeActionHookName}();
+  const runtimeContentDeclaration = `const runtimeContent = (
+    <GeneratedRuntimeContent runtimeManifest={runtimeManifest}>
+      {appContent}
+    </GeneratedRuntimeContent>
+  );`;
+  const generatedRuntimeContent = `function GeneratedRuntimeContent({
+  children,
+  runtimeManifest,
+}: {
+  children: ReactNode;
+  runtimeManifest: AppManifest;
+}) {${includeStudio ? '\n  const { setMode } = useZoraTheme();' : ''}
+  const { executeCapability: executeApplicationCapability } =
+    ${resolvedRuntimeCapabilityExecutorHookName}(${includeStudio ? '{ setThemeMode: setMode }' : ''});
+  const executeCapability = useMemo(
+    () =>
+      composeRuntimeCapabilityExecutor({
+        apiCapabilityExecutor: createRuntimeApiCapabilityExecutor({
+          apis: runtimeManifest.infra.apis ?? {},
+          fetch: runtimeApiFetch,${runtimeCredentialResolver}
+        }),
+        capabilityExecutor: executeApplicationCapability,
+      }),
+    [executeApplicationCapability, runtimeManifest.infra.apis],
+  );
 
   const generatedRuntimeConfig = useMemo(
     () => ({
-      executeAction,
+      executeCapability,
       registry: runtimeComponentRegistry,
-      executeOperation,
       mediaAssets: runtimeManifest.media?.assets,
       resolveMediaAsset: bundledMediaResolver,
     }),
-    [executeAction, executeOperation, runtimeManifest.media?.assets],
+    [executeCapability, runtimeManifest.media?.assets],
   );
 
-  const runtimeContent = (
+  return (
     <RuntimeRendererConfigProvider value={generatedRuntimeConfig}>
-      {appContent}
+      {children}
     </RuntimeRendererConfigProvider>
-  );`;
+  );
+}`;
   const outputDeclaration = includeStudio
     ? `${runtimeContentDeclaration}
   const output = __DEV__ ? (
@@ -315,7 +339,6 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     ) : (
       <AnkhStudio
         runtimeRegistry={runtimeComponentRegistry}
-        runtimeConfig={generatedRuntimeConfig}
         bundledMediaRegistry={bundledMediaRegistry}
       >
         {runtimeContent}
@@ -391,9 +414,6 @@ const shouldMountAppHeader =
       : `<AppShell>
           ${finalJsx}
         </AppShell>`;
-  const runtimeCredentialResolver = useStoredAuthSessionCredentialResolver
-    ? '\n        credentialResolver: resolveRuntimeOperationCredential,'
-    : '';
   const runtimeComponentRegistryDeclaration =
     'const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;';
   return `
@@ -451,13 +471,6 @@ ${indentedRootHookBlock}  const manifestContext = useOptionalManifestContext();
   const runtimeManifest = manifestContext?.manifest ?? fallbackManifest;${indentedStudioRuntimeLines}
   const activeTheme = resolveManifestActiveTheme(runtimeManifest);
   const activeThemeMode = resolveThemeMode(runtimeManifest.activeThemeMode, 'light');
-  const executeOperation = useMemo(
-    () =>
-      createRuntimeApiOperationExecutor({
-        fetch: runtimeApiFetch,${runtimeCredentialResolver}
-      }),
-    [],
-  );
 ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContentNode};
 
   ${outputDeclaration}
@@ -502,6 +515,7 @@ function StudioShell({
     setActiveCanvasDragNodeId,
     setLastNonAdminLocation,
   } = useStudio();
+  const { theme } = useZoraTheme();
   useEffect(() => {
     const nextAppLocation = resolveStudioLastNonAdminLocation({
       pathname: appPathname,
@@ -513,6 +527,7 @@ function StudioShell({
   const studioWrapNode = useMemo(
     () =>
       createStudioStationarySelectionWrapNode({
+        builtInComponentRegistry: studioInteractionPolicyComponentRegistry,
         previewMode,
         thirdPartySupport: APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
       }),
@@ -521,6 +536,7 @@ function StudioShell({
   const studioResolveNodeProps = useMemo(
     () =>
       createStudioInteractionPolicyResolver({
+        builtInComponentRegistry: studioInteractionPolicyComponentRegistry,
         previewMode,
         thirdPartySupport: APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
       }),
@@ -562,6 +578,7 @@ function StudioShell({
         setActiveDragNodeId: setActiveCanvasDragNodeId,
       }}
       isEditMode={!previewMode}
+      selectionColor={theme.semantics.action.primary.base}
       selectedNodeId={selectedNodeId}
       selectNode={selectNode}
     >
@@ -595,6 +612,8 @@ function StudioAppHeader({ appHeaderTitle }: { appHeaderTitle: string }) {
 }`
       : ''
   }
+
+${generatedRuntimeContent}
 
 function GeneratedZoraProvider({
   children,

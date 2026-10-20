@@ -6,11 +6,13 @@ import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
 
 interface AuthOAuthRuntimeTemplateArgs extends AuthOAuthLayoutPlan {
   readonly nativeSchemes: ExpoRuntimeNativeSchemeMap;
+  readonly zoraEntrypoint?: string;
 }
 
 /*** Generate the OAuth transport/runtime module for configured providers in a generated app. */
 export function getAuthOAuthRuntimeTs(args: AuthOAuthRuntimeTemplateArgs) {
   const providers = serializeOAuthProviders(args.providers);
+  const zoraEntrypoint = args.zoraEntrypoint ?? '@ankhorage/zora';
 
   return `import type {
   AuthOAuthCompletionResult,
@@ -21,7 +23,7 @@ import {
   resolveExpoOAuthBrowserResult,
 } from '@ankhorage/expo-runtime/oauth-browser';
 import { resolveExpoOAuthBrowserRuntimeReadiness } from '@ankhorage/expo-runtime/oauth-browser-runtime';
-import type { OAuthProviderIconSpec } from '@ankhorage/zora';
+import type { OAuthProviderIconSpec } from '${zoraEntrypoint}';
 import * as WebBrowser from 'expo-web-browser';
 import { Platform } from 'react-native';
 
@@ -58,10 +60,7 @@ export { completeOAuthCallback, resolveOAuthCallbackUrl };
 
 let activeAuthorization: Promise<GeneratedOAuthTransportOutcome> | null = null;
 
-type GeneratedOAuthAdapter = NonNullable<(typeof authAdapter)['oauth']>;
-
 interface OAuthAuthorizationContext {
-  oauth: GeneratedOAuthAdapter;
   provider: GeneratedOAuthProvider;
   redirectUri: string;
 }
@@ -86,23 +85,12 @@ async function runOAuthAuthorization(providerId: string): Promise<GeneratedOAuth
   if ('outcome' in resolved) return resolved.outcome;
   const started = await startAuthorizationAttemptAsync(resolved.context);
   if ('outcome' in started) return started.outcome;
-  return completeAuthorizationTransportAsync(resolved.context.oauth, started.authorization);
+  return completeAuthorizationTransportAsync(started.authorization);
 }
 
 function resolveAuthorizationContext(
   providerId: string,
 ): { context: OAuthAuthorizationContext } | { outcome: GeneratedOAuthTransportOutcome } {
-  const { oauth } = authAdapter;
-  if (!oauth) {
-    return {
-      outcome: {
-        status: 'error',
-        message: 'OAuth is not available in this app configuration.',
-        recoverable: true,
-      },
-    };
-  }
-
   const provider = GENERATED_OAUTH_PROVIDERS.find((entry) => entry.id === providerId);
   if (!provider) {
     return {
@@ -115,7 +103,7 @@ function resolveAuthorizationContext(
   }
 
   try {
-    return { context: { oauth, provider, redirectUri: resolveOAuthRedirectUri() } };
+    return { context: { provider, redirectUri: resolveOAuthRedirectUri() } };
   } catch {
     return {
       outcome: {
@@ -145,7 +133,7 @@ async function startAuthorizationAttemptAsync(
     }
   }
 
-  const started = await context.oauth.startAuthorization({
+  const started = await authAdapter.startAuthorization({
     provider: context.provider.id,
     redirectUri: context.redirectUri,
     scopes: [...context.provider.scopes],
@@ -164,7 +152,7 @@ async function startAuthorizationAttemptAsync(
   try {
     await writeTransportAttempt({ attemptId: started.data.attemptId });
   } catch {
-    await cancelOAuthAttempt(context.oauth, started.data.attemptId, 'user_cancelled');
+    await cancelOAuthAttempt(started.data.attemptId, 'user_cancelled');
     await clearTransportAttempt();
     return {
       outcome: {
@@ -179,14 +167,12 @@ async function startAuthorizationAttemptAsync(
 }
 
 async function completeAuthorizationTransportAsync(
-  oauth: GeneratedOAuthAdapter,
   started: StartedOAuthAuthorization,
 ): Promise<GeneratedOAuthTransportOutcome> {
   if (Platform.OS === 'web') {
     return redirectWebAuthorization({
       attemptId: started.attemptId,
       authorizationUrl: started.authorizationUrl,
-      oauth,
     });
   }
 
@@ -207,7 +193,7 @@ async function completeAuthorizationTransportAsync(
 
   let completed: AuthOAuthCompletionResult;
   try {
-    completed = await oauth.completeAuthorization({
+    completed = await authAdapter.completeAuthorization({
       attemptId: started.attemptId,
       response: browserResponse,
     });
@@ -226,11 +212,10 @@ async function completeAuthorizationTransportAsync(
 async function redirectWebAuthorization(args: {
   attemptId: string;
   authorizationUrl: string;
-  oauth: GeneratedOAuthAdapter;
 }): Promise<GeneratedOAuthTransportOutcome> {
   const location = getBrowserLocation();
   if (!hasBrowserLocationAssign(location)) {
-    await cancelOAuthAttempt(args.oauth, args.attemptId, 'browser_dismissed');
+    await cancelOAuthAttempt(args.attemptId, 'browser_dismissed');
     await clearTransportAttempt();
     return {
       status: 'error',
@@ -243,7 +228,7 @@ async function redirectWebAuthorization(args: {
     location.assign(args.authorizationUrl);
     return waitForFullPageNavigation();
   } catch {
-    await cancelOAuthAttempt(args.oauth, args.attemptId, 'browser_dismissed');
+    await cancelOAuthAttempt(args.attemptId, 'browser_dismissed');
     await clearTransportAttempt();
     return {
       status: 'error',
@@ -291,12 +276,11 @@ function toTransportOutcome(result: AuthOAuthCompletionResult): GeneratedOAuthTr
 }
 
 async function cancelOAuthAttempt(
-  oauth: GeneratedOAuthAdapter,
   attemptId: string,
   reason: AuthOAuthTransportCancellationReason,
 ): Promise<void> {
   try {
-    await oauth.completeAuthorization({
+    await authAdapter.completeAuthorization({
       attemptId,
       response: { type: 'cancelled', reason },
     });

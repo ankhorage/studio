@@ -174,10 +174,16 @@ async function writeRuntimeSmokeNodeModules(projectRoot: string): Promise<void> 
     path.join(ankhorageRoot, 'contracts'),
     'dir',
   );
-  await rm(path.join(ankhorageRoot, 'supabase-auth'), { force: true, recursive: true });
+  await rm(path.join(ankhorageRoot, 'auth'), { force: true, recursive: true });
   await symlink(
-    await realpath(path.join(process.cwd(), 'node_modules/@ankhorage/supabase-auth')),
-    path.join(ankhorageRoot, 'supabase-auth'),
+    await realpath(path.join(process.cwd(), 'node_modules/@ankhorage/auth')),
+    path.join(ankhorageRoot, 'auth'),
+    'dir',
+  );
+  await rm(path.join(ankhorageRoot, 'auth-supabase'), { force: true, recursive: true });
+  await symlink(
+    await realpath(path.join(process.cwd(), 'node_modules/@ankhorage/auth-supabase')),
+    path.join(ankhorageRoot, 'auth-supabase'),
     'dir',
   );
   await writeStubPackage(nodeModulesRoot, 'expo-secure-store', {

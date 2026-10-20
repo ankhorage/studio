@@ -28,7 +28,7 @@ test('reconciles an existing generated app to the current Studio owner policy wi
         '@ankhorage/studio': '^5.10.0',
         '@ankhorage/utility': '^1.0.0',
         '@ankhorage/supabase-auth': '^1.0.0',
-        '@ankhorage/supabase-storage': '^0.1.0',
+        '@ankhorage/storage-supabase': '^1.0.0',
         'user-owned-package': '^9.0.0',
       },
       devDependencies: { 'user-owned-dev-package': '^4.0.0' },

@@ -17,8 +17,8 @@ import {
   type StudioAuthSettings,
   type StudioAuthSettingsMutation,
 } from '../authSettings';
-import { updateStudioScreenMetadata } from '../features/screen-administration/application/use-cases/updateStudioScreenMetadata';
-import { updateStudioScreenRequirements } from '../features/screen-administration/application/use-cases/updateStudioScreenRequirements';
+import { updateStudioScreenMetadata } from '../features/screen-administration/domain/updateStudioScreenMetadata';
+import { updateStudioScreenRequirements } from '../features/screen-administration/domain/updateStudioScreenRequirements';
 import {
   createNodeFromCatalogEntry,
   findNodeById,

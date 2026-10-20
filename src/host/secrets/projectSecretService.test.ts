@@ -63,6 +63,77 @@ function createManifest(): AppManifest {
 const getInfrastructureStatus = () => Promise.resolve({ target: 'minikube' });
 
 describe('ProjectSecretService guarded removal', () => {
+  test('runs every secret-store operation through the trusted adapter and closes each successful client', async () => {
+    const clients: RecordingVaultClient[] = [];
+    const service = createService(() => {
+      const client = new RecordingVaultClient(clients.length !== 2);
+      clients.push(client);
+      return client;
+    });
+
+    const operations = [
+      () => service.list({ projectId: 'demo' }),
+      () => service.getMetadata({ projectId: 'demo', ref: 'auth/oauth/google' }),
+      () =>
+        service.create({
+          projectId: 'demo',
+          ref: 'auth/oauth/google',
+          kind: 'oauth',
+          provider: 'google',
+          payload: { clientId: 'client-id', clientSecret: 'client-secret' },
+        }),
+      () =>
+        service.replace({
+          projectId: 'demo',
+          ref: 'auth/oauth/google',
+          payload: { clientId: 'replacement-client-id', clientSecret: 'replacement-client-secret' },
+        }),
+      () => service.remove({ projectId: 'demo', ref: 'auth/oauth/google' }),
+      () => service.resolve({ projectId: 'demo', ref: 'auth/oauth/google' }),
+    ];
+
+    for (const [index, operation] of operations.entries()) {
+      const result = await operation();
+      if (!result.ok) throw new Error(`Operation ${index} failed: ${result.error.code}`);
+    }
+
+    expect(clients).toHaveLength(6);
+    expect(clients.map((client) => client.closeCount)).toEqual([1, 1, 1, 1, 1, 1]);
+  });
+
+  test('closes every trusted client and never returns payload data when a secret-store operation fails', async () => {
+    const clients: FailingVaultClient[] = [];
+    const service = createService(() => {
+      const client = new FailingVaultClient();
+      clients.push(client);
+      return client;
+    });
+    const sentinel = 'SERVER_SECRET_MUST_NOT_LEAK';
+    const operations = [
+      () => service.list({ projectId: 'demo' }),
+      () => service.getMetadata({ projectId: 'demo', ref: 'auth/oauth/google' }),
+      () =>
+        service.create({
+          projectId: 'demo',
+          ref: 'auth/oauth/google',
+          kind: 'oauth',
+          payload: { sentinel },
+        }),
+      () => service.replace({ projectId: 'demo', ref: 'auth/oauth/google', payload: { sentinel } }),
+      () => service.remove({ projectId: 'demo', ref: 'auth/oauth/google' }),
+      () => service.resolve({ projectId: 'demo', ref: 'auth/oauth/google' }),
+    ];
+
+    for (const operation of operations) {
+      const result = await operation();
+      expect(result.ok).toBe(false);
+      expect(JSON.stringify(result)).not.toContain(sentinel);
+    }
+
+    expect(clients).toHaveLength(6);
+    expect(clients.map((client) => client.closeCount)).toEqual([1, 1, 1, 1, 1, 1]);
+  });
+
   test('stores OAuth credentials without writing manifest state', async () => {
     let saveCount = 0;
     const service = new ProjectSecretService({
@@ -227,6 +298,80 @@ describe('ProjectSecretService guarded removal', () => {
     expect(transactionCount).toBe(0);
   });
 });
+
+/*** Create a project secret service with a deterministic trusted SQL boundary. */
+function createService(createClient: () => RecordingVaultClient | FailingVaultClient) {
+  return new ProjectSecretService({
+    workspaceRoot: '/tmp',
+    projectManager: {
+      getProjectManifest: () => Promise.resolve(createManifest()),
+      getInfrastructureStatus,
+    } as never,
+    resolveDatabaseUrl: () => Promise.resolve('postgres://local'),
+    createClient: () => createClient() as never,
+  });
+}
+
+class RecordingVaultClient {
+  closeCount = 0;
+
+  constructor(private readonly existing = true) {}
+
+  query(statement: string): Promise<{ rows: Record<string, unknown>[] }> {
+    if (statement.includes('vault.decrypted_secrets')) {
+      return Promise.resolve({
+        rows: [{ decrypted_secret: JSON.stringify({ token: 'trusted-token' }) }],
+      });
+    }
+    if (statement.includes('vault_secret_id::text')) {
+      return Promise.resolve({ rows: [{ id: '00000000-0000-0000-0000-000000000001' }] });
+    }
+    if (statement.includes('vault_secret_id')) {
+      return Promise.resolve({ rows: [{ ...metadataRow(), vault_secret_id: 'vault-id' }] });
+    }
+    if (statement.includes('vault.create_secret')) {
+      return Promise.resolve({ rows: [{ id: '00000000-0000-0000-0000-000000000001' }] });
+    }
+    if (statement.includes('insert into') || statement.includes('update ankh_secret_store')) {
+      return Promise.resolve({ rows: [metadataRow()] });
+    }
+    if (statement.includes('from ankh_secret_store')) {
+      return Promise.resolve({ rows: this.existing ? [metadataRow()] : [] });
+    }
+    return Promise.resolve({ rows: [] });
+  }
+
+  transaction<TResult>(
+    operation: (executor: RecordingVaultClient) => Promise<TResult>,
+  ): Promise<TResult> {
+    return operation(this);
+  }
+
+  close(): Promise<void> {
+    this.closeCount += 1;
+    return Promise.resolve();
+  }
+}
+
+class FailingVaultClient extends RecordingVaultClient {
+  override query(): Promise<{ rows: Record<string, unknown>[] }> {
+    return Promise.reject(new Error('trusted transport failed'));
+  }
+}
+
+/*** Return a deterministic Vault metadata row without including secret payload material. */
+function metadataRow() {
+  return {
+    project_id: 'demo',
+    environment: 'local',
+    secret_ref: 'auth/oauth/google',
+    kind: 'oauth',
+    provider: 'google',
+    configured_fields: ['clientId', 'clientSecret'],
+    created_at: '2026-07-12T00:00:00.000Z',
+    updated_at: '2026-07-12T00:00:00.000Z',
+  };
+}
 
 function withOAuthProvider(manifest: AppManifest, provider: AuthOAuthProviderConfig): AppManifest {
   return applyStudioAuthSettings(manifest, {

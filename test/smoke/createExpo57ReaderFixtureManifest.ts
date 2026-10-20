@@ -25,39 +25,6 @@ export function createExpo57ReaderFixtureManifest(): AppManifest {
 
   return {
     ...manifest,
-    dataBindings: Object.fromEntries(
-      READER_FORMATS.map((format) => [
-        `reader-${format}`,
-        {
-          componentId: `reader-${format}`,
-          componentType: 'ReaderSurface',
-          events: {
-            locationChange: [
-              {
-                target: { kind: 'action', type: 'console' },
-                input: {
-                  format: eventValue('payload.format'),
-                  locator: eventValue('payload.locator'),
-                  page: eventValue('payload.page'),
-                  progression: eventValue('payload.progression'),
-                  trigger: eventValue('payload.trigger'),
-                },
-              },
-            ],
-            readerError: [
-              {
-                target: { kind: 'action', type: 'console' },
-                input: {
-                  code: eventValue('payload.code'),
-                  format: eventValue('payload.format'),
-                  message: eventValue('payload.message'),
-                },
-              },
-            ],
-          },
-        },
-      ]),
-    ),
     deploy: {
       targets: {
         android: {
@@ -118,7 +85,7 @@ function createReaderScreen(format: (typeof READER_FORMATS)[number]): ScreenSpec
       children: [
         {
           id: `reader-${format}`,
-          type: 'ReaderSurface',
+          type: 'Reader',
           props: {
             format,
             source: { mediaId: `reader-${format}` },
@@ -128,11 +95,4 @@ function createReaderScreen(format: (typeof READER_FORMATS)[number]): ScreenSpec
       ],
     },
   };
-}
-
-/***
- * Build a contracts event-source binding value for one payload path inside the reader acceptance manifest.
- */
-function eventValue(path: string) {
-  return { kind: 'source' as const, source: { kind: 'event' as const, path } };
 }

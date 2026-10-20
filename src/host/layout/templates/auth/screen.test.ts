@@ -7,6 +7,11 @@ import { getAuthScreenControllerTs } from './screenController';
 test('generated auth validation stays in one canonical package-neutral module', () => {
   const form = getAuthFormTs();
 
+  expect(form).toContain(`import type {
+  AuthIdentifierKind,
+  SignUpFormField,
+  SignUpFormValues,
+} from '@ankhorage/zora';`);
   expect(form).toContain(
     "import { isEmail, isPhone, isUsername } from '@ankhorage/utility/regex';",
   );

@@ -1,4 +1,4 @@
-import { Heading, Text } from '@ankhorage/zora';
+import { Heading, Text } from '@ankhorage/zora/reader-free';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';

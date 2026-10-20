@@ -1,4 +1,10 @@
-import type { AppManifest, ScreenSpec, UiNode } from '@ankhorage/contracts';
+import type {
+  AppManifest,
+  ComponentDataBinding,
+  ComponentDataBindingRegistry,
+  ScreenSpec,
+  UiNode,
+} from '@ankhorage/contracts';
 
 /*** Create the deterministic Expo 57 navigation manifest used by route-generation acceptance.
  */
@@ -160,7 +166,7 @@ export function createExpo57NavigationFixtureManifest(
               'navigation-about',
               'About',
               'Static About Route',
-              createNavigationButton('about-home', 'Return Home', '/'),
+              createNavigationButton('about-home', 'Return Home'),
             ),
             'navigation-catalog': createScreen(
               'navigation-catalog',
@@ -171,23 +177,13 @@ export function createExpo57NavigationFixtureManifest(
               'navigation-home',
               'Home',
               'Navigation Home',
-              createNavigationButton('home-profile', 'Open Ada Profile', 'profile/[id]', {
-                id: 'ada',
-                source: 'internal',
-              }),
+              createNavigationButton('home-profile', 'Open Ada Profile'),
             ),
             'navigation-profile': createScreen(
               'navigation-profile',
               'Profile',
               'Dynamic Profile Route',
-              createNavigationButton(
-                'profile-settings',
-                'Open Catalog Settings',
-                'catalog/settings',
-                {
-                  tab: 'advanced',
-                },
-              ),
+              createNavigationButton('profile-settings', 'Open Catalog Settings'),
             ),
             'navigation-profile-index': createScreen(
               'navigation-profile-index',
@@ -215,31 +211,73 @@ export function createExpo57NavigationFixtureManifest(
               'navigation-about',
               'About',
               'Root Navigator About Route',
-              createNavigationButton('about-home', 'Return Home', '/'),
+              createNavigationButton('about-home', 'Return Home'),
             ),
             'navigation-home': createScreen(
               'navigation-home',
               'Home',
               'Root Navigator Home Route',
-              createNavigationButton('home-about', 'Open About', '/about'),
+              createNavigationButton('home-about', 'Open About'),
             ),
           },
+    dataBindings: createNavigationEventBindings(rootNavigator),
+  };
+}
+
+/*** Create canonical Runtime event bindings for every navigation fixture Button. */
+function createNavigationEventBindings(
+  rootNavigator: 'drawer' | 'stack' | 'tabs',
+): ComponentDataBindingRegistry {
+  return rootNavigator === 'stack'
+    ? {
+        'about-home': createNavigationEventBinding('about-home', '/'),
+        'home-profile': createNavigationEventBinding('home-profile', 'profile/[id]', {
+          id: 'ada',
+          source: 'internal',
+        }),
+        'profile-settings': createNavigationEventBinding('profile-settings', 'catalog/settings', {
+          tab: 'advanced',
+        }),
+      }
+    : {
+        'about-home': createNavigationEventBinding('about-home', '/'),
+        'home-about': createNavigationEventBinding('home-about', '/about'),
+      };
+}
+
+/*** Create one Navigator capability event binding with portable literal inputs. */
+function createNavigationEventBinding(
+  componentId: string,
+  route: string,
+  params?: Record<string, number | string>,
+): ComponentDataBinding {
+  return {
+    componentId,
+    events: {
+      press: [
+        {
+          target: {
+            capability: 'navigator.navigate' as const,
+            input: {
+              route: { kind: 'literal' as const, value: route },
+              ...(params === undefined
+                ? {}
+                : { params: { kind: 'literal' as const, value: params } }),
+            },
+          },
+        },
+      ],
+    },
   };
 }
 
 /*** Create a navigation Button node for the navigation fixture manifest. */
-function createNavigationButton(
-  id: string,
-  label: string,
-  route: string,
-  params?: Record<string, number | string>,
-): UiNode {
+function createNavigationButton(id: string, label: string): UiNode {
   return {
     id,
     type: 'Button',
     props: {
       children: label,
-      onPress: { type: 'navigate', payload: { route, ...(params ? { params } : {}) } },
       testID: id,
     },
   };

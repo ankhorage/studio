@@ -1,3 +1,7 @@
+import {
+  getSupabaseOAuthProviderDefinition,
+  validateSupabaseOAuthSecretPayload,
+} from '@ankhorage/auth-supabase';
 import { type AppManifest, type AuthOAuthProviderId } from '@ankhorage/contracts';
 import {
   normalizeSecretRef,
@@ -9,12 +13,8 @@ import {
   type SecretResolveInput,
   type SecretStoreAdapter,
   type SecretStoreResult,
-} from '@ankhorage/contracts/secrets';
-import {
-  getSupabaseOAuthProviderDefinition,
-  validateSupabaseOAuthSecretPayload,
-} from '@ankhorage/supabase-auth';
-import { createSupabaseVaultAdapter } from '@ankhorage/supabase-vault';
+} from '@ankhorage/secrets/port';
+import { createSupabaseVaultAdapter } from '@ankhorage/secrets-supabase-vault';
 import { pickCodeMessage } from '@ankhorage/utility/error';
 import { asNonEmptyString } from '@ankhorage/utility/value';
 
