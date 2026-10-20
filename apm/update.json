@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "owner": { "name": "@ankhorage/studio", "version": "7.0.3" },
   "history": {
-    "supported": [{ "sourceRange": ">=2.5.7", "mode": "no-migration" }],
+    "supported": [{ "sourceRange": ">=0.0.0", "mode": "no-migration" }],
     "unsupported": [],
     "downgrade": "unsupported"
   },

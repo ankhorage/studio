@@ -79,26 +79,6 @@ test('does not introduce optional generated dependencies when their capability i
   expect(Object.hasOwn(packageJson.dependencies, '@react-native-picker/picker')).toBe(false);
 });
 
-test('migrates existing generated storage apps to the canonical provider package', () => {
-  const policy = getGeneratedPackagePolicy();
-  const legacyDependencies: Record<string, string> = {
-    '@ankhorage/supabase-storage': '^0.2.108',
-  };
-  const updated = applyGeneratedPackagePolicy(
-    {
-      packageManager: policy.packageManager,
-      dependencies: legacyDependencies,
-      devDependencies: {},
-    },
-    policy,
-  );
-
-  expect(updated.dependencies['@ankhorage/supabase-storage']).toBeUndefined();
-  expect(updated.dependencies['@ankhorage/storage-supabase']).toBe(
-    policy.dependencies.storageSupabase,
-  );
-});
-
 test('never lowers already-newer Ankhorage dependency floors', () => {
   const policy = getGeneratedPackagePolicy();
   const basePackageJson = getPackageJson({
@@ -145,36 +125,6 @@ test('never lowers already-newer Ankhorage dependency floors', () => {
   );
   expect(raised.dependencies['@ankhorage/contracts']).toBe(policy.dependencies.contracts);
   expect(raised.devDependencies['@ankhorage/devtools']).toBe(policy.devDependencies.devtools);
-});
-
-test('removes obsolete standalone ZORA plugin dependencies from generated apps', () => {
-  const policy = getGeneratedPackagePolicy();
-  const basePackageJson = getPackageJson({
-    name: 'fixture',
-    includeStudio: true,
-    targets: WEB_TARGETS,
-  });
-
-  const updated = applyGeneratedPackagePolicy(
-    {
-      ...basePackageJson,
-      dependencies: {
-        ...basePackageJson.dependencies,
-        '@ankhorage/zora-chess': '^0.0.1',
-        '@ankhorage/zora-game': '^0.0.1',
-        '@ankhorage/zora-tabletop': '^0.0.1',
-      },
-    },
-    policy,
-  );
-
-  for (const packageName of [
-    '@ankhorage/zora-chess',
-    '@ankhorage/zora-game',
-    '@ankhorage/zora-tabletop',
-  ]) {
-    expect(Object.hasOwn(updated.dependencies, packageName)).toBe(false);
-  }
 });
 
 /*** Create a caret range whose semantic-version floor is newer than the supplied managed range. */

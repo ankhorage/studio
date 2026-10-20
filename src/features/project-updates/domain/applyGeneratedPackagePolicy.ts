@@ -6,29 +6,14 @@ import type {
 } from '../../../types/project-updates.js';
 import { readManagedPackageRangeFloor } from './readManagedPackageRangeFloor.js';
 
-const OBSOLETE_GENERATED_DEPENDENCIES = new Set([
-  '@ankhorage/supabase-storage',
-  '@react-native-picker/picker',
-  '@ankhorage/zora-chess',
-  '@ankhorage/zora-game',
-  '@ankhorage/zora-tabletop',
-]);
-
 /*** Apply one explicit Studio package policy while preserving user-owned package manifest entries outside superseded Studio-managed dependencies. */
 export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
   packageJson: T,
   policy: GeneratedPackagePolicy,
 ): T {
-  const requiresStorageSupabase =
-    '@ankhorage/storage-supabase' in packageJson.dependencies ||
-    '@ankhorage/supabase-storage' in packageJson.dependencies;
-  const baseDependencies = Object.fromEntries(
-    Object.entries(packageJson.dependencies).filter(
-      ([name]) => !OBSOLETE_GENERATED_DEPENDENCIES.has(name),
-    ),
-  );
+  const requiresStorageSupabase = '@ankhorage/storage-supabase' in packageJson.dependencies;
   const dependencies = {
-    ...baseDependencies,
+    ...packageJson.dependencies,
     '@ankhorage/contracts': monotonicAnkhorageRange(
       packageJson.dependencies['@ankhorage/contracts'],
       policy.dependencies.contracts,
