@@ -188,7 +188,7 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
   }
 }
 
-/*** Assert that a generated navigation project uses Router-owned navigation APIs, keeps hidden routes out of visible navigators and emits protected auth groups when required. */
+/*** Assert the common and topology-specific Router ownership contracts for one generated navigation fixture. */
 async function assertGeneratedNavigationContractAsync(project: NavigationProject): Promise<void> {
   const packageJson = JSON.parse(
     await readFile(path.join(project.path, 'package.json'), 'utf8'),
@@ -229,23 +229,7 @@ async function assertGeneratedNavigationContractAsync(project: NavigationProject
     throw new Error(`${project.id} does not own the minimal Expo 57 ancestor-isolation boundary.`);
   }
 
-  if (!generatedSource.includes("from 'expo-router/js-tabs'")) {
-    throw new Error(`${project.id} does not consume Router-owned JavaScript tabs.`);
-  }
-  if (!generatedSource.includes("from 'expo-router/drawer'")) {
-    throw new Error(`${project.id} does not consume Router-owned Drawer APIs.`);
-  }
-  const appRoot = path.join(project.path, 'src', 'app', '(app)');
-  const hiddenRoute = path.join(appRoot, 'hidden-tabs', 'secret.tsx');
-  const hiddenTabsLayout = path.join(appRoot, 'hidden-tabs', '_layout.tsx');
-  if (!(await pathExistsAsync(hiddenRoute)) || !(await pathExistsAsync(hiddenTabsLayout))) {
-    throw new Error(
-      `${project.id} does not preserve its hidden route outside the visible tab group.`,
-    );
-  }
-  if (!(await readFile(hiddenTabsLayout, 'utf8')).includes('href: null')) {
-    throw new Error(`${project.id} does not hide its direct JavaScript tab route.`);
-  }
+  await assertGeneratedNavigationTopologyAsync(project, generatedSource);
   if (generatedSource.includes('Parameters<typeof Zora')) {
     throw new Error(`${project.id} still contains a ZORA navigation compatibility cast.`);
   }
@@ -269,6 +253,62 @@ async function assertGeneratedNavigationContractAsync(project: NavigationProject
     packageName: '@ankhorage/navigator',
     range: navigatorRange,
   });
+}
+
+/*** Assert only the Router APIs and route files configured by the fixture's authored navigator topology. */
+async function assertGeneratedNavigationTopologyAsync(
+  project: NavigationProject,
+  generatedSource: string,
+): Promise<void> {
+  if (project.rootNavigator === 'stack') {
+    if (!generatedSource.includes("from 'expo-router/js-tabs'")) {
+      throw new Error(`${project.id} does not consume its configured Router JavaScript tabs.`);
+    }
+    if (!generatedSource.includes("from 'expo-router/drawer'")) {
+      throw new Error(`${project.id} does not consume its configured Router Drawer.`);
+    }
+    await assertHiddenJavaScriptTabRouteAsync(project);
+    return;
+  }
+
+  if (project.rootNavigator === 'drawer') {
+    if (!generatedSource.includes("from 'expo-router/drawer'")) {
+      throw new Error(`${project.id} does not consume its configured Router Drawer.`);
+    }
+    if (project.auth) await assertHiddenDrawerSignOutRouteAsync(project);
+  }
+}
+
+/*** Assert the stack fixture keeps its authored hidden JavaScript-tab route outside the visible tab group. */
+async function assertHiddenJavaScriptTabRouteAsync(project: NavigationProject): Promise<void> {
+  const appRoot = path.join(project.path, 'src', 'app', '(app)');
+  const hiddenRoute = path.join(appRoot, 'hidden-tabs', 'secret.tsx');
+  const hiddenTabsLayout = path.join(appRoot, 'hidden-tabs', '_layout.tsx');
+  if (!(await pathExistsAsync(hiddenRoute)) || !(await pathExistsAsync(hiddenTabsLayout))) {
+    throw new Error(
+      `${project.id} does not preserve its hidden route outside the visible tab group.`,
+    );
+  }
+  if (!(await readFile(hiddenTabsLayout, 'utf8')).includes('href: null')) {
+    throw new Error(`${project.id} does not hide its direct JavaScript tab route.`);
+  }
+}
+
+/*** Assert an authenticated root Drawer keeps the auth-injected sign-out route out of its visible entries. */
+async function assertHiddenDrawerSignOutRouteAsync(project: NavigationProject): Promise<void> {
+  const appLayout = await readFile(
+    path.join(project.path, 'src', 'app', '(app)', '_layout.tsx'),
+    'utf8',
+  );
+  const signOutScreen =
+    /<Drawer\.Screen\s+name="sign-out"\s+options=\{\{([\s\S]*?)\}\}\s*\/>/u.exec(appLayout);
+  const signOutOptions = signOutScreen?.[1];
+  if (!signOutOptions) {
+    throw new Error(`${project.id} does not generate the auth-injected sign-out Drawer route.`);
+  }
+  if (!/drawerItemStyle:\s*\{\s*display:\s*'none'\s*\}/u.test(signOutOptions)) {
+    throw new Error(`${project.id} exposes the auth-injected sign-out route in its Drawer.`);
+  }
 }
 
 /*** Assert production generation still declares a published Studio range before acceptance swaps in the current packed candidate. */
@@ -387,6 +427,7 @@ async function createProjectAsync(
     auth: options.auth && (options.authScope ?? 'global') === 'global',
     id: created.id,
     path: created.path,
+    rootNavigator: options.rootNavigator ?? 'stack',
   };
 }
 
@@ -813,19 +854,7 @@ async function runAuthHiddenRouteDrawerStudioNavigationSmokeAsync(
   project: NavigationProject,
   studioApiUrl: string,
 ): Promise<void> {
-  const appLayout = await readFile(
-    path.join(project.path, 'src', 'app', '(app)', '_layout.tsx'),
-    'utf8',
-  );
-  const signOutScreen =
-    /<Drawer\.Screen\s+name="sign-out"\s+options=\{\{([\s\S]*?)\}\}\s*\/>/u.exec(appLayout);
-  const signOutOptions = signOutScreen?.[1];
-  if (!signOutOptions) {
-    throw new Error(`${project.id} does not generate the auth-injected sign-out Drawer route.`);
-  }
-  if (!/drawerItemStyle:\s*\{\s*display:\s*'none'\s*\}/u.test(signOutOptions)) {
-    throw new Error(`${project.id} exposes the auth-injected sign-out route in its Drawer.`);
-  }
+  await assertHiddenDrawerSignOutRouteAsync(project);
 
   await generateRouterTypesAsync(project);
   await assertRouterTypesAsync(project, ['about']);
@@ -946,5 +975,5 @@ interface NavigationProject {
   readonly name: string;
   readonly path: string;
   readonly postSignInRoute?: 'about' | 'index';
-  readonly rootNavigator?: 'drawer' | 'tabs';
+  readonly rootNavigator: 'drawer' | 'stack' | 'tabs';
 }
