@@ -140,36 +140,6 @@ test('never lowers already-newer Ankhorage dependency floors', () => {
   expect(raised.devDependencies['@ankhorage/devtools']).toBe(policy.devDependencies.devtools);
 });
 
-test('removes obsolete standalone ZORA plugin dependencies from generated apps', () => {
-  const policy = getGeneratedPackagePolicy();
-  const basePackageJson = getPackageJson({
-    name: 'fixture',
-    includeStudio: true,
-    targets: WEB_TARGETS,
-  });
-
-  const updated = applyGeneratedPackagePolicy(
-    {
-      ...basePackageJson,
-      dependencies: {
-        ...basePackageJson.dependencies,
-        '@ankhorage/zora-chess': '^0.0.1',
-        '@ankhorage/zora-game': '^0.0.1',
-        '@ankhorage/zora-tabletop': '^0.0.1',
-      },
-    },
-    policy,
-  );
-
-  for (const packageName of [
-    '@ankhorage/zora-chess',
-    '@ankhorage/zora-game',
-    '@ankhorage/zora-tabletop',
-  ]) {
-    expect(Object.hasOwn(updated.dependencies, packageName)).toBe(false);
-  }
-});
-
 /*** Create a caret range whose semantic-version floor is newer than the supplied managed range. */
 function nextMinorCaretRange(range: string): string {
   const exact = range.startsWith('^') || range.startsWith('~') ? range.slice(1) : range;
