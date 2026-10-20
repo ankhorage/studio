@@ -1,27 +1,5 @@
 # Public API
 
-## ACTION_REGISTRY
-
-Kind: `value`
-Module: `src/index.ts`
-Source: `src/index.ts:461:14`
-
-## ActionDefinition
-
-Kind: `type`
-Module: `src/index.ts`
-Source: `src/index.ts:369:1`
-
-### Members
-
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| description | property | `string` | yes |  |
-| label | property | `string` | yes |  |
-| payloadSchema | property | `StudioActionPayloadSchema \| undefined` | no |  |
-| requiresPayload | property | `boolean` | yes |  |
-| type | property | `ActionType` | yes |  |
-
 ## appendStudioEventBinding
 
 Kind: `function`
@@ -60,7 +38,7 @@ TODO: Keep binding compatibility policy under src/bindings/.
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1389:1`
+Source: `src/index.ts:1276:1`
 
 Build and deterministically sort Studio's component/recipe insert catalog from component metadata and recipes.
 Follow-up: Move insert-catalog construction from `src/index.ts` into the insert domain.
@@ -75,7 +53,7 @@ Follow-up: Move insert-catalog construction from `src/index.ts` into the insert 
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:707:1`
+Source: `src/index.ts:594:1`
 
 Return whether Studio component metadata permits one child type under a parent type.
 Follow-up: Move this component-placement policy from `src/index.ts` into the `canvas/` or insert-authoring domain.
@@ -90,7 +68,7 @@ Follow-up: Move this component-placement policy from `src/index.ts` into the `ca
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:611:14`
+Source: `src/index.ts:498:14`
 
 Deep-clone a UiNode tree while assigning fresh identifiers and shallow-cloning node props.
 Utility candidate: @ankhorage/utility/tree
@@ -103,20 +81,20 @@ Follow-up: `cloneTreeWithNewIds` currently allocates child ids before the root; 
   - node: `UiNode`
   - returns: `UiNode`
 
-## collectStudioBindingOperationOptions
+## collectStudioBindingCapabilityOptions
 
 Kind: `function`
 Module: `src/bindingOperationModel.ts`
-Source: `src/bindingOperationModel.ts:23:1`
+Source: `src/bindingOperationModel.ts:31:1`
 
 Collect and alphabetically sort the API operations available for Studio binding authoring.
 TODO: Move binding operation catalog behavior under src/bindings/.
 
 ### Signatures
 
-- `(apis: ApiDefinitionRegistry) => readonly StudioBindingOperationOption[]`
+- `(apis: ApiDefinitionRegistry) => readonly StudioBindingCapabilityOption[]`
   - apis: `ApiDefinitionRegistry`
-  - returns: `readonly StudioBindingOperationOption[]`
+  - returns: `readonly StudioBindingCapabilityOption[]`
 
 ## collectStudioMediaAssetUsages
 
@@ -154,7 +132,7 @@ TODO: Move response-path authoring under src/bindings/.
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1302:1`
+Source: `src/index.ts:1189:1`
 
 Materialize one enabled component or recipe catalog entry into a fresh UiNode tree.
 Follow-up: Move insert-catalog node creation from `src/index.ts` into the insert domain.
@@ -166,21 +144,6 @@ Follow-up: Move insert-catalog node creation from `src/index.ts` into the insert
   - createId: `StudioIdGenerator` (optional)
   - entry: `InsertCatalogEntry`
   - returns: `UiNode`
-
-## createStudioActionInputFields
-
-Kind: `function`
-Module: `src/bindingOperationModel.ts`
-Source: `src/bindingOperationModel.ts:132:1`
-
-Convert an action payload schema into Studio binding input-field options.
-TODO: Move action binding-field projection under src/bindings/.
-
-### Signatures
-
-- `(payloadSchema: Readonly<Record<string, { readonly label: string; readonly type: string; readonly required?: boolean; }>> | undefined) => readonly StudioBindingInputFieldOption[]`
-  - payloadSchema: `Readonly<Record<string, { readonly label: string; readonly type: string; readonly required?: boolean; }>> | undefined`
-  - returns: `readonly StudioBindingInputFieldOption[]`
 
 ## createStudioMediaAssetId
 
@@ -253,15 +216,15 @@ Follow-up: Move binding diagnostics under src/bindings/.
 
 ### Signatures
 
-- `(args: { readonly node: UiNode; readonly registry: ComponentDataBindingRegistry; readonly componentMeta: UiComponentMetaRegistry; readonly operations: readonly StudioBindingOperationOption[]; readonly actionTypes: readonly string[]; }) => readonly StudioBindingDiagnostic[]`
-  - args: `{ readonly node: UiNode; readonly registry: ComponentDataBindingRegistry; readonly componentMeta: UiComponentMetaRegistry; readonly operations: readonly StudioBindingOperationOption[]; readonly actionTypes: readonly string[]; }`
+- `(args: { readonly node: UiNode; readonly registry: ComponentDataBindingRegistry; readonly componentMeta: UiComponentMetaRegistry; readonly capabilities: readonly StudioBindingCapabilityOption[]; }) => readonly StudioBindingDiagnostic[]`
+  - args: `{ readonly node: UiNode; readonly registry: ComponentDataBindingRegistry; readonly componentMeta: UiComponentMetaRegistry; readonly capabilities: readonly StudioBindingCapabilityOption[]; }`
   - returns: `readonly StudioBindingDiagnostic[]`
 
 ## findNodeById
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:632:14`
+Source: `src/index.ts:519:14`
 
 Find the first node with a matching id in a depth-first tree traversal.
 Follow-up: Move the UiNode wrapper out of `src/index.ts`; parameterize id and child accessors for Utility.
@@ -273,26 +236,26 @@ Follow-up: Move the UiNode wrapper out of `src/index.ts`; parameterize id and ch
   - root: `UiNode`
   - returns: `UiNode | null`
 
-## findStudioBindingOperationOption
+## findStudioBindingCapabilityOption
 
 Kind: `function`
 Module: `src/bindingOperationModel.ts`
-Source: `src/bindingOperationModel.ts:34:1`
+Source: `src/bindingOperationModel.ts:43:1`
 
 Find an option through the canonical keyed array lookup utility.
 
 ### Signatures
 
-- `(options: readonly StudioBindingOperationOption[], ref: BindingOperationRef) => StudioBindingOperationOption | undefined`
-  - options: `readonly StudioBindingOperationOption[]`
-  - ref: `BindingOperationRef`
-  - returns: `StudioBindingOperationOption | undefined`
+- `(options: readonly StudioBindingCapabilityOption[], capability: `${string}.${string}`) => StudioBindingCapabilityOption | undefined`
+  - capability: ``${string}.${string}``
+  - options: `readonly StudioBindingCapabilityOption[]`
+  - returns: `StudioBindingCapabilityOption | undefined`
 
 ## generateStudioId
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:602:14`
+Source: `src/index.ts:489:14`
 
 Generate a compact time/random identifier with an optional lowercase prefix.
 Follow-up: Move the Studio-facing wrapper out of `src/index.ts`; the reusable identifier primitive belongs in Utility.
@@ -307,7 +270,7 @@ Follow-up: Move the Studio-facing wrapper out of `src/index.ts`; the reusable id
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1212:1`
+Source: `src/index.ts:1099:1`
 
 Resolve Studio's display label for an insert-catalog category, falling back to the raw category id.
 Follow-up: Move insert-catalog presentation metadata out of `src/index.ts` into the insert domain.
@@ -322,7 +285,7 @@ Follow-up: Move insert-catalog presentation metadata out of `src/index.ts` into 
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:347:1`
+Source: `src/index.ts:344:1`
 
 ### Members
 
@@ -343,7 +306,7 @@ Source: `src/index.ts:347:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:329:1`
+Source: `src/index.ts:326:1`
 
 ### Members
 
@@ -357,19 +320,19 @@ Source: `src/index.ts:329:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:306:1`
+Source: `src/index.ts:303:1`
 
 ## InsertCatalogEntry
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:357:1`
+Source: `src/index.ts:354:1`
 
 ## InsertCatalogEntryBase
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:335:1`
+Source: `src/index.ts:332:1`
 
 ### Members
 
@@ -389,19 +352,19 @@ Source: `src/index.ts:335:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:303:1`
+Source: `src/index.ts:300:1`
 
 ## InsertCatalogEntryStatus
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:304:1`
+Source: `src/index.ts:301:1`
 
 ## InsertCatalogRecipeEntry
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:352:1`
+Source: `src/index.ts:349:1`
 
 ### Members
 
@@ -422,7 +385,7 @@ Source: `src/index.ts:352:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:989:1`
+Source: `src/index.ts:876:1`
 
 Create and insert one Studio node after validating its requested placement.
 Follow-up: Move Studio insertion orchestration from `src/index.ts` into the insert/canvas domain.
@@ -437,7 +400,7 @@ Follow-up: Move Studio insertion orchestration from `src/index.ts` into the inse
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:924:1`
+Source: `src/index.ts:811:1`
 
 ### Members
 
@@ -452,7 +415,7 @@ Source: `src/index.ts:924:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:931:1`
+Source: `src/index.ts:818:1`
 
 ### Members
 
@@ -465,7 +428,7 @@ Source: `src/index.ts:931:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:314:1`
+Source: `src/index.ts:311:1`
 
 ### Members
 
@@ -481,7 +444,7 @@ Source: `src/index.ts:314:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:322:1`
+Source: `src/index.ts:319:1`
 
 ### Members
 
@@ -496,7 +459,7 @@ Source: `src/index.ts:322:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:309:1`
+Source: `src/index.ts:306:1`
 
 ### Members
 
@@ -524,7 +487,7 @@ List manifest media assets, optionally filter by kind, and sort them by name.
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1137:1`
+Source: `src/index.ts:1024:1`
 
 Execute a validated Studio node move as immutable removal followed by insertion.
 Follow-up: Move node-move orchestration from `src/index.ts` into the canvas domain.
@@ -539,7 +502,7 @@ Follow-up: Move node-move orchestration from `src/index.ts` into the canvas doma
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:1016:1`
+Source: `src/index.ts:903:1`
 
 ### Members
 
@@ -554,7 +517,7 @@ Source: `src/index.ts:1016:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:1023:1`
+Source: `src/index.ts:910:1`
 
 ### Members
 
@@ -567,7 +530,7 @@ Source: `src/index.ts:1023:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:264:1`
+Source: `src/index.ts:261:1`
 
 ### Members
 
@@ -582,13 +545,13 @@ Source: `src/index.ts:264:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:271:1`
+Source: `src/index.ts:268:1`
 
 ## PlacementFailureReason
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:284:1`
+Source: `src/index.ts:281:1`
 
 ### Members
 
@@ -601,19 +564,19 @@ Source: `src/index.ts:284:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:262:1`
+Source: `src/index.ts:259:1`
 
 ## PlacementResolutionResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:296:1`
+Source: `src/index.ts:293:1`
 
 ## PlacementValidationResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:289:1`
+Source: `src/index.ts:286:1`
 
 ## ProjectAuthDiagnostic
 
@@ -779,7 +742,7 @@ Follow-up: Keep MediaAssetReference semantics with media/contracts; implement it
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:667:14`
+Source: `src/index.ts:554:14`
 
 Immutably remove a node by id from a UiNode tree and preserve unchanged branches by reference.
 Follow-up: Move the UiNode wrapper out of `src/index.ts` and parameterize tree accessors for Utility.
@@ -846,7 +809,7 @@ Follow-up: Move binding mutation behavior under src/bindings/.
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:879:1`
+Source: `src/index.ts:766:1`
 
 Resolve the preferred insertion placement by trying the selected node, its sibling position, then the screen root.
 Follow-up: Move Studio default insertion policy from `src/index.ts` into the insert/canvas domain.
@@ -861,7 +824,7 @@ Follow-up: Move Studio default insertion policy from `src/index.ts` into the ins
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1437:1`
+Source: `src/index.ts:1324:1`
 
 Resolve enabled/disabled insert-catalog state against the active screen and selected-node placement context.
 Follow-up: Move context-sensitive insert catalog projection from `src/index.ts` into the insert/canvas application domain.
@@ -876,7 +839,7 @@ Follow-up: Move context-sensitive insert catalog projection from `src/index.ts` 
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:814:1`
+Source: `src/index.ts:701:1`
 
 Resolve a requested inside/before/after insertion target to a validated Studio placement.
 Follow-up: Move insertion-placement policy from `src/index.ts` into the `canvas/`/insert domain.
@@ -891,7 +854,7 @@ Follow-up: Move insertion-placement policy from `src/index.ts` into the `canvas/
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1065:1`
+Source: `src/index.ts:952:1`
 
 Validate and resolve a requested Studio node move after accounting for source removal and descendant/no-op invariants.
 Follow-up: Move node-move policy from `src/index.ts` into the canvas domain.
@@ -953,7 +916,7 @@ TODO: Move binding schema projection under src/bindings/.
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:1175:14`
+Source: `src/index.ts:1062:14`
 
 | id | label | description | category |
 | --- | --- | --- | --- |
@@ -965,13 +928,13 @@ Source: `src/index.ts:1175:14`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:105:14`
+Source: `src/index.ts:104:14`
 
 ## STUDIO_PACKAGE_NAME
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:97:14`
+Source: `src/index.ts:96:14`
 
 Follow-up: Make `src/index.ts` a public exports-only entrypoint. Package metadata, authoring contracts, tree editing, placement policy, templates and insert-catalog implementations need canonical owner modules and should only be re-exported here.
 
@@ -979,51 +942,25 @@ Follow-up: Make `src/index.ts` a public exports-only entrypoint. Package metadat
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:139:14`
-
-## StudioActionPayloadField
-
-Kind: `type`
-Module: `src/index.ts`
-Source: `src/index.ts:361:1`
-
-### Members
-
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| label | property | `string` | yes |  |
-| required | property | `boolean \| undefined` | no |  |
-| type | property | `StudioActionPayloadPrimitive` | yes |  |
-
-## StudioActionPayloadPrimitive
-
-Kind: `unknown`
-Module: `src/index.ts`
-Source: `src/index.ts:359:1`
-
-## StudioActionPayloadSchema
-
-Kind: `unknown`
-Module: `src/index.ts`
-Source: `src/index.ts:367:1`
+Source: `src/index.ts:138:14`
 
 ## StudioAdminRouteId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:182:1`
+Source: `src/index.ts:179:1`
 
 ## StudioAdminRoutePath
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:228:1`
+Source: `src/index.ts:225:1`
 
 ## StudioAdminStaticRoutePath
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:208:1`
+Source: `src/index.ts:205:1`
 
 ## StudioAuthoringComponentMeta
 
@@ -1090,6 +1027,22 @@ Source: `src/bindingAuthoringContracts.ts:12:1`
 | meta | property | `UiBindablePropMeta` | yes |  |
 | name | property | `string` | yes |  |
 
+## StudioBindingCapabilityOption
+
+Kind: `type`
+Module: `src/bindingAuthoringContracts.ts`
+Source: `src/bindingAuthoringContracts.ts:38:1`
+
+### Members
+
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| apiLabel | property | `string` | yes |  |
+| capability | property | `Capability` | yes |  |
+| inputFields | property | `readonly StudioBindingInputFieldOption[]` | yes |  |
+| label | property | `string` | yes |  |
+| responsePaths | property | `readonly StudioBindingResponsePathOption[]` | yes |  |
+
 ## StudioBindingCompatibility
 
 Kind: `unknown`
@@ -1106,7 +1059,7 @@ Source: `src/bindingAuthoringContracts.ts:46:1`
 
 | Name | Kind | Type | Required | Description |
 | --- | --- | --- | --- | --- |
-| code | property | `"incompatible-input" \| "incompatible-response" \| "missing-action" \| "missing-binding-meta" \| "missing-input" \| "missing-operation" \| "missing-response-path" \| "unknown-event" \| "unknown-prop"` | yes |  |
+| code | property | `"incompatible-input" \| "incompatible-response" \| "missing-capability" \| "missing-binding-meta" \| "missing-event-payload-meta" \| "missing-input" \| "missing-capability-reference" \| "missing-response-path" \| "unknown-event" \| "unknown-prop"` | yes |  |
 | message | property | `string` | yes |  |
 | path | property | `string \| undefined` | no |  |
 | severity | property | `"warning" \| "error"` | yes |  |
@@ -1127,22 +1080,6 @@ Source: `src/bindingAuthoringContracts.ts:24:1`
 | required | property | `boolean` | yes |  |
 | value | property | `UiBindableValueMeta` | yes |  |
 
-## StudioBindingOperationOption
-
-Kind: `type`
-Module: `src/bindingAuthoringContracts.ts`
-Source: `src/bindingAuthoringContracts.ts:38:1`
-
-### Members
-
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| apiLabel | property | `string` | yes |  |
-| inputFields | property | `readonly StudioBindingInputFieldOption[]` | yes |  |
-| label | property | `string` | yes |  |
-| operation | property | `BindingOperationRef` | yes |  |
-| responsePaths | property | `readonly StudioBindingResponsePathOption[]` | yes |  |
-
 ## StudioBindingResponsePathOption
 
 Kind: `type`
@@ -1161,13 +1098,13 @@ Source: `src/bindingAuthoringContracts.ts:32:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:393:1`
+Source: `src/index.ts:372:1`
 
 ## StudioComponentBlueprint
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:377:1`
+Source: `src/index.ts:356:1`
 
 ### Members
 
@@ -1180,7 +1117,7 @@ Source: `src/index.ts:377:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:382:1`
+Source: `src/index.ts:361:1`
 
 ### Members
 
@@ -1195,13 +1132,13 @@ Source: `src/index.ts:382:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:389:1`
+Source: `src/index.ts:368:1`
 
 ## StudioContextValue
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:408:1`
+Source: `src/index.ts:387:1`
 
 ### Members
 
@@ -1264,19 +1201,19 @@ Source: `src/index.ts:408:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:401:1`
+Source: `src/index.ts:380:1`
 
 ## StudioIdGenerator
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:391:1`
+Source: `src/index.ts:370:1`
 
 ## StudioManifest
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:237:1`
+Source: `src/index.ts:234:1`
 
 ## StudioMediaAssetRemovalResult
 
@@ -1418,7 +1355,7 @@ Source: `src/moduleAdminContracts.ts:4:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:177:1`
+Source: `src/index.ts:174:1`
 
 ## StudioModuleOperationResult
 
@@ -1466,13 +1403,13 @@ Source: `src/moduleAdminContracts.ts:18:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:175:1`
+Source: `src/index.ts:172:1`
 
 ## StudioPackageBoundary
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:99:1`
+Source: `src/index.ts:98:1`
 
 ### Members
 
@@ -1486,13 +1423,13 @@ Source: `src/index.ts:99:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:181:1`
+Source: `src/index.ts:178:1`
 
 ## StudioProjectId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:173:1`
+Source: `src/index.ts:170:1`
 
 ## StudioProjectSummary
 
@@ -1519,7 +1456,7 @@ Source: `src/projectWorkspaceContracts.ts:3:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:171:1`
+Source: `src/index.ts:168:1`
 
 ## StudioRuntimeProjectionReason
 
@@ -1550,7 +1487,7 @@ Source: `src/types/project-generation.ts:1:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:180:1`
+Source: `src/index.ts:177:1`
 
 Report canonical manifest persistence only; runtime projection currency is exposed separately by the host project state.
 
@@ -1558,13 +1495,13 @@ Report canonical manifest persistence only; runtime projection currency is expos
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:176:1`
+Source: `src/index.ts:173:1`
 
 ## StudioSelectionState
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:244:1`
+Source: `src/index.ts:241:1`
 
 ### Members
 
@@ -1580,13 +1517,13 @@ Source: `src/index.ts:244:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:174:1`
+Source: `src/index.ts:171:1`
 
 ## StudioSessionState
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:252:1`
+Source: `src/index.ts:249:1`
 
 ### Members
 
@@ -1669,19 +1606,19 @@ Source: `src/templateCatalogContracts.ts:24:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:239:1`
+Source: `src/index.ts:236:1`
 
 ## TPL_SCREEN_EMPTY
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:553:14`
+Source: `src/index.ts:440:14`
 
 ## updateNodeInTree
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:640:14`
+Source: `src/index.ts:527:14`
 
 Immutably update one UiNode by id while preserving Studio's alias/style versus props patch semantics.
 Follow-up: Keep Studio-specific patch projection in the canvas/properties owner and extract the generic immutable tree-update primitive to Utility.
@@ -1731,7 +1668,7 @@ Follow-up: Move binding mutation behavior under src/bindings/.
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1235:1`
+Source: `src/index.ts:1122:1`
 
 Validate an insert recipe recursively against Studio component metadata and allowed-child constraints.
 Follow-up: Move recipe validation from `src/index.ts` into the insert/templates domain.
@@ -1747,7 +1684,7 @@ Follow-up: Move recipe validation from `src/index.ts` into the insert/templates 
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:723:1`
+Source: `src/index.ts:610:1`
 
 Validate one resolved Studio placement against parent existence, child policy, index bounds and sibling-reference invariants.
 Follow-up: Move placement validation from the public entrypoint into the `canvas/` domain.

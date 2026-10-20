@@ -3,7 +3,7 @@
 
 # @ankhorage/studio
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v7.0.3](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![paradox: canonical](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v8.0.0](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![paradox: canonical](././paradox/badges/docs.svg)
 
 Studio authoring package for Ankhorage apps
 
@@ -46,6 +46,7 @@ import {
 - [assessStudioBindingCompatibility sequence](././paradox/diagrams/sequences/assess-studio-binding-compatibility.mmd)
 - [buildInsertCatalogEntries sequence](././paradox/diagrams/sequences/build-insert-catalog-entries.mmd)
 - [cloneWithNewIds sequence](././paradox/diagrams/sequences/clone-with-new-ids.mmd)
+- [collectStudioBindingCapabilityOptions sequence](././paradox/diagrams/sequences/collect-studio-binding-capability-options.mmd)
 - [collectStudioMediaAssetUsages sequence](././paradox/diagrams/sequences/collect-studio-media-asset-usages.mmd)
 - [createNodeFromCatalogEntry sequence](././paradox/diagrams/sequences/create-node-from-catalog-entry.mmd)
 - [createStudioMediaAssetId sequence](././paradox/diagrams/sequences/create-studio-media-asset-id.mmd)
@@ -53,7 +54,7 @@ import {
 - [deriveProjectId sequence](././paradox/diagrams/sequences/derive-project-id.mmd)
 - [diagnoseStudioComponentBindings sequence](././paradox/diagrams/sequences/diagnose-studio-component-bindings.mmd)
 - [findNodeById sequence](././paradox/diagrams/sequences/find-node-by-id.mmd)
-- [findStudioBindingOperationOption sequence](././paradox/diagrams/sequences/find-studio-binding-operation-option.mmd)
+- [findStudioBindingCapabilityOption sequence](././paradox/diagrams/sequences/find-studio-binding-capability-option.mmd)
 - [generateStudioId sequence](././paradox/diagrams/sequences/generate-studio-id.mmd)
 - [listStudioMediaAssets sequence](././paradox/diagrams/sequences/list-studio-media-assets.mmd)
 - [removeNodeFromTree sequence](././paradox/diagrams/sequences/remove-node-from-tree.mmd)

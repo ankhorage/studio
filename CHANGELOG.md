@@ -1,5 +1,24 @@
 # @ankhorage/studio
 
+## 8.0.0
+
+### Major Changes
+
+- cd552d3: Author bindings through Contracts 26 capability references and invocations, removing the retired Studio action registry and operation-reference contracts.
+
+### Minor Changes
+
+- c06d974: Generate canonical ZORA `Reader` manifests backed by `@ankhorage/reader` without Expo-specific reader bridges or direct document-engine dependencies.
+- c558918: Publish Studio's canonical capability catalog and synchronize package discovery metadata.
+- cf1d2bb: Migrate generated Studio and standalone application runtime wiring to the published capability executor APIs from Runtime 5 and Expo Runtime 6.
+
+### Patch Changes
+
+- 2636ea2: Migrate managed Supabase Storage to the released provider-neutral storage port and `@ankhorage/storage-supabase` package.
+- e01b238: Migrate Studio and generated Supabase-auth applications to the released neutral AuthPort and canonical auth provider packages.
+- b70da83: Migrate trusted Studio host secret storage to the published neutral Secrets port and Supabase Vault adapter.
+- ca228bb: Generate Reader-free Expo applications from ZORA's Reader-free runtime and registry entrypoints.
+
 ## 7.0.3
 
 ### Patch Changes
