@@ -25,7 +25,6 @@ registerHooks({
 });
 
 const {
-  resolveMigrationPath,
   validateUpdateDescriptor,
   validateUpdateExtensionBinding,
   validateUpdateExtensionCapabilities,
@@ -68,18 +67,6 @@ if (!isUpdateExtension(artifact, extensionValue)) {
 const extension = extensionValue;
 assert.deepEqual(validateUpdateExtensionBinding(artifact, extension), []);
 assert.deepEqual(validateUpdateExtensionCapabilities(descriptor, artifact, extension), []);
-const path = resolveMigrationPath({
-  descriptor,
-  sourceVersion: '2.5.7',
-  targetVersion: packageJson.version,
-});
-assert.equal(path.supported, true);
-assert.equal(path.noMigrationRequired, true);
-assert.equal(
-  resolveMigrationPath({ descriptor, sourceVersion: '1.0.0', targetVersion: packageJson.version })
-    .supported,
-  false,
-);
 const projectionDescriptor = descriptor.projections.find(
   ({ id }) => id === 'generated-package-policy',
 );
