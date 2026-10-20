@@ -124,9 +124,8 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
       }
     }
     const lockfileDigests = new Map<string, string>();
-    for (const project of projects) {
-      lockfileDigests.set(project.path, await installGeneratedProjectAsync(project));
-    }
+
+    await installNavigationProjectAsync(standalone, lockfileDigests);
     await assertGeneratedNavigationContractAsync(standalone);
     await runGeneratedProjectChecksAsync(standalone);
     await runDevelopmentNavigationSmokeAsync(standalone.path);
@@ -136,6 +135,8 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     await staticServer.stop(true);
     staticServer = null;
 
+    await releaseNavigationProjectInstallAsync(standalone);
+    await installNavigationProjectAsync(studio, lockfileDigests);
     await assertGeneratedNavigationContractAsync(studio);
     await runGeneratedProjectChecksAsync(studio);
     const studioHostPort = await reserveTcpPort('navigation Studio host');
@@ -147,19 +148,31 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     const studioApiUrl = `http://127.0.0.1:${studioHostPort}/api`;
     await runGlobalStudioAuthNavigationSmokeAsync(studio.path, studioApiUrl);
     await runGlobalStudioAuthBypassNavigationSmokeAsync(studio.path, studioApiUrl);
+    await installNavigationProjectAsync(authHiddenRouteDrawerStudio, lockfileDigests);
     await runAuthHiddenRouteDrawerStudioNavigationSmokeAsync(
       authHiddenRouteDrawerStudio,
       studioApiUrl,
     );
+    await assertGeneratedNavigationContractAsync(authHiddenRouteDrawerStudio);
+    await releaseNavigationProjectInstallAsync(authHiddenRouteDrawerStudio);
+    await releaseNavigationProjectInstallAsync(studio);
     for (const project of [integratedStudio, noAuthStudio]) {
+      await installNavigationProjectAsync(project, lockfileDigests);
       await assertGeneratedNavigationContractAsync(project);
       await runScopeAwareStudioChecksAsync(project, studioApiUrl);
+      await releaseNavigationProjectInstallAsync(project);
     }
+    await installNavigationProjectAsync(authRuntime, lockfileDigests);
     await assertGeneratedNavigationContractAsync(authRuntime);
     await runSignedOutAuthNavigationSmokeAsync(authRuntime.path);
+    await releaseNavigationProjectInstallAsync(authRuntime);
 
+    await installNavigationProjectAsync(rootTabs, lockfileDigests);
     await runFocusedRootNavigatorChecksAsync(rootTabs);
+    await releaseNavigationProjectInstallAsync(rootTabs);
+    await installNavigationProjectAsync(rootDrawer, lockfileDigests);
     await runFocusedRootNavigatorChecksAsync(rootDrawer);
+    await releaseNavigationProjectInstallAsync(rootDrawer);
     for (const project of projects) {
       const expectedDigest = lockfileDigests.get(project.path);
       if (!expectedDigest) throw new Error(`${project.id} has no lockfile digest.`);
@@ -368,6 +381,7 @@ async function createProjectAsync(
     slug: created.id,
   });
   await manager.saveProjectManifest({ projectId: created.id, manifest, mutations: [] });
+  await releaseNavigationProjectInstallAsync({ path: created.path });
   return {
     ...options,
     auth: options.auth && (options.authScope ?? 'global') === 'global',
@@ -424,6 +438,26 @@ async function installGeneratedProjectAsync(project: NavigationProject): Promise
     label: `${project.id} cold frozen app install`,
   });
   return digest;
+}
+
+/*** Create and cold-install one fixture's lockfile without retaining its dependency tree after that fixture's checks complete. */
+async function installNavigationProjectAsync(
+  project: NavigationProject,
+  lockfileDigests: Map<string, string>,
+): Promise<void> {
+  const digest = await installGeneratedProjectAsync(project);
+  const expectedDigest = lockfileDigests.get(project.path);
+  if (expectedDigest !== undefined && expectedDigest !== digest) {
+    throw new Error(`${project.id} generated an unstable lockfile.`);
+  }
+  lockfileDigests.set(project.path, digest);
+}
+
+/*** Release one generated fixture's reproducible dependency tree once no active check needs it. */
+async function releaseNavigationProjectInstallAsync(project: {
+  readonly path: string;
+}): Promise<void> {
+  await rm(path.join(project.path, 'node_modules'), { force: true, recursive: true });
 }
 
 /***
