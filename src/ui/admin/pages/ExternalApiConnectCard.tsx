@@ -1,4 +1,4 @@
-import { Button, Card, Field, Text, TextInput } from '@ankhorage/zora';
+import { Button, Card, Field, Text, TextInput } from '@ankhorage/zora/reader-free';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 

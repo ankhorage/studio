@@ -1,5 +1,5 @@
-import type { ZoraThemeRecipeKind } from '@ankhorage/zora';
-import { Card, Text, useZoraTheme, ZORA_THEME_RECIPE_META } from '@ankhorage/zora';
+import type { ZoraThemeRecipeKind } from '@ankhorage/zora/reader-free';
+import { Card, Text, useZoraTheme, ZORA_THEME_RECIPE_META } from '@ankhorage/zora/reader-free';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';

@@ -124,9 +124,8 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
       }
     }
     const lockfileDigests = new Map<string, string>();
-    for (const project of projects) {
-      lockfileDigests.set(project.path, await installGeneratedProjectAsync(project));
-    }
+
+    await installNavigationProjectAsync(standalone, lockfileDigests);
     await assertGeneratedNavigationContractAsync(standalone);
     await runGeneratedProjectChecksAsync(standalone);
     await runDevelopmentNavigationSmokeAsync(standalone.path);
@@ -136,6 +135,8 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     await staticServer.stop(true);
     staticServer = null;
 
+    await releaseNavigationProjectInstallAsync(standalone);
+    await installNavigationProjectAsync(studio, lockfileDigests);
     await assertGeneratedNavigationContractAsync(studio);
     await runGeneratedProjectChecksAsync(studio);
     const studioHostPort = await reserveTcpPort('navigation Studio host');
@@ -147,19 +148,31 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     const studioApiUrl = `http://127.0.0.1:${studioHostPort}/api`;
     await runGlobalStudioAuthNavigationSmokeAsync(studio.path, studioApiUrl);
     await runGlobalStudioAuthBypassNavigationSmokeAsync(studio.path, studioApiUrl);
+    await installNavigationProjectAsync(authHiddenRouteDrawerStudio, lockfileDigests);
     await runAuthHiddenRouteDrawerStudioNavigationSmokeAsync(
       authHiddenRouteDrawerStudio,
       studioApiUrl,
     );
+    await assertGeneratedNavigationContractAsync(authHiddenRouteDrawerStudio);
+    await releaseNavigationProjectInstallAsync(authHiddenRouteDrawerStudio);
+    await releaseNavigationProjectInstallAsync(studio);
     for (const project of [integratedStudio, noAuthStudio]) {
+      await installNavigationProjectAsync(project, lockfileDigests);
       await assertGeneratedNavigationContractAsync(project);
       await runScopeAwareStudioChecksAsync(project, studioApiUrl);
+      await releaseNavigationProjectInstallAsync(project);
     }
+    await installNavigationProjectAsync(authRuntime, lockfileDigests);
     await assertGeneratedNavigationContractAsync(authRuntime);
     await runSignedOutAuthNavigationSmokeAsync(authRuntime.path);
+    await releaseNavigationProjectInstallAsync(authRuntime);
 
+    await installNavigationProjectAsync(rootTabs, lockfileDigests);
     await runFocusedRootNavigatorChecksAsync(rootTabs);
+    await releaseNavigationProjectInstallAsync(rootTabs);
+    await installNavigationProjectAsync(rootDrawer, lockfileDigests);
     await runFocusedRootNavigatorChecksAsync(rootDrawer);
+    await releaseNavigationProjectInstallAsync(rootDrawer);
     for (const project of projects) {
       const expectedDigest = lockfileDigests.get(project.path);
       if (!expectedDigest) throw new Error(`${project.id} has no lockfile digest.`);
@@ -175,7 +188,7 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
   }
 }
 
-/*** Assert that a generated navigation project uses Router-owned navigation APIs, keeps hidden routes out of visible navigators and emits protected auth groups when required. */
+/*** Assert the common and topology-specific Router ownership contracts for one generated navigation fixture. */
 async function assertGeneratedNavigationContractAsync(project: NavigationProject): Promise<void> {
   const packageJson = JSON.parse(
     await readFile(path.join(project.path, 'package.json'), 'utf8'),
@@ -216,23 +229,7 @@ async function assertGeneratedNavigationContractAsync(project: NavigationProject
     throw new Error(`${project.id} does not own the minimal Expo 57 ancestor-isolation boundary.`);
   }
 
-  if (!generatedSource.includes("from 'expo-router/js-tabs'")) {
-    throw new Error(`${project.id} does not consume Router-owned JavaScript tabs.`);
-  }
-  if (!generatedSource.includes("from 'expo-router/drawer'")) {
-    throw new Error(`${project.id} does not consume Router-owned Drawer APIs.`);
-  }
-  const appRoot = path.join(project.path, 'src', 'app', '(app)');
-  const hiddenRoute = path.join(appRoot, 'hidden-tabs', 'secret.tsx');
-  const hiddenTabsLayout = path.join(appRoot, 'hidden-tabs', '_layout.tsx');
-  if (!(await pathExistsAsync(hiddenRoute)) || !(await pathExistsAsync(hiddenTabsLayout))) {
-    throw new Error(
-      `${project.id} does not preserve its hidden route outside the visible tab group.`,
-    );
-  }
-  if (!(await readFile(hiddenTabsLayout, 'utf8')).includes('href: null')) {
-    throw new Error(`${project.id} does not hide its direct JavaScript tab route.`);
-  }
+  await assertGeneratedNavigationTopologyAsync(project, generatedSource);
   if (generatedSource.includes('Parameters<typeof Zora')) {
     throw new Error(`${project.id} still contains a ZORA navigation compatibility cast.`);
   }
@@ -256,6 +253,62 @@ async function assertGeneratedNavigationContractAsync(project: NavigationProject
     packageName: '@ankhorage/navigator',
     range: navigatorRange,
   });
+}
+
+/*** Assert only the Router APIs and route files configured by the fixture's authored navigator topology. */
+async function assertGeneratedNavigationTopologyAsync(
+  project: NavigationProject,
+  generatedSource: string,
+): Promise<void> {
+  if (project.rootNavigator === 'stack') {
+    if (!generatedSource.includes("from 'expo-router/js-tabs'")) {
+      throw new Error(`${project.id} does not consume its configured Router JavaScript tabs.`);
+    }
+    if (!generatedSource.includes("from 'expo-router/drawer'")) {
+      throw new Error(`${project.id} does not consume its configured Router Drawer.`);
+    }
+    await assertHiddenJavaScriptTabRouteAsync(project);
+    return;
+  }
+
+  if (project.rootNavigator === 'drawer') {
+    if (!generatedSource.includes("from 'expo-router/drawer'")) {
+      throw new Error(`${project.id} does not consume its configured Router Drawer.`);
+    }
+    if (project.auth) await assertHiddenDrawerSignOutRouteAsync(project);
+  }
+}
+
+/*** Assert the stack fixture keeps its authored hidden JavaScript-tab route outside the visible tab group. */
+async function assertHiddenJavaScriptTabRouteAsync(project: NavigationProject): Promise<void> {
+  const appRoot = path.join(project.path, 'src', 'app', '(app)');
+  const hiddenRoute = path.join(appRoot, 'hidden-tabs', 'secret.tsx');
+  const hiddenTabsLayout = path.join(appRoot, 'hidden-tabs', '_layout.tsx');
+  if (!(await pathExistsAsync(hiddenRoute)) || !(await pathExistsAsync(hiddenTabsLayout))) {
+    throw new Error(
+      `${project.id} does not preserve its hidden route outside the visible tab group.`,
+    );
+  }
+  if (!(await readFile(hiddenTabsLayout, 'utf8')).includes('href: null')) {
+    throw new Error(`${project.id} does not hide its direct JavaScript tab route.`);
+  }
+}
+
+/*** Assert an authenticated root Drawer keeps the auth-injected sign-out route out of its visible entries. */
+async function assertHiddenDrawerSignOutRouteAsync(project: NavigationProject): Promise<void> {
+  const appLayout = await readFile(
+    path.join(project.path, 'src', 'app', '(app)', '_layout.tsx'),
+    'utf8',
+  );
+  const signOutScreen =
+    /<Drawer\.Screen\s+name="sign-out"\s+options=\{\{([\s\S]*?)\}\}\s*\/>/u.exec(appLayout);
+  const signOutOptions = signOutScreen?.[1];
+  if (!signOutOptions) {
+    throw new Error(`${project.id} does not generate the auth-injected sign-out Drawer route.`);
+  }
+  if (!/drawerItemStyle:\s*\{\s*display:\s*'none'\s*\}/u.test(signOutOptions)) {
+    throw new Error(`${project.id} exposes the auth-injected sign-out route in its Drawer.`);
+  }
 }
 
 /*** Assert production generation still declares a published Studio range before acceptance swaps in the current packed candidate. */
@@ -368,11 +421,13 @@ async function createProjectAsync(
     slug: created.id,
   });
   await manager.saveProjectManifest({ projectId: created.id, manifest, mutations: [] });
+  await releaseNavigationProjectInstallAsync({ path: created.path });
   return {
     ...options,
     auth: options.auth && (options.authScope ?? 'global') === 'global',
     id: created.id,
     path: created.path,
+    rootNavigator: options.rootNavigator ?? 'stack',
   };
 }
 
@@ -424,6 +479,26 @@ async function installGeneratedProjectAsync(project: NavigationProject): Promise
     label: `${project.id} cold frozen app install`,
   });
   return digest;
+}
+
+/*** Create and cold-install one fixture's lockfile without retaining its dependency tree after that fixture's checks complete. */
+async function installNavigationProjectAsync(
+  project: NavigationProject,
+  lockfileDigests: Map<string, string>,
+): Promise<void> {
+  const digest = await installGeneratedProjectAsync(project);
+  const expectedDigest = lockfileDigests.get(project.path);
+  if (expectedDigest !== undefined && expectedDigest !== digest) {
+    throw new Error(`${project.id} generated an unstable lockfile.`);
+  }
+  lockfileDigests.set(project.path, digest);
+}
+
+/*** Release one generated fixture's reproducible dependency tree once no active check needs it. */
+async function releaseNavigationProjectInstallAsync(project: {
+  readonly path: string;
+}): Promise<void> {
+  await rm(path.join(project.path, 'node_modules'), { force: true, recursive: true });
 }
 
 /***
@@ -779,19 +854,7 @@ async function runAuthHiddenRouteDrawerStudioNavigationSmokeAsync(
   project: NavigationProject,
   studioApiUrl: string,
 ): Promise<void> {
-  const appLayout = await readFile(
-    path.join(project.path, 'src', 'app', '(app)', '_layout.tsx'),
-    'utf8',
-  );
-  const signOutScreen =
-    /<Drawer\.Screen\s+name="sign-out"\s+options=\{\{([\s\S]*?)\}\}\s*\/>/u.exec(appLayout);
-  const signOutOptions = signOutScreen?.[1];
-  if (!signOutOptions) {
-    throw new Error(`${project.id} does not generate the auth-injected sign-out Drawer route.`);
-  }
-  if (!/drawerItemStyle:\s*\{\s*display:\s*'none'\s*\}/u.test(signOutOptions)) {
-    throw new Error(`${project.id} exposes the auth-injected sign-out route in its Drawer.`);
-  }
+  await assertHiddenDrawerSignOutRouteAsync(project);
 
   await generateRouterTypesAsync(project);
   await assertRouterTypesAsync(project, ['about']);
@@ -912,5 +975,5 @@ interface NavigationProject {
   readonly name: string;
   readonly path: string;
   readonly postSignInRoute?: 'about' | 'index';
-  readonly rootNavigator?: 'drawer' | 'tabs';
+  readonly rootNavigator: 'drawer' | 'stack' | 'tabs';
 }

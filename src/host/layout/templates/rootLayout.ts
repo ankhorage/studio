@@ -300,9 +300,9 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
 }: {
   children: ReactNode;
   runtimeManifest: AppManifest;
-}) {
+}) {${includeStudio ? '\n  const { setMode } = useZoraTheme();' : ''}
   const { executeCapability: executeApplicationCapability } =
-    ${resolvedRuntimeCapabilityExecutorHookName}();
+    ${resolvedRuntimeCapabilityExecutorHookName}(${includeStudio ? '{ setThemeMode: setMode }' : ''});
   const executeCapability = useMemo(
     () =>
       composeRuntimeCapabilityExecutor({
@@ -339,7 +339,6 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     ) : (
       <AnkhStudio
         runtimeRegistry={runtimeComponentRegistry}
-        runtimeConfig={generatedRuntimeConfig}
         bundledMediaRegistry={bundledMediaRegistry}
       >
         {runtimeContent}
@@ -516,6 +515,7 @@ function StudioShell({
     setActiveCanvasDragNodeId,
     setLastNonAdminLocation,
   } = useStudio();
+  const { theme } = useZoraTheme();
   useEffect(() => {
     const nextAppLocation = resolveStudioLastNonAdminLocation({
       pathname: appPathname,
@@ -527,6 +527,7 @@ function StudioShell({
   const studioWrapNode = useMemo(
     () =>
       createStudioStationarySelectionWrapNode({
+        builtInComponentRegistry: studioInteractionPolicyComponentRegistry,
         previewMode,
         thirdPartySupport: APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
       }),
@@ -535,6 +536,7 @@ function StudioShell({
   const studioResolveNodeProps = useMemo(
     () =>
       createStudioInteractionPolicyResolver({
+        builtInComponentRegistry: studioInteractionPolicyComponentRegistry,
         previewMode,
         thirdPartySupport: APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
       }),
@@ -576,6 +578,7 @@ function StudioShell({
         setActiveDragNodeId: setActiveCanvasDragNodeId,
       }}
       isEditMode={!previewMode}
+      selectionColor={theme.semantics.action.primary.base}
       selectedNodeId={selectedNodeId}
       selectNode={selectNode}
     >

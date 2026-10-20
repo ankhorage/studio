@@ -342,7 +342,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(paths).not.toContain('src/app/(app)/(tabs)/friends.tsx');
   });
 
-  test('generates canonical ZORA registry ownership for the running app runtime path', () => {
+  test('generates Reader-free ZORA registry ownership for the running app runtime path', () => {
     const manifest = createManifest();
     const indexScreen = manifest.screens.index;
     if (!indexScreen) {
@@ -355,8 +355,13 @@ describe('GeneratedAppFileGenerator', () => {
     });
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
     const screen = files.find((file) => file.path === 'src/app/(app)/index.tsx')?.content ?? '';
+    const generatedSource = files.map((file) => file.content).join('\n');
 
-    expect(rootLayout).toContain("from '@ankhorage/zora';");
+    expect(rootLayout).toContain("from '@ankhorage/zora/reader-free';");
+    expect(rootLayout).toContain("from '@ankhorage/zora/registry';");
+    expect(rootLayout).not.toContain("from '@ankhorage/zora';");
+    expect(generatedSource).not.toContain('@ankhorage/reader');
+    expect(generatedSource).not.toContain('pdfjs-dist');
     expect(rootLayout).toContain('AppBar');
     expect(rootLayout).toContain('AppShell');
     expect(rootLayout).toContain('ZoraProvider');
@@ -369,9 +374,12 @@ describe('GeneratedAppFileGenerator', () => {
       'APP_EXTENSION_INTERACTION_POLICY_SUPPORT as GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT',
     );
     expect(rootLayout).toContain(`const APP_COMPONENT_REGISTRY = createComponentRegistry(
-  ZORA_COMPONENT_REGISTRY,
+  ZORA_BASE_COMPONENT_REGISTRY,
   GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
 );`);
+    expect(rootLayout).toContain(
+      'const studioInteractionPolicyComponentRegistry = ZORA_BASE_COMPONENT_REGISTRY;',
+    );
     expect(rootLayout).toContain(`const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
   ...GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
 } as const;`);
@@ -384,7 +392,7 @@ describe('GeneratedAppFileGenerator', () => {
     );
     expect(rootLayout).toContain('<RuntimeRendererConfigProvider value={generatedRuntimeConfig}>');
     expect(rootLayout).not.toContain('STUDIO_ZORA_COMPONENT_REGISTRY');
-    expect(rootLayout).not.toContain('BASE_ZORA_COMPONENT_REGISTRY');
+    expect(rootLayout).toContain('ZORA_BASE_COMPONENT_REGISTRY');
     expect(rootLayout).not.toContain('ZORA_COMPONENT_REGISTRY as STUDIO_ZORA_COMPONENT_REGISTRY');
     expect(rootLayout).not.toContain('ZORA_COMPONENT_REGISTRY as BASE_ZORA_COMPONENT_REGISTRY');
     expect(rootLayout).not.toContain('SURFACE_COMPONENT_REGISTRY');
@@ -393,6 +401,54 @@ describe('GeneratedAppFileGenerator', () => {
     expect(screen).toContain('<RuntimeRendererConfigProvider value={runtimeRendererConfig}>');
     expect(screen).toContain('useLocalSearchParams<SearchParams>()');
     expect(screen).toContain('useGlobalSearchParams<SearchParams>()');
+    expect(screen).toContain("from '@ankhorage/zora/reader-free';");
+  });
+
+  test('keeps the complete ZORA registry for nested Reader screens', () => {
+    const manifest = createManifest();
+    const indexScreen = manifest.screens.index;
+    if (!indexScreen) throw new Error('Test manifest is missing the index screen.');
+    indexScreen.requires = { capabilities: { ebookReader: true } };
+    indexScreen.root = {
+      id: 'reader-screen',
+      type: 'Screen',
+      children: [
+        {
+          id: 'reader-content',
+          type: 'Section',
+          children: [{ id: 'reader', type: 'Reader', props: { format: 'epub' } }],
+        },
+      ],
+    };
+
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', manifest, [], {
+      includeStudio: false,
+    });
+    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const screen = files.find((file) => file.path === 'src/app/(app)/index.tsx')?.content ?? '';
+
+    expect(rootLayout).toContain("from '@ankhorage/zora';");
+    expect(rootLayout).not.toContain("from '@ankhorage/zora/reader-free';");
+    expect(rootLayout).toContain('ZORA_COMPONENT_REGISTRY');
+    expect(rootLayout).not.toContain('ZORA_BASE_COMPONENT_REGISTRY');
+    expect(screen).toContain("from '@ankhorage/zora';");
+  });
+
+  test('uses the complete Reader-enabled ZORA registry for Studio interaction-policy classification', () => {
+    const manifest = createManifest();
+    const indexScreen = manifest.screens.index;
+    if (!indexScreen) throw new Error('Test manifest is missing the index screen.');
+    indexScreen.requires = { capabilities: { ebookReader: true } };
+
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', manifest, [], {
+      includeStudio: true,
+    });
+    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+
+    expect(rootLayout).toContain(
+      'const studioInteractionPolicyComponentRegistry = ZORA_COMPONENT_REGISTRY;',
+    );
+    expect(rootLayout).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
   });
 
   test('binds standalone runtime capabilities through the released Expo Runtime owner', () => {
@@ -568,7 +624,7 @@ describe('GeneratedAppFileGenerator', () => {
     );
     expect(oauthState).toContain('interface StoredTransportAttempt {\n  attemptId: string;\n}');
     expect(oauth).toContain('GENERATED_OAUTH_PROVIDERS.find');
-    expect(authScreen).toContain("import { AuthScreen } from '@ankhorage/zora';");
+    expect(authScreen).toContain("import { AuthScreen } from '@ankhorage/zora/reader-free';");
     expect(authScreen).toContain('oauthProviders={generatedOAuthProviderItems.map');
     expect(authScreen).not.toContain('OAuthProviderList');
     expect(authScreen).not.toContain('KeyboardAvoidingView');

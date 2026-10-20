@@ -1,5 +1,5 @@
 import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
-import { cp, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readdir, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import {
   createServer as createHttpServer,
   type IncomingMessage,
@@ -103,6 +103,22 @@ const SMOKE_NAVIGATION_PROBE_SOURCE = `export function SmokeNavigationProbe() {
   return null;
 }`;
 
+bunTest('writes the Studio smoke extension without the root facade', async () => {
+  const projectRoot = await mkdtemp(path.join(tmpdir(), 'studio-smoke-extension-'));
+  const generatedRoot = path.join(projectRoot, 'src', 'generated');
+  await mkdir(generatedRoot, { recursive: true });
+
+  try {
+    await writeSmokeRuntimeExtensions(projectRoot);
+    const source = await readFile(path.join(generatedRoot, 'SmokeStudioComponents.tsx'), 'utf8');
+
+    expect(source).toContain("from '@ankhorage/studio/core/StudioContext'");
+    expect(source).not.toContain("from '@ankhorage/studio';");
+  } finally {
+    await rm(projectRoot, { recursive: true, force: true });
+  }
+});
+
 function createAdminSmokeManifest(): AppManifest {
   const nutritionManifest = createAdminSmokeBaseManifest();
   const expo57RouteIcons: Readonly<Record<string, string>> = {
@@ -189,7 +205,6 @@ function createAdminSmokeManifest(): AppManifest {
               type: 'Button',
               props: {
                 children: 'Open scanner in Preview',
-                onPress: { type: 'navigate', payload: { route: '/scan' } },
                 testID: 'nutrition-preview-navigation-action',
               },
             },
@@ -203,8 +218,54 @@ function createAdminSmokeManifest(): AppManifest {
         root: createScrollableRuntimeScreenRoot(),
       },
     },
+    dataBindings: {
+      ...nutritionManifest.dataBindings,
+      'nutrition-preview-navigation-action': {
+        componentId: 'nutrition-preview-navigation-action',
+        events: {
+          press: [
+            {
+              target: {
+                capability: 'navigator.navigate',
+                input: {
+                  route: { kind: 'literal', value: '/scan' },
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
   };
 }
+
+bunTest('uses canonical event bindings for generated Admin Preview navigation', () => {
+  const manifest = createAdminSmokeManifest();
+  const action = manifest.screens['food_drink-nutrition-catalog-scan-catalog']?.root.children?.find(
+    (node) => node.id === 'nutrition-preview-navigation-action',
+  );
+
+  expect(action?.props).toEqual({
+    children: 'Open scanner in Preview',
+    testID: 'nutrition-preview-navigation-action',
+  });
+  expect(action?.props).not.toHaveProperty('onPress');
+  expect(manifest.dataBindings?.['nutrition-preview-navigation-action']).toEqual({
+    componentId: 'nutrition-preview-navigation-action',
+    events: {
+      press: [
+        {
+          target: {
+            capability: 'navigator.navigate',
+            input: {
+              route: { kind: 'literal', value: '/scan' },
+            },
+          },
+        },
+      ],
+    },
+  });
+});
 
 function createScrollableRuntimeScreenRoot(): UiNode {
   return {
@@ -1971,7 +2032,7 @@ async function installGeneratedProjectDependencies(
     throw new Error('Generated smoke project has no dependency map.');
   }
   generatedPackage.dependencies['@ankhorage/studio'] =
-    `file:${await stageLocalStudioPackage(workspaceRoot)}`;
+    `file:${await packLocalStudioPackageAsync(workspaceRoot)}`;
   const navigatorTarball = readEnvString('ANKH_STUDIO_NAVIGATOR_TARBALL');
   if (navigatorTarball) {
     generatedPackage.dependencies['@ankhorage/navigator'] = `file:${navigatorTarball}`;
@@ -1997,42 +2058,37 @@ async function installGeneratedProjectDependencies(
   }
 }
 
-async function stageLocalStudioPackage(workspaceRoot: string): Promise<string> {
-  const sourcePackage = JSON.parse(
-    await readFile(path.join(process.cwd(), 'package.json'), 'utf8'),
-  ) as Record<string, unknown>;
-  const packageRoot = path.join(workspaceRoot, 'packages', 'studio');
-  await mkdir(packageRoot, { recursive: true });
-  await cp(path.join(process.cwd(), 'dist'), path.join(packageRoot, 'dist'), {
-    recursive: true,
+async function packLocalStudioPackageAsync(workspaceRoot: string): Promise<string> {
+  const artifactRoot = path.join(workspaceRoot, 'artifacts');
+  await mkdir(artifactRoot, { recursive: true });
+  const pack = Bun.spawn(['bun', 'pm', 'pack', '--destination', artifactRoot], {
+    cwd: process.cwd(),
+    stdout: 'pipe',
+    stderr: 'pipe',
   });
-  await writeFile(
-    path.join(packageRoot, 'package.json'),
-    `${JSON.stringify(
-      {
-        name: sourcePackage.name,
-        version: sourcePackage.version,
-        type: sourcePackage.type,
-        main: sourcePackage.main,
-        exports: sourcePackage.exports,
-        dependencies: sourcePackage.dependencies,
-        peerDependencies: sourcePackage.peerDependencies,
-      },
-      null,
-      2,
-    )}\n`,
-    'utf8',
-  );
-  return packageRoot;
+  const [exitCode, stdout, stderr] = await Promise.all([
+    pack.exited,
+    new Response(pack.stdout).text(),
+    new Response(pack.stderr).text(),
+  ]);
+  if (exitCode !== 0) {
+    throw new Error(`Studio package packing failed.\n${stdout}\n${stderr}`);
+  }
+  const artifacts = (await readdir(artifactRoot)).filter((artifact) => artifact.endsWith('.tgz'));
+  const [artifact] = artifacts;
+  if (artifacts.length !== 1 || !artifact) {
+    throw new Error(`Studio package packing produced no single artifact.\n${stdout}`);
+  }
+  return path.join(artifactRoot, artifact);
 }
 
 async function writeSmokeRuntimeExtensions(projectRoot: string): Promise<void> {
   const generatedRoot = path.join(projectRoot, 'src', 'generated');
   await writeFile(
     path.join(generatedRoot, 'SmokeStudioComponents.tsx'),
-    `import { useStudio } from '@ankhorage/studio';
+    `import { useStudio } from '@ankhorage/studio/core/StudioContext';
 import { useStudioUnsupportedNodeMeasurement } from '@ankhorage/studio/runtime';
-import { Text } from '@ankhorage/zora';
+import { Text } from '@ankhorage/zora/reader-free';
 import { usePathname, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {

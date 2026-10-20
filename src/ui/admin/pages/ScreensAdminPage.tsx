@@ -11,7 +11,7 @@ import {
   Text,
   TextInput,
   View as ZoraView,
-} from '@ankhorage/zora';
+} from '@ankhorage/zora/reader-free';
 import { useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';

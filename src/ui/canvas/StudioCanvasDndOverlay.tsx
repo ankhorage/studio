@@ -5,7 +5,7 @@ import {
   Droppable,
   DropProvider,
 } from '@ankhorage/react-native-reanimated-dnd-web';
-import { IconButton, Text, useZoraTheme } from '@ankhorage/zora';
+import { IconButton, Text, useZoraTheme } from '@ankhorage/zora/reader-free';
 import React from 'react';
 import { View } from 'react-native';
 

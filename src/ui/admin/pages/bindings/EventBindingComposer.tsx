@@ -1,5 +1,5 @@
 import type { EventBinding, UiBindableEventMeta } from '@ankhorage/contracts';
-import { Button, Select, Text, TextInput } from '@ankhorage/zora';
+import { Button, Select, Text, TextInput } from '@ankhorage/zora/reader-free';
 import { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 

@@ -7,7 +7,7 @@ import {
   Heading,
   Text,
   useZoraTheme,
-} from '@ankhorage/zora';
+} from '@ankhorage/zora/reader-free';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 

@@ -1,12 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
+import type { ComponentRegistry } from '@ankhorage/runtime';
 import { describe, expect, it } from 'bun:test';
 
 import {
   createStudioActionSuppressionConfig,
   shouldSuppressStudioRuntimeActions,
 } from './actionSuppression';
+import { createStudioInteractionPolicyResolver } from './interactionPolicy';
 import {
   composeInteractionPolicyResolver,
   createInteractionPolicyResolver,
@@ -216,17 +218,43 @@ describe('interactionPolicy production adapter', () => {
   const sourcePath = join(import.meta.dir, 'interactionPolicy.ts');
   const source = readFileSync(sourcePath, 'utf8');
 
-  it('derives support from the actual ZORA_COMPONENT_REGISTRY', () => {
-    expect(source).toContain("from '@ankhorage/zora'");
-    expect(source).toContain('ZORA_COMPONENT_REGISTRY');
+  it('derives support from the selected built-in component registry', () => {
+    expect(source).toContain('type ComponentRegistry');
+    expect(source).toContain('readonly builtInComponentRegistry: ComponentRegistry');
     expect(source).toContain(
-      'Object.prototype.hasOwnProperty.call(ZORA_COMPONENT_REGISTRY, nodeType)',
+      'Object.prototype.hasOwnProperty.call(builtInComponentRegistry, nodeType)',
     );
+    expect(source).not.toContain("from '@ankhorage/zora'");
   });
 
   it('delegates classification to the pure core', () => {
     expect(source).toContain('createInteractionPolicyResolver');
     expect(source).toContain('composeInteractionPolicyResolver');
+  });
+
+  it('classifies built-ins and explicit extensions without inferring support from the render registry', () => {
+    const builtInComponentRegistry: ComponentRegistry = { BuiltIn: 'div' };
+    const renderComponentRegistry: ComponentRegistry = {
+      ...builtInComponentRegistry,
+      OptedInExtension: 'div',
+      RenderOnlyExtension: 'div',
+    };
+    const resolver = createStudioInteractionPolicyResolver({
+      builtInComponentRegistry,
+      previewMode: false,
+      thirdPartySupport: { OptedInExtension: true },
+    });
+
+    const resolvePolicy = (type: string) =>
+      resolver({
+        node: { id: type, type },
+        props: { renderable: Object.hasOwn(renderComponentRegistry, type) },
+      }).interactionPolicy;
+
+    expect(resolvePolicy('BuiltIn')).toBe('passive');
+    expect(resolvePolicy('OptedInExtension')).toBe('passive');
+    expect(resolvePolicy('RenderOnlyExtension')).toBeUndefined();
+    expect(resolvePolicy('Unknown')).toBeUndefined();
   });
 });
 

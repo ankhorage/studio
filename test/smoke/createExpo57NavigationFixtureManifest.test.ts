@@ -75,6 +75,23 @@ describe('Expo 57 generated navigation acceptance fixture', () => {
     expect(source).not.toContain('<ZoraDrawerContent');
     expect(source).not.toContain('@react-navigation/');
     expect(source).not.toContain('Parameters<typeof Zora');
+    expect(manifest.screens['navigation-home']?.root.children?.[1]?.props?.onPress).toBeUndefined();
+    expect(manifest.dataBindings?.['home-profile']).toEqual({
+      componentId: 'home-profile',
+      events: {
+        press: [
+          {
+            target: {
+              capability: 'navigator.navigate',
+              input: {
+                route: { kind: 'literal', value: 'profile/[id]' },
+                params: { kind: 'literal', value: { id: 'ada', source: 'internal' } },
+              },
+            },
+          },
+        ],
+      },
+    });
   });
 
   test('covers released Studio inclusion and protected auth route groups', () => {
@@ -134,5 +151,29 @@ describe('Expo 57 generated navigation acceptance fixture', () => {
     expect(navigatorLayout).not.toContain('ZoraTabBar');
     expect(navigatorLayout).not.toContain('ZoraDrawerContent');
     expect(rootLayout).not.toContain('@react-navigation/');
+  });
+
+  test('covers an authenticated root Drawer without requiring stack-only tabs or hidden-tab routes', () => {
+    const manifest = createExpo57NavigationFixtureManifest(BASE_MANIFEST, {
+      auth: true,
+      name: 'Authenticated Root Drawer',
+      rootNavigator: 'drawer',
+      slug: 'authenticated-root-drawer',
+    });
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/navigation', manifest, [], {
+      includeStudio: true,
+    });
+    const paths = files.map((file) => file.path);
+    const source = files.map((file) => file.content).join('\n');
+    const drawerLayout =
+      files.find((file) => file.path === 'src/app/(app)/_layout.tsx')?.content ?? '';
+
+    expect(drawerLayout).toContain("from 'expo-router/drawer'");
+    expect(drawerLayout).toContain('name="sign-out"');
+    expect(drawerLayout).toContain("drawerItemStyle: { display: 'none' }");
+    expect(source).toContain('<Stack.Protected');
+    expect(paths).toContain('src/app/(auth)/sign-in.tsx');
+    expect(paths).not.toContain('src/app/(app)/(tabs)/_layout.tsx');
+    expect(paths).not.toContain('src/app/(app)/hidden-tabs/_layout.tsx');
   });
 });

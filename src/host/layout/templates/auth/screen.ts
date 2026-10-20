@@ -14,6 +14,7 @@ interface AuthScreenTemplateArgs {
   signUpOptionalFields: string[];
   signUpPolicy: 'autoSignIn' | 'requireVerification';
   oauthProviders?: readonly GeneratedOAuthProviderPlan[];
+  zoraEntrypoint?: string;
 }
 
 /*** Generate the thin route component that binds a generated auth screen to its initial mode and title. */
@@ -31,6 +32,7 @@ export default function ${safeName}Screen() {
 export function getAuthScreenRuntimeTsx(
   args: Omit<AuthScreenTemplateArgs, 'initialMode' | 'screenName' | 'title'>,
 ) {
+  const zoraEntrypoint = args.zoraEntrypoint ?? '@ankhorage/zora';
   const oauthEnabled = (args.oauthProviders?.length ?? 0) > 0;
   const oauthImports = oauthEnabled
     ? `import { generatedOAuthProviderItems } from '@/auth/oauth';\n`
@@ -39,7 +41,7 @@ export function getAuthScreenRuntimeTsx(
 
   return `import type { AppManifest } from '@ankhorage/contracts';
 import { ManifestProvider } from '@ankhorage/runtime';
-import { AuthScreen } from '@ankhorage/zora';
+import { AuthScreen } from '${zoraEntrypoint}';
 import ankhConfig from '@root/ankh.config.json';
 import { Stack } from 'expo-router';
 

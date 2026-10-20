@@ -1,4 +1,3 @@
-import { useZoraTheme } from '@ankhorage/zora';
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 import { Alert } from 'react-native';
@@ -17,9 +16,11 @@ interface ThemeSetModeInput {
 /***
  * Expose Studio's runtime-host capability executor to generated Studio applications.
  */
-export function useStudioRuntimeCapabilityExecutor() {
+export function useStudioRuntimeCapabilityExecutor(args: {
+  readonly setThemeMode: (mode: ThemeSetModeInput['mode']) => void;
+}) {
   const router = useRouter();
-  const { setMode } = useZoraTheme();
+  const { setThemeMode } = args;
   const executeCapability = useMemo(
     () =>
       createStudioRuntimeCapabilityExecutor({
@@ -28,9 +29,9 @@ export function useStudioRuntimeCapabilityExecutor() {
           const { params, route } = input as NavigatorNavigateInput;
           router.navigate({ params, pathname: route });
         },
-        setThemeMode: (input) => setMode((input as ThemeSetModeInput).mode),
+        setThemeMode: (input) => setThemeMode((input as ThemeSetModeInput).mode),
       }),
-    [router, setMode],
+    [router, setThemeMode],
   );
 
   return { executeCapability };
