@@ -172,6 +172,9 @@ function createIconBindingFile(
   const cases = mediaIds.map((mediaId) => {
     const asset = Object.values(manifest.media?.assets ?? {}).find(({ id }) => id === mediaId);
     if (!asset) throw new Error(`Navigation icon media '${mediaId}' is missing from the manifest.`);
+    if (asset.kind !== 'image') {
+      throw new Error(`Navigation icon media '${mediaId}' must reference an image asset.`);
+    }
     if (asset.source.kind === 'storage') {
       throw new Error(
         `Navigation icon media '${mediaId}' requires asynchronous storage resolution.`,
@@ -179,7 +182,10 @@ function createIconBindingFile(
     }
     const source =
       asset.source.kind === 'bundled'
-        ? `bundledMediaRegistry['${escapeStringLiteral(asset.source.path)}']`
+        ? `resolveBundledNavigatorIconSource(
+        '${escapeStringLiteral(mediaId)}',
+        '${escapeStringLiteral(asset.source.path)}',
+      )`
         : `'${escapeStringLiteral(asset.source.url)}'`;
     return `    case '${escapeStringLiteral(mediaId)}':
       return ${source};`;
@@ -187,14 +193,38 @@ function createIconBindingFile(
 
   return {
     path: 'src/generated/navigatorIconBindings.ts',
-    content: `import { bundledMediaRegistry } from '@/generated/bundledMediaRegistry';
+    content: `import type { SvgIconSource } from '@ankhorage/surface';
 
-export function resolveNavigatorIconSource(reference: { mediaId: string }) {
+import { bundledMediaRegistry } from '@/generated/bundledMediaRegistry';
+
+export function resolveNavigatorIconSource(reference: { mediaId: string }): SvgIconSource['source'] {
   switch (reference.mediaId) {
 ${cases.join('\n')}
     default:
       throw new Error(\`Navigation icon media '\${reference.mediaId}' is unavailable.\`);
   }
+}
+
+function resolveBundledNavigatorIconSource(
+  mediaId: string,
+  assetPath: string,
+): SvgIconSource['source'] {
+  const source = bundledMediaRegistry[assetPath];
+  if (source === undefined) {
+    throw new Error(\`Navigation icon media '\${mediaId}' is missing bundled asset '\${assetPath}'.\`);
+  }
+  if (typeof source === 'string' || typeof source === 'number') return source;
+  if (isUriImageSource(source)) return source;
+  throw new Error(\`Navigation icon media '\${mediaId}' has unsupported bundled asset '\${assetPath}'.\`);
+}
+
+function isUriImageSource(source: unknown): source is { readonly uri: string } {
+  return (
+    typeof source === 'object' &&
+    source !== null &&
+    'uri' in source &&
+    typeof source.uri === 'string'
+  );
 }
 `,
   };

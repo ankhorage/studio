@@ -11,6 +11,7 @@ import {
   getMetroConfigJs,
   getMetroEmptyModuleJs,
   getPackageJson,
+  getPlatformCheckMjs,
 } from './templates';
 
 const WEB_TARGETS = { web: { enabled: true } } as const;
@@ -174,6 +175,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(pkg.packageManager.startsWith('bun@')).toBe(true);
     expect(pkg.packageManager.slice('bun@'.length)).toMatch(SEMVER_PATTERNS.exact);
     expect(pkg.scripts['knip:check']).toBe('ankhorage-knip');
+    expect(pkg.scripts['platform:check']).toBe('node scripts/assert-platform.mjs');
     expect(pkg.scripts.typecheck).toBe('tsc --noEmit -p tsconfig.json');
     expect(devDependencies[EXPO_PLATFORM.tooling.expoDoctor.name]).toBe(
       EXPO_PLATFORM.tooling.expoDoctor.version,
@@ -183,6 +185,14 @@ describe('generated OAuth scaffold templates', () => {
       EXPO_PLATFORM.tooling.typescript.version,
     );
     expect(Object.values(dependencies)).not.toContain('latest');
+  });
+
+  it('generates an app-owned platform verifier from Expo Runtime policy', () => {
+    const source = getPlatformCheckMjs();
+
+    expect(source).toContain("from '@ankhorage/expo-runtime/platform'");
+    expect(source).toContain('EXPO_PLATFORM.sdk');
+    expect(source).not.toContain('57.');
   });
 
   it('distinguishes compatible caret release lines', () => {

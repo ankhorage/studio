@@ -8,6 +8,7 @@ export {
   getEasJson,
   getMetroConfigJs,
   getMetroEmptyModuleJs,
+  getPlatformCheckMjs,
   getTsConfigJson,
 } from './templateSources';
 

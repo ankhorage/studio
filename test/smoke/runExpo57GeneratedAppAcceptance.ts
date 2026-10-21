@@ -184,6 +184,12 @@ async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
   });
 
   const commands = [
+    {
+      args: ['run', 'platform:check'],
+      command: 'bun',
+      cwd: projectRoot,
+      label: 'Generated app platform contract',
+    },
     { args: ['run', 'lint'], command: 'bun', cwd: projectRoot, label: 'Generated app lint' },
     {
       args: ['run', 'format:check'],

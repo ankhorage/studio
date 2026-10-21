@@ -120,8 +120,11 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     for (const project of projects) {
       if (project.includeStudio) {
         await assertGeneratedStudioRegistryRangeAsync(project);
-        await installStudioCandidateAsync(project.path, studioCandidate);
       }
+    }
+    await assertRegistryGeneratedStudioPlatformCheckAsync(studio);
+    for (const project of projects) {
+      if (project.includeStudio) await installStudioCandidateAsync(project.path, studioCandidate);
     }
     const lockfileDigests = new Map<string, string>();
 
@@ -138,7 +141,7 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     await releaseNavigationProjectInstallAsync(standalone);
     await installNavigationProjectAsync(studio, lockfileDigests);
     await assertGeneratedNavigationContractAsync(studio);
-    await runGeneratedProjectChecksAsync(studio);
+    await runGeneratedProjectChecksAsync(studio, 'packed-candidate');
     const studioHostPort = await reserveTcpPort('navigation Studio host');
     studioHost = await startStudioHostServer({
       host: '127.0.0.1',
@@ -357,6 +360,55 @@ async function installStudioCandidateAsync(
   };
   packageJson.dependencies['@ankhorage/studio'] = `file:${studioCandidate}`;
   await writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`, 'utf8');
+}
+
+/*** Prove a normally generated Studio app passes the production dependency-provenance policy before this acceptance replaces Studio with its packed candidate. */
+async function assertRegistryGeneratedStudioPlatformCheckAsync(
+  project: NavigationProject,
+): Promise<void> {
+  await installGeneratedProjectAsync(project);
+  await runCommandAsync({
+    args: ['run', 'platform:check'],
+    command: 'bun',
+    cwd: project.path,
+    label: `${project.id} registry platform contract`,
+  });
+  await releaseNavigationProjectInstallAsync(project);
+}
+
+/*** Verify that the production platform policy rejects the intentional packed-candidate declaration used only by this integration acceptance. */
+async function assertPackedStudioCandidatePlatformCheckRejectedAsync(
+  project: NavigationProject,
+): Promise<void> {
+  console.log(`\n==> ${project.id} packed Studio candidate platform contract rejection`);
+  const childProcess = Bun.spawn(['bun', 'run', 'platform:check'], {
+    cwd: project.path,
+    env: {
+      ...Bun.env,
+      CI: '1',
+      EXPO_NO_TELEMETRY: '1',
+      TMPDIR: '/tmp',
+      __UNSAFE_EXPO_HOME_DIRECTORY: path.join(project.path, '.ankh', 'expo-home'),
+    },
+    stderr: 'pipe',
+    stdout: 'pipe',
+  });
+  const [exitCode, stdout, stderr] = await Promise.all([
+    childProcess.exited,
+    new Response(childProcess.stdout).text(),
+    new Response(childProcess.stderr).text(),
+  ]);
+  const output = `${stdout}\n${stderr}`;
+  if (exitCode === 0) {
+    throw new Error(
+      `${project.id} accepted its packed Studio candidate as a production dependency.`,
+    );
+  }
+  if (!output.includes('uses forbidden standalone dependency range file:')) {
+    throw new Error(
+      `${project.id} rejected its packed Studio candidate for an unexpected reason.\n${output}`,
+    );
+  }
 }
 
 /*** Assert that generated Expo Router declarations are non-empty and contain the required navigation route evidence. */
@@ -679,12 +731,29 @@ async function runFocusedRootNavigatorChecksAsync(project: NavigationProject): P
 }
 
 /*** Run typed-route generation, navigation lint, Expo compatibility/Doctor, TypeScript and Web/native exports for one generated navigation fixture. */
-async function runGeneratedProjectChecksAsync(project: NavigationProject): Promise<void> {
+async function runGeneratedProjectChecksAsync(
+  project: NavigationProject,
+  dependencyProvenance: 'registry' | 'packed-candidate' = 'registry',
+): Promise<void> {
   await generateRouterTypesAsync(project);
   await assertRouterTypesAsync(project);
   const expoCli = await resolveAppOwnedExpoCliAsync(project.path);
 
+  if (dependencyProvenance === 'packed-candidate') {
+    await assertPackedStudioCandidatePlatformCheckRejectedAsync(project);
+  }
+
   const commands: readonly AcceptanceCommand[] = [
+    ...(dependencyProvenance === 'registry'
+      ? [
+          {
+            args: ['run', 'platform:check'],
+            command: 'bun',
+            cwd: project.path,
+            label: `${project.id} platform contract`,
+          },
+        ]
+      : []),
     project.auth
       ? {
           args: [

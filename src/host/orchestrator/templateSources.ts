@@ -947,6 +947,7 @@ export function getPackageJson(args: {
     version: '1.0.0',
     scripts: {
       start: 'expo start',
+      'platform:check': 'node scripts/assert-platform.mjs',
       ...(targets.android?.enabled ? { android: 'bun scripts/ankh-android.ts' } : {}),
       ...(targets.ios?.enabled ? { ios: 'expo run:ios' } : {}),
       ...(targets.web?.enabled ? { web: 'expo start --web' } : {}),
@@ -1033,6 +1034,92 @@ export function getPackageJson(args: {
   };
 
   return pkgJson;
+}
+
+/*** Generate the standalone app-owned verifier for the canonical Expo platform contract. */
+export function getPlatformCheckMjs(): string {
+  return `import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
+import { SEMVER_PATTERNS } from '@ankhorage/utility/semver';
+
+const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const packageJson = JSON.parse(await readFile(path.join(projectRoot, 'package.json'), 'utf8'));
+
+assertEqual(packageJson.main, \`\${EXPO_PLATFORM.navigation.expoRouter.name}/entry\`, 'Router entry');
+assertEqual(packageJson.engines?.node, EXPO_PLATFORM.tooling.node.version, 'Node engine');
+const packageManager = packageJson.packageManager;
+if (
+  typeof packageManager !== 'string' ||
+  !packageManager.startsWith('bun@') ||
+  !SEMVER_PATTERNS.exact.test(packageManager.slice('bun@'.length))
+) {
+  fail(\`Bun toolchain is \${String(packageManager)}; expected a pinned bun@x.y.z version.\`);
+}
+if (!SEMVER_PATTERNS.caret.test(packageJson.dependencies?.['@ankhorage/expo-runtime'] ?? '')) {
+  fail('Expo Runtime release range must be a pinned caret range.');
+}
+
+for (const dependency of collectPlatformDependencies()) {
+  assertEqual(
+    packageJson.dependencies?.[dependency.name] ?? packageJson.devDependencies?.[dependency.name],
+    dependency.version,
+    dependency.name,
+  );
+}
+
+if ('workspaces' in packageJson) fail('Generated app must not declare a workspace.');
+for (const [name, version] of Object.entries({
+  ...packageJson.dependencies,
+  ...packageJson.devDependencies,
+})) {
+  if (typeof version !== 'string') fail(\`\${name} has a non-string dependency range.\`);
+  if (
+    version === 'latest' ||
+    ['file:', 'link:', 'workspace:'].some((prefix) => version.startsWith(prefix))
+  ) {
+    fail(\`\${name} uses forbidden standalone dependency range \${version}.\`);
+  }
+}
+for (const [name, command] of Object.entries(packageJson.scripts ?? {})) {
+  if (typeof command !== 'string') fail(\`\${name} has a non-string script.\`);
+  if (command.includes('../..')) fail(\`\${name} reaches outside the app package root.\`);
+}
+
+console.log(
+  \`Generated app matches Expo SDK \${EXPO_PLATFORM.sdk}, \${EXPO_PLATFORM.architecture}, Node \${EXPO_PLATFORM.tooling.node.version}.\`,
+);
+
+function assertEqual(actual, expected, label) {
+  if (actual !== expected) fail(\`\${label} is \${String(actual)}; expected \${String(expected)}.\`);
+}
+
+function collectPlatformDependencies() {
+  return [
+    ...Object.values(EXPO_PLATFORM.runtime),
+    EXPO_PLATFORM.tooling.nodeTypes,
+    EXPO_PLATFORM.tooling.typescript,
+    EXPO_PLATFORM.tooling.expoDoctor,
+    EXPO_PLATFORM.navigation.expoRouter,
+    EXPO_PLATFORM.navigation.screens,
+    EXPO_PLATFORM.navigation.safeArea,
+    EXPO_PLATFORM.animation.gestureHandler,
+    EXPO_PLATFORM.animation.reanimated,
+    EXPO_PLATFORM.animation.worklets,
+    EXPO_PLATFORM.packages.constants,
+    EXPO_PLATFORM.packages.font,
+    EXPO_PLATFORM.packages.linking,
+    EXPO_PLATFORM.packages.splashScreen,
+    EXPO_PLATFORM.packages.statusBar,
+  ];
+}
+
+function fail(message) {
+  throw new Error(message);
+}
+`;
 }
 
 export function getEasJson() {
