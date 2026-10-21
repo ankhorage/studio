@@ -1076,7 +1076,10 @@ for (const [name, version] of Object.entries({
   ...packageJson.devDependencies,
 })) {
   if (typeof version !== 'string') fail(\`\${name} has a non-string dependency range.\`);
-  if (version === 'latest' || ['file:', 'link:', 'workspace:'].some((prefix) => version.startsWith(prefix))) {
+  if (
+    version === 'latest' ||
+    ['file:', 'link:', 'workspace:'].some((prefix) => version.startsWith(prefix))
+  ) {
     fail(\`\${name} uses forbidden standalone dependency range \${version}.\`);
   }
 }
