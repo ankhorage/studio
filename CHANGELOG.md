@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.0.1
+
+### Patch Changes
+
+- 767a8c0: Generate type-safe bundled and URL-backed Navigator icon resolvers, and include the standalone generated-app platform verifier.
+
 ## 8.0.0
 
 ### Major Changes

@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v8.0.0",
+      "value": "v8.0.1",
       "color": "cb3837"
     },
     {
@@ -3705,6 +3705,7 @@
         "getMetroConfigJs",
         "getMetroEmptyModuleJs",
         "getPackageJson",
+        "getPlatformCheckMjs",
         "getTsConfigJson"
       ]
     },
@@ -3721,6 +3722,7 @@
         "getMetroConfigJs",
         "getMetroEmptyModuleJs",
         "getPackageJson",
+        "getPlatformCheckMjs",
         "getTsConfigJson"
       ]
     },
@@ -18218,7 +18220,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyUpdatePorts.test.ts",
-        "line": 141,
+        "line": 142,
         "column": 1
       }
     },
@@ -18229,7 +18231,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyUpdatePorts.test.ts",
-        "line": 156,
+        "line": 157,
         "column": 1
       }
     },
@@ -18240,7 +18242,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyUpdatePorts.test.ts",
-        "line": 214,
+        "line": 215,
         "column": 1
       }
     },
@@ -18251,7 +18253,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyUpdatePorts.test.ts",
-        "line": 247,
+        "line": 248,
         "column": 1
       }
     },
@@ -18262,7 +18264,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/composition/createStudioGeneratedPackagePolicyUpdatePorts.test.ts",
-        "line": 277,
+        "line": 278,
         "column": 1
       }
     },
@@ -22750,7 +22752,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 204,
+        "line": 234,
         "column": 1
       }
     },
@@ -22761,7 +22763,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 206,
+        "line": 236,
         "column": 9
       }
     },
@@ -22772,7 +22774,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 219,
+        "line": 249,
         "column": 1
       }
     },
@@ -24532,7 +24534,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 401,
+        "line": 411,
         "column": 1
       }
     },
@@ -24543,7 +24545,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 462,
+        "line": 472,
         "column": 1
       }
     },
@@ -24554,7 +24556,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 492,
+        "line": 502,
         "column": 1
       }
     },
@@ -24620,7 +24622,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.test.ts",
-        "line": 430,
+        "line": 440,
         "column": 1
       }
     },
@@ -24631,7 +24633,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.test.ts",
-        "line": 439,
+        "line": 449,
         "column": 1
       }
     },
@@ -24642,7 +24644,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 15,
+        "line": 16,
         "column": 1
       }
     },
@@ -24801,13 +24803,24 @@
       }
     },
     {
+      "name": "getPlatformCheckMjs",
+      "description": "Generate the standalone app-owned verifier for the canonical Expo platform contract.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/templateSources.ts",
+        "line": 1040,
+        "column": 1
+      }
+    },
+    {
       "name": "getEasJson",
       "description": null,
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1038,
+        "line": 1125,
         "column": 1
       }
     },
@@ -24818,7 +24831,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1054,
+        "line": 1141,
         "column": 1
       }
     },
@@ -24829,7 +24842,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1065,
+        "line": 1152,
         "column": 1
       }
     },
@@ -24840,7 +24853,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1069,
+        "line": 1156,
         "column": 1
       }
     },
@@ -24851,7 +24864,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templateSources.ts",
-        "line": 1102,
+        "line": 1189,
         "column": 1
       }
     },
@@ -55256,6 +55269,12 @@
       },
       {
         "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "assertRegistryGeneratedStudioPlatformCheckAsync",
+        "callExpression": "assertRegistryGeneratedStudioPlatformCheckAsync",
+        "sourcePath": "test/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
         "toSymbol": "installStudioCandidateAsync",
         "callExpression": "installStudioCandidateAsync",
         "sourcePath": "test/smoke/runExpo57GeneratedNavigationAcceptance.ts"
@@ -55456,6 +55475,24 @@
         "fromSymbol": "installStudioCandidateAsync",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
+        "sourcePath": "test/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertRegistryGeneratedStudioPlatformCheckAsync",
+        "toSymbol": "installGeneratedProjectAsync",
+        "callExpression": "installGeneratedProjectAsync",
+        "sourcePath": "test/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertRegistryGeneratedStudioPlatformCheckAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "test/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertRegistryGeneratedStudioPlatformCheckAsync",
+        "toSymbol": "releaseNavigationProjectInstallAsync",
+        "callExpression": "releaseNavigationProjectInstallAsync",
         "sourcePath": "test/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
@@ -55756,6 +55793,12 @@
         "fromSymbol": "runGeneratedProjectChecksAsync",
         "toSymbol": "resolveAppOwnedExpoCliAsync",
         "callExpression": "resolveAppOwnedExpoCliAsync",
+        "sourcePath": "test/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runGeneratedProjectChecksAsync",
+        "toSymbol": "assertPackedStudioCandidatePlatformCheckRejectedAsync",
+        "callExpression": "assertPackedStudioCandidatePlatformCheckRejectedAsync",
         "sourcePath": "test/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
@@ -63182,6 +63225,12 @@
       },
       {
         "fromSymbol": "scaffoldProject",
+        "toSymbol": "writePlatformCheck",
+        "callExpression": "this.writePlatformCheck",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "scaffoldProject",
         "toSymbol": "writeTsConfig",
         "callExpression": "this.writeTsConfig",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
@@ -63266,6 +63315,12 @@
       },
       {
         "fromSymbol": "syncProjectScaffold",
+        "toSymbol": "writePlatformCheck",
+        "callExpression": "this.writePlatformCheck",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "syncProjectScaffold",
         "toSymbol": "writeTsConfig",
         "callExpression": "this.writeTsConfig",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
@@ -63328,6 +63383,12 @@
         "fromSymbol": "writeMetroConfig",
         "toSymbol": "getMetroEmptyModuleJs",
         "callExpression": "getMetroEmptyModuleJs",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "writePlatformCheck",
+        "toSymbol": "getPlatformCheckMjs",
+        "callExpression": "getPlatformCheckMjs",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
@@ -63568,6 +63629,12 @@
         "fromSymbol": "src/host/orchestrator/templates.test.ts",
         "toSymbol": "expectCompatibleCaretRanges",
         "callExpression": "expectCompatibleCaretRanges",
+        "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/templates.test.ts",
+        "toSymbol": "getPlatformCheckMjs",
+        "callExpression": "getPlatformCheckMjs",
         "sourcePath": "src/host/orchestrator/templates.test.ts"
       },
       {
