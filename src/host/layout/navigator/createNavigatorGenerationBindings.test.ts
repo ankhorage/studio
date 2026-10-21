@@ -87,6 +87,9 @@ describe('createNavigatorGenerationBindings', () => {
     expect(
       result.files.find(({ path }) => path.endsWith('navigatorIconBindings.ts'))?.content,
     ).toContain("case 'train-icon':");
+    expect(
+      result.files.find(({ path }) => path.endsWith('navigatorIconBindings.ts'))?.content,
+    ).toContain("resolveBundledNavigatorIconSource(\n        'train-icon'");
     expect(result.files.map(({ path }) => path)).toEqual([
       'src/generated/navigatorScreenBindings.ts',
       'src/generated/navigatorGuardBindings.ts',
@@ -122,5 +125,67 @@ describe('createNavigatorGenerationBindings', () => {
         roots: [{ navigator, rootDirectory: 'src/app/(app)' }],
       }),
     ).toThrow('requires asynchronous storage resolution');
+  });
+
+  test('projects URL-backed image icons with the Navigator source contract', () => {
+    const navigator: NavigatorNode = {
+      type: 'tabs',
+      implementation: 'headless',
+      presentation: 'bottom',
+      routes: [
+        { name: 'home', path: '/', icon: { source: { mediaId: 'remote-icon' } }, screenId: 'home' },
+      ],
+    };
+    const manifest = createManifest(navigator);
+    manifest.media = {
+      assets: {
+        'remote-icon': {
+          id: 'remote-icon',
+          kind: 'image',
+          name: 'Remote',
+          source: { kind: 'url', url: 'https://example.test/icon.svg' },
+        },
+      },
+    };
+
+    const result = createNavigatorGenerationBindings({
+      authEnabled: false,
+      manifest,
+      roots: [{ navigator, rootDirectory: 'src/app/(app)' }],
+    });
+
+    expect(
+      result.files.find(({ path }) => path.endsWith('navigatorIconBindings.ts'))?.content,
+    ).toContain("return 'https://example.test/icon.svg';");
+  });
+
+  test('rejects non-image navigation media at the generation boundary', () => {
+    const navigator: NavigatorNode = {
+      type: 'tabs',
+      implementation: 'headless',
+      presentation: 'bottom',
+      routes: [
+        { name: 'home', path: '/', icon: { source: { mediaId: 'audio-icon' } }, screenId: 'home' },
+      ],
+    };
+    const manifest = createManifest(navigator);
+    manifest.media = {
+      assets: {
+        'audio-icon': {
+          id: 'audio-icon',
+          kind: 'audio',
+          name: 'Audio',
+          source: { kind: 'bundled', path: 'assets/authoring/icon.mp3' },
+        },
+      },
+    };
+
+    expect(() =>
+      createNavigatorGenerationBindings({
+        authEnabled: false,
+        manifest,
+        roots: [{ navigator, rootDirectory: 'src/app/(app)' }],
+      }),
+    ).toThrow("Navigation icon media 'audio-icon' must reference an image asset.");
   });
 });

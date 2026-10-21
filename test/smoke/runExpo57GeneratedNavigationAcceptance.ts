@@ -685,6 +685,12 @@ async function runGeneratedProjectChecksAsync(project: NavigationProject): Promi
   const expoCli = await resolveAppOwnedExpoCliAsync(project.path);
 
   const commands: readonly AcceptanceCommand[] = [
+    {
+      args: ['run', 'platform:check'],
+      command: 'bun',
+      cwd: project.path,
+      label: `${project.id} platform contract`,
+    },
     project.auth
       ? {
           args: [

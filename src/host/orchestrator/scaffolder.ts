@@ -17,6 +17,7 @@ import {
   getMetroConfigJs,
   getMetroEmptyModuleJs,
   getPackageJson,
+  getPlatformCheckMjs,
   getTsConfigJson,
 } from './templates';
 
@@ -130,6 +131,7 @@ export class ProjectScaffolder {
     await this.writeAppConfig(projectPath, appName, slug, targets, manifest, runtimePlan);
     await this.writeEasConfig(projectPath);
     await this.writeMetroConfig(projectPath);
+    await this.writePlatformCheck(projectPath);
     await this.writeTsConfig(projectPath);
     await this.ensurePrettierLocalConfig(projectPath);
     await this.ensurePrettierIgnore(projectPath);
@@ -177,6 +179,7 @@ export class ProjectScaffolder {
     await this.writeAppConfig(projectPath, appName, slug, targets, manifest, runtimePlan);
     await this.writeEasConfig(projectPath);
     await this.writeMetroConfig(projectPath);
+    await this.writePlatformCheck(projectPath);
     await this.writeTsConfig(projectPath);
     await this.ensurePrettierLocalConfig(projectPath);
     await this.ensurePrettierIgnore(projectPath);
@@ -245,6 +248,13 @@ export class ProjectScaffolder {
       fs.writeFile(path.join(dir, 'metro.config.js'), getMetroConfigJs(), 'utf8'),
       fs.writeFile(path.join(dir, 'metro.empty-module.js'), getMetroEmptyModuleJs(), 'utf8'),
     ]);
+  }
+
+  /*** Write the generated app-owned verifier for the released Expo platform policy. */
+  private async writePlatformCheck(dir: string) {
+    const scriptPath = path.join(dir, 'scripts', 'assert-platform.mjs');
+    await fs.mkdir(path.dirname(scriptPath), { recursive: true });
+    await fs.writeFile(scriptPath, getPlatformCheckMjs(), 'utf8');
   }
 
   /*** Create or remove the managed Android run script according to the current Android deploy target. */
