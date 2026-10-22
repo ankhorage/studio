@@ -195,9 +195,13 @@ function createIconBindingFile(
     path: 'src/generated/navigatorIconBindings.ts',
     content: `import type { SvgIconSource } from '@ankhorage/surface';
 
+import { readOwnProperty } from '@ankhorage/utility/object';
+
 import { bundledMediaRegistry } from '@/generated/bundledMediaRegistry';
 
-export function resolveNavigatorIconSource(reference: { mediaId: string }): SvgIconSource['source'] {
+export function resolveNavigatorIconSource(reference: {
+  readonly mediaId: string;
+}): SvgIconSource['source'] {
   switch (reference.mediaId) {
 ${cases.join('\n')}
     default:
@@ -209,13 +213,15 @@ function resolveBundledNavigatorIconSource(
   mediaId: string,
   assetPath: string,
 ): SvgIconSource['source'] {
-  const source = bundledMediaRegistry[assetPath];
+  const source = readOwnProperty(bundledMediaRegistry, assetPath);
   if (source === undefined) {
     throw new Error(\`Navigation icon media '\${mediaId}' is missing bundled asset '\${assetPath}'.\`);
   }
   if (typeof source === 'string' || typeof source === 'number') return source;
   if (isUriImageSource(source)) return source;
-  throw new Error(\`Navigation icon media '\${mediaId}' has unsupported bundled asset '\${assetPath}'.\`);
+  throw new Error(
+    \`Navigation icon media '\${mediaId}' has unsupported bundled asset '\${assetPath}'.\`,
+  );
 }
 
 function isUriImageSource(source: unknown): source is { readonly uri: string } {

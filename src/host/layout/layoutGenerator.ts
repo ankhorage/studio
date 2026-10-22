@@ -549,7 +549,7 @@ export class GeneratedAppFileGenerator {
     const moduleHooks = mutations.flatMap((m) => m.hooks);
     const runtimeLayoutIntegration = resolveExpoRuntimeLayoutIntegration(runtimePlan);
 
-    const allImports = composeGeneratedImports([
+    const coreImports = [
       ...getRootLayoutImportRequirements(includeStudio),
       `import type { AppManifest } from '@ankhorage/contracts';`,
       ...runtimeLayoutIntegration.imports,
@@ -573,12 +573,13 @@ import { AnkhStudio } from '@ankhorage/studio/ui/AnkhStudio';
 import { StudioShell } from '@/generated/studioShell';`
         : '',
       `import { GeneratedRootShell, GeneratedStatusBar, GeneratedThemeShell, resolveManifestActiveTheme, resolveThemeMode } from '@/generated/rootShell';`,
-      `import { GeneratedRuntimeShell, bundledMediaRegistry, runtimeComponentRegistry } from '@/generated/runtimeShell';`,
+      `import { ${includeStudio ? 'GeneratedRuntimeShell, bundledMediaRegistry, runtimeComponentRegistry' : 'GeneratedRuntimeShell'} } from '@/generated/runtimeShell';`,
       includeStudio
         ? `import { isStudioAdminPath, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
         : '',
       ...moduleImports,
-    ]);
+    ].filter((entry) => entry !== '');
+    const allImports = composeGeneratedImports(coreImports);
 
     const allHooks = moduleHooks.join('\n  ');
 
@@ -633,11 +634,11 @@ import { AnkhStudio } from '@ankhorage/studio/ui/AnkhStudio';
 import { StudioShell } from '@/generated/studioShell';`
         : '',
       `import { GeneratedRootShell, GeneratedStatusBar, GeneratedThemeShell, resolveManifestActiveTheme, resolveThemeMode } from '@/generated/rootShell';`,
-      `import { GeneratedRuntimeShell, bundledMediaRegistry, runtimeComponentRegistry } from '@/generated/runtimeShell';`,
+      `import { ${includeStudio ? 'GeneratedRuntimeShell, bundledMediaRegistry, runtimeComponentRegistry' : 'GeneratedRuntimeShell'} } from '@/generated/runtimeShell';`,
       includeStudio
         ? `import { isStudioAdminPath, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
         : '',
-    ];
+    ].filter((entry): entry is string => entry.length > 0);
 
     const moduleImports = mutations.flatMap((m) => m.imports);
     const moduleHooks = mutations.flatMap((m) => m.hooks);

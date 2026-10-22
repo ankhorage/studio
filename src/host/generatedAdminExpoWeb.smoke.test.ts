@@ -685,6 +685,10 @@ test(
         path.join(projectRoot, 'src', 'app', '_layout.tsx'),
         'utf8',
       );
+      const rootShell = await readFile(
+        path.join(projectRoot, 'src', 'generated', 'rootShell.tsx'),
+        'utf8',
+      );
       const generatedPackage = JSON.parse(
         await readFile(path.join(projectRoot, 'package.json'), 'utf8'),
       ) as { dependencies?: Record<string, string> };
@@ -713,7 +717,7 @@ test(
           resolvedZoraPackage.version ?? '',
         ),
       ).toBe(true);
-      expect(rootLayout).toContain(
+      expect(rootShell).toContain(
         '<ZoraProvider themeConfig={themeConfig} initialMode={initialMode}>',
       );
       expect(rootLayout).not.toContain('function GeneratedZoraThemeConfigSync');

@@ -270,12 +270,11 @@ ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContent
     ${authRuntime ? 'shouldMountAuthenticatedAppHeader(appPathname, isAuthRuntimeReady)' : 'true'};
   `
       : ''
-  }return (
-    <GeneratedAppRoot
-      appContent={appContent}
-      ${includeStudio ? 'appLocation={appLocation}\n      appPathname={appPathname}\n      shouldMountAppHeader={shouldMountAppHeader}\n      ' : ''}runtimeManifest={runtimeManifest}
-    />
-  );
+  }return ${
+    includeStudio
+      ? `(\n    <GeneratedAppRoot\n      appContent={appContent}\n      appLocation={appLocation}\n      appPathname={appPathname}\n      shouldMountAppHeader={shouldMountAppHeader}\n      runtimeManifest={runtimeManifest}\n    />\n  )`
+      : '<GeneratedAppRoot appContent={appContent} runtimeManifest={runtimeManifest} />'
+  };
 }
 
 function InnerContent(${innerContentSignature}) {${innerContentReadyHook}

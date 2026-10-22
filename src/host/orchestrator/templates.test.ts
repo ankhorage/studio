@@ -3,7 +3,6 @@ import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { parseSemanticVersion, SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 import { describe, expect, it } from 'bun:test';
 
-import { getGeneratedPackagePolicy } from '../../features/project-updates/adapters/outbound/getGeneratedPackagePolicy';
 import {
   getAndroidRunTs,
   getAppConfigTs,
@@ -127,7 +126,6 @@ describe('generated OAuth scaffold templates', () => {
     });
     const dependencies = pkg.dependencies as Record<string, string>;
     const devDependencies = pkg.devDependencies as Record<string, string>;
-    const policy = getGeneratedPackagePolicy();
     expect(pkg.private).toBe(true);
 
     expectCompatibleCaretRanges(
@@ -169,14 +167,14 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@expo/vector-icons']).toBeUndefined();
     expect(dependencies['babel-preset-expo']).toBeUndefined();
     expect(devDependencies['@ankhorage/devtools']).toMatch(SEMVER_PATTERNS.caret);
-    expect(devDependencies['@ankhorage/ankh']).toMatch(SEMVER_PATTERNS.caret);
-    expect(devDependencies['@ankhorage/ankh']).toBe(policy.devDependencies.ankh);
+    expect(devDependencies['@ankhorage/ankh']).toBeUndefined();
     expect(devDependencies['@types/bun']).toMatch(SEMVER_PATTERNS.caret);
     expect(pkg.packageManager.startsWith('bun@')).toBe(true);
     expect(pkg.packageManager.slice('bun@'.length)).toMatch(SEMVER_PATTERNS.exact);
-    expect(pkg.scripts['platform:check']).toBe('expo install --check');
+    expect(pkg.scripts['platform:check']).toBe(
+      'node scripts/assert-platform.mjs && expo install --check',
+    );
     expect(pkg.scripts['knip:check']).toBe('ankhorage-knip');
-    expect(pkg.scripts['platform:check']).toBe('node scripts/assert-platform.mjs');
     expect(pkg.scripts.typecheck).toBe('tsc --noEmit -p tsconfig.json');
     expect(devDependencies[EXPO_PLATFORM.tooling.expoDoctor.name]).toBe(
       EXPO_PLATFORM.tooling.expoDoctor.version,
@@ -294,7 +292,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@readium/navigator']).toBeUndefined();
     expect(dependencies['@readium/shared']).toBeUndefined();
     expect(dependencies['@zip.js/zip.js']).toBeUndefined();
-    expect(dependencies['pdfjs-dist']).toBeUndefined();
+    expect(dependencies['pdfjs-dist']).toBe('6.4.299');
     expect(dependencies['@ankhorage/permissions']).toBeUndefined();
     expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBeUndefined();
   });

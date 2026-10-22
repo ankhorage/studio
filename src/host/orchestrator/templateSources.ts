@@ -26,8 +26,8 @@ const AUTH_SUPABASE_VERSION = '^2.0.0';
 const STORAGE_SUPABASE_VERSION = '^1.0.0';
 const ZORA_VERSION = '^4.0.0';
 const EXPO_RUNTIME_VERSION = '^3.2.4';
-const ANKH_VERSION = '^0.13.1';
 const DEVTOOLS_VERSION = '^1.12.0';
+const PDFJS_VERSION = '6.4.299';
 
 function serializeStringLiteral(value: string): string {
   return `'${value
@@ -993,6 +993,7 @@ export function getPackageJson(args: {
       '@react-native-vector-icons/fontawesome5': '^13.1.3',
       '@react-native-vector-icons/fontawesome6': '^13.1.3',
       '@react-native-vector-icons/ionicons': '^13.1.3',
+      'pdfjs-dist': PDFJS_VERSION,
       ...runtimeDependencies,
       ...(includeStudio
         ? createPlatformDependencyMap([
@@ -1026,7 +1027,6 @@ export function getPackageJson(args: {
       '@ankhorage/contracts': '$@ankhorage/contracts',
     },
     devDependencies: {
-      '@ankhorage/ankh': ANKH_VERSION,
       '@ankhorage/devtools': DEVTOOLS_VERSION,
       [EXPO_PLATFORM.tooling.expoDoctor.name]: EXPO_PLATFORM.tooling.expoDoctor.version,
       [EXPO_PLATFORM.tooling.nodeTypes.name]: EXPO_PLATFORM.tooling.nodeTypes.version,

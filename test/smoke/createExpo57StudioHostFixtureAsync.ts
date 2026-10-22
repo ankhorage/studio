@@ -35,7 +35,6 @@ export async function createExpo57StudioHostFixtureAsync(
           private: true,
           version: '1.0.0',
           devDependencies: {
-            '@ankhorage/ankh': generatedPackage.devDependencies['@ankhorage/ankh'],
             '@ankhorage/devtools': generatedPackage.devDependencies['@ankhorage/devtools'],
           },
         },

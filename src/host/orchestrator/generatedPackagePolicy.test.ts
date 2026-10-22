@@ -60,7 +60,6 @@ test('derives generated dependency ranges from owner package metadata', async ()
   ).toEqual([]);
   expect(Object.hasOwn(packageJson.dependencies, '@react-native-picker/picker')).toBe(false);
   expect(packageJson.devDependencies).toMatchObject({
-    '@ankhorage/ankh': policy.devDependencies.ankh,
     '@ankhorage/devtools': policy.devDependencies.devtools,
     '@types/bun': policy.devDependencies.typesBun,
     '@types/culori': policy.devDependencies.typesCulori,
@@ -107,7 +106,6 @@ test('never lowers already-newer Ankhorage dependency floors', () => {
     targets: WEB_TARGETS,
   });
   const newerContracts = nextMinorCaretRange(policy.dependencies.contracts);
-  const newerAnkh = nextMinorCaretRange(policy.devDependencies.ankh);
   const newerDevtools = nextMinorCaretRange(policy.devDependencies.devtools);
 
   const updated = applyGeneratedPackagePolicy(
@@ -119,7 +117,6 @@ test('never lowers already-newer Ankhorage dependency floors', () => {
       },
       devDependencies: {
         ...basePackageJson.devDependencies,
-        '@ankhorage/ankh': newerAnkh,
         '@ankhorage/devtools': newerDevtools,
       },
     },
@@ -127,7 +124,7 @@ test('never lowers already-newer Ankhorage dependency floors', () => {
   );
 
   expect(updated.dependencies['@ankhorage/contracts']).toBe(newerContracts);
-  expect(updated.devDependencies['@ankhorage/ankh']).toBe(newerAnkh);
+  expect(Object.hasOwn(updated.devDependencies, '@ankhorage/ankh')).toBe(false);
   expect(updated.devDependencies['@ankhorage/devtools']).toBe(newerDevtools);
 
   const raised = applyGeneratedPackagePolicy(
@@ -139,14 +136,13 @@ test('never lowers already-newer Ankhorage dependency floors', () => {
       },
       devDependencies: {
         ...basePackageJson.devDependencies,
-        '@ankhorage/ankh': '^0.0.1',
         '@ankhorage/devtools': '^0.0.1',
       },
     },
     policy,
   );
   expect(raised.dependencies['@ankhorage/contracts']).toBe(policy.dependencies.contracts);
-  expect(raised.devDependencies['@ankhorage/ankh']).toBe(policy.devDependencies.ankh);
+  expect(Object.hasOwn(raised.devDependencies, '@ankhorage/ankh')).toBe(false);
   expect(raised.devDependencies['@ankhorage/devtools']).toBe(policy.devDependencies.devtools);
 });
 

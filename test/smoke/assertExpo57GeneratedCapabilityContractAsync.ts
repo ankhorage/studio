@@ -64,10 +64,18 @@ async function assertConfigAsync(projectRoot: string): Promise<void> {
 
 /*** Assert generated runtime bridges and auth/session capability integration. */
 async function assertGeneratedRuntimesAsync(projectRoot: string): Promise<void> {
-  const rootLayout = await readFile(path.join(projectRoot, 'src', 'app', '_layout.tsx'), 'utf8');
-  for (const expected of ['ExpoRuntimeProviders', 'APP_EXTENSION_COMPONENT_REGISTRY']) {
-    if (!rootLayout.includes(expected)) {
-      throw new Error(`Generated capability root layout is missing ${expected}.`);
+  const runtimeShell = await readFile(
+    path.join(projectRoot, 'src', 'generated', 'runtimeShell.tsx'),
+    'utf8',
+  );
+  for (const expected of [
+    'APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY',
+    'createComponentRegistry(',
+    'GENERATED_APP_EXTENSION_COMPONENT_REGISTRY',
+    'registry: runtimeComponentRegistry',
+  ]) {
+    if (!runtimeShell.includes(expected)) {
+      throw new Error(`Generated capability Runtime shell is missing ${expected}.`);
     }
   }
 

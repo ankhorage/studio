@@ -63,7 +63,6 @@ export default createKnipConfig({
   ignore: ['metro.empty-module.js'],
   ignoreBinaries: ['adb'],
   ignoreDependencies: [
-    '@ankhorage/ankh',
     '@ankhorage/data-sources',
     '@ankhorage/storage-supabase',
     '@types/culori',
