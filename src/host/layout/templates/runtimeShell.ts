@@ -140,10 +140,8 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
 
 ${runtimeModuleDeclarations?.trim() ?? ''}
 
-export { bundledMediaRegistry };
-
-const bundledMediaResolver = createExpoBundledMediaResolver(bundledMediaRegistry);
-export const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;
+${includeStudio ? 'export { bundledMediaRegistry };\n' : ''}const bundledMediaResolver = createExpoBundledMediaResolver(bundledMediaRegistry);
+${includeStudio ? 'export ' : ''}const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;
 
 export function GeneratedRuntimeShell({
   children,

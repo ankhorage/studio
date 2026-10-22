@@ -32,6 +32,7 @@ export async function runExpo57SharkPreyAcceptanceAsync(): Promise<void> {
     const project = await manager.createProject('SharkPrey Acceptance', source, undefined, {
       includeStudio: true,
     });
+    await runGeneratedPlatformContractAsync(project.path);
     const studioCandidate = await packCurrentStudioCandidateAsync(workspaceRoot);
     await installStudioCandidateAsync(project.path, studioCandidate);
     const lockfile = await createFrozenProjectInstallationAsync(project.path);
@@ -146,6 +147,18 @@ async function assertGeneratedModuleBoundariesAsync(projectRoot: string): Promis
   }
 }
 
+/*** Verify the untouched generated package declares only standalone-compatible dependency ranges before candidate installation. */
+async function runGeneratedPlatformContractAsync(projectRoot: string): Promise<void> {
+  await runAcceptanceCommandAsync({
+    args: ['run', 'platform:check'],
+    command: 'bun',
+    cwd: projectRoot,
+    env: expoEnvironment(projectRoot),
+    label: 'SharkPrey platform:check',
+    timeoutMs: COMMAND_TIMEOUT_MS,
+  });
+}
+
 /*** Run static generated-app gates without changing generated source; lint is configured to reject warnings as well as errors. */
 async function runGeneratedQualityGatesAsync(projectRoot: string): Promise<void> {
   const commands = [
@@ -153,7 +166,6 @@ async function runGeneratedQualityGatesAsync(projectRoot: string): Promise<void>
     ['run', 'lint'],
     ['run', 'format:check'],
     ['run', 'knip:check'],
-    ['run', 'platform:check'],
     ['run', 'doctor'],
   ] as const;
   for (const args of commands) {

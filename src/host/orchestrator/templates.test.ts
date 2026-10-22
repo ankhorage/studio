@@ -297,6 +297,27 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBeUndefined();
   });
 
+  it('omits the PDF runtime dependency without the Reader capability', () => {
+    const dependencies = getPackageJson({
+      name: 'reader-free-app',
+      runtimePlan: {
+        capabilities: [],
+        dependencies: [],
+        diagnostics: [],
+        impliedPermissions: [],
+        nativeConfig: { androidPermissions: [], configHints: [], plugins: [] },
+        needsPermissionsProvider: false,
+        permissions: [],
+        providers: [],
+        runtimeAdapters: [],
+        usesExpoRuntimeRegistry: true,
+      },
+      targets: WEB_TARGETS,
+    }).dependencies as Record<string, string>;
+
+    expect(dependencies['pdfjs-dist']).toBeUndefined();
+  });
+
   it('requires the ZORA release with bounded SidebarLayout fill sizing', () => {
     const pkg = getPackageJson({
       name: 'studio-enabled-app',

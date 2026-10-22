@@ -138,7 +138,7 @@ export class ProjectScaffolder {
     await this.ensurePrettierIgnore(projectPath);
     await this.ensureKnipConfig(projectPath);
     await this.ensureAppGitIgnore(projectPath);
-    await syncGeneratedAppFiles(projectPath, { runtimePlan });
+    await syncGeneratedAppFiles(projectPath, { includeStudio, runtimePlan });
 
     await this.copyDefaultAssets(projectPath);
   }
@@ -188,7 +188,7 @@ export class ProjectScaffolder {
     await this.ensurePrettierIgnore(projectPath);
     await this.ensureKnipConfig(projectPath);
     await this.ensureAppGitIgnore(projectPath);
-    await syncGeneratedAppFiles(projectPath, { runtimePlan });
+    await syncGeneratedAppFiles(projectPath, { includeStudio, runtimePlan });
   }
 
   /*** Finalize and persist the canonical project manifest with project-owned identity/category/timestamps and system templates applied. */

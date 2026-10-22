@@ -8,6 +8,7 @@ import path from 'path';
 import { syncProjectBundledMediaRegistry } from '../media/projectBundledMediaRegistry';
 
 export interface GeneratedAppFilesOptions {
+  includeStudio?: boolean;
   runtimePlan?: ExpoRuntimePlan;
 }
 
@@ -22,7 +23,7 @@ export async function syncGeneratedAppFiles(
   targetProjectPath: string,
   options: GeneratedAppFilesOptions = {},
 ) {
-  const { runtimePlan } = options;
+  const { includeStudio = true, runtimePlan } = options;
   const generatedDest = path.join(targetProjectPath, 'src/generated');
   const appExtensionRegistryDest = path.join(generatedDest, 'appExtensionRegistry.ts');
   const expoBarcodeScannerDest = path.join(generatedDest, 'expo/ExpoBarcodeScannerView.tsx');
@@ -44,6 +45,7 @@ export async function syncGeneratedAppFiles(
   await fs.writeFile(
     appExtensionRegistryDest,
     createGeneratedAppExtensionRegistrySource({
+      includeStudio,
       usesExpoBarcodeScannerAdapter,
     }),
     'utf8',
@@ -55,6 +57,7 @@ export async function syncGeneratedAppFiles(
 
 /*** Generate the standalone app-extension component registry and interaction-policy support source. */
 export function createGeneratedAppExtensionRegistrySource(args: {
+  includeStudio: boolean;
   usesExpoBarcodeScannerAdapter: boolean;
 }): string {
   const relativeImportLines = new Set<string>();
@@ -79,14 +82,14 @@ export function createGeneratedAppExtensionRegistrySource(args: {
   const componentRegistry = registryEntries
     ? `export const APP_EXTENSION_COMPONENT_REGISTRY: ComponentRegistry = {\n${registryEntries}\n};`
     : 'export const APP_EXTENSION_COMPONENT_REGISTRY: ComponentRegistry = {};';
-  const interactionPolicySupport =
-    'export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {} as const;';
+  const interactionPolicySupport = args.includeStudio
+    ? '\nexport const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {} as const;'
+    : '';
   return [
     "import type { ComponentRegistry } from '@ankhorage/runtime';",
     ...(relativeImportLines.size > 0 ? ['', ...[...relativeImportLines].sort()] : []),
     '',
     componentRegistry,
-    '',
     interactionPolicySupport,
     '',
   ]

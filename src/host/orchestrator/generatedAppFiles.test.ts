@@ -21,6 +21,7 @@ afterEach(async () => {
 describe('generated app extension interaction-policy support', () => {
   it('separates the generated scanner adapter from package imports', () => {
     const source = createGeneratedAppExtensionRegistrySource({
+      includeStudio: true,
       usesExpoBarcodeScannerAdapter: true,
     });
 
@@ -41,15 +42,14 @@ describe('generated app extension interaction-policy support', () => {
 
   it('emits an empty adapter registry when no Expo bridge is required', () => {
     const source = createGeneratedAppExtensionRegistrySource({
+      includeStudio: false,
       usesExpoBarcodeScannerAdapter: false,
     });
 
     expect(source).toContain(
       'export const APP_EXTENSION_COMPONENT_REGISTRY: ComponentRegistry = {};',
     );
-    expect(source).toContain(
-      'export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {} as const;',
-    );
+    expect(source).not.toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
     expect(source).not.toContain('@ankhorage/zora-');
     expect(source).not.toContain('APP_ZORA_PLUGINS');
   });

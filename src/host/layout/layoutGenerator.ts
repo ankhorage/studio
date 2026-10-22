@@ -249,7 +249,7 @@ function mergeRuntimeModuleDeclarations(...declarations: readonly string[]): str
  * Follow-up: Move generated-app file orchestration out of the generic host/layout bucket into the projects/template generation owner.
  */
 export class GeneratedAppFileGenerator {
-  static readonly runtimeRevision = '2';
+  static readonly runtimeRevision = '3';
 
   /***
    * Walk the manifest navigators and compose root layouts, nested layouts, screens, auth runtime files and Studio admin routes into the generated project file set.

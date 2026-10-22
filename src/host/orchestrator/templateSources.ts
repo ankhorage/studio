@@ -993,7 +993,9 @@ export function getPackageJson(args: {
       '@react-native-vector-icons/fontawesome5': '^13.1.3',
       '@react-native-vector-icons/fontawesome6': '^13.1.3',
       '@react-native-vector-icons/ionicons': '^13.1.3',
-      'pdfjs-dist': PDFJS_VERSION,
+      ...(runtimePlan?.capabilities.some((requirement) => requirement.capability === 'ebookReader')
+        ? { 'pdfjs-dist': PDFJS_VERSION }
+        : {}),
       ...runtimeDependencies,
       ...(includeStudio
         ? createPlatformDependencyMap([
