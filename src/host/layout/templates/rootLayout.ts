@@ -221,8 +221,8 @@ const { authState, handleInnerContentReady } = useGeneratedAuthNavigation();
     finalJsx === '{output}'
       ? '<AppShell>{output}</AppShell>'
       : `<AppShell>
-          ${finalJsx}
-        </AppShell>`;
+        ${finalJsx}
+      </AppShell>`;
   const generatedAppRoot = `function GeneratedAppRoot({
   appContent,
   ${includeStudio ? 'appLocation,\n  appPathname,\n  shouldMountAppHeader,\n  ' : ''}runtimeManifest,

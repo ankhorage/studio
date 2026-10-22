@@ -231,6 +231,28 @@ test('preserves navigator-owned relative indentation in generated app output', (
   );`);
 });
 
+test('preserves formatter-stable indentation for generated provider composition', () => {
+  const generated = getRootLayoutTsx({
+    manifest: { navigator: {} } as AppManifest,
+    mutations: [
+      {
+        imports: [],
+        hooks: [],
+        providerStart: ["<ExpoRuntimeProviders providers={['permissions']}>"],
+        providerEnd: ['</ExpoRuntimeProviders>'],
+      },
+    ],
+    allImports: '',
+    allHooks: '',
+    innerNavigation: { declarations: '', jsx: '<Slot />', usesTheme: false },
+    includeStudio: false,
+  });
+
+  expect(generated).toContain(`      <AppShell>
+        {<ExpoRuntimeProviders providers={['permissions']}>{output}</ExpoRuntimeProviders>}
+      </AppShell>`);
+});
+
 test('calls themed navigator hooks before the global auth pending boundary', () => {
   const generated = getRootLayoutTsx({
     manifest: {
