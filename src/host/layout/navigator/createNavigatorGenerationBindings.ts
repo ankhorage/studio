@@ -194,7 +194,6 @@ function createIconBindingFile(
   return {
     path: 'src/generated/navigatorIconBindings.ts',
     content: `import type { SvgIconSource } from '@ankhorage/surface';
-
 import { readOwnProperty } from '@ankhorage/utility/object';
 
 import { bundledMediaRegistry } from '@/generated/bundledMediaRegistry';

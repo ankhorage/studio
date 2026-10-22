@@ -152,7 +152,8 @@ export function GeneratedRuntimeShell({
   readonly children: ReactNode;
   readonly runtimeManifest: AppManifest;
 }) {${includeStudio ? '\n  const { setMode } = useZoraTheme();' : ''}
-  const { executeCapability: executeApplicationCapability } = ${capabilityExecutor};
+  const { executeCapability: executeApplicationCapability } =
+    ${capabilityExecutor};
   const executeCapability = useMemo(
     () =>
       composeRuntimeCapabilityExecutor({
