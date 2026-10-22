@@ -276,5 +276,6 @@ ${innerThemeHook}${innerContentPendingBoundary}  ${innerContentReturn}
 }`,
   ]
     .filter(Boolean)
-    .join('\n\n');
+    .join('\n\n')
+    .concat('\n');
 }

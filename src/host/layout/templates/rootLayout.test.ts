@@ -353,6 +353,7 @@ test('keeps standalone root layouts free of empty declaration whitespace', () =>
   });
 
   expect(generated).not.toContain('\n\n\n');
+  expect(generated.endsWith('\n')).toBe(true);
 });
 
 test('holds generated app output behind the shared Expo ZORA icon font boundary', () => {
