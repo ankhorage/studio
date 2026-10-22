@@ -342,6 +342,19 @@ test('leaves bundled-media resolution to the generated Runtime shell', () => {
   expect(generated).toContain('bundledMediaRegistry={bundledMediaRegistry}');
 });
 
+test('keeps standalone root layouts free of empty declaration whitespace', () => {
+  const generated = getRootLayoutTsx({
+    manifest: { navigator: {} } as AppManifest,
+    mutations: [],
+    allImports: "import { AppShell } from '@ankhorage/zora';",
+    allHooks: '',
+    innerNavigation: { declarations: '', jsx: '<Slot />', usesTheme: false },
+    includeStudio: false,
+  });
+
+  expect(generated).not.toContain('\n\n\n');
+});
+
 test('holds generated app output behind the shared Expo ZORA icon font boundary', () => {
   for (const includeStudio of [false, true]) {
     expect(getRootLayoutImportRequirements(includeStudio)).not.toContainEqual({

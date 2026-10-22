@@ -241,23 +241,17 @@ const { authState, handleInnerContentReady } = useGeneratedAuthNavigation();
     </GeneratedThemeShell>
   );${indentedStudioShellBlock}  return <GeneratedRootShell>{shell}</GeneratedRootShell>;
 }`;
-  return `
-${allImports}
-
-void SplashScreen.preventAutoHideAsync();
-
-${moduleLevelDeclarations}
-
-const fallbackManifest = ankhConfig as unknown as AppManifest;
+  return [
+    allImports,
+    'void SplashScreen.preventAutoHideAsync();',
+    moduleLevelDeclarations,
+    `const fallbackManifest = ankhConfig as unknown as AppManifest;
 export const unstable_settings = {
   initialRouteName: '${initialRouteNameOverride ?? manifest.navigator.initialRouteName ?? 'index'}',
-};
-
-${generatedAppOutput}
-
-${generatedAppRoot}
-
-export default function RootLayout() {
+};`,
+    generatedAppOutput,
+    generatedAppRoot,
+    `export default function RootLayout() {
 ${indentedRootHookBlock}  const manifestContext = useOptionalManifestContext();
   const runtimeManifest = manifestContext?.manifest ?? fallbackManifest;
 ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContentNode};
@@ -279,6 +273,8 @@ ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContent
 
 function InnerContent(${innerContentSignature}) {${innerContentReadyHook}
 ${innerThemeHook}${innerContentPendingBoundary}  ${innerContentReturn}
-}
-`.trimStart();
+}`,
+  ]
+    .filter(Boolean)
+    .join('\n\n');
 }

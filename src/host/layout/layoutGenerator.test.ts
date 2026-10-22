@@ -498,8 +498,12 @@ describe('GeneratedAppFileGenerator', () => {
     expect(runtimeShell).toContain("setMode((input as { mode: 'dark' | 'light' }).mode)");
     expect(runtimeShell).not.toContain('eslint-disable');
     expect(runtimeShell).toContain('function useGeneratedRuntimeCapabilityExecutor()');
-    expect(runtimeShell).toContain(`const { executeCapability: executeApplicationCapability } =
-    useGeneratedRuntimeCapabilityExecutor();`);
+    expect(runtimeShell).toContain(
+      'const runtimeCapabilityExecutor = useGeneratedRuntimeCapabilityExecutor();',
+    );
+    expect(runtimeShell).toContain(
+      'const executeApplicationCapability = runtimeCapabilityExecutor.executeCapability;',
+    );
     expect(runtimeShell).toContain('composeRuntimeCapabilityExecutor');
     expect(runtimeShell).toContain('createRuntimeApiCapabilityExecutor');
     expect(runtimeShell).not.toContain('composeZoraPlugins');
