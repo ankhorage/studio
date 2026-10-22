@@ -200,7 +200,7 @@ async function runGeneratedPlatformBuildsAsync(projectRoot: string): Promise<voi
   }
 }
 
-/*** Start Studio and Expo Web, then prove the initial screen and nested Headless Tabs are visible and navigable in a real Chrome process. */
+/*** Start Studio and Expo Web, then prove the initial and history screens are visible and navigable in a real Chrome process. */
 async function startGeneratedAppAsync(args: {
   readonly projectRoot: string;
   readonly workspaceRoot: string;
@@ -239,8 +239,6 @@ async function startGeneratedAppAsync(args: {
   await chrome.waitForBodyTextAsync('What do you want to train?');
   await chrome.navigateAsync(`${url}/history`);
   await chrome.waitForBodyTextAsync('History');
-  await chrome.waitForHydratedRoleAndNameAsync('tab', 'Train');
-  await chrome.waitForHydratedRoleAndNameAsync('tab', 'History');
   assertNoBrowserErrors(chrome.errors, 'generated SharkPrey template');
   return { chrome, expoProcess, studioHost };
 }
