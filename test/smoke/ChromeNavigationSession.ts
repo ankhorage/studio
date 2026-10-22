@@ -121,8 +121,9 @@ export class ChromeNavigationSession {
     });
   }
 
-  /*** Wait for a test-id control to have a hydrated React click handler and invoke its browser click behavior. */
+  /*** Activate the requested visible test-id control through its browser click behavior. */
   async clickByTestIdAsync(testId: string): Promise<void> {
+    await this.waitForVisibleTestIdAsync(testId);
     const expression = `(() => {
   const hasHydratedClickHandler = (element) => {
     const propsKey = Object.keys(element).find((key) => key.startsWith('__reactProps$'));
@@ -137,7 +138,23 @@ export class ChromeNavigationSession {
   control.click();
   return true;
 })()`;
-    await this.waitForBooleanAsync(expression, `testID "${testId}" to become clickable`);
+    await this.waitForBooleanAsync(expression, `testID "${testId}" to activate`);
+  }
+
+  /*** Repeatedly activate a visible test-id control until its real browser navigation reaches the expected pathname. */
+  async clickByTestIdUntilLocationAsync(testId: string, pathname: string): Promise<void> {
+    await this.waitForVisibleTestIdAsync(testId);
+    const expression = `(() => {
+  const element = [...document.querySelectorAll('[data-testid]')].find(
+    (candidate) => candidate.getAttribute('data-testid') === ${JSON.stringify(testId)},
+  );
+  if (!(element instanceof HTMLElement)) return false;
+  const control = element.closest('[role="button"]') ?? element;
+  if (!(control instanceof HTMLElement)) return false;
+  control.click();
+  return location.pathname === ${JSON.stringify(pathname)};
+})()`;
+    await this.waitForBooleanAsync(expression, `testID "${testId}" to navigate to "${pathname}"`);
   }
 
   /*** Close the CDP socket and terminate the detached Chrome process group. */
@@ -364,6 +381,20 @@ export class ChromeNavigationSession {
   );
 })()`;
     await this.waitForBooleanAsync(expression, `testID "${testId}" to hydrate`);
+  }
+
+  /*** Wait until the requested test-id control is visible in the active browser viewport. */
+  async waitForVisibleTestIdAsync(testId: string): Promise<void> {
+    const expression = `(() => {
+  const element = [...document.querySelectorAll('[data-testid]')].find(
+    (candidate) => candidate.getAttribute('data-testid') === ${JSON.stringify(testId)},
+  );
+  if (!(element instanceof HTMLElement)) return false;
+  const rect = element.getBoundingClientRect();
+  const style = getComputedStyle(element);
+  return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+})()`;
+    await this.waitForBooleanAsync(expression, `visible testID "${testId}"`);
   }
 
   /*** Poll rendered body text until it contains the requested content and return the matching snapshot. */

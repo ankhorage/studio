@@ -200,7 +200,7 @@ async function runGeneratedPlatformBuildsAsync(projectRoot: string): Promise<voi
   }
 }
 
-/*** Start Studio and Expo Web, then prove the initial and history screens are visible and navigable in a real Chrome process. */
+/*** Start Studio and Expo Web, then prove SharkPrey's nested Headless Tabs navigate through real Navigator controls in Chrome. */
 async function startGeneratedAppAsync(args: {
   readonly projectRoot: string;
   readonly workspaceRoot: string;
@@ -237,8 +237,14 @@ async function startGeneratedAppAsync(args: {
   await chrome.navigateAsync(`${url}/training-setup`);
   await chrome.waitForLocationAsync({ pathname: '/training-setup' });
   await chrome.waitForBodyTextAsync('What do you want to train?');
-  await chrome.navigateAsync(`${url}/history`);
+  await chrome.waitForVisibleTestIdAsync('navigator-tabs-item-history');
+  await chrome.clickByTestIdUntilLocationAsync('navigator-tabs-item-history', '/history');
+  await chrome.waitForLocationAsync({ pathname: '/history' });
   await chrome.waitForBodyTextAsync('History');
+  await chrome.waitForVisibleTestIdAsync('navigator-tabs-item-(train)');
+  await chrome.clickByTestIdUntilLocationAsync('navigator-tabs-item-(train)', '/training-setup');
+  await chrome.waitForLocationAsync({ pathname: '/training-setup' });
+  await chrome.waitForBodyTextAsync('What do you want to train?');
   assertNoBrowserErrors(chrome.errors, 'generated SharkPrey template');
   return { chrome, expoProcess, studioHost };
 }
