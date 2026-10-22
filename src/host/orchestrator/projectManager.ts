@@ -14,6 +14,7 @@ import {
   ProjectCreationValidationError,
   validateProjectCreationInput,
 } from '../../projectIdentity';
+import { resolveAuthLayoutPlan } from '../layout/auth/resolveAuthLayoutPlan';
 import { GeneratedAppFileGenerator } from '../layout/layoutGenerator';
 import { applySystemTemplates } from '../manifestSystem';
 import { ProjectBundledMediaService } from '../media/projectBundledMediaService';
@@ -155,6 +156,7 @@ export class ProjectManager {
     await this.scaffolder.scaffoldProject(projectPath, name, slug, {
       includeStudio,
       authProvider: resolveGeneratedAuthProvider(scaffoldManifest),
+      oauthEnabled: hasGeneratedOAuth(scaffoldManifest),
       manifest: scaffoldManifest,
       runtimePlan: resolveExpoRuntimePlan(scaffoldManifest),
       storageProvider: resolveGeneratedStorageProvider(scaffoldManifest),
@@ -479,6 +481,7 @@ export class ProjectManager {
     await this.scaffolder.syncProjectScaffold(projectPath, manifest.metadata.name, projectId, {
       includeStudio,
       authProvider: resolveGeneratedAuthProvider(manifest),
+      oauthEnabled: hasGeneratedOAuth(manifest),
       runtimePlan,
       storageProvider: resolveGeneratedStorageProvider(manifest),
       manifest,
@@ -509,6 +512,12 @@ function resolveGeneratedAuthProvider(manifest: AppManifest): GeneratedAuthProvi
     return 'supabase';
   }
   return null;
+}
+
+/*** Resolve whether the generated manifest has an enabled OAuth runtime that requires native OAuth dependencies. */
+function hasGeneratedOAuth(manifest: AppManifest): boolean {
+  const authLayoutPlan = resolveAuthLayoutPlan({ manifest });
+  return authLayoutPlan.enabled && authLayoutPlan.oauth !== undefined;
 }
 
 /*** Resolve the generated storage-provider mode when automatic storage should follow Supabase-owned auth/database infrastructure. */

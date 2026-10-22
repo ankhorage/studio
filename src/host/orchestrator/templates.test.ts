@@ -174,6 +174,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(devDependencies['@types/bun']).toMatch(SEMVER_PATTERNS.caret);
     expect(pkg.packageManager.startsWith('bun@')).toBe(true);
     expect(pkg.packageManager.slice('bun@'.length)).toMatch(SEMVER_PATTERNS.exact);
+    expect(pkg.scripts['platform:check']).toBe('expo install --check');
     expect(pkg.scripts['knip:check']).toBe('ankhorage-knip');
     expect(pkg.scripts['platform:check']).toBe('node scripts/assert-platform.mjs');
     expect(pkg.scripts.typecheck).toBe('tsc --noEmit -p tsconfig.json');
@@ -212,6 +213,7 @@ describe('generated OAuth scaffold templates', () => {
     const pkg = getPackageJson({
       name: 'oauth-app',
       authProvider: 'supabase',
+      oauthEnabled: true,
       storageProvider: 'supabase',
       targets: WEB_TARGETS,
     });

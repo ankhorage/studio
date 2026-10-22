@@ -27,15 +27,12 @@ interface GetRootLayoutTsxArgs {
   includeStudio: boolean;
   authRuntime?: RootLayoutAuthRuntimeConfig;
   initialRouteNameOverride?: string;
-  runtimeModuleDeclarations?: string;
-  runtimeCapabilityExecutorHookName?: string;
   runtimeProviderEnd?: string[];
   runtimeProviderStart?: string[];
-  useStoredAuthSessionCredentialResolver?: boolean;
 }
 
 /***
- * Describe the generated root-layout import requirements, including Studio-only runtime and media-picker dependencies when authoring is enabled.
+ * Describe generated root-layout imports for splash-screen lifecycle and Studio media-picker ownership.
  */
 export function getRootLayoutImportRequirements(
   includeStudio: boolean,
@@ -46,47 +43,14 @@ export function getRootLayoutImportRequirements(
       namedImports: [{ imported: 'ReactNode', typeOnly: true }, { imported: 'useEffect' }],
     },
     {
-      source: 'react-native',
-      namedImports: !includeStudio ? [{ imported: 'Alert' }] : [],
-    },
-    {
-      source: '@ankhorage/expo-runtime/bundled-media',
-      namedImports: [{ imported: 'createExpoBundledMediaResolver' }],
-    },
-    {
-      source: '@ankhorage/utility/object',
-      namedImports: [{ imported: 'readOwnProperty' }],
-    },
-    {
-      source: '@ankhorage/expo-runtime/icon-fonts',
-      namedImports: [{ imported: 'ExpoZoraIconFontProvider' }],
-    },
-    {
       source: 'expo-splash-screen',
       namespaceImport: 'SplashScreen',
-    },
-    {
-      source: '@/generated/bundledMediaRegistry',
-      namedImports: [{ imported: 'bundledMediaRegistry' }],
     },
     ...(includeStudio
       ? [
           {
             source: '@ankhorage/expo-runtime/media-picker',
             namedImports: [{ imported: 'createExpoMediaPickerAdapter' }],
-          },
-        ]
-      : []),
-    ...(includeStudio
-      ? [
-          {
-            source: '@ankhorage/studio/runtime',
-            namedImports: [
-              { imported: 'createStudioActionSuppressionConfig' },
-              { imported: 'createStudioInteractionPolicyResolver' },
-              { imported: 'createStudioStationarySelectionWrapNode' },
-              { imported: 'StationaryTapSelector' },
-            ],
           },
         ]
       : []),
@@ -118,21 +82,13 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
     includeStudio,
     authRuntime,
     initialRouteNameOverride,
-    runtimeModuleDeclarations,
-    runtimeCapabilityExecutorHookName,
     runtimeProviderEnd = [],
     runtimeProviderStart = [],
-    useStoredAuthSessionCredentialResolver = false,
   } = args;
 
   const moduleProvidersStart = mutations.flatMap((m) => m.providerStart);
   const moduleProvidersEnd = mutations.flatMap((m) => m.providerEnd).reverse();
   const innerThemeHook = innerNavigation.usesTheme ? '  const { theme } = useZoraTheme();\n' : '';
-  const resolvedRuntimeCapabilityExecutorHookName =
-    runtimeCapabilityExecutorHookName ??
-    (includeStudio
-      ? 'useStudioRuntimeCapabilityExecutor'
-      : 'useGeneratedRuntimeCapabilityExecutor');
 
   const providersStart = [...runtimeProviderStart, ...moduleProvidersStart].join('\n    ');
   const providersEnd = [...moduleProvidersEnd, ...runtimeProviderEnd].join('\n    ');
@@ -140,75 +96,11 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
   const finalJsx = providersStart ? `{${providersStart}{output}${providersEnd}}` : '{output}';
   const studioFinalJsx = finalJsx.replace('{output}', '{studioOutput}');
 
-  const appHeaderHelpers = `
-function findRouteByScreenId(navigator: NavigatorNode, screenId: string): RouteDefinition | null {
-  for (const route of navigator.routes) {
-    if (route.screenId === screenId) {
-      return route;
-    }
-
-    if (route.navigator) {
-      const nestedRoute = findRouteByScreenId(route.navigator, screenId);
-      if (nestedRoute) {
-        return nestedRoute;
-      }
-    }
-  }
-
-  return null;
-}
-
-function resolveAppHeaderTitle(manifest: AppManifest, pathname: string): string {
-  const screenId = resolveScreenIdForPathname(manifest.navigator, pathname, manifest.screens);
-  const route = screenId ? findRouteByScreenId(manifest.navigator, screenId) : null;
-  const screen = screenId ? manifest.screens[screenId] : undefined;
-  return route?.label ?? screen?.title ?? screen?.name ?? route?.name ?? 'App';
-}
-
-function resolveAppHeaderTitleForScreenId(
-  manifest: AppManifest,
-  screenId: string | null | undefined,
-): string | null {
-  if (!screenId) return null;
-
-  const screen = manifest.screens[screenId];
-  if (!screen) return null;
-
-  const route = findRouteByScreenId(manifest.navigator, screenId);
-  return route?.label ?? screen.title ?? screen.name;
-}
-
-function resolveStudioAppHeaderTitle(args: {
-  runtimeManifest: AppManifest;
-  studioManifest: AppManifest | null;
-  previewMode: boolean;
-  activeScreenId: string | null;
-  pathname: string;
-}): string {
-  const { runtimeManifest, studioManifest, previewMode, activeScreenId, pathname } = args;
-
-  if (previewMode) {
-    const previewTitle = resolveAppHeaderTitleForScreenId(
-      studioManifest ?? runtimeManifest,
-      activeScreenId,
-    );
-    if (previewTitle) return previewTitle;
-  }
-
-  return resolveAppHeaderTitle(runtimeManifest, pathname);
-}
-`;
-
   const authRuntimeHook = authRuntime
     ? includeStudio
       ? `
-const {
-  authState,
-  canAccessStudioAdmin,
-  handleInnerContentReady,
-  isAuthRuntimeReady,
-  pathname,
-} = useGeneratedAuthNavigation();
+const { authState, canAccessStudioAdmin, handleInnerContentReady, isAuthRuntimeReady, pathname } =
+  useGeneratedAuthNavigation();
 `
       : `
 const { authState, handleInnerContentReady } = useGeneratedAuthNavigation();
@@ -220,7 +112,13 @@ const { authState, handleInnerContentReady } = useGeneratedAuthNavigation();
 
   const innerContentNode = authRuntime
     ? includeStudio
-      ? '<InnerContent authState={authState} canAccessStudioAdmin={canAccessStudioAdmin} onReady={handleInnerContentReady} />'
+      ? `(
+    <InnerContent
+      authState={authState}
+      canAccessStudioAdmin={canAccessStudioAdmin}
+      onReady={handleInnerContentReady}
+    />
+  )`
       : '<InnerContent authState={authState} onReady={handleInnerContentReady} />'
     : '<InnerContent />';
   const innerContentSignature = authRuntime
@@ -246,133 +144,43 @@ const { authState, handleInnerContentReady } = useGeneratedAuthNavigation();
   }
 `
     : '';
-  const runtimeCredentialResolver = useStoredAuthSessionCredentialResolver
-    ? '\n          credentialResolver: resolveRuntimeOperationCredential,'
-    : '';
-  const runtimeOperationHelpers = `
-async function runtimeApiFetch(
-  url: string,
-  init: {
-    readonly method: string;
-    readonly headers: Readonly<Record<string, string>>;
-    readonly body?: string;
-  },
-) {
-  const response = await fetch(url, {
-    method: init.method,
-    headers: init.headers,
-    body: init.body,
-  });
-
-  return {
-    status: response.status,
-    headers: Object.fromEntries(response.headers.entries()),
-    text: () => response.text(),
-  };
-}
-${
-  useStoredAuthSessionCredentialResolver
-    ? `
-function resolveRuntimeOperationCredential(credential: { readonly kind?: string } | undefined) {
-  if (credential?.kind !== 'bearer' && credential?.kind !== 'oauth2') return undefined;
-
-  const session = getStoredAuthSession();
-  if (!session?.accessToken) return undefined;
-
-  return {
-    headers: {
-      Authorization: \`Bearer \${session.accessToken}\`,
-    },
-  };
-}
-`
-    : ''
-}
-`;
   const runtimeContentDeclaration = `const runtimeContent = (
-    <GeneratedRuntimeContent runtimeManifest={runtimeManifest}>
-      {appContent}
-    </GeneratedRuntimeContent>
+    <GeneratedRuntimeShell runtimeManifest={runtimeManifest}>{appContent}</GeneratedRuntimeShell>
   );`;
-  const generatedRuntimeContent = `function GeneratedRuntimeContent({
-  children,
-  runtimeManifest,
-}: {
-  children: ReactNode;
-  runtimeManifest: AppManifest;
-}) {${includeStudio ? '\n  const { setMode } = useZoraTheme();' : ''}
-  const { executeCapability: executeApplicationCapability } =
-    ${resolvedRuntimeCapabilityExecutorHookName}(${includeStudio ? '{ setThemeMode: setMode }' : ''});
-  const executeCapability = useMemo(
-    () =>
-      composeRuntimeCapabilityExecutor({
-        apiCapabilityExecutor: createRuntimeApiCapabilityExecutor({
-          apis: runtimeManifest.infra.apis ?? {},
-          fetch: runtimeApiFetch,${runtimeCredentialResolver}
-        }),
-        capabilityExecutor: executeApplicationCapability,
-      }),
-    [executeApplicationCapability, runtimeManifest.infra.apis],
-  );
-
-  const generatedRuntimeConfig = useMemo(
-    () => ({
-      executeCapability,
-      registry: runtimeComponentRegistry,
-      mediaAssets: runtimeManifest.media?.assets,
-      resolveMediaAsset: bundledMediaResolver,
-    }),
-    [executeCapability, runtimeManifest.media?.assets],
-  );
-
-  return (
-    <RuntimeRendererConfigProvider value={generatedRuntimeConfig}>
-      {children}
-    </RuntimeRendererConfigProvider>
-  );
-}`;
   const outputDeclaration = includeStudio
-    ? `${runtimeContentDeclaration}
-  const output = __DEV__ ? (
-    isStudioAdminPath(appPathname) ? (
-      runtimeContent
-    ) : (
-      <AnkhStudio
-        runtimeRegistry={runtimeComponentRegistry}
-        bundledMediaRegistry={bundledMediaRegistry}
-      >
-        {runtimeContent}
-      </AnkhStudio>
-    )
-  ) : (
-    runtimeContent
-  );`
+    ? `const output = getGeneratedAppOutput({ appContent, appPathname, runtimeManifest });`
     : `${runtimeContentDeclaration}
   const output = runtimeContent;`;
+  const generatedAppOutput = includeStudio
+    ? `function getGeneratedAppOutput({
+  appContent,
+  appPathname,
+  runtimeManifest,
+}: {
+  readonly appContent: ReactNode;
+  readonly appPathname: string;
+  readonly runtimeManifest: AppManifest;
+}) {
+  const runtimeContent = (
+    <GeneratedRuntimeShell runtimeManifest={runtimeManifest}>{appContent}</GeneratedRuntimeShell>
+  );
+  if (!__DEV__ || isStudioAdminPath(appPathname)) return runtimeContent;
+  return (
+    <AnkhStudio
+      runtimeRegistry={runtimeComponentRegistry}
+      bundledMediaRegistry={bundledMediaRegistry}
+    >
+      {runtimeContent}
+    </AnkhStudio>
+  );
+}`
+    : '';
   const moduleLevelDeclarations = [
-    runtimeModuleDeclarations?.trim(),
-    'const bundledMediaResolver = createExpoBundledMediaResolver(bundledMediaRegistry);',
-    runtimeOperationHelpers.trim(),
-    includeStudio ? appHeaderHelpers.trim() : '',
     includeStudio ? 'const studioMediaPicker = createExpoMediaPickerAdapter();' : '',
     innerNavigation.declarations.trim(),
   ]
     .filter(Boolean)
     .join('\n\n');
-  const studioRuntimeLines = includeStudio
-    ? `const appPathname = ${authRuntime ? 'pathname' : 'usePathname()'};
-const appRouteSearchParams = useGlobalSearchParams();
-const appRouteSearchParamsKey = JSON.stringify(appRouteSearchParams);
-const appLocation = useMemo(
-  () => resolveStudioNavigableLocation(appPathname),
-  [appPathname, appRouteSearchParamsKey],
-);
-const shouldMountAppHeader =
-  !isStudioAdminPath(appPathname) &&
-  ${authRuntime ? 'shouldMountAuthenticatedAppHeader(appPathname, isAuthRuntimeReady)' : 'true'};`
-    : '';
-  const indentedStudioRuntimeLines =
-    studioRuntimeLines.length > 0 ? `\n${indentGeneratedBlock(studioRuntimeLines)}\n` : '\n';
   const handleInnerContentReadyDeclaration = '';
   const indentedHandleInnerContentReadyDeclaration =
     handleInnerContentReadyDeclaration.length > 0
@@ -381,7 +189,7 @@ const shouldMountAppHeader =
   const studioShellBlock = includeStudio
     ? `if (__DEV__) {
   return (
-    <GeneratedRootView>
+    <GeneratedRootShell>
       <StudioProvider
         projectId={ankhConfig.metadata.slug}
         initialManifest={runtimeManifest}
@@ -397,9 +205,10 @@ const shouldMountAppHeader =
           appPathname={appPathname}
           appLocation={appLocation}
           shouldMountAppHeader={shouldMountAppHeader}
+          wrapOutput={(studioOutput) => <>${studioFinalJsx}</>}
         />
       </StudioProvider>
-    </GeneratedRootView>
+    </GeneratedRootShell>
   );
 }`
     : '';
@@ -414,8 +223,24 @@ const shouldMountAppHeader =
       : `<AppShell>
           ${finalJsx}
         </AppShell>`;
-  const runtimeComponentRegistryDeclaration =
-    'const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;';
+  const generatedAppRoot = `function GeneratedAppRoot({
+  appContent,
+  ${includeStudio ? 'appLocation,\n  appPathname,\n  shouldMountAppHeader,\n  ' : ''}runtimeManifest,
+}: {
+  readonly appContent: ReactNode;
+  ${includeStudio ? 'readonly appLocation: string;\n  readonly appPathname: string;\n  readonly shouldMountAppHeader: boolean;\n  ' : ''}readonly runtimeManifest: AppManifest;
+}) {
+  const activeTheme = resolveManifestActiveTheme(runtimeManifest);
+  const activeThemeMode = resolveThemeMode(runtimeManifest.activeThemeMode, 'light');
+  ${outputDeclaration}
+
+  const shell = (
+    <GeneratedThemeShell theme={activeTheme} initialMode={activeThemeMode}>
+      ${generatedAppShell}
+      <GeneratedStatusBar />
+    </GeneratedThemeShell>
+  );${indentedStudioShellBlock}  return <GeneratedRootShell>{shell}</GeneratedRootShell>;
+}`;
   return `
 ${allImports}
 
@@ -424,218 +249,33 @@ void SplashScreen.preventAutoHideAsync();
 ${moduleLevelDeclarations}
 
 const fallbackManifest = ankhConfig as unknown as AppManifest;
-${runtimeComponentRegistryDeclaration}
-const rootViewStyle = { flex: 1 } as const;
-
-function GeneratedRootView({ children }: { children: ReactNode }) {
-  return (
-    <ExpoZoraIconFontProvider>
-      <GestureHandlerRootView style={rootViewStyle}>{children}</GestureHandlerRootView>
-    </ExpoZoraIconFontProvider>
-  );
-}
-
-function resolveZoraSurfaceThemeConfig(\n  theme: AppManifest['themes'][string],\n): AppManifest['themes'][string] {
-  return {
-    id: theme.id,
-    name: theme.name,
-    light: { ...theme.light },
-    dark: { ...theme.dark },
-    ...(theme.tokens === undefined ? {} : { tokens: theme.tokens }),
-    ...(theme.recipes === undefined ? {} : { recipes: theme.recipes }),
-  };
-}
-
-function resolveManifestActiveTheme(manifest: AppManifest): AppManifest['themes'][string] {
-  const theme = readOwnProperty<AppManifest['themes'][string]>(\n    manifest.themes,\n    manifest.activeThemeId,\n  );
-  if (!theme) {
-    throw new Error("Manifest active theme '" + manifest.activeThemeId + "' is missing.");
-  }
-  return theme;
-}
-
-function resolveThemeMode(
-  mode: AppManifest['activeThemeMode'],
-  fallback: NonNullable<AppManifest['activeThemeMode']>,
-): NonNullable<AppManifest['activeThemeMode']> {
-  if (mode === 'dark' || mode === 'light') return mode;
-  return fallback;
-}
-
 export const unstable_settings = {
   initialRouteName: '${initialRouteNameOverride ?? manifest.navigator.initialRouteName ?? 'index'}',
 };
 
+${generatedAppOutput}
+
+${generatedAppRoot}
+
 export default function RootLayout() {
 ${indentedRootHookBlock}  const manifestContext = useOptionalManifestContext();
-  const runtimeManifest = manifestContext?.manifest ?? fallbackManifest;${indentedStudioRuntimeLines}
-  const activeTheme = resolveManifestActiveTheme(runtimeManifest);
-  const activeThemeMode = resolveThemeMode(runtimeManifest.activeThemeMode, 'light');
+  const runtimeManifest = manifestContext?.manifest ?? fallbackManifest;
 ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContentNode};
-
-  ${outputDeclaration}
-
-  const shell = (
-    <GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>
-      <SafeAreaProvider>
-        ${generatedAppShell}
-        <GeneratedStatusBar />
-      </SafeAreaProvider>
-    </GeneratedZoraProvider>
-  );
-${indentedStudioShellBlock}  return <GeneratedRootView>{shell}</GeneratedRootView>;
-}${
+  ${
     includeStudio
-      ? `
-function StudioShell({
-  output,
-  activeThemeMode,
-  runtimeManifest,
-  appPathname,
-  appLocation,
-  shouldMountAppHeader,
-}: {
-  output: ReactNode;
-  activeThemeMode: NonNullable<AppManifest['activeThemeMode']>;
-  runtimeManifest: AppManifest;
-  appPathname: string;
-  appLocation: string;
-  shouldMountAppHeader: boolean;
-}) {
-  const {
-    activeCanvasDragNodeId,
-    activeScreenId,
-    componentMeta,
-    manifest: studioManifest,
-    moveNodeToPlacement,
-    previewMode,
-    rootNode,
-    selectedNodeId,
-    selectNode,
-    setActiveCanvasDragNodeId,
-    setLastNonAdminLocation,
-  } = useStudio();
-  const { theme } = useZoraTheme();
-  useEffect(() => {
-    const nextAppLocation = resolveStudioLastNonAdminLocation({
-      pathname: appPathname,
-      navigableLocation: appLocation,
-    });
-    if (nextAppLocation) setLastNonAdminLocation(nextAppLocation);
-  }, [appLocation, appPathname, setLastNonAdminLocation]);
-
-  const studioWrapNode = useMemo(
-    () =>
-      createStudioStationarySelectionWrapNode({
-        builtInComponentRegistry: studioInteractionPolicyComponentRegistry,
-        previewMode,
-        thirdPartySupport: APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
-      }),
-    [previewMode],
-  );
-  const studioResolveNodeProps = useMemo(
-    () =>
-      createStudioInteractionPolicyResolver({
-        builtInComponentRegistry: studioInteractionPolicyComponentRegistry,
-        previewMode,
-        thirdPartySupport: APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
-      }),
-    [previewMode],
-  );
-  const appHeaderTitle = resolveStudioAppHeaderTitle({
-    runtimeManifest,
-    studioManifest,
-    previewMode,
-    activeScreenId,
-    pathname: appPathname,
-  });
-  const header = shouldMountAppHeader ? (
-    <StudioAppHeader appHeaderTitle={appHeaderTitle} />
-  ) : undefined;
-  const studioRuntimeManifest = studioManifest ?? runtimeManifest;
-  const activeStudioTheme = resolveManifestActiveTheme(studioRuntimeManifest);
-  const activeStudioThemeMode = resolveThemeMode(
-    studioRuntimeManifest.activeThemeMode,
-    activeThemeMode,
-  );
-  const studioRuntimeConfig = useMemo(
-    () => ({
-      ...createStudioActionSuppressionConfig(previewMode),
-      wrapNode: studioWrapNode,
-      resolveNodeProps: studioResolveNodeProps,
-    }),
-    [previewMode, studioWrapNode, studioResolveNodeProps],
-  );
-  const studioOutput = isStudioAdminPath(appPathname) ? (
-    output
-  ) : (
-    <StationaryTapSelector
-      canvasInteraction={{
-        activeDragNodeId: activeCanvasDragNodeId,
-        componentMeta,
-        moveNodeToPlacement,
-        rootNode,
-        setActiveDragNodeId: setActiveCanvasDragNodeId,
-      }}
-      isEditMode={!previewMode}
-      selectionColor={theme.semantics.action.primary.base}
-      selectedNodeId={selectedNodeId}
-      selectNode={selectNode}
-    >
-      <RuntimeRendererConfigProvider value={studioRuntimeConfig}>
-        {output}
-      </RuntimeRendererConfigProvider>
-    </StationaryTapSelector>
-  );
-
-  return (
-    <GeneratedZoraProvider theme={activeStudioTheme} initialMode={activeStudioThemeMode}>
-      <SafeAreaProvider>
-        <AppShell header={header}>
-          ${studioFinalJsx}
-        </AppShell>
-        <GeneratedStatusBar />
-      </SafeAreaProvider>
-    </GeneratedZoraProvider>
-  );
-}
-
-function StudioAppHeader({ appHeaderTitle }: { appHeaderTitle: string }) {
-  const studioAppBar = useStudioAppBarAugmentation();
-
-  return (
-    <>
-      <AppBar title={appHeaderTitle} actions={studioAppBar.actions} />
-      {studioAppBar.overlays}
-    </>
-  );
-}`
+      ? `const appPathname = ${authRuntime ? 'pathname' : 'usePathname()'};
+  const appLocation = resolveStudioNavigableLocation(appPathname);
+  const shouldMountAppHeader =
+    !isStudioAdminPath(appPathname) &&
+    ${authRuntime ? 'shouldMountAuthenticatedAppHeader(appPathname, isAuthRuntimeReady)' : 'true'};
+  `
       : ''
-  }
-
-${generatedRuntimeContent}
-
-function GeneratedZoraProvider({
-  children,
-  theme,
-  initialMode,
-}: {
-  children: ReactNode;
-  theme: AppManifest['themes'][string];
-  initialMode: NonNullable<AppManifest['activeThemeMode']>;
-}) {
-  const themeConfig = useMemo(() => resolveZoraSurfaceThemeConfig(theme), [theme]);
-
-  return (
-    <ZoraProvider themeConfig={themeConfig} initialMode={initialMode}>
-      {children}
-    </ZoraProvider>
+  }return (
+    <GeneratedAppRoot
+      appContent={appContent}
+      ${includeStudio ? 'appLocation={appLocation}\n      appPathname={appPathname}\n      shouldMountAppHeader={shouldMountAppHeader}\n      ' : ''}runtimeManifest={runtimeManifest}
+    />
   );
-}
-
-function GeneratedStatusBar() {
-  const { mode } = useZoraTheme();
-  return <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />;
 }
 
 function InnerContent(${innerContentSignature}) {${innerContentReadyHook}

@@ -20,6 +20,12 @@ const GENERATED_NAVIGATOR_BINDING_FILE_PATHS = new Set([
   'src/generated/navigatorIconBindings.ts',
   'src/generated/navigatorScreenBindings.ts',
 ]);
+const GENERATED_LAYOUT_SUPPORT_FILE_PATHS = new Set([
+  'src/generated/rootShell.tsx',
+  'src/generated/runtimeShell.tsx',
+  'src/generated/studioAppHeader.tsx',
+  'src/generated/studioShell.tsx',
+]);
 
 interface RouteLedger {
   readonly schemaVersion: 1;
@@ -140,7 +146,8 @@ function resolveGeneratedFile(projectPath: string, relativePath: string): string
   if (
     !isGeneratedAppRoute &&
     !GENERATED_AUTH_FILE_PATHS.has(relativePath) &&
-    !GENERATED_NAVIGATOR_BINDING_FILE_PATHS.has(relativePath)
+    !GENERATED_NAVIGATOR_BINDING_FILE_PATHS.has(relativePath) &&
+    !GENERATED_LAYOUT_SUPPORT_FILE_PATHS.has(relativePath)
   ) {
     throw new Error(`Path is outside current route-generation ownership: ${relativePath}`);
   }

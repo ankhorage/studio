@@ -49,6 +49,55 @@ describe('GeneratedRouteFileOwnership', () => {
     });
   });
 
+  it('owns generated shell modules through regeneration and removes Studio-only shells when Studio is disabled', async () => {
+    const projectPath = await createProjectPath();
+    const ownership = new GeneratedRouteFileOwnership();
+    const studioShellPath = path.join(projectPath, 'src/generated/studioShell.tsx');
+    const studioAppHeaderPath = path.join(projectPath, 'src/generated/studioAppHeader.tsx');
+    const runtimeShellPath = path.join(projectPath, 'src/generated/runtimeShell.tsx');
+    await fs.mkdir(path.dirname(studioShellPath), { recursive: true });
+    await fs.writeFile(studioShellPath, 'generated Studio shell', 'utf8');
+    await fs.writeFile(studioAppHeaderPath, 'generated Studio app header', 'utf8');
+    await fs.writeFile(runtimeShellPath, 'generated Runtime shell', 'utf8');
+
+    await ownership.initialize(projectPath, [
+      'src/app/_layout.tsx',
+      'src/generated/runtimeShell.tsx',
+      'src/generated/studioAppHeader.tsx',
+      'src/generated/studioShell.tsx',
+    ]);
+    await ownership.reconcile(projectPath, [
+      'src/app/_layout.tsx',
+      'src/generated/runtimeShell.tsx',
+      'src/generated/studioAppHeader.tsx',
+      'src/generated/studioShell.tsx',
+    ]);
+
+    expect(await pathExists(studioShellPath)).toBe(true);
+    expect(await pathExists(studioAppHeaderPath)).toBe(true);
+    expect(await pathExists(runtimeShellPath)).toBe(true);
+    expect(await readLedger(projectPath)).toMatchObject({
+      files: [
+        'src/app/_layout.tsx',
+        'src/generated/runtimeShell.tsx',
+        'src/generated/studioAppHeader.tsx',
+        'src/generated/studioShell.tsx',
+      ],
+    });
+
+    await ownership.reconcile(projectPath, [
+      'src/app/_layout.tsx',
+      'src/generated/runtimeShell.tsx',
+    ]);
+
+    expect(await pathExists(studioShellPath)).toBe(false);
+    expect(await pathExists(studioAppHeaderPath)).toBe(false);
+    expect(await pathExists(runtimeShellPath)).toBe(true);
+    expect(await readLedger(projectPath)).toMatchObject({
+      files: ['src/app/_layout.tsx', 'src/generated/runtimeShell.tsx'],
+    });
+  });
+
   it('requires route ownership state before project sync', async () => {
     const projectPath = await createProjectPath();
     const ownership = new GeneratedRouteFileOwnership();

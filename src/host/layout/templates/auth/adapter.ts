@@ -12,7 +12,7 @@ export function getAuthAdapterTs(options: AuthAdapterTemplateOptions = {}) {
   const oauthProviderProperty =
     oauthProviders.length > 0 ? '\n        oauthProviders: generatedOAuthProviders,' : '';
   const oauthRandomBytesImport =
-    oauthProviders.length > 0 ? "import { getRandomBytes } from 'expo-crypto';" : '';
+    oauthProviders.length > 0 ? "import { getRandomBytes } from 'expo-crypto';\n" : '';
   const oauthRandomBytesProperty =
     oauthProviders.length > 0 ? '\n        oauthRandomBytes: getRandomBytes,' : '';
 
@@ -26,7 +26,6 @@ import type {
   AuthUser,
 } from '@ankhorage/contracts/auth';
 ${oauthRandomBytesImport}
-
 import { AUTH_SESSION_STORAGE_KEY, authSessionStorage } from './session';
 
 declare const process: {

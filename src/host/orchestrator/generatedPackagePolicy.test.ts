@@ -85,6 +85,16 @@ test('does not introduce optional generated dependencies when their capability i
   expect(packageJson.dependencies['@ankhorage/auth-supabase']).toBeUndefined();
   expect(packageJson.dependencies['@ankhorage/storage-supabase']).toBeUndefined();
   expect(Object.hasOwn(packageJson.dependencies, '@react-native-picker/picker')).toBe(false);
+
+  const supabaseWithoutOAuth = getPackageJson({
+    name: 'supabase-without-oauth',
+    authProvider: 'supabase',
+    storageProvider: 'supabase',
+    targets: WEB_TARGETS,
+  });
+
+  expect(Object.hasOwn(supabaseWithoutOAuth.dependencies, 'expo-crypto')).toBe(false);
+  expect(Object.hasOwn(supabaseWithoutOAuth.dependencies, 'expo-web-browser')).toBe(false);
 });
 
 test('never lowers already-newer Ankhorage dependency floors', () => {

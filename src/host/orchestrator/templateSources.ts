@@ -923,6 +923,7 @@ export function getPackageJson(args: {
   name: string;
   includeStudio?: boolean;
   authProvider?: GeneratedAuthProvider;
+  oauthEnabled?: boolean;
   storageProvider?: GeneratedStorageProvider;
   runtimePlan?: ExpoRuntimePlan;
   targets: AppDeployTargets;
@@ -931,6 +932,7 @@ export function getPackageJson(args: {
     name,
     includeStudio = false,
     authProvider = null,
+    oauthEnabled = false,
     storageProvider = null,
     runtimePlan,
     targets,
@@ -947,7 +949,7 @@ export function getPackageJson(args: {
     version: '1.0.0',
     scripts: {
       start: 'expo start',
-      'platform:check': 'node scripts/assert-platform.mjs',
+      'platform:check': 'node scripts/assert-platform.mjs && expo install --check',
       ...(targets.android?.enabled ? { android: 'bun scripts/ankh-android.ts' } : {}),
       ...(targets.ios?.enabled ? { ios: 'expo run:ios' } : {}),
       ...(targets.web?.enabled ? { web: 'expo start --web' } : {}),
@@ -974,11 +976,13 @@ export function getPackageJson(args: {
         ? {
             '@ankhorage/auth': AUTH_VERSION,
             '@ankhorage/auth-supabase': AUTH_SUPABASE_VERSION,
-            ...createPlatformDependencyMap([
-              EXPO_PLATFORM.packages.crypto,
-              EXPO_PLATFORM.packages.secureStore,
-              EXPO_PLATFORM.packages.webBrowser,
-            ]),
+            ...createPlatformDependencyMap([EXPO_PLATFORM.packages.secureStore]),
+            ...(oauthEnabled
+              ? createPlatformDependencyMap([
+                  EXPO_PLATFORM.packages.crypto,
+                  EXPO_PLATFORM.packages.webBrowser,
+                ])
+              : {}),
           }
         : {}),
       ...(storageProvider === 'supabase'

@@ -141,7 +141,10 @@ describe('generated auth root bootstrap', () => {
     );
     expect(authNavigation).not.toContain('isRouteGuardDisabled');
     expect(authNavigation).not.toContain('if (!isGeneratedAuthEnforced()) return null;');
-    expect(rootLayout).toContain('<InnerContent authState={authState}');
+    expect(rootLayout).toContain('const appContent = (\n    <InnerContent');
+    expect(rootLayout).toContain('authState={authState}');
+    expect(rootLayout).toContain('canAccessStudioAdmin={canAccessStudioAdmin}');
+    expect(rootLayout).toContain('onReady={handleInnerContentReady}');
     expect(rootLayout).toContain("if (authState === 'pending') {");
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'authenticated'}>");
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'unauthenticated'}>");

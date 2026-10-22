@@ -695,6 +695,10 @@ async function runFocusedRootNavigatorChecksAsync(project: NavigationProject): P
   if (!project.rootNavigator) throw new Error(`${project.id} has no focused root navigator.`);
 
   const rootLayout = await readFile(path.join(project.path, 'src', 'app', '_layout.tsx'), 'utf8');
+  const runtimeShell = await readFile(
+    path.join(project.path, 'src', 'generated', 'runtimeShell.tsx'),
+    'utf8',
+  );
   const navigatorLayout = await readFile(
     path.join(project.path, 'src', 'app', '(app)', '_layout.tsx'),
     'utf8',
@@ -710,8 +714,11 @@ async function runFocusedRootNavigatorChecksAsync(project: NavigationProject): P
   ) {
     throw new Error(`${project.id} does not generate its ${project.rootNavigator} at the root.`);
   }
-  if (!rootLayout.includes('type Href') || FORBIDDEN_REACT_NAVIGATION_IMPORT.test(rootLayout)) {
+  if (!runtimeShell.includes('type Href') || FORBIDDEN_REACT_NAVIGATION_IMPORT.test(runtimeShell)) {
     throw new Error(`${project.id} violates the narrow Expo Router Href boundary.`);
+  }
+  if (FORBIDDEN_REACT_NAVIGATION_IMPORT.test(rootLayout)) {
+    throw new Error(`${project.id} root layout imports React Navigation directly.`);
   }
 
   await generateRouterTypesAsync(project);
