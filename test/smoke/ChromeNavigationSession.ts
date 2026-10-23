@@ -141,22 +141,6 @@ export class ChromeNavigationSession {
     await this.waitForBooleanAsync(expression, `testID "${testId}" to activate`);
   }
 
-  /*** Repeatedly activate a visible test-id control until its real browser navigation reaches the expected pathname. */
-  async clickByTestIdUntilLocationAsync(testId: string, pathname: string): Promise<void> {
-    await this.waitForVisibleTestIdAsync(testId);
-    const expression = `(() => {
-  const element = [...document.querySelectorAll('[data-testid]')].find(
-    (candidate) => candidate.getAttribute('data-testid') === ${JSON.stringify(testId)},
-  );
-  if (!(element instanceof HTMLElement)) return false;
-  const control = element.closest('[role="button"]') ?? element;
-  if (!(control instanceof HTMLElement)) return false;
-  control.click();
-  return location.pathname === ${JSON.stringify(pathname)};
-})()`;
-    await this.waitForBooleanAsync(expression, `testID "${testId}" to navigate to "${pathname}"`);
-  }
-
   /*** Close the CDP socket and terminate the detached Chrome process group. */
   close(): void {
     this.socket.close();

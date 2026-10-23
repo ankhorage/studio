@@ -238,11 +238,11 @@ async function startGeneratedAppAsync(args: {
   await chrome.waitForLocationAsync({ pathname: '/training-setup' });
   await chrome.waitForBodyTextAsync('What do you want to train?');
   await chrome.waitForVisibleTestIdAsync('navigator-tabs-item-history');
-  await chrome.clickByTestIdUntilLocationAsync('navigator-tabs-item-history', '/history');
+  await chrome.clickByTestIdAsync('navigator-tabs-item-history');
   await chrome.waitForLocationAsync({ pathname: '/history' });
   await chrome.waitForBodyTextAsync('History');
   await chrome.waitForVisibleTestIdAsync('navigator-tabs-item-(train)');
-  await chrome.clickByTestIdUntilLocationAsync('navigator-tabs-item-(train)', '/training-setup');
+  await chrome.clickByTestIdAsync('navigator-tabs-item-(train)');
   await chrome.waitForLocationAsync({ pathname: '/training-setup' });
   await chrome.waitForBodyTextAsync('What do you want to train?');
   assertNoBrowserErrors(chrome.errors, 'generated SharkPrey template');
