@@ -125,16 +125,12 @@ export class ChromeNavigationSession {
   async clickByTestIdAsync(testId: string): Promise<void> {
     await this.waitForVisibleTestIdAsync(testId);
     const expression = `(() => {
-  const hasHydratedClickHandler = (element) => {
-    const propsKey = Object.keys(element).find((key) => key.startsWith('__reactProps$'));
-    return propsKey !== undefined && typeof element[propsKey]?.onClick === 'function';
-  };
   const element = [...document.querySelectorAll('[data-testid]')].find(
     (candidate) => candidate.getAttribute('data-testid') === ${JSON.stringify(testId)},
   );
   if (!(element instanceof HTMLElement)) return false;
   const control = element.closest('[role="button"]') ?? element;
-  if (!(control instanceof HTMLElement) || !hasHydratedClickHandler(control)) return false;
+  if (!(control instanceof HTMLElement)) return false;
   control.click();
   return true;
 })()`;
