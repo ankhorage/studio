@@ -9,6 +9,7 @@ interface ProjectGeneratedRouteInput {
 
 interface GeneratedRouteProjection {
   readonly modulePath: string;
+  readonly navigatorPath: string;
   readonly publicPath: string;
 }
 
@@ -28,7 +29,7 @@ export function projectGeneratedRoute(input: ProjectGeneratedRouteInput): Genera
         ...groupPath,
         ...(publicPathSegments.length === 0 ? ['index'] : publicPathSegments),
       );
-  return { modulePath, publicPath };
+  return { modulePath, navigatorPath: toNavigatorPath(publicPath), publicPath };
 }
 
 /*** Resolve a route's canonical public URL from its parent URL and authored route path. */
@@ -50,4 +51,13 @@ function trimSlashes(value: string): string {
 /*** Identify Expo Router group syntax, which owns module structure but no public URL segment. */
 function isRouteGroup(segment: string): boolean {
   return /^\(.*\)$/u.test(segment);
+}
+
+/** Translate Expo Router dynamic segments into Navigator's portable route-pattern syntax. */
+function toNavigatorPath(publicPath: string): string {
+  const segments = publicPath.split('/').map((segment) => {
+    const dynamic = /^\[([^\]]+)\]$/u.exec(segment)?.[1];
+    return dynamic ? `:${dynamic.replace(/^\.\.\./u, '')}` : segment;
+  });
+  return segments.join('/');
 }

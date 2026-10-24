@@ -32,6 +32,10 @@ export function getRuntimeShellImportRequirements(
       namedImports: [{ imported: 'useZoraTheme' }, { imported: 'ZORA_COMPONENT_META' }],
     },
     {
+      source: '@ankhorage/utility/object',
+      namedImports: [{ imported: 'readOwnProperty' }],
+    },
+    {
       source: '@ankhorage/expo-runtime/bundled-media',
       namedImports: [{ imported: 'createExpoBundledMediaResolver' }],
     },
@@ -152,9 +156,27 @@ ${runtimeModuleDeclarations?.trim() ?? ''}
 ${includeStudio ? 'export { bundledMediaRegistry };\n' : ''}const bundledMediaResolver = createExpoBundledMediaResolver(bundledMediaRegistry);
 ${includeStudio ? 'export ' : ''}const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;
 
-/** Resolve the component event identity published by ZORA for Runtime binding lookup. */
-function resolveZoraRuntimeEventCapability({ eventName, node }: { eventName: string; node: { type: string } }) {
-  return ZORA_COMPONENT_META[node.type]?.events?.[eventName]?.eventType;
+/** Resolve the published ZORA event identity only when it satisfies Runtime's capability-ID contract. */
+function resolveZoraRuntimeEventCapability({
+  eventName,
+  node,
+}: {
+  eventName: string;
+  node: { type: string };
+}) {
+  const component = readOwnProperty<
+    (typeof ZORA_COMPONENT_META)[string]
+  >(ZORA_COMPONENT_META, node.type);
+  const event = component?.events
+    ? readOwnProperty<(typeof component.events)[string]>(component.events, eventName)
+    : undefined;
+  const eventType = event?.eventType;
+  return isRuntimeCapabilityId(eventType) ? eventType : undefined;
+}
+
+/** Validate the current Runtime capability-ID shape at the ZORA metadata boundary. */
+function isRuntimeCapabilityId(value: unknown): value is \`\${string}.\${string}\` {
+  return typeof value === 'string' && /^[^.]+\\.[^.]+$/u.test(value);
 }
 
 /** Present Runtime action diagnostics rather than leaving failed interactions as silent no-ops. */

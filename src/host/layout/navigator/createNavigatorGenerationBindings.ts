@@ -5,8 +5,8 @@ import type {
 } from '@ankhorage/contracts/navigator';
 
 import type { GeneratedFile } from '../../../types/project-generation';
-import { projectGeneratedRoute } from './projectGeneratedRoute';
 import { escapeStringLiteral } from '../utils/escapeStringLiteral';
+import { projectGeneratedRoute } from './projectGeneratedRoute';
 
 const GUARD_BINDINGS_MODULE = '@/generated/navigatorGuardBindings';
 const ICON_BINDINGS_MODULE = '@/generated/navigatorIconBindings';

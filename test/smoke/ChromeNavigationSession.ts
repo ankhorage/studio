@@ -27,6 +27,7 @@ const APPLICATION_INTERACTIVE_TEST_ID = 'ankh-app-interactive';
  * Drive a headless Chrome DevTools Protocol session for Studio web acceptance, including navigation, hydration, hit testing, font assertions and browser-error capture.
  */
 export class ChromeNavigationSession {
+  readonly dialogs: string[] = [];
   readonly errors: string[] = [];
   private nextId = 1;
   private readonly pending = new Map<
@@ -219,6 +220,18 @@ export class ChromeNavigationSession {
   /*** Check whether a visible element with the requested accessible role and name currently exists. */
   async hasRoleAndNameAsync(role: string, name: string): Promise<boolean> {
     return this.evaluateAsync<boolean>(createRoleAndNameExpression(role, name, 0));
+  }
+
+  /*** Wait for a browser diagnostic dialog that begins with the expected visible message. */
+  async waitForDialogTextAsync(expectedText: string, timeoutMs = HTTP_TIMEOUT_MS): Promise<void> {
+    const start = Date.now();
+    while (Date.now() - start < timeoutMs) {
+      if (this.dialogs.some((message) => message.includes(expectedText))) return;
+      await Bun.sleep(250);
+    }
+    throw new Error(
+      `Timed out waiting for browser dialog containing ${JSON.stringify(expectedText)}. Received: ${JSON.stringify(this.dialogs)}.`,
+    );
   }
 
   /*** Capture the active route, rendered body, matching test-id DOM and browser errors for a browser-transition diagnosis. */
@@ -490,6 +503,13 @@ export class ChromeNavigationSession {
       this.pending.delete(message.id);
       if (message.error) pending.reject(new Error(JSON.stringify(message.error)));
       else pending.resolve(message.result);
+      return;
+    }
+
+    if (message.method === 'Page.javascriptDialogOpening') {
+      const dialog = getChromeDialogMessage(message.params);
+      if (dialog) this.dialogs.push(dialog);
+      void this.sendAsync('Page.handleJavaScriptDialog', { accept: true });
       return;
     }
 
@@ -822,4 +842,10 @@ interface ChromeProtocolMessage {
   readonly method?: string;
   readonly params?: unknown;
   readonly result?: unknown;
+}
+
+/*** Read the visible text from a browser dialog protocol event. */
+function getChromeDialogMessage(params: unknown): string | undefined {
+  if (!isRecord(params) || typeof params.message !== 'string') return undefined;
+  return params.message;
 }
