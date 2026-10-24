@@ -241,6 +241,7 @@ async function startGeneratedAppAsync(args: {
   await chrome.clickByRoleAndNameAsync('button', 'Start training');
   await chrome.waitForLocationAsync({ pathname: '/training-setup' });
   await chrome.waitForBodyTextAsync('What do you want to train?');
+  await assertGameCategoryNavigationAsync(chrome);
   const historyTraceStart = (await chrome.readObservedPathnamesAsync()).length;
   try {
     await chrome.clickByTestIdAsync('navigator-tabs-item-history');
@@ -263,6 +264,23 @@ async function startGeneratedAppAsync(args: {
   await chrome.waitForBodyTextAsync('What do you want to train?');
   assertNoBrowserErrors(chrome.errors, 'generated SharkPrey template');
   return { chrome, expoProcess, studioHost };
+}
+
+/*** Prove each authored RadioGroup value emits ZORA's capability event and reaches the canonical table-size route. */
+async function assertGameCategoryNavigationAsync(chrome: ChromeNavigationSession): Promise<void> {
+  for (const { label, value } of [
+    { label: 'MTT', value: 'mtt' },
+    { label: 'Sit & Go', value: 'sng' },
+    { label: 'Cash Game', value: 'cash' },
+  ]) {
+    await chrome.clickByRoleAndNameAsync('radio', label);
+    await chrome.waitForLocationAsync({
+      pathname: '/training-setup/table',
+      search: `?gameCategory=${value}`,
+    });
+    await chrome.goBackAsync();
+    await chrome.waitForLocationAsync({ pathname: '/training-setup' });
+  }
 }
 
 /*** Assert that one Preview-mode Navigator action reached its target without an auth redirect back to onboarding. */
