@@ -164,9 +164,10 @@ function resolveZoraRuntimeEventCapability({
   eventName: string;
   node: { type: string };
 }) {
-  const component = readOwnProperty<
-    (typeof ZORA_COMPONENT_META)[string]
-  >(ZORA_COMPONENT_META, node.type);
+  const component = readOwnProperty<(typeof ZORA_COMPONENT_META)[string]>(
+    ZORA_COMPONENT_META,
+    node.type,
+  );
   const event = component?.events
     ? readOwnProperty<(typeof component.events)[string]>(component.events, eventName)
     : undefined;
