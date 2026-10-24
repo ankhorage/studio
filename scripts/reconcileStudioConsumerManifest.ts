@@ -1,5 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises';
 
+import { isRecord } from '@ankhorage/utility/object';
 import { compareSemanticVersions, parseSemanticVersion } from '@ankhorage/utility/semver';
 
 interface PackageManifest {
@@ -25,15 +26,24 @@ export function reconcileStudioConsumerManifest(
     throw new Error('The first-party consumer must directly depend on @ankhorage/studio.');
   }
 
-  const owners = { ...root.dependencies, ...root.devDependencies, '@ankhorage/studio': `^${publishedVersion}` };
+  const owners = new Map(
+    Object.entries({
+      ...root.dependencies,
+      ...root.devDependencies,
+      '@ankhorage/studio': `^${publishedVersion}`,
+    }),
+  );
   const reconcile = (declared: Readonly<Record<string, string>>): Record<string, string> =>
     Object.fromEntries(
-      Object.entries(declared).map(([name, range]) => [
-        name,
-        name.startsWith('@ankhorage/') && typeof owners[name] === 'string'
-          ? selectMonotonicOwnerRange(name, range, owners[name])
-          : range,
-      ]),
+      Object.entries(declared).map(([name, range]) => {
+        const required = owners.get(name);
+        return [
+          name,
+          name.startsWith('@ankhorage/') && required !== undefined
+            ? selectMonotonicOwnerRange(name, range, required)
+            : range,
+        ];
+      }),
     );
 
   return {
@@ -56,14 +66,33 @@ function selectMonotonicOwnerRange(name: string, existing: string, required: str
   return compareSemanticVersions(floor(existing), floor(required)) >= 0 ? existing : required;
 }
 
+/*** Require valid owner dependency records without trusting arbitrary JSON input. */
+function isStringRecord(value: unknown): value is Record<string, string> {
+  return isRecord(value) && Object.values(value).every((entry) => typeof entry === 'string');
+}
+
+/*** Validate the metadata needed for deterministic first-party dependency reconciliation. */
+function isPackageManifest(value: unknown): value is PackageManifest {
+  return (
+    isRecord(value) &&
+    typeof value.name === 'string' &&
+    (value.version === undefined || typeof value.version === 'string') &&
+    isStringRecord(value.dependencies) &&
+    isStringRecord(value.devDependencies)
+  );
+}
+
 if (import.meta.main) {
   const rootPath = 'package.json';
   const appPath = 'apps/studio/package.json';
-  const root = JSON.parse(await readFile(rootPath, 'utf8')) as PackageManifest;
+  const rootValue: unknown = JSON.parse(await readFile(rootPath, 'utf8'));
   const appSource = await readFile(appPath, 'utf8');
-  const app = JSON.parse(appSource) as PackageManifest;
+  const appValue: unknown = JSON.parse(appSource);
+  if (!isPackageManifest(rootValue) || !isPackageManifest(appValue)) {
+    throw new Error('Studio root or standalone consumer manifest has an invalid shape.');
+  }
   const verifiedVersion = process.env.STUDIO_PUBLISHED_VERSION;
   if (!verifiedVersion) throw new Error('STUDIO_PUBLISHED_VERSION must come from npm publication verification.');
-  const next = `${JSON.stringify(reconcileStudioConsumerManifest(root, app, verifiedVersion), null, 2)}\n`;
+  const next = `${JSON.stringify(reconcileStudioConsumerManifest(rootValue, appValue, verifiedVersion), null, 2)}\n`;
   if (next !== appSource) await writeFile(appPath, next, 'utf8');
 }
