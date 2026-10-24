@@ -7,7 +7,13 @@ export function getRuntimeShellImportRequirements(
   useStoredAuthSessionCredentialResolver: boolean,
 ): GeneratedImportRequirement[] {
   return [
-    { source: '@ankhorage/contracts', namedImports: [{ imported: 'AppManifest', typeOnly: true }] },
+    {
+      source: '@ankhorage/contracts',
+      namedImports: [
+        { imported: 'AppManifest', typeOnly: true },
+        { imported: 'DataSourceDiagnostic', typeOnly: true },
+      ],
+    },
     {
       source: 'react',
       namedImports: [{ imported: 'ReactNode', typeOnly: true }, { imported: 'useMemo' }],
@@ -21,7 +27,10 @@ export function getRuntimeShellImportRequirements(
         { imported: 'RuntimeRendererConfigProvider' },
       ],
     },
-    { source: zoraEntrypoint, namedImports: [{ imported: 'useZoraTheme' }] },
+    {
+      source: zoraEntrypoint,
+      namedImports: [{ imported: 'useZoraTheme' }, { imported: 'ZORA_COMPONENT_META' }],
+    },
     {
       source: '@ankhorage/expo-runtime/bundled-media',
       namedImports: [{ imported: 'createExpoBundledMediaResolver' }],
@@ -67,8 +76,8 @@ export function getRuntimeShellImportRequirements(
             source: 'expo-router',
             namedImports: [{ imported: 'Href', typeOnly: true }, { imported: 'useRouter' }],
           },
-          { source: 'react-native', namedImports: [{ imported: 'Alert' }] },
         ]),
+    { source: 'react-native', namedImports: [{ imported: 'Alert' }] },
   ];
 }
 
@@ -143,6 +152,19 @@ ${runtimeModuleDeclarations?.trim() ?? ''}
 ${includeStudio ? 'export { bundledMediaRegistry };\n' : ''}const bundledMediaResolver = createExpoBundledMediaResolver(bundledMediaRegistry);
 ${includeStudio ? 'export ' : ''}const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;
 
+/** Resolve the component event identity published by ZORA for Runtime binding lookup. */
+function resolveZoraRuntimeEventCapability({ eventName, node }: { eventName: string; node: { type: string } }) {
+  return ZORA_COMPONENT_META[node.type]?.events?.[eventName]?.eventType;
+}
+
+/** Present Runtime action diagnostics rather than leaving failed interactions as silent no-ops. */
+function reportRuntimeDiagnostics(diagnostics: readonly DataSourceDiagnostic[]) {
+  const messages = diagnostics
+    .filter((diagnostic) => diagnostic.severity === 'error')
+    .map((diagnostic) => diagnostic.message);
+  if (messages.length > 0) Alert.alert('Action unavailable', messages.join('\n'));
+}
+
 export function GeneratedRuntimeShell({
   children,
   runtimeManifest,
@@ -168,7 +190,9 @@ export function GeneratedRuntimeShell({
       executeCapability,
       registry: runtimeComponentRegistry,
       mediaAssets: runtimeManifest.media?.assets,
+      onDiagnostics: reportRuntimeDiagnostics,
       resolveMediaAsset: bundledMediaResolver,
+      resolveEventCapability: resolveZoraRuntimeEventCapability,
     }),
     [executeCapability, runtimeManifest.media?.assets],
   );
