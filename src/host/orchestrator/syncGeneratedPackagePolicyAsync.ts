@@ -2,6 +2,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { isRecord } from '@ankhorage/utility/object';
+
 import { applyCurrentGeneratedPackagePolicy } from '../../features/project-updates/composition/applyCurrentGeneratedPackagePolicy';
 
 /*** Reconcile one generated app package manifest against current owner-managed version ranges. */
