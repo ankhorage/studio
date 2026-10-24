@@ -30,6 +30,9 @@ graph TD
   module_scripts_expo57_native_capability_evidence_ts --> module_test_smoke_nativeCapabilityEvidence_constants_ts
   module_scripts_expo57_native_capability_evidence_ts --> module_test_smoke_nativeCapabilityEvidence_createNativeEvidenceServer_ts
   module_scripts_expo57_native_capability_evidence_ts --> module_test_smoke_nativeCapabilityEvidence_prepareNativeCapabilityEvidenceAsync_ts
+  module_scripts_expo57_sharkprey_acceptance_ts["scripts/expo57-sharkprey-acceptance.ts"]
+  package__ankhorage_studio -.-> module_scripts_expo57_sharkprey_acceptance_ts
+  module_scripts_expo57_sharkprey_acceptance_ts --> module_test_smoke_runExpo57SharkPreyAcceptanceAsync_ts
   module_scripts_expo57_social_template_web_acceptance_ts["scripts/expo57-social-template-web-acceptance.ts"]
   package__ankhorage_studio -.-> module_scripts_expo57_social_template_web_acceptance_ts
   module_scripts_expo57_social_template_web_acceptance_ts --> module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts
@@ -1078,6 +1081,18 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_layout_templates_rootLayout_ts
   module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_templates_rootLayout_ts --> module_src_host_modules_layout_ts
+  module_src_host_layout_templates_rootShell_test_ts["src/host/layout/templates/rootShell.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_rootShell_test_ts
+  module_src_host_layout_templates_rootShell_test_ts --> module_src_host_layout_templates_rootShell_ts
+  module_src_host_layout_templates_rootShell_ts["src/host/layout/templates/rootShell.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_rootShell_ts
+  module_src_host_layout_templates_rootShell_ts --> module_src_host_layout_generatedImportComposer_ts
+  module_src_host_layout_templates_runtimeShell_test_ts["src/host/layout/templates/runtimeShell.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_runtimeShell_test_ts
+  module_src_host_layout_templates_runtimeShell_test_ts --> module_src_host_layout_templates_runtimeShell_ts
+  module_src_host_layout_templates_runtimeShell_ts["src/host/layout/templates/runtimeShell.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_runtimeShell_ts
+  module_src_host_layout_templates_runtimeShell_ts --> module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_templates_screen_test_ts["src/host/layout/templates/screen.test.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_screen_test_ts
   module_src_host_layout_templates_screen_test_ts --> module_src_host_layout_templates_screen_ts
@@ -1085,6 +1100,16 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_layout_templates_screen_ts
   module_src_host_layout_templates_screen_ts --> module_src_host_layout_templates_utils_strings_ts
   module_src_host_layout_templates_screen_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_studioAppHeader_ts["src/host/layout/templates/studioAppHeader.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_studioAppHeader_ts
+  module_src_host_layout_templates_studioAppHeader_ts --> module_src_host_layout_generatedImportComposer_ts
+  module_src_host_layout_templates_studioShell_test_ts["src/host/layout/templates/studioShell.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_studioShell_test_ts
+  module_src_host_layout_templates_studioShell_test_ts --> module_src_host_layout_templates_studioAppHeader_ts
+  module_src_host_layout_templates_studioShell_test_ts --> module_src_host_layout_templates_studioShell_ts
+  module_src_host_layout_templates_studioShell_ts["src/host/layout/templates/studioShell.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_studioShell_ts
+  module_src_host_layout_templates_studioShell_ts --> module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_templates_utils_routes_ts["src/host/layout/templates/utils/routes.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_utils_routes_ts
   module_src_host_layout_templates_utils_strings_ts["src/host/layout/templates/utils/strings.ts"]
@@ -1232,6 +1257,7 @@ graph TD
   module_src_host_orchestrator_projectManager_ts --> module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_features_project_updates_composition_createStudioProjectWriterProxy_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_features_projects_composition_createProjectGenerationStateStore_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_layout_layoutGenerator_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_manifestSystem_index_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_media_projectBundledMediaService_ts
@@ -1310,7 +1336,6 @@ graph TD
   module_src_host_orchestrator_syncGeneratedPackagePolicyAsync_ts --> module_src_features_project_updates_composition_applyCurrentGeneratedPackagePolicy_ts
   module_src_host_orchestrator_templates_test_ts["src/host/orchestrator/templates.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_templates_test_ts
-  module_src_host_orchestrator_templates_test_ts --> module_src_features_project_updates_adapters_outbound_getGeneratedPackagePolicy_ts
   module_src_host_orchestrator_templates_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_templates_ts["src/host/orchestrator/templates.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_templates_ts
@@ -2417,6 +2442,15 @@ graph TD
   module_test_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_test_smoke_generateExpoRouterTypesAsync_ts
   module_test_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_test_smoke_resolveAppOwnedExpoCliAsync_ts
   module_test_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_test_smoke_runAcceptanceCommandAsync_ts
+  module_test_smoke_runExpo57SharkPreyAcceptanceAsync_ts["test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"]
+  package__ankhorage_studio -.-> module_test_smoke_runExpo57SharkPreyAcceptanceAsync_ts
+  module_test_smoke_runExpo57SharkPreyAcceptanceAsync_ts --> module_src_host_http_server_ts
+  module_test_smoke_runExpo57SharkPreyAcceptanceAsync_ts --> module_src_host_orchestrator_projectManager_ts
+  module_test_smoke_runExpo57SharkPreyAcceptanceAsync_ts --> module_src_host_templates_index_ts
+  module_test_smoke_runExpo57SharkPreyAcceptanceAsync_ts --> module_test_smoke_assertNoBrowserErrors_ts
+  module_test_smoke_runExpo57SharkPreyAcceptanceAsync_ts --> module_test_smoke_ChromeNavigationSession_ts
+  module_test_smoke_runExpo57SharkPreyAcceptanceAsync_ts --> module_test_smoke_resolveAppOwnedExpoCliAsync_ts
+  module_test_smoke_runExpo57SharkPreyAcceptanceAsync_ts --> module_test_smoke_runAcceptanceCommandAsync_ts
   module_test_smoke_runExpo57StudioStandaloneAcceptance_ts["test/smoke/runExpo57StudioStandaloneAcceptance.ts"]
   package__ankhorage_studio -.-> module_test_smoke_runExpo57StudioStandaloneAcceptance_ts
   module_test_smoke_runExpo57StudioStandaloneAcceptance_ts --> module_src_host_http_serverWithSecrets_ts

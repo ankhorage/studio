@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.0.2
+
+### Patch Changes
+
+- 74a4e8f: Fix generated Expo root layout ownership and validate fresh SharkPrey output through the packed Studio candidate.
+
 ## 8.0.1
 
 ### Patch Changes
