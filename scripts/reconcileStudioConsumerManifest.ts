@@ -1,4 +1,5 @@
 import { readFile, writeFile } from 'node:fs/promises';
+import process from 'node:process';
 
 import { isRecord } from '@ankhorage/utility/object';
 import { compareSemanticVersions, parseSemanticVersion } from '@ankhorage/utility/semver';
@@ -92,7 +93,9 @@ if (import.meta.main) {
     throw new Error('Studio root or standalone consumer manifest has an invalid shape.');
   }
   const verifiedVersion = process.env.STUDIO_PUBLISHED_VERSION;
-  if (!verifiedVersion) throw new Error('STUDIO_PUBLISHED_VERSION must come from npm publication verification.');
+  if (!verifiedVersion) {
+    throw new Error('STUDIO_PUBLISHED_VERSION must come from npm publication verification.');
+  }
   const next = `${JSON.stringify(reconcileStudioConsumerManifest(rootValue, appValue, verifiedVersion), null, 2)}\n`;
   if (next !== appSource) await writeFile(appPath, next, 'utf8');
 }
