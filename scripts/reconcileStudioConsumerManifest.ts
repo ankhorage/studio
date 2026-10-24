@@ -92,8 +92,8 @@ if (import.meta.main) {
   if (!isPackageManifest(rootValue) || !isPackageManifest(appValue)) {
     throw new Error('Studio root or standalone consumer manifest has an invalid shape.');
   }
-  const verifiedVersion = process.env.STUDIO_PUBLISHED_VERSION;
-  if (!verifiedVersion) {
+  const verifiedVersion: unknown = process.env.STUDIO_PUBLISHED_VERSION;
+  if (typeof verifiedVersion !== 'string' || verifiedVersion.length === 0) {
     throw new Error('STUDIO_PUBLISHED_VERSION must come from npm publication verification.');
   }
   const next = `${JSON.stringify(reconcileStudioConsumerManifest(rootValue, appValue, verifiedVersion), null, 2)}\n`;
