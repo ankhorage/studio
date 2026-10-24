@@ -30,8 +30,8 @@ export function reconcileStudioConsumerManifest(
     Object.fromEntries(
       Object.entries(declared).map(([name, range]) => [
         name,
-        name.startsWith('@ankhorage/') && Object.hasOwn(owners, name)
-          ? selectMonotonicOwnerRange(name, range, owners[name]!)
+        name.startsWith('@ankhorage/') && typeof owners[name] === 'string'
+          ? selectMonotonicOwnerRange(name, range, owners[name])
           : range,
       ]),
     );
@@ -45,10 +45,11 @@ export function reconcileStudioConsumerManifest(
 
 /*** Select the newer supported caret/tilde semver floor without downgrading direct consumer requirements. */
 function selectMonotonicOwnerRange(name: string, existing: string, required: string): string {
+  /*** Parse the explicitly supported owner-managed caret or tilde range floor. */
   const floor = (range: string) => {
     const match = /^(?:\^|~)(\d+\.\d+\.\d+)$/.exec(range);
     if (!match) throw new Error(`Unsupported owner range for ${name}: ${range}`);
-    const version = parseSemanticVersion(match[1]!);
+    const version = parseSemanticVersion(match[1] ?? '');
     if (version === null) throw new Error(`Unparseable owner range for ${name}: ${range}`);
     return version;
   };
