@@ -404,13 +404,13 @@ export class ChromeNavigationSession {
   /*** Wait until the requested test-id control is visible in the active browser viewport. */
   async waitForVisibleTestIdAsync(testId: string): Promise<void> {
     const expression = `(() => {
-  const element = [...document.querySelectorAll('[data-testid]')].find(
-    (candidate) => candidate.getAttribute('data-testid') === ${JSON.stringify(testId)},
-  );
-  if (!(element instanceof HTMLElement)) return false;
-  const rect = element.getBoundingClientRect();
-  const style = getComputedStyle(element);
-  return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+  return [...document.querySelectorAll('[data-testid]')].some((candidate) => {
+    if (candidate.getAttribute('data-testid') !== ${JSON.stringify(testId)}) return false;
+    if (!(candidate instanceof HTMLElement)) return false;
+    const rect = candidate.getBoundingClientRect();
+    const style = getComputedStyle(candidate);
+    return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+  });
 })()`;
     await this.waitForBooleanAsync(expression, `visible testID "${testId}"`);
   }
@@ -716,22 +716,17 @@ function createRoleHitTestExpression(role: string, name: string, occurrence: num
 /*** Build a browser expression that scrolls to and hit-tests the interaction surface associated with a visible test id. */
 function createTestIdHitTestExpression(testId: string): string {
   return `(() => {
-  const element = [...document.querySelectorAll('[data-testid]')].find(
-    (candidate) => candidate.getAttribute('data-testid') === ${JSON.stringify(testId)},
-  );
+  const element = [...document.querySelectorAll('[data-testid]')].find((candidate) => {
+    if (candidate.getAttribute('data-testid') !== ${JSON.stringify(testId)}) return false;
+    if (!(candidate instanceof HTMLElement)) return false;
+    const rect = candidate.getBoundingClientRect();
+    const style = getComputedStyle(candidate);
+    return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+  });
   if (!(element instanceof HTMLElement)) return { state: 'missing' };
   const control = element.closest('[role="button"], [role="tab"]') ?? element;
   if (!(control instanceof HTMLElement)) return { state: 'missing' };
   const rect = control.getBoundingClientRect();
-  const style = getComputedStyle(control);
-  if (
-    rect.width <= 0 ||
-    rect.height <= 0 ||
-    style.display === 'none' ||
-    style.visibility === 'hidden'
-  ) {
-    return { state: 'missing' };
-  }
   const x = rect.left + rect.width / 2;
   const y = rect.top + rect.height / 2;
   if (x < 0 || y < 0 || x > innerWidth || y > innerHeight) {
