@@ -276,7 +276,7 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
     await chrome.navigateAsync(`${rootUrl}/auth/callback?code=replay-code`);
     await chrome.waitForLocationAsync({ pathname: '/' });
     await chrome.waitForBodyTextAsync('Camera access is required to scan barcodes.');
-    await chrome.waitForInteractiveTestIdAsync('capability-acceptance-scanner');
+    await chrome.waitForVisibleTestIdAsync('capability-acceptance-scanner');
 
     const completedExchangeCount = authStub.tokenExchangeCount;
     if (completedExchangeCount !== 1) {
@@ -296,9 +296,9 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
       'This OAuth callback was already completed. Continuing…',
     );
     await chrome.waitForLocationAsync({ pathname: '/' });
-    await chrome.waitForInteractiveTestIdAsync('capability-acceptance-scanner');
+    await chrome.waitForVisibleTestIdAsync('capability-acceptance-scanner');
     await chrome.reloadAsync();
-    await chrome.waitForInteractiveTestIdAsync('capability-acceptance-scanner');
+    await chrome.waitForVisibleTestIdAsync('capability-acceptance-scanner');
 
     if (authStub.tokenExchangeCount !== completedExchangeCount) {
       throw new Error(

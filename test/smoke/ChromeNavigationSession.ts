@@ -355,11 +355,6 @@ export class ChromeNavigationSession {
     await this.waitForHitTestedRoleAndNameAsync(role, name, occurrence);
   }
 
-  /*** Wait until the requested test-id control has a visible, unobstructed browser interaction surface. */
-  async waitForInteractiveTestIdAsync(testId: string): Promise<void> {
-    await this.waitForHitTestedTestIdAsync(testId);
-  }
-
   /*** Wait until the requested test-id control is visible in the active browser viewport. */
   async waitForVisibleTestIdAsync(testId: string): Promise<void> {
     const expression = `(() => {
