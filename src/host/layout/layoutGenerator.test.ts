@@ -383,6 +383,11 @@ describe('GeneratedAppFileGenerator', () => {
                       path: '/training-setup/difficulty',
                       screenId: 'training-difficulty',
                     },
+                    {
+                      name: '[...segments]',
+                      path: '/training-setup/[...segments]',
+                      screenId: 'training-catch-all',
+                    },
                   ],
                 },
               },
@@ -396,6 +401,7 @@ describe('GeneratedAppFileGenerator', () => {
       'training-table-size',
       'training-street',
       'training-difficulty',
+      'training-catch-all',
     ] as const;
     const manifest: AppManifest = {
       ...baseManifest,
@@ -419,6 +425,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(paths).toContain('src/app/(app)/(tabs)/(train)/training-setup/table.tsx');
     expect(paths).toContain('src/app/(app)/(tabs)/(train)/training-setup/street.tsx');
     expect(paths).toContain('src/app/(app)/(tabs)/(train)/training-setup/difficulty.tsx');
+    expect(paths).toContain('src/app/(app)/(tabs)/(train)/training-setup/[...segments].tsx');
     expect(paths).not.toContain('src/app/(app)/(tabs)/(train)/training-table-size.tsx');
     expect(paths).not.toContain('src/app/(app)/(tabs)/(train)/training-street.tsx');
     expect(paths).not.toContain('src/app/(app)/(tabs)/(train)/training-difficulty.tsx');

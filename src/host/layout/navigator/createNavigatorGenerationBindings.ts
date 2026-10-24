@@ -5,10 +5,7 @@ import type {
 } from '@ankhorage/contracts/navigator';
 
 import type { GeneratedFile } from '../../../types/project-generation';
-import {
-  resolveGeneratedPublicRoutePath,
-  resolveGeneratedRoutePath,
-} from '../resolveGeneratedRoutePath';
+import { projectGeneratedRoute } from './projectGeneratedRoute';
 import { escapeStringLiteral } from '../utils/escapeStringLiteral';
 
 const GUARD_BINDINGS_MODULE = '@/generated/navigatorGuardBindings';
@@ -130,12 +127,15 @@ function collectScreenModules(roots: readonly NavigatorRootBindingInput[]): Map<
   const modules = new Map<string, string>();
   const visit = (navigator: NavigatorNode, directory: string, publicPath: string) => {
     for (const route of navigator.routes) {
-      const routePath = resolveGeneratedRoutePath(directory, publicPath, route);
+      const projection = projectGeneratedRoute({
+        parentModulePath: directory,
+        parentPublicPath: publicPath,
+        route,
+      });
       if (route.screenId && !modules.has(route.screenId)) {
-        modules.set(route.screenId, toSourceAlias(routePath));
+        modules.set(route.screenId, toSourceAlias(projection.modulePath));
       }
-      if (route.navigator)
-        visit(route.navigator, routePath, resolveGeneratedPublicRoutePath(publicPath, route));
+      if (route.navigator) visit(route.navigator, projection.modulePath, projection.publicPath);
     }
   };
   for (const root of roots) visit(root.navigator, root.rootDirectory, '/');
