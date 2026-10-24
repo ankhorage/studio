@@ -77,7 +77,7 @@ export function getRuntimeShellImportRequirements(
             namedImports: [{ imported: 'Href', typeOnly: true }, { imported: 'useRouter' }],
           },
         ]),
-    { source: 'react-native', namedImports: [{ imported: 'Alert' }] },
+    { source: 'react-native', namedImports: [{ imported: 'Alert' }, { imported: 'Platform' }] },
   ];
 }
 
@@ -162,7 +162,14 @@ function reportRuntimeDiagnostics(diagnostics: readonly DataSourceDiagnostic[]) 
   const messages = diagnostics
     .filter((diagnostic) => diagnostic.severity === 'error')
     .map((diagnostic) => diagnostic.message);
-  if (messages.length > 0) Alert.alert('Action unavailable', messages.join('\n'));
+  if (messages.length === 0) return;
+
+  const message = messages.join('\\n');
+  if (Platform.OS === 'web') {
+    globalThis.alert(\`Action unavailable\\n\\n\${message}\`);
+    return;
+  }
+  Alert.alert('Action unavailable', message);
 }
 
 export function GeneratedRuntimeShell({

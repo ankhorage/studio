@@ -22,9 +22,13 @@ test('generates Studio Runtime composition with the Studio executor and bundled 
   expect(source).toContain('resolveEventCapability: resolveZoraRuntimeEventCapability');
   expect(source).toContain('onDiagnostics: reportRuntimeDiagnostics');
   expect(source).toContain('ZORA_COMPONENT_META[node.type]?.events?.[eventName]?.eventType');
+  expect(source).toContain("if (Platform.OS === 'web')");
+  expect(source).toContain('globalThis.alert(`Action unavailable\\n\\n${message}`)');
   expect(source).toContain("Alert.alert('Action unavailable'");
   expect(source).toContain('<RuntimeRendererConfigProvider value={generatedRuntimeConfig}>');
   expect(source).not.toContain('useGeneratedRuntimeCapabilityExecutor');
+  const transpiler = new Bun.Transpiler({ loader: 'tsx' });
+  expect(() => transpiler.transformSync(source)).not.toThrow();
 });
 
 test('generates standalone Runtime composition without Studio dependencies', () => {

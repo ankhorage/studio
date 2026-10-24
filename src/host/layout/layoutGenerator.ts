@@ -24,10 +24,7 @@ import {
 import { composeGeneratedImports } from './generatedImportComposer';
 import { createNavigatorGenerationBindings } from './navigator/createNavigatorGenerationBindings';
 import { generateNavigatorLayoutFiles } from './navigator/generateNavigatorLayoutFiles';
-import {
-  resolveGeneratedPublicRoutePath,
-  resolveGeneratedRoutePath,
-} from './resolveGeneratedRoutePath';
+import { projectGeneratedRoute } from './navigator/projectGeneratedRoute';
 import {
   getAuthAdapterTs,
   getAuthFormTs,
@@ -355,16 +352,19 @@ export class GeneratedAppFileGenerator {
       if (!Array.isArray(node.routes)) return;
 
       node.routes.forEach((route: RouteDefinition) => {
-        const nextRel = resolveGeneratedRoutePath(currentRel, currentPublicPath, route);
-        const nextPublicPath = resolveGeneratedPublicRoutePath(currentPublicPath, route);
+        const projection = projectGeneratedRoute({
+          parentModulePath: currentRel,
+          parentPublicPath: currentPublicPath,
+          route,
+        });
 
         if (route.navigator) {
-          walk(route.navigator, nextRel, nextPublicPath);
+          walk(route.navigator, projection.modulePath, projection.publicPath);
           return;
         }
 
-        const fileName = `${route.path === '/' ? 'index' : path.basename(nextRel)}.tsx`;
-        const dirRel = path.dirname(nextRel);
+        const fileName = `${route.path === '/' ? 'index' : path.basename(projection.modulePath)}.tsx`;
+        const dirRel = path.dirname(projection.modulePath);
         const targetDirRel = dirRel === '.' ? '' : dirRel;
         const targetPath = toPortablePath(path.join(appRootRel, targetDirRel, fileName));
 
