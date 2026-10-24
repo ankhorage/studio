@@ -234,14 +234,13 @@ async function startGeneratedAppAsync(args: {
   );
   await chrome.installObservedPathnameHistoryAsync();
   await chrome.navigateAsync(url);
-  await chrome.waitForBodyTextAsync('Where are you starting?');
+  await chrome.waitForBodyTextAsync('Ready to train?');
   await chrome.waitForApplicationInteractiveAsync();
-  await chrome.clickByRoleAndNameAsync('button', 'New to NLHE? Learn the rules');
-  await chrome.clickByRoleAndNameAsync('button', 'Start assessment');
-  await chrome.waitForLocationAsync({ pathname: '/training-setup' });
-  await chrome.waitForBodyTextAsync('What do you want to train?');
   await chrome.clickByRoleAndNameAsync('button', 'Preview');
   await chrome.waitForInteractiveRoleAndNameAsync('button', 'Edit');
+  await chrome.clickByRoleAndNameAsync('button', 'Start training');
+  await chrome.waitForLocationAsync({ pathname: '/training-setup' });
+  await chrome.waitForBodyTextAsync('What do you want to train?');
   const historyTraceStart = (await chrome.readObservedPathnamesAsync()).length;
   try {
     await chrome.clickByTestIdAsync('navigator-tabs-item-history');
