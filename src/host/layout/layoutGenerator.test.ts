@@ -207,6 +207,8 @@ describe('GeneratedAppFileGenerator', () => {
       },
     );
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const studioShell =
+      files.find((file) => file.path === 'src/generated/studioShell.tsx')?.content ?? '';
     const adminLayout = files.find((file) => file.path === 'src/app/ankh/_layout.tsx')?.content;
     const adminNativePage = files.find(
       (file) => file.path === 'src/app/ankh/auth/providers.tsx',
@@ -218,11 +220,13 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
     expect(rootLayout).toContain('<Stack.Protected guard={canAccessStudioAdmin}>');
     expect(rootLayout).toContain("if (authState === 'pending') {");
-    expect(rootLayout).toContain('isStudioAdminPath(appPathname) ? (');
-    expect(rootLayout).toContain('} = useGeneratedAuthNavigation();');
+    expect(rootLayout).toContain(
+      'activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}',
+    );
+    expect(rootLayout).toContain('useGeneratedAuthNavigation();');
     expect(rootLayout).not.toContain('isRouteGuardDisabled');
-    expect(rootLayout).toContain('useGlobalSearchParams');
-    expect(rootLayout).toContain('resolveStudioLastNonAdminLocation');
+    expect(rootLayout).not.toContain('useGlobalSearchParams');
+    expect(studioShell).toContain('resolveStudioLastNonAdminLocation');
     expect(rootLayout).toContain('!isStudioAdminPath(appPathname) &&');
     expect(adminLayout).toContain("import { Redirect, Slot } from 'expo-router';");
     expect(adminLayout).toContain("import { lazy, Suspense } from 'react';");
@@ -247,9 +251,8 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminWebPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
     expect(adminWebPage).not.toContain("from '@ankhorage/studio/administration/AnkhAdminPage'");
     expect(rootLayout).toContain("from '@ankhorage/studio/core/StudioProvider'");
-    expect(rootLayout).toContain("from '@ankhorage/studio/core/StudioContext'");
     expect(rootLayout).toContain("from '@ankhorage/studio/ui/AnkhStudio'");
-    expect(rootLayout).toContain("from '@ankhorage/studio/ui/useStudioAppBarAugmentation'");
+    expect(rootLayout).toContain("from '@/generated/studioShell'");
     expect(rootLayout).not.toContain("from '@ankhorage/studio';");
     expect(adminLayout).toContain("import('@ankhorage/studio')");
     expect(adminWebPage).toContain("import('@ankhorage/studio')");
@@ -354,45 +357,51 @@ describe('GeneratedAppFileGenerator', () => {
       includeStudio: true,
     });
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const studioShell =
+      files.find((file) => file.path === 'src/generated/studioShell.tsx')?.content ?? '';
+    const studioAppHeader =
+      files.find((file) => file.path === 'src/generated/studioAppHeader.tsx')?.content ?? '';
+    const runtimeShell =
+      files.find((file) => file.path === 'src/generated/runtimeShell.tsx')?.content ?? '';
     const screen = files.find((file) => file.path === 'src/app/(app)/index.tsx')?.content ?? '';
     const generatedSource = files.map((file) => file.content).join('\n');
 
     expect(rootLayout).toContain("from '@ankhorage/zora/reader-free';");
-    expect(rootLayout).toContain("from '@ankhorage/zora/registry';");
+    expect(runtimeShell).toContain("from '@ankhorage/zora/registry';");
     expect(rootLayout).not.toContain("from '@ankhorage/zora';");
     expect(generatedSource).not.toContain('@ankhorage/reader');
     expect(generatedSource).not.toContain('pdfjs-dist');
-    expect(rootLayout).toContain('AppBar');
+    expect(studioAppHeader).toContain('AppBar');
     expect(rootLayout).toContain('AppShell');
-    expect(rootLayout).toContain('ZoraProvider');
-    expect(rootLayout).toContain('createComponentRegistry');
+    expect(rootLayout).toContain('GeneratedThemeShell');
+    expect(runtimeShell).toContain('createComponentRegistry');
     expect(rootLayout).not.toContain('STUDIO_ZORA_PLUGIN_CATALOG');
-    expect(rootLayout).toContain(
+    expect(runtimeShell).toContain(
       'APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY',
     );
-    expect(rootLayout).toContain(
-      'APP_EXTENSION_INTERACTION_POLICY_SUPPORT as GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT',
-    );
-    expect(rootLayout).toContain(`const APP_COMPONENT_REGISTRY = createComponentRegistry(
+    expect(studioShell).toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
+    expect(runtimeShell).toContain(`const APP_COMPONENT_REGISTRY = createComponentRegistry(
   ZORA_BASE_COMPONENT_REGISTRY,
   GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
 );`);
-    expect(rootLayout).toContain(
-      'const studioInteractionPolicyComponentRegistry = ZORA_BASE_COMPONENT_REGISTRY;',
+    expect(studioShell).toContain('builtInComponentRegistry: ZORA_BASE_COMPONENT_REGISTRY');
+    expect(studioShell).toContain(
+      "import { APP_EXTENSION_INTERACTION_POLICY_SUPPORT } from '@/generated/appExtensionRegistry';",
     );
-    expect(rootLayout).toContain(`const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
-  ...GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
-} as const;`);
-    expect(rootLayout).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
+    expect(runtimeShell).toContain(
+      'export const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;',
+    );
     expect(rootLayout).toContain('componentMeta={ZORA_COMPONENT_META}');
     expect(rootLayout).toContain('bindableComponentMeta={ZORA_BINDABLE_COMPONENT_META}');
-    expect(rootLayout).toContain('registry: runtimeComponentRegistry');
+    expect(runtimeShell).toContain('registry: runtimeComponentRegistry');
     expect(rootLayout).toContain(
-      '<GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>',
+      '<GeneratedThemeShell theme={activeTheme} initialMode={activeThemeMode}>',
     );
-    expect(rootLayout).toContain('<RuntimeRendererConfigProvider value={generatedRuntimeConfig}>');
+    expect(runtimeShell).toContain(
+      '<RuntimeRendererConfigProvider value={generatedRuntimeConfig}>',
+    );
     expect(rootLayout).not.toContain('STUDIO_ZORA_COMPONENT_REGISTRY');
-    expect(rootLayout).toContain('ZORA_BASE_COMPONENT_REGISTRY');
+    expect(runtimeShell).toContain('ZORA_BASE_COMPONENT_REGISTRY');
     expect(rootLayout).not.toContain('ZORA_COMPONENT_REGISTRY as STUDIO_ZORA_COMPONENT_REGISTRY');
     expect(rootLayout).not.toContain('ZORA_COMPONENT_REGISTRY as BASE_ZORA_COMPONENT_REGISTRY');
     expect(rootLayout).not.toContain('SURFACE_COMPONENT_REGISTRY');
@@ -425,12 +434,14 @@ describe('GeneratedAppFileGenerator', () => {
       includeStudio: false,
     });
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const runtimeShell =
+      files.find((file) => file.path === 'src/generated/runtimeShell.tsx')?.content ?? '';
     const screen = files.find((file) => file.path === 'src/app/(app)/index.tsx')?.content ?? '';
 
     expect(rootLayout).toContain("from '@ankhorage/zora';");
     expect(rootLayout).not.toContain("from '@ankhorage/zora/reader-free';");
-    expect(rootLayout).toContain('ZORA_COMPONENT_REGISTRY');
-    expect(rootLayout).not.toContain('ZORA_BASE_COMPONENT_REGISTRY');
+    expect(runtimeShell).toContain('ZORA_COMPONENT_REGISTRY');
+    expect(runtimeShell).not.toContain('ZORA_BASE_COMPONENT_REGISTRY');
     expect(screen).toContain("from '@ankhorage/zora';");
   });
 
@@ -443,19 +454,23 @@ describe('GeneratedAppFileGenerator', () => {
     const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', manifest, [], {
       includeStudio: true,
     });
-    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const studioShell =
+      files.find((file) => file.path === 'src/generated/studioShell.tsx')?.content ?? '';
+    const runtimeShell =
+      files.find((file) => file.path === 'src/generated/runtimeShell.tsx')?.content ?? '';
 
-    expect(rootLayout).toContain(
-      'const studioInteractionPolicyComponentRegistry = ZORA_COMPONENT_REGISTRY;',
+    expect(studioShell).toContain('builtInComponentRegistry: ZORA_COMPONENT_REGISTRY');
+    expect(runtimeShell).toContain(
+      'export const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;',
     );
-    expect(rootLayout).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
   });
 
   test('binds standalone runtime capabilities through the released Expo Runtime owner', () => {
     const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', createManifest(), [], {
       includeStudio: false,
     });
-    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const runtimeShell =
+      files.find((file) => file.path === 'src/generated/runtimeShell.tsx')?.content ?? '';
     const executor = files.find(
       (file) => file.path === 'src/generated/runtimeCapabilityExecutor.ts',
     )?.content;
@@ -469,32 +484,35 @@ describe('GeneratedAppFileGenerator', () => {
     expect(executor).toContain('isNavigatorNavigateInput');
     expect(executor).toContain('isThemeSetModeInput');
     expect(executor).not.toContain("from '@ankhorage/studio");
-    expect(rootLayout).toContain('createGeneratedRuntimeCapabilityExecutor');
-    expect(rootLayout).toContain(
+    expect(runtimeShell).toContain('createGeneratedRuntimeCapabilityExecutor');
+    expect(runtimeShell).toContain(
       "import { resolveExpoRuntimeRoutePath } from '@ankhorage/expo-runtime/capability-bridge';",
     );
-    expect(rootLayout).toContain('type Href');
-    expect(rootLayout).toContain(
+    expect(runtimeShell).toContain('type Href');
+    expect(runtimeShell).toContain(
       'const { resolvedPath, unusedParams } = resolveExpoRuntimeRoutePath(route, params);',
     );
-    expect(rootLayout).toContain(
+    expect(runtimeShell).toContain(
       'router.navigate({ params: unusedParams, pathname: resolvedPath } as Href);',
     );
-    expect(rootLayout).toContain("setMode((input as { mode: 'dark' | 'light' }).mode)");
-    expect(rootLayout).not.toContain('eslint-disable');
-    expect(rootLayout).toContain('const useGeneratedRuntimeCapabilityExecutor = () =>');
-    expect(rootLayout).toContain(
-      'const { executeCapability: executeApplicationCapability } =\n    useGeneratedRuntimeCapabilityExecutor();',
+    expect(runtimeShell).toContain("setMode((input as { mode: 'dark' | 'light' }).mode)");
+    expect(runtimeShell).not.toContain('eslint-disable');
+    expect(runtimeShell).toContain('function useGeneratedRuntimeCapabilityExecutor()');
+    expect(runtimeShell).toContain(
+      'const runtimeCapabilityExecutor = useGeneratedRuntimeCapabilityExecutor();',
     );
-    expect(rootLayout).toContain('composeRuntimeCapabilityExecutor');
-    expect(rootLayout).toContain('createRuntimeApiCapabilityExecutor');
-    expect(rootLayout).not.toContain('composeZoraPlugins');
-    expect(rootLayout).not.toContain('ZORA_CORE_PLUGIN');
-    expect(rootLayout).not.toContain('GENERATED_APP_ZORA_PLUGINS');
-    expect(rootLayout).toContain('createComponentRegistry');
-    expect(rootLayout).not.toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
-    expect(rootLayout).not.toContain("from '@ankhorage/studio/runtime'");
-    expect(rootLayout).not.toContain('STUDIO_ZORA_PLUGIN_CATALOG');
+    expect(runtimeShell).toContain(
+      'const executeApplicationCapability = runtimeCapabilityExecutor.executeCapability;',
+    );
+    expect(runtimeShell).toContain('composeRuntimeCapabilityExecutor');
+    expect(runtimeShell).toContain('createRuntimeApiCapabilityExecutor');
+    expect(runtimeShell).not.toContain('composeZoraPlugins');
+    expect(runtimeShell).not.toContain('ZORA_CORE_PLUGIN');
+    expect(runtimeShell).not.toContain('GENERATED_APP_ZORA_PLUGINS');
+    expect(runtimeShell).toContain('createComponentRegistry');
+    expect(runtimeShell).not.toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
+    expect(runtimeShell).not.toContain("from '@ankhorage/studio/runtime'");
+    expect(runtimeShell).not.toContain('STUDIO_ZORA_PLUGIN_CATALOG');
   });
 
   test('executes the generated standalone capability executor with owner-valid inputs only', async () => {

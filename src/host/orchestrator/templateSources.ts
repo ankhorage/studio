@@ -26,8 +26,8 @@ const AUTH_SUPABASE_VERSION = '^2.0.0';
 const STORAGE_SUPABASE_VERSION = '^1.0.0';
 const ZORA_VERSION = '^4.0.0';
 const EXPO_RUNTIME_VERSION = '^3.2.4';
-const ANKH_VERSION = '^0.13.1';
 const DEVTOOLS_VERSION = '^1.12.0';
+const PDFJS_VERSION = '6.4.299';
 
 function serializeStringLiteral(value: string): string {
   return `'${value
@@ -923,6 +923,7 @@ export function getPackageJson(args: {
   name: string;
   includeStudio?: boolean;
   authProvider?: GeneratedAuthProvider;
+  oauthEnabled?: boolean;
   storageProvider?: GeneratedStorageProvider;
   runtimePlan?: ExpoRuntimePlan;
   targets: AppDeployTargets;
@@ -931,6 +932,7 @@ export function getPackageJson(args: {
     name,
     includeStudio = false,
     authProvider = null,
+    oauthEnabled = false,
     storageProvider = null,
     runtimePlan,
     targets,
@@ -947,7 +949,7 @@ export function getPackageJson(args: {
     version: '1.0.0',
     scripts: {
       start: 'expo start',
-      'platform:check': 'node scripts/assert-platform.mjs',
+      'platform:check': 'node scripts/assert-platform.mjs && expo install --check',
       ...(targets.android?.enabled ? { android: 'bun scripts/ankh-android.ts' } : {}),
       ...(targets.ios?.enabled ? { ios: 'expo run:ios' } : {}),
       ...(targets.web?.enabled ? { web: 'expo start --web' } : {}),
@@ -974,11 +976,13 @@ export function getPackageJson(args: {
         ? {
             '@ankhorage/auth': AUTH_VERSION,
             '@ankhorage/auth-supabase': AUTH_SUPABASE_VERSION,
-            ...createPlatformDependencyMap([
-              EXPO_PLATFORM.packages.crypto,
-              EXPO_PLATFORM.packages.secureStore,
-              EXPO_PLATFORM.packages.webBrowser,
-            ]),
+            ...createPlatformDependencyMap([EXPO_PLATFORM.packages.secureStore]),
+            ...(oauthEnabled
+              ? createPlatformDependencyMap([
+                  EXPO_PLATFORM.packages.crypto,
+                  EXPO_PLATFORM.packages.webBrowser,
+                ])
+              : {}),
           }
         : {}),
       ...(storageProvider === 'supabase'
@@ -989,6 +993,9 @@ export function getPackageJson(args: {
       '@react-native-vector-icons/fontawesome5': '^13.1.3',
       '@react-native-vector-icons/fontawesome6': '^13.1.3',
       '@react-native-vector-icons/ionicons': '^13.1.3',
+      ...(runtimePlan?.capabilities.some((requirement) => requirement.capability === 'ebookReader')
+        ? { 'pdfjs-dist': PDFJS_VERSION }
+        : {}),
       ...runtimeDependencies,
       ...(includeStudio
         ? createPlatformDependencyMap([
@@ -1022,7 +1029,6 @@ export function getPackageJson(args: {
       '@ankhorage/contracts': '$@ankhorage/contracts',
     },
     devDependencies: {
-      '@ankhorage/ankh': ANKH_VERSION,
       '@ankhorage/devtools': DEVTOOLS_VERSION,
       [EXPO_PLATFORM.tooling.expoDoctor.name]: EXPO_PLATFORM.tooling.expoDoctor.version,
       [EXPO_PLATFORM.tooling.nodeTypes.name]: EXPO_PLATFORM.tooling.nodeTypes.version,

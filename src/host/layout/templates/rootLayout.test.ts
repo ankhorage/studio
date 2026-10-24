@@ -53,7 +53,7 @@ test('keeps the native splash visible while generated auth is pending', () => {
   }, [authState, onReady]);`);
 });
 
-test('declares generated runtime registries before composing them', () => {
+test('delegates generated Runtime composition to the generated Runtime shell', () => {
   const generated = getRootLayoutTsx({
     manifest: {
       navigator: {
@@ -69,17 +69,10 @@ test('declares generated runtime registries before composing them', () => {
       usesTheme: false,
     },
     includeStudio: false,
-    runtimeModuleDeclarations: 'const APP_COMPONENT_REGISTRY = {};',
   });
 
-  const registryDeclarationIndex = generated.indexOf('const APP_COMPONENT_REGISTRY = {};');
-  const registryCompositionIndex = generated.indexOf(
-    'const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;',
-  );
-
-  expect(registryDeclarationIndex).toBeGreaterThanOrEqual(0);
-  expect(registryCompositionIndex).toBeGreaterThan(registryDeclarationIndex);
-  expect(generated).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
+  expect(generated).toContain('<GeneratedRuntimeShell runtimeManifest={runtimeManifest}>');
+  expect(generated).not.toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
   expect(generated).not.toContain('createComponentRegistry');
 });
 
@@ -110,55 +103,32 @@ test('initializes the Studio provider with the runtime manifest', () => {
   });
 
   expect(generated).toContain('initialManifest={runtimeManifest}');
-  expect(generated).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
+  expect(generated).toContain('<GeneratedRuntimeShell runtimeManifest={runtimeManifest}>');
   expect(generated).toContain('componentMeta={ZORA_COMPONENT_META}');
   expect(generated).toContain('bindableComponentMeta={ZORA_BINDABLE_COMPONENT_META}');
   expect(generated).toContain(
     'activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}',
   );
-  expect(generated).toContain(
-    'resolveScreenIdForPathname(manifest.navigator, pathname, manifest.screens)',
-  );
-  expect(generated).toContain('const appRouteSearchParams = useGlobalSearchParams();');
-  expect(generated).toContain('const appLocation = useMemo(');
-  expect(generated).toContain('resolveStudioLastNonAdminLocation({');
-  expect(generated).toContain('setLastNonAdminLocation(nextAppLocation)');
-  expect(generated).toContain('if (nextAppLocation) setLastNonAdminLocation(nextAppLocation)');
+  expect(generated).toContain('const appLocation = resolveStudioNavigableLocation(appPathname);');
+  expect(generated).not.toContain('useGlobalSearchParams');
   expect(generated).toContain('const shouldMountAppHeader =');
   expect(generated).toContain('!isStudioAdminPath(appPathname) &&');
-  expect(generated).toContain(
-    '<GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>',
-  );
-  expect(generated).toContain(
-    '<GeneratedZoraProvider theme={activeStudioTheme} initialMode={activeStudioThemeMode}>',
-  );
   expect(generated).toContain('const activeTheme = resolveManifestActiveTheme(runtimeManifest);');
-  expect(generated).toContain(
-    'const activeStudioTheme = resolveManifestActiveTheme(studioRuntimeManifest);',
-  );
   expect(generated).not.toContain('themes.find(');
-  expect(generated).toContain("readOwnProperty<AppManifest['themes'][string]>(");
+  expect(generated).toContain('resolveManifestActiveTheme(runtimeManifest)');
   expect(generated).not.toContain("AppManifest['themes'][number]");
   expect(generated).not.toContain('?? activeTheme');
   expect(generated).toContain(
-    'const themeConfig = useMemo(() => resolveZoraSurfaceThemeConfig(theme), [theme]);',
+    '<GeneratedThemeShell theme={activeTheme} initialMode={activeThemeMode}>',
   );
-  expect(generated).toContain('<ZoraProvider themeConfig={themeConfig} initialMode={initialMode}>');
   expect(generated).not.toContain('function GeneratedZoraThemeConfigSync');
-  expect(generated).toContain("): AppManifest['themes'][string] {");
-  expect(generated).toContain('id: theme.id');
-  expect(generated).toContain('name: theme.name');
-  expect(generated).toContain(
-    "function resolveManifestActiveTheme(manifest: AppManifest): AppManifest['themes'][string] {",
-  );
-  expect(generated).not.toContain('function resolveManifestActiveTheme(\n');
+  expect(generated).not.toContain('function resolveManifestActiveTheme(');
   expect(generated).not.toContain('resolveZoraProviderTheme');
   expect(generated).not.toContain('setThemeConfig');
   expect(generated).not.toContain('useRef(');
-  expect(generated).toContain('<AppBar title={appHeaderTitle} actions={studioAppBar.actions} />');
-  expect(generated).not.toContain('appMode={studioAppBar.appMode}');
-  expect(generated).not.toContain('overflow={studioAppBar.overflow}');
-  expect(generated).toContain('<GeneratedStatusBar />');
+  expect(generated).toContain('<StudioShell');
+  expect(generated).toContain('wrapOutput={(studioOutput) => <>{studioOutput}</>}');
+  expect(generated).not.toContain('function StudioShell(');
 });
 
 test('suppresses the normal Studio app header inside admin routes without auth runtime', () => {
@@ -184,7 +154,7 @@ test('suppresses the normal Studio app header inside admin routes without auth r
   expect(generated).toContain('true;');
 });
 
-test('keeps admin routes outside the root-owned stationary selection composition', () => {
+test('composes the Studio shell without embedding its selection behavior', () => {
   const generated = getRootLayoutTsx({
     manifest: {
       navigator: {
@@ -202,24 +172,10 @@ test('keeps admin routes outside the root-owned stationary selection composition
     includeStudio: true,
   });
 
-  expect(generated).toContain('StationaryTapSelector');
-  expect(generated).toContain(`const studioOutput = isStudioAdminPath(appPathname) ? (
-    output
-  ) : (
-    <StationaryTapSelector`);
-  expect(generated).toContain('createStudioStationarySelectionWrapNode');
-  expect(generated).toContain('createStudioInteractionPolicyResolver');
-  expect(generated).toContain('createStudioActionSuppressionConfig(previewMode)');
-  expect(generated).toContain('resolveNodeProps: studioResolveNodeProps');
-  expect(generated).toContain('wrapNode: studioWrapNode');
-  expect(generated).toContain('selectedNodeId');
-  expect(generated).toContain('selectNode');
-  expect(generated).toContain('canvasInteraction={{');
-  expect(generated).toContain('activeDragNodeId: activeCanvasDragNodeId');
-  expect(generated).toContain('moveNodeToPlacement');
-  expect(generated).toContain('setActiveDragNodeId: setActiveCanvasDragNodeId');
-  expect(generated).toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
   expect(generated).toContain('componentMeta={ZORA_COMPONENT_META}');
+  expect(generated).toContain('<StudioShell');
+  expect(generated).not.toContain('StationaryTapSelector');
+  expect(generated).not.toContain('createStudioActionSuppressionConfig');
 });
 
 test('keeps non-Studio generated output Studio-independent', () => {
@@ -240,7 +196,7 @@ test('keeps non-Studio generated output Studio-independent', () => {
     includeStudio: false,
   });
 
-  expect(generated).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
+  expect(generated).toContain('<GeneratedRuntimeShell runtimeManifest={runtimeManifest}>');
   expect(generated).not.toContain('createComponentRegistry');
   expect(generated).not.toContain('useStudio');
   expect(generated).not.toContain('StationaryTapSelector');
@@ -273,6 +229,28 @@ test('preserves navigator-owned relative indentation in generated app output', (
       <Stack.Screen key="index" name="index" />
     </Stack>
   );`);
+});
+
+test('preserves formatter-stable indentation for generated provider composition', () => {
+  const generated = getRootLayoutTsx({
+    manifest: { navigator: {} } as AppManifest,
+    mutations: [
+      {
+        imports: [],
+        hooks: [],
+        providerStart: ["<ExpoRuntimeProviders providers={['permissions']}>"],
+        providerEnd: ['</ExpoRuntimeProviders>'],
+      },
+    ],
+    allImports: '',
+    allHooks: '',
+    innerNavigation: { declarations: '', jsx: '<Slot />', usesTheme: false },
+    includeStudio: false,
+  });
+
+  expect(generated).toContain(`      <AppShell>
+        {<ExpoRuntimeProviders providers={['permissions']}>{output}</ExpoRuntimeProviders>}
+      </AppShell>`);
 });
 
 test('calls themed navigator hooks before the global auth pending boundary', () => {
@@ -308,7 +286,7 @@ test('calls themed navigator hooks before the global auth pending boundary', () 
   expect(pendingBoundaryIndex).toBeGreaterThan(themeHookIndex);
 });
 
-test('scopes Studio runtime selection config below StudioProvider', () => {
+test('keeps Studio runtime selection implementation out of RootLayout', () => {
   const generated = getRootLayoutTsx({
     manifest: {
       navigator: {
@@ -326,38 +304,12 @@ test('scopes Studio runtime selection config below StudioProvider', () => {
     includeStudio: true,
   });
 
-  const rootLayoutIndex = generated.indexOf('export default function RootLayout()');
-  const studioShellIndex = generated.indexOf('function StudioShell({');
-  const rootLayoutSource = generated.slice(rootLayoutIndex, studioShellIndex);
-  const studioShellSource = generated.slice(studioShellIndex);
-
-  expect(rootLayoutIndex).toBeGreaterThanOrEqual(0);
-  expect(studioShellIndex).toBeGreaterThan(rootLayoutIndex);
-  expect(rootLayoutSource).not.toContain('useStudio()');
-  expect(rootLayoutSource).not.toContain('createStudioActionSuppressionConfig(previewMode)');
-  expect(rootLayoutSource).not.toContain('wrapNode: wrapStudioRuntimeNode');
-  expect(studioShellSource).toContain('const studioRuntimeConfig = useMemo(');
-  expect(studioShellSource).toContain('const studioWrapNode = useMemo(');
-  expect(studioShellSource).toContain('createStudioStationarySelectionWrapNode');
-  expect(studioShellSource).toContain(
-    'builtInComponentRegistry: studioInteractionPolicyComponentRegistry',
-  );
-  expect(studioShellSource).toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
-  expect(studioShellSource).toContain('const studioResolveNodeProps = useMemo(');
-  expect(studioShellSource).toContain('createStudioInteractionPolicyResolver');
-  expect(studioShellSource).toContain('selectionColor={theme.semantics.action.primary.base}');
-  expect(studioShellSource).toContain('createStudioActionSuppressionConfig(previewMode)');
-  expect(studioShellSource).toContain('wrapNode: studioWrapNode');
-  expect(studioShellSource).not.toContain('registry: create');
-  expect(
-    generated.match(/const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;/gu),
-  ).toHaveLength(1);
-  expect(studioShellSource).toContain(
-    '<RuntimeRendererConfigProvider value={studioRuntimeConfig}>',
-  );
-  expect(studioShellSource).toContain('const studioOutput = isStudioAdminPath(appPathname) ? (');
-  expect(studioShellSource).toContain('[previewMode, studioWrapNode, studioResolveNodeProps]');
-  expect(studioShellSource).not.toContain('runtimeConfig={generatedRuntimeConfig}');
+  expect(generated).toContain('<StudioShell');
+  expect(generated).not.toContain('function StudioShell(');
+  expect(generated).not.toContain('useStudio()');
+  expect(generated).not.toContain('createStudioActionSuppressionConfig(previewMode)');
+  expect(generated).not.toContain('wrapNode: wrapStudioRuntimeNode');
+  expect(generated).toContain('<GeneratedRuntimeShell runtimeManifest={runtimeManifest}>');
 });
 
 test('keeps generated apps Studio-independent when includeStudio is false', () => {
@@ -386,16 +338,12 @@ test('keeps generated apps Studio-independent when includeStudio is false', () =
   expect(generated).not.toContain('createStudioActionSuppressionConfig(previewMode)');
 });
 
-test('wires bundled media through generated runtime and Studio preview', () => {
+test('leaves bundled-media resolution to the generated Runtime shell', () => {
   for (const includeStudio of [false, true]) {
     const imports = getRootLayoutImportRequirements(includeStudio);
-    expect(imports).toContainEqual({
+    expect(imports).not.toContainEqual({
       source: '@ankhorage/expo-runtime/bundled-media',
       namedImports: [{ imported: 'createExpoBundledMediaResolver' }],
-    });
-    expect(imports).toContainEqual({
-      source: '@/generated/bundledMediaRegistry',
-      namedImports: [{ imported: 'bundledMediaRegistry' }],
     });
   }
 
@@ -412,17 +360,27 @@ test('wires bundled media through generated runtime and Studio preview', () => {
     includeStudio: true,
   });
 
-  expect(generated).toContain(
-    'const bundledMediaResolver = createExpoBundledMediaResolver(bundledMediaRegistry);',
-  );
-  expect(generated).toContain('mediaAssets: runtimeManifest.media?.assets');
-  expect(generated).toContain('resolveMediaAsset: bundledMediaResolver');
+  expect(generated).toContain('<GeneratedRuntimeShell runtimeManifest={runtimeManifest}>');
   expect(generated).toContain('bundledMediaRegistry={bundledMediaRegistry}');
+});
+
+test('keeps standalone root layouts free of empty declaration whitespace', () => {
+  const generated = getRootLayoutTsx({
+    manifest: { navigator: {} } as AppManifest,
+    mutations: [],
+    allImports: "import { AppShell } from '@ankhorage/zora';",
+    allHooks: '',
+    innerNavigation: { declarations: '', jsx: '<Slot />', usesTheme: false },
+    includeStudio: false,
+  });
+
+  expect(generated).not.toContain('\n\n\n');
+  expect(generated.endsWith('\n')).toBe(true);
 });
 
 test('holds generated app output behind the shared Expo ZORA icon font boundary', () => {
   for (const includeStudio of [false, true]) {
-    expect(getRootLayoutImportRequirements(includeStudio)).toContainEqual({
+    expect(getRootLayoutImportRequirements(includeStudio)).not.toContainEqual({
       source: '@ankhorage/expo-runtime/icon-fonts',
       namedImports: [{ imported: 'ExpoZoraIconFontProvider' }],
     });
@@ -444,12 +402,7 @@ test('holds generated app output behind the shared Expo ZORA icon font boundary'
       includeStudio,
     });
 
-    expect(generated).toContain('<ExpoZoraIconFontProvider>');
-    expect(generated).toContain('</ExpoZoraIconFontProvider>');
-    expect(generated.match(/<ExpoZoraIconFontProvider>/g)).toHaveLength(1);
-    expect(generated).toContain(
-      'function GeneratedRootView({ children }: { children: ReactNode })',
-    );
-    expect(generated).toContain('return <GeneratedRootView>{shell}</GeneratedRootView>;');
+    expect(generated).not.toContain('<ExpoZoraIconFontProvider>');
+    expect(generated).toContain('return <GeneratedRootShell>{shell}</GeneratedRootShell>;');
   }
 });

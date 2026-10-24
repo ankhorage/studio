@@ -25,8 +25,8 @@ describe('syncProjectBundledMediaRegistry', () => {
       path.join(projectPath, 'src/generated/bundledMediaRegistry.ts'),
       'utf8',
     );
-    expect(source).toContain('"assets/authoring/hero/Hero Image.png"');
-    expect(source).toContain('require("../../assets/authoring/hero/Hero Image.png")');
+    expect(source).toContain("'assets/authoring/hero/Hero Image.png'");
+    expect(source).toContain("require('../../assets/authoring/hero/Hero Image.png')");
     expect(source).toContain("from '@ankhorage/expo-runtime/bundled-media';");
     expect(source).not.toContain("from '@ankhorage/expo-runtime';");
   });

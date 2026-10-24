@@ -37,6 +37,9 @@ export function getAuthScreenControllerTs(args: AuthScreenControllerTemplateArgs
     return Promise.resolve();
   }`;
   const sessionGuardImport = args.signUpPolicy === 'autoSignIn' ? '  isAuthSession,\n' : '';
+  const oauthLoadingState = oauthEnabled
+    ? '  const [oauthLoadingProvider, setOAuthLoadingProvider] = useState<string | null>(null);'
+    : '  const oauthLoadingProvider = null;';
   const successfulSignUp =
     args.signUpPolicy === 'autoSignIn'
       ? `  if (isAuthSession(result.data)) {
@@ -92,7 +95,7 @@ export function useAuthScreenController(initialMode: AuthMode): AuthScreenContro
   const router = useRouter();
   const [mode, setMode] = useState<AuthMode>(initialMode);
   const [loading, setLoading] = useState(false);
-  const [oauthLoadingProvider, setOAuthLoadingProvider] = useState<string | null>(null);
+${oauthLoadingState}
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
   const { authIdentifiers, identifierField, signUpFields } = useAuthFormFields();

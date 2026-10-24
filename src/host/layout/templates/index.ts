@@ -1,5 +1,9 @@
 /*** Audit coverage: exports-only entrypoint for generated layout and auth template sources. */
 export { getRootLayoutImportRequirements, getRootLayoutTsx } from './rootLayout';
+export { getRootShellImportRequirements, getRootShellTsx } from './rootShell';
+export { getRuntimeShellImportRequirements, getRuntimeShellTsx } from './runtimeShell';
+export { getStudioAppHeaderImportRequirements, getStudioAppHeaderTsx } from './studioAppHeader';
+export { getStudioShellImportRequirements, getStudioShellTsx } from './studioShell';
 export type { RootNavigationContent } from './rootLayout';
 export { getScreenTsx } from './screen';
 export { getAuthSessionTs } from './auth/session';

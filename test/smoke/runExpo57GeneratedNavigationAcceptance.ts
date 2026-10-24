@@ -614,6 +614,7 @@ async function runDevelopmentNavigationSmokeAsync(projectRoot: string): Promise<
 
     await chrome.navigateAsync(rootUrl);
     await chrome.waitForBodyTextAsync('Navigation Home');
+    await chrome.waitForApplicationInteractiveAsync();
     await chrome.clickByTestIdAsync('home-profile');
     await chrome.waitForLocationAsync({ pathname: '/profile/ada', search: '?source=internal' });
     await chrome.waitForBodyTextAsync('Dynamic Profile Route');
@@ -627,13 +628,13 @@ async function runDevelopmentNavigationSmokeAsync(projectRoot: string): Promise<
     await chrome.goBackAsync();
     await chrome.waitForLocationAsync({ pathname: '/' });
 
-    await chrome.waitForHydratedRoleAndNameAsync('tab', 'Catalog');
+    await chrome.waitForInteractiveRoleAndNameAsync('tab', 'Catalog');
     await chrome.clickByRoleAndNameAsync('tab', 'Catalog');
     await chrome.waitForLocationAsync({ pathname: '/catalog' });
     await chrome.waitForBodyTextAsync('Catalog Drawer Route');
-    await chrome.waitForHydratedRoleAndNameAsync('button', 'Show navigation menu');
+    await chrome.waitForInteractiveRoleAndNameAsync('button', 'Show navigation menu');
     await chrome.clickByRoleAndNameAsync('button', 'Show navigation menu');
-    await chrome.waitForHydratedRoleAndNameAsync('button', 'Catalog Settings');
+    await chrome.waitForInteractiveRoleAndNameAsync('button', 'Catalog Settings');
     await chrome.clickByRoleAndNameAsync('button', 'Catalog Settings');
     await chrome.waitForLocationAsync({ pathname: '/catalog/settings' });
     await chrome.waitForBodyTextAsync('Catalog Settings Route');
@@ -695,6 +696,10 @@ async function runFocusedRootNavigatorChecksAsync(project: NavigationProject): P
   if (!project.rootNavigator) throw new Error(`${project.id} has no focused root navigator.`);
 
   const rootLayout = await readFile(path.join(project.path, 'src', 'app', '_layout.tsx'), 'utf8');
+  const runtimeShell = await readFile(
+    path.join(project.path, 'src', 'generated', 'runtimeShell.tsx'),
+    'utf8',
+  );
   const navigatorLayout = await readFile(
     path.join(project.path, 'src', 'app', '(app)', '_layout.tsx'),
     'utf8',
@@ -710,8 +715,11 @@ async function runFocusedRootNavigatorChecksAsync(project: NavigationProject): P
   ) {
     throw new Error(`${project.id} does not generate its ${project.rootNavigator} at the root.`);
   }
-  if (!rootLayout.includes('type Href') || FORBIDDEN_REACT_NAVIGATION_IMPORT.test(rootLayout)) {
+  if (!runtimeShell.includes('type Href') || FORBIDDEN_REACT_NAVIGATION_IMPORT.test(runtimeShell)) {
     throw new Error(`${project.id} violates the narrow Expo Router Href boundary.`);
+  }
+  if (FORBIDDEN_REACT_NAVIGATION_IMPORT.test(rootLayout)) {
+    throw new Error(`${project.id} root layout imports React Navigation directly.`);
   }
 
   await generateRouterTypesAsync(project);
@@ -813,6 +821,7 @@ async function runStaticExportSmokeAsync(port: number): Promise<void> {
     await chrome.setViewportAsync(390, 844);
     await chrome.navigateAsync(rootUrl);
     await chrome.waitForBodyTextAsync('Navigation Home');
+    await chrome.waitForApplicationInteractiveAsync();
     await chrome.assertNoHorizontalOverflowAsync('served static export at mobile width');
     await chrome.clickByTestIdAsync('home-profile');
     await chrome.waitForLocationAsync({ pathname: '/profile/ada', search: '?source=internal' });

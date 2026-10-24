@@ -21,15 +21,15 @@ export async function runExpo57StudioStandaloneStaticWebSmokeAsync(
     await browser.navigateAsync(`${appUrl}/`);
     await browser.waitForBodyTextAsync('No projects yet');
     await assertStudioWebIconFontsAsync(browser);
-    await browser.waitForHydratedRoleAndNameAsync('button', 'New project');
+    await browser.waitForInteractiveRoleAndNameAsync('button', 'New project');
     await browser.clickByRoleAndNameAsync('button', 'New project');
     await browser.waitForLocationAsync({ pathname: '/create' });
     await browser.waitForBodyTextAsync('New Project');
-    await browser.waitForHydratedRoleAndNameAsync('button', 'Back');
+    await browser.waitForInteractiveRoleAndNameAsync('button', 'Back');
     await browser.clickByRoleAndNameAsync('button', 'Back');
     await browser.waitForLocationAsync({ pathname: '/' });
     await browser.waitForBodyTextAsync('No projects yet');
-    await browser.waitForHydratedRoleAndNameAsync('button', 'New project', 1);
+    await browser.waitForInteractiveRoleAndNameAsync('button', 'New project', 1);
     await browser.clickByRoleAndNameAsync('button', 'New project', 1);
     await browser.waitForLocationAsync({ pathname: '/create' });
     assertNoBrowserErrors(browser.errors, 'Standalone Studio static Web');

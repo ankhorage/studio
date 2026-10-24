@@ -16,6 +16,13 @@ interface HitTestResult {
   readonly y?: number;
 }
 
+interface PointerTarget {
+  readonly x: number;
+  readonly y: number;
+}
+
+const APPLICATION_INTERACTIVE_TEST_ID = 'ankh-app-interactive';
+
 /***
  * Drive a headless Chrome DevTools Protocol session for Studio web acceptance, including navigation, hydration, hit testing, font assertions and browser-error capture.
  */
@@ -98,6 +105,17 @@ export class ChromeNavigationSession {
   /*** Hit-test and dispatch a real pointer click to the requested accessible role/name occurrence. */
   async clickByRoleAndNameAsync(role: string, name: string, occurrence = 0): Promise<void> {
     const point = await this.waitForHitTestedRoleAndNameAsync(role, name, occurrence);
+    await this.dispatchPointerClickAsync(point);
+  }
+
+  /*** Hit-test and dispatch a real pointer click to the requested visible test-id control. */
+  async clickByTestIdAsync(testId: string): Promise<void> {
+    const point = await this.waitForHitTestedTestIdAsync(testId);
+    await this.dispatchPointerClickAsync(point);
+  }
+
+  /*** Dispatch a browser-native primary-pointer click at an already hit-tested viewport coordinate. */
+  private async dispatchPointerClickAsync(point: PointerTarget): Promise<void> {
     await this.sendAsync('Input.dispatchMouseEvent', {
       type: 'mouseMoved',
       x: point.x,
@@ -119,25 +137,6 @@ export class ChromeNavigationSession {
       x: point.x,
       y: point.y,
     });
-  }
-
-  /*** Wait for a test-id control to have a hydrated React click handler and invoke its browser click behavior. */
-  async clickByTestIdAsync(testId: string): Promise<void> {
-    const expression = `(() => {
-  const hasHydratedClickHandler = (element) => {
-    const propsKey = Object.keys(element).find((key) => key.startsWith('__reactProps$'));
-    return propsKey !== undefined && typeof element[propsKey]?.onClick === 'function';
-  };
-  const element = [...document.querySelectorAll('[data-testid]')].find(
-    (candidate) => candidate.getAttribute('data-testid') === ${JSON.stringify(testId)},
-  );
-  if (!(element instanceof HTMLElement)) return false;
-  const control = element.closest('[role="button"]') ?? element;
-  if (!(control instanceof HTMLElement) || !hasHydratedClickHandler(control)) return false;
-  control.click();
-  return true;
-})()`;
-    await this.waitForBooleanAsync(expression, `testID "${testId}" to become clickable`);
   }
 
   /*** Close the CDP socket and terminate the detached Chrome process group. */
@@ -219,9 +218,44 @@ export class ChromeNavigationSession {
 
   /*** Check whether a visible element with the requested accessible role and name currently exists. */
   async hasRoleAndNameAsync(role: string, name: string): Promise<boolean> {
-    return this.evaluateAsync<boolean>(
-      createRoleAndNameExpression(role, name, { occurrence: 0, requireHydration: false }),
-    );
+    return this.evaluateAsync<boolean>(createRoleAndNameExpression(role, name, 0));
+  }
+
+  /*** Capture the active route, rendered body, matching test-id DOM and browser errors for a browser-transition diagnosis. */
+  async capturePageDiagnosticsAsync(testIds: readonly string[]): Promise<{
+    readonly bodyText: string;
+    readonly errors: readonly string[];
+    readonly pathname: string;
+    readonly testIds: readonly {
+      readonly html: string;
+      readonly id: string;
+      readonly visible: boolean;
+    }[];
+  }> {
+    const page = await this.evaluateAsync<{
+      readonly bodyText: string;
+      readonly pathname: string;
+      readonly testIds: readonly {
+        readonly html: string;
+        readonly id: string;
+        readonly visible: boolean;
+      }[];
+    }>(`(() => {
+  const requested = new Set(${JSON.stringify(testIds)});
+  const testIds = [...document.querySelectorAll('[data-testid]')]
+    .filter((element) => requested.has(element.getAttribute('data-testid') ?? ''))
+    .map((element) => {
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return {
+        html: element.outerHTML.slice(0, 2_000),
+        id: element.getAttribute('data-testid') ?? '',
+        visible: rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden',
+      };
+    });
+  return { bodyText: (document.body?.innerText ?? '').slice(-4_000), pathname: location.pathname, testIds };
+})()`);
+    return { ...page, errors: [...this.errors] };
   }
 
   /*** Check whether any previously recorded body-text snapshot contains the requested text. */
@@ -239,6 +273,14 @@ export class ChromeNavigationSession {
     return this.evaluateAsync<boolean>(`(() => {
   const history = Reflect.get(globalThis, '__ankhObservedPathnames');
   return Array.isArray(history) && history.includes(${JSON.stringify(expectedPathname)});
+})()`);
+  }
+
+  /*** Read the browser pathname transitions recorded by the installed navigation observer. */
+  async readObservedPathnamesAsync(): Promise<readonly string[]> {
+    return this.evaluateAsync<readonly string[]>(`(() => {
+  const history = Reflect.get(globalThis, '__ankhObservedPathnames');
+  return Array.isArray(history) ? history.filter((pathname) => typeof pathname === 'string') : [];
 })()`);
   }
 
@@ -343,27 +385,32 @@ export class ChromeNavigationSession {
     );
   }
 
-  /*** Wait until the requested accessible element exists and has a hydrated React click handler. */
-  async waitForHydratedRoleAndNameAsync(role: string, name: string, occurrence = 0): Promise<void> {
-    const expression = createRoleAndNameExpression(role, name, {
-      occurrence,
-      requireHydration: true,
-    });
-    await this.waitForBooleanAsync(expression, `hydrated ${role} named "${name}"`);
+  /*** Wait until the requested accessible role/name control has a visible, unobstructed browser interaction surface. */
+  async waitForInteractiveRoleAndNameAsync(
+    role: string,
+    name: string,
+    occurrence = 0,
+  ): Promise<void> {
+    await this.waitForHitTestedRoleAndNameAsync(role, name, occurrence);
   }
 
-  /*** Wait until an element with the requested test id exposes React hydration metadata. */
-  async waitForHydratedTestIdAsync(testId: string): Promise<void> {
+  /*** Wait until the generated application has committed its post-hydration interactive boundary. */
+  async waitForApplicationInteractiveAsync(): Promise<void> {
+    await this.waitForVisibleTestIdAsync(APPLICATION_INTERACTIVE_TEST_ID);
+  }
+
+  /*** Wait until the requested test-id control is visible in the active browser viewport. */
+  async waitForVisibleTestIdAsync(testId: string): Promise<void> {
     const expression = `(() => {
-  const element = [...document.querySelectorAll('[data-testid]')].find(
-    (candidate) => candidate.getAttribute('data-testid') === ${JSON.stringify(testId)},
-  );
-  if (!(element instanceof HTMLElement)) return false;
-  return Object.keys(element).some(
-    (key) => key.startsWith('__reactProps$') || key.startsWith('__reactFiber$'),
-  );
+  return [...document.querySelectorAll('[data-testid]')].some((candidate) => {
+    if (candidate.getAttribute('data-testid') !== ${JSON.stringify(testId)}) return false;
+    if (!(candidate instanceof HTMLElement)) return false;
+    const rect = candidate.getBoundingClientRect();
+    const style = getComputedStyle(candidate);
+    return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+  });
 })()`;
-    await this.waitForBooleanAsync(expression, `testID "${testId}" to hydrate`);
+    await this.waitForBooleanAsync(expression, `visible testID "${testId}"`);
   }
 
   /*** Poll rendered body text until it contains the requested content and return the matching snapshot. */
@@ -414,8 +461,9 @@ export class ChromeNavigationSession {
       await Bun.sleep(250);
     }
     const bodyText = await this.evaluateAsync<string>('document.body?.innerText ?? ""');
+    const observedPathnames = await this.readObservedPathnamesAsync();
     throw new Error(
-      `Timed out waiting for location ${JSON.stringify(expected)}. Observed ${JSON.stringify(observed)}.\nBody:\n${bodyText.slice(-4_000)}\nBrowser errors:\n${this.errors.join('\n').slice(-8_000)}`,
+      `Timed out waiting for location ${JSON.stringify(expected)}. Observed ${JSON.stringify(observed)}.\nNavigation trace:\n${observedPathnames.join(' -> ')}\nBody:\n${bodyText.slice(-4_000)}\nBrowser errors:\n${this.errors.join('\n').slice(-8_000)}`,
     );
   }
 
@@ -495,7 +543,7 @@ export class ChromeNavigationSession {
     role: string,
     name: string,
     occurrence: number,
-  ): Promise<{ readonly x: number; readonly y: number }> {
+  ): Promise<PointerTarget> {
     const expression = createRoleHitTestExpression(role, name, occurrence);
     const start = Date.now();
     let observed: HitTestResult = { state: 'missing' };
@@ -511,6 +559,21 @@ export class ChromeNavigationSession {
     );
   }
 
+  /*** Poll real DOM hit testing for a test-id control until its interaction surface is visible and unobstructed. */
+  private async waitForHitTestedTestIdAsync(testId: string): Promise<PointerTarget> {
+    const expression = createTestIdHitTestExpression(testId);
+    const start = Date.now();
+    let observed: HitTestResult = { state: 'missing' };
+    while (Date.now() - start < HIT_TEST_TIMEOUT_MS) {
+      observed = await this.evaluateAsync<HitTestResult>(expression);
+      if (observed.state === 'ready' && observed.x !== undefined && observed.y !== undefined) {
+        return { x: observed.x, y: observed.y };
+      }
+      await Bun.sleep(100);
+    }
+    throw new Error(`Hit testing blocked testID "${testId}": ${JSON.stringify(observed)}.`);
+  }
+
   /*** Wait for the Chrome DevTools WebSocket to open or reject when the connection fails. */
   private waitForSocketAsync(): Promise<void> {
     if (this.socket.readyState === WebSocket.OPEN) return Promise.resolve();
@@ -522,17 +585,9 @@ export class ChromeNavigationSession {
 }
 
 /*** Build a browser expression that finds a visible element by accessible role/name and optionally requires a hydrated React click handler. */
-function createRoleAndNameExpression(
-  role: string,
-  name: string,
-  options: { readonly occurrence: number; readonly requireHydration: boolean },
-): string {
+function createRoleAndNameExpression(role: string, name: string, occurrence: number): string {
   return `(() => {
   const normalize = (value) => value.replace(/\\s+/gu, ' ').trim();
-  const hasHydratedClickHandler = (element) => {
-    const propsKey = Object.keys(element).find((key) => key.startsWith('__reactProps$'));
-    return propsKey !== undefined && typeof element[propsKey]?.onClick === 'function';
-  };
   const elements = [...document.querySelectorAll('[role]')].filter((candidate) => {
     if (candidate.getAttribute('role') !== ${JSON.stringify(role)}) return false;
     const ariaLabel = candidate.getAttribute('aria-label');
@@ -545,9 +600,8 @@ function createRoleAndNameExpression(
     const style = getComputedStyle(candidate);
     return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
   });
-  const element = elements[${options.occurrence}];
+  const element = elements[${occurrence}];
   if (!(element instanceof HTMLElement)) return false;
-  ${options.requireHydration ? 'if (!hasHydratedClickHandler(element)) return false;' : ''}
   return true;
 })()`;
 }
@@ -640,6 +694,45 @@ function createRoleHitTestExpression(role: string, name: string, occurrence: num
   }
   const hit = document.elementFromPoint(x, y);
   if (!(hit instanceof Element) || !element.contains(hit)) {
+    const hitRole = hit instanceof Element ? hit.getAttribute('role') : null;
+    const hitLabel = hit instanceof Element ? hit.getAttribute('aria-label') : null;
+    return {
+      state: 'blocked',
+      hit: hit instanceof Element
+        ? [
+            hit.tagName.toLowerCase(),
+            hitRole ? 'role=' + hitRole : '',
+            hitLabel ? 'aria-label=' + hitLabel : '',
+          ].filter(Boolean).join(' ')
+        : 'none',
+    };
+  }
+  return { state: 'ready', x, y };
+})()`;
+}
+
+/*** Build a browser expression that scrolls to and hit-tests the interaction surface associated with a visible test id. */
+function createTestIdHitTestExpression(testId: string): string {
+  return `(() => {
+  const element = [...document.querySelectorAll('[data-testid]')].find((candidate) => {
+    if (candidate.getAttribute('data-testid') !== ${JSON.stringify(testId)}) return false;
+    if (!(candidate instanceof HTMLElement)) return false;
+    const rect = candidate.getBoundingClientRect();
+    const style = getComputedStyle(candidate);
+    return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+  });
+  if (!(element instanceof HTMLElement)) return { state: 'missing' };
+  const control = element.closest('[role="button"], [role="tab"]') ?? element;
+  if (!(control instanceof HTMLElement)) return { state: 'missing' };
+  const rect = control.getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+  if (x < 0 || y < 0 || x > innerWidth || y > innerHeight) {
+    control.scrollIntoView({ block: 'center', inline: 'center' });
+    return { state: 'scrolling' };
+  }
+  const hit = document.elementFromPoint(x, y);
+  if (!(hit instanceof Element) || !control.contains(hit)) {
     const hitRole = hit instanceof Element ? hit.getAttribute('role') : null;
     const hitLabel = hit instanceof Element ? hit.getAttribute('aria-label') : null;
     return {

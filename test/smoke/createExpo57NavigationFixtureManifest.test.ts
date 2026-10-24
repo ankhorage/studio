@@ -133,24 +133,27 @@ describe('Expo 57 generated navigation acceptance fixture', () => {
     const navigatorLayout = files.find(
       (file) => file.path === 'src/app/(app)/_layout.tsx',
     )?.content;
+    const runtimeShell = files.find(
+      (file) => file.path === 'src/generated/runtimeShell.tsx',
+    )?.content;
 
     expect(rootLayout).toBeDefined();
-    expect(rootLayout).toContain("import { type Href, Slot, useRouter } from 'expo-router';");
-    expect(rootLayout).toContain(
+    expect(rootLayout).toContain("import { Slot } from 'expo-router';");
+    expect(runtimeShell).toContain(
       "import { resolveExpoRuntimeRoutePath } from '@ankhorage/expo-runtime/capability-bridge';",
     );
     expect(navigatorLayout).toContain(
       rootNavigator === 'tabs' ? "from '@ankhorage/navigator/tabs'" : "from 'expo-router/drawer'",
     );
-    expect(rootLayout).toContain(
+    expect(runtimeShell).toContain(
       'const { resolvedPath, unusedParams } = resolveExpoRuntimeRoutePath(route, params);',
     );
-    expect(rootLayout).toContain(
+    expect(runtimeShell).toContain(
       'router.navigate({ params: unusedParams, pathname: resolvedPath } as Href);',
     );
     expect(navigatorLayout).not.toContain('ZoraTabBar');
     expect(navigatorLayout).not.toContain('ZoraDrawerContent');
-    expect(rootLayout).not.toContain('@react-navigation/');
+    expect(`${rootLayout}\n${runtimeShell}`).not.toContain('@react-navigation/');
   });
 
   test('covers an authenticated root Drawer without requiring stack-only tabs or hidden-tab routes', () => {

@@ -84,7 +84,7 @@ export async function clearStoredAuthSession(): Promise<void> {
   await authSessionStorage.removeItem(AUTH_SESSION_STORAGE_KEY);
 }
 
-export function isAuthSessionExpired(session: AuthSession | null | undefined): boolean {
+function isAuthSessionExpired(session: AuthSession | null | undefined): boolean {
   const expiresAt = session?.expiresAt;
   if (typeof expiresAt !== 'number' || !Number.isFinite(expiresAt)) {
     return false;

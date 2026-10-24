@@ -28,7 +28,6 @@ test('gives the host project the generated app-owned reconciliation tools', asyn
   const generatedPackage = getPackageJson({ name: 'release-monitor', targets: {} });
 
   expect(projectPackage.devDependencies).toEqual({
-    '@ankhorage/ankh': generatedPackage.devDependencies['@ankhorage/ankh'],
     '@ankhorage/devtools': generatedPackage.devDependencies['@ankhorage/devtools'],
   });
 });

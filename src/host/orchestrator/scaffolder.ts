@@ -24,6 +24,7 @@ import {
 interface ScaffoldProjectOptions {
   includeStudio?: boolean;
   authProvider?: GeneratedAuthProvider;
+  oauthEnabled?: boolean;
   storageProvider?: GeneratedStorageProvider;
   manifest?: Pick<AppManifest, 'media' | 'splashScreen'>;
   runtimePlan?: ExpoRuntimePlan;
@@ -59,12 +60,10 @@ const APP_PRETTIER_LOCAL_CONFIG = `module.exports = {
 const APP_KNIP_CONFIG = `import { createKnipConfig } from '@ankhorage/devtools/knip';
 
 export default createKnipConfig({
-  ignore: ['metro.empty-module.js', 'src/generated/appExtensionRegistry.ts'],
+  ignore: ['metro.empty-module.js'],
   ignoreBinaries: ['adb'],
   ignoreDependencies: [
-    '@ankhorage/ankh',
     '@ankhorage/data-sources',
-    '@ankhorage/navigator',
     '@ankhorage/storage-supabase',
     '@types/culori',
     'expo-updates',
@@ -109,6 +108,7 @@ export class ProjectScaffolder {
     const {
       includeStudio = true,
       authProvider = null,
+      oauthEnabled = false,
       storageProvider = null,
       manifest,
       runtimePlan,
@@ -123,6 +123,7 @@ export class ProjectScaffolder {
       slug,
       includeStudio,
       authProvider,
+      oauthEnabled,
       storageProvider,
       runtimePlan,
       targets,
@@ -137,7 +138,7 @@ export class ProjectScaffolder {
     await this.ensurePrettierIgnore(projectPath);
     await this.ensureKnipConfig(projectPath);
     await this.ensureAppGitIgnore(projectPath);
-    await syncGeneratedAppFiles(projectPath, { runtimePlan });
+    await syncGeneratedAppFiles(projectPath, { includeStudio, runtimePlan });
 
     await this.copyDefaultAssets(projectPath);
   }
@@ -152,6 +153,7 @@ export class ProjectScaffolder {
     const {
       includeStudio = true,
       authProvider = null,
+      oauthEnabled = false,
       storageProvider = null,
       manifest,
       runtimePlan,
@@ -167,6 +169,7 @@ export class ProjectScaffolder {
       name: existingPackageJson?.name ?? slug,
       includeStudio,
       authProvider,
+      oauthEnabled,
       storageProvider,
       runtimePlan,
       targets,
@@ -185,7 +188,7 @@ export class ProjectScaffolder {
     await this.ensurePrettierIgnore(projectPath);
     await this.ensureKnipConfig(projectPath);
     await this.ensureAppGitIgnore(projectPath);
-    await syncGeneratedAppFiles(projectPath, { runtimePlan });
+    await syncGeneratedAppFiles(projectPath, { includeStudio, runtimePlan });
   }
 
   /*** Finalize and persist the canonical project manifest with project-owned identity/category/timestamps and system templates applied. */
@@ -280,6 +283,7 @@ export class ProjectScaffolder {
     slug: string,
     includeStudio: boolean,
     authProvider: GeneratedAuthProvider,
+    oauthEnabled: boolean,
     storageProvider: GeneratedStorageProvider,
     runtimePlan: ExpoRuntimePlan | undefined,
     targets: AppDeployTargets,
@@ -288,6 +292,7 @@ export class ProjectScaffolder {
       name: slug,
       includeStudio,
       authProvider,
+      oauthEnabled,
       storageProvider,
       runtimePlan,
       targets,
@@ -419,6 +424,7 @@ function mergePackageJson(
     name: template.name,
     includeStudio: false,
     authProvider: 'supabase',
+    oauthEnabled: false,
     storageProvider: 'supabase',
     targets,
   });
@@ -426,6 +432,7 @@ function mergePackageJson(
     name: template.name,
     includeStudio: true,
     authProvider: 'supabase',
+    oauthEnabled: true,
     storageProvider: 'supabase',
     targets,
   });

@@ -87,3 +87,18 @@ test('generated Expo Router auth files are thin screen delegates', () => {
   expect(verificationController).not.toContain('isAuthSession');
   expect(verificationController).toContain('await clearStoredAuthSession();');
 });
+
+test('does not emit OAuth state setters when OAuth is not configured', () => {
+  const controller = getAuthScreenControllerTs({
+    postSignInRoute: 'index',
+    signInIdentifiers: ['email'],
+    signInRoute: 'sign-in',
+    signUpOptionalFields: [],
+    signUpPolicy: 'autoSignIn',
+    signUpRequiredFields: [],
+    signUpRoute: 'sign-up',
+  });
+
+  expect(controller).toContain('const oauthLoadingProvider = null;');
+  expect(controller).not.toContain('setOAuthLoadingProvider');
+});

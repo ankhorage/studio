@@ -83,12 +83,10 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
     '@react-native-vector-icons/fontawesome6': policy.peerDependencies.fontawesome6,
     '@react-native-vector-icons/ionicons': policy.peerDependencies.ionicons,
   };
+  const { '@ankhorage/ankh': _removedAnkhDependency, ...existingDevDependencies } =
+    packageJson.devDependencies;
   const devDependencies = {
-    ...packageJson.devDependencies,
-    '@ankhorage/ankh': monotonicAnkhorageRange(
-      packageJson.devDependencies['@ankhorage/ankh'],
-      policy.devDependencies.ankh,
-    ),
+    ...existingDevDependencies,
     '@ankhorage/devtools': monotonicAnkhorageRange(
       packageJson.devDependencies['@ankhorage/devtools'],
       policy.devDependencies.devtools,
