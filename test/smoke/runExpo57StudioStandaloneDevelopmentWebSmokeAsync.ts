@@ -46,7 +46,7 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
     await pointerClickAsync(browser, 'button', 'Updated');
     await pointerClickAsync(browser, 'button', 'Name');
     await pointerClickAsync(browser, 'button', 'Use light mode');
-    await browser.waitForHydratedRoleAndNameAsync('button', 'Use dark mode');
+    await browser.waitForInteractiveRoleAndNameAsync('button', 'Use dark mode');
 
     await pointerClickAsync(browser, 'button', 'New project');
     await browser.waitForLocationAsync({ pathname: '/create' });
@@ -133,7 +133,7 @@ async function pointerClickAsync(
   name: string,
   occurrence = 0,
 ): Promise<void> {
-  await browser.waitForHydratedRoleAndNameAsync(role, name, occurrence);
+  await browser.waitForInteractiveRoleAndNameAsync(role, name, occurrence);
   await browser.clickByRoleAndNameAsync(role, name, occurrence);
 }
 

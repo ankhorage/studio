@@ -232,21 +232,40 @@ async function startGeneratedAppAsync(args: {
   const chrome = await ChromeNavigationSession.createAsync(
     await reserveTcpPort('SharkPrey Chrome debug'),
   );
+  await chrome.installObservedPathnameHistoryAsync();
   await chrome.navigateAsync(url);
   await chrome.waitForBodyTextAsync('Where are you starting?');
   await chrome.navigateAsync(`${url}/training-setup`);
   await chrome.waitForLocationAsync({ pathname: '/training-setup' });
   await chrome.waitForBodyTextAsync('What do you want to train?');
-  await chrome.waitForVisibleTestIdAsync('navigator-tabs-item-history');
+  await chrome.clickByRoleAndNameAsync('button', 'Preview');
+  await chrome.waitForInteractiveRoleAndNameAsync('button', 'Edit');
+  const historyTraceStart = (await chrome.readObservedPathnamesAsync()).length;
   await chrome.clickByTestIdAsync('navigator-tabs-item-history');
   await chrome.waitForLocationAsync({ pathname: '/history' });
+  await assertPreviewNavigationTraceAsync(chrome, historyTraceStart, '/history');
   await chrome.waitForBodyTextAsync('History');
-  await chrome.waitForVisibleTestIdAsync('navigator-tabs-item-(train)');
+  const trainingTraceStart = (await chrome.readObservedPathnamesAsync()).length;
   await chrome.clickByTestIdAsync('navigator-tabs-item-(train)');
   await chrome.waitForLocationAsync({ pathname: '/training-setup' });
+  await assertPreviewNavigationTraceAsync(chrome, trainingTraceStart, '/training-setup');
   await chrome.waitForBodyTextAsync('What do you want to train?');
   assertNoBrowserErrors(chrome.errors, 'generated SharkPrey template');
   return { chrome, expoProcess, studioHost };
+}
+
+/*** Assert that one Preview-mode Navigator action reached its target without an auth redirect back to onboarding. */
+async function assertPreviewNavigationTraceAsync(
+  chrome: ChromeNavigationSession,
+  start: number,
+  expectedPathname: string,
+): Promise<void> {
+  const trace = (await chrome.readObservedPathnamesAsync()).slice(start);
+  if (!trace.includes(expectedPathname) || trace.includes('/onboarding')) {
+    throw new Error(
+      `Preview navigation expected ${expectedPathname} without an onboarding redirect. Trace: ${trace.join(' -> ')}`,
+    );
+  }
 }
 
 /*** Supply safe deterministic generated-app environment values for static, native, and browser acceptance. */

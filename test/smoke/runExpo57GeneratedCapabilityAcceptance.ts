@@ -244,19 +244,19 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
 
     await chrome.navigateAsync(`${rootUrl}/sign-in`);
     await chrome.waitForBodyTextAsync('Sign in');
-    await chrome.waitForHydratedRoleAndNameAsync('button', 'Sign in');
+    await chrome.waitForInteractiveRoleAndNameAsync('button', 'Sign in');
     await chrome.reloadAsync();
-    await chrome.waitForHydratedRoleAndNameAsync('button', 'Sign in');
+    await chrome.waitForInteractiveRoleAndNameAsync('button', 'Sign in');
 
     await chrome.navigateAsync(`${rootUrl}/sign-up`);
     await chrome.waitForBodyTextAsync('Create account');
-    await chrome.waitForHydratedRoleAndNameAsync('button', 'Create account');
+    await chrome.waitForInteractiveRoleAndNameAsync('button', 'Create account');
     await chrome.goBackAsync();
     await chrome.waitForLocationAsync({ pathname: '/sign-in' });
-    await chrome.waitForHydratedRoleAndNameAsync('button', 'Sign in');
+    await chrome.waitForInteractiveRoleAndNameAsync('button', 'Sign in');
     await chrome.goForwardAsync();
     await chrome.waitForLocationAsync({ pathname: '/sign-up' });
-    await chrome.waitForHydratedRoleAndNameAsync('button', 'Create account');
+    await chrome.waitForInteractiveRoleAndNameAsync('button', 'Create account');
 
     await startBrowserOAuthAttemptAsync(chrome, rootUrl, authStub);
     await chrome.navigateAsync(`${rootUrl}/sign-in`);
@@ -266,7 +266,7 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
     );
     await chrome.navigateAsync(`${rootUrl}/auth/callback?code=expired-code`);
     await chrome.waitForBodyTextAsync('The OAuth attempt expired.');
-    await chrome.waitForHydratedRoleAndNameAsync('button', 'Return to sign in');
+    await chrome.waitForInteractiveRoleAndNameAsync('button', 'Return to sign in');
     await chrome.reloadAsync();
     await chrome.waitForBodyTextAsync(
       'The OAuth authorization attempt was not found or has expired.',
@@ -276,7 +276,7 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
     await chrome.navigateAsync(`${rootUrl}/auth/callback?code=replay-code`);
     await chrome.waitForLocationAsync({ pathname: '/' });
     await chrome.waitForBodyTextAsync('Camera access is required to scan barcodes.');
-    await chrome.waitForHydratedTestIdAsync('capability-acceptance-scanner');
+    await chrome.waitForInteractiveTestIdAsync('capability-acceptance-scanner');
 
     const completedExchangeCount = authStub.tokenExchangeCount;
     if (completedExchangeCount !== 1) {
@@ -289,16 +289,16 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
     await chrome.waitForBodyTextAsync(
       'The OAuth callback does not match the completed authorization callback.',
     );
-    await chrome.waitForHydratedRoleAndNameAsync('button', 'Return to sign in');
+    await chrome.waitForInteractiveRoleAndNameAsync('button', 'Return to sign in');
 
     await chrome.navigateAsync(`${rootUrl}/auth/callback?code=replay-code`);
     await chrome.waitForObservedBodyTextAsync(
       'This OAuth callback was already completed. Continuing…',
     );
     await chrome.waitForLocationAsync({ pathname: '/' });
-    await chrome.waitForHydratedTestIdAsync('capability-acceptance-scanner');
+    await chrome.waitForInteractiveTestIdAsync('capability-acceptance-scanner');
     await chrome.reloadAsync();
-    await chrome.waitForHydratedTestIdAsync('capability-acceptance-scanner');
+    await chrome.waitForInteractiveTestIdAsync('capability-acceptance-scanner');
 
     if (authStub.tokenExchangeCount !== completedExchangeCount) {
       throw new Error(
@@ -322,7 +322,7 @@ async function startBrowserOAuthAttemptAsync(
   await chrome.clearLocalStorageAsync();
   await chrome.setLocalStorageItemAsync(OAUTH_CLOCK_OFFSET_STORAGE_KEY, '0');
   await chrome.navigateAsync(`${rootUrl}/sign-in`);
-  await chrome.waitForHydratedRoleAndNameAsync('button', 'Continue with Google');
+  await chrome.waitForInteractiveRoleAndNameAsync('button', 'Continue with Google');
   await chrome.clickByRoleAndNameAsync('button', 'Continue with Google');
   await chrome.waitForLocationAsync({ pathname: '/auth/v1/authorize' });
   await chrome.waitForBodyTextAsync('Deterministic OAuth provider handoff');
