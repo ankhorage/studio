@@ -9,6 +9,8 @@ import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { createNavigatorPlan, generateNavigator } from '@ankhorage/navigator';
 import { parseSemanticVersion } from '@ankhorage/utility/semver';
 
+import { projectGeneratedRoute } from './projectGeneratedRoute';
+
 export interface NavigatorOwnedLayoutFile {
   path: string;
   content: string;
@@ -80,7 +82,7 @@ function generatePlatformLayouts(
   const navigator = input.externalHeaderVisible
     ? withExternalHeaderOwnership(input.navigator)
     : input.navigator;
-  const plan = createNavigatorPlan(withGeneratedRoutePaths(navigator), {
+  const plan = createNavigatorPlan(withGeneratedRoutePaths(navigator, input.rootDirectory), {
     platform,
     expoRouterVersion: resolveExactVersion(EXPO_PLATFORM.navigation.expoRouter.version),
   });
@@ -141,40 +143,35 @@ function withExternalHeaderOwnership(navigator: NavigatorNode): NavigatorNode {
   };
 }
 
-/*** Project Studio-owned public route paths into the navigator slice required by headless tabs. */
-function withGeneratedRoutePaths(navigator: NavigatorNode, parentPath = '/'): NavigatorNode {
+/*** Project Studio-owned routes through the shared module, URL, and Navigator path policy. */
+function withGeneratedRoutePaths(
+  navigator: NavigatorNode,
+  parentModulePath: string,
+  parentPublicPath = '/',
+): NavigatorNode {
   return {
     ...navigator,
     routes: navigator.routes.map((route) => {
-      const publicPath = resolvePublicRoutePath(parentPath, route.name, route.path);
+      const projection = projectGeneratedRoute({
+        parentModulePath,
+        parentPublicPath,
+        route,
+      });
       return {
         ...route,
-        path: publicPath,
+        path: projection.navigatorPath,
         ...(route.navigator
-          ? { navigator: withGeneratedRoutePaths(route.navigator, publicPath) }
+          ? {
+              navigator: withGeneratedRoutePaths(
+                route.navigator,
+                projection.modulePath,
+                projection.publicPath,
+              ),
+            }
           : {}),
       };
     }),
   };
-}
-
-/*** Resolve one safe route segment to its canonical public path while omitting groups and index. */
-function resolvePublicRoutePath(
-  parentPath: string,
-  routeName: string,
-  authoredPath: string | undefined,
-): string {
-  if (authoredPath?.startsWith('/')) return authoredPath || '/';
-  const parentSegments = parentPath.split('/').filter(Boolean);
-  const authoredSegments = authoredPath?.split('/').filter(Boolean);
-  const routeSegments = authoredSegments ?? [routeName];
-  const publicSegments = routeSegments.flatMap((segment) => {
-    if (segment === 'index' || /^\(.*\)$/u.test(segment)) return [];
-    const dynamic = /^\[([^\]]+)\]$/u.exec(segment)?.[1];
-    return [dynamic ? `:${dynamic.replace(/^\.\.\./u, '')}` : segment];
-  });
-  const resolved = [...parentSegments, ...publicSegments].join('/');
-  return resolved.length === 0 ? '/' : `/${resolved}`;
 }
 
 /*** Read the concrete semantic version from Expo Runtime's package range. */

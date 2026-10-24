@@ -21,7 +21,13 @@ test('generates Studio Runtime composition with the Studio executor and bundled 
   expect(source).toContain('registry: runtimeComponentRegistry');
   expect(source).toContain('resolveEventCapability: resolveZoraRuntimeEventCapability');
   expect(source).toContain('onDiagnostics: reportRuntimeDiagnostics');
-  expect(source).toContain('ZORA_COMPONENT_META[node.type]?.events?.[eventName]?.eventType');
+  expect(getRuntimeShellImportRequirements(true, '@ankhorage/zora', true)).toContainEqual({
+    source: '@ankhorage/utility/object',
+    namedImports: [{ imported: 'readOwnProperty' }],
+  });
+  expect(source).toContain('readOwnProperty');
+  expect(source).toContain('isRuntimeCapabilityId(eventType) ? eventType : undefined');
+  expect(source).not.toContain('ZORA_COMPONENT_META[node.type]');
   expect(source).toContain("if (Platform.OS === 'web')");
   expect(source).toContain('globalThis.alert(`Action unavailable\\n\\n${message}`)');
   expect(source).toContain("Alert.alert('Action unavailable'");
