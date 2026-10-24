@@ -679,7 +679,7 @@ function createTestIdHitTestExpression(testId: string): string {
     (candidate) => candidate.getAttribute('data-testid') === ${JSON.stringify(testId)},
   );
   if (!(element instanceof HTMLElement)) return { state: 'missing' };
-  const control = element.closest('[role="button"]') ?? element;
+  const control = element.closest('[role="button"], [role="tab"]') ?? element;
   if (!(control instanceof HTMLElement)) return { state: 'missing' };
   const rect = control.getBoundingClientRect();
   const style = getComputedStyle(control);
