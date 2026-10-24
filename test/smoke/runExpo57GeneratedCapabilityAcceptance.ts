@@ -343,6 +343,7 @@ async function startBrowserOAuthAttemptAsync(
   await chrome.clearLocalStorageAsync();
   await chrome.setLocalStorageItemAsync(OAUTH_CLOCK_OFFSET_STORAGE_KEY, '0');
   await chrome.navigateAsync(`${rootUrl}/sign-in`);
+  await chrome.waitForApplicationInteractiveAsync();
   await chrome.waitForInteractiveRoleAndNameAsync('button', 'Continue with Google');
   await chrome.clickByRoleAndNameAsync('button', 'Continue with Google');
   await chrome.waitForLocationAsync({ pathname: '/auth/v1/authorize' });

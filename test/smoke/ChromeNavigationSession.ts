@@ -104,14 +104,12 @@ export class ChromeNavigationSession {
 
   /*** Hit-test and dispatch a real pointer click to the requested accessible role/name occurrence. */
   async clickByRoleAndNameAsync(role: string, name: string, occurrence = 0): Promise<void> {
-    await this.waitForApplicationInteractiveAsync();
     const point = await this.waitForHitTestedRoleAndNameAsync(role, name, occurrence);
     await this.dispatchPointerClickAsync(point);
   }
 
   /*** Hit-test and dispatch a real pointer click to the requested visible test-id control. */
   async clickByTestIdAsync(testId: string): Promise<void> {
-    await this.waitForApplicationInteractiveAsync();
     const point = await this.waitForHitTestedTestIdAsync(testId);
     await this.dispatchPointerClickAsync(point);
   }

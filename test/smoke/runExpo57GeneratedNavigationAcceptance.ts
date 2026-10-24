@@ -614,6 +614,7 @@ async function runDevelopmentNavigationSmokeAsync(projectRoot: string): Promise<
 
     await chrome.navigateAsync(rootUrl);
     await chrome.waitForBodyTextAsync('Navigation Home');
+    await chrome.waitForApplicationInteractiveAsync();
     await chrome.clickByTestIdAsync('home-profile');
     await chrome.waitForLocationAsync({ pathname: '/profile/ada', search: '?source=internal' });
     await chrome.waitForBodyTextAsync('Dynamic Profile Route');
@@ -820,6 +821,7 @@ async function runStaticExportSmokeAsync(port: number): Promise<void> {
     await chrome.setViewportAsync(390, 844);
     await chrome.navigateAsync(rootUrl);
     await chrome.waitForBodyTextAsync('Navigation Home');
+    await chrome.waitForApplicationInteractiveAsync();
     await chrome.assertNoHorizontalOverflowAsync('served static export at mobile width');
     await chrome.clickByTestIdAsync('home-profile');
     await chrome.waitForLocationAsync({ pathname: '/profile/ada', search: '?source=internal' });
