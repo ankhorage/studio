@@ -2153,7 +2153,7 @@
       <div class="summary">
         <div><strong>138</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>628</strong><span class="muted">modules</span></div>
+        <div><strong>630</strong><span class="muted">modules</span></div>
         <div><strong>2</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -2254,6 +2254,11 @@ Run with `bun examples/canvas-drag-payload/basic.ts` after building the package.
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>test/acceptance/runPackedStudioHostAcceptance.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
+  </article><article class="item" data-search="scripts/reconcileStudioConsumerManifest.ts reconcileStudioConsumerManifest">
+    <h3>scripts/reconcileStudioConsumerManifest.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>reconcileStudioConsumerManifest</code></p>
   </article><article class="item" data-search="src/ankhAdmin.public.test.ts src/root.ts">
     <h3>src/ankhAdmin.public.test.ts</h3>
     <p class="muted">Referenced module</p>
@@ -5329,6 +5334,11 @@ Run with `bun examples/canvas-drag-payload/basic.ts` after building the package.
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/host/http/server.ts</code>, <code>src/host/orchestrator/projectManager.ts</code>, <code>src/host/templates/index.ts</code>, <code>test/smoke/assertNoBrowserErrors.ts</code>, <code>test/smoke/ChromeNavigationSession.ts</code>, <code>test/smoke/resolveAppOwnedExpoCliAsync.ts</code>, <code>test/smoke/runAcceptanceCommandAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>runSocialTemplateWebAcceptanceAsync</code></p>
+  </article><article class="item" data-search="test/studioConsumerSync.test.ts scripts/reconcileStudioConsumerManifest.ts">
+    <h3>test/studioConsumerSync.test.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>scripts/reconcileStudioConsumerManifest.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article>
     </section>
     <section class="panel">
@@ -9410,6 +9420,8 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_scripts_packed_studio_host_acceptance_ts[&quot;scripts/packed-studio-host-acceptance.ts&quot;]
   package__ankhorage_studio -.-&gt; module_scripts_packed_studio_host_acceptance_ts
   module_scripts_packed_studio_host_acceptance_ts --&gt; module_test_acceptance_runPackedStudioHostAcceptance_ts
+  module_scripts_reconcileStudioConsumerManifest_ts[&quot;scripts/reconcileStudioConsumerManifest.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_scripts_reconcileStudioConsumerManifest_ts
   module_src_ankhAdmin_public_test_ts[&quot;src/ankhAdmin.public.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ankhAdmin_public_test_ts
   module_src_ankhAdmin_public_test_ts --&gt; module_src_root_ts
@@ -11849,6 +11861,9 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --&gt; module_test_smoke_ChromeNavigationSession_ts
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --&gt; module_test_smoke_resolveAppOwnedExpoCliAsync_ts
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --&gt; module_test_smoke_runAcceptanceCommandAsync_ts
+  module_test_studioConsumerSync_test_ts[&quot;test/studioConsumerSync.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_test_studioConsumerSync_test_ts
+  module_test_studioConsumerSync_test_ts --&gt; module_scripts_reconcileStudioConsumerManifest_ts
 </div>
     <details>
       <summary>View Mermaid source</summary>
@@ -11896,6 +11911,8 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_scripts_packed_studio_host_acceptance_ts[&quot;scripts/packed-studio-host-acceptance.ts&quot;]
   package__ankhorage_studio -.-&gt; module_scripts_packed_studio_host_acceptance_ts
   module_scripts_packed_studio_host_acceptance_ts --&gt; module_test_acceptance_runPackedStudioHostAcceptance_ts
+  module_scripts_reconcileStudioConsumerManifest_ts[&quot;scripts/reconcileStudioConsumerManifest.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_scripts_reconcileStudioConsumerManifest_ts
   module_src_ankhAdmin_public_test_ts[&quot;src/ankhAdmin.public.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ankhAdmin_public_test_ts
   module_src_ankhAdmin_public_test_ts --&gt; module_src_root_ts
@@ -14335,6 +14352,9 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --&gt; module_test_smoke_ChromeNavigationSession_ts
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --&gt; module_test_smoke_resolveAppOwnedExpoCliAsync_ts
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --&gt; module_test_smoke_runAcceptanceCommandAsync_ts
+  module_test_studioConsumerSync_test_ts[&quot;test/studioConsumerSync.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_test_studioConsumerSync_test_ts
+  module_test_studioConsumerSync_test_ts --&gt; module_scripts_reconcileStudioConsumerManifest_ts
 </pre>
     </details>
   </article><article class="item" data-search="Module relationships diagrams/module-relationships.mmd">
@@ -14354,6 +14374,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_scripts_expo57_social_template_web_acceptance_ts[&quot;scripts/expo57-social-template-web-acceptance.ts&quot;]
   module_scripts_expo57_studio_standalone_acceptance_ts[&quot;scripts/expo57-studio-standalone-acceptance.ts&quot;]
   module_scripts_packed_studio_host_acceptance_ts[&quot;scripts/packed-studio-host-acceptance.ts&quot;]
+  module_scripts_reconcileStudioConsumerManifest_ts[&quot;scripts/reconcileStudioConsumerManifest.ts&quot;]
   module_src_ankhAdmin_public_test_ts[&quot;src/ankhAdmin.public.test.ts&quot;]
   module_src_apm_ts[&quot;src/apm.ts&quot;]
   module_src_app_CreateCategoriesScreen_tsx[&quot;src/app/CreateCategoriesScreen.tsx&quot;]
@@ -14969,6 +14990,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_test_smoke_runExpo57StudioStandaloneDevelopmentWebSmokeAsync_ts[&quot;test/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts&quot;]
   module_test_smoke_runExpo57StudioStandaloneStaticWebSmokeAsync_ts[&quot;test/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts&quot;]
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts[&quot;test/smoke/runSocialTemplateWebAcceptanceAsync.ts&quot;]
+  module_test_studioConsumerSync_test_ts[&quot;test/studioConsumerSync.test.ts&quot;]
   module_scripts_auth5_native_oauth_smoke_infra_ts --&gt; module_test_smoke_runAuth5NativeOAuthSmokeInfra_ts
   module_scripts_auth5_native_oauth_smoke_ts --&gt; module_test_smoke_runAuth5NativeOAuthSmoke_ts
   module_scripts_expo57_generated_app_acceptance_ts --&gt; module_test_smoke_runExpo57GeneratedAppAcceptance_ts
@@ -16192,6 +16214,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --&gt; module_test_smoke_ChromeNavigationSession_ts
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --&gt; module_test_smoke_resolveAppOwnedExpoCliAsync_ts
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --&gt; module_test_smoke_runAcceptanceCommandAsync_ts
+  module_test_studioConsumerSync_test_ts --&gt; module_scripts_reconcileStudioConsumerManifest_ts
 </div>
     <details>
       <summary>View Mermaid source</summary>
@@ -16209,6 +16232,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_scripts_expo57_social_template_web_acceptance_ts[&quot;scripts/expo57-social-template-web-acceptance.ts&quot;]
   module_scripts_expo57_studio_standalone_acceptance_ts[&quot;scripts/expo57-studio-standalone-acceptance.ts&quot;]
   module_scripts_packed_studio_host_acceptance_ts[&quot;scripts/packed-studio-host-acceptance.ts&quot;]
+  module_scripts_reconcileStudioConsumerManifest_ts[&quot;scripts/reconcileStudioConsumerManifest.ts&quot;]
   module_src_ankhAdmin_public_test_ts[&quot;src/ankhAdmin.public.test.ts&quot;]
   module_src_apm_ts[&quot;src/apm.ts&quot;]
   module_src_app_CreateCategoriesScreen_tsx[&quot;src/app/CreateCategoriesScreen.tsx&quot;]
@@ -16824,6 +16848,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_test_smoke_runExpo57StudioStandaloneDevelopmentWebSmokeAsync_ts[&quot;test/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts&quot;]
   module_test_smoke_runExpo57StudioStandaloneStaticWebSmokeAsync_ts[&quot;test/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts&quot;]
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts[&quot;test/smoke/runSocialTemplateWebAcceptanceAsync.ts&quot;]
+  module_test_studioConsumerSync_test_ts[&quot;test/studioConsumerSync.test.ts&quot;]
   module_scripts_auth5_native_oauth_smoke_infra_ts --&gt; module_test_smoke_runAuth5NativeOAuthSmokeInfra_ts
   module_scripts_auth5_native_oauth_smoke_ts --&gt; module_test_smoke_runAuth5NativeOAuthSmoke_ts
   module_scripts_expo57_generated_app_acceptance_ts --&gt; module_test_smoke_runExpo57GeneratedAppAcceptance_ts
@@ -18047,6 +18072,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --&gt; module_test_smoke_ChromeNavigationSession_ts
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --&gt; module_test_smoke_resolveAppOwnedExpoCliAsync_ts
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --&gt; module_test_smoke_runAcceptanceCommandAsync_ts
+  module_test_studioConsumerSync_test_ts --&gt; module_scripts_reconcileStudioConsumerManifest_ts
 </pre>
     </details>
   </article><article class="item" data-search="Export graph diagrams/export-graph.mmd">
@@ -18066,6 +18092,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_scripts_expo57_social_template_web_acceptance_ts[&quot;scripts/expo57-social-template-web-acceptance.ts&quot;]
   module_scripts_expo57_studio_standalone_acceptance_ts[&quot;scripts/expo57-studio-standalone-acceptance.ts&quot;]
   module_scripts_packed_studio_host_acceptance_ts[&quot;scripts/packed-studio-host-acceptance.ts&quot;]
+  module_scripts_reconcileStudioConsumerManifest_ts[&quot;scripts/reconcileStudioConsumerManifest.ts&quot;]
   module_src_ankhAdmin_public_test_ts[&quot;src/ankhAdmin.public.test.ts&quot;]
   module_src_apm_ts[&quot;src/apm.ts&quot;]
   module_src_app_CreateCategoriesScreen_tsx[&quot;src/app/CreateCategoriesScreen.tsx&quot;]
@@ -18681,6 +18708,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_test_smoke_runExpo57StudioStandaloneDevelopmentWebSmokeAsync_ts[&quot;test/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts&quot;]
   module_test_smoke_runExpo57StudioStandaloneStaticWebSmokeAsync_ts[&quot;test/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts&quot;]
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts[&quot;test/smoke/runSocialTemplateWebAcceptanceAsync.ts&quot;]
+  module_test_studioConsumerSync_test_ts[&quot;test/studioConsumerSync.test.ts&quot;]
   export_appendStudioEventBinding[&quot;appendStudioEventBinding&quot;]
   module_src_bindingMutationModel_ts --&gt; export_appendStudioEventBinding
   export_assessStudioBindingCompatibility[&quot;assessStudioBindingCompatibility&quot;]
@@ -19071,6 +19099,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_scripts_expo57_social_template_web_acceptance_ts[&quot;scripts/expo57-social-template-web-acceptance.ts&quot;]
   module_scripts_expo57_studio_standalone_acceptance_ts[&quot;scripts/expo57-studio-standalone-acceptance.ts&quot;]
   module_scripts_packed_studio_host_acceptance_ts[&quot;scripts/packed-studio-host-acceptance.ts&quot;]
+  module_scripts_reconcileStudioConsumerManifest_ts[&quot;scripts/reconcileStudioConsumerManifest.ts&quot;]
   module_src_ankhAdmin_public_test_ts[&quot;src/ankhAdmin.public.test.ts&quot;]
   module_src_apm_ts[&quot;src/apm.ts&quot;]
   module_src_app_CreateCategoriesScreen_tsx[&quot;src/app/CreateCategoriesScreen.tsx&quot;]
@@ -19686,6 +19715,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_test_smoke_runExpo57StudioStandaloneDevelopmentWebSmokeAsync_ts[&quot;test/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts&quot;]
   module_test_smoke_runExpo57StudioStandaloneStaticWebSmokeAsync_ts[&quot;test/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts&quot;]
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts[&quot;test/smoke/runSocialTemplateWebAcceptanceAsync.ts&quot;]
+  module_test_studioConsumerSync_test_ts[&quot;test/studioConsumerSync.test.ts&quot;]
   export_appendStudioEventBinding[&quot;appendStudioEventBinding&quot;]
   module_src_bindingMutationModel_ts --&gt; export_appendStudioEventBinding
   export_assessStudioBindingCompatibility[&quot;assessStudioBindingCompatibility&quot;]

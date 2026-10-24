@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v8.0.3",
+      "value": "v8.0.4",
       "color": "cb3837"
     },
     {
@@ -199,6 +199,14 @@
         "test/acceptance/runPackedStudioHostAcceptance.ts"
       ],
       "exports": []
+    },
+    {
+      "path": "scripts/reconcileStudioConsumerManifest.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "reconcileStudioConsumerManifest"
+      ]
     },
     {
       "path": "src/ankhAdmin.public.test.ts",
@@ -7345,6 +7353,14 @@
       "exports": [
         "runSocialTemplateWebAcceptanceAsync"
       ]
+    },
+    {
+      "path": "test/studioConsumerSync.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "scripts/reconcileStudioConsumerManifest.ts"
+      ],
+      "exports": []
     }
   ],
   "exports": [
@@ -33886,6 +33902,11 @@
         "sourcePath": "src/workspaceSearch.ts"
       },
       {
+        "fromPath": "test/studioConsumerSync.test.ts",
+        "toPath": "scripts/reconcileStudioConsumerManifest.ts",
+        "sourcePath": "test/studioConsumerSync.test.ts"
+      },
+      {
         "fromPath": "src/app/CreateCategoriesScreen.tsx",
         "toPath": "src/hooks/useTemplateCatalog.ts",
         "sourcePath": "src/app/CreateCategoriesScreen.tsx"
@@ -39901,6 +39922,78 @@
         "toSymbol": "runPackedStudioHostAcceptance",
         "callExpression": "runPackedStudioHostAcceptance",
         "sourcePath": "scripts/packed-studio-host-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/reconcileStudioConsumerManifest.ts",
+        "toSymbol": "selectMonotonicOwnerRange",
+        "callExpression": "selectMonotonicOwnerRange",
+        "sourcePath": "scripts/reconcileStudioConsumerManifest.ts"
+      },
+      {
+        "fromSymbol": "reconcileStudioConsumerManifest",
+        "toSymbol": "reconcile",
+        "callExpression": "reconcile",
+        "sourcePath": "scripts/reconcileStudioConsumerManifest.ts"
+      },
+      {
+        "fromSymbol": "floor",
+        "toSymbol": "parseSemanticVersion",
+        "callExpression": "parseSemanticVersion",
+        "sourcePath": "scripts/reconcileStudioConsumerManifest.ts"
+      },
+      {
+        "fromSymbol": "selectMonotonicOwnerRange",
+        "toSymbol": "compareSemanticVersions",
+        "callExpression": "compareSemanticVersions",
+        "sourcePath": "scripts/reconcileStudioConsumerManifest.ts"
+      },
+      {
+        "fromSymbol": "selectMonotonicOwnerRange",
+        "toSymbol": "floor",
+        "callExpression": "floor",
+        "sourcePath": "scripts/reconcileStudioConsumerManifest.ts"
+      },
+      {
+        "fromSymbol": "isStringRecord",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/reconcileStudioConsumerManifest.ts"
+      },
+      {
+        "fromSymbol": "isPackageManifest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "scripts/reconcileStudioConsumerManifest.ts"
+      },
+      {
+        "fromSymbol": "isPackageManifest",
+        "toSymbol": "isStringRecord",
+        "callExpression": "isStringRecord",
+        "sourcePath": "scripts/reconcileStudioConsumerManifest.ts"
+      },
+      {
+        "fromSymbol": "scripts/reconcileStudioConsumerManifest.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "scripts/reconcileStudioConsumerManifest.ts"
+      },
+      {
+        "fromSymbol": "scripts/reconcileStudioConsumerManifest.ts",
+        "toSymbol": "isPackageManifest",
+        "callExpression": "isPackageManifest",
+        "sourcePath": "scripts/reconcileStudioConsumerManifest.ts"
+      },
+      {
+        "fromSymbol": "scripts/reconcileStudioConsumerManifest.ts",
+        "toSymbol": "reconcileStudioConsumerManifest",
+        "callExpression": "reconcileStudioConsumerManifest",
+        "sourcePath": "scripts/reconcileStudioConsumerManifest.ts"
+      },
+      {
+        "fromSymbol": "scripts/reconcileStudioConsumerManifest.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "scripts/reconcileStudioConsumerManifest.ts"
       },
       {
         "fromSymbol": "src/ankhAdmin.public.test.ts",
@@ -45985,6 +46078,30 @@
         "toSymbol": "normalize",
         "callExpression": "normalize",
         "sourcePath": "src/workspaceSearch.ts"
+      },
+      {
+        "fromSymbol": "test/studioConsumerSync.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "test/studioConsumerSync.test.ts"
+      },
+      {
+        "fromSymbol": "test/studioConsumerSync.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "test/studioConsumerSync.test.ts"
+      },
+      {
+        "fromSymbol": "test/studioConsumerSync.test.ts",
+        "toSymbol": "reconcileStudioConsumerManifest",
+        "callExpression": "reconcileStudioConsumerManifest",
+        "sourcePath": "test/studioConsumerSync.test.ts"
+      },
+      {
+        "fromSymbol": "test/studioConsumerSync.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "test/studioConsumerSync.test.ts"
       },
       {
         "fromSymbol": "CreateCategoriesScreen",

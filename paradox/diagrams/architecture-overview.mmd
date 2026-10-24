@@ -42,6 +42,8 @@ graph TD
   module_scripts_packed_studio_host_acceptance_ts["scripts/packed-studio-host-acceptance.ts"]
   package__ankhorage_studio -.-> module_scripts_packed_studio_host_acceptance_ts
   module_scripts_packed_studio_host_acceptance_ts --> module_test_acceptance_runPackedStudioHostAcceptance_ts
+  module_scripts_reconcileStudioConsumerManifest_ts["scripts/reconcileStudioConsumerManifest.ts"]
+  package__ankhorage_studio -.-> module_scripts_reconcileStudioConsumerManifest_ts
   module_src_ankhAdmin_public_test_ts["src/ankhAdmin.public.test.ts"]
   package__ankhorage_studio -.-> module_src_ankhAdmin_public_test_ts
   module_src_ankhAdmin_public_test_ts --> module_src_root_ts
@@ -2481,3 +2483,6 @@ graph TD
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --> module_test_smoke_ChromeNavigationSession_ts
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --> module_test_smoke_resolveAppOwnedExpoCliAsync_ts
   module_test_smoke_runSocialTemplateWebAcceptanceAsync_ts --> module_test_smoke_runAcceptanceCommandAsync_ts
+  module_test_studioConsumerSync_test_ts["test/studioConsumerSync.test.ts"]
+  package__ankhorage_studio -.-> module_test_studioConsumerSync_test_ts
+  module_test_studioConsumerSync_test_ts --> module_scripts_reconcileStudioConsumerManifest_ts

@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.0.4
+
+### Patch Changes
+
+- 4982839: Update dependencies: `@react-native-vector-icons/fontawesome5`, `@react-native-vector-icons/fontawesome6`, `@react-native-vector-icons/fontawesome`, `@react-native-vector-icons/ionicons`, `fastify`.
+
 ## 8.0.3
 
 ### Patch Changes
