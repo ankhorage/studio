@@ -298,7 +298,19 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
     await chrome.waitForLocationAsync({ pathname: '/' });
     await chrome.waitForVisibleTestIdAsync('capability-acceptance-scanner');
     await chrome.reloadAsync();
-    await chrome.waitForVisibleTestIdAsync('capability-acceptance-scanner');
+    const reloadDiagnostics = await chrome.capturePageDiagnosticsAsync([
+      'capability-acceptance-scanner',
+    ]);
+    try {
+      await chrome.waitForVisibleTestIdAsync('capability-acceptance-scanner');
+    } catch (error) {
+      const finalDiagnostics = await chrome.capturePageDiagnosticsAsync([
+        'capability-acceptance-scanner',
+      ]);
+      throw new Error(
+        `Generated capability scanner is absent after OAuth replay reload. Immediately after reload: ${JSON.stringify(reloadDiagnostics)}. After readiness wait: ${JSON.stringify(finalDiagnostics)}. ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
 
     if (authStub.tokenExchangeCount !== completedExchangeCount) {
       throw new Error(

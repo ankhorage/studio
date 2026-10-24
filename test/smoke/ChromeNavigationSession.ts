@@ -102,6 +102,7 @@ export class ChromeNavigationSession {
 
   /*** Hit-test and dispatch a real pointer click to the requested accessible role/name occurrence. */
   async clickByRoleAndNameAsync(role: string, name: string, occurrence = 0): Promise<void> {
+    await this.waitForHydratedRoleAndNameAsync(role, name, occurrence);
     const point = await this.waitForHitTestedRoleAndNameAsync(role, name, occurrence);
     await this.dispatchPointerClickAsync(point);
   }
@@ -217,6 +218,43 @@ export class ChromeNavigationSession {
   /*** Check whether a visible element with the requested accessible role and name currently exists. */
   async hasRoleAndNameAsync(role: string, name: string): Promise<boolean> {
     return this.evaluateAsync<boolean>(createRoleAndNameExpression(role, name, 0));
+  }
+
+  /*** Capture the active route, rendered body, matching test-id DOM and browser errors for a browser-transition diagnosis. */
+  async capturePageDiagnosticsAsync(testIds: readonly string[]): Promise<{
+    readonly bodyText: string;
+    readonly errors: readonly string[];
+    readonly pathname: string;
+    readonly testIds: readonly {
+      readonly html: string;
+      readonly id: string;
+      readonly visible: boolean;
+    }[];
+  }> {
+    const page = await this.evaluateAsync<{
+      readonly bodyText: string;
+      readonly pathname: string;
+      readonly testIds: readonly {
+        readonly html: string;
+        readonly id: string;
+        readonly visible: boolean;
+      }[];
+    }>(`(() => {
+  const requested = new Set(${JSON.stringify(testIds)});
+  const testIds = [...document.querySelectorAll('[data-testid]')]
+    .filter((element) => requested.has(element.getAttribute('data-testid') ?? ''))
+    .map((element) => {
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return {
+        html: element.outerHTML.slice(0, 2_000),
+        id: element.getAttribute('data-testid') ?? '',
+        visible: rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden',
+      };
+    });
+  return { bodyText: (document.body?.innerText ?? '').slice(-4_000), pathname: location.pathname, testIds };
+})()`);
+    return { ...page, errors: [...this.errors] };
   }
 
   /*** Check whether any previously recorded body-text snapshot contains the requested text. */
@@ -353,6 +391,18 @@ export class ChromeNavigationSession {
     occurrence = 0,
   ): Promise<void> {
     await this.waitForHitTestedRoleAndNameAsync(role, name, occurrence);
+  }
+
+  /*** Wait until the requested role/name control carries React's hydrated click handler. */
+  async waitForHydratedRoleAndNameAsync(
+    role: string,
+    name: string,
+    occurrence = 0,
+  ): Promise<void> {
+    await this.waitForBooleanAsync(
+      createHydratedRoleAndNameExpression(role, name, occurrence),
+      `hydrated ${role} named "${name}"`,
+    );
   }
 
   /*** Wait until the requested test-id control is visible in the active browser viewport. */
@@ -559,6 +609,33 @@ function createRoleAndNameExpression(role: string, name: string, occurrence: num
   const element = elements[${occurrence}];
   if (!(element instanceof HTMLElement)) return false;
   return true;
+})()`;
+}
+
+/*** Build a browser expression that proves a role/name target has React's client-side click handler. */
+function createHydratedRoleAndNameExpression(
+  role: string,
+  name: string,
+  occurrence: number,
+): string {
+  return `(() => {
+  const normalize = (value) => value.replace(/\\s+/gu, ' ').trim();
+  const elements = [...document.querySelectorAll('[role]')].filter((candidate) => {
+    if (candidate.getAttribute('role') !== ${JSON.stringify(role)}) return false;
+    const ariaLabel = candidate.getAttribute('aria-label');
+    const visibleText = normalize(candidate.textContent ?? '');
+    const matchesName = ariaLabel !== null
+      ? normalize(ariaLabel) === ${JSON.stringify(name)}
+      : visibleText === ${JSON.stringify(name)} || visibleText.endsWith(${JSON.stringify(name)});
+    if (!matchesName || !(candidate instanceof HTMLElement)) return false;
+    const rect = candidate.getBoundingClientRect();
+    const style = getComputedStyle(candidate);
+    return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+  });
+  const element = elements[${occurrence}];
+  if (!(element instanceof HTMLElement)) return false;
+  const propsKey = Object.keys(element).find((key) => key.startsWith('__reactProps$'));
+  return propsKey !== undefined && typeof element[propsKey]?.onClick === 'function';
 })()`;
 }
 
