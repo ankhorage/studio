@@ -21,16 +21,16 @@ const app = {
     '@ankhorage/studio': '^8.0.1',
     '@ankhorage/expo-runtime': '^7.0.1',
     '@ankhorage/utility': '^1.10.0',
-    'expo': '57.0.31',
+    expo: '57.0.31',
   },
   devDependencies: {
     '@ankhorage/devtools': '^2.0.100',
-    'typescript': '~6.0.3',
+    typescript: '~6.0.3',
   },
 };
 
 describe('published Studio first-party owner dependency sync', () => {
-  test('updates only already-declared owner floors while preserving platform pins and newer floors', () => {
+  test('updates direct owner floors but preserves newer and third-party ranges', () => {
     const result = reconcileStudioConsumerManifest(root, app, '8.0.2');
     expect(result.dependencies).toEqual({
       '@ankhorage/studio': '^8.0.2',
@@ -52,7 +52,9 @@ describe('published Studio first-party owner dependency sync', () => {
   });
 
   test('does not synchronize an unpublished or different root version', () => {
-    expect(() => reconcileStudioConsumerManifest(root, app, '8.0.3')).toThrow('verified npm release');
+    expect(() => reconcileStudioConsumerManifest(root, app, '8.0.3')).toThrow(
+      'verified npm release',
+    );
   });
 
   test('fails closed on workspace aliases or unsupported owner ranges', () => {
@@ -60,6 +62,8 @@ describe('published Studio first-party owner dependency sync', () => {
       ...app,
       dependencies: { ...app.dependencies, '@ankhorage/studio': 'workspace:*' },
     };
-    expect(() => reconcileStudioConsumerManifest(root, modified, '8.0.2')).toThrow('Unsupported owner range');
+    expect(() => reconcileStudioConsumerManifest(root, modified, '8.0.2')).toThrow(
+      'Unsupported owner range',
+    );
   });
 });
