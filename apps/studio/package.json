@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@ankhorage/expo-runtime": "^7.0.2",
-    "@ankhorage/studio": "^8.0.3",
+    "@ankhorage/studio": "^8.0.4",
     "@expo/metro-runtime": "~57.0.17",
     "@react-native-vector-icons/fontawesome": "^14.0.0",
     "@react-native-vector-icons/fontawesome5": "^14.0.0",
@@ -60,7 +60,7 @@
     "expo-image-picker": "~57.0.20"
   },
   "devDependencies": {
-    "@ankhorage/devtools": "^2.0.100",
+    "@ankhorage/devtools": "^2.3.21",
     "@ankhorage/utility": "^1.10.0",
     "@types/bun": "^1.4.2",
     "@types/node": "^24.13.3",
