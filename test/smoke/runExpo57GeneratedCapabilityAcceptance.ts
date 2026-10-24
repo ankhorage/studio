@@ -296,7 +296,16 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
       'This OAuth callback was already completed. Continuing…',
     );
     await chrome.waitForLocationAsync({ pathname: '/' });
-    await chrome.waitForVisibleTestIdAsync('capability-acceptance-scanner');
+    try {
+      await chrome.waitForVisibleTestIdAsync('capability-acceptance-scanner');
+    } catch (error) {
+      const diagnostics = await chrome.capturePageDiagnosticsAsync([
+        'capability-acceptance-scanner',
+      ]);
+      throw new Error(
+        `Generated capability scanner is absent after OAuth replay. ${JSON.stringify(diagnostics)}. ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
     await chrome.reloadAsync();
     const reloadDiagnostics = await chrome.capturePageDiagnosticsAsync([
       'capability-acceptance-scanner',

@@ -21,6 +21,8 @@ interface PointerTarget {
   readonly y: number;
 }
 
+const APPLICATION_INTERACTIVE_TEST_ID = 'ankh-app-interactive';
+
 /***
  * Drive a headless Chrome DevTools Protocol session for Studio web acceptance, including navigation, hydration, hit testing, font assertions and browser-error capture.
  */
@@ -102,13 +104,14 @@ export class ChromeNavigationSession {
 
   /*** Hit-test and dispatch a real pointer click to the requested accessible role/name occurrence. */
   async clickByRoleAndNameAsync(role: string, name: string, occurrence = 0): Promise<void> {
-    await this.waitForHydratedRoleAndNameAsync(role, name, occurrence);
+    await this.waitForApplicationInteractiveAsync();
     const point = await this.waitForHitTestedRoleAndNameAsync(role, name, occurrence);
     await this.dispatchPointerClickAsync(point);
   }
 
   /*** Hit-test and dispatch a real pointer click to the requested visible test-id control. */
   async clickByTestIdAsync(testId: string): Promise<void> {
+    await this.waitForApplicationInteractiveAsync();
     const point = await this.waitForHitTestedTestIdAsync(testId);
     await this.dispatchPointerClickAsync(point);
   }
@@ -393,16 +396,9 @@ export class ChromeNavigationSession {
     await this.waitForHitTestedRoleAndNameAsync(role, name, occurrence);
   }
 
-  /*** Wait until the requested role/name control carries React's hydrated click handler. */
-  async waitForHydratedRoleAndNameAsync(
-    role: string,
-    name: string,
-    occurrence = 0,
-  ): Promise<void> {
-    await this.waitForBooleanAsync(
-      createHydratedRoleAndNameExpression(role, name, occurrence),
-      `hydrated ${role} named "${name}"`,
-    );
+  /*** Wait until the generated application has committed its post-hydration interactive boundary. */
+  async waitForApplicationInteractiveAsync(): Promise<void> {
+    await this.waitForVisibleTestIdAsync(APPLICATION_INTERACTIVE_TEST_ID);
   }
 
   /*** Wait until the requested test-id control is visible in the active browser viewport. */
@@ -609,33 +605,6 @@ function createRoleAndNameExpression(role: string, name: string, occurrence: num
   const element = elements[${occurrence}];
   if (!(element instanceof HTMLElement)) return false;
   return true;
-})()`;
-}
-
-/*** Build a browser expression that proves a role/name target has React's client-side click handler. */
-function createHydratedRoleAndNameExpression(
-  role: string,
-  name: string,
-  occurrence: number,
-): string {
-  return `(() => {
-  const normalize = (value) => value.replace(/\\s+/gu, ' ').trim();
-  const elements = [...document.querySelectorAll('[role]')].filter((candidate) => {
-    if (candidate.getAttribute('role') !== ${JSON.stringify(role)}) return false;
-    const ariaLabel = candidate.getAttribute('aria-label');
-    const visibleText = normalize(candidate.textContent ?? '');
-    const matchesName = ariaLabel !== null
-      ? normalize(ariaLabel) === ${JSON.stringify(name)}
-      : visibleText === ${JSON.stringify(name)} || visibleText.endsWith(${JSON.stringify(name)});
-    if (!matchesName || !(candidate instanceof HTMLElement)) return false;
-    const rect = candidate.getBoundingClientRect();
-    const style = getComputedStyle(candidate);
-    return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
-  });
-  const element = elements[${occurrence}];
-  if (!(element instanceof HTMLElement)) return false;
-  const propsKey = Object.keys(element).find((key) => key.startsWith('__reactProps$'));
-  return propsKey !== undefined && typeof element[propsKey]?.onClick === 'function';
 })()`;
 }
 

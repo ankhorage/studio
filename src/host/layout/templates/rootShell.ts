@@ -8,7 +8,12 @@ export function getRootShellImportRequirements(
     { source: '@ankhorage/contracts', namedImports: [{ imported: 'AppManifest', typeOnly: true }] },
     {
       source: 'react',
-      namedImports: [{ imported: 'ReactNode', typeOnly: true }, { imported: 'useMemo' }],
+      namedImports: [
+        { imported: 'ReactNode', typeOnly: true },
+        { imported: 'useEffect' },
+        { imported: 'useMemo' },
+        { imported: 'useState' },
+      ],
     },
     { source: '@ankhorage/utility/object', namedImports: [{ imported: 'readOwnProperty' }] },
     {
@@ -35,9 +40,21 @@ export function getRootShellTsx(imports: string): string {
 const rootViewStyle = { flex: 1 } as const;
 
 export function GeneratedRootShell({ children }: { readonly children: ReactNode }) {
+  const [interactive, setInteractive] = useState(false);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      setInteractive(true);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, []);
   return (
     <ExpoZoraIconFontProvider>
-      <GestureHandlerRootView style={rootViewStyle}>{children}</GestureHandlerRootView>
+      <GestureHandlerRootView
+        style={rootViewStyle}
+        testID={interactive ? 'ankh-app-interactive' : 'ankh-app-loading'}
+      >
+        {children}
+      </GestureHandlerRootView>
     </ExpoZoraIconFontProvider>
   );
 }

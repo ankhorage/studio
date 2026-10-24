@@ -241,7 +241,17 @@ async function startGeneratedAppAsync(args: {
   await chrome.clickByRoleAndNameAsync('button', 'Preview');
   await chrome.waitForInteractiveRoleAndNameAsync('button', 'Edit');
   const historyTraceStart = (await chrome.readObservedPathnamesAsync()).length;
-  await chrome.clickByTestIdAsync('navigator-tabs-item-history');
+  try {
+    await chrome.clickByTestIdAsync('navigator-tabs-item-history');
+  } catch (error) {
+    const diagnostics = await chrome.capturePageDiagnosticsAsync([
+      'navigator-tabs-item-history',
+      'navigator-tabs-item-(train)',
+    ]);
+    throw new Error(
+      `SharkPrey History tab is unavailable after Preview activation. ${JSON.stringify(diagnostics)}. ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
   await chrome.waitForLocationAsync({ pathname: '/history' });
   await assertPreviewNavigationTraceAsync(chrome, historyTraceStart, '/history');
   await chrome.waitForBodyTextAsync('History');
