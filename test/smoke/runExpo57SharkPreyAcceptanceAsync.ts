@@ -21,6 +21,7 @@ const SHARKPREY_TEMPLATE = { category: 'education_learning', slug: 'sharkprey' }
  */
 export async function runExpo57SharkPreyAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-sharkprey-acceptance-'));
+  const taskQueryFixture = createPokerTaskQueryFixture();
   let studioHost: Awaited<ReturnType<typeof startStudioHostServer>> | null = null;
   let expoProcess: ChildProcessWithoutNullStreams | null = null;
   let chrome: ChromeNavigationSession | null = null;
@@ -29,9 +30,14 @@ export async function runExpo57SharkPreyAcceptanceAsync(): Promise<void> {
     await createWorkspaceAsync(workspaceRoot);
     const manager = new ProjectManager(workspaceRoot);
     const source = await getProjectTemplateSource(SHARKPREY_TEMPLATE);
-    const project = await manager.createProject('SharkPrey Acceptance', source, undefined, {
-      includeStudio: true,
-    });
+    const project = await manager.createProject(
+      'SharkPrey Acceptance',
+      withPokerTaskQueryFixture(source, taskQueryFixture.baseUrl),
+      undefined,
+      {
+        includeStudio: true,
+      },
+    );
     await runGeneratedPlatformContractAsync(project.path);
     const studioCandidate = await packCurrentStudioCandidateAsync(workspaceRoot);
     await installStudioCandidateAsync(project.path, studioCandidate);
@@ -46,12 +52,38 @@ export async function runExpo57SharkPreyAcceptanceAsync(): Promise<void> {
     studioHost = browser.studioHost;
     expoProcess = browser.expoProcess;
     chrome = browser.chrome;
+    taskQueryFixture.assertExpectedQueries();
   } finally {
     chrome?.close();
     if (expoProcess) stopProcess(expoProcess);
     await studioHost?.close();
+    taskQueryFixture.stop(true);
     await rm(workspaceRoot, { force: true, recursive: true });
   }
+}
+
+/*** Replace only the external poker API origin with the browser acceptance fixture; the published task bindings remain untouched. */
+function withPokerTaskQueryFixture(
+  source: Awaited<ReturnType<typeof getProjectTemplateSource>>,
+  baseUrl: string,
+): Awaited<ReturnType<typeof getProjectTemplateSource>> {
+  const pokerTraining = source.manifest.infra.apis?.['poker-training'];
+  if (!pokerTraining || pokerTraining.origin !== 'external' || pokerTraining.protocol !== 'rest') {
+    throw new Error('SharkPrey template is missing its REST poker-training API.');
+  }
+  return {
+    ...source,
+    manifest: {
+      ...source.manifest,
+      infra: {
+        ...source.manifest.infra,
+        apis: {
+          ...source.manifest.infra.apis,
+          'poker-training': { ...pokerTraining, baseUrl },
+        },
+      },
+    },
+  };
 }
 
 /*** Create the isolated parent workspace that makes the generated app prove its own dependency and lockfile ownership. */
@@ -241,6 +273,8 @@ async function startGeneratedAppAsync(args: {
   await chrome.clickByRoleAndNameAsync('button', 'Start training');
   await chrome.waitForLocationAsync({ pathname: '/training-setup' });
   await chrome.waitForBodyTextAsync('What do you want to train?');
+  await assertGameCategoryNavigationAsync(chrome);
+  await assertTrainingJourneyAsync(chrome);
   const historyTraceStart = (await chrome.readObservedPathnamesAsync()).length;
   try {
     await chrome.clickByTestIdAsync('navigator-tabs-item-history');
@@ -263,6 +297,176 @@ async function startGeneratedAppAsync(args: {
   await chrome.waitForBodyTextAsync('What do you want to train?');
   assertNoBrowserErrors(chrome.errors, 'generated SharkPrey template');
   return { chrome, expoProcess, studioHost };
+}
+
+/*** Exercise SharkPrey's published setup flow and preserve every authored route query before its task-query result reaches the decision table. */
+async function assertTrainingJourneyAsync(chrome: ChromeNavigationSession): Promise<void> {
+  await chrome.clickByRoleAndNameAsync('radio', 'MTT');
+  await chrome.waitForLocationAsync({
+    pathname: '/training-setup/table',
+    search: '?gameCategory=mtt',
+  });
+  await chrome.clickByRoleAndNameAsync('radio', '6-max');
+  await chrome.waitForLocationAsync({
+    pathname: '/training-setup/street',
+    search: '?gameCategory=mtt&tableSize=6max',
+  });
+  await chrome.clickByRoleAndNameAsync('radio', 'Preflop');
+  await chrome.waitForLocationAsync({
+    pathname: '/training-setup/difficulty',
+    search: '?gameCategory=mtt&tableSize=6max&street=preflop',
+  });
+  await assertDifficultyTaskQueriesAsync(chrome);
+  await assertFailedTaskQueriesAsync(chrome);
+}
+
+/*** Exercise every authored difficulty Button through its real task-query capability and returned task route. */
+async function assertDifficultyTaskQueriesAsync(chrome: ChromeNavigationSession): Promise<void> {
+  for (const { difficulty, label, taskId } of pokerTrainingDifficulties()) {
+    await chrome.clickByRoleAndNameAsync('button', label);
+    await chrome.waitForLocationAsync({
+      pathname: '/decision-table',
+      search: `?taskId=${taskId}`,
+    });
+    await chrome.waitForBodyTextAsync('Your decision');
+    await chrome.goBackAsync();
+    await chrome.waitForLocationAsync({
+      pathname: '/training-setup/difficulty',
+      search: '?gameCategory=mtt&tableSize=6max&street=preflop',
+    });
+    if (difficulty === 5) continue;
+  }
+}
+
+/*** Prove empty and failed task-query actions stay on setup and render Web diagnostics rather than falsely navigating. */
+async function assertFailedTaskQueriesAsync(chrome: ChromeNavigationSession): Promise<void> {
+  const location = {
+    pathname: '/training-setup/difficulty',
+    search: '?gameCategory=mtt&tableSize=6max&street=preflop',
+  };
+  const dialogCount = chrome.dialogs.length;
+  await chrome.clickByRoleAndNameAsync('button', 'Level 4 · Advanced');
+  await chrome.waitForDialogTextAsync('Action unavailable');
+  await chrome.waitForLocationAsync(location);
+  if (chrome.dialogs.length === dialogCount) {
+    throw new Error('Empty SharkPrey task results did not render a failed-action diagnostic.');
+  }
+
+  await chrome.clickByRoleAndNameAsync('button', 'Level 5 · Expert');
+  await chrome.waitForDialogTextAsync('Action unavailable');
+  await chrome.waitForLocationAsync(location);
+}
+
+/*** Prove each authored RadioGroup value emits ZORA's capability event and reaches the canonical table-size route. */
+async function assertGameCategoryNavigationAsync(chrome: ChromeNavigationSession): Promise<void> {
+  for (const { label, value } of [
+    { label: 'MTT', value: 'mtt' },
+    { label: 'Sit & Go', value: 'sng' },
+    { label: 'Cash Game', value: 'cash' },
+  ]) {
+    await chrome.clickByRoleAndNameAsync('radio', label);
+    await chrome.waitForLocationAsync({
+      pathname: '/training-setup/table',
+      search: `?gameCategory=${value}`,
+    });
+    await chrome.goBackAsync();
+    await chrome.waitForLocationAsync({ pathname: '/training-setup' });
+  }
+}
+
+/*** Serve the task selected by SharkPrey's own query binding and record its exact filter contract. */
+function createPokerTaskQueryFixture() {
+  const requestedUrls: string[] = [];
+  const taskRequestsByDifficulty = new Map<string, number>();
+  const corsHeaders = { 'access-control-allow-origin': '*' };
+  const server = Bun.serve({
+    fetch(request) {
+      const url = new URL(request.url);
+      requestedUrls.push(url.toString());
+      if (url.pathname === '/training/tasks') {
+        const difficulty = url.searchParams.get('difficulty');
+        const count = (taskRequestsByDifficulty.get(difficulty ?? '') ?? 0) + 1;
+        taskRequestsByDifficulty.set(difficulty ?? '', count);
+        if (difficulty === '4' && count > 1) return Response.json([], { headers: corsHeaders });
+        if (difficulty === '5' && count > 1)
+          return new Response('Task fixture failure', { headers: corsHeaders, status: 500 });
+        const task = pokerTrainingDifficulties().find(
+          (candidate) => candidate.difficulty === Number(difficulty),
+        );
+        return Response.json(task ? [{ id: task.taskId }] : [], { headers: corsHeaders });
+      }
+      if (url.pathname.startsWith('/training/tasks/')) {
+        const taskId = url.pathname.slice('/training/tasks/'.length);
+        return Response.json(
+          {
+            options: [],
+            task: { id: taskId, prompt: 'Fixture decision', street: 'preflop' },
+          },
+          { headers: corsHeaders },
+        );
+      }
+      return new Response('Not found', { headers: corsHeaders, status: 404 });
+    },
+    hostname: '127.0.0.1',
+    port: 0,
+  });
+  return {
+    baseUrl: `http://127.0.0.1:${server.port}`,
+    assertExpectedQueries() {
+      const taskRequests = requestedUrls.filter(
+        (url) => new URL(url).pathname === '/training/tasks',
+      );
+      for (const { difficulty } of pokerTrainingDifficulties()) {
+        const request = taskRequests.find(
+          (candidate) => new URL(candidate).searchParams.get('difficulty') === String(difficulty),
+        );
+        if (!request) throw new Error(`SharkPrey did not query difficulty ${difficulty}.`);
+        const query = new URL(request).searchParams;
+        for (const [name, value] of [
+          ['gameCategory', 'mtt'],
+          ['tableSize', '6max'],
+          ['street', 'preflop'],
+          ['difficulty', String(difficulty)],
+          ['limit', '1'],
+        ] as const) {
+          if (query.get(name) !== value)
+            throw new Error(`SharkPrey task query lost ${name}=${value}.`);
+        }
+      }
+      if (
+        (taskRequestsByDifficulty.get('4') ?? 0) < 2 ||
+        (taskRequestsByDifficulty.get('5') ?? 0) < 2
+      ) {
+        throw new Error('SharkPrey did not execute the empty and failing task-query fixtures.');
+      }
+    },
+    stop(force: boolean) {
+      server.stop(force);
+    },
+  };
+}
+
+/*** Supply deterministic fixture task identities for every published SharkPrey difficulty. */
+function pokerTrainingDifficulties() {
+  return [
+    {
+      difficulty: 1,
+      label: 'Level 1 · Fundamentals',
+      taskId: '10000000-0000-4000-8000-000000000001',
+    },
+    {
+      difficulty: 2,
+      label: 'Level 2 · Standard spots',
+      taskId: '10000000-0000-4000-8000-000000000002',
+    },
+    {
+      difficulty: 3,
+      label: 'Level 3 · Intermediate',
+      taskId: '10000000-0000-4000-8000-000000000003',
+    },
+    { difficulty: 4, label: 'Level 4 · Advanced', taskId: '10000000-0000-4000-8000-000000000004' },
+    { difficulty: 5, label: 'Level 5 · Expert', taskId: '10000000-0000-4000-8000-000000000005' },
+  ] as const;
 }
 
 /*** Assert that one Preview-mode Navigator action reached its target without an auth redirect back to onboarding. */

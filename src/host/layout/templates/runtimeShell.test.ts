@@ -19,8 +19,22 @@ test('generates Studio Runtime composition with the Studio executor and bundled 
   expect(source).toContain('export { bundledMediaRegistry };');
   expect(source).toContain('export const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
   expect(source).toContain('registry: runtimeComponentRegistry');
+  expect(source).toContain('resolveEventCapability: resolveZoraRuntimeEventCapability');
+  expect(source).toContain('onDiagnostics: reportRuntimeDiagnostics');
+  expect(getRuntimeShellImportRequirements(true, '@ankhorage/zora', true)).toContainEqual({
+    source: '@ankhorage/utility/object',
+    namedImports: [{ imported: 'readOwnProperty' }],
+  });
+  expect(source).toContain('readOwnProperty');
+  expect(source).toContain('isRuntimeCapabilityId(eventType) ? eventType : undefined');
+  expect(source).not.toContain('ZORA_COMPONENT_META[node.type]');
+  expect(source).toContain("if (Platform.OS === 'web')");
+  expect(source).toContain('globalThis.alert(`Action unavailable\\n\\n${message}`)');
+  expect(source).toContain("Alert.alert('Action unavailable'");
   expect(source).toContain('<RuntimeRendererConfigProvider value={generatedRuntimeConfig}>');
   expect(source).not.toContain('useGeneratedRuntimeCapabilityExecutor');
+  const transpiler = new Bun.Transpiler({ loader: 'tsx' });
+  expect(() => transpiler.transformSync(source)).not.toThrow();
 });
 
 test('generates standalone Runtime composition without Studio dependencies', () => {
@@ -42,6 +56,7 @@ test('generates standalone Runtime composition without Studio dependencies', () 
   expect(source).toContain('createGeneratedRuntimeCapabilityExecutor({');
   expect(source).toContain('resolveExpoRuntimeRoutePath(route, params)');
   expect(source).not.toContain('@ankhorage/studio');
+  expect(source).toContain('resolveEventCapability: resolveZoraRuntimeEventCapability');
   expect(source).not.toContain('export { bundledMediaRegistry };');
   expect(source).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
   expect(source).not.toContain('export const runtimeComponentRegistry');

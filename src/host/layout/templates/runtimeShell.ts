@@ -7,7 +7,13 @@ export function getRuntimeShellImportRequirements(
   useStoredAuthSessionCredentialResolver: boolean,
 ): GeneratedImportRequirement[] {
   return [
-    { source: '@ankhorage/contracts', namedImports: [{ imported: 'AppManifest', typeOnly: true }] },
+    {
+      source: '@ankhorage/contracts',
+      namedImports: [
+        { imported: 'AppManifest', typeOnly: true },
+        { imported: 'DataSourceDiagnostic', typeOnly: true },
+      ],
+    },
     {
       source: 'react',
       namedImports: [{ imported: 'ReactNode', typeOnly: true }, { imported: 'useMemo' }],
@@ -21,7 +27,14 @@ export function getRuntimeShellImportRequirements(
         { imported: 'RuntimeRendererConfigProvider' },
       ],
     },
-    { source: zoraEntrypoint, namedImports: [{ imported: 'useZoraTheme' }] },
+    {
+      source: zoraEntrypoint,
+      namedImports: [{ imported: 'useZoraTheme' }, { imported: 'ZORA_COMPONENT_META' }],
+    },
+    {
+      source: '@ankhorage/utility/object',
+      namedImports: [{ imported: 'readOwnProperty' }],
+    },
     {
       source: '@ankhorage/expo-runtime/bundled-media',
       namedImports: [{ imported: 'createExpoBundledMediaResolver' }],
@@ -67,8 +80,8 @@ export function getRuntimeShellImportRequirements(
             source: 'expo-router',
             namedImports: [{ imported: 'Href', typeOnly: true }, { imported: 'useRouter' }],
           },
-          { source: 'react-native', namedImports: [{ imported: 'Alert' }] },
         ]),
+    { source: 'react-native', namedImports: [{ imported: 'Alert' }, { imported: 'Platform' }] },
   ];
 }
 
@@ -143,6 +156,45 @@ ${runtimeModuleDeclarations?.trim() ?? ''}
 ${includeStudio ? 'export { bundledMediaRegistry };\n' : ''}const bundledMediaResolver = createExpoBundledMediaResolver(bundledMediaRegistry);
 ${includeStudio ? 'export ' : ''}const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;
 
+/** Resolve the published ZORA event identity only when it satisfies Runtime's capability-ID contract. */
+function resolveZoraRuntimeEventCapability({
+  eventName,
+  node,
+}: {
+  eventName: string;
+  node: { type: string };
+}) {
+  const component = readOwnProperty<(typeof ZORA_COMPONENT_META)[string]>(
+    ZORA_COMPONENT_META,
+    node.type,
+  );
+  const event = component?.events
+    ? readOwnProperty<(typeof component.events)[string]>(component.events, eventName)
+    : undefined;
+  const eventType = event?.eventType;
+  return isRuntimeCapabilityId(eventType) ? eventType : undefined;
+}
+
+/** Validate the current Runtime capability-ID shape at the ZORA metadata boundary. */
+function isRuntimeCapabilityId(value: unknown): value is \`\${string}.\${string}\` {
+  return typeof value === 'string' && /^[^.]+\\.[^.]+$/u.test(value);
+}
+
+/** Present Runtime action diagnostics rather than leaving failed interactions as silent no-ops. */
+function reportRuntimeDiagnostics(diagnostics: readonly DataSourceDiagnostic[]) {
+  const messages = diagnostics
+    .filter((diagnostic) => diagnostic.severity === 'error')
+    .map((diagnostic) => diagnostic.message);
+  if (messages.length === 0) return;
+
+  const message = messages.join('\\n');
+  if (Platform.OS === 'web') {
+    globalThis.alert(\`Action unavailable\\n\\n\${message}\`);
+    return;
+  }
+  Alert.alert('Action unavailable', message);
+}
+
 export function GeneratedRuntimeShell({
   children,
   runtimeManifest,
@@ -168,7 +220,9 @@ export function GeneratedRuntimeShell({
       executeCapability,
       registry: runtimeComponentRegistry,
       mediaAssets: runtimeManifest.media?.assets,
+      onDiagnostics: reportRuntimeDiagnostics,
       resolveMediaAsset: bundledMediaResolver,
+      resolveEventCapability: resolveZoraRuntimeEventCapability,
     }),
     [executeCapability, runtimeManifest.media?.assets],
   );
