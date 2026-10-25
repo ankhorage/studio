@@ -417,18 +417,17 @@ describe('GeneratedAppFileGenerator', () => {
       },
     };
 
-    const paths = new GeneratedAppFileGenerator()
-      .generateFiles('/tmp/demo', manifest, [], { includeStudio: false })
-      .map((file) => file.path);
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', manifest, [], {
+      includeStudio: false,
+    });
+    const paths = files.map((file) => file.path);
 
     expect(paths).toContain('src/app/(app)/(tabs)/(train)/training-setup/index.tsx');
     expect(paths).toContain('src/app/(app)/(tabs)/(train)/training-setup/table.tsx');
     expect(paths).toContain('src/app/(app)/(tabs)/(train)/training-setup/street.tsx');
     expect(paths).toContain('src/app/(app)/(tabs)/(train)/training-setup/difficulty.tsx');
     expect(paths).toContain('src/app/(app)/(tabs)/(train)/training-setup/[...segments].tsx');
-    expect(paths).not.toContain('src/app/(app)/(tabs)/(train)/training-table-size.tsx');
-    expect(paths).not.toContain('src/app/(app)/(tabs)/(train)/training-street.tsx');
-    expect(paths).not.toContain('src/app/(app)/(tabs)/(train)/training-difficulty.tsx');
+    expect(paths).not.toContain('src/app/(app)/(tabs)/(train)/index.tsx');
   });
 
   test('generates Reader-free ZORA registry ownership for the running app runtime path', () => {

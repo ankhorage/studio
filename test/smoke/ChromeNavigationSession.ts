@@ -29,6 +29,7 @@ const APPLICATION_INTERACTIVE_TEST_ID = 'ankh-app-interactive';
 export class ChromeNavigationSession {
   readonly dialogs: string[] = [];
   readonly errors: string[] = [];
+  readonly runtimeExceptions: string[] = [];
   private nextId = 1;
   private readonly pending = new Map<
     number,
@@ -103,16 +104,60 @@ export class ChromeNavigationSession {
     await this.evaluateAsync('(() => { localStorage.clear(); return true; })()');
   }
 
+  /*** Clear the temporary browser-only Runtime trace used by generated-app acceptance. */
+  async clearBrowserAcceptanceTraceAsync(): Promise<void> {
+    await this.evaluateAsync(
+      '(() => { globalThis.__ankhBrowserAcceptanceTrace = []; return true; })()',
+    );
+  }
+
+  /*** Install a browser-only fetch observer for one generated-app action-chain diagnosis. */
+  async installBrowserAcceptanceFetchTraceAsync(): Promise<void> {
+    await this.sendAsync('Page.addScriptToEvaluateOnNewDocument', {
+      source: `(() => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (...args) => {
+    const response = await originalFetch(...args);
+    const request = args[0] instanceof Request ? args[0] : undefined;
+    const init = args[1] ?? {};
+    const url = request?.url ?? String(args[0]);
+    if (url.includes('/training/tasks')) {
+      const text = await response.clone().text();
+      const target = globalThis;
+      target.__ankhBrowserAcceptanceTrace ??= [];
+      target.__ankhBrowserAcceptanceTrace.push({
+        kind: 'http',
+        method: request?.method ?? init.method ?? 'GET',
+        response: text ? JSON.parse(text) : undefined,
+        status: response.status,
+        url,
+      });
+    }
+    return response;
+  };
+})();`,
+    });
+  }
+
+  /*** Read the temporary browser-only Runtime trace used to diagnose a generated action chain. */
+  async readBrowserAcceptanceTraceAsync(): Promise<readonly Record<string, unknown>[]> {
+    return this.evaluateAsync<readonly Record<string, unknown>[]>(
+      'Array.isArray(globalThis.__ankhBrowserAcceptanceTrace) ? globalThis.__ankhBrowserAcceptanceTrace : []',
+    );
+  }
+
   /*** Hit-test and dispatch a real pointer click to the requested accessible role/name occurrence. */
   async clickByRoleAndNameAsync(role: string, name: string, occurrence = 0): Promise<void> {
     const point = await this.waitForHitTestedRoleAndNameAsync(role, name, occurrence);
     await this.dispatchPointerClickAsync(point);
+    this.throwIfRuntimeException();
   }
 
   /*** Hit-test and dispatch a real pointer click to the requested visible test-id control. */
   async clickByTestIdAsync(testId: string): Promise<void> {
     const point = await this.waitForHitTestedTestIdAsync(testId);
     await this.dispatchPointerClickAsync(point);
+    this.throwIfRuntimeException();
   }
 
   /*** Dispatch a browser-native primary-pointer click at an already hit-tested viewport coordinate. */
@@ -149,6 +194,7 @@ export class ChromeNavigationSession {
   /*** Navigate backward through browser history in the active page. */
   async goBackAsync(): Promise<void> {
     await this.evaluateAsync('(() => { history.back(); return true; })()');
+    this.throwIfRuntimeException();
   }
 
   /*** Navigate forward through browser history in the active page. */
@@ -234,10 +280,28 @@ export class ChromeNavigationSession {
     );
   }
 
+  /*** Wait for a diagnostic dialog emitted after a specific browser interaction. */
+  async waitForNewDialogTextAsync(
+    expectedText: string,
+    dialogCount: number,
+    timeoutMs = HTTP_TIMEOUT_MS,
+  ): Promise<void> {
+    const start = Date.now();
+    while (Date.now() - start < timeoutMs) {
+      this.throwIfRuntimeException();
+      if (this.dialogs.slice(dialogCount).some((message) => message.includes(expectedText))) return;
+      await Bun.sleep(250);
+    }
+    throw new Error(
+      `Timed out waiting for new browser dialog containing ${JSON.stringify(expectedText)}. Received after interaction: ${JSON.stringify(this.dialogs.slice(dialogCount))}.`,
+    );
+  }
+
   /*** Capture the active route, rendered body, matching test-id DOM and browser errors for a browser-transition diagnosis. */
   async capturePageDiagnosticsAsync(testIds: readonly string[]): Promise<{
     readonly bodyText: string;
     readonly errors: readonly string[];
+    readonly runtimeExceptions: readonly string[];
     readonly pathname: string;
     readonly testIds: readonly {
       readonly html: string;
@@ -268,7 +332,7 @@ export class ChromeNavigationSession {
     });
   return { bodyText: (document.body?.innerText ?? '').slice(-4_000), pathname: location.pathname, testIds };
 })()`);
-    return { ...page, errors: [...this.errors] };
+    return { ...page, errors: [...this.errors], runtimeExceptions: [...this.runtimeExceptions] };
   }
 
   /*** Check whether any previously recorded body-text snapshot contains the requested text. */
@@ -319,6 +383,7 @@ export class ChromeNavigationSession {
   async navigateAsync(url: string): Promise<void> {
     await this.sendAsync('Page.navigate', { url });
     await this.waitForLoadAsync();
+    this.throwIfRuntimeException();
   }
 
   /*** Reload the active Chrome target and wait for its page load event. */
@@ -431,6 +496,7 @@ export class ChromeNavigationSession {
     const start = Date.now();
     let bodyText = '';
     while (Date.now() - start < timeoutMs) {
+      this.throwIfRuntimeException();
       bodyText = await this.evaluateAsync<string>('document.body?.innerText ?? ""');
       if (bodyText.includes(expectedText)) return bodyText;
       await Bun.sleep(250);
@@ -462,6 +528,7 @@ export class ChromeNavigationSession {
     const start = Date.now();
     let observed = { pathname: '', search: '' };
     while (Date.now() - start < timeoutMs) {
+      this.throwIfRuntimeException();
       observed = await this.evaluateAsync<{ pathname: string; search: string }>(
         '({ pathname: location.pathname, search: location.search })',
       );
@@ -513,8 +580,24 @@ export class ChromeNavigationSession {
       return;
     }
 
+    if (message.method === 'Runtime.exceptionThrown') {
+      const exception = getChromeNavigationIssue(message.method, message.params);
+      if (exception) {
+        this.runtimeExceptions.push(exception);
+        this.errors.push(exception);
+      }
+      return;
+    }
+
     const issue = getChromeNavigationIssue(message.method, message.params);
     if (issue) this.errors.push(issue);
+  }
+
+  /*** Fail the active acceptance step with the original uncaught browser exception, excluding unrelated browser diagnostics. */
+  private throwIfRuntimeException(): void {
+    const [firstException] = this.runtimeExceptions;
+    if (!firstException) return;
+    throw new Error(`Fatal browser exception:\n${firstException}`);
   }
 
   /*** Send one CDP request with a monotonically increasing id and resolve it when the matching response arrives. */
@@ -552,6 +635,7 @@ export class ChromeNavigationSession {
   ): Promise<void> {
     const start = Date.now();
     while (Date.now() - start < timeoutMs) {
+      this.throwIfRuntimeException();
       if (await this.evaluateAsync<boolean>(expression)) return;
       await Bun.sleep(250);
     }
@@ -568,6 +652,7 @@ export class ChromeNavigationSession {
     const start = Date.now();
     let observed: HitTestResult = { state: 'missing' };
     while (Date.now() - start < HIT_TEST_TIMEOUT_MS) {
+      this.throwIfRuntimeException();
       observed = await this.evaluateAsync<HitTestResult>(expression);
       if (observed.state === 'ready' && observed.x !== undefined && observed.y !== undefined) {
         return { x: observed.x, y: observed.y };
@@ -585,6 +670,7 @@ export class ChromeNavigationSession {
     const start = Date.now();
     let observed: HitTestResult = { state: 'missing' };
     while (Date.now() - start < HIT_TEST_TIMEOUT_MS) {
+      this.throwIfRuntimeException();
       observed = await this.evaluateAsync<HitTestResult>(expression);
       if (observed.state === 'ready' && observed.x !== undefined && observed.y !== undefined) {
         return { x: observed.x, y: observed.y };
@@ -704,6 +790,7 @@ function createRoleHitTestExpression(role: string, name: string, occurrence: num
       state: 'missing',
     };
   }
+  element.scrollIntoView({ block: 'center', inline: 'center' });
   const rect = element.getBoundingClientRect();
   if (rect.width <= 0 || rect.height <= 0) return { state: 'missing' };
   const x = rect.left + rect.width / 2;

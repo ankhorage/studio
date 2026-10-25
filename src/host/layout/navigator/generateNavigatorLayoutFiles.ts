@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import type { AppDeployTargets } from '@ankhorage/contracts/deploy';
 import type {
   NavigatorGeneratedFile,
@@ -52,7 +54,51 @@ export function generateNavigatorLayoutFiles(
     }
   }
 
-  return output.sort((left, right) => left.path.localeCompare(right.path));
+  return relocateNavigatorLayoutFiles(output, input.navigator, input.rootDirectory).sort(
+    (left, right) => left.path.localeCompare(right.path),
+  );
+}
+
+/*** Move Navigator's name-based nested layouts to the shared Expo Router module projection. */
+function relocateNavigatorLayoutFiles(
+  files: NavigatorOwnedLayoutFile[],
+  navigator: NavigatorNode,
+  rootDirectory: string,
+): NavigatorOwnedLayoutFile[] {
+  const directories = new Map<string, string>();
+  collectNavigatorLayoutDirectories(navigator, rootDirectory, rootDirectory, '/', directories);
+  return files.map((file) => {
+    const directory = directories.get(path.posix.dirname(file.path));
+    return directory
+      ? { ...file, path: path.posix.join(directory, path.posix.basename(file.path)) }
+      : file;
+  });
+}
+
+/*** Map each owner-generated nested layout directory from Navigator names to Studio's canonical route modules. */
+function collectNavigatorLayoutDirectories(
+  navigator: NavigatorNode,
+  sourceDirectory: string,
+  destinationDirectory: string,
+  parentPublicPath: string,
+  directories: Map<string, string>,
+): void {
+  directories.set(sourceDirectory, destinationDirectory);
+  for (const route of navigator.routes) {
+    if (!route.navigator) continue;
+    const projection = projectGeneratedRoute({
+      parentModulePath: destinationDirectory,
+      parentPublicPath,
+      route,
+    });
+    collectNavigatorLayoutDirectories(
+      route.navigator,
+      path.posix.join(sourceDirectory, route.name),
+      projection.modulePath,
+      projection.publicPath,
+      directories,
+    );
+  }
 }
 
 /*** Resolve enabled targets with Web first so its source remains the universal fallback file. */
@@ -149,28 +195,45 @@ function withGeneratedRoutePaths(
   parentModulePath: string,
   parentPublicPath = '/',
 ): NavigatorNode {
+  const projectedRoutes = navigator.routes.flatMap((route) => {
+    const projection = projectGeneratedRoute({
+      parentModulePath,
+      parentPublicPath,
+      route,
+    });
+    const relativeModulePath = path.posix.relative(parentModulePath, projection.modulePath);
+    if (relativeModulePath.startsWith('../')) return [];
+    const navigatorName =
+      route.navigator && /^\(.*\)$/u.test(route.name)
+        ? route.name
+        : path.posix.basename(projection.modulePath);
+    return [
+      {
+        originalName: route.name,
+        route: {
+          ...route,
+          name: navigatorName,
+          path: projection.navigatorPath,
+          ...(route.navigator
+            ? {
+                navigator: withGeneratedRoutePaths(
+                  route.navigator,
+                  projection.modulePath,
+                  projection.publicPath,
+                ),
+              }
+            : {}),
+        },
+      },
+    ];
+  });
+
   return {
     ...navigator,
-    routes: navigator.routes.map((route) => {
-      const projection = projectGeneratedRoute({
-        parentModulePath,
-        parentPublicPath,
-        route,
-      });
-      return {
-        ...route,
-        path: projection.navigatorPath,
-        ...(route.navigator
-          ? {
-              navigator: withGeneratedRoutePaths(
-                route.navigator,
-                projection.modulePath,
-                projection.publicPath,
-              ),
-            }
-          : {}),
-      };
-    }),
+    initialRouteName: projectedRoutes.find(
+      (projected) => projected.originalName === navigator.initialRouteName,
+    )?.route.name,
+    routes: projectedRoutes.map((projected) => projected.route),
   };
 }
 

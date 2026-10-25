@@ -76,6 +76,37 @@ describe('generateNavigatorLayoutFiles', () => {
     expect(layout).toContain('headerShown: false');
   });
 
+  test('uses projected module names for nested Stack screens', () => {
+    const files = generateNavigatorLayoutFiles({
+      bindings,
+      navigator: {
+        type: 'stack',
+        routes: [
+          {
+            name: '(train)',
+            path: '/training-setup',
+            navigator: {
+              type: 'stack',
+              initialRouteName: 'training-setup',
+              routes: [
+                { name: 'training-setup', path: '/training-setup', screenId: 'setup' },
+                { name: 'training-table-size', path: '/training-setup/table', screenId: 'table' },
+              ],
+            },
+          },
+        ],
+      },
+      rootDirectory: 'src/app/(app)',
+      targets: { web: { enabled: true } },
+    });
+
+    const contents = files.map((file) => file.content).join('\n');
+    expect(contents).toContain('<Stack initialRouteName="index"');
+    expect(contents).toContain('name="index"');
+    expect(contents).toContain('name="table"');
+    expect(contents).not.toContain('name="training-setup"');
+  });
+
   test('generates released Navigator layouts below the Studio-owned app shell', () => {
     const navigator: NavigatorNode = {
       type: 'tabs',

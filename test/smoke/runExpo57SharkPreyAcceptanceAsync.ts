@@ -15,6 +15,7 @@ import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 const COMMAND_TIMEOUT_MS = 300_000;
 const HTTP_TIMEOUT_MS = 120_000;
 const SHARKPREY_TEMPLATE = { category: 'education_learning', slug: 'sharkprey' } as const;
+const BROWSER_ONLY = process.env.ANKH_STUDIO_SHARKPREY_BROWSER_ONLY === '1';
 
 /***
  * Generate the released SharkPrey template with Studio, install the packed Studio candidate, and prove its untouched output passes every generated-app quality gate and boots in Chrome.
@@ -38,15 +39,16 @@ export async function runExpo57SharkPreyAcceptanceAsync(): Promise<void> {
         includeStudio: true,
       },
     );
-    await runGeneratedPlatformContractAsync(project.path);
+    if (!BROWSER_ONLY) await runGeneratedPlatformContractAsync(project.path);
     const studioCandidate = await packCurrentStudioCandidateAsync(workspaceRoot);
     await installStudioCandidateAsync(project.path, studioCandidate);
     const lockfile = await createFrozenProjectInstallationAsync(project.path);
     await assertGeneratedModuleBoundariesAsync(project.path);
-    await runGeneratedQualityGatesAsync(project.path);
+    if (!BROWSER_ONLY) await runGeneratedQualityGatesAsync(project.path);
     await assertUnchangedLockfileAsync(project.path, lockfile);
-    await runGeneratedPlatformBuildsAsync(project.path);
+    if (!BROWSER_ONLY) await runGeneratedPlatformBuildsAsync(project.path);
     await assertUnchangedLockfileAsync(project.path, lockfile);
+    if (BROWSER_ONLY) await instrumentBrowserOnlyRuntimeAsync(project.path);
 
     const browser = await startGeneratedAppAsync({ projectRoot: project.path, workspaceRoot });
     studioHost = browser.studioHost;
@@ -265,6 +267,7 @@ async function startGeneratedAppAsync(args: {
     await reserveTcpPort('SharkPrey Chrome debug'),
   );
   await chrome.installObservedPathnameHistoryAsync();
+  await chrome.installBrowserAcceptanceFetchTraceAsync();
   await chrome.navigateAsync(url);
   await chrome.waitForBodyTextAsync('Ready to train?');
   await chrome.waitForApplicationInteractiveAsync();
@@ -281,7 +284,7 @@ async function startGeneratedAppAsync(args: {
   } catch (error) {
     const diagnostics = await chrome.capturePageDiagnosticsAsync([
       'navigator-tabs-item-history',
-      'navigator-tabs-item-(train)',
+      'navigator-tabs-item-(train)-training-setup',
     ]);
     throw new Error(
       `SharkPrey History tab is unavailable after Preview activation. ${JSON.stringify(diagnostics)}. ${error instanceof Error ? error.message : String(error)}`,
@@ -291,7 +294,7 @@ async function startGeneratedAppAsync(args: {
   await assertPreviewNavigationTraceAsync(chrome, historyTraceStart, '/history');
   await chrome.waitForBodyTextAsync('History');
   const trainingTraceStart = (await chrome.readObservedPathnamesAsync()).length;
-  await chrome.clickByTestIdAsync('navigator-tabs-item-(train)');
+  await chrome.clickByTestIdAsync('navigator-tabs-item-(train)-training-setup');
   await chrome.waitForLocationAsync({ pathname: '/training-setup' });
   await assertPreviewNavigationTraceAsync(chrome, trainingTraceStart, '/training-setup');
   await chrome.waitForBodyTextAsync('What do you want to train?');
@@ -323,11 +326,18 @@ async function assertTrainingJourneyAsync(chrome: ChromeNavigationSession): Prom
 /*** Exercise every authored difficulty Button through its real task-query capability and returned task route. */
 async function assertDifficultyTaskQueriesAsync(chrome: ChromeNavigationSession): Promise<void> {
   for (const { difficulty, label, taskId } of pokerTrainingDifficulties()) {
+    await chrome.clearBrowserAcceptanceTraceAsync();
     await chrome.clickByRoleAndNameAsync('button', label);
-    await chrome.waitForLocationAsync({
-      pathname: '/decision-table',
-      search: `?taskId=${taskId}`,
-    });
+    try {
+      await chrome.waitForLocationAsync({
+        pathname: '/decision-table',
+        search: `?taskId=${taskId}`,
+      });
+    } catch (error) {
+      throw new Error(
+        `SharkPrey Level ${difficulty} action trace: ${JSON.stringify(await chrome.readBrowserAcceptanceTraceAsync())}. ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
     await chrome.waitForBodyTextAsync('Your decision');
     await chrome.goBackAsync();
     await chrome.waitForLocationAsync({
@@ -338,6 +348,135 @@ async function assertDifficultyTaskQueriesAsync(chrome: ChromeNavigationSession)
   }
 }
 
+/*** Add disposable browser-only visibility to the generated Runtime capability chain without changing the packaged application. */
+async function instrumentBrowserOnlyRuntimeAsync(projectRoot: string): Promise<void> {
+  const runtimeShellPath = path.join(projectRoot, 'src', 'generated', 'runtimeShell.tsx');
+  const runtimeActionRegistryPath = path.join(
+    projectRoot,
+    'node_modules',
+    '@ankhorage',
+    'runtime',
+    'dist',
+    'runtimeActionRegistry.js',
+  );
+  const runtimeBindingsPath = path.join(
+    projectRoot,
+    'node_modules',
+    '@ankhorage',
+    'runtime',
+    'dist',
+    'runtimeBindings.js',
+  );
+  const source = await readFile(runtimeShellPath, 'utf8');
+  const traced = source
+    .replace(
+      'const APP_COMPONENT_REGISTRY = createComponentRegistry(',
+      `type BrowserAcceptanceTraceEntry = Readonly<Record<string, unknown>>;
+
+function recordBrowserAcceptanceTrace(entry: BrowserAcceptanceTraceEntry): void {
+  const target = globalThis as typeof globalThis & {
+    __ankhBrowserAcceptanceTrace?: BrowserAcceptanceTraceEntry[];
+  };
+  target.__ankhBrowserAcceptanceTrace ??= [];
+  target.__ankhBrowserAcceptanceTrace.push(entry);
+}
+
+const APP_COMPONENT_REGISTRY = createComponentRegistry(`,
+    )
+    .replace(
+      '  const generatedRuntimeConfig = useMemo(\n',
+      `  const instrumentedExecuteCapability = useMemo(
+    () => async (args: Parameters<typeof executeCapability>[0]) => {
+      const result = await executeCapability(args);
+      recordBrowserAcceptanceTrace({
+        capability: args.capability,
+        data: result.ok ? result.data : undefined,
+        diagnostics: result.diagnostics ?? [],
+        input: args.input,
+        kind: args.capability === 'navigator.navigate' ? 'navigator.navigate' : 'capability',
+        ok: result.ok,
+      });
+      return result;
+    },
+    [executeCapability],
+  );
+  const generatedRuntimeConfig = useMemo(\n`,
+    )
+    .replace(
+      '      executeCapability,\n',
+      `      executeCapability: instrumentedExecuteCapability,
+      writeResultSlot: (slot, value) => {
+        recordBrowserAcceptanceTrace({ kind: 'result-slot', slot, value });
+      },
+`,
+    )
+    .replace(
+      '    [executeCapability, runtimeManifest.media?.assets],\n',
+      '    [instrumentedExecuteCapability, runtimeManifest.media?.assets],\n',
+    )
+    .replace(
+      `  return {
+    status: response.status,
+    headers: Object.fromEntries(response.headers.entries()),
+    text: () => response.text(),
+  };`,
+      `  return {
+    status: response.status,
+    headers: Object.fromEntries(response.headers.entries()),
+    text: async () => {
+      const text = await response.text();
+      recordBrowserAcceptanceTrace({
+        kind: 'http',
+        method: init.method,
+        response: JSON.parse(text),
+        status: response.status,
+        url,
+      });
+      return text;
+    },
+  };`,
+    );
+  if (traced === source || !traced.includes('recordBrowserAcceptanceTrace')) {
+    throw new Error('Could not install the browser-only SharkPrey Runtime trace.');
+  }
+  await writeFile(runtimeShellPath, traced, 'utf8');
+
+  const runtimeActionRegistry = await readFile(runtimeActionRegistryPath, 'utf8');
+  const dispatchMarker = 'export async function dispatchRuntimeComponentEvent(args) {';
+  const tracedRuntimeActionRegistry = runtimeActionRegistry.replace(
+    dispatchMarker,
+    `${dispatchMarker}
+    globalThis.__ankhBrowserAcceptanceTrace ??= [];
+    globalThis.__ankhBrowserAcceptanceTrace.push({
+        eventName: args.eventName,
+        kind: 'dispatch',
+        nodeId: args.node.id,
+    });`,
+  );
+  if (tracedRuntimeActionRegistry === runtimeActionRegistry) {
+    throw new Error('Could not install the browser-only SharkPrey Runtime dispatch trace.');
+  }
+  await writeFile(runtimeActionRegistryPath, tracedRuntimeActionRegistry, 'utf8');
+
+  const runtimeBindings = await readFile(runtimeBindingsPath, 'utf8');
+  const invocationMarker =
+    'export async function executeRuntimeBindingInvocation(invocation, context, args = {}, diagnostics = []) {';
+  const tracedRuntimeBindings = runtimeBindings.replace(
+    invocationMarker,
+    `${invocationMarker}
+    globalThis.__ankhBrowserAcceptanceTrace ??= [];
+    globalThis.__ankhBrowserAcceptanceTrace.push({
+        capability: invocation.capability,
+        hasExecutor: context.executeCapability !== undefined,
+        kind: 'invocation',
+    });`,
+  );
+  if (tracedRuntimeBindings === runtimeBindings) {
+    throw new Error('Could not install the browser-only SharkPrey Runtime invocation trace.');
+  }
+  await writeFile(runtimeBindingsPath, tracedRuntimeBindings, 'utf8');
+}
+
 /*** Prove empty and failed task-query actions stay on setup and render Web diagnostics rather than falsely navigating. */
 async function assertFailedTaskQueriesAsync(chrome: ChromeNavigationSession): Promise<void> {
   const location = {
@@ -346,14 +485,15 @@ async function assertFailedTaskQueriesAsync(chrome: ChromeNavigationSession): Pr
   };
   const dialogCount = chrome.dialogs.length;
   await chrome.clickByRoleAndNameAsync('button', 'Level 4 · Advanced');
-  await chrome.waitForDialogTextAsync('Action unavailable');
+  await chrome.waitForNewDialogTextAsync('Action unavailable', dialogCount);
   await chrome.waitForLocationAsync(location);
   if (chrome.dialogs.length === dialogCount) {
     throw new Error('Empty SharkPrey task results did not render a failed-action diagnostic.');
   }
 
+  const failedDialogCount = chrome.dialogs.length;
   await chrome.clickByRoleAndNameAsync('button', 'Level 5 · Expert');
-  await chrome.waitForDialogTextAsync('Action unavailable');
+  await chrome.waitForNewDialogTextAsync('Action unavailable', failedDialogCount);
   await chrome.waitForLocationAsync(location);
 }
 
