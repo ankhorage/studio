@@ -503,6 +503,21 @@ export class ChromeNavigationSession {
     await this.waitForBooleanAsync(expression, `visible testID "${testId}"`);
   }
 
+  /*** Wait until the requested visible tab exposes Navigator's selected accessibility state. */
+  async waitForSelectedTabTestIdAsync(testId: string): Promise<void> {
+    const expression = `(() => {
+  return [...document.querySelectorAll('[data-testid]')].some((candidate) => {
+    if (candidate.getAttribute('data-testid') !== ${JSON.stringify(testId)}) return false;
+    if (!(candidate instanceof HTMLElement)) return false;
+    const control = candidate.closest('[role="tab"]') ?? candidate;
+    const rect = control.getBoundingClientRect();
+    const style = getComputedStyle(control);
+    return control.getAttribute('aria-selected') === 'true' && rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+  });
+})()`;
+    await this.waitForBooleanAsync(expression, `selected tab testID "${testId}"`);
+  }
+
   /*** Poll rendered body text until it contains the requested content and return the matching snapshot. */
   async waitForBodyTextAsync(expectedText: string, timeoutMs = HTTP_TIMEOUT_MS): Promise<string> {
     const start = Date.now();

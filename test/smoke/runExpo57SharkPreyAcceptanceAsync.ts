@@ -51,7 +51,11 @@ export async function runExpo57SharkPreyAcceptanceAsync(): Promise<void> {
     await assertUnchangedLockfileAsync(project.path, lockfile);
     if (BROWSER_ONLY) await instrumentBrowserOnlyRuntimeAsync(project.path);
 
-    const browser = await startGeneratedAppAsync({ projectRoot: project.path, workspaceRoot });
+    const browser = await startGeneratedAppAsync({
+      projectRoot: project.path,
+      taskQueryFixtureBaseUrl: taskQueryFixture.baseUrl,
+      workspaceRoot,
+    });
     studioHost = browser.studioHost;
     expoProcess = browser.expoProcess;
     chrome = browser.chrome;
@@ -238,6 +242,7 @@ async function runGeneratedPlatformBuildsAsync(projectRoot: string): Promise<voi
 /*** Start Studio and Expo Web, then prove SharkPrey's nested Headless Tabs navigate through real Navigator controls in Chrome. */
 async function startGeneratedAppAsync(args: {
   readonly projectRoot: string;
+  readonly taskQueryFixtureBaseUrl: string;
   readonly workspaceRoot: string;
 }): Promise<{
   readonly chrome: ChromeNavigationSession;
@@ -297,11 +302,21 @@ async function startGeneratedAppAsync(args: {
   await chrome.waitForBodyTextAsync('History');
   const trainingTraceStart = (await chrome.readObservedPathnamesAsync()).length;
   await chrome.clickByTestIdAsync('navigator-tabs-item-(train)');
-  await chrome.waitForLocationAsync({ pathname: '/training-setup' });
-  await assertPreviewNavigationTraceAsync(chrome, trainingTraceStart, '/training-setup');
-  await chrome.waitForBodyTextAsync('What do you want to train?');
+  await chrome.waitForLocationAsync({
+    pathname: '/training-setup/difficulty',
+    search: '?gameCategory=mtt&tableSize=6max&street=preflop',
+  });
+  await chrome.waitForSelectedTabTestIdAsync('navigator-tabs-item-(train)');
+  await assertPreviewNavigationTraceAsync(chrome, trainingTraceStart, '/training-setup/difficulty');
+  await chrome.waitForBodyTextAsync('How hard?');
   await assertDirectDecisionTableNavigationAsync(chrome);
-  assertNoBrowserErrors(chrome.errors, 'generated SharkPrey template');
+  assertExpectedLevelFiveFailure(chrome.errors, args.taskQueryFixtureBaseUrl);
+  assertNoBrowserErrors(
+    chrome.errors.filter(
+      (issue) => !isExpectedLevelFiveFailureIssue(issue, args.taskQueryFixtureBaseUrl),
+    ),
+    'generated SharkPrey template',
+  );
   return { chrome, expoProcess, studioHost };
 }
 
@@ -652,6 +667,34 @@ function pokerTrainingDifficulties() {
     { difficulty: 4, label: 'Level 4 · Advanced', taskId: '10000000-0000-4000-8000-000000000004' },
     { difficulty: 5, label: 'Level 5 · Expert', taskId: '10000000-0000-4000-8000-000000000005' },
   ] as const;
+}
+
+/*** Prove the sole tolerated browser failure is the Level 5 fixture's exact task-query response. */
+function assertExpectedLevelFiveFailure(issues: readonly string[], baseUrl: string): void {
+  const expectedIssues = issues.filter((issue) => isExpectedLevelFiveFailureIssue(issue, baseUrl));
+  if (expectedIssues.length !== 2) {
+    throw new Error(
+      `Expected exactly the two Chrome diagnostics for the Level 5 task fixture's HTTP 500 response. Received: ${JSON.stringify(expectedIssues)}.`,
+    );
+  }
+}
+
+/*** Recognize Chrome's response and resource-error records only for the fixture's Level 5 task query. */
+function isExpectedLevelFiveFailureIssue(issue: string, baseUrl: string): boolean {
+  const url = new URL('/training/tasks', baseUrl);
+  url.search = new URLSearchParams([
+    ['gameCategory', 'mtt'],
+    ['tableSize', '6max'],
+    ['street', 'preflop'],
+    ['difficulty', '5'],
+    ['limit', '1'],
+  ]).toString();
+  const expectedUrl = url.toString();
+  return (
+    issue === `[network response] 500 ${expectedUrl}` ||
+    issue ===
+      `[network error] Failed to load resource: the server responded with a status of 500 (Internal Server Error) ${expectedUrl}`
+  );
 }
 
 /*** Assert that one Preview-mode Navigator action reached its target without an auth redirect back to onboarding. */
