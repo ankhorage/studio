@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.0.5
+
+### Patch Changes
+
+- b062dfe: Update dependencies: `@ankhorage/auth-supabase`, `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/deploy`, `@ankhorage/navigator`, `@ankhorage/zora`.
+
 ## 8.0.4
 
 ### Patch Changes
