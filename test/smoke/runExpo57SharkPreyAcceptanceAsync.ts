@@ -43,6 +43,7 @@ export async function runExpo57SharkPreyAcceptanceAsync(): Promise<void> {
     const studioCandidate = await packCurrentStudioCandidateAsync(workspaceRoot);
     await installStudioCandidateAsync(project.path, studioCandidate);
     const lockfile = await createFrozenProjectInstallationAsync(project.path);
+    await logResolvedSharkPreyDependenciesAsync(project.path);
     await assertGeneratedModuleBoundariesAsync(project.path);
     if (!BROWSER_ONLY) await runGeneratedQualityGatesAsync(project.path);
     await assertUnchangedLockfileAsync(project.path, lockfile);
@@ -285,7 +286,7 @@ async function startGeneratedAppAsync(args: {
   } catch (error) {
     const diagnostics = await chrome.capturePageDiagnosticsAsync([
       'navigator-tabs-item-history',
-      'navigator-tabs-item-(train)-training-setup',
+      'navigator-tabs-item-(train)',
     ]);
     throw new Error(
       `SharkPrey History tab is unavailable after Preview activation. ${JSON.stringify(diagnostics)}. ${error instanceof Error ? error.message : String(error)}`,
@@ -295,10 +296,11 @@ async function startGeneratedAppAsync(args: {
   await assertPreviewNavigationTraceAsync(chrome, historyTraceStart, '/history');
   await chrome.waitForBodyTextAsync('History');
   const trainingTraceStart = (await chrome.readObservedPathnamesAsync()).length;
-  await chrome.clickByTestIdAsync('navigator-tabs-item-(train)-training-setup');
+  await chrome.clickByTestIdAsync('navigator-tabs-item-(train)');
   await chrome.waitForLocationAsync({ pathname: '/training-setup' });
   await assertPreviewNavigationTraceAsync(chrome, trainingTraceStart, '/training-setup');
   await chrome.waitForBodyTextAsync('What do you want to train?');
+  await assertDirectDecisionTableNavigationAsync(chrome);
   assertNoBrowserErrors(chrome.errors, 'generated SharkPrey template');
   return { chrome, expoProcess, studioHost };
 }
@@ -324,10 +326,27 @@ async function assertTrainingJourneyAsync(chrome: ChromeNavigationSession): Prom
   await assertFailedTaskQueriesAsync(chrome);
 }
 
+/*** Prove Expo Router resolves SharkPrey's public Decision Table URL before the Runtime capability initiates the same transition. */
+async function assertDirectDecisionTableNavigationAsync(
+  chrome: ChromeNavigationSession,
+): Promise<void> {
+  const { taskId } = pokerTrainingDifficulties()[0] ?? {};
+  if (!taskId) throw new Error('SharkPrey acceptance is missing a Level 1 task fixture.');
+  const origin = await chrome.readOriginAsync();
+  await chrome.navigateAsync(`${origin}/decision-table?taskId=${taskId}`);
+  await chrome.waitForLocationAsync({ pathname: '/decision-table', search: `?taskId=${taskId}` });
+  await chrome.waitForBodyTextAsync('Your decision');
+}
+
 /*** Exercise every authored difficulty Button through its real task-query capability and returned task route. */
 async function assertDifficultyTaskQueriesAsync(chrome: ChromeNavigationSession): Promise<void> {
   for (const { difficulty, label, taskId } of pokerTrainingDifficulties()) {
     await chrome.clearBrowserAcceptanceTraceAsync();
+    await chrome.recordBrowserAcceptanceTraceAsync({
+      difficulty,
+      kind: 'test-click',
+      target: 'setup-difficulty',
+    });
     await chrome.clickByRoleAndNameAsync('button', label);
     try {
       await chrome.waitForLocationAsync({
@@ -336,7 +355,7 @@ async function assertDifficultyTaskQueriesAsync(chrome: ChromeNavigationSession)
       });
     } catch (error) {
       throw new Error(
-        `SharkPrey Level ${difficulty} action trace: ${JSON.stringify(await chrome.readBrowserAcceptanceTraceAsync())}. ${error instanceof Error ? error.message : String(error)}`,
+        `SharkPrey Level ${difficulty} browser trace: ${JSON.stringify(await chrome.readBrowserAcceptanceTraceAsync())}. Runtime capability instrumentation is disabled in full acceptance, so an absent HTTP entry does not establish that Runtime did not dispatch; rerun with ANKH_STUDIO_SHARKPREY_BROWSER_ONLY=1 for the isolated Runtime handoff trace. ${error instanceof Error ? error.message : String(error)}`,
       );
     }
     await chrome.waitForBodyTextAsync('Your decision');
@@ -347,6 +366,24 @@ async function assertDifficultyTaskQueriesAsync(chrome: ChromeNavigationSession)
     });
     if (difficulty === 5) continue;
   }
+}
+
+/*** Log the actual generated consumer versions that the frozen Bun lockfile selected for browser acceptance. */
+async function logResolvedSharkPreyDependenciesAsync(projectRoot: string): Promise<void> {
+  const lockfile = await readFile(path.join(projectRoot, 'bun.lock'), 'utf8');
+  const dependencies = [
+    '@ankhorage/contracts',
+    '@ankhorage/navigator',
+    '@ankhorage/runtime',
+    '@ankhorage/zora',
+  ] as const;
+  const resolved = Object.fromEntries(
+    dependencies.map((dependency) => [
+      dependency,
+      lockfile.match(new RegExp(`"${dependency}": \\["${dependency}@([^"]+)`))?.[1] ?? 'unresolved',
+    ]),
+  );
+  console.info(`SharkPrey generated bun.lock: ${JSON.stringify(resolved)}`);
 }
 
 /*** Add disposable browser-only visibility to the generated Runtime capability chain without changing the packaged application. */
@@ -485,8 +522,15 @@ async function assertFailedTaskQueriesAsync(chrome: ChromeNavigationSession): Pr
     search: '?gameCategory=mtt&tableSize=6max&street=preflop',
   };
   const dialogCount = chrome.dialogs.length;
+  await chrome.clearBrowserAcceptanceTraceAsync();
   await chrome.clickByRoleAndNameAsync('button', 'Level 4 · Advanced');
-  await chrome.waitForNewDialogTextAsync('Action unavailable', dialogCount);
+  try {
+    await chrome.waitForNewDialogTextAsync('Action unavailable', dialogCount);
+  } catch (error) {
+    throw new Error(
+      `SharkPrey empty task browser trace: ${JSON.stringify(await chrome.readBrowserAcceptanceTraceAsync())}. ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
   await chrome.waitForLocationAsync(location);
   if (chrome.dialogs.length === dialogCount) {
     throw new Error('Empty SharkPrey task results did not render a failed-action diagnostic.');

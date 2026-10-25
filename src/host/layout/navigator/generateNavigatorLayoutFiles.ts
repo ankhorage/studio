@@ -54,9 +54,118 @@ export function generateNavigatorLayoutFiles(
     }
   }
 
-  return relocateNavigatorLayoutFiles(output, input.navigator, input.rootDirectory).sort(
-    (left, right) => left.path.localeCompare(right.path),
+  return [
+    ...relocateNavigatorLayoutFiles(output, input.navigator, input.rootDirectory),
+    ...generateEscapedRouteBoundaryLayouts(
+      input.navigator,
+      input.rootDirectory,
+      input.externalHeaderVisible === true,
+    ),
+  ].sort((left, right) => left.path.localeCompare(right.path));
+}
+
+/*** Add a direct-child Stack boundary when absolute child URLs escape their manifest Stack's module directory. */
+function generateEscapedRouteBoundaryLayouts(
+  navigator: NavigatorNode,
+  parentModulePath: string,
+  externalHeaderVisible: boolean,
+  parentPublicPath = '/',
+): NavigatorOwnedLayoutFile[] {
+  return navigator.routes.flatMap((route) => {
+    if (!route.navigator) return [];
+    const projection = projectGeneratedRoute({ parentModulePath, parentPublicPath, route });
+    const nestedLayouts = generateEscapedRouteBoundaryLayouts(
+      route.navigator,
+      projection.modulePath,
+      externalHeaderVisible,
+      projection.publicPath,
+    );
+    if (route.navigator.type !== 'stack') return nestedLayouts;
+
+    const children = route.navigator.routes.map((child) =>
+      projectGeneratedRoute({
+        parentModulePath: projection.modulePath,
+        parentPublicPath: projection.publicPath,
+        route: child,
+      }),
+    );
+    const escaped = children.some((child) =>
+      path.posix.relative(projection.modulePath, child.modulePath).startsWith('../'),
+    );
+    if (!escaped) return nestedLayouts;
+
+    const boundaryDirectory = path.posix.dirname(projection.modulePath);
+    const names = uniqueDirectChildNames(
+      boundaryDirectory,
+      children.map((child) => child.modulePath),
+    );
+    const initialManifestChild = route.navigator.routes.find(
+      ({ name }) => route.navigator?.initialRouteName === name,
+    );
+    const initialChildIndex = initialManifestChild
+      ? route.navigator.routes.indexOf(initialManifestChild)
+      : -1;
+    const initialChild = children.at(initialChildIndex);
+    const initialRouteName = childNameForModule(
+      boundaryDirectory,
+      initialChild?.modulePath ?? children[0]?.modulePath,
+    );
+    if (!initialRouteName || names.length === 0) return nestedLayouts;
+
+    return [
+      ...nestedLayouts,
+      {
+        path: path.posix.join(boundaryDirectory, '_layout.tsx'),
+        content: getEscapedRouteBoundaryLayout({
+          externalHeaderVisible,
+          initialRouteName,
+          names,
+        }),
+      },
+    ];
+  });
+}
+
+/*** Collapse nested route modules to the direct child names permitted by Native Stack registration. */
+function uniqueDirectChildNames(
+  boundaryDirectory: string,
+  modulePaths: readonly string[],
+): string[] {
+  return [
+    ...new Set(modulePaths.map((modulePath) => childNameForModule(boundaryDirectory, modulePath))),
+  ].filter((name): name is string => Boolean(name));
+}
+
+/*** Resolve one generated route module to its owning boundary Stack child name. */
+function childNameForModule(
+  boundaryDirectory: string,
+  modulePath: string | undefined,
+): string | undefined {
+  if (!modulePath) return undefined;
+  const [name] = path.posix.relative(boundaryDirectory, modulePath).split('/');
+  return name && name !== '..' ? name : undefined;
+}
+
+/*** Render the physical Stack boundary required to navigate an absolute child route from a nested manifest Stack. */
+function getEscapedRouteBoundaryLayout(args: {
+  readonly externalHeaderVisible: boolean;
+  readonly initialRouteName: string;
+  readonly names: readonly string[];
+}): string {
+  const screenOptions = args.externalHeaderVisible ? ' screenOptions={{ headerShown: false }}' : '';
+  const screens = args.names
+    .map((name) => `      <Stack.Screen name=${JSON.stringify(name)} />`)
+    .join('\n');
+  return `import { Stack } from 'expo-router';
+
+export default function NavigatorBoundaryLayout() {
+  return (
+    <Stack initialRouteName=${JSON.stringify(args.initialRouteName)}${screenOptions}>
+${screens}
+    </Stack>
   );
+}
+`;
 }
 
 /*** Move Navigator's name-based nested layouts to the shared Expo Router module projection. */

@@ -111,6 +111,13 @@ export class ChromeNavigationSession {
     );
   }
 
+  /*** Record an acceptance-owned observation without modifying the generated application runtime. */
+  async recordBrowserAcceptanceTraceAsync(entry: Readonly<Record<string, unknown>>): Promise<void> {
+    await this.evaluateAsync(
+      `(() => { globalThis.__ankhBrowserAcceptanceTrace ??= []; globalThis.__ankhBrowserAcceptanceTrace.push(${JSON.stringify(entry)}); return true; })()`,
+    );
+  }
+
   /*** Install a browser-only fetch observer for one generated-app action-chain diagnosis. */
   async installBrowserAcceptanceFetchTraceAsync(): Promise<void> {
     await this.sendAsync('Page.addScriptToEvaluateOnNewDocument', {
@@ -144,6 +151,11 @@ export class ChromeNavigationSession {
     return this.evaluateAsync<readonly Record<string, unknown>[]>(
       'Array.isArray(globalThis.__ankhBrowserAcceptanceTrace) ? globalThis.__ankhBrowserAcceptanceTrace : []',
     );
+  }
+
+  /*** Read the current page origin for acceptance-owned deep-link navigation. */
+  async readOriginAsync(): Promise<string> {
+    return this.evaluateAsync<string>('location.origin');
   }
 
   /*** Hit-test and dispatch a real pointer click to the requested accessible role/name occurrence. */

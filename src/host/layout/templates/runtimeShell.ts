@@ -101,7 +101,7 @@ export function getRuntimeShellTsx(args: {
     zoraEntrypoint,
   } = args;
   const runtimeCredentialResolver = useStoredAuthSessionCredentialResolver
-    ? '\n          credentialResolver: resolveRuntimeOperationCredential,'
+    ? '\n        credentialResolver: resolveRuntimeOperationCredential,'
     : '';
   const capabilityExecutor = includeStudio
     ? `useStudioRuntimeCapabilityExecutor({
@@ -117,7 +117,13 @@ function useGeneratedRuntimeCapabilityExecutor() {
   const executeCapability = useMemo(
     () =>
       createGeneratedRuntimeCapabilityExecutor({
-        alert: (message) => Alert.alert(message),
+        alert: (message) => {
+          if (Platform.OS === 'web') {
+            globalThis.alert(message);
+            return;
+          }
+          Alert.alert(message);
+        },
         navigate: (input) => {
           const { params, route } = input as { route: string; params?: Record<string, string> };
           const { resolvedPath, unusedParams } = resolveExpoRuntimeRoutePath(route, params);
@@ -204,16 +210,24 @@ export function GeneratedRuntimeShell({
 }) {${includeStudio ? '\n  const { setMode } = useZoraTheme();' : ''}
   const runtimeCapabilityExecutor = ${capabilityExecutor};
   const executeApplicationCapability = runtimeCapabilityExecutor.executeCapability;
+  const apiCapabilityExecutor = useMemo(
+    () =>
+      createRuntimeApiCapabilityExecutor({
+        apis: runtimeManifest.infra.apis ?? {},
+        fetch: runtimeApiFetch,${runtimeCredentialResolver}
+      }),
+    [runtimeManifest.infra.apis],
+  );
   const executeCapability = useMemo(
     () =>
       composeRuntimeCapabilityExecutor({
-        apiCapabilityExecutor: createRuntimeApiCapabilityExecutor({
-          apis: runtimeManifest.infra.apis ?? {},
-          fetch: runtimeApiFetch,${runtimeCredentialResolver}
-        }),
-        capabilityExecutor: executeApplicationCapability,
+        apiCapabilityExecutor,
+        capabilityExecutor: (args) =>
+          args.capability.startsWith('api.')
+            ? apiCapabilityExecutor(args)
+            : executeApplicationCapability(args),
       }),
-    [executeApplicationCapability, runtimeManifest.infra.apis],
+    [apiCapabilityExecutor, executeApplicationCapability],
   );
   const generatedRuntimeConfig = useMemo(
     () => ({

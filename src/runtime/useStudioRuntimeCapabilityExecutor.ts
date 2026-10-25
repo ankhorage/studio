@@ -1,6 +1,7 @@
+import { resolveExpoRuntimeRoutePath } from '@ankhorage/expo-runtime/capability-bridge';
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 
 import { createStudioRuntimeCapabilityExecutor } from './executeStudioRuntimeCapabilityAsync.js';
 
@@ -24,10 +25,11 @@ export function useStudioRuntimeCapabilityExecutor(args: {
   const executeCapability = useMemo(
     () =>
       createStudioRuntimeCapabilityExecutor({
-        alert: (message) => Alert.alert(message),
+        alert: showRuntimeAlert,
         navigate: (input) => {
           const { params, route } = input as NavigatorNavigateInput;
-          router.navigate({ params, pathname: route });
+          const { resolvedPath, unusedParams } = resolveExpoRuntimeRoutePath(route, params);
+          router.navigate({ params: unusedParams, pathname: resolvedPath });
         },
         setThemeMode: (input) => setThemeMode((input as ThemeSetModeInput).mode),
       }),
@@ -35,4 +37,13 @@ export function useStudioRuntimeCapabilityExecutor(args: {
   );
 
   return { executeCapability };
+}
+
+/*** Present Runtime alerts through the browser dialog host on Web and React Native on native targets. */
+function showRuntimeAlert(message: string): void {
+  if (Platform.OS === 'web') {
+    globalThis.alert(message);
+    return;
+  }
+  Alert.alert(message);
 }

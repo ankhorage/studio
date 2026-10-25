@@ -4,6 +4,10 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'bun:test';
 
 const runtimeIndexSource = readFileSync(join(import.meta.dir, 'index.ts'), 'utf8');
+const capabilityExecutorSource = readFileSync(
+  join(import.meta.dir, 'useStudioRuntimeCapabilityExecutor.ts'),
+  'utf8',
+);
 
 describe('Studio runtime surface', () => {
   it('keeps the public runtime entrypoint limited to current Studio-owned modules', () => {
@@ -13,6 +17,12 @@ describe('Studio runtime surface', () => {
     expect(runtimeIndexSource).toContain(
       "export * from './useStudioRuntimeCapabilityExecutor.js';",
     );
+    expect(capabilityExecutorSource).toContain(
+      'const { resolvedPath, unusedParams } = resolveExpoRuntimeRoutePath(route, params);',
+    );
+    expect(capabilityExecutorSource).toContain("if (Platform.OS === 'web')");
+    expect(capabilityExecutorSource).toContain('globalThis.alert(message);');
+    expect(capabilityExecutorSource).toContain('Alert.alert(message);');
     expect(runtimeIndexSource).not.toContain('appExtensionRegistry');
     expect(runtimeIndexSource).not.toContain("export * from './registry.js';");
     expect(runtimeIndexSource).not.toContain('STUDIO_ZORA_PLUGIN_CATALOG');

@@ -15,6 +15,9 @@ test('generates Studio Runtime composition with the Studio executor and bundled 
     setThemeMode: setMode,
   })`);
   expect(source).toContain('credentialResolver: resolveRuntimeOperationCredential');
+  expect(source).toContain('const apiCapabilityExecutor = useMemo(');
+  expect(source).toContain("args.capability.startsWith('api.')");
+  expect(source).toContain('? apiCapabilityExecutor(args)');
   expect(source).toContain('const bundledMediaResolver = createExpoBundledMediaResolver');
   expect(source).toContain('export { bundledMediaRegistry };');
   expect(source).toContain('export const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
@@ -55,6 +58,8 @@ test('generates standalone Runtime composition without Studio dependencies', () 
   expect(source).toContain('function useGeneratedRuntimeCapabilityExecutor()');
   expect(source).toContain('createGeneratedRuntimeCapabilityExecutor({');
   expect(source).toContain('resolveExpoRuntimeRoutePath(route, params)');
+  expect(source).toContain('globalThis.alert(message);');
+  expect(source).toContain('Alert.alert(message);');
   expect(source).not.toContain('@ankhorage/studio');
   expect(source).toContain('resolveEventCapability: resolveZoraRuntimeEventCapability');
   expect(source).not.toContain('export { bundledMediaRegistry };');
