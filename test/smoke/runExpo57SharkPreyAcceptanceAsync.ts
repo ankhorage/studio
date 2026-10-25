@@ -243,6 +243,7 @@ async function startGeneratedAppAsync(args: {
   readonly expoProcess: ChildProcessWithoutNullStreams;
   readonly studioHost: Awaited<ReturnType<typeof startStudioHostServer>>;
 }> {
+  await mkdir(path.join(args.projectRoot, '.ankh', 'metro-tmp'), { recursive: true });
   const studioPort = await reserveTcpPort('SharkPrey Studio host');
   const studioHost = await startStudioHostServer({
     host: '127.0.0.1',
@@ -635,6 +636,7 @@ function expoEnvironment(projectRoot: string): NodeJS.ProcessEnv {
     EXPO_PUBLIC_SUPABASE_ANON_KEY: 'sharkprey-acceptance-anon-key',
     EXPO_PUBLIC_SUPABASE_URL: 'http://127.0.0.1:54321',
     EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: '1',
+    TMPDIR: path.join(projectRoot, '.ankh', 'metro-tmp'),
     NODE_ENV: 'development',
   };
 }
