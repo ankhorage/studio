@@ -19,7 +19,14 @@ env:
 
 jobs:
   expo-web:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
+    if: >-
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name != github.repository ||
+       github.head_ref != 'changeset-release/main') &&
+      (github.event_name != 'pull_request' ||
+       !contains(fromJSON('["renovate[bot]","ankhorage-renovate-sync[bot]"]'), github.event.pull_request.user.login) ||
+       !startsWith(github.head_ref, 'renovate/patch-') ||
+       !contains(github.event.pull_request.labels.*.name, 'renovate:patch'))
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
@@ -53,7 +60,14 @@ jobs:
         run: bun run test:e2e:generated-app-web
 
   sharkprey:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
+    if: >-
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name != github.repository ||
+       github.head_ref != 'changeset-release/main') &&
+      (github.event_name != 'pull_request' ||
+       !contains(fromJSON('["renovate[bot]","ankhorage-renovate-sync[bot]"]'), github.event.pull_request.user.login) ||
+       !startsWith(github.head_ref, 'renovate/patch-') ||
+       !contains(github.event.pull_request.labels.*.name, 'renovate:patch'))
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -78,7 +92,14 @@ jobs:
         run: bun run test:acceptance:expo57-sharkprey
 
   studio-standalone:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
+    if: >-
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name != github.repository ||
+       github.head_ref != 'changeset-release/main') &&
+      (github.event_name != 'pull_request' ||
+       !contains(fromJSON('["renovate[bot]","ankhorage-renovate-sync[bot]"]'), github.event.pull_request.user.login) ||
+       !startsWith(github.head_ref, 'renovate/patch-') ||
+       !contains(github.event.pull_request.labels.*.name, 'renovate:patch'))
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -103,7 +124,14 @@ jobs:
         run: bun run test:acceptance:expo57-studio-standalone
 
   generated-app:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
+    if: >-
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name != github.repository ||
+       github.head_ref != 'changeset-release/main') &&
+      (github.event_name != 'pull_request' ||
+       !contains(fromJSON('["renovate[bot]","ankhorage-renovate-sync[bot]"]'), github.event.pull_request.user.login) ||
+       !startsWith(github.head_ref, 'renovate/patch-') ||
+       !contains(github.event.pull_request.labels.*.name, 'renovate:patch'))
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -128,7 +156,14 @@ jobs:
         run: bun run test:acceptance:expo57-generated-app
 
   generated-navigation:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
+    if: >-
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name != github.repository ||
+       github.head_ref != 'changeset-release/main') &&
+      (github.event_name != 'pull_request' ||
+       !contains(fromJSON('["renovate[bot]","ankhorage-renovate-sync[bot]"]'), github.event.pull_request.user.login) ||
+       !startsWith(github.head_ref, 'renovate/patch-') ||
+       !contains(github.event.pull_request.labels.*.name, 'renovate:patch'))
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -153,7 +188,14 @@ jobs:
         run: bun run test:acceptance:expo57-generated-navigation
 
   generated-capabilities:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main'
+    if: >-
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name != github.repository ||
+       github.head_ref != 'changeset-release/main') &&
+      (github.event_name != 'pull_request' ||
+       !contains(fromJSON('["renovate[bot]","ankhorage-renovate-sync[bot]"]'), github.event.pull_request.user.login) ||
+       !startsWith(github.head_ref, 'renovate/patch-') ||
+       !contains(github.event.pull_request.labels.*.name, 'renovate:patch'))
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
