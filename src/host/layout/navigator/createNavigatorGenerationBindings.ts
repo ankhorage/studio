@@ -6,6 +6,7 @@ import type {
 
 import type { GeneratedFile } from '../../../types/project-generation';
 import { escapeStringLiteral } from '../utils/escapeStringLiteral';
+import { projectGeneratedRoute } from './projectGeneratedRoute';
 
 const GUARD_BINDINGS_MODULE = '@/generated/navigatorGuardBindings';
 const ICON_BINDINGS_MODULE = '@/generated/navigatorIconBindings';
@@ -124,16 +125,20 @@ function collectLayoutScreenIds(roots: readonly NavigatorRootBindingInput[]): Se
 /*** Map each routed screen ID to its first deterministic Studio-generated route module. */
 function collectScreenModules(roots: readonly NavigatorRootBindingInput[]): Map<string, string> {
   const modules = new Map<string, string>();
-  const visit = (navigator: NavigatorNode, directory: string) => {
+  const visit = (navigator: NavigatorNode, directory: string, publicPath: string) => {
     for (const route of navigator.routes) {
-      const routePath = `${directory}/${route.name}`;
+      const projection = projectGeneratedRoute({
+        parentModulePath: directory,
+        parentPublicPath: publicPath,
+        route,
+      });
       if (route.screenId && !modules.has(route.screenId)) {
-        modules.set(route.screenId, toSourceAlias(routePath));
+        modules.set(route.screenId, toSourceAlias(projection.modulePath));
       }
-      if (route.navigator) visit(route.navigator, routePath);
+      if (route.navigator) visit(route.navigator, projection.modulePath, projection.publicPath);
     }
   };
-  for (const root of roots) visit(root.navigator, root.rootDirectory);
+  for (const root of roots) visit(root.navigator, root.rootDirectory, '/');
   return modules;
 }
 

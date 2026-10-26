@@ -76,6 +76,87 @@ describe('generateNavigatorLayoutFiles', () => {
     expect(layout).toContain('headerShown: false');
   });
 
+  test('uses projected module names for nested Stack screens', () => {
+    const files = generateNavigatorLayoutFiles({
+      bindings,
+      navigator: {
+        type: 'stack',
+        routes: [
+          {
+            name: '(train)',
+            path: '/training-setup',
+            navigator: {
+              type: 'stack',
+              initialRouteName: 'training-setup',
+              routes: [
+                { name: 'training-setup', path: '/training-setup', screenId: 'setup' },
+                { name: 'training-table-size', path: '/training-setup/table', screenId: 'table' },
+              ],
+            },
+          },
+        ],
+      },
+      rootDirectory: 'src/app/(app)',
+      targets: { web: { enabled: true } },
+    });
+
+    const contents = files.map((file) => file.content).join('\n');
+    expect(contents).toContain('<Stack initialRouteName="index"');
+    expect(contents).toContain('name="index"');
+    expect(contents).toContain('name="table"');
+    expect(contents).not.toContain('name="training-setup"');
+  });
+
+  test('registers SharkPrey absolute decision routes in the Train Stack that owns their generated modules', () => {
+    const files = generateNavigatorLayoutFiles({
+      bindings,
+      navigator: {
+        type: 'tabs',
+        implementation: 'headless',
+        presentation: 'bottom',
+        routes: [
+          {
+            name: '(train)',
+            path: '/training-setup',
+            navigator: {
+              type: 'stack',
+              initialRouteName: 'training-setup',
+              routes: [
+                { name: 'training-setup', path: '/training-setup', screenId: 'setup' },
+                {
+                  name: 'training-difficulty',
+                  path: '/training-setup/difficulty',
+                  screenId: 'difficulty',
+                },
+                { name: 'decision-table', path: '/decision-table', screenId: 'decision' },
+                {
+                  name: 'answer-explanation',
+                  path: '/answer-explanation',
+                  screenId: 'explanation',
+                },
+              ],
+            },
+          },
+        ],
+      },
+      rootDirectory: 'src/app/(app)/(tabs)',
+      targets: { web: { enabled: true } },
+    });
+
+    const layout = files.find(
+      ({ path }) => path === 'src/app/(app)/(tabs)/(train)/_layout.tsx',
+    )?.content;
+    expect(layout).toContain('<Stack initialRouteName="training-setup"');
+    expect(layout).toContain('name="training-setup"');
+    expect(layout).toContain('name="decision-table"');
+    expect(layout).toContain('name="answer-explanation"');
+    expect(
+      files.find(({ path }) => path === 'src/app/(app)/(tabs)/(train)/training-setup/_layout.tsx')
+        ?.content,
+    ).toContain('name="difficulty"');
+    expect(layout).not.toContain('name="training-setup/difficulty"');
+  });
+
   test('generates released Navigator layouts below the Studio-owned app shell', () => {
     const navigator: NavigatorNode = {
       type: 'tabs',

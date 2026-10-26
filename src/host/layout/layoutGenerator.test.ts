@@ -345,6 +345,91 @@ describe('GeneratedAppFileGenerator', () => {
     expect(paths).not.toContain('src/app/(app)/(tabs)/friends.tsx');
   });
 
+  test('projects nested public paths into route files while retaining route-group ownership', () => {
+    const baseManifest = createManifest();
+    const navigator: AppManifest['navigator'] = {
+      type: 'stack',
+      routes: [
+        {
+          name: '(tabs)',
+          navigator: {
+            type: 'tabs',
+            implementation: 'headless',
+            presentation: 'bottom',
+            routes: [
+              {
+                name: '(train)',
+                path: '/training-setup',
+                navigator: {
+                  type: 'stack',
+                  routes: [
+                    {
+                      name: 'training-setup',
+                      path: '/training-setup',
+                      screenId: 'training-setup',
+                    },
+                    {
+                      name: 'training-table-size',
+                      path: '/training-setup/table',
+                      screenId: 'training-table-size',
+                    },
+                    {
+                      name: 'training-street',
+                      path: '/training-setup/street',
+                      screenId: 'training-street',
+                    },
+                    {
+                      name: 'training-difficulty',
+                      path: '/training-setup/difficulty',
+                      screenId: 'training-difficulty',
+                    },
+                    {
+                      name: '[...segments]',
+                      path: '/training-setup/[...segments]',
+                      screenId: 'training-catch-all',
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        },
+      ],
+    };
+    const screenIds = [
+      'training-setup',
+      'training-table-size',
+      'training-street',
+      'training-difficulty',
+      'training-catch-all',
+    ] as const;
+    const manifest: AppManifest = {
+      ...baseManifest,
+      navigator,
+      screens: {
+        ...baseManifest.screens,
+        ...Object.fromEntries(
+          screenIds.map((screenId) => [
+            screenId,
+            { id: screenId, name: screenId, root: { id: `${screenId}-root`, type: 'Screen' } },
+          ]),
+        ),
+      },
+    };
+
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', manifest, [], {
+      includeStudio: false,
+    });
+    const paths = files.map((file) => file.path);
+
+    expect(paths).toContain('src/app/(app)/(tabs)/(train)/training-setup/index.tsx');
+    expect(paths).toContain('src/app/(app)/(tabs)/(train)/training-setup/table.tsx');
+    expect(paths).toContain('src/app/(app)/(tabs)/(train)/training-setup/street.tsx');
+    expect(paths).toContain('src/app/(app)/(tabs)/(train)/training-setup/difficulty.tsx');
+    expect(paths).toContain('src/app/(app)/(tabs)/(train)/training-setup/[...segments].tsx');
+    expect(paths).not.toContain('src/app/(app)/(tabs)/(train)/index.tsx');
+  });
+
   test('generates Reader-free ZORA registry ownership for the running app runtime path', () => {
     const manifest = createManifest();
     const indexScreen = manifest.screens.index;

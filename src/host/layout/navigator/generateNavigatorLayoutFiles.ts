@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import type { AppDeployTargets } from '@ankhorage/contracts/deploy';
 import type {
   NavigatorGeneratedFile,
@@ -8,6 +10,8 @@ import type {
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { createNavigatorPlan, generateNavigator } from '@ankhorage/navigator';
 import { parseSemanticVersion } from '@ankhorage/utility/semver';
+
+import { projectGeneratedRoute } from './projectGeneratedRoute';
 
 export interface NavigatorOwnedLayoutFile {
   path: string;
@@ -50,7 +54,160 @@ export function generateNavigatorLayoutFiles(
     }
   }
 
-  return output.sort((left, right) => left.path.localeCompare(right.path));
+  return [
+    ...relocateNavigatorLayoutFiles(output, input.navigator, input.rootDirectory),
+    ...generateEscapedRouteBoundaryLayouts(
+      input.navigator,
+      input.rootDirectory,
+      input.externalHeaderVisible === true,
+    ),
+  ].sort((left, right) => left.path.localeCompare(right.path));
+}
+
+/*** Add a direct-child Stack boundary when absolute child URLs escape their manifest Stack's module directory. */
+function generateEscapedRouteBoundaryLayouts(
+  navigator: NavigatorNode,
+  parentModulePath: string,
+  externalHeaderVisible: boolean,
+  parentPublicPath = '/',
+): NavigatorOwnedLayoutFile[] {
+  return navigator.routes.flatMap((route) => {
+    if (!route.navigator) return [];
+    const projection = projectGeneratedRoute({ parentModulePath, parentPublicPath, route });
+    const nestedLayouts = generateEscapedRouteBoundaryLayouts(
+      route.navigator,
+      projection.modulePath,
+      externalHeaderVisible,
+      projection.publicPath,
+    );
+    if (route.navigator.type !== 'stack') return nestedLayouts;
+
+    const children = route.navigator.routes.map((child) =>
+      projectGeneratedRoute({
+        parentModulePath: projection.modulePath,
+        parentPublicPath: projection.publicPath,
+        route: child,
+      }),
+    );
+    const escaped = children.some((child) =>
+      path.posix.relative(projection.modulePath, child.modulePath).startsWith('../'),
+    );
+    if (!escaped) return nestedLayouts;
+
+    const boundaryDirectory = path.posix.dirname(projection.modulePath);
+    const names = uniqueDirectChildNames(
+      boundaryDirectory,
+      children.map((child) => child.modulePath),
+    );
+    const initialManifestChild = route.navigator.routes.find(
+      ({ name }) => route.navigator?.initialRouteName === name,
+    );
+    const initialChildIndex = initialManifestChild
+      ? route.navigator.routes.indexOf(initialManifestChild)
+      : -1;
+    const initialChild = children.at(initialChildIndex);
+    const initialRouteName = childNameForModule(
+      boundaryDirectory,
+      initialChild?.modulePath ?? children[0]?.modulePath,
+    );
+    if (!initialRouteName || names.length === 0) return nestedLayouts;
+
+    return [
+      ...nestedLayouts,
+      {
+        path: path.posix.join(boundaryDirectory, '_layout.tsx'),
+        content: getEscapedRouteBoundaryLayout({
+          externalHeaderVisible,
+          initialRouteName,
+          names,
+        }),
+      },
+    ];
+  });
+}
+
+/*** Collapse nested route modules to the direct child names permitted by Native Stack registration. */
+function uniqueDirectChildNames(
+  boundaryDirectory: string,
+  modulePaths: readonly string[],
+): string[] {
+  return [
+    ...new Set(modulePaths.map((modulePath) => childNameForModule(boundaryDirectory, modulePath))),
+  ].filter((name): name is string => Boolean(name));
+}
+
+/*** Resolve one generated route module to its owning boundary Stack child name. */
+function childNameForModule(
+  boundaryDirectory: string,
+  modulePath: string | undefined,
+): string | undefined {
+  if (!modulePath) return undefined;
+  const [name] = path.posix.relative(boundaryDirectory, modulePath).split('/');
+  return name && name !== '..' ? name : undefined;
+}
+
+/*** Render the physical Stack boundary required to navigate an absolute child route from a nested manifest Stack. */
+function getEscapedRouteBoundaryLayout(args: {
+  readonly externalHeaderVisible: boolean;
+  readonly initialRouteName: string;
+  readonly names: readonly string[];
+}): string {
+  const screenOptions = args.externalHeaderVisible ? ' screenOptions={{ headerShown: false }}' : '';
+  const screens = args.names
+    .map((name) => `      <Stack.Screen name=${JSON.stringify(name)} />`)
+    .join('\n');
+  return `import { Stack } from 'expo-router';
+
+export default function NavigatorBoundaryLayout() {
+  return (
+    <Stack initialRouteName=${JSON.stringify(args.initialRouteName)}${screenOptions}>
+${screens}
+    </Stack>
+  );
+}
+`;
+}
+
+/*** Move Navigator's name-based nested layouts to the shared Expo Router module projection. */
+function relocateNavigatorLayoutFiles(
+  files: NavigatorOwnedLayoutFile[],
+  navigator: NavigatorNode,
+  rootDirectory: string,
+): NavigatorOwnedLayoutFile[] {
+  const directories = new Map<string, string>();
+  collectNavigatorLayoutDirectories(navigator, rootDirectory, rootDirectory, '/', directories);
+  return files.map((file) => {
+    const directory = directories.get(path.posix.dirname(file.path));
+    return directory
+      ? { ...file, path: path.posix.join(directory, path.posix.basename(file.path)) }
+      : file;
+  });
+}
+
+/*** Map each owner-generated nested layout directory from Navigator names to Studio's canonical route modules. */
+function collectNavigatorLayoutDirectories(
+  navigator: NavigatorNode,
+  sourceDirectory: string,
+  destinationDirectory: string,
+  parentPublicPath: string,
+  directories: Map<string, string>,
+): void {
+  directories.set(sourceDirectory, destinationDirectory);
+  for (const route of navigator.routes) {
+    if (!route.navigator) continue;
+    const projection = projectGeneratedRoute({
+      parentModulePath: destinationDirectory,
+      parentPublicPath,
+      route,
+    });
+    collectNavigatorLayoutDirectories(
+      route.navigator,
+      path.posix.join(sourceDirectory, route.name),
+      projection.modulePath,
+      projection.publicPath,
+      directories,
+    );
+  }
 }
 
 /*** Resolve enabled targets with Web first so its source remains the universal fallback file. */
@@ -80,7 +237,7 @@ function generatePlatformLayouts(
   const navigator = input.externalHeaderVisible
     ? withExternalHeaderOwnership(input.navigator)
     : input.navigator;
-  const plan = createNavigatorPlan(withGeneratedRoutePaths(navigator), {
+  const plan = createNavigatorPlan(withGeneratedRoutePaths(navigator, input.rootDirectory), {
     platform,
     expoRouterVersion: resolveExactVersion(EXPO_PLATFORM.navigation.expoRouter.version),
   });
@@ -141,40 +298,52 @@ function withExternalHeaderOwnership(navigator: NavigatorNode): NavigatorNode {
   };
 }
 
-/*** Project Studio-owned public route paths into the navigator slice required by headless tabs. */
-function withGeneratedRoutePaths(navigator: NavigatorNode, parentPath = '/'): NavigatorNode {
+/*** Project Studio-owned routes through the shared module, URL, and Navigator path policy. */
+function withGeneratedRoutePaths(
+  navigator: NavigatorNode,
+  parentModulePath: string,
+  parentPublicPath = '/',
+): NavigatorNode {
+  const projectedRoutes = navigator.routes.flatMap((route) => {
+    const projection = projectGeneratedRoute({
+      parentModulePath,
+      parentPublicPath,
+      route,
+    });
+    const relativeModulePath = path.posix.relative(parentModulePath, projection.modulePath);
+    if (relativeModulePath.startsWith('../')) return [];
+    const navigatorName =
+      route.navigator && /^\(.*\)$/u.test(route.name)
+        ? route.name
+        : path.posix.basename(projection.modulePath);
+    return [
+      {
+        originalName: route.name,
+        route: {
+          ...route,
+          name: navigatorName,
+          path: projection.navigatorPath,
+          ...(route.navigator
+            ? {
+                navigator: withGeneratedRoutePaths(
+                  route.navigator,
+                  projection.modulePath,
+                  projection.publicPath,
+                ),
+              }
+            : {}),
+        },
+      },
+    ];
+  });
+
   return {
     ...navigator,
-    routes: navigator.routes.map((route) => {
-      const publicPath = resolvePublicRoutePath(parentPath, route.name, route.path);
-      return {
-        ...route,
-        path: publicPath,
-        ...(route.navigator
-          ? { navigator: withGeneratedRoutePaths(route.navigator, publicPath) }
-          : {}),
-      };
-    }),
+    initialRouteName: projectedRoutes.find(
+      (projected) => projected.originalName === navigator.initialRouteName,
+    )?.route.name,
+    routes: projectedRoutes.map((projected) => projected.route),
   };
-}
-
-/*** Resolve one safe route segment to its canonical public path while omitting groups and index. */
-function resolvePublicRoutePath(
-  parentPath: string,
-  routeName: string,
-  authoredPath: string | undefined,
-): string {
-  if (authoredPath?.startsWith('/')) return authoredPath || '/';
-  const parentSegments = parentPath.split('/').filter(Boolean);
-  const authoredSegments = authoredPath?.split('/').filter(Boolean);
-  const routeSegments = authoredSegments ?? [routeName];
-  const publicSegments = routeSegments.flatMap((segment) => {
-    if (segment === 'index' || /^\(.*\)$/u.test(segment)) return [];
-    const dynamic = /^\[([^\]]+)\]$/u.exec(segment)?.[1];
-    return [dynamic ? `:${dynamic.replace(/^\.\.\./u, '')}` : segment];
-  });
-  const resolved = [...parentSegments, ...publicSegments].join('/');
-  return resolved.length === 0 ? '/' : `/${resolved}`;
 }
 
 /*** Read the concrete semantic version from Expo Runtime's package range. */

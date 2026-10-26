@@ -24,6 +24,7 @@ import {
 import { composeGeneratedImports } from './generatedImportComposer';
 import { createNavigatorGenerationBindings } from './navigator/createNavigatorGenerationBindings';
 import { generateNavigatorLayoutFiles } from './navigator/generateNavigatorLayoutFiles';
+import { projectGeneratedRoute } from './navigator/projectGeneratedRoute';
 import {
   getAuthAdapterTs,
   getAuthFormTs,
@@ -347,20 +348,23 @@ export class GeneratedAppFileGenerator {
       );
     };
 
-    const walk = (node: NavigatorNode, currentRel: string) => {
+    const walk = (node: NavigatorNode, currentRel: string, currentPublicPath: string) => {
       if (!Array.isArray(node.routes)) return;
 
       node.routes.forEach((route: RouteDefinition) => {
-        const segment = route.name;
-        const nextRel = currentRel ? path.join(currentRel, segment) : segment;
+        const projection = projectGeneratedRoute({
+          parentModulePath: currentRel,
+          parentPublicPath: currentPublicPath,
+          route,
+        });
 
         if (route.navigator) {
-          walk(route.navigator, nextRel);
+          walk(route.navigator, projection.modulePath, projection.publicPath);
           return;
         }
 
-        const fileName = `${route.path === '/' ? 'index' : path.basename(nextRel)}.tsx`;
-        const dirRel = path.dirname(nextRel);
+        const fileName = `${route.path === '/' ? 'index' : path.basename(projection.modulePath)}.tsx`;
+        const dirRel = path.dirname(projection.modulePath);
         const targetDirRel = dirRel === '.' ? '' : dirRel;
         const targetPath = toPortablePath(path.join(appRootRel, targetDirRel, fileName));
 
@@ -484,10 +488,10 @@ export class GeneratedAppFileGenerator {
         });
       }
 
-      walk(authLayoutPlan.appNavigator, '(app)');
+      walk(authLayoutPlan.appNavigator, '(app)', '/');
 
       if (authLayoutPlan.authNavigator.routes.length > 0) {
-        walk(authLayoutPlan.authNavigator, '(auth)');
+        walk(authLayoutPlan.authNavigator, '(auth)', '/');
       }
     } else {
       files.push({
@@ -502,7 +506,7 @@ export class GeneratedAppFileGenerator {
       });
 
       addStudioAdminRouteFiles();
-      walk(manifest.navigator, '(app)');
+      walk(manifest.navigator, '(app)', '/');
     }
 
     return files;
