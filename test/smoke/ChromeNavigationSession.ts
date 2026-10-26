@@ -503,16 +503,21 @@ export class ChromeNavigationSession {
     await this.waitForBooleanAsync(expression, `visible testID "${testId}"`);
   }
 
-  /*** Wait until the requested visible tab exposes Navigator's selected accessibility state. */
+  /*** Wait until the requested visible tab exposes ARIA selection or Navigator's React Native Web active presentation. */
   async waitForSelectedTabTestIdAsync(testId: string): Promise<void> {
     const expression = `(() => {
   return [...document.querySelectorAll('[data-testid]')].some((candidate) => {
     if (candidate.getAttribute('data-testid') !== ${JSON.stringify(testId)}) return false;
     if (!(candidate instanceof HTMLElement)) return false;
     const control = candidate.closest('[role="tab"]') ?? candidate;
+    if (!(control instanceof HTMLElement)) return false;
     const rect = control.getBoundingClientRect();
     const style = getComputedStyle(control);
-    return control.getAttribute('aria-selected') === 'true' && rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+    if (rect.width <= 0 || rect.height <= 0 || style.display === 'none' || style.visibility === 'hidden') return false;
+    if (control.getAttribute('aria-selected') === 'true') return true;
+    const content = control.firstElementChild;
+    if (!(content instanceof HTMLElement)) return false;
+    return getComputedStyle(content).backgroundColor !== 'rgba(0, 0, 0, 0)';
   });
 })()`;
     await this.waitForBooleanAsync(expression, `selected tab testID "${testId}"`);
