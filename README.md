@@ -3,7 +3,7 @@
 
 # @ankhorage/studio
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v8.0.6](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![paradox: canonical](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v8.0.7](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![paradox: canonical](././paradox/badges/docs.svg)
 
 Studio authoring package for Ankhorage apps
 
@@ -68,6 +68,5 @@ import {
 - [updateNodeInTree sequence](././paradox/diagrams/sequences/update-node-in-tree.mmd)
 - [upsertStudioMediaAsset sequence](././paradox/diagrams/sequences/upsert-studio-media-asset.mmd)
 - [upsertStudioPropBinding sequence](././paradox/diagrams/sequences/upsert-studio-prop-binding.mmd)
-- [validateInsertRecipe sequence](././paradox/diagrams/sequences/validate-insert-recipe.mmd)
 - [validateNodePlacement sequence](././paradox/diagrams/sequences/validate-node-placement.mmd)
 - [validateProjectCreationInput sequence](././paradox/diagrams/sequences/validate-project-creation-input.mmd)

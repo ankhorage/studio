@@ -252,6 +252,8 @@ graph LR
   module_src_host_layout_navigator_createNavigatorGenerationBindings_ts["src/host/layout/navigator/createNavigatorGenerationBindings.ts"]
   module_src_host_layout_navigator_generateNavigatorLayoutFiles_test_ts["src/host/layout/navigator/generateNavigatorLayoutFiles.test.ts"]
   module_src_host_layout_navigator_generateNavigatorLayoutFiles_ts["src/host/layout/navigator/generateNavigatorLayoutFiles.ts"]
+  module_src_host_layout_navigator_projectGeneratedRoute_test_ts["src/host/layout/navigator/projectGeneratedRoute.test.ts"]
+  module_src_host_layout_navigator_projectGeneratedRoute_ts["src/host/layout/navigator/projectGeneratedRoute.ts"]
   module_src_host_layout_templates_auth_adapter_test_ts["src/host/layout/templates/auth/adapter.test.ts"]
   module_src_host_layout_templates_auth_adapter_ts["src/host/layout/templates/auth/adapter.ts"]
   module_src_host_layout_templates_auth_callback_test_ts["src/host/layout/templates/auth/callback.test.ts"]
@@ -1126,6 +1128,7 @@ graph LR
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_navigator_createNavigatorGenerationBindings_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_navigator_generateNavigatorLayoutFiles_ts
+  module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_navigator_projectGeneratedRoute_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_templates_index_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_templates_utils_routes_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_modules_layout_ts
@@ -1133,9 +1136,12 @@ graph LR
   module_src_host_layout_layoutGenerator_ts --> module_src_studioAdminRouteModel_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_types_project_generation_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_test_ts --> module_src_host_layout_navigator_createNavigatorGenerationBindings_ts
+  module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --> module_src_host_layout_navigator_projectGeneratedRoute_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
   module_src_host_layout_navigator_createNavigatorGenerationBindings_ts --> module_src_types_project_generation_ts
   module_src_host_layout_navigator_generateNavigatorLayoutFiles_test_ts --> module_src_host_layout_navigator_generateNavigatorLayoutFiles_ts
+  module_src_host_layout_navigator_generateNavigatorLayoutFiles_ts --> module_src_host_layout_navigator_projectGeneratedRoute_ts
+  module_src_host_layout_navigator_projectGeneratedRoute_test_ts --> module_src_host_layout_navigator_projectGeneratedRoute_ts
   module_src_host_layout_templates_auth_adapter_test_ts --> module_src_host_layout_templates_auth_adapter_ts
   module_src_host_layout_templates_auth_callback_test_ts --> module_src_host_layout_templates_auth_callback_ts
   module_src_host_layout_templates_auth_callback_ts --> module_src_host_layout_templates_utils_routes_ts

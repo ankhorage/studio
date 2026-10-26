@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v8.0.6",
+      "value": "v8.0.7",
       "color": "cb3837"
     },
     {
@@ -2818,6 +2818,7 @@
         "src/host/layout/generatedImportComposer.ts",
         "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
         "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
+        "src/host/layout/navigator/projectGeneratedRoute.ts",
         "src/host/layout/templates/index.ts",
         "src/host/layout/templates/utils/routes.ts",
         "src/host/modules/layout.ts",
@@ -2842,6 +2843,7 @@
       "path": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/host/layout/navigator/projectGeneratedRoute.ts",
         "src/host/layout/utils/escapeStringLiteral.ts",
         "src/types/project-generation.ts"
       ],
@@ -2860,10 +2862,28 @@
     {
       "path": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": [
+        "src/host/layout/navigator/projectGeneratedRoute.ts"
+      ],
       "exports": [
         "generateNavigatorLayoutFiles",
         "NavigatorOwnedLayoutFile"
+      ]
+    },
+    {
+      "path": "src/host/layout/navigator/projectGeneratedRoute.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/layout/navigator/projectGeneratedRoute.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/host/layout/navigator/projectGeneratedRoute.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "projectGeneratedRoute"
       ]
     },
     {
@@ -22627,7 +22647,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 64,
+        "line": 65,
         "column": 1
       }
     },
@@ -22638,7 +22658,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 72,
+        "line": 73,
         "column": 1
       }
     },
@@ -22649,7 +22669,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 88,
+        "line": 89,
         "column": 1
       }
     },
@@ -22660,7 +22680,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 240,
+        "line": 241,
         "column": 1
       }
     },
@@ -22671,7 +22691,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 339,
+        "line": 340,
         "column": 11
       }
     },
@@ -22682,7 +22702,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 350,
+        "line": 351,
         "column": 11
       }
     },
@@ -22693,7 +22713,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 761,
+        "line": 765,
         "column": 1
       }
     },
@@ -22704,7 +22724,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 780,
+        "line": 784,
         "column": 1
       }
     },
@@ -22715,7 +22735,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 799,
+        "line": 803,
         "column": 1
       }
     },
@@ -22726,7 +22746,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 804,
+        "line": 808,
         "column": 1
       }
     },
@@ -22737,7 +22757,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 814,
+        "line": 818,
         "column": 1
       }
     },
@@ -22748,7 +22768,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 849,
+        "line": 853,
         "column": 1
       }
     },
@@ -22770,7 +22790,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 31,
+        "line": 32,
         "column": 1
       }
     },
@@ -22781,7 +22801,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 95,
+        "line": 96,
         "column": 1
       }
     },
@@ -22792,7 +22812,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 97,
+        "line": 98,
         "column": 9
       }
     },
@@ -22803,7 +22823,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 125,
+        "line": 126,
         "column": 1
       }
     },
@@ -22814,7 +22834,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 127,
+        "line": 128,
         "column": 9
       }
     },
@@ -22825,7 +22845,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 141,
+        "line": 146,
         "column": 1
       }
     },
@@ -22836,7 +22856,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 146,
+        "line": 151,
         "column": 9
       }
     },
@@ -22847,7 +22867,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 166,
+        "line": 171,
         "column": 1
       }
     },
@@ -22858,7 +22878,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 239,
+        "line": 244,
         "column": 1
       }
     },
@@ -22869,7 +22889,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 241,
+        "line": 246,
         "column": 9
       }
     },
@@ -22880,7 +22900,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
-        "line": 254,
+        "line": 259,
         "column": 1
       }
     },
@@ -22891,7 +22911,73 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 26,
+        "line": 30,
+        "column": 1
+      }
+    },
+    {
+      "name": "generateEscapedRouteBoundaryLayouts",
+      "description": "Add a direct-child Stack boundary when absolute child URLs escape their manifest Stack's module directory.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
+        "line": 68,
+        "column": 1
+      }
+    },
+    {
+      "name": "uniqueDirectChildNames",
+      "description": "Collapse nested route modules to the direct child names permitted by Native Stack registration.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
+        "line": 130,
+        "column": 1
+      }
+    },
+    {
+      "name": "childNameForModule",
+      "description": "Resolve one generated route module to its owning boundary Stack child name.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
+        "line": 140,
+        "column": 1
+      }
+    },
+    {
+      "name": "getEscapedRouteBoundaryLayout",
+      "description": "Render the physical Stack boundary required to navigate an absolute child route from a nested manifest Stack.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
+        "line": 150,
+        "column": 1
+      }
+    },
+    {
+      "name": "relocateNavigatorLayoutFiles",
+      "description": "Move Navigator's name-based nested layouts to the shared Expo Router module projection.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
+        "line": 172,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectNavigatorLayoutDirectories",
+      "description": "Map each owner-generated nested layout directory from Navigator names to Studio's canonical route modules.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
+        "line": 188,
         "column": 1
       }
     },
@@ -22902,7 +22988,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 57,
+        "line": 214,
         "column": 1
       }
     },
@@ -22913,7 +22999,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 64,
+        "line": 221,
         "column": 1
       }
     },
@@ -22924,7 +23010,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 76,
+        "line": 233,
         "column": 1
       }
     },
@@ -22935,29 +23021,18 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 107,
+        "line": 264,
         "column": 1
       }
     },
     {
       "name": "withGeneratedRoutePaths",
-      "description": "Project Studio-owned public route paths into the navigator slice required by headless tabs.",
+      "description": "Project Studio-owned routes through the shared module, URL, and Navigator path policy.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 145,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolvePublicRoutePath",
-      "description": "Resolve one safe route segment to its canonical public path while omitting groups and index.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 162,
+        "line": 302,
         "column": 1
       }
     },
@@ -22968,7 +23043,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 181,
+        "line": 350,
         "column": 1
       }
     },
@@ -22979,7 +23054,62 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "line": 194,
+        "line": 363,
+        "column": 1
+      }
+    },
+    {
+      "name": "projectGeneratedRoute",
+      "description": "Project one manifest route into its Expo Router module and public path without making route groups URL segments.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/layout/navigator/projectGeneratedRoute.ts",
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolvePublicPath",
+      "description": "Resolve a route's canonical public URL from its parent URL and authored route path.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/layout/navigator/projectGeneratedRoute.ts",
+        "line": 36,
+        "column": 1
+      }
+    },
+    {
+      "name": "trimSlashes",
+      "description": "Strip leading and trailing slashes before calculating a relative Expo Router module path.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/layout/navigator/projectGeneratedRoute.ts",
+        "line": 47,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRouteGroup",
+      "description": "Identify Expo Router group syntax, which owns module structure but no public URL segment.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/layout/navigator/projectGeneratedRoute.ts",
+        "line": 52,
+        "column": 1
+      }
+    },
+    {
+      "name": "toNavigatorPath",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/layout/navigator/projectGeneratedRoute.ts",
+        "line": 57,
         "column": 1
       }
     },
@@ -23298,7 +23428,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/layout/templates/runtimeShell.ts",
-        "line": 76,
+        "line": 89,
         "column": 1
       }
     },
@@ -29304,7 +29434,18 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/runtime/useStudioRuntimeCapabilityExecutor.ts",
-        "line": 19,
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "showRuntimeAlert",
+      "description": "Present Runtime alerts through the browser dialog host on Web and React Native on native targets.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/runtime/useStudioRuntimeCapabilityExecutor.ts",
+        "line": 43,
         "column": 1
       }
     },
@@ -36078,6 +36219,11 @@
       },
       {
         "fromPath": "src/host/layout/layoutGenerator.ts",
+        "toPath": "src/host/layout/navigator/projectGeneratedRoute.ts",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromPath": "src/host/layout/layoutGenerator.ts",
         "toPath": "src/host/layout/templates/index.ts",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
@@ -37612,9 +37758,24 @@
         "sourcePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts"
       },
       {
+        "fromPath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts",
+        "toPath": "src/host/layout/navigator/projectGeneratedRoute.ts",
+        "sourcePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts"
+      },
+      {
         "fromPath": "src/host/layout/navigator/generateNavigatorLayoutFiles.test.ts",
         "toPath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
         "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.test.ts"
+      },
+      {
+        "fromPath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
+        "toPath": "src/host/layout/navigator/projectGeneratedRoute.ts",
+        "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
+      },
+      {
+        "fromPath": "src/host/layout/navigator/projectGeneratedRoute.test.ts",
+        "toPath": "src/host/layout/navigator/projectGeneratedRoute.ts",
+        "sourcePath": "src/host/layout/navigator/projectGeneratedRoute.test.ts"
       },
       {
         "fromPath": "src/host/layout/templates/index.ts",
@@ -52422,6 +52583,12 @@
         "sourcePath": "src/runtime/useStudioRuntimeCapabilityExecutor.ts"
       },
       {
+        "fromSymbol": "navigate",
+        "toSymbol": "resolveExpoRuntimeRoutePath",
+        "callExpression": "resolveExpoRuntimeRoutePath",
+        "sourcePath": "src/runtime/useStudioRuntimeCapabilityExecutor.ts"
+      },
+      {
         "fromSymbol": "setThemeMode",
         "toSymbol": "setThemeMode",
         "callExpression": "setThemeMode",
@@ -53730,6 +53897,36 @@
         "sourcePath": "test/smoke/ChromeNavigationSession.ts"
       },
       {
+        "fromSymbol": "clearBrowserAcceptanceTraceAsync",
+        "toSymbol": "evaluateAsync",
+        "callExpression": "this.evaluateAsync",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "recordBrowserAcceptanceTraceAsync",
+        "toSymbol": "evaluateAsync",
+        "callExpression": "this.evaluateAsync",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "installBrowserAcceptanceFetchTraceAsync",
+        "toSymbol": "sendAsync",
+        "callExpression": "this.sendAsync",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "readBrowserAcceptanceTraceAsync",
+        "toSymbol": "evaluateAsync",
+        "callExpression": "this.evaluateAsync",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "readOriginAsync",
+        "toSymbol": "evaluateAsync",
+        "callExpression": "this.evaluateAsync",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
         "fromSymbol": "clickByRoleAndNameAsync",
         "toSymbol": "waitForHitTestedRoleAndNameAsync",
         "callExpression": "this.waitForHitTestedRoleAndNameAsync",
@@ -53742,6 +53939,12 @@
         "sourcePath": "test/smoke/ChromeNavigationSession.ts"
       },
       {
+        "fromSymbol": "clickByRoleAndNameAsync",
+        "toSymbol": "throwIfRuntimeException",
+        "callExpression": "this.throwIfRuntimeException",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
         "fromSymbol": "clickByTestIdAsync",
         "toSymbol": "waitForHitTestedTestIdAsync",
         "callExpression": "this.waitForHitTestedTestIdAsync",
@@ -53751,6 +53954,12 @@
         "fromSymbol": "clickByTestIdAsync",
         "toSymbol": "dispatchPointerClickAsync",
         "callExpression": "this.dispatchPointerClickAsync",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "clickByTestIdAsync",
+        "toSymbol": "throwIfRuntimeException",
+        "callExpression": "this.throwIfRuntimeException",
         "sourcePath": "test/smoke/ChromeNavigationSession.ts"
       },
       {
@@ -53769,6 +53978,12 @@
         "fromSymbol": "goBackAsync",
         "toSymbol": "evaluateAsync",
         "callExpression": "this.evaluateAsync",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "goBackAsync",
+        "toSymbol": "throwIfRuntimeException",
+        "callExpression": "this.throwIfRuntimeException",
         "sourcePath": "test/smoke/ChromeNavigationSession.ts"
       },
       {
@@ -53805,6 +54020,12 @@
         "fromSymbol": "hasRoleAndNameAsync",
         "toSymbol": "createRoleAndNameExpression",
         "callExpression": "createRoleAndNameExpression",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "waitForNewDialogTextAsync",
+        "toSymbol": "throwIfRuntimeException",
+        "callExpression": "this.throwIfRuntimeException",
         "sourcePath": "test/smoke/ChromeNavigationSession.ts"
       },
       {
@@ -53853,6 +54074,12 @@
         "fromSymbol": "navigateAsync",
         "toSymbol": "waitForLoadAsync",
         "callExpression": "this.waitForLoadAsync",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "navigateAsync",
+        "toSymbol": "throwIfRuntimeException",
+        "callExpression": "this.throwIfRuntimeException",
         "sourcePath": "test/smoke/ChromeNavigationSession.ts"
       },
       {
@@ -53910,6 +54137,18 @@
         "sourcePath": "test/smoke/ChromeNavigationSession.ts"
       },
       {
+        "fromSymbol": "waitForSelectedTabTestIdAsync",
+        "toSymbol": "waitForBooleanAsync",
+        "callExpression": "this.waitForBooleanAsync",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "waitForBodyTextAsync",
+        "toSymbol": "throwIfRuntimeException",
+        "callExpression": "this.throwIfRuntimeException",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
         "fromSymbol": "waitForBodyTextAsync",
         "toSymbol": "evaluateAsync",
         "callExpression": "this.evaluateAsync",
@@ -53919,6 +54158,12 @@
         "fromSymbol": "waitForObservedBodyTextAsync",
         "toSymbol": "waitForBooleanAsync",
         "callExpression": "this.waitForBooleanAsync",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "waitForLocationAsync",
+        "toSymbol": "throwIfRuntimeException",
+        "callExpression": "this.throwIfRuntimeException",
         "sourcePath": "test/smoke/ChromeNavigationSession.ts"
       },
       {
@@ -53965,6 +54210,18 @@
       },
       {
         "fromSymbol": "handleMessage",
+        "toSymbol": "getChromeDialogMessage",
+        "callExpression": "getChromeDialogMessage",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "handleMessage",
+        "toSymbol": "sendAsync",
+        "callExpression": "this.sendAsync",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "handleMessage",
         "toSymbol": "getChromeNavigationIssue",
         "callExpression": "getChromeNavigationIssue",
         "sourcePath": "test/smoke/ChromeNavigationSession.ts"
@@ -53983,6 +54240,12 @@
       },
       {
         "fromSymbol": "waitForBooleanAsync",
+        "toSymbol": "throwIfRuntimeException",
+        "callExpression": "this.throwIfRuntimeException",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "waitForBooleanAsync",
         "toSymbol": "evaluateAsync",
         "callExpression": "this.evaluateAsync",
         "sourcePath": "test/smoke/ChromeNavigationSession.ts"
@@ -53995,6 +54258,12 @@
       },
       {
         "fromSymbol": "waitForHitTestedRoleAndNameAsync",
+        "toSymbol": "throwIfRuntimeException",
+        "callExpression": "this.throwIfRuntimeException",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "waitForHitTestedRoleAndNameAsync",
         "toSymbol": "evaluateAsync",
         "callExpression": "this.evaluateAsync",
         "sourcePath": "test/smoke/ChromeNavigationSession.ts"
@@ -54003,6 +54272,12 @@
         "fromSymbol": "waitForHitTestedTestIdAsync",
         "toSymbol": "createTestIdHitTestExpression",
         "callExpression": "createTestIdHitTestExpression",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "waitForHitTestedTestIdAsync",
+        "toSymbol": "throwIfRuntimeException",
+        "callExpression": "this.throwIfRuntimeException",
         "sourcePath": "test/smoke/ChromeNavigationSession.ts"
       },
       {
@@ -54027,6 +54302,12 @@
         "fromSymbol": "resolveChromePathAsync",
         "toSymbol": "pathExists",
         "callExpression": "pathExists",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "getChromeDialogMessage",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
         "sourcePath": "test/smoke/ChromeNavigationSession.ts"
       },
       {
@@ -56467,6 +56748,12 @@
       },
       {
         "fromSymbol": "runExpo57SharkPreyAcceptanceAsync",
+        "toSymbol": "createPokerTaskQueryFixture",
+        "callExpression": "createPokerTaskQueryFixture",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57SharkPreyAcceptanceAsync",
         "toSymbol": "createWorkspaceAsync",
         "callExpression": "createWorkspaceAsync",
         "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
@@ -56481,6 +56768,12 @@
         "fromSymbol": "runExpo57SharkPreyAcceptanceAsync",
         "toSymbol": "createProject",
         "callExpression": "manager.createProject",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57SharkPreyAcceptanceAsync",
+        "toSymbol": "withPokerTaskQueryFixture",
+        "callExpression": "withPokerTaskQueryFixture",
         "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
       },
       {
@@ -56509,6 +56802,12 @@
       },
       {
         "fromSymbol": "runExpo57SharkPreyAcceptanceAsync",
+        "toSymbol": "logResolvedSharkPreyDependenciesAsync",
+        "callExpression": "logResolvedSharkPreyDependenciesAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57SharkPreyAcceptanceAsync",
         "toSymbol": "assertGeneratedModuleBoundariesAsync",
         "callExpression": "assertGeneratedModuleBoundariesAsync",
         "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
@@ -56533,8 +56832,20 @@
       },
       {
         "fromSymbol": "runExpo57SharkPreyAcceptanceAsync",
+        "toSymbol": "instrumentBrowserOnlyRuntimeAsync",
+        "callExpression": "instrumentBrowserOnlyRuntimeAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57SharkPreyAcceptanceAsync",
         "toSymbol": "startGeneratedAppAsync",
         "callExpression": "startGeneratedAppAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57SharkPreyAcceptanceAsync",
+        "toSymbol": "assertExpectedQueries",
+        "callExpression": "taskQueryFixture.assertExpectedQueries",
         "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
       },
       {
@@ -56547,6 +56858,12 @@
         "fromSymbol": "runExpo57SharkPreyAcceptanceAsync",
         "toSymbol": "stopProcess",
         "callExpression": "stopProcess",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57SharkPreyAcceptanceAsync",
+        "toSymbol": "stop",
+        "callExpression": "taskQueryFixture.stop",
         "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
       },
       {
@@ -56659,6 +56976,12 @@
       },
       {
         "fromSymbol": "startGeneratedAppAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "startGeneratedAppAsync",
         "toSymbol": "reserveTcpPort",
         "callExpression": "reserveTcpPort",
         "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
@@ -56713,6 +57036,12 @@
       },
       {
         "fromSymbol": "startGeneratedAppAsync",
+        "toSymbol": "installBrowserAcceptanceFetchTraceAsync",
+        "callExpression": "chrome.installBrowserAcceptanceFetchTraceAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "startGeneratedAppAsync",
         "toSymbol": "navigateAsync",
         "callExpression": "chrome.navigateAsync",
         "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
@@ -56749,6 +57078,18 @@
       },
       {
         "fromSymbol": "startGeneratedAppAsync",
+        "toSymbol": "assertGameCategoryNavigationAsync",
+        "callExpression": "assertGameCategoryNavigationAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "startGeneratedAppAsync",
+        "toSymbol": "assertTrainingJourneyAsync",
+        "callExpression": "assertTrainingJourneyAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "startGeneratedAppAsync",
         "toSymbol": "readObservedPathnamesAsync",
         "callExpression": "chrome.readObservedPathnamesAsync",
         "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
@@ -56773,8 +57114,212 @@
       },
       {
         "fromSymbol": "startGeneratedAppAsync",
+        "toSymbol": "waitForSelectedTabTestIdAsync",
+        "callExpression": "chrome.waitForSelectedTabTestIdAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "startGeneratedAppAsync",
+        "toSymbol": "assertDirectDecisionTableNavigationAsync",
+        "callExpression": "assertDirectDecisionTableNavigationAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "startGeneratedAppAsync",
+        "toSymbol": "assertExpectedLevelFiveFailure",
+        "callExpression": "assertExpectedLevelFiveFailure",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "startGeneratedAppAsync",
         "toSymbol": "assertNoBrowserErrors",
         "callExpression": "assertNoBrowserErrors",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts",
+        "toSymbol": "isExpectedLevelFiveFailureIssue",
+        "callExpression": "isExpectedLevelFiveFailureIssue",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertTrainingJourneyAsync",
+        "toSymbol": "clickByRoleAndNameAsync",
+        "callExpression": "chrome.clickByRoleAndNameAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertTrainingJourneyAsync",
+        "toSymbol": "waitForLocationAsync",
+        "callExpression": "chrome.waitForLocationAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertTrainingJourneyAsync",
+        "toSymbol": "assertDifficultyTaskQueriesAsync",
+        "callExpression": "assertDifficultyTaskQueriesAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertTrainingJourneyAsync",
+        "toSymbol": "assertFailedTaskQueriesAsync",
+        "callExpression": "assertFailedTaskQueriesAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDirectDecisionTableNavigationAsync",
+        "toSymbol": "pokerTrainingDifficulties",
+        "callExpression": "pokerTrainingDifficulties",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDirectDecisionTableNavigationAsync",
+        "toSymbol": "readOriginAsync",
+        "callExpression": "chrome.readOriginAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDirectDecisionTableNavigationAsync",
+        "toSymbol": "navigateAsync",
+        "callExpression": "chrome.navigateAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDirectDecisionTableNavigationAsync",
+        "toSymbol": "waitForLocationAsync",
+        "callExpression": "chrome.waitForLocationAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDirectDecisionTableNavigationAsync",
+        "toSymbol": "waitForBodyTextAsync",
+        "callExpression": "chrome.waitForBodyTextAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDifficultyTaskQueriesAsync",
+        "toSymbol": "pokerTrainingDifficulties",
+        "callExpression": "pokerTrainingDifficulties",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDifficultyTaskQueriesAsync",
+        "toSymbol": "clearBrowserAcceptanceTraceAsync",
+        "callExpression": "chrome.clearBrowserAcceptanceTraceAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDifficultyTaskQueriesAsync",
+        "toSymbol": "recordBrowserAcceptanceTraceAsync",
+        "callExpression": "chrome.recordBrowserAcceptanceTraceAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDifficultyTaskQueriesAsync",
+        "toSymbol": "clickByRoleAndNameAsync",
+        "callExpression": "chrome.clickByRoleAndNameAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDifficultyTaskQueriesAsync",
+        "toSymbol": "waitForLocationAsync",
+        "callExpression": "chrome.waitForLocationAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDifficultyTaskQueriesAsync",
+        "toSymbol": "readBrowserAcceptanceTraceAsync",
+        "callExpression": "chrome.readBrowserAcceptanceTraceAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDifficultyTaskQueriesAsync",
+        "toSymbol": "waitForBodyTextAsync",
+        "callExpression": "chrome.waitForBodyTextAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDifficultyTaskQueriesAsync",
+        "toSymbol": "goBackAsync",
+        "callExpression": "chrome.goBackAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "logResolvedSharkPreyDependenciesAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "instrumentBrowserOnlyRuntimeAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "instrumentBrowserOnlyRuntimeAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertFailedTaskQueriesAsync",
+        "toSymbol": "clearBrowserAcceptanceTraceAsync",
+        "callExpression": "chrome.clearBrowserAcceptanceTraceAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertFailedTaskQueriesAsync",
+        "toSymbol": "clickByRoleAndNameAsync",
+        "callExpression": "chrome.clickByRoleAndNameAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertFailedTaskQueriesAsync",
+        "toSymbol": "waitForNewDialogTextAsync",
+        "callExpression": "chrome.waitForNewDialogTextAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertFailedTaskQueriesAsync",
+        "toSymbol": "readBrowserAcceptanceTraceAsync",
+        "callExpression": "chrome.readBrowserAcceptanceTraceAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertFailedTaskQueriesAsync",
+        "toSymbol": "waitForLocationAsync",
+        "callExpression": "chrome.waitForLocationAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertGameCategoryNavigationAsync",
+        "toSymbol": "clickByRoleAndNameAsync",
+        "callExpression": "chrome.clickByRoleAndNameAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertGameCategoryNavigationAsync",
+        "toSymbol": "waitForLocationAsync",
+        "callExpression": "chrome.waitForLocationAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertGameCategoryNavigationAsync",
+        "toSymbol": "goBackAsync",
+        "callExpression": "chrome.goBackAsync",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "fetch",
+        "toSymbol": "pokerTrainingDifficulties",
+        "callExpression": "pokerTrainingDifficulties",
+        "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
+      },
+      {
+        "fromSymbol": "assertExpectedQueries",
+        "toSymbol": "pokerTrainingDifficulties",
+        "callExpression": "pokerTrainingDifficulties",
         "sourcePath": "test/smoke/runExpo57SharkPreyAcceptanceAsync.ts"
       },
       {
@@ -60231,6 +60776,12 @@
         "fromSymbol": "addStudioAdminRouteFiles",
         "toSymbol": "createStudioAdminRouteGeneratedFiles",
         "callExpression": "createStudioAdminRouteGeneratedFiles",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGenerator.ts",
+        "toSymbol": "projectGeneratedRoute",
+        "callExpression": "projectGeneratedRoute",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
@@ -69295,6 +69846,12 @@
       },
       {
         "fromSymbol": "visit",
+        "toSymbol": "projectGeneratedRoute",
+        "callExpression": "projectGeneratedRoute",
+        "sourcePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts"
+      },
+      {
+        "fromSymbol": "visit",
         "toSymbol": "toSourceAlias",
         "callExpression": "toSourceAlias",
         "sourcePath": "src/host/layout/navigator/createNavigatorGenerationBindings.ts"
@@ -69372,6 +69929,66 @@
         "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
       },
       {
+        "fromSymbol": "generateNavigatorLayoutFiles",
+        "toSymbol": "relocateNavigatorLayoutFiles",
+        "callExpression": "relocateNavigatorLayoutFiles",
+        "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
+      },
+      {
+        "fromSymbol": "generateNavigatorLayoutFiles",
+        "toSymbol": "generateEscapedRouteBoundaryLayouts",
+        "callExpression": "generateEscapedRouteBoundaryLayouts",
+        "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
+        "toSymbol": "projectGeneratedRoute",
+        "callExpression": "projectGeneratedRoute",
+        "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
+        "toSymbol": "generateEscapedRouteBoundaryLayouts",
+        "callExpression": "generateEscapedRouteBoundaryLayouts",
+        "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
+        "toSymbol": "uniqueDirectChildNames",
+        "callExpression": "uniqueDirectChildNames",
+        "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
+        "toSymbol": "childNameForModule",
+        "callExpression": "childNameForModule",
+        "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
+        "toSymbol": "getEscapedRouteBoundaryLayout",
+        "callExpression": "getEscapedRouteBoundaryLayout",
+        "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
+      },
+      {
+        "fromSymbol": "relocateNavigatorLayoutFiles",
+        "toSymbol": "collectNavigatorLayoutDirectories",
+        "callExpression": "collectNavigatorLayoutDirectories",
+        "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
+      },
+      {
+        "fromSymbol": "collectNavigatorLayoutDirectories",
+        "toSymbol": "projectGeneratedRoute",
+        "callExpression": "projectGeneratedRoute",
+        "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
+      },
+      {
+        "fromSymbol": "collectNavigatorLayoutDirectories",
+        "toSymbol": "collectNavigatorLayoutDirectories",
+        "callExpression": "collectNavigatorLayoutDirectories",
+        "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
+      },
+      {
         "fromSymbol": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
         "toSymbol": "isPlatformEnabled",
         "callExpression": "isPlatformEnabled",
@@ -69415,12 +70032,6 @@
       },
       {
         "fromSymbol": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
-        "toSymbol": "resolvePublicRoutePath",
-        "callExpression": "resolvePublicRoutePath",
-        "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
-      },
-      {
-        "fromSymbol": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts",
         "toSymbol": "withGeneratedRoutePaths",
         "callExpression": "withGeneratedRoutePaths",
         "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
@@ -69430,6 +70041,60 @@
         "toSymbol": "parseSemanticVersion",
         "callExpression": "parseSemanticVersion",
         "sourcePath": "src/host/layout/navigator/generateNavigatorLayoutFiles.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/navigator/projectGeneratedRoute.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/layout/navigator/projectGeneratedRoute.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/navigator/projectGeneratedRoute.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/layout/navigator/projectGeneratedRoute.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/navigator/projectGeneratedRoute.test.ts",
+        "toSymbol": "projectGeneratedRoute",
+        "callExpression": "projectGeneratedRoute",
+        "sourcePath": "src/host/layout/navigator/projectGeneratedRoute.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/navigator/projectGeneratedRoute.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/layout/navigator/projectGeneratedRoute.test.ts"
+      },
+      {
+        "fromSymbol": "projectGeneratedRoute",
+        "toSymbol": "resolvePublicPath",
+        "callExpression": "resolvePublicPath",
+        "sourcePath": "src/host/layout/navigator/projectGeneratedRoute.ts"
+      },
+      {
+        "fromSymbol": "projectGeneratedRoute",
+        "toSymbol": "trimSlashes",
+        "callExpression": "trimSlashes",
+        "sourcePath": "src/host/layout/navigator/projectGeneratedRoute.ts"
+      },
+      {
+        "fromSymbol": "projectGeneratedRoute",
+        "toSymbol": "isRouteGroup",
+        "callExpression": "isRouteGroup",
+        "sourcePath": "src/host/layout/navigator/projectGeneratedRoute.ts"
+      },
+      {
+        "fromSymbol": "projectGeneratedRoute",
+        "toSymbol": "toNavigatorPath",
+        "callExpression": "toNavigatorPath",
+        "sourcePath": "src/host/layout/navigator/projectGeneratedRoute.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/navigator/projectGeneratedRoute.ts",
+        "toSymbol": "isRouteGroup",
+        "callExpression": "isRouteGroup",
+        "sourcePath": "src/host/layout/navigator/projectGeneratedRoute.ts"
       },
       {
         "fromSymbol": "getIndexRedirectRouteTsx",

@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.0.7
+
+### Patch Changes
+
+- 5f73cad: Fix generated app route projection and event capability resolution.
+
 ## 8.0.6
 
 ### Patch Changes
