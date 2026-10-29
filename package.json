@@ -292,7 +292,7 @@
     "@ankhorage/color-theory": "^0.3.2",
     "@ankhorage/contracts": "^26.3.0",
     "@ankhorage/data-sources": "^2.1.6",
-    "@ankhorage/deploy": "^0.14.13",
+    "@ankhorage/deploy": "^0.14.14",
     "@ankhorage/expo-runtime": "^7.0.2",
     "@ankhorage/infra": "^7.2.12",
     "@ankhorage/local": "^0.3.24",
@@ -342,7 +342,7 @@
   "devDependencies": {
     "@ankhorage/ankh": "^0.13.1",
     "@ankhorage/devtools": "^2.3.21",
-    "@ankhorage/paradox": "^0.3.5",
+    "@ankhorage/paradox": "^0.3.6",
     "@types/bun": "^1.4.2",
     "@types/node": "^24.13.3",
     "@types/react": "~19.2.4",
