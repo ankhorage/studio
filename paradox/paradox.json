@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v8.0.7",
+      "value": "v8.0.8",
       "color": "cb3837"
     },
     {
@@ -24913,7 +24913,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/syncGeneratedPackagePolicyAsync.ts",
-        "line": 7,
+        "line": 9,
         "column": 1
       }
     },
@@ -24924,18 +24924,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/syncGeneratedPackagePolicyAsync.ts",
-        "line": 25,
-        "column": 1
-      }
-    },
-    {
-      "name": "isRecord",
-      "description": "Return whether a value is a non-array object.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/syncGeneratedPackagePolicyAsync.ts",
-        "line": 39,
+        "line": 27,
         "column": 1
       }
     },
@@ -24946,7 +24935,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/syncGeneratedPackagePolicyAsync.ts",
-        "line": 44,
+        "line": 41,
         "column": 1
       }
     },
