@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.0.9
+
+### Patch Changes
+
+- ff1f254: Update dependencies: `@ankhorage/orchestrator-module-expo-google-fonts`, `@ankhorage/permissions`, `@ankhorage/repository`, `@ankhorage/templates`, `@ankhorage/zora`.
+
 ## 8.0.8
 
 ### Patch Changes
