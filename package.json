@@ -311,7 +311,7 @@
     "@ankhorage/surface": "^9.4.13",
     "@ankhorage/secrets": "^0.3.1",
     "@ankhorage/secrets-supabase-vault": "^1.0.0",
-    "@ankhorage/templates": "^12.4.5",
+    "@ankhorage/templates": "^12.4.6",
     "@ankhorage/utility": "^1.10.0",
     "@ankhorage/zora": "^25.10.4",
     "@fastify/cors": "^11.3.1",
