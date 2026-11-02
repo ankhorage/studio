@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.0.11
+
+### Patch Changes
+
+- 1d61b49: Update dependencies: `@ankhorage/repository`.
+
 ## 8.0.10
 
 ### Patch Changes
