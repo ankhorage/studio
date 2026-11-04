@@ -6,7 +6,7 @@ import { expect, test } from 'bun:test';
 
 const scopeScriptPath = path.resolve('scripts/determine-studio-acceptance-scope.sh');
 
-test('runs the complete acceptance suite for deletes, renames, Agent scripts, and unknown paths', async () => {
+test('runs the complete acceptance suite for deletes, renames, executable documentation, configuration, and unknown paths', async () => {
   await Promise.all([
     expectScopeForChange(
       'deleted documentation',
@@ -27,6 +27,26 @@ test('runs the complete acceptance suite for deletes, renames, Agent scripts, an
       true,
     ),
     expectScopeForChange(
+      'documentation TypeScript file',
+      (root) => writeFile(path.join(root, 'docs', 'audit.ts'), ''),
+      true,
+    ),
+    expectScopeForChange(
+      'Paradox configuration',
+      (root) => writeFile(path.join(root, 'paradox', 'paradox.json'), '{}'),
+      true,
+    ),
+    expectScopeForChange(
+      'Paradox HTML output',
+      (root) => writeFile(path.join(root, 'paradox', 'index.html'), ''),
+      true,
+    ),
+    expectScopeForChange(
+      'Paradox SVG asset',
+      (root) => writeFile(path.join(root, 'paradox', 'badges', 'docs.svg'), ''),
+      true,
+    ),
+    expectScopeForChange(
       'unknown path',
       (root) => writeFile(path.join(root, 'config.yml'), ''),
       true,
@@ -35,11 +55,29 @@ test('runs the complete acceptance suite for deletes, renames, Agent scripts, an
 });
 
 test('skips the complete acceptance suite only for explicit safe paths', async () => {
-  await expectScopeForChange(
-    'Agent guidance',
-    (root) => writeFile(path.join(root, '.agents', 'skills', 'demo', 'SKILL.md'), '# Guidance'),
-    false,
-  );
+  await Promise.all([
+    expectScopeForChange(
+      'Agent guidance',
+      (root) => writeFile(path.join(root, '.agents', 'skills', 'demo', 'SKILL.md'), '# Guidance'),
+      false,
+    ),
+    expectScopeForChange(
+      'documentation Markdown',
+      (root) => writeFile(path.join(root, 'docs', 'guide.md'), '# Guidance'),
+      false,
+    ),
+    expectScopeForChange(
+      'Paradox Markdown',
+      (root) => writeFile(path.join(root, 'paradox', 'components.md'), '# Components'),
+      false,
+    ),
+    expectScopeForChange(
+      'Paradox Mermaid diagram',
+      (root) =>
+        writeFile(path.join(root, 'paradox', 'diagrams', 'architecture.mmd'), 'flowchart TD'),
+      false,
+    ),
+  ]);
 });
 
 test('runs the complete acceptance suite when the changed-path scope cannot be read', async () => {
@@ -71,6 +109,8 @@ async function expectScopeForChange(
   try {
     await mkdir(path.join(root, 'docs'), { recursive: true });
     await mkdir(path.join(root, '.agents', 'skills', 'demo', 'scripts'), { recursive: true });
+    await mkdir(path.join(root, 'paradox', 'badges'), { recursive: true });
+    await mkdir(path.join(root, 'paradox', 'diagrams'), { recursive: true });
     await writeFile(path.join(root, 'docs', 'guide.md'), 'guide');
     await runGit(root, 'init');
     await runGit(root, 'config', 'user.email', 'studio-test@example.com');

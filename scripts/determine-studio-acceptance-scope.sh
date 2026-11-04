@@ -29,7 +29,7 @@ else
       case "$status" in
         A|M)
           case "$path" in
-            .agents/**/*.md|.changeset/*.md|.github/ISSUE_TEMPLATE/*.md|AGENTS.md|README.md|docs/*|paradox/*)
+            .agents/**/*.md|.changeset/*.md|.github/ISSUE_TEMPLATE/*.md|AGENTS.md|README.md|docs/*.md|paradox/*.md|paradox/diagrams/*.mmd)
               ;;
             *)
               required=true
