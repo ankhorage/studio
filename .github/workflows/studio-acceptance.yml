@@ -34,35 +34,22 @@ jobs:
         id: scope
         shell: bash
         run: |
-          required=true
-          reason='push or manual dispatch requires the complete acceptance suite'
-
           if [ "${{ github.event_name }}" = 'pull_request' ]; then
             base_sha='${{ github.event.pull_request.base.sha }}'
             head_sha='${{ github.event.pull_request.head.sha }}'
-            changed_files="$(git diff --name-only "$base_sha" "$head_sha")"
-            required=false
-            reason='only documentation, Changeset, or Agent guidance changed'
-
-            while IFS= read -r changed_file; do
-              case "$changed_file" in
-                .agents/*|.changeset/*|.github/ISSUE_TEMPLATE/*|AGENTS.md|README.md|docs/*|paradox/*)
-                  ;;
-                *)
-                  required=true
-                  reason="product-relevant path changed: $changed_file"
-                  break
-                  ;;
-              esac
-            done <<< "$changed_files"
+            bash scripts/determine-studio-acceptance-scope.sh "$base_sha" "$head_sha"
+          else
+            {
+              echo 'required=true'
+              echo 'reason=Push or manual dispatch requires the complete acceptance suite.'
+            } >> "$GITHUB_OUTPUT"
           fi
 
-          echo "required=$required" >> "$GITHUB_OUTPUT"
           {
             echo '## Studio acceptance scope'
             echo
-            echo "- Complete suite required: \`$required\`"
-            echo "- Reason: $reason"
+            echo "- Complete suite required: \`${{ steps.scope.outputs.required }}\`"
+            echo "- Reason: ${{ steps.scope.outputs.reason }}"
             echo '- Required scenarios when selected: Expo web, SharkPrey, standalone Studio, generated app, generated navigation, and generated capabilities.'
           } >> "$GITHUB_STEP_SUMMARY"
 
