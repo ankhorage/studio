@@ -42,6 +42,25 @@ test('skips the complete acceptance suite only for explicit safe paths', async (
   );
 });
 
+test('runs the complete acceptance suite when the changed-path scope cannot be read', async () => {
+  const root = await mkdtemp(path.join(tmpdir(), 'studio-acceptance-scope-'));
+
+  try {
+    await runGit(root, 'init');
+    await runGit(root, 'config', 'user.email', 'studio-test@example.com');
+    await runGit(root, 'config', 'user.name', 'Studio test');
+    await writeFile(path.join(root, 'guide.md'), 'guide');
+    await runGit(root, 'add', '.');
+    await runGit(root, 'commit', '--quiet', '-m', 'test: create scope fixture');
+    const headSha = await runGit(root, 'rev-parse', 'HEAD');
+    const scope = await runScopeScript(root, 'not-a-revision', headSha);
+
+    expect(scope).toContain('required=true');
+  } finally {
+    await rm(root, { force: true, recursive: true });
+  }
+});
+
 async function expectScopeForChange(
   name: string,
   change: (root: string) => Promise<void>,
@@ -90,9 +109,11 @@ async function runGit(root: string, ...arguments_: string[]): Promise<string> {
 }
 
 async function runScopeScript(root: string, baseSha: string, headSha: string): Promise<string> {
+  const { GITHUB_OUTPUT: _githubOutput, ...environment } = Bun.env;
   const process = Bun.spawn({
     cmd: ['bash', scopeScriptPath, baseSha, headSha],
     cwd: root,
+    env: environment,
     stderr: 'pipe',
     stdout: 'pipe',
   });
