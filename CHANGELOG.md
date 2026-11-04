@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.0.15
+
+### Patch Changes
+
+- e64a5b5: Update dependencies: `@ankhorage/zora`.
+
 ## 8.0.14
 
 ### Patch Changes
