@@ -308,7 +308,7 @@
     "@ankhorage/supabase": "^0.5.14",
     "@ankhorage/storage": "^0.2.2",
     "@ankhorage/storage-supabase": "^1.0.0",
-    "@ankhorage/surface": "^9.4.13",
+    "@ankhorage/surface": "^9.4.14",
     "@ankhorage/secrets": "^0.3.1",
     "@ankhorage/secrets-supabase-vault": "^1.0.0",
     "@ankhorage/templates": "^12.4.6",
