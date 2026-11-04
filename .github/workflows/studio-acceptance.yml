@@ -89,14 +89,16 @@ jobs:
         with:
           bun-version: '1.4.2'
 
+      - name: Cache Bun downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock', 'apps/studio/bun.lock') }}
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: bun
-          cache-dependency-path: |
-            bun.lock
-            apps/studio/bun.lock
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -136,12 +138,16 @@ jobs:
         with:
           bun-version: '1.4.2'
 
+      - name: Cache Bun downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: bun
-          cache-dependency-path: bun.lock
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -172,12 +178,16 @@ jobs:
         with:
           bun-version: '1.4.2'
 
+      - name: Cache Bun downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: bun
-          cache-dependency-path: bun.lock
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -208,12 +218,16 @@ jobs:
         with:
           bun-version: '1.4.2'
 
+      - name: Cache Bun downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: bun
-          cache-dependency-path: bun.lock
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -244,12 +258,16 @@ jobs:
         with:
           bun-version: '1.4.2'
 
+      - name: Cache Bun downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: bun
-          cache-dependency-path: bun.lock
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -280,12 +298,16 @@ jobs:
         with:
           bun-version: '1.4.2'
 
+      - name: Cache Bun downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: bun
-          cache-dependency-path: bun.lock
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
