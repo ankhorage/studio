@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.0.16
+
+### Patch Changes
+
+- f84c8f0: Update dependencies: `@ankhorage/templates`.
+
 ## 8.0.15
 
 ### Patch Changes
