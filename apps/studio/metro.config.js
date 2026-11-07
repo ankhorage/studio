@@ -1,21 +1,17 @@
 const path = require('node:path');
 const { getDefaultConfig } = require('expo/metro-config');
 
+const standardPdfjsModulePath = require.resolve('pdfjs-dist/build/pdf.mjs');
+const legacyPdfjsModulePath = require.resolve('pdfjs-dist/legacy/build/pdf.mjs');
+
 const config = getDefaultConfig(__dirname);
 config.resolver.emptyModulePath = path.resolve(__dirname, 'metro.empty-module.js');
 config.resolver.resolveRequest = (context, moduleName, platform) => {
-  if (
-    moduleName === 'pdfjs-dist/webpack.mjs' ||
-    moduleName === 'pdfjs-dist/legacy/webpack.mjs'
-  ) {
-    return {
-      filePath: require.resolve(
-        moduleName === 'pdfjs-dist/legacy/webpack.mjs'
-          ? 'pdfjs-dist/legacy/build/pdf.mjs'
-          : 'pdfjs-dist/build/pdf.mjs',
-      ),
-      type: 'sourceFile',
-    };
+  if (moduleName === 'pdfjs-dist/webpack.mjs') {
+    return { filePath: standardPdfjsModulePath, type: 'sourceFile' };
+  }
+  if (moduleName === 'pdfjs-dist/legacy/webpack.mjs') {
+    return { filePath: legacyPdfjsModulePath, type: 'sourceFile' };
   }
   return context.resolveRequest(context, moduleName, platform);
 };
