@@ -13,6 +13,7 @@ export default {
           'src/core/StudioContext.ts',
           'src/core/StudioProvider.ts',
           'src/core/studioPackageBoundary.ts',
+          'src/designFacts.ts',
           'src/features/administration/adapters/inbound/StudioAdminAccessGate.tsx',
           'src/features/administration/adapters/inbound/useStudioAdminWorkspace.ts',
           'src/runtime/index.ts',
