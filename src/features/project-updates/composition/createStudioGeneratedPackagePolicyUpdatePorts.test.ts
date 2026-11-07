@@ -21,7 +21,7 @@ import { createStudioGeneratedPackagePolicyUpdatePorts } from './createStudioGen
 test('reconciles an existing generated app to the current Studio owner policy without regeneration', async () => {
   const rootPath = await mkdtemp(path.join(tmpdir(), 'studio-generated-update-'));
   const policy = getGeneratedPackagePolicy();
-  const currentGeneratedStudioVersion = policy.dependencies.studio.slice(1);
+  const currentGeneratedStudioVersion = policy.ownerVersion;
   const current = applyGeneratedPackagePolicy(
     {
       packageManager: policy.packageManager,
