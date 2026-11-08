@@ -179,7 +179,7 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Validate standalone Studio registry consumer
+      - name: Validate standalone Studio packed PR candidate
         run: bun run test:acceptance:expo57-studio-standalone
 
   generated-app:

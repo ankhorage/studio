@@ -56,6 +56,28 @@ test('accepts newer compatible registry patches installed and locked inside the 
   });
 });
 
+test('requires the published acceptance fixture to install its exact Studio version', async () => {
+  const repositoryRoot = process.cwd();
+  const fixtureRoot = await createFixtureRootAsync();
+  const publishedVersion = '8.0.18';
+  await createExpo57StudioStandaloneFixtureAsync({
+    fixtureRoot,
+    repositoryRoot,
+    studioSpecifier: publishedVersion,
+  });
+  await writeInstalledGraphAsync(fixtureRoot, repositoryRoot, {
+    ...(await createCompatibleInstalledVersionsAsync(repositoryRoot)),
+    '@ankhorage/studio': publishedVersion,
+  });
+
+  await assertExpo57StudioStandaloneContractAsync({
+    fixtureRoot,
+    installed: true,
+    repositoryRoot,
+    studioSource: { kind: 'published', version: publishedVersion },
+  });
+});
+
 test('rejects a registry package below the declared fixture range', async () => {
   const repositoryRoot = process.cwd();
   const fixtureRoot = await createFixtureRootAsync();

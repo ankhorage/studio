@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { lstat, readdir, readFile, realpath, stat } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import path from 'node:path';
@@ -16,6 +17,15 @@ const REQUIRED_ROUTE_EVIDENCE = [
   '/projects/[projectId]',
 ] as const;
 
+export type StudioStandalonePackageSource =
+  | {
+      readonly integrity: string;
+      readonly kind: 'packed';
+      readonly tarballPath: string;
+      readonly version: string;
+    }
+  | { readonly kind: 'published'; readonly version: string };
+
 /***
  * Verify that a generated standalone Studio fixture is checkout-independent, declares canonical release ranges and, once installed, resolves the expected registry owner graph and router evidence.
  */
@@ -23,6 +33,7 @@ export async function assertExpo57StudioStandaloneContractAsync(options: {
   readonly fixtureRoot: string;
   readonly installed: boolean;
   readonly repositoryRoot: string;
+  readonly studioSource?: StudioStandalonePackageSource;
 }): Promise<void> {
   const [fixtureRoot, repositoryRoot] = await Promise.all([
     realpath(options.fixtureRoot),
@@ -35,6 +46,13 @@ export async function assertExpo57StudioStandaloneContractAsync(options: {
   const packageJson = JSON.parse(
     await readFile(path.join(fixtureRoot, 'package.json'), 'utf8'),
   ) as StandalonePackageJson;
+  await assertStudioSourceAsync(
+    packageJson,
+    options.studioSource,
+    fixtureRoot,
+    options.installed,
+    repositoryRoot,
+  );
   if (packageJson.workspaces !== undefined) {
     throw new Error('Standalone Studio fixture must not declare workspaces.');
   }
@@ -55,7 +73,7 @@ export async function assertExpo57StudioStandaloneContractAsync(options: {
       `Standalone Studio fixture declares expo-font ${String(packageJson.dependencies?.['expo-font'])} instead of ${EXPO_FONT_RANGE}.`,
     );
   }
-  assertRegistryDependencyRanges(packageJson);
+  assertRegistryDependencyRanges(packageJson, options.studioSource);
 
   if (packageJson.scripts?.['knip:check'] !== 'ankhorage-knip') {
     throw new Error('Standalone Studio fixture does not own the canonical Knip command.');
@@ -93,7 +111,48 @@ export async function assertExpo57StudioStandaloneContractAsync(options: {
   }
   await assertCopiedFilesAreIndependentAsync(fixtureRoot, repositoryRoot);
   if (options.installed) {
-    await assertInstalledContractAsync(fixtureRoot, packageJson, requiredReleaseRanges);
+    await assertInstalledContractAsync(
+      fixtureRoot,
+      packageJson,
+      requiredReleaseRanges,
+      options.studioSource,
+    );
+  }
+}
+
+/*** Verify that a fixture-only source is either an exact published version or an external packed artifact. */
+async function assertStudioSourceAsync(
+  packageJson: StandalonePackageJson,
+  studioSource: StudioStandalonePackageSource | undefined,
+  fixtureRoot: string,
+  installed: boolean,
+  repositoryRoot: string,
+): Promise<void> {
+  if (studioSource === undefined) return;
+  const studioSpecifier = requireDependencyRange(packageJson, 'dependencies', '@ankhorage/studio');
+  if (studioSource.kind === 'published') {
+    if (studioSpecifier !== studioSource.version) {
+      throw new Error(
+        `Published Studio acceptance requires exact ${studioSource.version}, received ${studioSpecifier}.`,
+      );
+    }
+    return;
+  }
+  const tarballPath = await realpath(studioSource.tarballPath);
+  if (isWithin(tarballPath, repositoryRoot) || isWithin(tarballPath, fixtureRoot)) {
+    throw new Error(
+      'Packed Studio candidate artifact must be outside the checkout and fixture root.',
+    );
+  }
+  const expectedSpecifier = installed ? `^${studioSource.version}` : `file:${tarballPath}`;
+  if (studioSpecifier !== expectedSpecifier) {
+    throw new Error('Packed Studio acceptance does not install the exact candidate tarball.');
+  }
+  const integrity = `sha512-${createHash('sha512')
+    .update(await readFile(tarballPath))
+    .digest('base64')}`;
+  if (integrity !== studioSource.integrity) {
+    throw new Error('Packed Studio candidate artifact integrity changed during acceptance.');
   }
 }
 
@@ -122,26 +181,43 @@ async function assertInstalledContractAsync(
   fixtureRoot: string,
   packageJson: StandalonePackageJson,
   requiredReleaseRanges: readonly ReleaseRequirement[],
+  studioSource: StudioStandalonePackageSource | undefined,
 ): Promise<void> {
   const lockfile = await readFile(path.join(fixtureRoot, 'bun.lock'), 'utf8');
   for (const requirement of requiredReleaseRanges) {
+    if (requirement.packageName === '@ankhorage/studio' && studioSource?.kind === 'packed') {
+      await assertInstalledPackedStudioAsync(fixtureRoot, studioSource);
+      continue;
+    }
     const declaredRange = packageJson[requirement.dependencyGroup]?.[requirement.packageName];
     if (declaredRange === undefined) {
       throw new Error(`Standalone Studio fixture does not declare ${requirement.packageName}.`);
     }
-    await assertInstalledRegistryPackageAsync({
+    const installedVersion = await assertInstalledRegistryPackageAsync({
       installationRoot: fixtureRoot,
       lockfile,
       packageName: requirement.packageName,
-      range: declaredRange,
+      range:
+        requirement.packageName === '@ankhorage/studio' && studioSource?.kind === 'published'
+          ? `^${studioSource.version}`
+          : declaredRange,
     });
+    if (
+      requirement.packageName === '@ankhorage/studio' &&
+      studioSource?.kind === 'published' &&
+      installedVersion !== studioSource.version
+    ) {
+      throw new Error(
+        `Published Studio acceptance installed ${installedVersion} instead of exact ${studioSource.version}.`,
+      );
+    }
   }
 
   await assertReactNativeOwnerGraphAsync({
     installationRoot: fixtureRoot,
     reactNativeVersion: requireDependencyRange(packageJson, 'dependencies', 'react-native'),
     requiredOwnerRanges: {
-      '@ankhorage/studio': requireDependencyRange(packageJson, 'dependencies', '@ankhorage/studio'),
+      '@ankhorage/studio': resolveStudioOwnerRange(packageJson, studioSource),
       ...(await resolveInstalledStudioOwnerRangesAsync(fixtureRoot)),
       '@ankhorage/expo-runtime': requireDependencyRange(
         packageJson,
@@ -164,6 +240,44 @@ async function assertInstalledContractAsync(
       }
     }
   }
+}
+
+/*** Prove the installed Studio package has the packed candidate identity and fixture-owned provenance. */
+async function assertInstalledPackedStudioAsync(
+  fixtureRoot: string,
+  studioSource: Extract<StudioStandalonePackageSource, { readonly kind: 'packed' }>,
+): Promise<void> {
+  const studioPackagePath = path.join(
+    fixtureRoot,
+    'node_modules',
+    '@ankhorage',
+    'studio',
+    'package.json',
+  );
+  const studioPackage = await readPackageJsonAsync(studioPackagePath);
+  if (
+    studioPackage.name !== '@ankhorage/studio' ||
+    studioPackage.version !== studioSource.version
+  ) {
+    throw new Error('Packed Studio candidate identity does not match the installed package.');
+  }
+  const [installedPackagePath, installedModulesPath] = await Promise.all([
+    realpath(path.dirname(studioPackagePath)),
+    realpath(path.join(fixtureRoot, 'node_modules')),
+  ]);
+  if (!isWithin(installedPackagePath, installedModulesPath)) {
+    throw new Error('Packed Studio candidate did not resolve from fixture-owned node_modules.');
+  }
+}
+
+/*** Keep the owner-graph semver proof meaningful when a fixture replaces its normal Studio range with a tarball. */
+function resolveStudioOwnerRange(
+  packageJson: StandalonePackageJson,
+  studioSource: StudioStandalonePackageSource | undefined,
+): string {
+  return studioSource?.kind === 'packed'
+    ? `^${studioSource.version}`
+    : requireDependencyRange(packageJson, 'dependencies', '@ankhorage/studio');
 }
 
 /*** Resolve Runtime, ZORA and Surface ranges from the installed registry Studio dependency graph. */
@@ -201,12 +315,19 @@ async function resolveInstalledStudioOwnerRangesAsync(
 }
 
 /*** Assert that fixture dependency ranges resolve from the registry and scripts do not reach outside the standalone package root. */
-function assertRegistryDependencyRanges(packageJson: StandalonePackageJson): void {
+function assertRegistryDependencyRanges(
+  packageJson: StandalonePackageJson,
+  studioSource: StudioStandalonePackageSource | undefined,
+): void {
   for (const [name, version] of Object.entries({
     ...packageJson.dependencies,
     ...packageJson.devDependencies,
   })) {
-    if (version === 'latest' || FORBIDDEN_DEPENDENCY_PREFIX.test(version)) {
+    const isPackedStudioCandidate = name === '@ankhorage/studio' && studioSource?.kind === 'packed';
+    if (
+      !isPackedStudioCandidate &&
+      (version === 'latest' || FORBIDDEN_DEPENDENCY_PREFIX.test(version))
+    ) {
       throw new Error(`Standalone Studio dependency ${name} uses forbidden range ${version}.`);
     }
   }
@@ -312,6 +433,8 @@ interface ReleaseRequirement {
 }
 
 interface StandalonePackageJson {
+  readonly name?: string;
+  readonly version?: string;
   readonly dependencies?: Readonly<Record<string, string>>;
   readonly devDependencies?: Readonly<Record<string, string>>;
   readonly scripts?: Readonly<Record<string, string>>;
