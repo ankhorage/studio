@@ -432,6 +432,16 @@
       <small>5 functions</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts">
+      src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts
+      <small>10 functions</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts">
+      src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts
+      <small>1 function</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts">
       src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts
       <small>6 functions</small>
@@ -2163,7 +2173,7 @@
       <div class="summary">
         <div><strong>138</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>634</strong><span class="muted">modules</span></div>
+        <div><strong>638</strong><span class="muted">modules</span></div>
         <div><strong>2</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -2564,6 +2574,11 @@ Run with `bun examples/canvas-drag-payload/basic.ts` after building the package.
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/normalizeExternalApiId.ts</code></p>
     <p><strong>Exports:</strong> <code>deriveExternalApiIdFromUrl</code></p>
+  </article><article class="item" data-search="src/designFacts.ts createStudioDesignFacts createStudioDesignRuleProvider StudioDesignFactsInput StudioRenderedAreaMeasurement">
+    <h3>src/designFacts.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>createStudioDesignFacts</code>, <code>createStudioDesignRuleProvider</code>, <code>StudioDesignFactsInput</code>, <code>StudioRenderedAreaMeasurement</code></p>
   </article><article class="item" data-search="src/externalApiAdministration.test.ts src/deriveExternalApiIdFromUrl.ts src/removeExternalApi.ts">
     <h3>src/externalApiAdministration.test.ts</h3>
     <p class="muted">Referenced module</p>
@@ -2749,6 +2764,21 @@ Run with `bun examples/canvas-drag-payload/basic.ts` after building the package.
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/types/authoring-engine.ts</code></p>
     <p><strong>Exports:</strong> <code>resolveAuthoringUnion</code></p>
+  </article><article class="item" data-search="src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts">
+    <h3>src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts</code>, <code>src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
+  </article><article class="item" data-search="src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts createStudioDesignFacts StudioDesignFactsInput StudioRenderedAreaMeasurement">
+    <h3>src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>createStudioDesignFacts</code>, <code>StudioDesignFactsInput</code>, <code>StudioRenderedAreaMeasurement</code></p>
+  </article><article class="item" data-search="src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts createStudioDesignRuleProvider">
+    <h3>src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>createStudioDesignRuleProvider</code></p>
   </article><article class="item" data-search="src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts">
     <h3>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts</h3>
     <p class="muted">Referenced module</p>
@@ -9678,6 +9708,8 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_deriveExternalApiIdFromUrl_ts[&quot;src/deriveExternalApiIdFromUrl.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_deriveExternalApiIdFromUrl_ts
   module_src_deriveExternalApiIdFromUrl_ts --&gt; module_src_normalizeExternalApiId_ts
+  module_src_designFacts_ts[&quot;src/designFacts.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_designFacts_ts
   module_src_externalApiAdministration_test_ts[&quot;src/externalApiAdministration.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_externalApiAdministration_test_ts
   module_src_externalApiAdministration_test_ts --&gt; module_src_deriveExternalApiIdFromUrl_ts
@@ -9824,6 +9856,14 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_features_authoring_engine_utils_resolveAuthoringUnion_ts[&quot;src/features/authoring-engine/utils/resolveAuthoringUnion.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_features_authoring_engine_utils_resolveAuthoringUnion_ts
   module_src_features_authoring_engine_utils_resolveAuthoringUnion_ts --&gt; module_src_types_authoring_engine_ts
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts --&gt; module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_ts
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts --&gt; module_src_features_design_facts_adapters_inbound_createStudioDesignRuleProvider_ts
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_ts
+  module_src_features_design_facts_adapters_inbound_createStudioDesignRuleProvider_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_features_design_facts_adapters_inbound_createStudioDesignRuleProvider_ts
   module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_test_ts[&quot;src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_test_ts
   module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_test_ts --&gt; module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_ts
@@ -12182,6 +12222,8 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_deriveExternalApiIdFromUrl_ts[&quot;src/deriveExternalApiIdFromUrl.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_deriveExternalApiIdFromUrl_ts
   module_src_deriveExternalApiIdFromUrl_ts --&gt; module_src_normalizeExternalApiId_ts
+  module_src_designFacts_ts[&quot;src/designFacts.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_designFacts_ts
   module_src_externalApiAdministration_test_ts[&quot;src/externalApiAdministration.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_externalApiAdministration_test_ts
   module_src_externalApiAdministration_test_ts --&gt; module_src_deriveExternalApiIdFromUrl_ts
@@ -12328,6 +12370,14 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_features_authoring_engine_utils_resolveAuthoringUnion_ts[&quot;src/features/authoring-engine/utils/resolveAuthoringUnion.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_features_authoring_engine_utils_resolveAuthoringUnion_ts
   module_src_features_authoring_engine_utils_resolveAuthoringUnion_ts --&gt; module_src_types_authoring_engine_ts
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts --&gt; module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_ts
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts --&gt; module_src_features_design_facts_adapters_inbound_createStudioDesignRuleProvider_ts
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_ts
+  module_src_features_design_facts_adapters_inbound_createStudioDesignRuleProvider_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_features_design_facts_adapters_inbound_createStudioDesignRuleProvider_ts
   module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_test_ts[&quot;src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_test_ts
   module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_test_ts --&gt; module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_ts
@@ -14490,6 +14540,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
   module_src_createProjectDeployRequest_ts[&quot;src/createProjectDeployRequest.ts&quot;]
   module_src_deriveExternalApiIdFromUrl_ts[&quot;src/deriveExternalApiIdFromUrl.ts&quot;]
+  module_src_designFacts_ts[&quot;src/designFacts.ts&quot;]
   module_src_externalApiAdministration_test_ts[&quot;src/externalApiAdministration.test.ts&quot;]
   module_src_externalApiApi_ts[&quot;src/externalApiApi.ts&quot;]
   module_src_externalApiAuthoring_public_test_ts[&quot;src/externalApiAuthoring.public.test.ts&quot;]
@@ -14527,6 +14578,9 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_features_authoring_engine_utils_isAuthoringCollectionKeyAllowed_ts[&quot;src/features/authoring-engine/utils/isAuthoringCollectionKeyAllowed.ts&quot;]
   module_src_features_authoring_engine_utils_resolveAuthoringCollectionKey_ts[&quot;src/features/authoring-engine/utils/resolveAuthoringCollectionKey.ts&quot;]
   module_src_features_authoring_engine_utils_resolveAuthoringUnion_ts[&quot;src/features/authoring-engine/utils/resolveAuthoringUnion.ts&quot;]
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts&quot;]
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts&quot;]
+  module_src_features_design_facts_adapters_inbound_createStudioDesignRuleProvider_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts&quot;]
   module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_test_ts[&quot;src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts&quot;]
   module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_ts[&quot;src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts&quot;]
   module_src_features_infrastructure_application_use_cases_initializeProjectLocalInfraNetworking_test_ts[&quot;src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.test.ts&quot;]
@@ -15244,6 +15298,8 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_features_authoring_engine_utils_isAuthoringCollectionKeyAllowed_ts --&gt; module_src_types_authoring_engine_ts
   module_src_features_authoring_engine_utils_resolveAuthoringCollectionKey_ts --&gt; module_src_types_authoring_engine_ts
   module_src_features_authoring_engine_utils_resolveAuthoringUnion_ts --&gt; module_src_types_authoring_engine_ts
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts --&gt; module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_ts
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts --&gt; module_src_features_design_facts_adapters_inbound_createStudioDesignRuleProvider_ts
   module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_test_ts --&gt; module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_ts
   module_src_features_infrastructure_application_use_cases_initializeProjectLocalInfraNetworking_test_ts --&gt; module_src_features_infrastructure_application_use_cases_initializeProjectLocalInfraNetworking_ts
   module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts --&gt; module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_ts
@@ -16357,6 +16413,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
   module_src_createProjectDeployRequest_ts[&quot;src/createProjectDeployRequest.ts&quot;]
   module_src_deriveExternalApiIdFromUrl_ts[&quot;src/deriveExternalApiIdFromUrl.ts&quot;]
+  module_src_designFacts_ts[&quot;src/designFacts.ts&quot;]
   module_src_externalApiAdministration_test_ts[&quot;src/externalApiAdministration.test.ts&quot;]
   module_src_externalApiApi_ts[&quot;src/externalApiApi.ts&quot;]
   module_src_externalApiAuthoring_public_test_ts[&quot;src/externalApiAuthoring.public.test.ts&quot;]
@@ -16394,6 +16451,9 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_features_authoring_engine_utils_isAuthoringCollectionKeyAllowed_ts[&quot;src/features/authoring-engine/utils/isAuthoringCollectionKeyAllowed.ts&quot;]
   module_src_features_authoring_engine_utils_resolveAuthoringCollectionKey_ts[&quot;src/features/authoring-engine/utils/resolveAuthoringCollectionKey.ts&quot;]
   module_src_features_authoring_engine_utils_resolveAuthoringUnion_ts[&quot;src/features/authoring-engine/utils/resolveAuthoringUnion.ts&quot;]
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts&quot;]
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts&quot;]
+  module_src_features_design_facts_adapters_inbound_createStudioDesignRuleProvider_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts&quot;]
   module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_test_ts[&quot;src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts&quot;]
   module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_ts[&quot;src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts&quot;]
   module_src_features_infrastructure_application_use_cases_initializeProjectLocalInfraNetworking_test_ts[&quot;src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.test.ts&quot;]
@@ -17111,6 +17171,8 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_features_authoring_engine_utils_isAuthoringCollectionKeyAllowed_ts --&gt; module_src_types_authoring_engine_ts
   module_src_features_authoring_engine_utils_resolveAuthoringCollectionKey_ts --&gt; module_src_types_authoring_engine_ts
   module_src_features_authoring_engine_utils_resolveAuthoringUnion_ts --&gt; module_src_types_authoring_engine_ts
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts --&gt; module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_ts
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts --&gt; module_src_features_design_facts_adapters_inbound_createStudioDesignRuleProvider_ts
   module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_test_ts --&gt; module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_ts
   module_src_features_infrastructure_application_use_cases_initializeProjectLocalInfraNetworking_test_ts --&gt; module_src_features_infrastructure_application_use_cases_initializeProjectLocalInfraNetworking_ts
   module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts --&gt; module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_ts
@@ -18226,6 +18288,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
   module_src_createProjectDeployRequest_ts[&quot;src/createProjectDeployRequest.ts&quot;]
   module_src_deriveExternalApiIdFromUrl_ts[&quot;src/deriveExternalApiIdFromUrl.ts&quot;]
+  module_src_designFacts_ts[&quot;src/designFacts.ts&quot;]
   module_src_externalApiAdministration_test_ts[&quot;src/externalApiAdministration.test.ts&quot;]
   module_src_externalApiApi_ts[&quot;src/externalApiApi.ts&quot;]
   module_src_externalApiAuthoring_public_test_ts[&quot;src/externalApiAuthoring.public.test.ts&quot;]
@@ -18263,6 +18326,9 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_features_authoring_engine_utils_isAuthoringCollectionKeyAllowed_ts[&quot;src/features/authoring-engine/utils/isAuthoringCollectionKeyAllowed.ts&quot;]
   module_src_features_authoring_engine_utils_resolveAuthoringCollectionKey_ts[&quot;src/features/authoring-engine/utils/resolveAuthoringCollectionKey.ts&quot;]
   module_src_features_authoring_engine_utils_resolveAuthoringUnion_ts[&quot;src/features/authoring-engine/utils/resolveAuthoringUnion.ts&quot;]
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts&quot;]
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts&quot;]
+  module_src_features_design_facts_adapters_inbound_createStudioDesignRuleProvider_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts&quot;]
   module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_test_ts[&quot;src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts&quot;]
   module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_ts[&quot;src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts&quot;]
   module_src_features_infrastructure_application_use_cases_initializeProjectLocalInfraNetworking_test_ts[&quot;src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.test.ts&quot;]
@@ -19237,6 +19303,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
   module_src_createProjectDeployRequest_ts[&quot;src/createProjectDeployRequest.ts&quot;]
   module_src_deriveExternalApiIdFromUrl_ts[&quot;src/deriveExternalApiIdFromUrl.ts&quot;]
+  module_src_designFacts_ts[&quot;src/designFacts.ts&quot;]
   module_src_externalApiAdministration_test_ts[&quot;src/externalApiAdministration.test.ts&quot;]
   module_src_externalApiApi_ts[&quot;src/externalApiApi.ts&quot;]
   module_src_externalApiAuthoring_public_test_ts[&quot;src/externalApiAuthoring.public.test.ts&quot;]
@@ -19274,6 +19341,9 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_features_authoring_engine_utils_isAuthoringCollectionKeyAllowed_ts[&quot;src/features/authoring-engine/utils/isAuthoringCollectionKeyAllowed.ts&quot;]
   module_src_features_authoring_engine_utils_resolveAuthoringCollectionKey_ts[&quot;src/features/authoring-engine/utils/resolveAuthoringCollectionKey.ts&quot;]
   module_src_features_authoring_engine_utils_resolveAuthoringUnion_ts[&quot;src/features/authoring-engine/utils/resolveAuthoringUnion.ts&quot;]
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_test_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts&quot;]
+  module_src_features_design_facts_adapters_inbound_createStudioDesignFacts_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts&quot;]
+  module_src_features_design_facts_adapters_inbound_createStudioDesignRuleProvider_ts[&quot;src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts&quot;]
   module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_test_ts[&quot;src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts&quot;]
   module_src_features_infrastructure_adapters_outbound_createStudioInfraAdapterPackageResolver_ts[&quot;src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts&quot;]
   module_src_features_infrastructure_application_use_cases_initializeProjectLocalInfraNetworking_test_ts[&quot;src/features/infrastructure/application/use-cases/initializeProjectLocalInfraNetworking.test.ts&quot;]
@@ -22867,6 +22937,71 @@ Utility candidate: @ankhorage/utility/http</p>
     <h3>invalidValue</h3>
     <p class="muted"><code>src/features/authoring-engine/utils/resolveAuthoringUnion.ts:112:1</code></p>
     <p>Create an invalid authored-union value result.</p>
+    
+  </article>
+    </section>
+  </section><section id="view-src-features-design-facts-adapters-inbound-createstudiodesignfacts-ts" class="view" data-view="src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts" hidden>
+    <section class="panel">
+      <h2>src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts</h2>
+      <article class="item" data-search="createStudioDesignFacts src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts Build portable Design facts only from independently measured Studio render evidence.">
+    <h3>createStudioDesignFacts</h3>
+    <p class="muted"><code>src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts:43:1</code></p>
+    <p>Build portable Design facts only from independently measured Studio render evidence.</p>
+    
+  </article><article class="item" data-search="createScope src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts Create the exact serializable Rules scope for one Studio screen.">
+    <h3>createScope</h3>
+    <p class="muted"><code>src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts:57:1</code></p>
+    <p>Create the exact serializable Rules scope for one Studio screen.</p>
+    
+  </article><article class="item" data-search="createProvenance src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts Retain Studio source provenance without turning authoring declarations into paint evidence.">
+    <h3>createProvenance</h3>
+    <p class="muted"><code>src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts:73:1</code></p>
+    <p>Retain Studio source provenance without turning authoring declarations into paint evidence.</p>
+    
+  </article><article class="item" data-search="availableFact src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts Create one available fact after preserving the exclusive role-pixel measurement.">
+    <h3>availableFact</h3>
+    <p class="muted"><code>src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts:82:1</code></p>
+    <p>Create one available fact after preserving the exclusive role-pixel measurement.</p>
+    
+  </article><article class="item" data-search="missingFact src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts Represent unavailable rendered evidence explicitly so Rules cannot infer a pass.">
+    <h3>missingFact</h3>
+    <p class="muted"><code>src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts:112:1</code></p>
+    <p>Represent unavailable rendered evidence explicitly so Rules cannot infer a pass.</p>
+    
+  </article><article class="item" data-search="isCompleteMeasurement src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts Accept only non-overlapping, complete renderer pixel counters.">
+    <h3>isCompleteMeasurement</h3>
+    <p class="muted"><code>src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts:138:1</code></p>
+    <p>Accept only non-overlapping, complete renderer pixel counters.</p>
+    
+  </article><article class="item" data-search="contentHash src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts Keep content hashes deterministic across equivalent serializable fact envelopes.">
+    <h3>contentHash</h3>
+    <p class="muted"><code>src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts:162:1</code></p>
+    <p>Keep content hashes deterministic across equivalent serializable fact envelopes.</p>
+    
+  </article><article class="item" data-search="sortValue src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts Sort object keys recursively while retaining semantic array order.">
+    <h3>sortValue</h3>
+    <p class="muted"><code>src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts:169:1</code></p>
+    <p>Sort object keys recursively while retaining semantic array order.</p>
+    
+  </article><article class="item" data-search="nonEmpty src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts Require a non-empty stable scoped identifier.">
+    <h3>nonEmpty</h3>
+    <p class="muted"><code>src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts:183:1</code></p>
+    <p>Require a non-empty stable scoped identifier.</p>
+    
+  </article><article class="item" data-search="nonNegativeInteger src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts Restrict rendered area counters to portable non-negative integer pixels.">
+    <h3>nonNegativeInteger</h3>
+    <p class="muted"><code>src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts:188:1</code></p>
+    <p>Restrict rendered area counters to portable non-negative integer pixels.</p>
+    
+  </article>
+    </section>
+  </section><section id="view-src-features-design-facts-adapters-inbound-createstudiodesignruleprovider-ts" class="view" data-view="src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts" hidden>
+    <section class="panel">
+      <h2>src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts</h2>
+      <article class="item" data-search="createStudioDesignRuleProvider src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts Create Studio&#39;s public Design provider contribution and select its canonical 60-30-10 profile.">
+    <h3>createStudioDesignRuleProvider</h3>
+    <p class="muted"><code>src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts:5:1</code></p>
+    <p>Create Studio&#39;s public Design provider contribution and select its canonical 60-30-10 profile.</p>
     
   </article>
     </section>

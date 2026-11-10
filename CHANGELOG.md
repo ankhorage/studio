@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.0
+
+### Minor Changes
+
+- 1e21ffc: Expose normalized renderer-backed Design facts and the canonical design-rules provider contribution.
+
 ## 8.0.20
 
 ### Patch Changes

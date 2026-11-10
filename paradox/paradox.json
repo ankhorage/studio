@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v8.0.20",
+      "value": "v8.1.0",
       "color": "cb3837"
     },
     {
@@ -886,6 +886,17 @@
       ]
     },
     {
+      "path": "src/designFacts.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createStudioDesignFacts",
+        "createStudioDesignRuleProvider",
+        "StudioDesignFactsInput",
+        "StudioRenderedAreaMeasurement"
+      ]
+    },
+    {
       "path": "src/externalApiAdministration.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1282,6 +1293,33 @@
       ],
       "exports": [
         "resolveAuthoringUnion"
+      ]
+    },
+    {
+      "path": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createStudioDesignFacts",
+        "StudioDesignFactsInput",
+        "StudioRenderedAreaMeasurement"
+      ]
+    },
+    {
+      "path": "src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createStudioDesignRuleProvider"
       ]
     },
     {
@@ -16427,6 +16465,127 @@
       "sourceLocation": {
         "filePath": "src/features/authoring-engine/utils/resolveAuthoringUnion.ts",
         "line": 112,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioDesignFacts",
+      "description": "Build portable Design facts only from independently measured Studio render evidence.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "line": 43,
+        "column": 1
+      }
+    },
+    {
+      "name": "createScope",
+      "description": "Create the exact serializable Rules scope for one Studio screen.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "line": 57,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProvenance",
+      "description": "Retain Studio source provenance without turning authoring declarations into paint evidence.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "line": 73,
+        "column": 1
+      }
+    },
+    {
+      "name": "availableFact",
+      "description": "Create one available fact after preserving the exclusive role-pixel measurement.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "line": 82,
+        "column": 1
+      }
+    },
+    {
+      "name": "missingFact",
+      "description": "Represent unavailable rendered evidence explicitly so Rules cannot infer a pass.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "line": 112,
+        "column": 1
+      }
+    },
+    {
+      "name": "isCompleteMeasurement",
+      "description": "Accept only non-overlapping, complete renderer pixel counters.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "line": 138,
+        "column": 1
+      }
+    },
+    {
+      "name": "contentHash",
+      "description": "Keep content hashes deterministic across equivalent serializable fact envelopes.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "line": 162,
+        "column": 1
+      }
+    },
+    {
+      "name": "sortValue",
+      "description": "Sort object keys recursively while retaining semantic array order.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "line": 169,
+        "column": 1
+      }
+    },
+    {
+      "name": "nonEmpty",
+      "description": "Require a non-empty stable scoped identifier.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "line": 183,
+        "column": 1
+      }
+    },
+    {
+      "name": "nonNegativeInteger",
+      "description": "Restrict rendered area counters to portable non-negative integer pixels.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "line": 188,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioDesignRuleProvider",
+      "description": "Create Studio's public Design provider contribution and select its canonical 60-30-10 profile.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts",
+        "line": 5,
         "column": 1
       }
     },
@@ -33569,6 +33728,16 @@
         "sourcePath": "src/deriveExternalApiIdFromUrl.ts"
       },
       {
+        "fromPath": "src/designFacts.ts",
+        "toPath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "sourcePath": "src/designFacts.ts"
+      },
+      {
+        "fromPath": "src/designFacts.ts",
+        "toPath": "src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts",
+        "sourcePath": "src/designFacts.ts"
+      },
+      {
         "fromPath": "src/externalApiAdministration.test.ts",
         "toPath": "src/deriveExternalApiIdFromUrl.ts",
         "sourcePath": "src/externalApiAdministration.test.ts"
@@ -39107,6 +39276,16 @@
         "fromPath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts",
         "toPath": "src/features/authoring-engine/utils/resolveAuthoringUnion.ts",
         "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
+      },
+      {
+        "fromPath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts",
+        "toPath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts"
+      },
+      {
+        "fromPath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts",
+        "toPath": "src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts"
       },
       {
         "fromPath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
@@ -55041,6 +55220,12 @@
       },
       {
         "fromSymbol": "test/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "test/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "test/smoke/expo57StudioStandaloneFixture.test.ts",
         "toSymbol": "createVersionBelowRange",
         "callExpression": "createVersionBelowRange",
         "sourcePath": "test/smoke/expo57StudioStandaloneFixture.test.ts"
@@ -55049,12 +55234,6 @@
         "fromSymbol": "test/smoke/expo57StudioStandaloneFixture.test.ts",
         "toSymbol": "getGeneratedPackagePolicy",
         "callExpression": "getGeneratedPackagePolicy",
-        "sourcePath": "test/smoke/expo57StudioStandaloneFixture.test.ts"
-      },
-      {
-        "fromSymbol": "test/smoke/expo57StudioStandaloneFixture.test.ts",
-        "toSymbol": "writeFile",
-        "callExpression": "writeFile",
         "sourcePath": "test/smoke/expo57StudioStandaloneFixture.test.ts"
       },
       {
@@ -57609,8 +57788,8 @@
       },
       {
         "fromSymbol": "runExpo57StudioStandaloneAcceptance",
-        "toSymbol": "createCandidateLockfileAsync",
-        "callExpression": "createCandidateLockfileAsync",
+        "toSymbol": "createFixtureLockfileAsync",
+        "callExpression": "createFixtureLockfileAsync",
         "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
       },
       {
@@ -57623,6 +57802,12 @@
         "fromSymbol": "runExpo57StudioStandaloneAcceptance",
         "toSymbol": "createLockfileAndInstallAsync",
         "callExpression": "createLockfileAndInstallAsync",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "restorePublishedConsumerRangeAsync",
+        "callExpression": "restorePublishedConsumerRangeAsync",
         "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
       },
       {
@@ -57704,15 +57889,27 @@
         "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
       },
       {
-        "fromSymbol": "createCandidateLockfileAsync",
+        "fromSymbol": "createFixtureLockfileAsync",
         "toSymbol": "runAcceptanceCommandAsync",
         "callExpression": "runAcceptanceCommandAsync",
         "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
       },
       {
-        "fromSymbol": "createCandidateLockfileAsync",
+        "fromSymbol": "createFixtureLockfileAsync",
         "toSymbol": "createCommandEnvironment",
         "callExpression": "createCommandEnvironment",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "restorePublishedConsumerRangeAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "restorePublishedConsumerRangeAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
         "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
       },
       {
@@ -75462,6 +75659,126 @@
         "toSymbol": "orderedListInvalidValue",
         "callExpression": "orderedListInvalidValue",
         "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts",
+        "toSymbol": "createStudioDesignFacts",
+        "callExpression": "createStudioDesignFacts",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts",
+        "toSymbol": "createStudioDesignRuleProvider",
+        "callExpression": "createStudioDesignRuleProvider",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts"
+      },
+      {
+        "fromSymbol": "createStudioDesignFacts",
+        "toSymbol": "createScope",
+        "callExpression": "createScope",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts"
+      },
+      {
+        "fromSymbol": "createStudioDesignFacts",
+        "toSymbol": "createProvenance",
+        "callExpression": "createProvenance",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts"
+      },
+      {
+        "fromSymbol": "createStudioDesignFacts",
+        "toSymbol": "missingFact",
+        "callExpression": "missingFact",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "toSymbol": "isCompleteMeasurement",
+        "callExpression": "isCompleteMeasurement",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "toSymbol": "availableFact",
+        "callExpression": "availableFact",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "toSymbol": "missingFact",
+        "callExpression": "missingFact",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts"
+      },
+      {
+        "fromSymbol": "availableFact",
+        "toSymbol": "contentHash",
+        "callExpression": "contentHash",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts"
+      },
+      {
+        "fromSymbol": "missingFact",
+        "toSymbol": "contentHash",
+        "callExpression": "contentHash",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts"
+      },
+      {
+        "fromSymbol": "isCompleteMeasurement",
+        "toSymbol": "nonEmpty",
+        "callExpression": "nonEmpty",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts"
+      },
+      {
+        "fromSymbol": "isCompleteMeasurement",
+        "toSymbol": "nonNegativeInteger",
+        "callExpression": "nonNegativeInteger",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts"
+      },
+      {
+        "fromSymbol": "contentHash",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts"
+      },
+      {
+        "fromSymbol": "contentHash",
+        "toSymbol": "sortValue",
+        "callExpression": "sortValue",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "toSymbol": "sortValue",
+        "callExpression": "sortValue",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts"
+      },
+      {
+        "fromSymbol": "createStudioDesignRuleProvider",
+        "toSymbol": "selectDesignRuleProfile",
+        "callExpression": "selectDesignRuleProfile",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts"
+      },
+      {
+        "fromSymbol": "createStudioDesignRuleProvider",
+        "toSymbol": "createDesignRuleProvider",
+        "callExpression": "createDesignRuleProvider",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts"
       },
       {
         "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
