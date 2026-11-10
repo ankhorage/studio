@@ -1,5 +1,17 @@
 # @ankhorage/studio
 
+## 8.0.20
+
+### Patch Changes
+
+- 8837e47: Update dependencies: `@ankhorage/orchestrator-module-expo-google-fonts`, `@ankhorage/templates`, `@ankhorage/zora`.
+
+## 8.0.19
+
+### Patch Changes
+
+- 0ac9443: Align generated Expo 57 consumers with the released Expo Runtime platform policy and ZORA 26 Reader-free runtime boundary.
+
 ## 8.0.18
 
 ### Patch Changes

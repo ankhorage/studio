@@ -1,4 +1,4 @@
-import type { UiComponentMetaRegistry, UiNode } from '@ankhorage/contracts';
+import type { UiComponentBindingMeta, UiNode } from '@ankhorage/contracts';
 import { mapRecordEntries } from '@ankhorage/utility/collection';
 
 import type {
@@ -6,12 +6,16 @@ import type {
   StudioBindablePropOption,
 } from './bindingAuthoringContracts';
 
+type BindableComponentMetaRegistry = Readonly<
+  Record<string, { readonly bindings?: UiComponentBindingMeta }>
+>;
+
 /***
  * Convert a component's bindable prop metadata record into labeled authoring options.
  */
 export function resolveStudioBindableProps(
   node: UiNode,
-  registry: UiComponentMetaRegistry,
+  registry: BindableComponentMetaRegistry,
 ): readonly StudioBindablePropOption[] {
   const props = registry[node.type]?.bindings?.props ?? {};
 
@@ -27,7 +31,7 @@ export function resolveStudioBindableProps(
  */
 export function resolveStudioBindableEvents(
   node: UiNode,
-  registry: UiComponentMetaRegistry,
+  registry: BindableComponentMetaRegistry,
 ): readonly StudioBindableEventOption[] {
   const events = registry[node.type]?.bindings?.events ?? {};
 

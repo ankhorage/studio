@@ -19,7 +19,12 @@ if (
 ) {
   fail(`Bun toolchain is ${String(packageManager)}; expected a pinned bun@x.y.z version.`);
 }
-if (!SEMVER_PATTERNS.caret.test(packageJson.dependencies?.['@ankhorage/studio'] ?? '')) {
+const studioDependency = packageJson.dependencies?.['@ankhorage/studio'];
+const candidateStudioTarball = process.env.STUDIO_CANDIDATE_TARBALL;
+const isVerifiedCandidate =
+  typeof candidateStudioTarball === 'string' &&
+  studioDependency === `file:${candidateStudioTarball}`;
+if (!SEMVER_PATTERNS.caret.test(studioDependency ?? '') && !isVerifiedCandidate) {
   fail('Studio release range must be a pinned caret range.');
 }
 if (!SEMVER_PATTERNS.caret.test(packageJson.dependencies?.['@ankhorage/expo-runtime'] ?? '')) {
@@ -42,7 +47,8 @@ for (const [name, version] of Object.entries({
   if (typeof version !== 'string') fail(`${name} has a non-string dependency range.`);
   if (
     version === 'latest' ||
-    ['file:', 'link:', 'workspace:'].some((prefix) => version.startsWith(prefix))
+    (['file:', 'link:', 'workspace:'].some((prefix) => version.startsWith(prefix)) &&
+      !(name === '@ankhorage/studio' && isVerifiedCandidate))
   ) {
     fail(`${name} uses forbidden standalone dependency range ${version}.`);
   }

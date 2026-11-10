@@ -24,8 +24,31 @@ test('apps/studio exposes the canonical workspace Expo routes', async () => {
 
   for (const [routePath, screenName] of Object.entries(routes)) {
     const source = await readFile(path.join(repoRoot, 'apps/studio', routePath), 'utf8');
-    expect(source).toContain(`export { ${screenName} as default } from '@ankhorage/studio';`);
+    expect(source).toContain(`export { ${screenName} as default } from '@ankhorage/studio/app';`);
+    expect(source).not.toContain("from '@ankhorage/studio';");
   }
+});
+
+test('apps/studio imports its shell from the Reader-free public app entrypoint', async () => {
+  const [appEntry, rootLayout, packageJson] = await Promise.all([
+    readFile(path.join(repoRoot, 'src/app/index.ts'), 'utf8'),
+    readFile(path.join(repoRoot, 'apps/studio/src/app/_layout.tsx'), 'utf8'),
+    readFile(path.join(repoRoot, 'package.json'), 'utf8'),
+  ]);
+
+  expect(rootLayout).toContain("import { StudioApp } from '@ankhorage/studio/app';");
+  expect(rootLayout).not.toContain("from '@ankhorage/studio';");
+  expect(appEntry).not.toContain("from '../root");
+  expect(appEntry).not.toContain('@ankhorage/reader');
+  expect(appEntry).not.toContain('pdfjs-dist');
+  expect(packageJson).toContain('"./app"');
+});
+
+test('apps/studio embeds its configured host API base in the Expo manifest', async () => {
+  const appConfig = await readFile(path.join(repoRoot, 'apps/studio/app.config.ts'), 'utf8');
+
+  expect(appConfig).toContain('extra: {');
+  expect(appConfig).toContain('studioApiBase: process.env.EXPO_PUBLIC_API_URL');
 });
 
 test('apps/studio owns a canonical AppManifest for the Studio workspace app', async () => {

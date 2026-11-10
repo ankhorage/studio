@@ -1,1 +1,1 @@
-export { CreateProjectFromTemplateScreen as default } from '@ankhorage/studio';
+export { CreateProjectFromTemplateScreen as default } from '@ankhorage/studio/app';

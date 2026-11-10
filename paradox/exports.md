@@ -869,30 +869,30 @@ Follow-up: Move node-move policy from `src/index.ts` into the canvas domain.
 
 Kind: `function`
 Module: `src/bindingMetadataModel.ts`
-Source: `src/bindingMetadataModel.ts:28:1`
+Source: `src/bindingMetadataModel.ts:32:1`
 
 Convert a component's bindable event metadata record into labeled authoring options.
 
 ### Signatures
 
-- `(node: UiNode, registry: Readonly<Record<string, import("@ankhorage/contracts").UiComponentMeta>>) => readonly StudioBindableEventOption[]`
+- `(node: UiNode, registry: Readonly<Record<string, { readonly bindings?: UiComponentBindingMeta; }>>) => readonly StudioBindableEventOption[]`
   - node: `UiNode`
-  - registry: `Readonly<Record<string, import("@ankhorage/contracts").UiComponentMeta>>`
+  - registry: `Readonly<Record<string, { readonly bindings?: UiComponentBindingMeta; }>>`
   - returns: `readonly StudioBindableEventOption[]`
 
 ## resolveStudioBindableProps
 
 Kind: `function`
 Module: `src/bindingMetadataModel.ts`
-Source: `src/bindingMetadataModel.ts:12:1`
+Source: `src/bindingMetadataModel.ts:16:1`
 
 Convert a component's bindable prop metadata record into labeled authoring options.
 
 ### Signatures
 
-- `(node: UiNode, registry: Readonly<Record<string, import("@ankhorage/contracts").UiComponentMeta>>) => readonly StudioBindablePropOption[]`
+- `(node: UiNode, registry: Readonly<Record<string, { readonly bindings?: UiComponentBindingMeta; }>>) => readonly StudioBindablePropOption[]`
   - node: `UiNode`
-  - registry: `Readonly<Record<string, import("@ankhorage/contracts").UiComponentMeta>>`
+  - registry: `Readonly<Record<string, { readonly bindings?: UiComponentBindingMeta; }>>`
   - returns: `readonly StudioBindablePropOption[]`
 
 ## resolveStudioSchemaValueMeta

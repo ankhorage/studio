@@ -590,11 +590,50 @@ jobs:
           cat "$registry_evidence" 2>/dev/null || true
           exit 1
 
+  studio-published-acceptance:
+    needs:
+      - release
+      - verify-publication
+    if: >-
+      needs.release.outputs.versioned == 'true' &&
+      needs.verify-publication.result == 'success' &&
+      needs.release.outputs.package_name == '@ankhorage/studio'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout exact released Studio source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release.outputs.release_sha }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install released Studio test harness dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Validate exact published Studio registry consumer
+        env:
+          STUDIO_PUBLISHED_VERSION: ${{ needs.release.outputs.package_version }}
+        run: bun run test:acceptance:expo57-studio-standalone
+
   finalize:
     needs:
       - release
       - verify-publication
-    if: needs.release.outputs.versioned == 'true' && needs.verify-publication.result == 'success'
+      - studio-published-acceptance
+    if: >-
+      needs.release.outputs.versioned == 'true' &&
+      needs.verify-publication.result == 'success' &&
+      (needs.release.outputs.package_name != '@ankhorage/studio' || needs.studio-published-acceptance.result == 'success')
     runs-on: ubuntu-latest
 
     steps:

@@ -56,6 +56,54 @@ test('accepts newer compatible registry patches installed and locked inside the 
   });
 });
 
+test('requires the published acceptance fixture to resolve its exact Studio version before installation', async () => {
+  const repositoryRoot = process.cwd();
+  const fixtureRoot = await createFixtureRootAsync();
+  const publishedVersion = '8.0.18';
+  await createExpo57StudioStandaloneFixtureAsync({
+    fixtureRoot,
+    repositoryRoot,
+    studioSpecifier: publishedVersion,
+  });
+  await assertExpo57StudioStandaloneContractAsync({
+    fixtureRoot,
+    installed: false,
+    repositoryRoot,
+    studioSource: { kind: 'published', version: publishedVersion },
+  });
+});
+
+test('requires the published acceptance fixture to retain its exact installed Studio version', async () => {
+  const repositoryRoot = process.cwd();
+  const fixtureRoot = await createFixtureRootAsync();
+  const publishedVersion = '8.0.18';
+  await createExpo57StudioStandaloneFixtureAsync({
+    fixtureRoot,
+    repositoryRoot,
+    studioSpecifier: publishedVersion,
+  });
+  const packagePath = path.join(fixtureRoot, 'package.json');
+  const packageJson = await readPackageJsonAsync(packagePath);
+  await writeFile(
+    packagePath,
+    `${JSON.stringify({
+      ...packageJson,
+      dependencies: { ...packageJson.dependencies, '@ankhorage/studio': `^${publishedVersion}` },
+    })}\n`,
+  );
+  await writeInstalledGraphAsync(fixtureRoot, repositoryRoot, {
+    ...(await createCompatibleInstalledVersionsAsync(repositoryRoot)),
+    '@ankhorage/studio': publishedVersion,
+  });
+
+  await assertExpo57StudioStandaloneContractAsync({
+    fixtureRoot,
+    installed: true,
+    repositoryRoot,
+    studioSource: { kind: 'published', version: publishedVersion },
+  });
+});
+
 test('rejects a registry package below the declared fixture range', async () => {
   const repositoryRoot = process.cwd();
   const fixtureRoot = await createFixtureRootAsync();
