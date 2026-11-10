@@ -134,20 +134,14 @@ describe('binding authoring metadata', () => {
     const propNames = resolveStudioBindableProps(chessBoard, ZORA_COMPONENT_META).map(
       (entry) => entry.name,
     );
-    for (const propName of [
-      'pieces',
-      'orientation',
-      'selectedSquare',
-      'legalTargets',
-      'disabled',
-    ]) {
+    for (const propName of ['pieces', 'orientation', 'selectedCell', 'legalTargets', 'disabled']) {
       expect(propNames).toContain(propName);
     }
 
     const eventNames = resolveStudioBindableEvents(chessBoard, ZORA_COMPONENT_META).map(
       (entry) => entry.name,
     );
-    expect(eventNames).toContain('squarePress');
+    expect(eventNames).toContain('cellPress');
     expect(eventNames).toContain('moveAttempt');
   });
 });

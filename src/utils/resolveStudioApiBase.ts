@@ -3,11 +3,13 @@ const ANDROID_LOCAL_API_BASE = 'http://127.0.0.1:3000/api';
 
 /*** Resolve the Studio host API base URL for explicit configuration, Android, Expo LAN hosts, or localhost. */
 export function resolveStudioApiBase(args: {
+  readonly configuredApiBase: string | undefined;
   readonly explicitApiBase: string | undefined;
   readonly expoHostUri: string | null;
   readonly platform: string;
 }): string {
   if (args.explicitApiBase !== undefined) return args.explicitApiBase;
+  if (args.configuredApiBase !== undefined) return args.configuredApiBase;
   if (args.platform === 'android') return ANDROID_LOCAL_API_BASE;
 
   if (args.expoHostUri !== null) {

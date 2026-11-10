@@ -24,6 +24,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     ...config.web,
     output: 'static',
   },
+  extra: {
+    ...config.extra,
+    studioApiBase: process.env.EXPO_PUBLIC_API_URL,
+  },
   plugins: ['expo-router', ...STATIC_ICON_PLUGINS, ...(config.plugins ?? [])],
   experiments: {
     ...config.experiments,

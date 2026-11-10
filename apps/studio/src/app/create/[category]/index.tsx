@@ -1,1 +1,1 @@
-export { CreateCategoryTemplatesScreen as default } from '@ankhorage/studio';
+export { CreateCategoryTemplatesScreen as default } from '@ankhorage/studio/app';
