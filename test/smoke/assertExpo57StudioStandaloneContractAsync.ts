@@ -21,6 +21,7 @@ export type StudioStandalonePackageSource =
   | {
       readonly integrity: string;
       readonly kind: 'packed';
+      readonly revision: string;
       readonly tarballPath: string;
       readonly version: string;
     }
@@ -144,7 +145,7 @@ async function assertStudioSourceAsync(
       'Packed Studio candidate artifact must be outside the checkout and fixture root.',
     );
   }
-  const expectedSpecifier = installed ? `^${studioSource.version}` : `file:${tarballPath}`;
+  const expectedSpecifier = `file:${tarballPath}`;
   if (studioSpecifier !== expectedSpecifier) {
     throw new Error('Packed Studio acceptance does not install the exact candidate tarball.');
   }
@@ -225,6 +226,7 @@ async function assertInstalledContractAsync(
         '@ankhorage/expo-runtime',
       ),
     },
+    singletonOwnerPackages: ['@ankhorage/zora'],
   });
 
   const routerTypesPath = path.join(fixtureRoot, '.expo', 'types', 'router.d.ts');

@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, realpath, rm } from 'node:fs/promises';
 import path from 'node:path';
 
 import { startStudioHostServerWithSecrets } from '../../src/host/http/serverWithSecrets';
@@ -57,16 +57,13 @@ export async function runExpo57StudioStandaloneAcceptance(
       studioSource,
     });
     const lockfileDigest = await createLockfileAndInstallAsync(fixtureRoot, cacheRoot);
-    if (studioSource.kind === 'packed') {
-      await restoreCandidateConsumerRangeAsync(fixtureRoot, studioSource.version);
-    }
     await assertExpo57StudioStandaloneContractAsync({
       fixtureRoot,
       installed: true,
       repositoryRoot,
       studioSource,
     });
-    await runAppOwnedQualityChecksAsync(fixtureRoot, cacheRoot);
+    await runAppOwnedQualityChecksAsync(fixtureRoot, cacheRoot, studioSource);
     await assertExpo57StudioStandaloneContractAsync({
       fixtureRoot,
       installed: true,
@@ -93,7 +90,9 @@ export async function runExpo57StudioStandaloneAcceptance(
     await assertLockfileUnchangedAsync(fixtureRoot, lockfileDigest);
 
     console.log(
-      `${studioSource.kind === 'packed' ? 'Packed candidate' : 'Published registry'} Studio acceptance passed at ${fixtureRoot}.`,
+      studioSource.kind === 'packed'
+        ? `Packed candidate ${studioSource.revision} Studio acceptance passed at ${fixtureRoot}.`
+        : `Published registry Studio acceptance passed at ${fixtureRoot}.`,
     );
   } finally {
     await host?.close();
@@ -128,6 +127,19 @@ async function resolveStudioSourceAsync(options: {
     throw new Error('Current Studio candidate has invalid package metadata.');
   }
   const tarballPath = path.join(options.artifactRoot, 'studio-candidate.tgz');
+  const revision = (
+    await runAcceptanceCommandAsync({
+      args: ['rev-parse', 'HEAD'],
+      captureOutput: true,
+      command: 'git',
+      cwd: options.repositoryRoot,
+      label: 'Resolve packed Studio candidate revision',
+      timeoutMs: COMMAND_TIMEOUT_MS,
+    })
+  ).trim();
+  if (!/^[0-9a-f]{40}$/u.test(revision)) {
+    throw new Error(`Packed Studio candidate revision is not a Git SHA: ${revision}.`);
+  }
   await runAcceptanceCommandAsync({
     args: ['run', 'build'],
     command: 'bun',
@@ -146,6 +158,7 @@ async function resolveStudioSourceAsync(options: {
   return {
     integrity,
     kind: 'packed',
+    revision,
     tarballPath: await realpath(tarballPath),
     version: packageJson.version,
   };
@@ -168,33 +181,6 @@ async function getCandidateArtifactIntegrityAsync(tarballPath: string): Promise<
   const artifact = await readFile(tarballPath);
   if (artifact.byteLength === 0) throw new Error('Packed Studio candidate artifact is empty.');
   return `sha512-${createHash('sha512').update(artifact).digest('base64')}`;
-}
-
-/*** Restore the app's release-shaped range after its candidate-only frozen installation so app-owned policy gates remain meaningful. */
-async function restoreCandidateConsumerRangeAsync(
-  fixtureRoot: string,
-  candidateVersion: string,
-): Promise<void> {
-  const packagePath = path.join(fixtureRoot, 'package.json');
-  const packageJson = JSON.parse(await readFile(packagePath, 'utf8')) as {
-    readonly dependencies?: Record<string, string>;
-  };
-  if (packageJson.dependencies?.['@ankhorage/studio']?.startsWith('file:') !== true) {
-    throw new Error(
-      'Packed Studio acceptance lost its candidate source before the frozen install.',
-    );
-  }
-  await writeFile(
-    packagePath,
-    `${JSON.stringify(
-      {
-        ...packageJson,
-        dependencies: { ...packageJson.dependencies, '@ankhorage/studio': `^${candidateVersion}` },
-      },
-      null,
-      2,
-    )}\n`,
-  );
 }
 
 /*** Assert that the standalone fixture's Bun lockfile still matches the expected content digest. */
@@ -249,6 +235,7 @@ function hash(value: Uint8Array): string {
 async function runAppOwnedQualityChecksAsync(
   fixtureRoot: string,
   cacheRoot: string,
+  studioSource: StudioStandalonePackageSource,
 ): Promise<void> {
   const commands = [
     ['platform:check', 'Released Expo platform contract'],
@@ -265,7 +252,12 @@ async function runAppOwnedQualityChecksAsync(
       args: ['run', script],
       command: 'bun',
       cwd: fixtureRoot,
-      env: createCommandEnvironment(cacheRoot),
+      env: {
+        ...createCommandEnvironment(cacheRoot),
+        ...(studioSource.kind === 'packed'
+          ? { STUDIO_CANDIDATE_TARBALL: studioSource.tarballPath }
+          : {}),
+      },
       label,
       timeoutMs: COMMAND_TIMEOUT_MS,
     });
