@@ -1,1 +1,1 @@
-export { ProjectDetailScreen as default } from '@ankhorage/studio';
+export { ProjectDetailScreen as default } from '@ankhorage/studio/app';

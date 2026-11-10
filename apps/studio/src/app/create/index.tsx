@@ -1,1 +1,1 @@
-export { CreateCategoriesScreen as default } from '@ankhorage/studio';
+export { CreateCategoriesScreen as default } from '@ankhorage/studio/app';

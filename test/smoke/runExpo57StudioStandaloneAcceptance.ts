@@ -5,6 +5,7 @@ import path from 'node:path';
 import { startStudioHostServerWithSecrets } from '../../src/host/http/serverWithSecrets';
 import { reserveTcpPort } from '@ankhorage/utility/node/net';
 import { assertExpo57StudioNativePrebuildAsync } from './assertExpo57StudioNativePrebuildAsync';
+import { assertExpo57StudioReaderFreeRuntimeAsync } from './assertExpo57StudioReaderFreeRuntimeAsync';
 import {
   assertExpo57StudioStandaloneContractAsync,
   type StudioStandalonePackageSource,
@@ -292,6 +293,7 @@ async function runStaticAndNativeOutputChecksAsync(options: {
       await runExpo57StudioStandaloneStaticWebSmokeAsync(options.fixtureRoot);
     }
   }
+  await assertExpo57StudioReaderFreeRuntimeAsync(options.fixtureRoot);
   await runAcceptanceCommandAsync({
     args: ['run', 'prebuild'],
     command: 'bun',
