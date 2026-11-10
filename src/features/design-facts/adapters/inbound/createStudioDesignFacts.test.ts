@@ -37,10 +37,18 @@ describe('createStudioDesignFacts', () => {
           themeId: 'light',
           unknownPixels: 0,
         },
+        {
+          measuredPixels: 100,
+          rolePixels: { accent: 10, base: 60, secondary: 30, unknown: 0 },
+          scope: 'scroll-sample',
+          scopeId: 'details',
+          themeId: 'light',
+          unknownPixels: 0,
+        },
       ],
     });
 
-    expect(facts).toHaveLength(2);
+    expect(facts).toHaveLength(3);
     expect(facts[0]).toMatchObject({
       scope: { id: 'studio:tenant-a:project:catalog:screen:home' },
       status: 'available',
@@ -50,6 +58,7 @@ describe('createStudioDesignFacts', () => {
       },
     });
     expect(facts[1]).toMatchObject({ status: 'available', value: { scope: 'viewport' } });
+    expect(facts[2]).toMatchObject({ status: 'available', value: { scope: 'scroll-sample' } });
   });
 
   it('makes missing and incomplete renderer evidence explicit', () => {
@@ -88,6 +97,58 @@ describe('createStudioDesignRuleProvider', () => {
     expect(contribution.profile.profileId).toBe('design.60-30-10');
     expect(contribution.profile.selection.rootRuleIds).toEqual(['design.color.usage-distribution']);
     expect(contribution.provider.packageName).toBe('@ankhorage/rules-design');
+  });
+
+  it('passes complete page, viewport, and scroll renderer evidence to the provider-owned rule', () => {
+    const facts = createStudioDesignFacts({
+      ...input,
+      measurements: [
+        {
+          measuredPixels: 100,
+          rolePixels: { accent: 10, base: 60, secondary: 30, unknown: 0 },
+          scope: 'page',
+          scopeId: 'page',
+          themeId: 'light',
+          unknownPixels: 0,
+        },
+        {
+          measuredPixels: 100,
+          rolePixels: { accent: 10, base: 60, secondary: 30, unknown: 0 },
+          scope: 'viewport',
+          scopeId: 'hero',
+          themeId: 'light',
+          unknownPixels: 0,
+        },
+        {
+          measuredPixels: 100,
+          rolePixels: { accent: 10, base: 60, secondary: 30, unknown: 0 },
+          scope: 'scroll-sample',
+          scopeId: 'details',
+          themeId: 'light',
+          unknownPixels: 0,
+        },
+      ],
+    });
+    const contribution = createStudioDesignRuleProvider({
+      color: colorPolicy,
+      typography: typographyPolicy,
+    });
+    const rule = contribution.provider.ruleSet.rules.find(
+      ({ identity }) => identity.id === 'design.color.usage-distribution',
+    );
+    const scope = facts[0]?.scope;
+
+    if (!rule) throw new Error('The Design provider did not register its 60-30-10 rule.');
+    if (!scope) throw new Error('The renderer did not produce its page fact.');
+
+    expect(
+      rule.evaluate({
+        context: { facts },
+        dependencyResults: [],
+        options: undefined,
+        scope,
+      }),
+    ).toMatchObject({ findings: [], status: 'PASS' });
   });
 });
 
