@@ -14,6 +14,7 @@
     "src/root.ts",
     "src/index.ts",
     "src/apm.ts",
+    "src/designFacts.ts",
     "src/externalApiAuthoring/index.ts",
     "src/app/index.ts",
     "src/app/StudioApp.tsx",

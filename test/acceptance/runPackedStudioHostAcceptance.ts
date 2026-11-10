@@ -62,6 +62,9 @@ async function assertPackedPackageAsync(
       readonly apm?: { readonly descriptor?: string; readonly protocolVersion?: number };
     };
     readonly dependencies?: Readonly<Record<string, string>>;
+    readonly exports?: Readonly<
+      Record<string, { readonly import?: string; readonly types?: string }>
+    >;
     readonly version?: string;
   };
   const packedDependencies = new Map(Object.entries(packageJson.dependencies ?? {}));
@@ -93,6 +96,32 @@ async function assertPackedPackageAsync(
       'Packed Studio APM descriptor owner identity does not match the package artifact.',
     );
   }
+  await assertPackedPublicExportTargetsAsync(packageRoot, packageJson.exports);
+}
+
+/*** Assert that every declared public import and type target is present in the packed artifact. */
+async function assertPackedPublicExportTargetsAsync(
+  packageRoot: string,
+  exportsMap:
+    Readonly<Record<string, { readonly import?: string; readonly types?: string }>> | undefined,
+): Promise<void> {
+  if (exportsMap === undefined)
+    throw new Error('Packed Studio package does not declare public exports.');
+
+  await Promise.all(
+    Object.entries(exportsMap).flatMap(([specifier, target]) =>
+      [target.import, target.types]
+        .filter((path): path is string => path !== undefined)
+        .map(async (relativePath) => {
+          const resolvedPath = await realpath(path.resolve(packageRoot, relativePath));
+          if (!isWithin(resolvedPath, packageRoot)) {
+            throw new Error(
+              `Packed Studio export ${specifier} resolves outside its package artifact.`,
+            );
+          }
+        }),
+    ),
+  );
 }
 
 /*** Verify the packed Studio CLI provider loads under Ankh's peer-omitted cache semantics. */
@@ -168,6 +197,10 @@ async function createConsumerAsync(consumerRoot: string, tarballPath: string): P
     writeFile(
       path.join(consumerRoot, 'host-import.mjs'),
       "await import('@ankhorage/studio/host');\n",
+    ),
+    writeFile(
+      path.join(consumerRoot, 'design-facts-import.mjs'),
+      "await import('@ankhorage/studio/designFacts');\n",
     ),
     writeFile(
       path.join(consumerRoot, 'surface-capabilities-import.mjs'),
@@ -279,6 +312,11 @@ async function runConsumerChecksAsync(
     ...options,
     args: ['host-import.mjs'],
     label: 'Import packed Studio host',
+  });
+  await runAcceptanceCommandAsync({
+    ...options,
+    args: ['design-facts-import.mjs'],
+    label: 'Import packed Studio design facts',
   });
   await runAcceptanceCommandAsync({
     ...options,
