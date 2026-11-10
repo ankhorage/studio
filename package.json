@@ -45,6 +45,10 @@
       "types": "./dist/capabilities/index.d.ts",
       "import": "./dist/capabilities/index.js"
     },
+    "./designFacts": {
+      "types": "./dist/designFacts.d.ts",
+      "import": "./dist/designFacts.js"
+    },
     "./runtime": {
       "types": "./dist/runtime/index.d.ts",
       "import": "./dist/runtime/index.js"
@@ -304,13 +308,14 @@
     "@ankhorage/permissions": "^0.3.13",
     "@ankhorage/react-native-reanimated-dnd-web": "^0.4.4",
     "@ankhorage/repository": "^0.8.1",
+    "@ankhorage/rules-design": "^0.4.0",
     "@ankhorage/runtime": "^5.2.4",
-    "@ankhorage/supabase": "^0.5.14",
-    "@ankhorage/storage": "^0.2.2",
-    "@ankhorage/storage-supabase": "^1.0.0",
-    "@ankhorage/surface": "^9.4.15",
     "@ankhorage/secrets": "^0.3.1",
     "@ankhorage/secrets-supabase-vault": "^1.0.0",
+    "@ankhorage/storage": "^0.2.2",
+    "@ankhorage/storage-supabase": "^1.0.0",
+    "@ankhorage/supabase": "^0.5.14",
+    "@ankhorage/surface": "^9.4.15",
     "@ankhorage/templates": "^12.4.18",
     "@ankhorage/utility": "^1.10.0",
     "@ankhorage/zora": "^26.0.1",
