@@ -1,5 +1,12 @@
 # @ankhorage/studio
 
+## 8.1.1
+
+### Patch Changes
+
+- b715d2e: Update dependencies: `@ankhorage/contracts`, `@ankhorage/templates`.
+- 74efd25: Update dependencies: `@ankhorage/auth-supabase`, `@ankhorage/data-sources`, `@ankhorage/deploy`, `@ankhorage/permissions`, `@ankhorage/repository`, `@ankhorage/runtime`.
+
 ## 8.1.0
 
 ### Minor Changes

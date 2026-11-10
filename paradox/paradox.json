@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v8.1.0",
+      "value": "v8.1.1",
       "color": "cb3837"
     },
     {
@@ -53392,6 +53392,24 @@
         "fromSymbol": "assertPackedPackageAsync",
         "toSymbol": "readFile",
         "callExpression": "readFile",
+        "sourcePath": "test/acceptance/runPackedStudioHostAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertPackedPackageAsync",
+        "toSymbol": "assertPackedPublicExportTargetsAsync",
+        "callExpression": "assertPackedPublicExportTargetsAsync",
+        "sourcePath": "test/acceptance/runPackedStudioHostAcceptance.ts"
+      },
+      {
+        "fromSymbol": "test/acceptance/runPackedStudioHostAcceptance.ts",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "test/acceptance/runPackedStudioHostAcceptance.ts"
+      },
+      {
+        "fromSymbol": "test/acceptance/runPackedStudioHostAcceptance.ts",
+        "toSymbol": "isWithin",
+        "callExpression": "isWithin",
         "sourcePath": "test/acceptance/runPackedStudioHostAcceptance.ts"
       },
       {
