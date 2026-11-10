@@ -538,6 +538,16 @@ export class ChromeNavigationSession {
     );
   }
 
+  /*** Wait until the active page has issued a resource request to the expected URL. */
+  async waitForResourceUrlAsync(expectedUrl: string, timeoutMs = HTTP_TIMEOUT_MS): Promise<void> {
+    const expression = `performance.getEntriesByType('resource').some((entry) => entry.name === ${JSON.stringify(expectedUrl)})`;
+    await this.waitForBooleanAsync(
+      expression,
+      `resource request ${JSON.stringify(expectedUrl)}`,
+      timeoutMs,
+    );
+  }
+
   /*** Wait until a previously observed body-text snapshot contains the requested content. */
   async waitForObservedBodyTextAsync(
     expectedText: string,

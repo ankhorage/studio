@@ -7,10 +7,11 @@ import { createStaticExportServer } from './createStaticExportServer';
 
 /*** Run the standalone Studio static-export browser acceptance flow.
  */
-export async function runExpo57StudioStandaloneStaticWebSmokeAsync(
-  fixtureRoot: string,
-): Promise<void> {
-  const server = createStaticExportServer(fixtureRoot);
+export async function runExpo57StudioStandaloneStaticWebSmokeAsync(options: {
+  readonly apiUrl: string;
+  readonly fixtureRoot: string;
+}): Promise<void> {
+  const server = createStaticExportServer(options.fixtureRoot);
   let browser: ChromeNavigationSession | null = null;
   try {
     if (server.port === undefined) throw new Error('Static Studio server has no TCP port.');
@@ -20,6 +21,7 @@ export async function runExpo57StudioStandaloneStaticWebSmokeAsync(
     const appUrl = `http://127.0.0.1:${server.port}`;
     await browser.navigateAsync(`${appUrl}/`);
     await browser.waitForBodyTextAsync('No projects yet');
+    await browser.waitForResourceUrlAsync(`${options.apiUrl}/projects`);
     await assertStudioWebIconFontsAsync(browser);
     await browser.waitForInteractiveRoleAndNameAsync('button', 'New project');
     await browser.clickByRoleAndNameAsync('button', 'New project');

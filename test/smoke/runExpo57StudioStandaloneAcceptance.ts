@@ -290,7 +290,10 @@ async function runStaticAndNativeOutputChecksAsync(options: {
       timeoutMs: COMMAND_TIMEOUT_MS,
     });
     if (script === 'export:web') {
-      await runExpo57StudioStandaloneStaticWebSmokeAsync(options.fixtureRoot);
+      await runExpo57StudioStandaloneStaticWebSmokeAsync({
+        apiUrl: options.apiUrl,
+        fixtureRoot: options.fixtureRoot,
+      });
     }
   }
   await assertExpo57StudioReaderFreeRuntimeAsync(options.fixtureRoot);

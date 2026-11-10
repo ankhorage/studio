@@ -44,6 +44,13 @@ test('apps/studio imports its shell from the Reader-free public app entrypoint',
   expect(packageJson).toContain('"./app"');
 });
 
+test('apps/studio embeds its configured host API base in the Expo manifest', async () => {
+  const appConfig = await readFile(path.join(repoRoot, 'apps/studio/app.config.ts'), 'utf8');
+
+  expect(appConfig).toContain('extra: {');
+  expect(appConfig).toContain('studioApiBase: process.env.EXPO_PUBLIC_API_URL');
+});
+
 test('apps/studio owns a canonical AppManifest for the Studio workspace app', async () => {
   const manifest = JSON.parse(
     await readFile(path.join(repoRoot, 'apps/studio/ankh.config.json'), 'utf8'),
