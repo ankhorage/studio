@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { mkdtemp, readFile, realpath, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { startStudioHostServerWithSecrets } from '../../src/host/http/serverWithSecrets';
@@ -48,9 +48,14 @@ export async function runExpo57StudioStandaloneAcceptance(
       studioSpecifier:
         studioSource.kind === 'packed' ? `file:${studioSource.tarballPath}` : studioSource.version,
     });
-    if (studioSource.kind === 'packed') {
-      await createCandidateLockfileAsync(fixtureRoot, cacheRoot);
-    }
+    await createFixtureLockfileAsync({
+      cacheRoot,
+      fixtureRoot,
+      label:
+        studioSource.kind === 'packed'
+          ? 'Resolve packed Studio candidate fixture lockfile'
+          : `Resolve published Studio ${studioSource.version} fixture lockfile`,
+    });
     await assertExpo57StudioStandaloneContractAsync({
       fixtureRoot,
       installed: false,
@@ -58,6 +63,9 @@ export async function runExpo57StudioStandaloneAcceptance(
       studioSource,
     });
     const lockfileDigest = await createLockfileAndInstallAsync(fixtureRoot, cacheRoot);
+    if (studioSource.kind === 'published') {
+      await restorePublishedConsumerRangeAsync(fixtureRoot, studioSource.version);
+    }
     await assertExpo57StudioStandaloneContractAsync({
       fixtureRoot,
       installed: true,
@@ -165,16 +173,47 @@ async function resolveStudioSourceAsync(options: {
   };
 }
 
-/*** Create the fixture-owned lockfile for the packed candidate before proving its cold frozen installation. */
-async function createCandidateLockfileAsync(fixtureRoot: string, cacheRoot: string): Promise<void> {
+/*** Create the fixture-owned lockfile for the selected Studio source before proving its cold frozen installation. */
+async function createFixtureLockfileAsync(options: {
+  readonly cacheRoot: string;
+  readonly fixtureRoot: string;
+  readonly label: string;
+}): Promise<void> {
   await runAcceptanceCommandAsync({
     args: ['install', '--lockfile-only'],
     command: 'bun',
-    cwd: fixtureRoot,
-    env: createCommandEnvironment(cacheRoot),
-    label: 'Resolve packed Studio candidate fixture lockfile',
+    cwd: options.fixtureRoot,
+    env: createCommandEnvironment(options.cacheRoot),
+    label: options.label,
     timeoutMs: COMMAND_TIMEOUT_MS,
   });
+}
+
+/*** Restore the app's release-shaped Studio range after proving the exact published package through a frozen install. */
+async function restorePublishedConsumerRangeAsync(
+  fixtureRoot: string,
+  publishedVersion: string,
+): Promise<void> {
+  const packagePath = path.join(fixtureRoot, 'package.json');
+  const packageJson = JSON.parse(await readFile(packagePath, 'utf8')) as {
+    readonly dependencies?: Record<string, string>;
+  };
+  if (packageJson.dependencies?.['@ankhorage/studio'] !== publishedVersion) {
+    throw new Error(
+      'Published Studio acceptance lost its exact registry source before the frozen install.',
+    );
+  }
+  await writeFile(
+    packagePath,
+    `${JSON.stringify(
+      {
+        ...packageJson,
+        dependencies: { ...packageJson.dependencies, '@ankhorage/studio': `^${publishedVersion}` },
+      },
+      null,
+      2,
+    )}\n`,
+  );
 }
 
 /*** Reject a missing or empty candidate artifact before it can become an acceptance dependency. */

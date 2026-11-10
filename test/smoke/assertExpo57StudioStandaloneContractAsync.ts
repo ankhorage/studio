@@ -132,9 +132,10 @@ async function assertStudioSourceAsync(
   if (studioSource === undefined) return;
   const studioSpecifier = requireDependencyRange(packageJson, 'dependencies', '@ankhorage/studio');
   if (studioSource.kind === 'published') {
-    if (studioSpecifier !== studioSource.version) {
+    const expectedSpecifier = installed ? `^${studioSource.version}` : studioSource.version;
+    if (studioSpecifier !== expectedSpecifier) {
       throw new Error(
-        `Published Studio acceptance requires exact ${studioSource.version}, received ${studioSpecifier}.`,
+        `Published Studio acceptance requires ${expectedSpecifier}, received ${studioSpecifier}.`,
       );
     }
     return;
