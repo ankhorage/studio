@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.2
+
+### Patch Changes
+
+- 66c038a: Update dependencies: `@ankhorage/navigator`, `@ankhorage/templates`, `@ankhorage/zora`.
+
 ## 8.1.1
 
 ### Patch Changes
