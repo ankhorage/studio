@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.0.20
+
+### Patch Changes
+
+- 8837e47: Update dependencies: `@ankhorage/orchestrator-module-expo-google-fonts`, `@ankhorage/templates`, `@ankhorage/zora`.
+
 ## 8.0.19
 
 ### Patch Changes
