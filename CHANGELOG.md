@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.0.19
+
+### Patch Changes
+
+- 0ac9443: Align generated Expo 57 consumers with the released Expo Runtime platform policy and ZORA 26 Reader-free runtime boundary.
+
 ## 8.0.18
 
 ### Patch Changes

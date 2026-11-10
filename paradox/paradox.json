@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v8.0.18",
+      "value": "v8.0.19",
       "color": "cb3837"
     },
     {
@@ -6777,6 +6777,14 @@
       ]
     },
     {
+      "path": "test/smoke/assertExpo57StudioReaderFreeRuntimeAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "assertExpo57StudioReaderFreeRuntimeAsync"
+      ]
+    },
+    {
       "path": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -6784,7 +6792,8 @@
         "test/smoke/assertReactNativeOwnerGraphAsync.ts"
       ],
       "exports": [
-        "assertExpo57StudioStandaloneContractAsync"
+        "assertExpo57StudioStandaloneContractAsync",
+        "StudioStandalonePackageSource"
       ]
     },
     {
@@ -7328,6 +7337,7 @@
       "dependencies": [
         "src/host/http/serverWithSecrets.ts",
         "test/smoke/assertExpo57StudioNativePrebuildAsync.ts",
+        "test/smoke/assertExpo57StudioReaderFreeRuntimeAsync.ts",
         "test/smoke/assertExpo57StudioStandaloneContractAsync.ts",
         "test/smoke/createExpo57StudioHostFixtureAsync.ts",
         "test/smoke/createExpo57StudioStandaloneFixtureAsync.ts",
@@ -10111,7 +10121,7 @@
       "modulePath": "src/bindingMetadataModel.ts",
       "sourceLocation": {
         "filePath": "src/bindingMetadataModel.ts",
-        "line": 28,
+        "line": 32,
         "column": 1
       },
       "exportPaths": [
@@ -10122,7 +10132,7 @@
       ],
       "signatures": [
         {
-          "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>) => readonly StudioBindableEventOption[]",
+          "label": "(node: UiNode, registry: Readonly<Record<string, { readonly bindings?: UiComponentBindingMeta; }>>) => readonly StudioBindableEventOption[]",
           "parameters": [
             {
               "name": "node",
@@ -10132,7 +10142,7 @@
             },
             {
               "name": "registry",
-              "type": "Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>",
+              "type": "Readonly<Record<string, { readonly bindings?: UiComponentBindingMeta; }>>",
               "required": true,
               "description": null
             }
@@ -10155,7 +10165,7 @@
       "modulePath": "src/bindingMetadataModel.ts",
       "sourceLocation": {
         "filePath": "src/bindingMetadataModel.ts",
-        "line": 12,
+        "line": 16,
         "column": 1
       },
       "exportPaths": [
@@ -10166,7 +10176,7 @@
       ],
       "signatures": [
         {
-          "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>) => readonly StudioBindablePropOption[]",
+          "label": "(node: UiNode, registry: Readonly<Record<string, { readonly bindings?: UiComponentBindingMeta; }>>) => readonly StudioBindablePropOption[]",
           "parameters": [
             {
               "name": "node",
@@ -10176,7 +10186,7 @@
             },
             {
               "name": "registry",
-              "type": "Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>",
+              "type": "Readonly<Record<string, { readonly bindings?: UiComponentBindingMeta; }>>",
               "required": true,
               "description": null
             }
@@ -13952,7 +13962,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/bindingAuthoringModel.test.ts",
-        "line": 362,
+        "line": 356,
         "column": 11
       }
     },
@@ -14128,7 +14138,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/bindingMetadataModel.ts",
-        "line": 12,
+        "line": 16,
         "column": 1
       }
     },
@@ -14139,7 +14149,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/bindingMetadataModel.ts",
-        "line": 28,
+        "line": 32,
         "column": 1
       }
     },
@@ -32877,6 +32887,17 @@
       }
     },
     {
+      "name": "readConfiguredStudioApiBase",
+      "description": "Read the app-owned Studio API base embedded in the Expo manifest at build time.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/utils/studioApiBase.ts",
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
       "name": "createDeleteConfirmation",
       "description": "Create a confirmation action that uses browser confirm when available and an injected alert otherwise.",
       "see": [],
@@ -35515,6 +35536,11 @@
       {
         "fromPath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts",
         "toPath": "test/smoke/assertExpo57StudioNativePrebuildAsync.ts",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromPath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "toPath": "test/smoke/assertExpo57StudioReaderFreeRuntimeAsync.ts",
         "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
       },
       {
@@ -53071,6 +53097,12 @@
       },
       {
         "fromSymbol": "src/utils/studioApiBase.ts",
+        "toSymbol": "readConfiguredStudioApiBase",
+        "callExpression": "readConfiguredStudioApiBase",
+        "sourcePath": "src/utils/studioApiBase.ts"
+      },
+      {
+        "fromSymbol": "src/utils/studioApiBase.ts",
         "toSymbol": "readEnvString",
         "callExpression": "readEnvString",
         "sourcePath": "src/utils/studioApiBase.ts"
@@ -53079,6 +53111,12 @@
         "fromSymbol": "src/utils/studioApiBase.ts",
         "toSymbol": "readExpoHostUri",
         "callExpression": "readExpoHostUri",
+        "sourcePath": "src/utils/studioApiBase.ts"
+      },
+      {
+        "fromSymbol": "readConfiguredStudioApiBase",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
         "sourcePath": "src/utils/studioApiBase.ts"
       },
       {
@@ -53460,6 +53498,24 @@
         "sourcePath": "test/smoke/assertExpo57StudioNativePrebuildAsync.ts"
       },
       {
+        "fromSymbol": "test/smoke/assertExpo57StudioReaderFreeRuntimeAsync.ts",
+        "toSymbol": "collectJavaScriptFilesAsync",
+        "callExpression": "collectJavaScriptFilesAsync",
+        "sourcePath": "test/smoke/assertExpo57StudioReaderFreeRuntimeAsync.ts"
+      },
+      {
+        "fromSymbol": "test/smoke/assertExpo57StudioReaderFreeRuntimeAsync.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "test/smoke/assertExpo57StudioReaderFreeRuntimeAsync.ts"
+      },
+      {
+        "fromSymbol": "collectJavaScriptFilesAsync",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "test/smoke/assertExpo57StudioReaderFreeRuntimeAsync.ts"
+      },
+      {
         "fromSymbol": "assertExpo57StudioStandaloneContractAsync",
         "toSymbol": "realpath",
         "callExpression": "realpath",
@@ -53475,6 +53531,12 @@
         "fromSymbol": "assertExpo57StudioStandaloneContractAsync",
         "toSymbol": "readFile",
         "callExpression": "readFile",
+        "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertExpo57StudioStandaloneContractAsync",
+        "toSymbol": "assertStudioSourceAsync",
+        "callExpression": "assertStudioSourceAsync",
         "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
       },
       {
@@ -53508,6 +53570,36 @@
         "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
       },
       {
+        "fromSymbol": "assertStudioSourceAsync",
+        "toSymbol": "requireDependencyRange",
+        "callExpression": "requireDependencyRange",
+        "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertStudioSourceAsync",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertStudioSourceAsync",
+        "toSymbol": "isWithin",
+        "callExpression": "isWithin",
+        "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertStudioSourceAsync",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
+        "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertStudioSourceAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
         "fromSymbol": "assertCopiedFilesAreIndependentAsync",
         "toSymbol": "listFilesAsync",
         "callExpression": "listFilesAsync",
@@ -53533,6 +53625,12 @@
       },
       {
         "fromSymbol": "assertInstalledContractAsync",
+        "toSymbol": "assertInstalledPackedStudioAsync",
+        "callExpression": "assertInstalledPackedStudioAsync",
+        "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledContractAsync",
         "toSymbol": "assertInstalledRegistryPackageAsync",
         "callExpression": "assertInstalledRegistryPackageAsync",
         "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
@@ -53551,6 +53649,12 @@
       },
       {
         "fromSymbol": "assertInstalledContractAsync",
+        "toSymbol": "resolveStudioOwnerRange",
+        "callExpression": "resolveStudioOwnerRange",
+        "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledContractAsync",
         "toSymbol": "resolveInstalledStudioOwnerRangesAsync",
         "callExpression": "resolveInstalledStudioOwnerRangesAsync",
         "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
@@ -53559,6 +53663,30 @@
         "fromSymbol": "assertInstalledContractAsync",
         "toSymbol": "stat",
         "callExpression": "stat",
+        "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledPackedStudioAsync",
+        "toSymbol": "readPackageJsonAsync",
+        "callExpression": "readPackageJsonAsync",
+        "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledPackedStudioAsync",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledPackedStudioAsync",
+        "toSymbol": "isWithin",
+        "callExpression": "isWithin",
+        "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioOwnerRange",
+        "toSymbol": "requireDependencyRange",
+        "callExpression": "requireDependencyRange",
         "sourcePath": "test/smoke/assertExpo57StudioStandaloneContractAsync.ts"
       },
       {
@@ -54258,6 +54386,12 @@
         "sourcePath": "test/smoke/ChromeNavigationSession.ts"
       },
       {
+        "fromSymbol": "waitForResourceUrlAsync",
+        "toSymbol": "waitForBooleanAsync",
+        "callExpression": "this.waitForBooleanAsync",
+        "sourcePath": "test/smoke/ChromeNavigationSession.ts"
+      },
+      {
         "fromSymbol": "waitForObservedBodyTextAsync",
         "toSymbol": "waitForBooleanAsync",
         "callExpression": "this.waitForBooleanAsync",
@@ -54741,6 +54875,24 @@
         "fromSymbol": "test/smoke/createExpo57StudioStandaloneFixtureAsync.ts",
         "toSymbol": "cp",
         "callExpression": "cp",
+        "sourcePath": "test/smoke/createExpo57StudioStandaloneFixtureAsync.ts"
+      },
+      {
+        "fromSymbol": "createExpo57StudioStandaloneFixtureAsync",
+        "toSymbol": "replaceStudioSpecifierAsync",
+        "callExpression": "replaceStudioSpecifierAsync",
+        "sourcePath": "test/smoke/createExpo57StudioStandaloneFixtureAsync.ts"
+      },
+      {
+        "fromSymbol": "replaceStudioSpecifierAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "test/smoke/createExpo57StudioStandaloneFixtureAsync.ts"
+      },
+      {
+        "fromSymbol": "replaceStudioSpecifierAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
         "sourcePath": "test/smoke/createExpo57StudioStandaloneFixtureAsync.ts"
       },
       {
@@ -57445,8 +57597,20 @@
       },
       {
         "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "resolveStudioSourceAsync",
+        "callExpression": "resolveStudioSourceAsync",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
         "toSymbol": "createExpo57StudioStandaloneFixtureAsync",
         "callExpression": "createExpo57StudioStandaloneFixtureAsync",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "createCandidateLockfileAsync",
+        "callExpression": "createCandidateLockfileAsync",
         "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
       },
       {
@@ -57471,6 +57635,12 @@
         "fromSymbol": "runExpo57StudioStandaloneAcceptance",
         "toSymbol": "createExpo57StudioHostFixtureAsync",
         "callExpression": "createExpo57StudioHostFixtureAsync",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "reserveTcpPort",
+        "callExpression": "reserveTcpPort",
         "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
       },
       {
@@ -57507,6 +57677,54 @@
         "fromSymbol": "runExpo57StudioStandaloneAcceptance",
         "toSymbol": "rm",
         "callExpression": "rm",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSourceAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSourceAsync",
+        "toSymbol": "runAcceptanceCommandAsync",
+        "callExpression": "runAcceptanceCommandAsync",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSourceAsync",
+        "toSymbol": "getCandidateArtifactIntegrityAsync",
+        "callExpression": "getCandidateArtifactIntegrityAsync",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSourceAsync",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createCandidateLockfileAsync",
+        "toSymbol": "runAcceptanceCommandAsync",
+        "callExpression": "runAcceptanceCommandAsync",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createCandidateLockfileAsync",
+        "toSymbol": "createCommandEnvironment",
+        "callExpression": "createCommandEnvironment",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "getCandidateArtifactIntegrityAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "getCandidateArtifactIntegrityAsync",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
         "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
       },
       {
@@ -57585,6 +57803,12 @@
         "fromSymbol": "runStaticAndNativeOutputChecksAsync",
         "toSymbol": "runExpo57StudioStandaloneStaticWebSmokeAsync",
         "callExpression": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runStaticAndNativeOutputChecksAsync",
+        "toSymbol": "assertExpo57StudioReaderFreeRuntimeAsync",
+        "callExpression": "assertExpo57StudioReaderFreeRuntimeAsync",
         "sourcePath": "test/smoke/runExpo57StudioStandaloneAcceptance.ts"
       },
       {
@@ -57723,6 +57947,12 @@
         "fromSymbol": "runExpo57StudioStandaloneStaticWebSmokeAsync",
         "toSymbol": "waitForBodyTextAsync",
         "callExpression": "browser.waitForBodyTextAsync",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+        "toSymbol": "waitForResourceUrlAsync",
+        "callExpression": "browser.waitForResourceUrlAsync",
         "sourcePath": "test/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
       },
       {
@@ -79151,7 +79381,7 @@
       },
       {
         "fromSymbol": "resolveStudioBindableProps",
-        "toType": "UiComponentMeta",
+        "toType": "UiComponentBindingMeta",
         "sourcePath": "src/bindingMetadataModel.ts"
       },
       {
@@ -79171,7 +79401,7 @@
       },
       {
         "fromSymbol": "resolveStudioBindableEvents",
-        "toType": "UiComponentMeta",
+        "toType": "UiComponentBindingMeta",
         "sourcePath": "src/bindingMetadataModel.ts"
       },
       {

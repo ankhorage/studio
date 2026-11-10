@@ -2720,7 +2720,7 @@
     "modulePath": "src/bindingMetadataModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingMetadataModel.ts",
-      "line": 28,
+      "line": 32,
       "column": 1
     },
     "exportPaths": [
@@ -2731,7 +2731,7 @@
     ],
     "signatures": [
       {
-        "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>) => readonly StudioBindableEventOption[]",
+        "label": "(node: UiNode, registry: Readonly<Record<string, { readonly bindings?: UiComponentBindingMeta; }>>) => readonly StudioBindableEventOption[]",
         "parameters": [
           {
             "name": "node",
@@ -2741,7 +2741,7 @@
           },
           {
             "name": "registry",
-            "type": "Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>",
+            "type": "Readonly<Record<string, { readonly bindings?: UiComponentBindingMeta; }>>",
             "required": true,
             "description": null
           }
@@ -2764,7 +2764,7 @@
     "modulePath": "src/bindingMetadataModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingMetadataModel.ts",
-      "line": 12,
+      "line": 16,
       "column": 1
     },
     "exportPaths": [
@@ -2775,7 +2775,7 @@
     ],
     "signatures": [
       {
-        "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>) => readonly StudioBindablePropOption[]",
+        "label": "(node: UiNode, registry: Readonly<Record<string, { readonly bindings?: UiComponentBindingMeta; }>>) => readonly StudioBindablePropOption[]",
         "parameters": [
           {
             "name": "node",
@@ -2785,7 +2785,7 @@
           },
           {
             "name": "registry",
-            "type": "Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>",
+            "type": "Readonly<Record<string, { readonly bindings?: UiComponentBindingMeta; }>>",
             "required": true,
             "description": null
           }
