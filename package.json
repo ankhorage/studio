@@ -308,7 +308,7 @@
     "@ankhorage/permissions": "^0.3.15",
     "@ankhorage/react-native-reanimated-dnd-web": "^0.4.4",
     "@ankhorage/repository": "^0.8.3",
-    "@ankhorage/rules-design": "^0.5.0",
+    "@ankhorage/rules-design": "^0.6.0",
     "@ankhorage/runtime": "^5.3.2",
     "@ankhorage/secrets": "^0.3.1",
     "@ankhorage/secrets-supabase-vault": "^1.0.0",
