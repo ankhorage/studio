@@ -87,10 +87,7 @@ export function applyGeneratedPackagePolicy<T extends GeneratedPackageManifest>(
     packageJson.devDependencies;
   const devDependencies = {
     ...existingDevDependencies,
-    '@ankhorage/devtools': monotonicAnkhorageRange(
-      packageJson.devDependencies['@ankhorage/devtools'],
-      policy.devDependencies.devtools,
-    ),
+    '@ankhorage/devtools': policy.devDependencies.devtools,
     '@types/bun': policy.devDependencies.typesBun,
     '@types/culori': policy.devDependencies.typesCulori,
     '@types/react': policy.devDependencies.typesReact,

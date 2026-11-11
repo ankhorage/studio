@@ -1,4 +1,4 @@
-import { parseSemanticVersion } from '@ankhorage/utility/semver';
+import { parseSemanticVersion, SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 import { expect, test } from 'bun:test';
 
 import { getGeneratedPackagePolicy } from '../../features/project-updates/adapters/outbound/getGeneratedPackagePolicy';
@@ -14,6 +14,9 @@ test('derives generated dependency ranges from owner package metadata', async ()
   ).json()) as {
     readonly dependencies?: Readonly<Record<string, string>>;
   };
+  const devtoolsPackage = (await Bun.file(
+    new URL('../../../node_modules/@ankhorage/devtools/package.json', import.meta.url),
+  ).json()) as { readonly version?: string };
   const selfConsumerPackage = (await Bun.file(
     new URL('../../../apps/studio/package.json', import.meta.url),
   ).json()) as {
@@ -32,8 +35,13 @@ test('derives generated dependency ranges from owner package metadata', async ()
   if (!selfConsumerStudioRange) {
     throw new Error('Studio self-consumer is missing its published Studio dependency range.');
   }
+  if (typeof devtoolsPackage.version !== 'string') {
+    throw new Error('Installed Devtools package is missing its exact version.');
+  }
 
   expect(packageJson.packageManager).toBe(policy.packageManager);
+  expect(policy.devDependencies.devtools).toBe(devtoolsPackage.version);
+  expect(policy.devDependencies.devtools).toMatch(SEMVER_PATTERNS.exactWithPrerelease);
   expect(policy.dependencies.studio).toBe(selfConsumerStudioRange);
   expect(packageJson.dependencies).toMatchObject({
     '@ankhorage/contracts': policy.dependencies.contracts,
@@ -96,7 +104,7 @@ test('does not introduce optional generated dependencies when their capability i
   expect(Object.hasOwn(supabaseWithoutOAuth.dependencies, 'expo-web-browser')).toBe(false);
 });
 
-test('never lowers already-newer Ankhorage dependency floors', () => {
+test('preserves newer ordinary dependency floors but pins the Devtools provider selection', () => {
   const policy = getGeneratedPackagePolicy();
   const basePackageJson = getPackageJson({
     name: 'fixture',
@@ -125,7 +133,7 @@ test('never lowers already-newer Ankhorage dependency floors', () => {
 
   expect(updated.dependencies['@ankhorage/contracts']).toBe(newerContracts);
   expect(Object.hasOwn(updated.devDependencies, '@ankhorage/ankh')).toBe(false);
-  expect(updated.devDependencies['@ankhorage/devtools']).toBe(newerDevtools);
+  expect(updated.devDependencies['@ankhorage/devtools']).toBe(policy.devDependencies.devtools);
 
   const raised = applyGeneratedPackagePolicy(
     {
