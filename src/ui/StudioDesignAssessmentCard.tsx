@@ -15,7 +15,9 @@ export function StudioDesignAssessmentCard({ assessment }: StudioDesignAssessmen
   return (
     <Card title="Design assessment" description={`Profile: ${presentation.profileId}`}>
       <Text weight="semiBold">Provider configuration</Text>
-      <Text variant="bodySmall">{JSON.stringify(assessment.providerOptions)}</Text>
+      <Text variant="bodySmall">Rules provider: {presentation.providerPackageName}</Text>
+      <Text variant="bodySmall">Provider identity: {presentation.providerId}</Text>
+      <Text variant="bodySmall">Color policy version: {presentation.colorPolicyVersion}</Text>
       <ListSection title="Canonical rule results">
         {assessment.evaluation.results.map((result) => (
           <ListItem
@@ -68,17 +70,30 @@ export function StudioDesignAssessmentCard({ assessment }: StudioDesignAssessmen
               />
             ))
           )}
-          {group.findings.map((finding, index) => (
+          {group.findings.map(({ advisory, finding, resultStatus }, index) => (
             <ListItem
               key={`${finding.ruleId}:${index}`}
-              title={`FAIL: ${finding.ruleId}`}
+              title={`${resultStatus ?? 'UNRESOLVED'}: ${finding.ruleId}`}
               description={finding.message}
-              meta={finding.severity}
+              meta={`${finding.severity}${advisory ? ' advisory' : ''}`}
               variant="card"
             />
           ))}
         </ListSection>
       ))}
+      {presentation.unscopedMissingFacts.length > 0 ? (
+        <ListSection title="Unscoped missing evidence">
+          {presentation.unscopedMissingFacts.map((fact) => (
+            <ListItem
+              key={fact.id}
+              title={`Missing evidence: ${fact.missing.code}`}
+              description={`${fact.missing.message} Provenance: ${fact.provenance.producer.id}@${fact.provenance.producer.version}; source revision: ${fact.provenance.source.revision ?? 'unknown'}`}
+              meta={fact.contentHash}
+              variant="card"
+            />
+          ))}
+        </ListSection>
+      ) : null}
     </Card>
   );
 }

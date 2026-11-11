@@ -1,5 +1,6 @@
 import type { FactEnvelope } from '@ankhorage/contracts/rules';
-import type { RuleFinding } from '@ankhorage/rules';
+import type { RuleFinding, RuleResultStatus } from '@ankhorage/rules';
+import { designRuleCatalog } from '@ankhorage/rules-design';
 
 import type { StudioDesignAssessment } from './evaluateStudioDesignAssessment';
 
@@ -7,15 +8,25 @@ type StudioDesignEvidenceScope = 'page' | 'scroll-sample' | 'viewport';
 
 interface StudioDesignEvidenceGroup {
   readonly facts: readonly FactEnvelope[];
-  readonly findings: readonly RuleFinding[];
+  readonly findings: readonly StudioDesignFindingPresentation[];
   readonly scope: StudioDesignEvidenceScope;
 }
 
+interface StudioDesignFindingPresentation {
+  readonly advisory: boolean;
+  readonly finding: RuleFinding;
+  readonly resultStatus: RuleResultStatus | null;
+}
+
 export interface StudioDesignAssessmentPresentation {
+  readonly colorPolicyVersion: number;
   readonly diagnostics: readonly string[];
   readonly groups: readonly StudioDesignEvidenceGroup[];
+  readonly providerId: string;
+  readonly providerPackageName: string;
   readonly profileId: string;
   readonly resultStatuses: readonly string[];
+  readonly unscopedMissingFacts: readonly Extract<FactEnvelope, { readonly status: 'missing' }>[];
 }
 
 /*** Project canonical Rules output into Studio display groups without deriving or changing any rule outcome. */
@@ -23,14 +34,43 @@ export function createStudioDesignAssessmentPresentation(
   assessment: StudioDesignAssessment,
 ): StudioDesignAssessmentPresentation {
   return {
+    colorPolicyVersion: assessment.providerOptions.color.version,
     diagnostics: assessment.evaluation.diagnostics.map((diagnostic) => diagnostic.message),
     groups: DESIGN_EVIDENCE_SCOPES.map((scope) => ({
       facts: assessment.facts.filter((fact) => factScope(fact) === scope),
-      findings: assessment.evaluation.findings.filter((finding) => findingScope(finding) === scope),
+      findings: assessment.evaluation.findings
+        .filter((finding) => findingScope(finding) === scope)
+        .map((finding) => presentFinding(assessment, finding)),
       scope,
     })),
+    providerId: assessment.providerId,
+    providerPackageName: assessment.providerPackageName,
     profileId: assessment.profileId,
     resultStatuses: assessment.evaluation.results.map((result) => result.status),
+    unscopedMissingFacts: assessment.facts.filter(isUnscopedMissingFact),
+  };
+}
+
+/*** Preserve missing facts without a renderer value scope instead of dropping their evidence. */
+function isUnscopedMissingFact(
+  fact: FactEnvelope,
+): fact is Extract<FactEnvelope, { readonly status: 'missing' }> {
+  return fact.status === 'missing' && factScope(fact) === null;
+}
+
+/*** Retain Rules result status, finding severity, and catalog-owned advisory semantics for presentation. */
+function presentFinding(
+  assessment: StudioDesignAssessment,
+  finding: RuleFinding,
+): StudioDesignFindingPresentation {
+  return {
+    advisory: designRuleCatalog.some(
+      (entry) => entry.id === finding.ruleId && entry.severity === 'advisory',
+    ),
+    finding,
+    resultStatus:
+      assessment.evaluation.results.find((result) => result.rule.id === finding.ruleId)?.status ??
+      null,
   };
 }
 

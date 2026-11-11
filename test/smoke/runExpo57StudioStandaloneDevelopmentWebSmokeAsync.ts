@@ -43,6 +43,11 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
     await browser.navigateAsync(`${appUrl}/`);
     await browser.waitForBodyTextAsync('Release Monitor');
     await assertStudioWebIconFontsAsync(browser);
+    await browser.navigateAsync(`${appUrl}/design-assessment-entrypoint`);
+    await browser.waitForLocationAsync({ pathname: '/design-assessment-entrypoint' });
+    await browser.waitForBodyTextAsync('StudioDesignAssessmentCard');
+    await browser.navigateAsync(`${appUrl}/`);
+    await browser.waitForBodyTextAsync('Release Monitor');
     await pointerClickAsync(browser, 'button', 'Updated');
     await pointerClickAsync(browser, 'button', 'Name');
     await pointerClickAsync(browser, 'button', 'Use light mode');

@@ -16,6 +16,8 @@ export interface StudioDesignAssessmentInput {
 export interface StudioDesignAssessment {
   readonly evaluation: RuleEvaluationResult;
   readonly facts: readonly FactEnvelope[];
+  readonly providerId: string;
+  readonly providerPackageName: string;
   readonly profileId: string;
   readonly providerOptions: DesignRuleProviderOptions;
 }
@@ -39,6 +41,8 @@ export function evaluateStudioDesignAssessment(
       selection: contribution.profile.selection,
     }),
     facts,
+    providerId: contribution.provider.id,
+    providerPackageName: contribution.provider.packageName,
     profileId: contribution.profile.profileId,
     providerOptions: input.providerOptions,
   };
