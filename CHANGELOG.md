@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.7
+
+### Patch Changes
+
+- 26dfde8: Update dependencies: `@ankhorage/data-sources`, `@ankhorage/deploy`, `@ankhorage/permissions`, `@ankhorage/repository`, `@ankhorage/runtime`.
+
 ## 8.1.6
 
 ### Patch Changes
