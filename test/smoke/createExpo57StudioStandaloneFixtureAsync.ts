@@ -51,8 +51,8 @@ export async function createExpo57StudioStandaloneFixtureAsync(options: {
 async function createDesignAssessmentEntrypointFixtureAsync(fixtureRoot: string): Promise<void> {
   await writeFile(
     path.join(fixtureRoot, 'src', 'app', 'design-assessment-entrypoint.tsx'),
-    `import { Text } from '@ankhorage/zora/reader-free';
-import { StudioDesignAssessmentCard } from '@ankhorage/studio/ui/StudioDesignAssessmentCard';
+    `import { StudioDesignAssessmentCard } from '@ankhorage/studio/ui/StudioDesignAssessmentCard';
+import { Text } from '@ankhorage/zora/reader-free';
 
 export default function DesignAssessmentEntrypointFixture() {
   return <Text>{StudioDesignAssessmentCard.name}</Text>;
