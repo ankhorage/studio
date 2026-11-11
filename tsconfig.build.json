@@ -42,6 +42,7 @@
     "src/runtime/executeStudioRuntimeCapabilityAsync.ts",
     "src/runtime/useStudioRuntimeCapabilityExecutor.ts",
     "src/ui/AnkhStudio.ts",
+    "src/ui/StudioDesignAssessmentCard.tsx",
     "src/ui/useStudioAppBarAugmentation.ts",
     "src/utils/treeUtils.ts",
     "src/hooks/useProjects.ts",

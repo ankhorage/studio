@@ -41,9 +41,25 @@ export async function createExpo57StudioStandaloneFixtureAsync(options: {
       }),
     ),
   );
+  await createDesignAssessmentEntrypointFixtureAsync(options.fixtureRoot);
   if (options.studioSpecifier !== undefined) {
     await replaceStudioSpecifierAsync(options.fixtureRoot, options.studioSpecifier);
   }
+}
+
+/*** Add a fixture-owned Expo route that proves the public assessment-card entrypoint resolves in Metro. */
+async function createDesignAssessmentEntrypointFixtureAsync(fixtureRoot: string): Promise<void> {
+  await writeFile(
+    path.join(fixtureRoot, 'src', 'app', 'design-assessment-entrypoint.tsx'),
+    `import { StudioDesignAssessmentCard } from '@ankhorage/studio/ui/StudioDesignAssessmentCard';
+import { Text } from '@ankhorage/zora/reader-free';
+
+export default function DesignAssessmentEntrypointFixture() {
+  return <Text>{StudioDesignAssessmentCard.name}</Text>;
+}
+`,
+    'utf8',
+  );
 }
 
 /*** Replace the fixture-only Studio dependency without changing the checked-in standalone consumer manifest. */
