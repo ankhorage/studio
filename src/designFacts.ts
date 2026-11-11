@@ -9,4 +9,3 @@ export type {
   StudioDesignAssessmentInput,
 } from './features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.js';
 export { evaluateStudioDesignAssessment } from './features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.js';
-export { StudioDesignAssessmentCard } from './features/design-facts/adapters/inbound/StudioDesignAssessmentCard.js';

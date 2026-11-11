@@ -22,6 +22,7 @@ export default {
           'src/runtime/useStudioRuntimeCapabilityExecutor.ts',
           'src/ui/admin/AnkhAdminPage.tsx',
           'src/ui/AnkhStudio.ts',
+          'src/ui/StudioDesignAssessmentCard.tsx',
           'src/ui/useStudioAppBarAugmentation.ts',
           'src/utils/treeUtils.ts',
         ],

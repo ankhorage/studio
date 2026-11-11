@@ -9,13 +9,15 @@ const RENDERED_AREA_ANALYSIS_CAPABILITY = 'rendered.area-analysis';
 
 export interface StudioDesignAssessmentInput {
   readonly facts: StudioDesignFactsInput;
+  readonly profileId: string;
   readonly providerOptions: DesignRuleProviderOptions;
 }
 
 export interface StudioDesignAssessment {
   readonly evaluation: RuleEvaluationResult;
   readonly facts: readonly FactEnvelope[];
-  readonly profileId: 'design.60-30-10';
+  readonly profileId: string;
+  readonly providerOptions: DesignRuleProviderOptions;
 }
 
 /*** Acquire Studio render facts and evaluate the provider-selected advisory Design profile through Rules. */
@@ -23,7 +25,7 @@ export function evaluateStudioDesignAssessment(
   input: StudioDesignAssessmentInput,
 ): StudioDesignAssessment {
   const facts = createStudioDesignFacts(input.facts);
-  const contribution = createStudioDesignRuleProvider(input.providerOptions);
+  const contribution = createStudioDesignRuleProvider(input.providerOptions, input.profileId);
   const scope = facts[0]?.scope;
 
   if (!scope) {
@@ -37,6 +39,7 @@ export function evaluateStudioDesignAssessment(
       selection: contribution.profile.selection,
     }),
     facts,
-    profileId: 'design.60-30-10',
+    profileId: contribution.profile.profileId,
+    providerOptions: input.providerOptions,
   };
 }
