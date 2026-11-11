@@ -18,6 +18,7 @@ const STUDIO_SELF_CONSUMER_PACKAGE_JSON_URL = new URL(
   import.meta.url,
 );
 const COLOR_THEORY_PACKAGE_JSON_PATH = REQUIRE.resolve('@ankhorage/color-theory/package.json');
+const DEVTOOLS_PACKAGE_JSON_PATH = REQUIRE.resolve('@ankhorage/devtools/package.json');
 const GENERATED_PACKAGE_POLICY = readGeneratedPackagePolicy();
 
 /*** Read and validate owner package metadata used as generated-app dependency floors. */
@@ -60,13 +61,23 @@ function createGeneratedPackagePolicy(input: {
     dependencies: readGeneratedRuntimeDependencies(input.dependencies, input.studioDependencyRange),
     devDependencies: {
       ankh: readRequiredString(input.devDependencies, '@ankhorage/ankh', 'Studio'),
-      devtools: readRequiredString(input.devDependencies, '@ankhorage/devtools', 'Studio'),
+      devtools: readInstalledDevtoolsProviderVersion(),
       typesBun: readRequiredString(input.devDependencies, '@types/bun', 'Studio'),
       typesCulori: input.typesCulori,
       typesReact: readRequiredString(input.devDependencies, '@types/react', 'Studio'),
     },
     peerDependencies: readGeneratedPeerDependencies(input.peerDependencies),
   };
+}
+
+/*** Read the exact published Devtools provider release selected for generated app synchronization. */
+function readInstalledDevtoolsProviderVersion(): string {
+  const devtools = readPackageManifest(DEVTOOLS_PACKAGE_JSON_PATH, 'Devtools');
+  const version = readRequiredString(devtools, 'version', 'Devtools');
+  if (!SEMVER_PATTERNS.exactWithPrerelease.test(version)) {
+    throw new Error('Devtools package.json version must be an exact semantic version.');
+  }
+  return version;
 }
 
 /*** Read generated runtime dependency ranges from Studio's dependency contract. */
