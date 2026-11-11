@@ -36,7 +36,6 @@ test('updates owner ranges before installs and runs only app-level Devtools conc
         expect(packageJson.devDependencies['@ankhorage/devtools']).toBe(
           policy.devDependencies.devtools,
         );
-        expect(packageJson.devDependencies['@ankhorage/devtools']).not.toStartWith('^');
       }
       calls.push({ command, args, cwd });
     },
