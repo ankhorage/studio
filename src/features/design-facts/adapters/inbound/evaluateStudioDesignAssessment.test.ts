@@ -88,6 +88,15 @@ describe('evaluateStudioDesignAssessment', () => {
     expect(assessment.evaluation.findings[0]?.message).toContain(
       'outside its configured tolerance',
     );
+    const findings = createStudioDesignAssessmentPresentation(assessment).groups[0]?.findings;
+    expect(
+      findings?.some(
+        (finding) =>
+          finding.advisory &&
+          finding.finding.severity === 'warning' &&
+          finding.resultStatus === 'FAIL',
+      ),
+    ).toBe(true);
   });
 
   it('keeps missing renderer evidence INCOMPLETE without inventing a pass', () => {
@@ -101,6 +110,33 @@ describe('evaluateStudioDesignAssessment', () => {
 
     expect(assessment.evaluation.results.map((result) => result.status)).toEqual(['INCOMPLETE']);
     expect(assessment.facts[0]).toMatchObject({ status: 'missing' });
+    const [missingFact] = createStudioDesignAssessmentPresentation(assessment).unscopedMissingFacts;
+    expect(missingFact?.missing).toEqual({
+      code: 'rendered-area-unavailable',
+      message: 'No renderer pixel-area measurement was captured.',
+    });
+    expect(missingFact?.provenance).toEqual({
+      collectedAt: '2026-11-10T00:00:00.000Z',
+      producer: { id: '@ankhorage/studio', version: '8' },
+      source: { id: 'studio-screen:home', revision: 'manifest-sha' },
+    });
+  });
+
+  it('retains the provider identity and authoritative color policy version for presentation', () => {
+    const assessment = evaluateStudioDesignAssessment({
+      ...assessmentInput,
+      facts: {
+        ...assessmentInput.facts,
+        measurements: measurements(),
+      },
+    });
+
+    expect(createStudioDesignAssessmentPresentation(assessment)).toMatchObject({
+      colorPolicyVersion: 1,
+      providerId: 'ankhorage.rules-design',
+      providerPackageName: '@ankhorage/rules-design',
+      profileId: 'design.60-30-10',
+    });
   });
 
   it('keeps an advisory viewport deviation out of the page evidence group', () => {
