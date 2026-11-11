@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.11
+
+### Patch Changes
+
+- 74ae066: Update dependencies: `@ankhorage/rules-design`.
+
 ## 8.1.10
 
 ### Patch Changes
