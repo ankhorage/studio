@@ -41,6 +41,21 @@ test('copies apps/studio directly into an independent single-package root', asyn
   );
 });
 
+test('generates the public design-assessment entrypoint with canonical import order', async () => {
+  const fixtureRoot = await createFixtureRootAsync();
+
+  await createExpo57StudioStandaloneFixtureAsync({ fixtureRoot, repositoryRoot: process.cwd() });
+
+  expect(
+    await readFile(
+      path.join(fixtureRoot, 'src', 'app', 'design-assessment-entrypoint.tsx'),
+      'utf8',
+    ),
+  ).toStartWith(
+    "import { StudioDesignAssessmentCard } from '@ankhorage/studio/ui/StudioDesignAssessmentCard';\nimport { Text } from '@ankhorage/zora/reader-free';\n",
+  );
+});
+
 test('accepts newer compatible registry patches installed and locked inside the fixture', async () => {
   const repositoryRoot = process.cwd();
   const fixtureRoot = await createFixtureRootAsync();
