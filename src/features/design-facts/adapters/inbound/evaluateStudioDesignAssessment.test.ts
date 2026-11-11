@@ -54,6 +54,7 @@ const assessmentInput = {
     sourceRevision: 'manifest-sha',
     tenantId: 'tenant-a',
   },
+  profileId: 'design.60-30-10',
   providerOptions,
 };
 
