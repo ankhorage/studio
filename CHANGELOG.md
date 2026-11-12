@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.14
+
+### Patch Changes
+
+- cb0b408: Update dependencies: `@ankhorage/contracts`.
+
 ## 8.1.13
 
 ### Patch Changes
