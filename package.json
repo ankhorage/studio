@@ -318,7 +318,7 @@
     "@ankhorage/surface": "^9.4.18",
     "@ankhorage/templates": "^12.5.7",
     "@ankhorage/utility": "^1.10.0",
-    "@ankhorage/zora": "^26.1.5",
+    "@ankhorage/zora": "^27.0.0",
     "@fastify/cors": "^11.4.1",
     "expo-document-picker": "~57.0.3",
     "expo-file-system": "~57.0.7",
@@ -347,7 +347,7 @@
   "devDependencies": {
     "@ankhorage/ankh": "^0.13.1",
     "@ankhorage/devtools": "^2.3.21",
-    "@ankhorage/paradox": "^0.3.6",
+    "@ankhorage/paradox": "^0.3.7",
     "@types/bun": "^1.4.2",
     "@types/node": "^24.13.3",
     "@types/react": "~19.2.4",
