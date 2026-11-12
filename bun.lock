@@ -31,7 +31,7 @@
         "@ankhorage/storage": "^0.2.2",
         "@ankhorage/storage-supabase": "^1.0.0",
         "@ankhorage/supabase": "^0.5.14",
-        "@ankhorage/surface": "^9.4.17",
+        "@ankhorage/surface": "^9.4.18",
         "@ankhorage/templates": "^12.5.7",
         "@ankhorage/utility": "^1.10.0",
         "@ankhorage/zora": "^26.1.4",
