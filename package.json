@@ -294,7 +294,7 @@
     "@ankhorage/auth-supabase": "^2.0.10",
     "@ankhorage/capability": "^0.2.2",
     "@ankhorage/color-theory": "^0.3.2",
-    "@ankhorage/contracts": "^26.6.0",
+    "@ankhorage/contracts": "^26.7.0",
     "@ankhorage/data-sources": "^2.1.9",
     "@ankhorage/deploy": "^0.14.17",
     "@ankhorage/expo-runtime": "^7.0.3",
