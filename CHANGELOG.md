@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.18
+
+### Patch Changes
+
+- 2910d7d: Update dependencies: `@fastify/cors`.
+
 ## 8.1.17
 
 ### Patch Changes
