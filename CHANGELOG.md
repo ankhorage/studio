@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.22
+
+### Patch Changes
+
+- 310aa9a: Update dependencies: `@ankhorage/repository`.
+
 ## 8.1.21
 
 ### Patch Changes
