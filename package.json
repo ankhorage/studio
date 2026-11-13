@@ -307,7 +307,7 @@
     "@ankhorage/orchestrator-module-expo-localization": "^0.7.3",
     "@ankhorage/permissions": "^0.3.17",
     "@ankhorage/react-native-reanimated-dnd-web": "^0.4.4",
-    "@ankhorage/repository": "^0.8.5",
+    "@ankhorage/repository": "^0.9.0",
     "@ankhorage/rules-design": "^0.9.0",
     "@ankhorage/runtime": "^5.3.6",
     "@ankhorage/secrets": "^0.3.1",
