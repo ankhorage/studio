@@ -35,7 +35,7 @@
         "@ankhorage/templates": "^12.5.7",
         "@ankhorage/utility": "^1.10.0",
         "@ankhorage/zora": "^27.0.0",
-        "@fastify/cors": "^11.4.2",
+        "@fastify/cors": "^11.4.3",
         "expo-document-picker": "~57.0.3",
         "expo-file-system": "~57.0.7",
         "expo-image-picker": "~57.0.21",
@@ -445,7 +445,7 @@
 
     "@fastify/ajv-compiler": ["@fastify/ajv-compiler@4.0.6", "", { "dependencies": { "ajv": "^8.12.0", "ajv-formats": "^3.0.1", "fast-uri": "^4.0.0" } }, "sha512-NtuzM0SfaMJbGlnjr9LWQUN5LzgSrbB8tf/wRZNas+4E1O/Nmzl53e7ruT61HDZyRCJGC6FxIogmNZO1c5ETBA=="],
 
-    "@fastify/cors": ["@fastify/cors@11.4.2", "", { "dependencies": { "fastify-plugin": "^6.0.0", "toad-cache": "^3.7.0" } }, "sha512-YEVXrPWmKOGtnU/21mH2kErmrP1zsLJwWG8KOIbtRe/Sayu+LQPxSubRIVmddDudr05w/GGgUtIzac6Jp3zNzA=="],
+    "@fastify/cors": ["@fastify/cors@11.4.3", "", { "dependencies": { "fastify-plugin": "^6.0.0", "toad-cache": "^3.7.0" } }, "sha512-6NNFNR1i9t1oG1WlQftwc2ugElFm4cG75ylYyGNiKKiyxlVGueneup9MQ9Nd3eI4lT6kVOJaxV1Jqa727/E4jg=="],
 
     "@fastify/error": ["@fastify/error@4.2.0", "", {}, "sha512-RSo3sVDXfHskiBZKBPRgnQTtIqpi/7zhJOEmAxCiBcM7d0uwdGdxLlsCaLzGs8v8NnxIRlfG0N51p5yFaOentQ=="],
 

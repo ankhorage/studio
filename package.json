@@ -319,7 +319,7 @@
     "@ankhorage/templates": "^12.5.7",
     "@ankhorage/utility": "^1.10.0",
     "@ankhorage/zora": "^27.0.0",
-    "@fastify/cors": "^11.4.2",
+    "@fastify/cors": "^11.4.3",
     "expo-document-picker": "~57.0.3",
     "expo-file-system": "~57.0.7",
     "expo-image-picker": "~57.0.21",
