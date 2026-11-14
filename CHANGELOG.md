@@ -1,5 +1,42 @@
 # @ankhorage/studio
 
+## 8.1.49
+
+### Patch Changes
+
+- 414eb4d: Update dependencies: `@ankhorage/paradox`, `@ankhorage/templates`.
+
+## 8.1.48
+
+### Patch Changes
+
+- e5cbf0a: Update dependencies: `@ankhorage/zora`.
+
+## 8.1.47
+
+### Patch Changes
+
+- 99fcbac: Update dependencies: `@ankhorage/zora`.
+
+## 8.1.46
+
+### Patch Changes
+
+- 3ee3cb6: Update dependencies: `@ankhorage/auth-supabase`, `@ankhorage/secrets`, `@ankhorage/storage`, `@ankhorage/surface`, `@ankhorage/templates`, `@ankhorage/zora`.
+
+## 8.1.45
+
+### Patch Changes
+
+- d9221f4: Update dependencies: `@ankhorage/auth`, `@ankhorage/runtime`.
+
+## 8.1.44
+
+### Patch Changes
+
+- 5efd4cf: Update dependencies: `@ankhorage/infra`.
+- 182c9a0: Update dependencies: `@ankhorage/permissions`, `@ankhorage/templates`.
+
 ## 8.1.43
 
 ### Patch Changes
