@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.40
+
+### Patch Changes
+
+- 41ee191: Update dependencies: `@ankhorage/runtime`, `@ankhorage/templates`, `@ankhorage/zora`.
+
 ## 8.1.39
 
 ### Patch Changes
