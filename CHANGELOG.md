@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.46
+
+### Patch Changes
+
+- 3ee3cb6: Update dependencies: `@ankhorage/auth-supabase`, `@ankhorage/secrets`, `@ankhorage/storage`, `@ankhorage/surface`, `@ankhorage/templates`, `@ankhorage/zora`.
+
 ## 8.1.45
 
 ### Patch Changes
