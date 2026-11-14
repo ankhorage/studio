@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.45
+
+### Patch Changes
+
+- d9221f4: Update dependencies: `@ankhorage/auth`, `@ankhorage/runtime`.
+
 ## 8.1.44
 
 ### Patch Changes
