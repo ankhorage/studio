@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.49
+
+### Patch Changes
+
+- 414eb4d: Update dependencies: `@ankhorage/paradox`, `@ankhorage/templates`.
+
 ## 8.1.48
 
 ### Patch Changes
