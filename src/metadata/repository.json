@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "kind": "application",
+  "title": "Ankhorage Studio",
+  "summary": "Provides the authoring package, project workspace, host, and application capabilities for Ankhorage apps.",
+  "purpose": "Give application authors a cohesive workspace for creating, editing, validating, and operating Ankhorage projects through published package and CLI boundaries.",
+  "domain": "application authoring",
+  "responsibilities": [
+    "Provide Studio authoring, project, runtime, host, and administration entrypoints.",
+    "Expose capabilities for starting Studio and listing, creating, or deleting workspace projects.",
+    "Compose published Ankhorage packages into the Studio authoring experience."
+  ],
+  "boundaries": [
+    "Does not replace the published contracts, runtime, surface, or deployment package boundaries it consumes.",
+    "Does not require consumers to import sibling repository source files.",
+    "Does not make repository metadata enforcement decisions."
+  ],
+  "audience": [
+    "Authors building and operating Ankhorage applications.",
+    "Hosts that embed or invoke Studio capabilities."
+  ],
+  "useCases": [
+    "Create and manage Studio workspace projects.",
+    "Run the local Studio host and first-party Studio application.",
+    "Author application, runtime, navigation, and administration behavior through published entrypoints."
+  ],
+  "architecture": {
+    "role": "A Studio-specific authoring application package that composes explicit published package boundaries.",
+    "invariants": [
+      "Cross-package consumption uses declared dependencies and published APIs.",
+      "Studio capabilities are exposed through explicit package and CLI entrypoints."
+    ]
+  },
+  "constraints": {
+    "limitations": [
+      "Platform-native behavior depends on the configured Expo and React Native peer environment.",
+      "Repository metadata enforcement remains disabled until the organization inventory is verified."
+    ]
+  }
+}
