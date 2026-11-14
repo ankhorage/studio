@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.29
+
+### Patch Changes
+
+- 336208f: Update dependencies: `@ankhorage/infra`, `@ankhorage/templates`.
+
 ## 8.1.28
 
 ### Patch Changes
