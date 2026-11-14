@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.25
+
+### Patch Changes
+
+- 8b16e10: Update dependencies: `@ankhorage/repository`, `@ankhorage/surface`.
+
 ## 8.1.24
 
 ### Patch Changes
