@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.27
+
+### Patch Changes
+
+- 6c37068: Update dependencies: `@ankhorage/auth-supabase`, `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/deploy`, `@ankhorage/navigator`, `@ankhorage/permissions`, `@ankhorage/repository`, `@ankhorage/runtime`, `@ankhorage/surface`.
+
 ## 8.1.26
 
 ### Patch Changes
