@@ -316,7 +316,7 @@
     "@ankhorage/storage-supabase": "^1.0.0",
     "@ankhorage/supabase": "^0.5.14",
     "@ankhorage/surface": "^9.5.4",
-    "@ankhorage/templates": "^12.6.5",
+    "@ankhorage/templates": "^12.6.6",
     "@ankhorage/utility": "^1.10.0",
     "@ankhorage/zora": "^27.1.4",
     "@fastify/cors": "^11.4.3",
@@ -347,7 +347,7 @@
   "devDependencies": {
     "@ankhorage/ankh": "^0.13.1",
     "@ankhorage/devtools": "^2.3.21",
-    "@ankhorage/paradox": "^0.3.7",
+    "@ankhorage/paradox": "^0.4.0",
     "@types/bun": "^1.4.2",
     "@types/node": "^24.13.3",
     "@types/react": "~19.2.4",
