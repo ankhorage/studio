@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.28
+
+### Patch Changes
+
+- f69ce64: Update dependencies: `@ankhorage/runtime`, `@ankhorage/zora`.
+
 ## 8.1.27
 
 ### Patch Changes
