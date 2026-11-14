@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.35
+
+### Patch Changes
+
+- fa66bf4: Update dependencies: `@ankhorage/surface`, `@ankhorage/templates`.
+
 ## 8.1.34
 
 ### Patch Changes
