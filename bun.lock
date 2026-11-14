@@ -107,7 +107,7 @@
 
     "@ankhorage/grid-view": ["@ankhorage/grid-view@0.5.0", "", {}, "sha512-xTfDJNBkWmkaVHQd6Oe6YiRSG4f6ZN1gPnl143AVhS7gZU/x7Tesc/WLaDQ66Z6qALhWzoFrNzKN4S3XuZ4QLQ=="],
 
-    "@ankhorage/infra": ["@ankhorage/infra@7.3.1", "", { "dependencies": { "@ankhorage/ankh": "^0.13.6", "@ankhorage/capability": "^0.2.2", "@ankhorage/contracts": "^26.11.0", "@ankhorage/utility": "^1.10.0" }, "bin": { "ankhorage-infra": "dist/cli/bin.js" } }, "sha512-7OZHydgd53VeUMxyNtnsoaV9Ze1vNlyUmo2NZ/66/bXuAdos0tYA90rHBkOoLH0EkFCtNfZVubbEM4v7vdgisQ=="],
+    "@ankhorage/infra": ["@ankhorage/infra@7.3.2", "", { "dependencies": { "@ankhorage/ankh": "^0.13.6", "@ankhorage/capability": "^0.2.2", "@ankhorage/contracts": "^26.11.1", "@ankhorage/utility": "^1.10.0" }, "bin": { "ankhorage-infra": "dist/cli/bin.js" } }, "sha512-Xqms6R0nQsWeVpFOsn7PtfM7pcpcZFj9mLJib+7lOeb9ZLwrDcw/xd5yiUoUEXy3RK8Jstyyt7mTuIllccNlXQ=="],
 
     "@ankhorage/kubernetes": ["@ankhorage/kubernetes@0.8.2", "", { "dependencies": { "@ankhorage/contracts": "^22.0.3" } }, "sha512-93qzH5pL3ciywNrVK0Tm0Xl88C4up06kgOOdSqO5vwlz+HE42r18IphDIdGBLdxum1dS4SHHNVrPDKrFY+kxcg=="],
 
