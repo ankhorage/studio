@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.42
+
+### Patch Changes
+
+- 6450bad: Update dependencies: `@ankhorage/contracts`.
+
 ## 8.1.41
 
 ### Patch Changes
