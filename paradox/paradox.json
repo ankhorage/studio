@@ -2,8 +2,10 @@
   "packageName": "@ankhorage/studio",
   "packageId": "@ankhorage/studio",
   "description": "Studio authoring package for Ankhorage apps",
-  "collaborators": null,
-  "donation": null,
+  "collaborators": true,
+  "donation": {
+    "account": "ankhorage"
+  },
   "badges": [
     {
       "id": "license",
@@ -14,7 +16,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v8.1.36",
+      "value": "v8.1.37",
       "color": "cb3837"
     },
     {

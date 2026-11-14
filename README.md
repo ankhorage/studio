@@ -3,7 +3,7 @@
 
 # @ankhorage/studio
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v8.1.36](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![paradox: canonical](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v8.1.37](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![paradox: canonical](././paradox/badges/docs.svg)
 
 Studio authoring package for Ankhorage apps
 
@@ -34,39 +34,17 @@ import {
 } from '@ankhorage/studio/canvasDragModel';
 ```
 
-## Generated documentation
+## Documentation
 
-- [Interactive documentation app](././paradox/index.html)
-- [Public API reference](././paradox/exports.md)
-- [Component registry](././paradox/components.md)
-- [Architecture overview](././paradox/diagrams/architecture-overview.mmd)
-- [Module relationships](././paradox/diagrams/module-relationships.mmd)
-- [Export graph](././paradox/diagrams/export-graph.mmd)
-- [appendStudioEventBinding sequence](././paradox/diagrams/sequences/append-studio-event-binding.mmd)
-- [assessStudioBindingCompatibility sequence](././paradox/diagrams/sequences/assess-studio-binding-compatibility.mmd)
-- [buildInsertCatalogEntries sequence](././paradox/diagrams/sequences/build-insert-catalog-entries.mmd)
-- [cloneWithNewIds sequence](././paradox/diagrams/sequences/clone-with-new-ids.mmd)
-- [collectStudioBindingCapabilityOptions sequence](././paradox/diagrams/sequences/collect-studio-binding-capability-options.mmd)
-- [collectStudioMediaAssetUsages sequence](././paradox/diagrams/sequences/collect-studio-media-asset-usages.mmd)
-- [createNodeFromCatalogEntry sequence](././paradox/diagrams/sequences/create-node-from-catalog-entry.mmd)
-- [createStudioMediaAssetId sequence](././paradox/diagrams/sequences/create-studio-media-asset-id.mmd)
-- [createStudioUrlMediaAsset sequence](././paradox/diagrams/sequences/create-studio-url-media-asset.mmd)
-- [deriveProjectId sequence](././paradox/diagrams/sequences/derive-project-id.mmd)
-- [diagnoseStudioComponentBindings sequence](././paradox/diagrams/sequences/diagnose-studio-component-bindings.mmd)
-- [findNodeById sequence](././paradox/diagrams/sequences/find-node-by-id.mmd)
-- [findStudioBindingCapabilityOption sequence](././paradox/diagrams/sequences/find-studio-binding-capability-option.mmd)
-- [generateStudioId sequence](././paradox/diagrams/sequences/generate-studio-id.mmd)
-- [listStudioMediaAssets sequence](././paradox/diagrams/sequences/list-studio-media-assets.mmd)
-- [removeNodeFromTree sequence](././paradox/diagrams/sequences/remove-node-from-tree.mmd)
-- [removeStudioEventBinding sequence](././paradox/diagrams/sequences/remove-studio-event-binding.mmd)
-- [removeStudioMediaAsset sequence](././paradox/diagrams/sequences/remove-studio-media-asset.mmd)
-- [removeStudioPropBinding sequence](././paradox/diagrams/sequences/remove-studio-prop-binding.mmd)
-- [resolveDefaultInsertPlacement sequence](././paradox/diagrams/sequences/resolve-default-insert-placement.mmd)
-- [resolveInsertPlacement sequence](././paradox/diagrams/sequences/resolve-insert-placement.mmd)
-- [resolveStudioBindableEvents sequence](././paradox/diagrams/sequences/resolve-studio-bindable-events.mmd)
-- [resolveStudioBindableProps sequence](././paradox/diagrams/sequences/resolve-studio-bindable-props.mmd)
-- [updateNodeInTree sequence](././paradox/diagrams/sequences/update-node-in-tree.mmd)
-- [upsertStudioMediaAsset sequence](././paradox/diagrams/sequences/upsert-studio-media-asset.mmd)
-- [upsertStudioPropBinding sequence](././paradox/diagrams/sequences/upsert-studio-prop-binding.mmd)
-- [validateNodePlacement sequence](././paradox/diagrams/sequences/validate-node-placement.mmd)
-- [validateProjectCreationInput sequence](././paradox/diagrams/sequences/validate-project-creation-input.mmd)
+Open `./paradox/index.html` locally in your browser to browse the complete documentation.
+
+## Contributors
+
+<!-- readme: contributors -start -->
+<!-- readme: contributors -end -->
+
+## Donation
+
+If this project is useful to you, you can support its continued development.
+
+[Support @ankhorage](https://github.com/sponsors/ankhorage)
