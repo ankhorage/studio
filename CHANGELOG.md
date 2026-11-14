@@ -1,5 +1,12 @@
 # @ankhorage/studio
 
+## 8.1.52
+
+### Patch Changes
+
+- 81f1130: Add canonical repository metadata for package discovery and documentation.
+- 7d855f3: Update dependencies: `@ankhorage/zora`.
+
 ## 8.1.51
 
 ### Patch Changes

@@ -1,7 +1,8 @@
 {
-  "packageName": "@ankhorage/studio",
+  "packageName": "Ankhorage Studio",
   "packageId": "@ankhorage/studio",
-  "description": "Studio authoring package for Ankhorage apps",
+  "description": "Provides the authoring package, project workspace, host, and application capabilities for Ankhorage apps.",
+  "purpose": "Give application authors a cohesive workspace for creating, editing, validating, and operating Ankhorage projects through published package and CLI boundaries.",
   "collaborators": true,
   "donation": {
     "account": "ankhorage"
@@ -16,7 +17,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v8.1.51",
+      "value": "v8.1.52",
       "color": "cb3837"
     },
     {
