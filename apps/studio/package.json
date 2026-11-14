@@ -61,7 +61,7 @@
   },
   "devDependencies": {
     "@ankhorage/devtools": "^2.3.21",
-    "@ankhorage/utility": "^1.10.0",
+    "@ankhorage/utility": "^1.10.1",
     "@types/bun": "^1.4.2",
     "@types/node": "^24.13.3",
     "@types/react": "~19.2.4",
