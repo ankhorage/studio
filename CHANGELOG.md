@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.50
+
+### Patch Changes
+
+- 0583ea8: Align Studio and its standalone app with the current Expo 57 compatibility patch releases, including the released Runtime, Google Fonts, and Localization dependency lines.
+
 ## 8.1.49
 
 ### Patch Changes
