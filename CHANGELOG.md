@@ -1,5 +1,12 @@
 # @ankhorage/studio
 
+## 8.1.44
+
+### Patch Changes
+
+- 5efd4cf: Update dependencies: `@ankhorage/infra`.
+- 182c9a0: Update dependencies: `@ankhorage/permissions`, `@ankhorage/templates`.
+
 ## 8.1.43
 
 ### Patch Changes
