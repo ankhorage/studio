@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.51
+
+### Patch Changes
+
+- 2fd9802: Update dependencies: `@ankhorage/color-theory`, `@ankhorage/infra`, `@ankhorage/paradox`, `@ankhorage/repository`, `@ankhorage/surface`, `@ankhorage/templates`, `@ankhorage/zora`.
+
 ## 8.1.50
 
 ### Patch Changes
