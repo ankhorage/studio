@@ -18,11 +18,11 @@ env:
   GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
-  acceptance-scope:
+  acceptance-impact:
     runs-on: ubuntu-latest
 
     outputs:
-      required: ${{ steps.scope.outputs.required }}
+      impact: ${{ steps.plan.outputs.impact }}
 
     steps:
       - name: Checkout repository
@@ -30,31 +30,31 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Determine acceptance scope
-        id: scope
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" = 'pull_request' ]; then
-            base_sha='${{ github.event.pull_request.base.sha }}'
-            head_sha='${{ github.event.pull_request.head.sha }}'
-            bash scripts/determine-studio-acceptance-scope.sh "$base_sha" "$head_sha"
-          else
-            {
-              echo 'required=true'
-              echo 'reason=Push or manual dispatch requires the complete acceptance suite.'
-            } >> "$GITHUB_OUTPUT"
-          fi
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
 
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Plan acceptance impact
+        id: plan
+        env:
+          ANKH_CI_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: bun .github/scripts/run-ci-impact.ts plan
+
+      - name: Summarize acceptance impact policy
+        run: |
           {
-            echo '## Studio acceptance scope'
+            echo '## Studio acceptance impact'
             echo
-            echo "- Complete suite required: \`${{ steps.scope.outputs.required }}\`"
-            echo "- Reason: ${{ steps.scope.outputs.reason }}"
-            echo '- Required scenarios when selected: Expo web, SharkPrey, standalone Studio, generated app, generated navigation, and generated capabilities.'
+            echo '- Existing scenarios: Expo web, SharkPrey, standalone Studio, generated app, generated navigation, and generated capabilities.'
+            echo '- The published Devtools plan records a decision for each scenario; unavailable, unsafe, ambiguous, or unmapped changes fall back to every scenario.'
           } >> "$GITHUB_STEP_SUMMARY"
 
   expo-web:
-    needs: acceptance-scope
+    needs: acceptance-impact
     if: >-
       (github.event_name != 'pull_request' ||
        github.event.pull_request.head.repo.full_name != github.repository ||
@@ -63,7 +63,7 @@ jobs:
        !contains(fromJSON('["renovate[bot]","ankhorage-renovate-sync[bot]"]'), github.event.pull_request.user.login) ||
        !startsWith(github.head_ref, 'renovate/patch-') ||
        !contains(github.event.pull_request.labels.*.name, 'renovate:patch')) &&
-      needs.acceptance-scope.outputs.required == 'true'
+      fromJSON(needs.acceptance-impact.outputs.impact).jobs['ci:acceptance:expo-web'].state != 'skipped'
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
@@ -90,20 +90,11 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Typecheck Studio Expo app
-        run: bun run typecheck:studio
-
-      - name: Validate packed Studio host artifact
-        run: bun run test:acceptance:packed-studio-host
-
-      - name: Validate generated Close social template Web
-        run: bun run test:acceptance:expo57-social-template-web
-
-      - name: Validate generated Studio admin Web
-        run: bun run test:e2e:generated-app-web
+      - name: Validate Expo Web acceptance
+        run: bun run ci:acceptance:expo-web
 
   sharkprey:
-    needs: acceptance-scope
+    needs: acceptance-impact
     if: >-
       (github.event_name != 'pull_request' ||
        github.event.pull_request.head.repo.full_name != github.repository ||
@@ -112,7 +103,7 @@ jobs:
        !contains(fromJSON('["renovate[bot]","ankhorage-renovate-sync[bot]"]'), github.event.pull_request.user.login) ||
        !startsWith(github.head_ref, 'renovate/patch-') ||
        !contains(github.event.pull_request.labels.*.name, 'renovate:patch')) &&
-      needs.acceptance-scope.outputs.required == 'true'
+      fromJSON(needs.acceptance-impact.outputs.impact).jobs['ci:acceptance:sharkprey'].state != 'skipped'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -140,10 +131,10 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Validate packed Studio candidate with generated SharkPrey
-        run: bun run test:acceptance:expo57-sharkprey
+        run: bun run ci:acceptance:sharkprey
 
   studio-standalone:
-    needs: acceptance-scope
+    needs: acceptance-impact
     if: >-
       (github.event_name != 'pull_request' ||
        github.event.pull_request.head.repo.full_name != github.repository ||
@@ -152,7 +143,7 @@ jobs:
        !contains(fromJSON('["renovate[bot]","ankhorage-renovate-sync[bot]"]'), github.event.pull_request.user.login) ||
        !startsWith(github.head_ref, 'renovate/patch-') ||
        !contains(github.event.pull_request.labels.*.name, 'renovate:patch')) &&
-      needs.acceptance-scope.outputs.required == 'true'
+      fromJSON(needs.acceptance-impact.outputs.impact).jobs['ci:acceptance:studio-standalone'].state != 'skipped'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -180,10 +171,10 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Validate standalone Studio packed PR candidate
-        run: bun run test:acceptance:expo57-studio-standalone
+        run: bun run ci:acceptance:studio-standalone
 
   generated-app:
-    needs: acceptance-scope
+    needs: acceptance-impact
     if: >-
       (github.event_name != 'pull_request' ||
        github.event.pull_request.head.repo.full_name != github.repository ||
@@ -192,7 +183,7 @@ jobs:
        !contains(fromJSON('["renovate[bot]","ankhorage-renovate-sync[bot]"]'), github.event.pull_request.user.login) ||
        !startsWith(github.head_ref, 'renovate/patch-') ||
        !contains(github.event.pull_request.labels.*.name, 'renovate:patch')) &&
-      needs.acceptance-scope.outputs.required == 'true'
+      fromJSON(needs.acceptance-impact.outputs.impact).jobs['ci:acceptance:generated-app'].state != 'skipped'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -220,10 +211,10 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Validate generated Expo 57 app
-        run: bun run test:acceptance:expo57-generated-app
+        run: bun run ci:acceptance:generated-app
 
   generated-navigation:
-    needs: acceptance-scope
+    needs: acceptance-impact
     if: >-
       (github.event_name != 'pull_request' ||
        github.event.pull_request.head.repo.full_name != github.repository ||
@@ -232,7 +223,7 @@ jobs:
        !contains(fromJSON('["renovate[bot]","ankhorage-renovate-sync[bot]"]'), github.event.pull_request.user.login) ||
        !startsWith(github.head_ref, 'renovate/patch-') ||
        !contains(github.event.pull_request.labels.*.name, 'renovate:patch')) &&
-      needs.acceptance-scope.outputs.required == 'true'
+      fromJSON(needs.acceptance-impact.outputs.impact).jobs['ci:acceptance:generated-navigation'].state != 'skipped'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -260,10 +251,10 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Validate generated Expo 57 navigation
-        run: bun run test:acceptance:expo57-generated-navigation
+        run: bun run ci:acceptance:generated-navigation
 
   generated-capabilities:
-    needs: acceptance-scope
+    needs: acceptance-impact
     if: >-
       (github.event_name != 'pull_request' ||
        github.event.pull_request.head.repo.full_name != github.repository ||
@@ -272,7 +263,7 @@ jobs:
        !contains(fromJSON('["renovate[bot]","ankhorage-renovate-sync[bot]"]'), github.event.pull_request.user.login) ||
        !startsWith(github.head_ref, 'renovate/patch-') ||
        !contains(github.event.pull_request.labels.*.name, 'renovate:patch')) &&
-      needs.acceptance-scope.outputs.required == 'true'
+      fromJSON(needs.acceptance-impact.outputs.impact).jobs['ci:acceptance:generated-capabilities'].state != 'skipped'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -299,11 +290,56 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Validate focused generated capability contracts
-        run: >-
-          bun test
-          test/smoke/createExpo57CapabilityFixtureManifest.test.ts
-          src/projectDeployAssetPicker.test.ts
-
       - name: Validate generated Expo 57 capabilities
-        run: bun run test:acceptance:expo57-generated-capabilities
+        run: bun run ci:acceptance:generated-capabilities
+
+  acceptance:
+    needs:
+      - acceptance-impact
+      - expo-web
+      - sharkprey
+      - studio-standalone
+      - generated-app
+      - generated-navigation
+      - generated-capabilities
+    if: always()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate planned acceptance results
+        env:
+          IMPACT: ${{ needs.acceptance-impact.outputs.impact }}
+          EXPO_WEB_RESULT: ${{ needs.expo-web.result }}
+          SHARKPREY_RESULT: ${{ needs.sharkprey.result }}
+          STUDIO_STANDALONE_RESULT: ${{ needs.studio-standalone.result }}
+          GENERATED_APP_RESULT: ${{ needs.generated-app.result }}
+          GENERATED_NAVIGATION_RESULT: ${{ needs.generated-navigation.result }}
+          GENERATED_CAPABILITIES_RESULT: ${{ needs.generated-capabilities.result }}
+          RENOVATE_PATCH_EXEMPT: ${{ github.event_name == 'pull_request' && contains(fromJSON('["renovate[bot]","ankhorage-renovate-sync[bot]"]'), github.event.pull_request.user.login) && startsWith(github.head_ref, 'renovate/patch-') && contains(github.event.pull_request.labels.*.name, 'renovate:patch') }}
+        run: |
+          node -e '
+            const impact = JSON.parse(process.env.IMPACT ?? "");
+            if (impact.version !== 1 || typeof impact.jobs !== "object" || impact.jobs === null) {
+              throw new Error("Expected the published CI-impact version 1 job decisions.");
+            }
+            const results = {
+              "ci:acceptance:expo-web": process.env.EXPO_WEB_RESULT,
+              "ci:acceptance:sharkprey": process.env.SHARKPREY_RESULT,
+              "ci:acceptance:studio-standalone": process.env.STUDIO_STANDALONE_RESULT,
+              "ci:acceptance:generated-app": process.env.GENERATED_APP_RESULT,
+              "ci:acceptance:generated-navigation": process.env.GENERATED_NAVIGATION_RESULT,
+              "ci:acceptance:generated-capabilities": process.env.GENERATED_CAPABILITIES_RESULT,
+            };
+            const exempt = process.env.RENOVATE_PATCH_EXEMPT === "true";
+            for (const [script, result] of Object.entries(results)) {
+              const decision = impact.jobs[script];
+              if (decision === undefined || !["selected", "skipped", "full"].includes(decision.state)) {
+                throw new Error(`Missing valid decision for ${script}.`);
+              }
+              const expected = decision.state === "skipped" ? "skipped" : "success";
+              if (result !== expected && !(exempt && result === "skipped")) {
+                throw new Error(`${script} was planned as ${decision.state} but finished ${result}.`);
+              }
+            }
+            if (exempt) console.log("Existing Renovate patch policy exempted acceptance execution; no acceptance result is claimed.");
+          '
