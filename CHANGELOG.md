@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.53
+
+### Patch Changes
+
+- f65d3af: Update dependencies: `@ankhorage/data-sources`.
+
 ## 8.1.52
 
 ### Patch Changes
