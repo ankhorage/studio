@@ -164,6 +164,9 @@
   },
   "ankh": {
     "ciImpact": {
+      "complete": {
+        "e2e": false
+      },
       "suites": [
         {
           "kind": "e2e",
@@ -398,7 +401,7 @@
   },
   "devDependencies": {
     "@ankhorage/ankh": "^0.13.1",
-    "@ankhorage/devtools": "^2.3.21",
+    "@ankhorage/devtools": "^2.6.0",
     "@ankhorage/paradox": "^0.5.0",
     "@types/bun": "^1.4.2",
     "@types/node": "^24.13.3",
