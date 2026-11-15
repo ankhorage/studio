@@ -33,6 +33,11 @@ jobs:
       - name: Install dependencies
         run: bun install
 
+      - name: Plan CI impact
+        env:
+          ANKH_CI_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: bun .github/scripts/run-ci-impact.ts plan
+
       - name: Reject package version rollback
         if: github.event_name == 'pull_request'
         run: |
@@ -103,7 +108,7 @@ jobs:
       - name: Run tests
         run: |
           if node -e "const p=require('./package.json'); process.exit(p.scripts?.test ? 0 : 1)"; then
-            bun run test
+            bun .github/scripts/run-ci-impact.ts unit
           else
             echo "No test script found; skipping."
           fi

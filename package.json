@@ -163,6 +163,52 @@
     }
   },
   "ankh": {
+    "ciImpact": {
+      "suites": [
+        {
+          "kind": "e2e",
+          "script": "ci:acceptance:expo-web",
+          "paths": [
+            "scripts/expo57-social-template-web-acceptance.ts"
+          ]
+        },
+        {
+          "kind": "e2e",
+          "script": "ci:acceptance:sharkprey",
+          "paths": [
+            "scripts/expo57-sharkprey-acceptance.ts"
+          ]
+        },
+        {
+          "kind": "e2e",
+          "script": "ci:acceptance:studio-standalone",
+          "paths": [
+            "scripts/expo57-studio-standalone-acceptance.ts"
+          ]
+        },
+        {
+          "kind": "e2e",
+          "script": "ci:acceptance:generated-app",
+          "paths": [
+            "scripts/expo57-generated-app-acceptance.ts"
+          ]
+        },
+        {
+          "kind": "e2e",
+          "script": "ci:acceptance:generated-navigation",
+          "paths": [
+            "scripts/expo57-generated-navigation-acceptance.ts"
+          ]
+        },
+        {
+          "kind": "e2e",
+          "script": "ci:acceptance:generated-capabilities",
+          "paths": [
+            "scripts/expo57-generated-capability-acceptance.ts"
+          ]
+        }
+      ]
+    },
     "category": "studio",
     "provider": "./dist/cli/index.js",
     "capabilities": [
@@ -276,7 +322,13 @@
     "check-types": "tsc --noEmit -p tsconfig.json",
     "test:apm:consumer": "node scripts/apm-owner-consumer.ts",
     "test:e2e:fresh-template-infra": "ANKH_STUDIO_FRESH_TEMPLATE_INFRA_E2E=1 bun test src/host/freshTemplateInfra.e2e.test.ts",
-    "test:acceptance:expo57-social-template-web": "bun scripts/expo57-social-template-web-acceptance.ts"
+    "test:acceptance:expo57-social-template-web": "bun scripts/expo57-social-template-web-acceptance.ts",
+    "ci:acceptance:expo-web": "bun run typecheck:studio && bun run test:acceptance:packed-studio-host && bun run test:acceptance:expo57-social-template-web && bun run test:e2e:generated-app-web",
+    "ci:acceptance:sharkprey": "bun run test:acceptance:expo57-sharkprey",
+    "ci:acceptance:studio-standalone": "bun run test:acceptance:expo57-studio-standalone",
+    "ci:acceptance:generated-app": "bun run test:acceptance:expo57-generated-app",
+    "ci:acceptance:generated-navigation": "bun run test:acceptance:expo57-generated-navigation",
+    "ci:acceptance:generated-capabilities": "bun test test/smoke/createExpo57CapabilityFixtureManifest.test.ts src/projectDeployAssetPicker.test.ts && bun run test:acceptance:expo57-generated-capabilities"
   },
   "keywords": [
     "ankhorage",
