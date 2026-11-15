@@ -26,6 +26,13 @@ test('uses published per-job decisions and fails closed for non-documentation ch
   );
 });
 
+test('declares the verified published planner minimum while keeping e2e ownership incomplete', async () => {
+  const manifest = await readStudioManifestAsync();
+
+  expect(manifest.devDependencies['@ankhorage/devtools']).toBe('^2.6.0');
+  expect(manifest.ankh.ciImpact.complete).toEqual({ e2e: false });
+});
+
 test('allows only the published planner to skip the documented acceptance matrix', async () => {
   const manifest = await readStudioManifestAsync();
   const output = createOutput(['docs/ci-impact.md'], manifest);
@@ -51,8 +58,12 @@ test('keeps an always-running aggregation gate for the published job decisions',
 
 async function readStudioManifestAsync(): Promise<{
   ankh: {
-    ciImpact: { suites: readonly { kind: 'e2e'; paths: readonly string[]; script: string }[] };
+    ciImpact: {
+      complete: { e2e: false };
+      suites: readonly { kind: 'e2e'; paths: readonly string[]; script: string }[];
+    };
   };
+  devDependencies: Readonly<Record<string, string>>;
   scripts: Readonly<Record<string, string>>;
 }> {
   return JSON.parse(await readFile('package.json', 'utf8'));
