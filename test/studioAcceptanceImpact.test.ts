@@ -16,7 +16,7 @@ test('uses published per-job decisions and fails closed for non-documentation ch
   const manifest = await readStudioManifestAsync();
   const output = createOutput(['src/host/layout/layoutGenerator.ts'], manifest);
 
-  expect(Object.keys(output.jobs)).toEqual(acceptanceScripts);
+  expect(Object.keys(output.jobs)).toEqual([...acceptanceScripts]);
   expect(Object.values(output.jobs)).toEqual(
     acceptanceScripts.map(() => ({
       fallback: true,
