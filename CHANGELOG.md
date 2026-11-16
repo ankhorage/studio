@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.64
+
+### Patch Changes
+
+- e551b0f: Update dependencies: `@ankhorage/surface`.
+
 ## 8.1.63
 
 ### Patch Changes
