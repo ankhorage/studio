@@ -1,5 +1,13 @@
 # @ankhorage/studio
 
+## 8.1.57
+
+### Patch Changes
+
+- 7941799: Update dependencies: `@ankhorage/runtime`.
+- 702aff3: Update dependencies: `@ankhorage/templates`, `@ankhorage/zora`.
+- 650bb4d: Update dependencies: `@ankhorage/templates`.
+
 ## 8.1.56
 
 ### Patch Changes
