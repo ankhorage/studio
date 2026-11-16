@@ -17,7 +17,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v8.1.61",
+      "value": "v8.1.62",
       "color": "cb3837"
     },
     {
@@ -53,8 +53,8 @@
     {
       "id": "tests",
       "label": "tests",
-      "value": "checked",
-      "color": "0a7f3f"
+      "value": "configured",
+      "color": "6f42c1"
     },
     {
       "id": "docs",
@@ -6769,12 +6769,6 @@
       ]
     },
     {
-      "path": "test/determineStudioAcceptanceScope.test.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": []
-    },
-    {
       "path": "test/smoke/assertExpo57GeneratedCapabilityContractAsync.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -7430,6 +7424,12 @@
       "exports": [
         "runSocialTemplateWebAcceptanceAsync"
       ]
+    },
+    {
+      "path": "test/studioAcceptanceImpact.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
     },
     {
       "path": "test/studioConsumerSync.test.ts",
@@ -46444,112 +46444,52 @@
         "sourcePath": "src/workspaceSearch.ts"
       },
       {
-        "fromSymbol": "test/determineStudioAcceptanceScope.test.ts",
+        "fromSymbol": "test/studioAcceptanceImpact.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
+        "sourcePath": "test/studioAcceptanceImpact.test.ts"
       },
       {
-        "fromSymbol": "test/determineStudioAcceptanceScope.test.ts",
-        "toSymbol": "expectScopeForChange",
-        "callExpression": "expectScopeForChange",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
+        "fromSymbol": "test/studioAcceptanceImpact.test.ts",
+        "toSymbol": "readStudioManifestAsync",
+        "callExpression": "readStudioManifestAsync",
+        "sourcePath": "test/studioAcceptanceImpact.test.ts"
       },
       {
-        "fromSymbol": "test/determineStudioAcceptanceScope.test.ts",
-        "toSymbol": "rm",
-        "callExpression": "rm",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
+        "fromSymbol": "test/studioAcceptanceImpact.test.ts",
+        "toSymbol": "createOutput",
+        "callExpression": "createOutput",
+        "sourcePath": "test/studioAcceptanceImpact.test.ts"
       },
       {
-        "fromSymbol": "test/determineStudioAcceptanceScope.test.ts",
-        "toSymbol": "writeFile",
-        "callExpression": "writeFile",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
-      },
-      {
-        "fromSymbol": "test/determineStudioAcceptanceScope.test.ts",
-        "toSymbol": "mkdtemp",
-        "callExpression": "mkdtemp",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
-      },
-      {
-        "fromSymbol": "test/determineStudioAcceptanceScope.test.ts",
-        "toSymbol": "tmpdir",
-        "callExpression": "tmpdir",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
-      },
-      {
-        "fromSymbol": "test/determineStudioAcceptanceScope.test.ts",
-        "toSymbol": "runGit",
-        "callExpression": "runGit",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
-      },
-      {
-        "fromSymbol": "test/determineStudioAcceptanceScope.test.ts",
-        "toSymbol": "runScopeScript",
-        "callExpression": "runScopeScript",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
-      },
-      {
-        "fromSymbol": "test/determineStudioAcceptanceScope.test.ts",
+        "fromSymbol": "test/studioAcceptanceImpact.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
+        "sourcePath": "test/studioAcceptanceImpact.test.ts"
       },
       {
-        "fromSymbol": "expectScopeForChange",
-        "toSymbol": "mkdtemp",
-        "callExpression": "mkdtemp",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
+        "fromSymbol": "test/studioAcceptanceImpact.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "test/studioAcceptanceImpact.test.ts"
       },
       {
-        "fromSymbol": "expectScopeForChange",
-        "toSymbol": "tmpdir",
-        "callExpression": "tmpdir",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
+        "fromSymbol": "readStudioManifestAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "test/studioAcceptanceImpact.test.ts"
       },
       {
-        "fromSymbol": "expectScopeForChange",
-        "toSymbol": "mkdir",
-        "callExpression": "mkdir",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
+        "fromSymbol": "createOutput",
+        "toSymbol": "createCiImpactWorkflowOutput",
+        "callExpression": "createCiImpactWorkflowOutput",
+        "sourcePath": "test/studioAcceptanceImpact.test.ts"
       },
       {
-        "fromSymbol": "expectScopeForChange",
-        "toSymbol": "writeFile",
-        "callExpression": "writeFile",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
-      },
-      {
-        "fromSymbol": "expectScopeForChange",
-        "toSymbol": "runGit",
-        "callExpression": "runGit",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
-      },
-      {
-        "fromSymbol": "expectScopeForChange",
-        "toSymbol": "change",
-        "callExpression": "change",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
-      },
-      {
-        "fromSymbol": "expectScopeForChange",
-        "toSymbol": "runScopeScript",
-        "callExpression": "runScopeScript",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
-      },
-      {
-        "fromSymbol": "expectScopeForChange",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
-      },
-      {
-        "fromSymbol": "expectScopeForChange",
-        "toSymbol": "rm",
-        "callExpression": "rm",
-        "sourcePath": "test/determineStudioAcceptanceScope.test.ts"
+        "fromSymbol": "createOutput",
+        "toSymbol": "planCiImpact",
+        "callExpression": "planCiImpact",
+        "sourcePath": "test/studioAcceptanceImpact.test.ts"
       },
       {
         "fromSymbol": "test/studioConsumerSync.test.ts",
