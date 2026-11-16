@@ -297,6 +297,7 @@ async function assertParentOnlyDependencyCannotBundleAsync(
   } finally {
     await Promise.all([
       rm(probePath, { force: true }),
+      rm(path.join(projectRoot, '.expo'), { force: true, recursive: true }),
       rm(path.join(projectRoot, 'dist-parent-probe'), { force: true, recursive: true }),
     ]);
   }
