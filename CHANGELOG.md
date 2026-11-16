@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.59
+
+### Patch Changes
+
+- dc9a7bc: Update dependencies: `@ankhorage/expo-runtime`, `@ankhorage/surface`, `@ankhorage/templates`, `@ankhorage/zora`.
+
 ## 8.1.58
 
 ### Patch Changes

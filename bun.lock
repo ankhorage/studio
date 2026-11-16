@@ -119,7 +119,7 @@
 
     "@ankhorage/orchestrator": ["@ankhorage/orchestrator@0.4.6", "", { "dependencies": { "@ankhorage/ankh": "^0.13.3", "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^25.0.1" } }, "sha512-s/xTlIqwyCfz0L029jy6McZ2WdrftdLIT7UtfjPNR37kRzW2tiZb6HGuaxudaJCa3I88PLFbZ/W6fGs2LERYWQ=="],
 
-    "@ankhorage/orchestrator-module-expo-google-fonts": ["@ankhorage/orchestrator-module-expo-google-fonts@0.2.27", "", { "dependencies": { "@ankhorage/expo-runtime": "^7.0.5", "@ankhorage/orchestrator": "^0.4.6" } }, "sha512-VW7umh4NP1H5lVQW6aP0LGGg8xZ9dIlcPEOdo5PBI9Y1bMraHbOsSEZWyAQaBXylet97K0aU1yLoXf6XsJ2GQw=="],
+    "@ankhorage/orchestrator-module-expo-google-fonts": ["@ankhorage/orchestrator-module-expo-google-fonts@0.2.28", "", { "dependencies": { "@ankhorage/expo-runtime": "^7.1.0", "@ankhorage/orchestrator": "^0.4.6" } }, "sha512-DbLEeb8gyw9REH1x3Aa+KpqwkaUVbdQ22/80lJkWdm9S7Bb4Vid64w/+OUrTRATfZLvo9642Nv61Dbo/0mdLbA=="],
 
     "@ankhorage/orchestrator-module-expo-localization": ["@ankhorage/orchestrator-module-expo-localization@0.7.4", "", { "dependencies": { "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^26.0.0", "@ankhorage/expo-runtime": "^7.0.4", "@ankhorage/orchestrator": "^0.4.4" }, "peerDependencies": { "@ankhorage/zora": "^24.1.2 || ^25.0.0", "react": ">=18.2.0" }, "optionalPeers": ["@ankhorage/zora", "react"] }, "sha512-IdJnpq03VEeovoR6iPij72M4W1pk95WpDK2oUUSvun36b8/STaVkq5NKilGNl4mZZE5Zu30wPP81vgqIVh0S5Q=="],
 
