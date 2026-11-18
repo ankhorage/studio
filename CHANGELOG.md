@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.77
+
+### Patch Changes
+
+- 022b5fb: Update dependencies: `@ankhorage/surface`, `@ankhorage/templates`, `@ankhorage/zora`.
+
 ## 8.1.76
 
 ### Patch Changes
