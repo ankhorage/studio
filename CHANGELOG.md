@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.79
+
+### Patch Changes
+
+- cf25ec5: Update dependencies: `@ankhorage/templates`.
+
 ## 8.1.78
 
 ### Patch Changes
