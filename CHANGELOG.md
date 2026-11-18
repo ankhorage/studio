@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.80
+
+### Patch Changes
+
+- 427f40a: Update dependencies: `@ankhorage/runtime`.
+
 ## 8.1.79
 
 ### Patch Changes
