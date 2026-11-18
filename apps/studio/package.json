@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@ankhorage/expo-runtime": "^7.1.0",
-    "@ankhorage/studio": "^8.1.71",
+    "@ankhorage/studio": "^8.1.72",
     "@expo/metro-runtime": "~57.0.18",
     "@react-native-vector-icons/fontawesome": "^14.0.0",
     "@react-native-vector-icons/fontawesome5": "^14.0.0",
