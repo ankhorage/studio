@@ -371,7 +371,7 @@
     "@ankhorage/storage-supabase": "^1.0.0",
     "@ankhorage/supabase": "^0.5.14",
     "@ankhorage/surface": "^9.5.15",
-    "@ankhorage/templates": "^12.6.32",
+    "@ankhorage/templates": "^12.6.33",
     "@ankhorage/utility": "^1.10.1",
     "@ankhorage/zora": "^27.3.0",
     "@fastify/cors": "^11.4.3",
