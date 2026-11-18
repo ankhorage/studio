@@ -349,7 +349,7 @@
     "@ankhorage/auth-supabase": "^2.0.17",
     "@ankhorage/capability": "^0.2.3",
     "@ankhorage/color-theory": "^0.3.3",
-    "@ankhorage/contracts": "^26.11.1",
+    "@ankhorage/contracts": "^26.12.0",
     "@ankhorage/data-sources": "^2.2.2",
     "@ankhorage/deploy": "^0.14.25",
     "@ankhorage/expo-runtime": "^7.1.0",
