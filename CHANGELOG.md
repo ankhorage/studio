@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.81
+
+### Patch Changes
+
+- d5d7d4c: Update dependencies: `@ankhorage/surface`, `@ankhorage/templates`.
+
 ## 8.1.80
 
 ### Patch Changes
