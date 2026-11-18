@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.83
+
+### Patch Changes
+
+- bedbb2e: Update dependencies: `@ankhorage/templates`.
+
 ## 8.1.82
 
 ### Patch Changes
