@@ -373,7 +373,7 @@
     "@ankhorage/surface": "^9.5.17",
     "@ankhorage/templates": "^12.6.42",
     "@ankhorage/utility": "^1.10.1",
-    "@ankhorage/zora": "^27.3.5",
+    "@ankhorage/zora": "^27.3.6",
     "@fastify/cors": "^11.4.3",
     "expo-document-picker": "~57.0.3",
     "expo-file-system": "~57.0.7",
