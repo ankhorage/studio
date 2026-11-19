@@ -207,6 +207,10 @@ async function createConsumerAsync(consumerRoot: string, tarballPath: string): P
       "const { CAPABILITIES } = await import('@ankhorage/surface/capabilities');\nif (!CAPABILITIES.some(({ id }) => id === 'theme.setMode')) throw new Error('Surface capability catalog is unavailable.');\n",
     ),
     writeFile(
+      path.join(consumerRoot, 'infra-adapters-import.mjs'),
+      "import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';\nimport { tmpdir } from 'node:os';\nimport path from 'node:path';\nimport { ProjectManager, getProjectTemplateSource } from '@ankhorage/studio/host';\n\nconst workspaceRoot = await mkdtemp(path.join(tmpdir(), 'packed-studio-infra-'));\ntry {\n  await mkdir(path.join(workspaceRoot, 'apps'), { recursive: true });\n  await writeFile(path.join(workspaceRoot, 'package.json'), JSON.stringify({ name: 'packed-studio-infra-consumer', private: true }));\n  const manager = new ProjectManager(workspaceRoot, { reconcileProjectPackageRootAsync: async () => undefined });\n  const source = await getProjectTemplateSource({ category: 'education_learning', slug: 'sharkprey' });\n  const project = await manager.createProject('Packed Infra', source, undefined, { includeStudio: false });\n  const manifest = await manager.getProjectManifest(project.id);\n  if (manifest.infra.environments.local.database?.provider !== 'supabase') throw new Error('Packed Studio did not create the default Supabase environment.');\n  const generated = await manager.regenerateInfrastructure(project.id);\n  if (generated.ledger.projectId !== project.id) throw new Error('Packed Studio did not generate the fresh app Infra environment.');\n} finally {\n  await rm(workspaceRoot, { force: true, recursive: true });\n}\n",
+    ),
+    writeFile(
       path.join(consumerRoot, 'apm-import.ts'),
       await readFile(new URL('../../scripts/apm-owner-consumer.ts', import.meta.url), 'utf8'),
     ),
@@ -322,6 +326,11 @@ async function runConsumerChecksAsync(
     ...options,
     args: ['surface-capabilities-import.mjs'],
     label: 'Import direct Surface capability catalog from packed consumer',
+  });
+  await runAcceptanceCommandAsync({
+    ...options,
+    args: ['infra-adapters-import.mjs'],
+    label: 'Resolve fresh app Infra adapters from packed Studio consumer',
   });
   await runAcceptanceCommandAsync({
     ...options,

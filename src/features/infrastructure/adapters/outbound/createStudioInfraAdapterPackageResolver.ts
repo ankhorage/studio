@@ -12,12 +12,12 @@ export function createStudioInfraAdapterPackageResolver(
   return {
     loadAsync(packageName) {
       switch (packageName) {
-        case '@ankhorage/local':
-          return import('@ankhorage/local');
-        case '@ankhorage/minikube':
-          return import('@ankhorage/minikube');
-        case '@ankhorage/supabase':
-          return import('@ankhorage/supabase');
+        case '@ankhorage/infra-local':
+          return import('@ankhorage/infra-local');
+        case '@ankhorage/infra-minikube':
+          return import('@ankhorage/infra-minikube');
+        case '@ankhorage/infra-supabase':
+          return import('@ankhorage/infra-supabase');
         case '@ankhorage/secrets-supabase-vault':
           return loadSupabaseVaultModuleAsync(options.supabaseVaultClient);
         default:
