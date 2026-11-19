@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.93
+
+### Patch Changes
+
+- c307871: Update dependencies: `@ankhorage/zora`.
+
 ## 8.1.92
 
 ### Patch Changes
