@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.101
+
+### Patch Changes
+
+- be3871d: Update dependencies: `@ankhorage/templates`.
+
 ## 8.1.100
 
 ### Patch Changes
