@@ -1,6 +1,10 @@
-import cors from '@fastify/cors';
-import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
-import Fastify from 'fastify';
+import {
+  createFastifyApiServer,
+  type FastifyInstance,
+  type FastifyReply,
+  type FastifyRequest,
+  registerFastifyCorsAsync,
+} from '@ankhorage/api-fastify';
 
 import { isAppCategory, isAppManifest } from '../../contractGuards';
 import { registerProjectUpdateRoutes } from '../../features/project-updates/adapters/inbound/registerProjectUpdateRoutes';
@@ -53,12 +57,12 @@ export async function createStudioHostServer(args: {
   fastifyInstance?: FastifyInstance;
 }) {
   const { projectManager, orchestrator, projectRoot } = args;
-  const fastify = args.fastifyInstance ?? Fastify({ logger: true });
+  const fastify = args.fastifyInstance ?? createFastifyApiServer({ logger: true });
   const projectUpdateService =
     args.projectUpdateService ??
     createStudioProjectUpdateService({}, createStudioPendingModuleLifecyclePort());
 
-  await fastify.register(cors, {
+  await registerFastifyCorsAsync(fastify, {
     origin: (origin, cb) => {
       if (isOriginAllowed(origin)) {
         cb(null, true);

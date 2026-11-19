@@ -1,4 +1,4 @@
-import type { FastifyInstance, FastifyReply } from 'fastify';
+import type { FastifyInstance, FastifyReply } from '@ankhorage/api-fastify';
 
 import type { ProjectManager } from '../orchestrator/projectManager';
 

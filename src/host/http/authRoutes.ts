@@ -1,4 +1,4 @@
-import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyInstance, FastifyReply, FastifyRequest } from '@ankhorage/api-fastify';
 
 import {
   type ProjectAuthHealthResult,

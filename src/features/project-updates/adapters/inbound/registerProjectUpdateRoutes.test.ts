@@ -1,6 +1,6 @@
+import { createFastifyApiServer, type FastifyInstance } from '@ankhorage/api-fastify';
 import type { ApmPlanResult } from '@ankhorage/apm/types';
 import { afterEach, describe, expect, test } from 'bun:test';
-import Fastify, { type FastifyInstance } from 'fastify';
 
 import { registerProjectUpdateRoutes } from './registerProjectUpdateRoutes';
 
@@ -222,7 +222,7 @@ function createServer(
     readonly planComplete?: boolean;
   } = {},
 ): FastifyInstance {
-  const server = Fastify({ logger: false });
+  const server = createFastifyApiServer({ logger: false });
   const service: Parameters<typeof registerProjectUpdateRoutes>[1]['service'] = {
     statusAsync: (input) => {
       calls.push({ operation: 'status', input });
