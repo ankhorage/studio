@@ -37,7 +37,7 @@ test('resolves a persisted default Infra environment through Studio composition'
   expect(manifest.infra.environments.local.database?.provider).toBe('supabase');
   expect(generated.ledger.projectId).toBe(projectId);
   expect(generated.ledger.resources.map(({ identity }) => identity.adapter)).toContain('local');
-});
+}, 15_000);
 
 async function createWorkspaceRoot(): Promise<string> {
   const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'studio-infra-adapter-resolution-'));

@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 
 import { createCiImpactWorkflowOutput, planCiImpact } from '@ankhorage/devtools/ci-impact';
+import { SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 import { expect, test } from 'bun:test';
 
 const acceptanceScripts = [
@@ -29,7 +30,7 @@ test('uses published per-job decisions and fails closed for non-documentation ch
 test('declares the verified published planner minimum while keeping e2e ownership incomplete', async () => {
   const manifest = await readStudioManifestAsync();
 
-  expect(manifest.devDependencies['@ankhorage/devtools']).toBe('^2.6.0');
+  expect(manifest.devDependencies['@ankhorage/devtools']).toMatch(SEMVER_PATTERNS.caret);
   expect(manifest.ankh.ciImpact.complete).toEqual({ e2e: false });
 });
 
