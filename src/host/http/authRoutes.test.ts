@@ -1,12 +1,12 @@
+import { createFastifyApiServer } from '@ankhorage/api-fastify';
 import { describe, expect, test } from 'bun:test';
-import Fastify from 'fastify';
 
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { registerProjectAuthRoutes } from './authRoutes';
 
 describe('registerProjectAuthRoutes', () => {
   test('fails closed when the current auth health service is unavailable', async () => {
-    const fastify = Fastify();
+    const fastify = createFastifyApiServer();
     registerProjectAuthRoutes(fastify, {
       projectManager: {} as ProjectManager,
     });
