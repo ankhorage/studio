@@ -73,6 +73,11 @@ describe('evaluateStudioDesignAssessment', () => {
     expect(
       createStudioDesignAssessmentPresentation(assessment).groups.map((group) => group.scope),
     ).toEqual(['page', 'viewport', 'scroll-sample']);
+    expect(
+      createStudioDesignAssessmentPresentation(assessment).groups.map(
+        (group) => group.facts.length,
+      ),
+    ).toEqual([1, 1, 1]);
   });
 
   it('retains canonical FAIL findings instead of translating them in Studio', () => {
@@ -97,6 +102,11 @@ describe('evaluateStudioDesignAssessment', () => {
           finding.resultStatus === 'FAIL',
       ),
     ).toBe(true);
+    expect(
+      createStudioDesignAssessmentPresentation(assessment).groups.find(
+        (group) => group.scope === 'viewport',
+      )?.findings,
+    ).toEqual([]);
   });
 
   it('keeps missing renderer evidence INCOMPLETE without inventing a pass', () => {
@@ -157,6 +167,25 @@ describe('evaluateStudioDesignAssessment', () => {
       status: 'available',
       value: { scope: 'viewport' },
     });
+    expect(
+      viewport?.findings.every((finding) => finding.advisory && finding.resultStatus === 'PASS'),
+    ).toBe(true);
+  });
+
+  it('keeps missing scroll-sample coverage INCOMPLETE without turning page evidence into a failure', () => {
+    const assessment = evaluateStudioDesignAssessment({
+      ...assessmentInput,
+      facts: {
+        ...assessmentInput.facts,
+        measurements: measurements().filter((measurement) => measurement.scope !== 'scroll-sample'),
+      },
+    });
+    const presentation = createStudioDesignAssessmentPresentation(assessment);
+
+    expect(assessment.evaluation.results.map((result) => result.status)).toEqual(['INCOMPLETE']);
+    expect(presentation.groups.find((group) => group.scope === 'page')?.facts).toHaveLength(1);
+    expect(presentation.groups.find((group) => group.scope === 'viewport')?.facts).toHaveLength(1);
+    expect(presentation.groups.find((group) => group.scope === 'scroll-sample')?.facts).toEqual([]);
   });
 });
 

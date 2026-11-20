@@ -1,6 +1,7 @@
 import type { FactEnvelope } from '@ankhorage/contracts/rules';
 import type { RuleFinding, RuleResultStatus } from '@ankhorage/rules';
 import { designRuleCatalog } from '@ankhorage/rules-design';
+import { isRecord } from '@ankhorage/utility/object';
 
 import type { StudioDesignAssessment } from './evaluateStudioDesignAssessment';
 
@@ -89,11 +90,6 @@ function findingScope(finding: RuleFinding): StudioDesignEvidenceScope | null {
 /*** Accept the three frozen Design evidence scopes. */
 function isDesignEvidenceScope(value: unknown): value is StudioDesignEvidenceScope {
   return value === 'page' || value === 'viewport' || value === 'scroll-sample';
-}
-
-/*** Narrow serialized evidence to a string-keyed record at the presentation boundary. */
-function isRecord(value: unknown): value is Readonly<Record<string, unknown>> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 const DESIGN_EVIDENCE_SCOPES = ['page', 'viewport', 'scroll-sample'] as const;
