@@ -9,7 +9,7 @@ import { ProjectManager } from '../../src/host/orchestrator/projectManager';
 import { getProjectTemplateSource } from '../../src/host/templates';
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
-import { preparePackedStudioCandidateAsync } from './preparePackedStudioCandidateAsync';
+import { reconcilePackedStudioCandidateProjectAsync } from './preparePackedStudioCandidateAsync';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
@@ -31,7 +31,11 @@ export async function runExpo57SharkPreyAcceptanceAsync(): Promise<void> {
   try {
     await createWorkspaceAsync(workspaceRoot);
     const manager = new ProjectManager(workspaceRoot, {
-      reconcileProjectPackageRootAsync: async () => undefined,
+      reconcileProjectPackageRootAsync: (projectRoot) =>
+        reconcilePackedStudioCandidateProjectAsync(projectRoot, workspaceRoot, {
+          label: 'SharkPrey',
+          timeoutMs: COMMAND_TIMEOUT_MS,
+        }),
     });
     const source = await getProjectTemplateSource(SHARKPREY_TEMPLATE);
     const project = await manager.createProject(
@@ -42,12 +46,8 @@ export async function runExpo57SharkPreyAcceptanceAsync(): Promise<void> {
         includeStudio: true,
       },
     );
-    if (!BROWSER_ONLY) await runGeneratedPlatformContractAsync(project.path);
-    await preparePackedStudioCandidateAsync(project.path, workspaceRoot, {
-      label: 'SharkPrey',
-      timeoutMs: COMMAND_TIMEOUT_MS,
-    });
     const lockfile = await createFrozenProjectInstallationAsync(project.path);
+    if (!BROWSER_ONLY) await runGeneratedPlatformContractAsync(project.path);
     await logResolvedSharkPreyDependenciesAsync(project.path);
     await assertGeneratedModuleBoundariesAsync(project.path);
     if (!BROWSER_ONLY) await runGeneratedQualityGatesAsync(project.path);

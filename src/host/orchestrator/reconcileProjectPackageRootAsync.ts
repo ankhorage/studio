@@ -14,6 +14,7 @@ export async function reconcileProjectPackageRootAsync(
 ): Promise<void> {
   const runCommandAsync = options.runCommandAsync ?? runProjectCommandAsync;
   await syncGeneratedPackagePolicyAsync(projectPath);
+  await options.preparePackageRootAsync?.(projectPath);
   await runCommandAsync('bun', ['install'], projectPath);
 
   if (options.devtoolsScope === 'repository') {
@@ -46,6 +47,7 @@ const DEVTOOLS_APP_SCOPES = ['package', 'eslint', 'prettier', 'knip'] as const;
 
 interface ProjectPackageReconciliationOptions {
   readonly devtoolsScope?: 'app' | 'repository';
+  readonly preparePackageRootAsync?: (projectPath: string) => Promise<void>;
   readonly runCommandAsync?: ProjectCommandRunner;
 }
 
