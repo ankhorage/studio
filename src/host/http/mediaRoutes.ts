@@ -1,3 +1,4 @@
+import type { FastifyInstance, FastifyReply, FastifyRequest } from '@ankhorage/api-fastify';
 import {
   MEDIA_ASSET_KINDS,
   type MediaAssetKind,
@@ -6,7 +7,6 @@ import {
 } from '@ankhorage/contracts';
 import { toErrorMessage } from '@ankhorage/utility/error';
 import { isNonEmptyString } from '@ankhorage/utility/string';
-import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import { ProjectBundledMediaService } from '../media/projectBundledMediaService';
 import { ProjectMediaService } from '../media/projectMediaService';

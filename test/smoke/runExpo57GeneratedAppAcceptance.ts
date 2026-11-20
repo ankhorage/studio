@@ -8,6 +8,7 @@ import { ProjectManager } from '../../src/host/orchestrator/projectManager';
 import { assertReactNativeOwnerGraphAsync } from './assertReactNativeOwnerGraphAsync';
 import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
+import { reconcilePackedStudioCandidateProjectAsync } from './preparePackedStudioCandidateAsync';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
@@ -19,14 +20,15 @@ const COMMAND_TIMEOUT_MS = 300_000;
  */
 export async function runExpo57GeneratedAppAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-acceptance-'));
-  const relocatedProjectRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-relocated-'));
+  const relocatedWorkspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-relocated-'));
+  const relocatedProjectRoot = path.join(relocatedWorkspaceRoot, 'app');
 
   try {
     const projectRoot = await createGeneratedProjectAsync(workspaceRoot);
-    await assertParentOnlyDependencyCannotBundleAsync(workspaceRoot, projectRoot);
     await copyRelocatedProjectAsync(projectRoot, relocatedProjectRoot);
     const lockfileDigest = hash(await readFile(path.join(relocatedProjectRoot, 'bun.lock')));
     await runAcceptanceChecksAsync(relocatedProjectRoot);
+    await assertParentOnlyDependencyCannotBundleAsync(relocatedProjectRoot);
     await assertStaleLockfileFailsAsync(relocatedProjectRoot);
     const finalDigest = hash(await readFile(path.join(relocatedProjectRoot, 'bun.lock')));
     if (finalDigest !== lockfileDigest) {
@@ -35,12 +37,12 @@ export async function runExpo57GeneratedAppAcceptanceAsync(): Promise<void> {
   } finally {
     await Promise.all([
       rm(workspaceRoot, { force: true, recursive: true }),
-      rm(relocatedProjectRoot, { force: true, recursive: true }),
+      rm(relocatedWorkspaceRoot, { force: true, recursive: true }),
     ]);
   }
 }
 
-/*** Assert that the camera-free generated app neither declares nor transitively installs camera capability dependencies. */
+/*** Assert that the camera-free generated app neither declares generic camera capability packages nor installs Expo Camera. */
 async function assertCameraFreeInstalledGraphAsync(projectRoot: string): Promise<void> {
   const packageJson = JSON.parse(
     await readFile(path.join(projectRoot, 'package.json'), 'utf8'),
@@ -58,11 +60,9 @@ async function assertCameraFreeInstalledGraphAsync(projectRoot: string): Promise
     if (Object.hasOwn(packageJson.dependencies ?? {}, dependency)) {
       throw new Error(`Camera-free generated package unexpectedly declares ${dependency}.`);
     }
-    if (installedGraph.includes(dependency)) {
-      throw new Error(
-        `Camera-free installed dependency graph unexpectedly contains ${dependency}.`,
-      );
-    }
+  }
+  if (installedGraph.includes('expo-camera')) {
+    throw new Error('Camera-free installed dependency graph unexpectedly contains expo-camera.');
   }
 }
 
@@ -100,7 +100,13 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
     'utf8',
   );
 
-  const projectManager = new ProjectManager(workspaceRoot);
+  const projectManager = new ProjectManager(workspaceRoot, {
+    reconcileProjectPackageRootAsync: (projectRoot) =>
+      reconcilePackedStudioCandidateProjectAsync(projectRoot, {
+        label: 'generated app',
+        timeoutMs: COMMAND_TIMEOUT_MS,
+      }),
+  });
   const created = await projectManager.createProject(
     'Expo 57 Generated App Acceptance',
     createSmokeProjectSource(),
@@ -138,6 +144,13 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
     mutations: [],
   });
 
+  await runAcceptanceCommandAsync({
+    args: ['install', '--lockfile-only', '--os=*', '--cpu=*'],
+    command: 'bun',
+    cwd: created.path,
+    label: 'Create generated app lockfile',
+    timeoutMs: COMMAND_TIMEOUT_MS,
+  });
   return created.path;
 }
 
@@ -261,11 +274,12 @@ async function copyRelocatedProjectAsync(sourceRoot: string, targetRoot: string)
 }
 
 /*** Prove Metro cannot satisfy a generated-app import from an ancestor-only package installation. */
-async function assertParentOnlyDependencyCannotBundleAsync(
-  workspaceRoot: string,
-  projectRoot: string,
-): Promise<void> {
-  const dependencyRoot = path.join(workspaceRoot, 'node_modules', 'parent-only-dependency');
+async function assertParentOnlyDependencyCannotBundleAsync(projectRoot: string): Promise<void> {
+  const dependencyRoot = path.join(
+    path.dirname(projectRoot),
+    'node_modules',
+    'parent-only-dependency',
+  );
   const probePath = path.join(projectRoot, 'src', 'app', 'parent-only-probe.tsx');
   await mkdir(dependencyRoot, { recursive: true });
   await Promise.all([

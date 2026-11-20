@@ -1,3 +1,4 @@
+import type { FastifyInstance, FastifyReply } from '@ankhorage/api-fastify';
 import type {
   ApmApplyInput,
   ApmApplyPermissions,
@@ -11,7 +12,6 @@ import type {
   ApmVerifyInput,
 } from '@ankhorage/apm/types';
 import { hasOnlyKeys, isRecord } from '@ankhorage/utility/object';
-import type { FastifyInstance, FastifyReply } from 'fastify';
 
 interface ProjectUpdateRouteService {
   readonly statusAsync: (input: ApmStatusInput) => Promise<unknown>;

@@ -5,6 +5,7 @@
     "": {
       "name": "@ankhorage/studio",
       "dependencies": {
+        "@ankhorage/api-fastify": "^0.3.0",
         "@ankhorage/apm": "^0.8.15",
         "@ankhorage/auth": "^0.1.4",
         "@ankhorage/auth-supabase": "^2.0.18",
@@ -35,11 +36,9 @@
         "@ankhorage/templates": "^12.6.53",
         "@ankhorage/utility": "^1.10.1",
         "@ankhorage/zora": "^27.4.4",
-        "@fastify/cors": "^11.4.3",
         "expo-document-picker": "~57.0.3",
         "expo-file-system": "~57.0.7",
         "expo-image-picker": "~57.0.21",
-        "fastify": "^5.12.8",
       },
       "devDependencies": {
         "@ankhorage/ankh": "^0.13.1",
@@ -76,6 +75,10 @@
   },
   "packages": {
     "@ankhorage/ankh": ["@ankhorage/ankh@0.13.7", "", { "dependencies": { "@ankhorage/capability": "^0.2.2", "@ankhorage/contracts": "^26.0.0", "yaml": "^2.9.1" }, "bin": { "ankh": "dist/bin.js" } }, "sha512-5pLXDQToHHsieT/Pq9Ewp1JCdGcuRf8vCK/TmYoSrQ4D/4XgYFr/6o6u6bvNGF6GFloeEAk//ZmJ6GCqMXDFEA=="],
+
+    "@ankhorage/api": ["@ankhorage/api@0.5.1", "", { "dependencies": { "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^26.10.0" } }, "sha512-FxKMssY0eekMJnS+X7cn2iQMocAdCYL5P6th/3pncF3C4Xh4nPzCmr3zlTp6/3mFK2GzYPRoJn2bXvEkghDDOA=="],
+
+    "@ankhorage/api-fastify": ["@ankhorage/api-fastify@0.3.0", "", { "dependencies": { "@ankhorage/ankh": "^0.13.1", "@ankhorage/api": "^0.5.1", "@ankhorage/contracts": "^26.10.0", "@fastify/cors": "^11.3.0", "fastify": "^5.12.5" } }, "sha512-iDAvn9U7osUOh7rRPwS5BtSmc07esHngn3KqabnC5NDXUtXsdspwvyXX9V9UkBXi1OoZW3BHCcdU5Y9DUeH1mQ=="],
 
     "@ankhorage/apm": ["@ankhorage/apm@0.8.15", "", { "dependencies": { "@ankhorage/contracts": "^26.0.0", "@ankhorage/project-detector": "^0.1.0", "@ankhorage/utility": "^1.4.0", "jsonc-parser": "^3.3.1", "semver": "^7.8.5", "yaml": "^2.9.1" }, "peerDependencies": { "@ankhorage/ankh": "^0.13.1" }, "optionalPeers": ["@ankhorage/ankh"], "bin": { "apm": "dist/cli/runAsync.js" } }, "sha512-3Gts6J0ayMKx1gogCtjPWuh4kvFsDEdyKwSzagjHS4vcVae42XnkobJoSUIj4ffehBNYOSZi67jYSLzg8CjMXw=="],
 

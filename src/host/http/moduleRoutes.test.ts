@@ -1,5 +1,5 @@
+import { createFastifyApiServer, type FastifyInstance } from '@ankhorage/api-fastify';
 import { afterEach, describe, expect, test } from 'bun:test';
-import Fastify, { type FastifyInstance } from 'fastify';
 
 import type { StudioModuleState } from '../../moduleAdminContracts';
 import type { ModuleManager } from '../orchestrator/moduleManager';
@@ -65,7 +65,7 @@ describe('canonical module HTTP adapter', () => {
         return Promise.resolve({ success: true, result: { handled: true } });
       },
     };
-    const server = Fastify({ logger: false });
+    const server = createFastifyApiServer({ logger: false });
     registerProjectModuleRoutes(server, orchestrator);
     await server.ready();
     servers.push(server);
@@ -136,7 +136,7 @@ describe('canonical module HTTP adapter', () => {
   test('rejects a non-object admin operation body before delegation', async () => {
     const calls: unknown[][] = [];
     const orchestrator = createAdminOnlyManager(calls);
-    const server = Fastify({ logger: false });
+    const server = createFastifyApiServer({ logger: false });
     registerProjectModuleRoutes(server, orchestrator);
     await server.ready();
     servers.push(server);
