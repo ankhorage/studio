@@ -53,8 +53,10 @@ exceptions or replaced by generic preferences from this skill.
   reason behind a decision. Do not narrate self-explanatory code or duplicate what names and types
   already express.
 - Paradox documentation metadata belongs only inside `/*** ... */` comments. The canonical tag
-  vocabulary is owned by `@ankhorage/policy`: `@readme`, `@usage`, `@config`, `@title`,
-  `@see`, and `@security`. Unsupported tag-shaped lines are invalid; `@example` does not exist.
+  vocabulary is owned by `@ankhorage/rules-documentation`: `@readme`, `@usage`, `@config`, `@title`,
+  `@see`, `@security`, and `@performance`. Unsupported tag-shaped lines are invalid.
+  `@example` does not exist. Preserve supported metadata tags verbatim; never rewrite them as prose
+  headings or labels such as `Performance:`.
   Do not use JSDoc-only tags such as `@param` or `@returns` as Paradox metadata.
 - Paradox comments contain documentation prose and metadata only. Fenced or indented code blocks are
   invalid; source examples come from real code. Inline code spans remain valid prose.
