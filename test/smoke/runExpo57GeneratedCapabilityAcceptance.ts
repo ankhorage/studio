@@ -31,7 +31,7 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
     await createWorkspaceAsync(workspaceRoot);
     const manager = new ProjectManager(workspaceRoot, {
       reconcileProjectPackageRootAsync: (projectRoot) =>
-        reconcilePackedStudioCandidateProjectAsync(projectRoot, workspaceRoot, {
+        reconcilePackedStudioCandidateProjectAsync(projectRoot, {
           label: 'generated capability',
           timeoutMs: COMMAND_TIMEOUT_MS,
         }),

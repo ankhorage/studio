@@ -32,7 +32,7 @@ export async function runExpo57SharkPreyAcceptanceAsync(): Promise<void> {
     await createWorkspaceAsync(workspaceRoot);
     const manager = new ProjectManager(workspaceRoot, {
       reconcileProjectPackageRootAsync: (projectRoot) =>
-        reconcilePackedStudioCandidateProjectAsync(projectRoot, workspaceRoot, {
+        reconcilePackedStudioCandidateProjectAsync(projectRoot, {
           label: 'SharkPrey',
           timeoutMs: COMMAND_TIMEOUT_MS,
         }),

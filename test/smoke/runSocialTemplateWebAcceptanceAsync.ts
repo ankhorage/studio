@@ -28,7 +28,7 @@ export async function runSocialTemplateWebAcceptanceAsync(): Promise<void> {
     await createWorkspaceAsync(workspaceRoot);
     const manager = new ProjectManager(workspaceRoot, {
       reconcileProjectPackageRootAsync: (projectRoot) =>
-        reconcilePackedStudioCandidateProjectAsync(projectRoot, workspaceRoot, {
+        reconcilePackedStudioCandidateProjectAsync(projectRoot, {
           label: 'Close social',
           timeoutMs: COMMAND_TIMEOUT_MS,
         }),
