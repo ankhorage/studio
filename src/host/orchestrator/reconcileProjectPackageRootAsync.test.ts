@@ -105,10 +105,7 @@ test('prepares an exact package candidate after owner policy synchronization and
         `${JSON.stringify(
           {
             ...packageJson,
-            dependencies: {
-              ...packageJson.dependencies,
-              '@ankhorage/studio': 'file:/tmp/studio-candidate.tgz',
-            },
+            overrides: { '@ankhorage/studio': 'file:/tmp/studio-candidate.tgz' },
           },
           null,
           2,
@@ -119,10 +116,14 @@ test('prepares an exact package candidate after owner policy synchronization and
     },
     runCommandAsync: async (command) => {
       if (command !== 'bun' || candidateObservedByInstall) return;
-      const packageJson = await readGeneratedPackageJson(projectPath);
+      const packageJson = JSON.parse(
+        await readFile(path.join(projectPath, 'package.json'), 'utf8'),
+      ) as {
+        readonly overrides?: Readonly<Record<string, string>>;
+      };
       candidateObservedByInstall =
         prepared &&
-        packageJson.dependencies['@ankhorage/studio'] === 'file:/tmp/studio-candidate.tgz';
+        packageJson.overrides?.['@ankhorage/studio'] === 'file:/tmp/studio-candidate.tgz';
     },
   });
 
