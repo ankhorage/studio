@@ -8,6 +8,7 @@ import { ProjectManager } from '../../src/host/orchestrator/projectManager';
 import { getProjectTemplateSource } from '../../src/host/templates';
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
+import { preparePackedStudioCandidateAsync } from './preparePackedStudioCandidateAsync';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
@@ -25,7 +26,9 @@ export async function runSocialTemplateWebAcceptanceAsync(): Promise<void> {
 
   try {
     await createWorkspaceAsync(workspaceRoot);
-    const manager = new ProjectManager(workspaceRoot);
+    const manager = new ProjectManager(workspaceRoot, {
+      reconcileProjectPackageRootAsync: async () => undefined,
+    });
     const source = await getProjectTemplateSource({
       category: 'social_community',
       slug: 'chat',
@@ -33,8 +36,10 @@ export async function runSocialTemplateWebAcceptanceAsync(): Promise<void> {
     const project = await manager.createProject('Close Social Web Acceptance', source, undefined, {
       includeStudio: true,
     });
-    const studioCandidate = await packCurrentStudioCandidateAsync(workspaceRoot);
-    await installStudioCandidateAsync(project.path, studioCandidate);
+    await preparePackedStudioCandidateAsync(project.path, workspaceRoot, {
+      label: 'Close social',
+      timeoutMs: COMMAND_TIMEOUT_MS,
+    });
     await installGeneratedProjectAsync(project.path);
 
     const studioHostPort = await reserveTcpPort('Close social Studio host');
@@ -98,41 +103,6 @@ async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
     )}\n`,
     'utf8',
   );
-}
-
-/*** Pack the current Studio checkout so this breaking-change acceptance exercises the PR runtime rather than the previous published release. */
-async function packCurrentStudioCandidateAsync(workspaceRoot: string): Promise<string> {
-  const artifactRoot = path.join(workspaceRoot, '.ankh', 'acceptance-artifacts');
-  const tarballPath = path.join(artifactRoot, 'studio-candidate.tgz');
-  await mkdir(artifactRoot, { recursive: true });
-  await runAcceptanceCommandAsync({
-    args: ['run', 'build'],
-    command: 'bun',
-    cwd: process.cwd(),
-    label: 'Build current Studio candidate',
-    timeoutMs: COMMAND_TIMEOUT_MS,
-  });
-  await runAcceptanceCommandAsync({
-    args: ['pm', 'pack', '--filename', tarballPath, '--ignore-scripts', '--quiet'],
-    command: 'bun',
-    cwd: process.cwd(),
-    label: 'Pack current Studio candidate',
-    timeoutMs: COMMAND_TIMEOUT_MS,
-  });
-  return tarballPath;
-}
-
-/*** Point the generated acceptance app at the packed Studio candidate without changing production package policy. */
-async function installStudioCandidateAsync(
-  projectRoot: string,
-  studioCandidate: string,
-): Promise<void> {
-  const packagePath = path.join(projectRoot, 'package.json');
-  const packageJson = JSON.parse(await readFile(packagePath, 'utf8')) as {
-    dependencies: Record<string, string>;
-  };
-  packageJson.dependencies['@ankhorage/studio'] = `file:${studioCandidate}`;
-  await writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`, 'utf8');
 }
 
 /*** Create and verify the generated app's own frozen Bun dependency graph before launching Expo. */
