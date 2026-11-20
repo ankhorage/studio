@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.102
+
+### Patch Changes
+
+- 60e53b8: Load the canonical Infra adapter packages during fresh app infrastructure operations.
+
 ## 8.1.101
 
 ### Patch Changes

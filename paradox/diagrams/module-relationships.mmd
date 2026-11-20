@@ -332,6 +332,7 @@ graph LR
   module_src_host_orchestrator_projectManager_ts["src/host/orchestrator/projectManager.ts"]
   module_src_host_orchestrator_projectManagerCurrentState_test_ts["src/host/orchestrator/projectManagerCurrentState.test.ts"]
   module_src_host_orchestrator_projectManagerDeletion_test_ts["src/host/orchestrator/projectManagerDeletion.test.ts"]
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts["src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"]
   module_src_host_orchestrator_projectPaths_ts["src/host/orchestrator/projectPaths.ts"]
   module_src_host_orchestrator_projectRepositoryConnection_test_ts["src/host/orchestrator/projectRepositoryConnection.test.ts"]
   module_src_host_orchestrator_projectStore_ts["src/host/orchestrator/projectStore.ts"]
@@ -1273,6 +1274,8 @@ graph LR
   module_src_host_orchestrator_projectManagerCurrentState_test_ts --> module_src_manifestSync_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --> module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --> module_src_host_orchestrator_createProjectCreationTestSource_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts --> module_src_constants_projectIdentity_ts
   module_src_host_orchestrator_projectRepositoryConnection_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectStore_ts --> module_src_contractGuards_ts

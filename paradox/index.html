@@ -445,7 +445,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts">
       src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts
-      <small>6 functions</small>
+      <small>7 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.ts">
@@ -1323,6 +1323,11 @@
       <small>5 functions</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts">
+      src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts
+      <small>2 functions</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/host/orchestrator/projectPaths.ts">
       src/host/orchestrator/projectPaths.ts
       <small>3 functions</small>
@@ -2174,7 +2179,7 @@
       <div class="summary">
         <div><strong>138</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>638</strong><span class="muted">modules</span></div>
+        <div><strong>639</strong><span class="muted">modules</span></div>
         <div><strong>2</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -3875,6 +3880,11 @@ Run with `bun examples/canvas-drag-payload/basic.ts` after building the package.
     <h3>src/host/orchestrator/projectManagerDeletion.test.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts</code>, <code>src/host/orchestrator/projectManager.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
+  </article><article class="item" data-search="src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts src/host/orchestrator/createProjectCreationTestSource.ts src/host/orchestrator/projectManager.ts">
+    <h3>src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/host/orchestrator/createProjectCreationTestSource.ts</code>, <code>src/host/orchestrator/projectManager.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="src/host/orchestrator/projectPaths.ts src/constants/projectIdentity.ts assertProjectId getAppsRoot getProjectPath">
     <h3>src/host/orchestrator/projectPaths.ts</h3>
@@ -10745,6 +10755,10 @@ Follow-up: Move project creation validation under src/projects/.</p>
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectManagerDeletion_test_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts[&quot;src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectPaths_ts --&gt; module_src_constants_projectIdentity_ts
@@ -13259,6 +13273,10 @@ Follow-up: Move project creation validation under src/projects/.</p>
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectManagerDeletion_test_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts[&quot;src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectPaths_ts --&gt; module_src_constants_projectIdentity_ts
@@ -14802,6 +14820,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
   module_src_host_orchestrator_projectManagerCurrentState_test_ts[&quot;src/host/orchestrator/projectManagerCurrentState.test.ts&quot;]
   module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts[&quot;src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts&quot;]
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   module_src_host_orchestrator_projectRepositoryConnection_test_ts[&quot;src/host/orchestrator/projectRepositoryConnection.test.ts&quot;]
   module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
@@ -15743,6 +15762,8 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_orchestrator_projectManagerCurrentState_test_ts --&gt; module_src_manifestSync_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts --&gt; module_src_constants_projectIdentity_ts
   module_src_host_orchestrator_projectRepositoryConnection_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectStore_ts --&gt; module_src_contractGuards_ts
@@ -16675,6 +16696,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
   module_src_host_orchestrator_projectManagerCurrentState_test_ts[&quot;src/host/orchestrator/projectManagerCurrentState.test.ts&quot;]
   module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts[&quot;src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts&quot;]
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   module_src_host_orchestrator_projectRepositoryConnection_test_ts[&quot;src/host/orchestrator/projectRepositoryConnection.test.ts&quot;]
   module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
@@ -17616,6 +17638,8 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_orchestrator_projectManagerCurrentState_test_ts --&gt; module_src_manifestSync_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts --&gt; module_src_constants_projectIdentity_ts
   module_src_host_orchestrator_projectRepositoryConnection_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectStore_ts --&gt; module_src_contractGuards_ts
@@ -18550,6 +18574,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
   module_src_host_orchestrator_projectManagerCurrentState_test_ts[&quot;src/host/orchestrator/projectManagerCurrentState.test.ts&quot;]
   module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts[&quot;src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts&quot;]
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   module_src_host_orchestrator_projectRepositoryConnection_test_ts[&quot;src/host/orchestrator/projectRepositoryConnection.test.ts&quot;]
   module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
@@ -19565,6 +19590,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
   module_src_host_orchestrator_projectManagerCurrentState_test_ts[&quot;src/host/orchestrator/projectManagerCurrentState.test.ts&quot;]
   module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts[&quot;src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts&quot;]
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   module_src_host_orchestrator_projectRepositoryConnection_test_ts[&quot;src/host/orchestrator/projectRepositoryConnection.test.ts&quot;]
   module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
@@ -22714,27 +22740,31 @@ Utility candidate: @ankhorage/utility/http</p>
       <h2>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts</h2>
       <article class="item" data-search="createOwner src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts ">
     <h3>createOwner</h3>
-    <p class="muted"><code>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts:59:1</code></p>
+    <p class="muted"><code>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts:89:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="createLedger src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts ">
     <h3>createLedger</h3>
-    <p class="muted"><code>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts:81:1</code></p>
+    <p class="muted"><code>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts:111:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="createContext src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts ">
     <h3>createContext</h3>
-    <p class="muted"><code>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts:93:1</code></p>
+    <p class="muted"><code>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts:123:1</code></p>
+    <p class="empty">No description available.</p>
+</article><article class="item" data-search="createDefaultEnvironment src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts ">
+    <h3>createDefaultEnvironment</h3>
+    <p class="muted"><code>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts:148:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="createDestroyRequest src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts ">
     <h3>createDestroyRequest</h3>
-    <p class="muted"><code>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts:118:1</code></p>
+    <p class="muted"><code>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts:158:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="isDestroyAdapter src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts ">
     <h3>isDestroyAdapter</h3>
-    <p class="muted"><code>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts:127:1</code></p>
+    <p class="muted"><code>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts:167:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="isRecord src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts ">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts:131:1</code></p>
+    <p class="muted"><code>src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts:171:1</code></p>
     <p class="empty">No description available.</p>
 </article>
     </section>
@@ -26618,6 +26648,19 @@ Follow-up: Move deploy-target validation to the deploy/projects domain boundary 
 </article><article class="item" data-search="expectRejects src/host/orchestrator/projectManagerDeletion.test.ts ">
     <h3>expectRejects</h3>
     <p class="muted"><code>src/host/orchestrator/projectManagerDeletion.test.ts:187:1</code></p>
+    <p class="empty">No description available.</p>
+</article>
+    </section>
+  </section><section id="view-src-host-orchestrator-projectmanagerinfraadapterresolution-test-ts" class="view" data-view="src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts" hidden>
+    <section class="panel">
+      <h2>src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts</h2>
+      <article class="item" data-search="createWorkspaceRoot src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts ">
+    <h3>createWorkspaceRoot</h3>
+    <p class="muted"><code>src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts:42:1</code></p>
+    <p class="empty">No description available.</p>
+</article><article class="item" data-search="createProjectRoot src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts ">
+    <h3>createProjectRoot</h3>
+    <p class="muted"><code>src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts:53:1</code></p>
     <p class="empty">No description available.</p>
 </article>
     </section>

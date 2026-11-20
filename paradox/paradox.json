@@ -18,7 +18,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v8.1.101",
+      "value": "v8.1.102",
       "color": "cb3837"
     },
     {
@@ -3692,6 +3692,15 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
+        "src/host/orchestrator/projectManager.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/createProjectCreationTestSource.ts",
         "src/host/orchestrator/projectManager.ts"
       ],
       "exports": []
@@ -16600,7 +16609,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
-        "line": 59,
+        "line": 89,
         "column": 1
       }
     },
@@ -16611,7 +16620,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
-        "line": 81,
+        "line": 111,
         "column": 1
       }
     },
@@ -16622,7 +16631,18 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
-        "line": 93,
+        "line": 123,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDefaultEnvironment",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "line": 148,
         "column": 1
       }
     },
@@ -16633,7 +16653,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
-        "line": 118,
+        "line": 158,
         "column": 1
       }
     },
@@ -16644,7 +16664,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
-        "line": 127,
+        "line": 167,
         "column": 1
       }
     },
@@ -16655,7 +16675,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
-        "line": 131,
+        "line": 171,
         "column": 1
       }
     },
@@ -24796,6 +24816,28 @@
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManagerDeletion.test.ts",
         "line": 187,
+        "column": 1
+      }
+    },
+    {
+      "name": "createWorkspaceRoot",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "line": 42,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProjectRoot",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "line": 53,
         "column": 1
       }
     },
@@ -36825,6 +36867,16 @@
         "fromPath": "src/host/orchestrator/projectManagerDeletion.test.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
         "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "toPath": "src/host/orchestrator/createProjectCreationTestSource.ts",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
       },
       {
         "fromPath": "src/host/orchestrator/projectPaths.ts",
@@ -64565,6 +64617,96 @@
         "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "toSymbol": "createWorkspaceRoot",
+        "callExpression": "createWorkspaceRoot",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "toSymbol": "createProjectRoot",
+        "callExpression": "createProjectRoot",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "toSymbol": "persistProjectManifest",
+        "callExpression": "manager.persistProjectManifest",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "toSymbol": "createProjectCreationTestSource",
+        "callExpression": "createProjectCreationTestSource",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "toSymbol": "regenerateInfrastructure",
+        "callExpression": "manager.regenerateInfrastructure",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceRoot",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceRoot",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceRoot",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceRoot",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "createProjectRoot",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "createProjectRoot",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
         "fromSymbol": "getProjectPath",
         "toSymbol": "getAppsRoot",
         "callExpression": "getAppsRoot",
@@ -75750,20 +75892,38 @@
       },
       {
         "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
-        "toSymbol": "createOwner",
-        "callExpression": "createOwner",
-        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
-      },
-      {
-        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
         "toSymbol": "createStudioInfraAdapterPackageResolver",
         "callExpression": "createStudioInfraAdapterPackageResolver",
         "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
       },
       {
         "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "toSymbol": "resolveInfraAdaptersAsync",
+        "callExpression": "resolveInfraAdaptersAsync",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "toSymbol": "createDefaultEnvironment",
+        "callExpression": "createDefaultEnvironment",
+        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
+        "toSymbol": "createOwner",
+        "callExpression": "createOwner",
         "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
       },
       {
@@ -75788,12 +75948,6 @@
         "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
         "toSymbol": "createDestroyRequest",
         "callExpression": "createDestroyRequest",
-        "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
-      },
-      {
-        "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
         "sourcePath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts"
       },
       {
