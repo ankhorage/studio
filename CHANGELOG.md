@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.104
+
+### Patch Changes
+
+- 2bfad2c: Update dependencies: `@ankhorage/auth-supabase`, `@ankhorage/data-sources`, `@ankhorage/deploy`, `@ankhorage/infra-minikube`, `@ankhorage/infra`, `@ankhorage/runtime`, `@ankhorage/templates`.
+
 ## 8.1.103
 
 ### Patch Changes
