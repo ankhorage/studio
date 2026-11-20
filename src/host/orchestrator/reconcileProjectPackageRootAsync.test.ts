@@ -92,6 +92,43 @@ test('updates Devtools before full synchronization when preparing a standalone r
   ]);
 });
 
+test('prepares an exact package candidate after owner policy synchronization and before installation', async () => {
+  const { projectPath } = await createProjectRoot();
+  let prepared = false;
+  let candidateObservedByInstall = false;
+
+  await reconcileProjectPackageRootAsync(projectPath, {
+    preparePackageRootAsync: async (preparedProjectPath) => {
+      const packageJson = await readGeneratedPackageJson(preparedProjectPath);
+      await writeFile(
+        path.join(preparedProjectPath, 'package.json'),
+        `${JSON.stringify(
+          {
+            ...packageJson,
+            dependencies: {
+              ...packageJson.dependencies,
+              '@ankhorage/studio': 'file:/tmp/studio-candidate.tgz',
+            },
+          },
+          null,
+          2,
+        )}\n`,
+        'utf8',
+      );
+      prepared = true;
+    },
+    runCommandAsync: async (command) => {
+      if (command !== 'bun' || candidateObservedByInstall) return;
+      const packageJson = await readGeneratedPackageJson(projectPath);
+      candidateObservedByInstall =
+        prepared &&
+        packageJson.dependencies['@ankhorage/studio'] === 'file:/tmp/studio-candidate.tgz';
+    },
+  });
+
+  expect(candidateObservedByInstall).toBe(true);
+});
+
 /*** Create one generated project fixture with deliberately stale generator-owned package ranges. */
 async function createProjectRoot(): Promise<{
   readonly projectPath: string;

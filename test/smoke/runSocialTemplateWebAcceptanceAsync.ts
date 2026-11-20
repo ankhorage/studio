@@ -8,7 +8,7 @@ import { ProjectManager } from '../../src/host/orchestrator/projectManager';
 import { getProjectTemplateSource } from '../../src/host/templates';
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
-import { preparePackedStudioCandidateAsync } from './preparePackedStudioCandidateAsync';
+import { reconcilePackedStudioCandidateProjectAsync } from './preparePackedStudioCandidateAsync';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
@@ -27,7 +27,11 @@ export async function runSocialTemplateWebAcceptanceAsync(): Promise<void> {
   try {
     await createWorkspaceAsync(workspaceRoot);
     const manager = new ProjectManager(workspaceRoot, {
-      reconcileProjectPackageRootAsync: async () => undefined,
+      reconcileProjectPackageRootAsync: (projectRoot) =>
+        reconcilePackedStudioCandidateProjectAsync(projectRoot, workspaceRoot, {
+          label: 'Close social',
+          timeoutMs: COMMAND_TIMEOUT_MS,
+        }),
     });
     const source = await getProjectTemplateSource({
       category: 'social_community',
@@ -35,10 +39,6 @@ export async function runSocialTemplateWebAcceptanceAsync(): Promise<void> {
     });
     const project = await manager.createProject('Close Social Web Acceptance', source, undefined, {
       includeStudio: true,
-    });
-    await preparePackedStudioCandidateAsync(project.path, workspaceRoot, {
-      label: 'Close social',
-      timeoutMs: COMMAND_TIMEOUT_MS,
     });
     await installGeneratedProjectAsync(project.path);
 
