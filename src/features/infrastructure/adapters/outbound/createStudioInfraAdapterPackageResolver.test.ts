@@ -4,6 +4,7 @@ import type {
   InfraOwnedResource,
   InfraServiceAdapter,
 } from '@ankhorage/contracts/infra';
+import { resolveInfraAdaptersAsync } from '@ankhorage/infra';
 import type {
   SupabaseVaultQueryResult,
   SupabaseVaultSqlClient,
@@ -12,6 +13,35 @@ import type {
 import { expect, test } from 'bun:test';
 
 import { createStudioInfraAdapterPackageResolver } from './createStudioInfraAdapterPackageResolver';
+
+const canonicalInfraPackages = [
+  '@ankhorage/infra-local',
+  '@ankhorage/infra-minikube',
+  '@ankhorage/infra-supabase',
+] as const;
+
+test('loads the canonical default Infra adapters with their public descriptor and factory', async () => {
+  const resolver = createStudioInfraAdapterPackageResolver();
+  const loaded = await Promise.all(
+    canonicalInfraPackages.map((packageName) => resolver.loadAsync(packageName)),
+  );
+
+  for (const module of loaded) {
+    expect(isRecord(module)).toBe(true);
+    if (!isRecord(module)) throw new Error('Expected an Infra adapter package module.');
+    expect(Reflect.get(module, 'infraAdapterDescriptor')).toBeDefined();
+    expect(typeof Reflect.get(module, 'createInfraAdapter')).toBe('function');
+  }
+
+  const resolved = await resolveInfraAdaptersAsync(createDefaultEnvironment(), resolver);
+  expect(resolved.ok).toBe(true);
+  if (!resolved.ok) throw new Error('Expected Studio to resolve the default Infra adapters.');
+  expect(resolved.value.compute.descriptor.package).toBe('@ankhorage/infra-local');
+  expect(resolved.value.runtime.descriptor.package).toBe('@ankhorage/infra-minikube');
+  expect(resolved.value.services.map(({ descriptor }) => descriptor.package)).toContain(
+    '@ankhorage/infra-supabase',
+  );
+});
 
 test('injects Studio trusted SQL access into the Supabase Vault Infra adapter', async () => {
   const owner = createOwner();
@@ -112,6 +142,16 @@ function createContext(previous: InfraLedger): InfraExecutionContext {
     secrets: {
       resolveAsync: () => Promise.resolve({ ok: true, value: 'secret-value', diagnostics: [] }),
     },
+  };
+}
+
+function createDefaultEnvironment() {
+  return {
+    deployment: {
+      compute: { provider: 'local' as const },
+      runtime: { provider: 'minikube' as const },
+    },
+    database: { provider: 'supabase' as const, tier: 'dev' as const },
   };
 }
 
