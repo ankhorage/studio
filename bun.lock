@@ -10,7 +10,7 @@
         "@ankhorage/auth-supabase": "^2.0.18",
         "@ankhorage/capability": "^0.2.3",
         "@ankhorage/color-theory": "^0.3.3",
-        "@ankhorage/contracts": "^26.12.0",
+        "@ankhorage/contracts": "^26.13.0",
         "@ankhorage/data-sources": "^2.2.3",
         "@ankhorage/deploy": "^0.14.26",
         "@ankhorage/expo-runtime": "^7.1.0",
@@ -72,7 +72,7 @@
     },
   },
   "overrides": {
-    "@ankhorage/contracts": "^26.12.0",
+    "@ankhorage/contracts": "^26.13.0",
   },
   "packages": {
     "@ankhorage/ankh": ["@ankhorage/ankh@0.13.7", "", { "dependencies": { "@ankhorage/capability": "^0.2.2", "@ankhorage/contracts": "^26.0.0", "yaml": "^2.9.1" }, "bin": { "ankh": "dist/bin.js" } }, "sha512-5pLXDQToHHsieT/Pq9Ewp1JCdGcuRf8vCK/TmYoSrQ4D/4XgYFr/6o6u6bvNGF6GFloeEAk//ZmJ6GCqMXDFEA=="],
@@ -87,7 +87,7 @@
 
     "@ankhorage/color-theory": ["@ankhorage/color-theory@0.3.3", "", { "dependencies": { "culori": "^4.0.2" } }, "sha512-t3Vxwp53Hdxf6pkzUMcW/K7xh8axcgL4d5hqAWSMGPlOTiZJ1rzIraFH0e5AaeiCip7zmCbz+tOv7dCSQh3i6Q=="],
 
-    "@ankhorage/contracts": ["@ankhorage/contracts@26.12.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.3.3", "@ankhorage/utility": "^1.10.1" } }, "sha512-QReVcYA8LV7B9mGyv97AomapJXBwDGUkIPHbwZD2mbVjEpHJ0pa9Y/LG1aAp1MNYdCdsuyH68f14aPi87r92OA=="],
+    "@ankhorage/contracts": ["@ankhorage/contracts@26.13.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.3.3", "@ankhorage/utility": "^1.10.1" } }, "sha512-W3EgZlIDO4eOz0Ykwt/525desBP+3lxmERR+AYKi/jxoH9k+xkiIVUwA3/559DujuRugOqYL03CDMIi3rGu2+w=="],
 
     "@ankhorage/data-sources": ["@ankhorage/data-sources@2.2.3", "", { "dependencies": { "@ankhorage/contracts": "^26.12.0" } }, "sha512-mmC1Am4w6qirisjSO3n2XF6L8FRfY9q2ZpCIaObFZ6QiqOCTk2YfGO/1Q8g0T2zIooaY9Ti676K7QcJ0tI5Oyg=="],
 
