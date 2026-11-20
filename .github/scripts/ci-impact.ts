@@ -1,3 +1,3 @@
 import { runCiImpact } from '@ankhorage/devtools/ci-impact';
 
-runCiImpact(Bun.argv.slice(2));
+runCiImpact(process.argv.slice(2));

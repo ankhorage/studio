@@ -52,7 +52,7 @@ test('keeps an always-running aggregation gate for the published job decisions',
 
   expect(workflow).toContain('acceptance:\n    needs:');
   expect(workflow).toContain('if: always()');
-  expect(workflow).toContain('bun .github/scripts/run-ci-impact.ts plan');
+  expect(workflow).toContain('bun .github/scripts/ci-impact.ts plan');
   expect(workflow).not.toContain('determine-studio-acceptance-scope');
   for (const script of acceptanceScripts) expect(workflow).toContain(script);
 });
