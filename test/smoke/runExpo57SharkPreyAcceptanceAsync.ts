@@ -9,6 +9,7 @@ import { ProjectManager } from '../../src/host/orchestrator/projectManager';
 import { getProjectTemplateSource } from '../../src/host/templates';
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
+import { preparePackedStudioCandidateAsync } from './preparePackedStudioCandidateAsync';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
@@ -29,7 +30,9 @@ export async function runExpo57SharkPreyAcceptanceAsync(): Promise<void> {
 
   try {
     await createWorkspaceAsync(workspaceRoot);
-    const manager = new ProjectManager(workspaceRoot);
+    const manager = new ProjectManager(workspaceRoot, {
+      reconcileProjectPackageRootAsync: async () => undefined,
+    });
     const source = await getProjectTemplateSource(SHARKPREY_TEMPLATE);
     const project = await manager.createProject(
       'SharkPrey Acceptance',
@@ -40,8 +43,10 @@ export async function runExpo57SharkPreyAcceptanceAsync(): Promise<void> {
       },
     );
     if (!BROWSER_ONLY) await runGeneratedPlatformContractAsync(project.path);
-    const studioCandidate = await packCurrentStudioCandidateAsync(workspaceRoot);
-    await installStudioCandidateAsync(project.path, studioCandidate);
+    await preparePackedStudioCandidateAsync(project.path, workspaceRoot, {
+      label: 'SharkPrey',
+      timeoutMs: COMMAND_TIMEOUT_MS,
+    });
     const lockfile = await createFrozenProjectInstallationAsync(project.path);
     await logResolvedSharkPreyDependenciesAsync(project.path);
     await assertGeneratedModuleBoundariesAsync(project.path);
@@ -101,41 +106,6 @@ async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
     `${JSON.stringify({ name: '@ankhorage/sharkprey-acceptance', packageManager: 'bun@1.4.2', private: true }, null, 2)}\n`,
     'utf8',
   );
-}
-
-/*** Build and package the current checkout so the generated app exercises the candidate instead of a previously released Studio version. */
-async function packCurrentStudioCandidateAsync(workspaceRoot: string): Promise<string> {
-  const artifactRoot = path.join(workspaceRoot, '.ankh', 'acceptance-artifacts');
-  const tarballPath = path.join(artifactRoot, 'studio-candidate.tgz');
-  await mkdir(artifactRoot, { recursive: true });
-  await runAcceptanceCommandAsync({
-    args: ['run', 'build'],
-    command: 'bun',
-    cwd: process.cwd(),
-    label: 'Build SharkPrey Studio candidate',
-    timeoutMs: COMMAND_TIMEOUT_MS,
-  });
-  await runAcceptanceCommandAsync({
-    args: ['pm', 'pack', '--filename', tarballPath, '--ignore-scripts', '--quiet'],
-    command: 'bun',
-    cwd: process.cwd(),
-    label: 'Pack SharkPrey Studio candidate',
-    timeoutMs: COMMAND_TIMEOUT_MS,
-  });
-  return tarballPath;
-}
-
-/*** Replace only the acceptance app's Studio dependency with the explicitly packed local candidate. */
-async function installStudioCandidateAsync(
-  projectRoot: string,
-  studioCandidate: string,
-): Promise<void> {
-  const packagePath = path.join(projectRoot, 'package.json');
-  const packageJson = JSON.parse(await readFile(packagePath, 'utf8')) as {
-    dependencies: Record<string, string>;
-  };
-  packageJson.dependencies['@ankhorage/studio'] = `file:${studioCandidate}`;
-  await writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`, 'utf8');
 }
 
 /*** Create an app-owned cross-platform lockfile, then perform the untouched app's required cold frozen installation. */
