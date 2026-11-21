@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.105
+
+### Patch Changes
+
+- 0e00ce1: Update dependencies: `@ankhorage/runtime`, `@ankhorage/templates`.
+
 ## 8.1.104
 
 ### Patch Changes
