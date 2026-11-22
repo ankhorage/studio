@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.2.0
+
+### Minor Changes
+
+- 86c3686: Evaluate Studio render facts through the published Rules Design profile and render its canonical advisory results.
+
 ## 8.1.108
 
 ### Patch Changes

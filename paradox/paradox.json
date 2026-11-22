@@ -18,7 +18,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v8.1.108",
+      "value": "v8.2.0",
       "color": "cb3837"
     },
     {
@@ -896,6 +896,9 @@
       "exports": [
         "createStudioDesignFacts",
         "createStudioDesignRuleProvider",
+        "evaluateStudioDesignAssessment",
+        "StudioDesignAssessment",
+        "StudioDesignAssessmentInput",
         "StudioDesignFactsInput",
         "StudioRenderedAreaMeasurement"
       ]
@@ -1300,6 +1303,17 @@
       ]
     },
     {
+      "path": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts"
+      ],
+      "exports": [
+        "createStudioDesignAssessmentPresentation",
+        "StudioDesignAssessmentPresentation"
+      ]
+    },
+    {
       "path": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1324,6 +1338,28 @@
       "dependencies": [],
       "exports": [
         "createStudioDesignRuleProvider"
+      ]
+    },
+    {
+      "path": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+        "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts"
+      ],
+      "exports": [
+        "evaluateStudioDesignAssessment",
+        "StudioDesignAssessment",
+        "StudioDesignAssessmentInput"
       ]
     },
     {
@@ -6657,6 +6693,18 @@
       "exports": [
         "StudioDeleteDialog",
         "StudioDeleteDialogProps"
+      ]
+    },
+    {
+      "path": "src/ui/StudioDesignAssessmentCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+        "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts"
+      ],
+      "exports": [
+        "StudioDesignAssessmentCard",
+        "StudioDesignAssessmentCardProps"
       ]
     },
     {
@@ -16493,6 +16541,72 @@
       }
     },
     {
+      "name": "createStudioDesignAssessmentPresentation",
+      "description": "Project canonical Rules output into Studio display groups without deriving or changing any rule outcome.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "isUnscopedMissingFact",
+      "description": "Preserve missing facts without a renderer value scope instead of dropping their evidence.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+        "line": 56,
+        "column": 1
+      }
+    },
+    {
+      "name": "presentFinding",
+      "description": "Retain Rules result status, finding severity, and catalog-owned advisory semantics for presentation.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+        "line": 63,
+        "column": 1
+      }
+    },
+    {
+      "name": "factScope",
+      "description": "Read the renderer-owned scope marker from an available fact without treating missing data as a pass.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+        "line": 79,
+        "column": 1
+      }
+    },
+    {
+      "name": "findingScope",
+      "description": "Read a provider finding's serialized scope marker only for presentation grouping.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+        "line": 85,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDesignEvidenceScope",
+      "description": "Accept the three frozen Design evidence scopes.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+        "line": 91,
+        "column": 1
+      }
+    },
+    {
       "name": "createStudioDesignFacts",
       "description": "Build portable Design facts only from independently measured Studio render evidence.",
       "see": [],
@@ -16604,12 +16718,45 @@
     },
     {
       "name": "createStudioDesignRuleProvider",
-      "description": "Create Studio's public Design provider contribution and select its canonical 60-30-10 profile.",
+      "description": "Create Studio's public Design provider contribution for an explicitly selected published profile.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts",
-        "line": 5,
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "measurements",
+      "description": "Create one complete renderer measurement per frozen 60-30-10 evidence scope.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts",
+        "line": 193,
+        "column": 1
+      }
+    },
+    {
+      "name": "pixelsForScope",
+      "description": "Select explicit fixture pixels without dynamic property access.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts",
+        "line": 209,
+        "column": 1
+      }
+    },
+    {
+      "name": "evaluateStudioDesignAssessment",
+      "description": "Acquire Studio render facts and evaluate the provider-selected advisory Design profile through Rules.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts",
+        "line": 26,
         "column": 1
       }
     },
@@ -33004,6 +33151,28 @@
       }
     },
     {
+      "name": "StudioDesignAssessmentCard",
+      "description": "Display canonical Rules results and renderer evidence without deriving an outcome in the UI.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/ui/StudioDesignAssessmentCard.tsx",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatScope",
+      "description": "Format one frozen evidence scope as a readable Studio section title.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/ui/StudioDesignAssessmentCard.tsx",
+        "line": 102,
+        "column": 1
+      }
+    },
+    {
       "name": "StudioInsertDialog",
       "description": null,
       "see": [],
@@ -33803,6 +33972,11 @@
       {
         "fromPath": "src/designFacts.ts",
         "toPath": "src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts",
+        "sourcePath": "src/designFacts.ts"
+      },
+      {
+        "fromPath": "src/designFacts.ts",
+        "toPath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts",
         "sourcePath": "src/designFacts.ts"
       },
       {
@@ -35244,6 +35418,16 @@
         "fromPath": "src/ui/createStudioAppBarActions.ts",
         "toPath": "src/ui/studioAppBarModel.ts",
         "sourcePath": "src/ui/createStudioAppBarActions.ts"
+      },
+      {
+        "fromPath": "src/ui/StudioDesignAssessmentCard.tsx",
+        "toPath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+        "sourcePath": "src/ui/StudioDesignAssessmentCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/StudioDesignAssessmentCard.tsx",
+        "toPath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts",
+        "sourcePath": "src/ui/StudioDesignAssessmentCard.tsx"
       },
       {
         "fromPath": "src/ui/StudioInsertDialog.tsx",
@@ -39376,6 +39560,11 @@
         "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
       },
       {
+        "fromPath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+        "toPath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts"
+      },
+      {
         "fromPath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts",
         "toPath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
         "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts"
@@ -39384,6 +39573,26 @@
         "fromPath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts",
         "toPath": "src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts",
         "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts"
+      },
+      {
+        "fromPath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts",
+        "toPath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+        "sourcePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts"
+      },
+      {
+        "fromPath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts",
+        "toPath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts",
+        "sourcePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts"
+      },
+      {
+        "fromPath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts",
+        "toPath": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.ts",
+        "sourcePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts"
+      },
+      {
+        "fromPath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts",
+        "toPath": "src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts",
+        "sourcePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts"
       },
       {
         "fromPath": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
@@ -52995,6 +53204,18 @@
         "sourcePath": "src/ui/createStudioAppBarActions.ts"
       },
       {
+        "fromSymbol": "StudioDesignAssessmentCard",
+        "toSymbol": "createStudioDesignAssessmentPresentation",
+        "callExpression": "createStudioDesignAssessmentPresentation",
+        "sourcePath": "src/ui/StudioDesignAssessmentCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioDesignAssessmentCard.tsx",
+        "toSymbol": "formatScope",
+        "callExpression": "formatScope",
+        "sourcePath": "src/ui/StudioDesignAssessmentCard.tsx"
+      },
+      {
         "fromSymbol": "src/ui/StudioInsertDialog.tsx",
         "toSymbol": "setQuery",
         "callExpression": "setQuery",
@@ -55114,8 +55335,20 @@
       },
       {
         "fromSymbol": "createExpo57StudioStandaloneFixtureAsync",
+        "toSymbol": "createDesignAssessmentEntrypointFixtureAsync",
+        "callExpression": "createDesignAssessmentEntrypointFixtureAsync",
+        "sourcePath": "test/smoke/createExpo57StudioStandaloneFixtureAsync.ts"
+      },
+      {
+        "fromSymbol": "createExpo57StudioStandaloneFixtureAsync",
         "toSymbol": "replaceStudioSpecifierAsync",
         "callExpression": "replaceStudioSpecifierAsync",
+        "sourcePath": "test/smoke/createExpo57StudioStandaloneFixtureAsync.ts"
+      },
+      {
+        "fromSymbol": "createDesignAssessmentEntrypointFixtureAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
         "sourcePath": "test/smoke/createExpo57StudioStandaloneFixtureAsync.ts"
       },
       {
@@ -58114,6 +58347,12 @@
       },
       {
         "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "waitForLocationAsync",
+        "callExpression": "browser.waitForLocationAsync",
+        "sourcePath": "test/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
         "toSymbol": "pointerClickAsync",
         "callExpression": "pointerClickAsync",
         "sourcePath": "test/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
@@ -58122,12 +58361,6 @@
         "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
         "toSymbol": "waitForInteractiveRoleAndNameAsync",
         "callExpression": "browser.waitForInteractiveRoleAndNameAsync",
-        "sourcePath": "test/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
-      },
-      {
-        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
-        "toSymbol": "waitForLocationAsync",
-        "callExpression": "browser.waitForLocationAsync",
         "sourcePath": "test/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
       },
       {
@@ -75855,6 +76088,54 @@
         "sourcePath": "src/features/authoring-engine/application/use-cases/deriveAuthoringModel.ts"
       },
       {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+        "toSymbol": "factScope",
+        "callExpression": "factScope",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+        "toSymbol": "findingScope",
+        "callExpression": "findingScope",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts",
+        "toSymbol": "presentFinding",
+        "callExpression": "presentFinding",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts"
+      },
+      {
+        "fromSymbol": "isUnscopedMissingFact",
+        "toSymbol": "factScope",
+        "callExpression": "factScope",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts"
+      },
+      {
+        "fromSymbol": "factScope",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts"
+      },
+      {
+        "fromSymbol": "factScope",
+        "toSymbol": "isDesignEvidenceScope",
+        "callExpression": "isDesignEvidenceScope",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts"
+      },
+      {
+        "fromSymbol": "findingScope",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts"
+      },
+      {
+        "fromSymbol": "findingScope",
+        "toSymbol": "isDesignEvidenceScope",
+        "callExpression": "isDesignEvidenceScope",
+        "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignAssessmentPresentation.ts"
+      },
+      {
         "fromSymbol": "src/features/design-facts/adapters/inbound/createStudioDesignFacts.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -75973,6 +76254,66 @@
         "toSymbol": "createDesignRuleProvider",
         "callExpression": "createDesignRuleProvider",
         "sourcePath": "src/features/design-facts/adapters/inbound/createStudioDesignRuleProvider.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts",
+        "toSymbol": "evaluateStudioDesignAssessment",
+        "callExpression": "evaluateStudioDesignAssessment",
+        "sourcePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts",
+        "toSymbol": "measurements",
+        "callExpression": "measurements",
+        "sourcePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts",
+        "toSymbol": "createStudioDesignAssessmentPresentation",
+        "callExpression": "createStudioDesignAssessmentPresentation",
+        "sourcePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts",
+        "toSymbol": "pixelsForScope",
+        "callExpression": "pixelsForScope",
+        "sourcePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.test.ts"
+      },
+      {
+        "fromSymbol": "evaluateStudioDesignAssessment",
+        "toSymbol": "createStudioDesignFacts",
+        "callExpression": "createStudioDesignFacts",
+        "sourcePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts"
+      },
+      {
+        "fromSymbol": "evaluateStudioDesignAssessment",
+        "toSymbol": "createStudioDesignRuleProvider",
+        "callExpression": "createStudioDesignRuleProvider",
+        "sourcePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts"
+      },
+      {
+        "fromSymbol": "evaluateStudioDesignAssessment",
+        "toSymbol": "evaluateRules",
+        "callExpression": "evaluateRules",
+        "sourcePath": "src/features/design-facts/adapters/inbound/evaluateStudioDesignAssessment.ts"
       },
       {
         "fromSymbol": "src/features/infrastructure/adapters/outbound/createStudioInfraAdapterPackageResolver.test.ts",
