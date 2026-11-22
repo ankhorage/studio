@@ -1325,7 +1325,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts">
       src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts
-      <small>2 functions</small>
+      <small>3 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/host/orchestrator/projectPaths.ts">
@@ -2179,7 +2179,7 @@
       <div class="summary">
         <div><strong>138</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>639</strong><span class="muted">modules</span></div>
+        <div><strong>640</strong><span class="muted">modules</span></div>
         <div><strong>2</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -3416,6 +3416,11 @@ Run with `bun examples/canvas-drag-payload/basic.ts` after building the package.
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>isOriginAllowed</code></p>
+  </article><article class="item" data-search="src/host/http/server.test.ts src/host/http/server.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts">
+    <h3>src/host/http/server.test.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/host/http/server.ts</code>, <code>src/host/orchestrator/moduleManager.ts</code>, <code>src/host/orchestrator/projectManager.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="src/host/http/server.ts src/contractGuards.ts src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.ts src/features/project-updates/composition/createStudioProjectUpdateService.ts src/host/http/mediaRoutes.ts src/host/http/moduleRoutes.ts src/host/http/projectRuntimeRoutes.ts src/host/http/resolveProjectUpdateRootAsync.ts src/host/http/security.ts src/host/orchestrator/createStudioPendingModuleLifecyclePort.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/studioInfraUp.ts src/host/templates/index.ts src/host/utils/workspaceRoot.ts src/projectIdentity.ts createStudioHostServer startStudioHostServer StartStudioHostServerOptions">
     <h3>src/host/http/server.ts</h3>
     <p class="muted">Referenced module</p>
@@ -3881,10 +3886,10 @@ Run with `bun examples/canvas-drag-payload/basic.ts` after building the package.
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts</code>, <code>src/host/orchestrator/projectManager.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts src/host/orchestrator/createProjectCreationTestSource.ts src/host/orchestrator/projectManager.ts">
+  </article><article class="item" data-search="src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts src/host/orchestrator/createProjectCreationTestSource.ts src/host/orchestrator/projectManager.ts">
     <h3>src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/host/orchestrator/createProjectCreationTestSource.ts</code>, <code>src/host/orchestrator/projectManager.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts</code>, <code>src/host/orchestrator/createProjectCreationTestSource.ts</code>, <code>src/host/orchestrator/projectManager.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="src/host/orchestrator/projectPaths.ts src/constants/projectIdentity.ts assertProjectId getAppsRoot getProjectPath">
     <h3>src/host/orchestrator/projectPaths.ts</h3>
@@ -10398,6 +10403,11 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_http_secretRoutes_ts --&gt; module_src_host_secrets_projectSecretService_ts
   module_src_host_http_security_ts[&quot;src/host/http/security.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_http_security_ts
+  module_src_host_http_server_test_ts[&quot;src/host/http/server.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_http_server_test_ts
+  module_src_host_http_server_test_ts --&gt; module_src_host_http_server_ts
+  module_src_host_http_server_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_server_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_http_server_ts[&quot;src/host/http/server.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_http_server_ts
   module_src_host_http_server_ts --&gt; module_src_contractGuards_ts
@@ -10757,6 +10767,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts[&quot;src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
@@ -12916,6 +12927,11 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_http_secretRoutes_ts --&gt; module_src_host_secrets_projectSecretService_ts
   module_src_host_http_security_ts[&quot;src/host/http/security.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_http_security_ts
+  module_src_host_http_server_test_ts[&quot;src/host/http/server.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_http_server_test_ts
+  module_src_host_http_server_test_ts --&gt; module_src_host_http_server_ts
+  module_src_host_http_server_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_server_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_http_server_ts[&quot;src/host/http/server.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_http_server_ts
   module_src_host_http_server_ts --&gt; module_src_contractGuards_ts
@@ -13275,6 +13291,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts[&quot;src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
@@ -14727,6 +14744,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_http_resolveStandaloneStudioHostOptions_ts[&quot;src/host/http/resolveStandaloneStudioHostOptions.ts&quot;]
   module_src_host_http_secretRoutes_ts[&quot;src/host/http/secretRoutes.ts&quot;]
   module_src_host_http_security_ts[&quot;src/host/http/security.ts&quot;]
+  module_src_host_http_server_test_ts[&quot;src/host/http/server.test.ts&quot;]
   module_src_host_http_server_ts[&quot;src/host/http/server.ts&quot;]
   module_src_host_http_serverWithSecrets_ts[&quot;src/host/http/serverWithSecrets.ts&quot;]
   module_src_host_http_standalone_ts[&quot;src/host/http/standalone.ts&quot;]
@@ -15591,6 +15609,9 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_http_resolveStandaloneStudioHostOptions_test_ts --&gt; module_src_host_http_resolveStandaloneStudioHostOptions_ts
   module_src_host_http_secretRoutes_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_http_secretRoutes_ts --&gt; module_src_host_secrets_projectSecretService_ts
+  module_src_host_http_server_test_ts --&gt; module_src_host_http_server_ts
+  module_src_host_http_server_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_server_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_http_server_ts --&gt; module_src_contractGuards_ts
   module_src_host_http_server_ts --&gt; module_src_features_project_updates_adapters_inbound_registerProjectUpdateRoutes_ts
   module_src_host_http_server_ts --&gt; module_src_features_project_updates_composition_createStudioProjectUpdateService_ts
@@ -15762,6 +15783,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_orchestrator_projectManagerCurrentState_test_ts --&gt; module_src_manifestSync_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts --&gt; module_src_constants_projectIdentity_ts
@@ -16603,6 +16625,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_http_resolveStandaloneStudioHostOptions_ts[&quot;src/host/http/resolveStandaloneStudioHostOptions.ts&quot;]
   module_src_host_http_secretRoutes_ts[&quot;src/host/http/secretRoutes.ts&quot;]
   module_src_host_http_security_ts[&quot;src/host/http/security.ts&quot;]
+  module_src_host_http_server_test_ts[&quot;src/host/http/server.test.ts&quot;]
   module_src_host_http_server_ts[&quot;src/host/http/server.ts&quot;]
   module_src_host_http_serverWithSecrets_ts[&quot;src/host/http/serverWithSecrets.ts&quot;]
   module_src_host_http_standalone_ts[&quot;src/host/http/standalone.ts&quot;]
@@ -17467,6 +17490,9 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_http_resolveStandaloneStudioHostOptions_test_ts --&gt; module_src_host_http_resolveStandaloneStudioHostOptions_ts
   module_src_host_http_secretRoutes_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_http_secretRoutes_ts --&gt; module_src_host_secrets_projectSecretService_ts
+  module_src_host_http_server_test_ts --&gt; module_src_host_http_server_ts
+  module_src_host_http_server_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_server_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_http_server_ts --&gt; module_src_contractGuards_ts
   module_src_host_http_server_ts --&gt; module_src_features_project_updates_adapters_inbound_registerProjectUpdateRoutes_ts
   module_src_host_http_server_ts --&gt; module_src_features_project_updates_composition_createStudioProjectUpdateService_ts
@@ -17638,6 +17664,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_orchestrator_projectManagerCurrentState_test_ts --&gt; module_src_manifestSync_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts --&gt; module_src_constants_projectIdentity_ts
@@ -18481,6 +18508,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_http_resolveStandaloneStudioHostOptions_ts[&quot;src/host/http/resolveStandaloneStudioHostOptions.ts&quot;]
   module_src_host_http_secretRoutes_ts[&quot;src/host/http/secretRoutes.ts&quot;]
   module_src_host_http_security_ts[&quot;src/host/http/security.ts&quot;]
+  module_src_host_http_server_test_ts[&quot;src/host/http/server.test.ts&quot;]
   module_src_host_http_server_ts[&quot;src/host/http/server.ts&quot;]
   module_src_host_http_serverWithSecrets_ts[&quot;src/host/http/serverWithSecrets.ts&quot;]
   module_src_host_http_standalone_ts[&quot;src/host/http/standalone.ts&quot;]
@@ -19497,6 +19525,7 @@ Follow-up: Move project creation validation under src/projects/.</p>
   module_src_host_http_resolveStandaloneStudioHostOptions_ts[&quot;src/host/http/resolveStandaloneStudioHostOptions.ts&quot;]
   module_src_host_http_secretRoutes_ts[&quot;src/host/http/secretRoutes.ts&quot;]
   module_src_host_http_security_ts[&quot;src/host/http/security.ts&quot;]
+  module_src_host_http_server_test_ts[&quot;src/host/http/server.test.ts&quot;]
   module_src_host_http_server_ts[&quot;src/host/http/server.ts&quot;]
   module_src_host_http_serverWithSecrets_ts[&quot;src/host/http/serverWithSecrets.ts&quot;]
   module_src_host_http_standalone_ts[&quot;src/host/http/standalone.ts&quot;]
@@ -23133,40 +23162,40 @@ Utility candidate: @ankhorage/utility/http</p>
     <p>Read and validate owner package metadata used as generated-app dependency floors.</p>
 </article><article class="item" data-search="createGeneratedPackagePolicy src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts Build generated package policy from validated owner package sections.">
     <h3>createGeneratedPackagePolicy</h3>
-    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:48:1</code></p>
+    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:44:1</code></p>
     <p>Build generated package policy from validated owner package sections.</p>
 </article><article class="item" data-search="readGeneratedRuntimeDependencies src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts Read generated runtime dependency ranges from Studio&#39;s dependency contract.">
     <h3>readGeneratedRuntimeDependencies</h3>
-    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:73:1</code></p>
+    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:69:1</code></p>
     <p>Read generated runtime dependency ranges from Studio&#39;s dependency contract.</p>
 </article><article class="item" data-search="readGeneratedStudioDependencyRange src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts Resolve the Studio range generated apps may install: source checkouts follow the verified&#10;self-consumer baseline, while published package artifacts use their own exact release line.">
     <h3>readGeneratedStudioDependencyRange</h3>
-    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:97:1</code></p>
+    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:93:1</code></p>
     <p>Resolve the Studio range generated apps may install: source checkouts follow the verified
 self-consumer baseline, while published package artifacts use their own exact release line.</p>
 </article><article class="item" data-search="readGeneratedPeerDependencies src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts Read generated native peer ranges from Studio&#39;s peer dependency contract.">
     <h3>readGeneratedPeerDependencies</h3>
-    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:108:1</code></p>
+    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:104:1</code></p>
     <p>Read generated native peer ranges from Studio&#39;s peer dependency contract.</p>
 </article><article class="item" data-search="readPackageManifest src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts Parse one owner package manifest as a validated object.">
     <h3>readPackageManifest</h3>
-    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:132:1</code></p>
+    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:128:1</code></p>
     <p>Parse one owner package manifest as a validated object.</p>
 </article><article class="item" data-search="readStudioVersion src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts Read and validate Studio&#39;s exact package version.">
     <h3>readStudioVersion</h3>
-    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:142:1</code></p>
+    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:138:1</code></p>
     <p>Read and validate Studio&#39;s exact package version.</p>
 </article><article class="item" data-search="readStudioPackageManager src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts Read and validate Studio&#39;s exact Bun package-manager pin.">
     <h3>readStudioPackageManager</h3>
-    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:151:1</code></p>
+    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:147:1</code></p>
     <p>Read and validate Studio&#39;s exact Bun package-manager pin.</p>
 </article><article class="item" data-search="readRequiredSection src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts Read one required package-manifest dependency section.">
     <h3>readRequiredSection</h3>
-    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:163:1</code></p>
+    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:159:1</code></p>
     <p>Read one required package-manifest dependency section.</p>
 </article><article class="item" data-search="readRequiredString src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts Read one required non-empty string property from package metadata.">
     <h3>readRequiredString</h3>
-    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:176:1</code></p>
+    <p class="muted"><code>src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts:172:1</code></p>
     <p>Read one required non-empty string property from package metadata.</p>
 </article>
     </section>
@@ -25350,16 +25379,16 @@ Utility candidate: @ankhorage/utility/network/security</p>
       <h2>src/host/http/server.ts</h2>
       <article class="item" data-search="resolveProjectTemplateSelection src/host/http/server.ts Parse one template selection from the trusted Studio project-create request body.">
     <h3>resolveProjectTemplateSelection</h3>
-    <p class="muted"><code>src/host/http/server.ts:26:1</code></p>
+    <p class="muted"><code>src/host/http/server.ts:30:1</code></p>
     <p>Parse one template selection from the trusted Studio project-create request body.</p>
 </article><article class="item" data-search="createStudioHostServer src/host/http/server.ts Compose the Fastify Studio host by applying security middleware and registering project, template, infrastructure, runtime, project-update, media and module HTTP endpoints.&#10;TODO: Split the remaining inline project/template/infrastructure endpoints into domain-owned HTTP route adapters so this server remains composition/bootstrap only and can satisfy canonical function-size lint rules without local overrides.">
     <h3>createStudioHostServer</h3>
-    <p class="muted"><code>src/host/http/server.ts:48:1</code></p>
+    <p class="muted"><code>src/host/http/server.ts:52:1</code></p>
     <p>Compose the Fastify Studio host by applying security middleware and registering project, template, infrastructure, runtime, project-update, media and module HTTP endpoints.
 TODO: Split the remaining inline project/template/infrastructure endpoints into domain-owned HTTP route adapters so this server remains composition/bootstrap only and can satisfy canonical function-size lint rules without local overrides.</p>
 </article><article class="item" data-search="startStudioHostServer src/host/http/server.ts Resolve host options, construct Studio managers/server composition and listen on the requested local interface.">
     <h3>startStudioHostServer</h3>
-    <p class="muted"><code>src/host/http/server.ts:263:1</code></p>
+    <p class="muted"><code>src/host/http/server.ts:267:1</code></p>
     <p>Resolve host options, construct Studio managers/server composition and listen on the requested local interface.</p>
 </article>
     </section>
@@ -26654,13 +26683,17 @@ Follow-up: Move deploy-target validation to the deploy/projects domain boundary 
   </section><section id="view-src-host-orchestrator-projectmanagerinfraadapterresolution-test-ts" class="view" data-view="src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts" hidden>
     <section class="panel">
       <h2>src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts</h2>
-      <article class="item" data-search="createWorkspaceRoot src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts ">
+      <article class="item" data-search="createInfraLifecycle src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts ">
+    <h3>createInfraLifecycle</h3>
+    <p class="muted"><code>src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts:45:1</code></p>
+    <p class="empty">No description available.</p>
+</article><article class="item" data-search="createWorkspaceRoot src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts ">
     <h3>createWorkspaceRoot</h3>
-    <p class="muted"><code>src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts:42:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts:79:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="createProjectRoot src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts ">
     <h3>createProjectRoot</h3>
-    <p class="muted"><code>src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts:53:1</code></p>
+    <p class="muted"><code>src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts:90:1</code></p>
     <p class="empty">No description available.</p>
 </article>
     </section>

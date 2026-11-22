@@ -1,5 +1,12 @@
 # @ankhorage/studio
 
+## 8.1.108
+
+### Patch Changes
+
+- 325a770: Refactor the Studio HTTP host to consume the canonical API Fastify transport package.
+- f0db4ab: Update dependencies: `@ankhorage/auth-supabase`, `@ankhorage/contracts`, `@ankhorage/data-sources`, `@ankhorage/deploy`, `@ankhorage/expo-runtime`, `@ankhorage/infra-local`, `@ankhorage/rules-design`, `@ankhorage/runtime`, `@ankhorage/templates`.
+
 ## 8.1.107
 
 ### Patch Changes

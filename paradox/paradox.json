@@ -18,7 +18,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v8.1.107",
+      "value": "v8.1.108",
       "color": "cb3837"
     },
     {
@@ -2663,6 +2663,16 @@
       ]
     },
     {
+      "path": "src/host/http/server.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/http/server.ts",
+        "src/host/orchestrator/moduleManager.ts",
+        "src/host/orchestrator/projectManager.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "src/host/http/server.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -3700,6 +3710,7 @@
       "path": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
         "src/host/orchestrator/createProjectCreationTestSource.ts",
         "src/host/orchestrator/projectManager.ts"
       ],
@@ -17511,7 +17522,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 48,
+        "line": 44,
         "column": 1
       }
     },
@@ -17522,7 +17533,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 73,
+        "line": 69,
         "column": 1
       }
     },
@@ -17533,7 +17544,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 97,
+        "line": 93,
         "column": 1
       }
     },
@@ -17544,7 +17555,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 108,
+        "line": 104,
         "column": 1
       }
     },
@@ -17555,7 +17566,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 132,
+        "line": 128,
         "column": 1
       }
     },
@@ -17566,7 +17577,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 142,
+        "line": 138,
         "column": 1
       }
     },
@@ -17577,7 +17588,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 151,
+        "line": 147,
         "column": 1
       }
     },
@@ -17588,7 +17599,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 163,
+        "line": 159,
         "column": 1
       }
     },
@@ -17599,7 +17610,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/project-updates/adapters/outbound/getGeneratedPackagePolicy.ts",
-        "line": 176,
+        "line": 172,
         "column": 1
       }
     },
@@ -22263,7 +22274,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 26,
+        "line": 30,
         "column": 1
       }
     },
@@ -22274,7 +22285,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 48,
+        "line": 52,
         "column": 1
       }
     },
@@ -22285,7 +22296,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 263,
+        "line": 267,
         "column": 1
       }
     },
@@ -24820,13 +24831,24 @@
       }
     },
     {
+      "name": "createInfraLifecycle",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "line": 45,
+        "column": 1
+      }
+    },
+    {
       "name": "createWorkspaceRoot",
       "description": null,
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
-        "line": 42,
+        "line": 79,
         "column": 1
       }
     },
@@ -24837,7 +24859,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
-        "line": 53,
+        "line": 90,
         "column": 1
       }
     },
@@ -36274,6 +36296,21 @@
         "sourcePath": "src/host/http/secretRoutes.ts"
       },
       {
+        "fromPath": "src/host/http/server.test.ts",
+        "toPath": "src/host/orchestrator/moduleManager.ts",
+        "sourcePath": "src/host/http/server.test.ts"
+      },
+      {
+        "fromPath": "src/host/http/server.test.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/http/server.test.ts"
+      },
+      {
+        "fromPath": "src/host/http/server.test.ts",
+        "toPath": "src/host/http/server.ts",
+        "sourcePath": "src/host/http/server.test.ts"
+      },
+      {
         "fromPath": "src/host/http/server.ts",
         "toPath": "src/contractGuards.ts",
         "sourcePath": "src/host/http/server.ts"
@@ -36867,6 +36904,11 @@
         "fromPath": "src/host/orchestrator/projectManagerDeletion.test.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
         "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "toPath": "src/features/infrastructure/composition/createStudioProjectInfraLifecycle.ts",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
       },
       {
         "fromPath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
@@ -59980,8 +60022,8 @@
       },
       {
         "fromSymbol": "src/host/http/authRoutes.test.ts",
-        "toSymbol": "Fastify",
-        "callExpression": "Fastify",
+        "toSymbol": "createFastifyApiServer",
+        "callExpression": "createFastifyApiServer",
         "sourcePath": "src/host/http/authRoutes.test.ts"
       },
       {
@@ -60412,8 +60454,8 @@
       },
       {
         "fromSymbol": "src/host/http/moduleRoutes.test.ts",
-        "toSymbol": "Fastify",
-        "callExpression": "Fastify",
+        "toSymbol": "createFastifyApiServer",
+        "callExpression": "createFastifyApiServer",
         "sourcePath": "src/host/http/moduleRoutes.test.ts"
       },
       {
@@ -60502,8 +60544,8 @@
       },
       {
         "fromSymbol": "src/host/http/projectRuntimeRoutes.test.ts",
-        "toSymbol": "Fastify",
-        "callExpression": "Fastify",
+        "toSymbol": "createFastifyApiServer",
+        "callExpression": "createFastifyApiServer",
         "sourcePath": "src/host/http/projectRuntimeRoutes.test.ts"
       },
       {
@@ -60723,6 +60765,36 @@
         "sourcePath": "src/host/http/secretRoutes.ts"
       },
       {
+        "fromSymbol": "src/host/http/server.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/http/server.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/server.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/http/server.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/server.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/http/server.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/server.test.ts",
+        "toSymbol": "createStudioHostServer",
+        "callExpression": "createStudioHostServer",
+        "sourcePath": "src/host/http/server.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/server.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/http/server.test.ts"
+      },
+      {
         "fromSymbol": "resolveProjectTemplateSelection",
         "toSymbol": "isAppCategory",
         "callExpression": "isAppCategory",
@@ -60730,8 +60802,8 @@
       },
       {
         "fromSymbol": "createStudioHostServer",
-        "toSymbol": "Fastify",
-        "callExpression": "Fastify",
+        "toSymbol": "createFastifyApiServer",
+        "callExpression": "createFastifyApiServer",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -60744,6 +60816,12 @@
         "fromSymbol": "createStudioHostServer",
         "toSymbol": "createStudioPendingModuleLifecyclePort",
         "callExpression": "createStudioPendingModuleLifecyclePort",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromSymbol": "createStudioHostServer",
+        "toSymbol": "registerFastifyCorsAsync",
+        "callExpression": "registerFastifyCorsAsync",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -64648,6 +64726,12 @@
       },
       {
         "fromSymbol": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "toSymbol": "createInfraLifecycle",
+        "callExpression": "createInfraLifecycle",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
         "toSymbol": "persistProjectManifest",
         "callExpression": "manager.persistProjectManifest",
         "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
@@ -64666,6 +64750,12 @@
       },
       {
         "fromSymbol": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
+      },
+      {
+        "fromSymbol": "generateAsync",
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"
@@ -76102,8 +76192,8 @@
       },
       {
         "fromSymbol": "createServer",
-        "toSymbol": "Fastify",
-        "callExpression": "Fastify",
+        "toSymbol": "createFastifyApiServer",
+        "callExpression": "createFastifyApiServer",
         "sourcePath": "src/features/project-updates/adapters/inbound/registerProjectUpdateRoutes.test.ts"
       },
       {

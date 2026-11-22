@@ -948,6 +948,11 @@ graph TD
   module_src_host_http_secretRoutes_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_http_security_ts["src/host/http/security.ts"]
   package__ankhorage_studio -.-> module_src_host_http_security_ts
+  module_src_host_http_server_test_ts["src/host/http/server.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_http_server_test_ts
+  module_src_host_http_server_test_ts --> module_src_host_http_server_ts
+  module_src_host_http_server_test_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_server_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_server_ts["src/host/http/server.ts"]
   package__ankhorage_studio -.-> module_src_host_http_server_ts
   module_src_host_http_server_ts --> module_src_contractGuards_ts
@@ -1307,6 +1312,7 @@ graph TD
   module_src_host_orchestrator_projectManagerDeletion_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts["src/host/orchestrator/projectManagerInfraAdapterResolution.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --> module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --> module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts["src/host/orchestrator/projectPaths.ts"]

@@ -239,6 +239,7 @@ graph LR
   module_src_host_http_resolveStandaloneStudioHostOptions_ts["src/host/http/resolveStandaloneStudioHostOptions.ts"]
   module_src_host_http_secretRoutes_ts["src/host/http/secretRoutes.ts"]
   module_src_host_http_security_ts["src/host/http/security.ts"]
+  module_src_host_http_server_test_ts["src/host/http/server.test.ts"]
   module_src_host_http_server_ts["src/host/http/server.ts"]
   module_src_host_http_serverWithSecrets_ts["src/host/http/serverWithSecrets.ts"]
   module_src_host_http_standalone_ts["src/host/http/standalone.ts"]
@@ -1103,6 +1104,9 @@ graph LR
   module_src_host_http_resolveStandaloneStudioHostOptions_test_ts --> module_src_host_http_resolveStandaloneStudioHostOptions_ts
   module_src_host_http_secretRoutes_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_secretRoutes_ts --> module_src_host_secrets_projectSecretService_ts
+  module_src_host_http_server_test_ts --> module_src_host_http_server_ts
+  module_src_host_http_server_test_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_server_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_server_ts --> module_src_contractGuards_ts
   module_src_host_http_server_ts --> module_src_features_project_updates_adapters_inbound_registerProjectUpdateRoutes_ts
   module_src_host_http_server_ts --> module_src_features_project_updates_composition_createStudioProjectUpdateService_ts
@@ -1274,6 +1278,7 @@ graph LR
   module_src_host_orchestrator_projectManagerCurrentState_test_ts --> module_src_manifestSync_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --> module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --> module_src_features_infrastructure_composition_createStudioProjectInfraLifecycle_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --> module_src_host_orchestrator_createProjectCreationTestSource_ts
   module_src_host_orchestrator_projectManagerInfraAdapterResolution_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts --> module_src_constants_projectIdentity_ts
