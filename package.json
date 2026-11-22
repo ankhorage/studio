@@ -355,7 +355,7 @@
     "@ankhorage/capability": "^0.2.3",
     "@ankhorage/color-theory": "^0.3.4",
     "@ankhorage/contracts": "^26.13.1",
-    "@ankhorage/data-sources": "^2.2.5",
+    "@ankhorage/data-sources": "^2.3.0",
     "@ankhorage/deploy": "^0.14.28",
     "@ankhorage/expo-runtime": "^7.2.0",
     "@ankhorage/infra": "^7.3.5",
