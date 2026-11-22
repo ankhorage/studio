@@ -6,10 +6,10 @@ import { reconcileProjectPackageRootAsync } from '../../src/host/orchestrator/re
 
 /*** Pack the current checkout once for a generated acceptance app's exact Studio candidate. */
 async function packStudioCandidateAsync(
-  projectRoot: string,
+  workspaceRoot: string,
   options: { readonly label: string; readonly timeoutMs: number },
 ): Promise<string> {
-  const artifactRoot = path.join(projectRoot, '.ankh', 'acceptance-artifacts');
+  const artifactRoot = path.join(workspaceRoot, '.ankh', 'acceptance-artifacts');
   const tarballPath = path.join(artifactRoot, 'studio-candidate.tgz');
   await mkdir(artifactRoot, { recursive: true });
   await runAcceptanceCommandAsync({
@@ -29,26 +29,23 @@ async function packStudioCandidateAsync(
   return tarballPath;
 }
 
-/*** Override Studio resolution with the app-local exact packed candidate while retaining the generated dependency contract. */
+/*** Redirect a generated acceptance app to the exact packed Studio candidate after owner policy synchronization. */
 async function setStudioCandidateAsync(projectRoot: string, tarballPath: string): Promise<void> {
   const packagePath = path.join(projectRoot, 'package.json');
   const packageJson = JSON.parse(await readFile(packagePath, 'utf8')) as {
     dependencies: Record<string, string>;
-    overrides?: Record<string, string>;
   };
-  packageJson.overrides = {
-    ...packageJson.overrides,
-    '@ankhorage/studio': `file:${tarballPath}`,
-  };
+  packageJson.dependencies['@ankhorage/studio'] = `file:${tarballPath}`;
   await writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`, 'utf8');
 }
 
 /*** Reconcile a generated app through Studio's canonical package pipeline after making the exact packed checkout its Studio dependency. */
 export async function reconcilePackedStudioCandidateProjectAsync(
   projectRoot: string,
+  workspaceRoot: string,
   options: { readonly label: string; readonly timeoutMs: number },
 ): Promise<void> {
-  const tarballPath = await packStudioCandidateAsync(projectRoot, options);
+  const tarballPath = await packStudioCandidateAsync(workspaceRoot, options);
   await reconcileProjectPackageRootAsync(projectRoot, {
     preparePackageRootAsync: (reconciledProjectRoot) =>
       setStudioCandidateAsync(reconciledProjectRoot, tarballPath),

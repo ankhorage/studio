@@ -42,7 +42,7 @@ export async function runExpo57GeneratedAppAcceptanceAsync(): Promise<void> {
   }
 }
 
-/*** Assert that the camera-free generated app neither declares generic camera capability packages nor installs Expo Camera. */
+/*** Assert that the camera-free generated app neither declares nor transitively installs camera capability dependencies. */
 async function assertCameraFreeInstalledGraphAsync(projectRoot: string): Promise<void> {
   const packageJson = JSON.parse(
     await readFile(path.join(projectRoot, 'package.json'), 'utf8'),
@@ -60,9 +60,11 @@ async function assertCameraFreeInstalledGraphAsync(projectRoot: string): Promise
     if (Object.hasOwn(packageJson.dependencies ?? {}, dependency)) {
       throw new Error(`Camera-free generated package unexpectedly declares ${dependency}.`);
     }
-  }
-  if (installedGraph.includes('expo-camera')) {
-    throw new Error('Camera-free installed dependency graph unexpectedly contains expo-camera.');
+    if (installedGraph.includes(dependency)) {
+      throw new Error(
+        `Camera-free installed dependency graph unexpectedly contains ${dependency}.`,
+      );
+    }
   }
 }
 
@@ -102,7 +104,7 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
 
   const projectManager = new ProjectManager(workspaceRoot, {
     reconcileProjectPackageRootAsync: (projectRoot) =>
-      reconcilePackedStudioCandidateProjectAsync(projectRoot, {
+      reconcilePackedStudioCandidateProjectAsync(projectRoot, workspaceRoot, {
         label: 'generated app',
         timeoutMs: COMMAND_TIMEOUT_MS,
       }),
