@@ -42,7 +42,7 @@ jobs:
         id: plan
         env:
           ANKH_CI_BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: bun .github/scripts/run-ci-impact.ts plan
+        run: bun .github/scripts/ci-impact.ts plan
 
       - name: Summarize acceptance impact policy
         run: |

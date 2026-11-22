@@ -6,7 +6,37 @@
 
 Package: `@ankhorage/studio`
 
-Studio authoring package for Ankhorage apps
+Title: Ankhorage Studio
+
+Provides the authoring package, project workspace, host, and application capabilities for Ankhorage apps.
+
+Purpose: Give application authors a cohesive workspace for creating, editing, validating, and operating Ankhorage projects through published package and CLI boundaries.
+
+Audience:
+
+- Authors building and operating Ankhorage applications.
+- Hosts that embed or invoke Studio capabilities.
+
+## Scope and boundaries
+
+Responsibilities:
+
+- Provide Studio authoring, project, runtime, host, and administration entrypoints.
+- Expose capabilities for starting Studio and listing, creating, or deleting workspace projects.
+- Compose published Ankhorage packages into the Studio authoring experience.
+
+Boundaries:
+
+- Does not replace the published contracts, runtime, surface, or deployment package boundaries it consumes.
+- Does not require consumers to import sibling repository source files.
+- Does not make repository metadata enforcement decisions.
+
+Architecture role: A Studio-specific authoring application package that composes explicit published package boundaries.
+
+Architectural invariants:
+
+- Cross-package consumption uses declared dependencies and published APIs.
+- Studio capabilities are exposed through explicit package and CLI entrypoints.
 
 ## Current architecture only
 
@@ -20,6 +50,22 @@ published public APIs and declared dependencies, never sibling source files.
 
 Current-runtime error handling and canonical database or infrastructure migrations remain valid
 when they support states that the current architecture can intentionally produce.
+
+## Standalone contract
+
+Every repository managed by `@ankhorage/devtools` is standalone. It must be independently
+installable, buildable, testable, and usable from its own checkout using only declared dependencies
+and explicit configuration. It must not require sibling repositories, sibling source imports,
+`workspace:`, `file:`, or `link:` dependencies to unpublished packages, hidden
+organization-local state, or assumptions about a specific consuming application, infrastructure,
+hosting provider, web server, container runtime, or deployment topology.
+
+Published packages are additionally consumer-agnostic and reusable outside Ankhorage.
+Environment- or provider-specific behavior belongs behind explicit configuration and adapters,
+never in the package core.
+
+If an existing repository violates this contract, treat that as architecture debt to remove, not
+as an exception to preserve.
 
 ## Required repository instructions
 
@@ -49,6 +95,26 @@ Paradox `/*** ... */` comments in `src` and leading `@usage` comments in real
 generated output. The managed release workflow runs `bun run docs` after the package version bump
 and commits the regenerated artifacts in the release commit.
 
+## GitHub task lifecycle and workspace cleanup
+
+- **Start.** Treat each issue implementation, PR implementation, review, and change request (CR)
+  as an independent task. Fetch the current remote default branch and read the applicable issue,
+  PR, HEAD, review feedback, and CI state. Use a fresh, uniquely named task checkout or worktree.
+  Concurrent tasks must have distinct writable checkout, temporary, build, and cache paths.
+- **CRs.** Fetch and check out the current remote PR branch in the new workspace. Preserve PR
+  history and scope. Push corrections to the existing PR branch.
+- **Delivery.** Run applicable checks. Commit and push all intended changes, then verify that
+  GitHub has the intended commit on the correct remote branch. Report the exact HEAD, checks, CI,
+  findings, and blockers. Report acceptance that was not run as unverified. Read-only reviews hand
+  off their findings without creating a commit. Merge requires explicit authorization.
+- **Cleanup.** After handoff, resolve every candidate path and remove only task-owned directories
+  whose resolved paths are strictly under the resolved system path for `/tmp` (`/private/tmp` on
+  macOS). Refuse candidates that resolve outside that boundary, including through a symlink. Use
+  Git-aware removal for worktrees. Preserve workspaces outside the boundary, shared directories,
+  other tasks' directories, uncommitted changes, and unpushed commits. If blocked, persist
+  recoverable work first and document what must be retained. Report whether cleanup succeeded, was
+  skipped, or was blocked.
+
 ## Pull requests
 
 Before creating a pull request, run all of these commands in this order and resolve every failure:
@@ -61,6 +127,10 @@ bun run knip:check
 bun run changeset
 bun run format
 ```
+
+For repositories that use Changesets, run `bun run changeset` only for release-impacting work.
+No Changeset means no release is requested. Never add an empty Changeset to satisfy CI; remove it
+for a no-release pull request, or add explicit release intent before validation.
 
 ## Skill scripts
 

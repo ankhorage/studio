@@ -1,5 +1,23 @@
 # @ankhorage/studio
 
+## 8.1.107
+
+### Patch Changes
+
+- 3a52dea: Update dependencies: `@ankhorage/infra-supabase`.
+
+## 8.1.106
+
+### Patch Changes
+
+- 969ed1d: Update dependencies: `@ankhorage/templates`.
+
+## 8.1.105
+
+### Patch Changes
+
+- 0e00ce1: Update dependencies: `@ankhorage/runtime`, `@ankhorage/templates`.
+
 ## 8.1.104
 
 ### Patch Changes

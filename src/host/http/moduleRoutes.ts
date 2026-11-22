@@ -1,6 +1,6 @@
+import type { FastifyInstance } from '@ankhorage/api-fastify';
 import { toErrorMessage } from '@ankhorage/utility/error';
 import { isRecord } from '@ankhorage/utility/object';
-import type { FastifyInstance } from 'fastify';
 
 import type { ModuleManager } from '../orchestrator/moduleManager';
 

@@ -27,17 +27,13 @@ function readGeneratedPackagePolicy(): GeneratedPackagePolicy {
   const dependencies = readRequiredSection(studio, 'dependencies', 'Studio');
   const devDependencies = readRequiredSection(studio, 'devDependencies', 'Studio');
   const peerDependencies = readRequiredSection(studio, 'peerDependencies', 'Studio');
-  const colorTheoryDevDependencies = readRequiredSection(
-    colorTheory,
-    'devDependencies',
-    'Color Theory',
-  );
+  const colorTheoryDependencies = readRequiredSection(colorTheory, 'dependencies', 'Color Theory');
   const ownerVersion = readStudioVersion(studio);
   return createGeneratedPackagePolicy({
     dependencies,
     devDependencies,
     peerDependencies,
-    typesCulori: readRequiredString(colorTheoryDevDependencies, '@types/culori', 'Color Theory'),
+    typesCulori: readRequiredString(colorTheoryDependencies, '@types/culori', 'Color Theory'),
     ownerVersion,
     studioDependencyRange: readGeneratedStudioDependencyRange(ownerVersion),
     packageManager: readStudioPackageManager(studio),

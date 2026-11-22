@@ -1,7 +1,7 @@
+import type { FastifyInstance, FastifyReply, FastifyRequest } from '@ankhorage/api-fastify';
 import type { DataContractValue, DataOperationIntent } from '@ankhorage/contracts/data';
 import { asRecord } from '@ankhorage/utility/object';
 import { isNonEmptyString } from '@ankhorage/utility/string';
-import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import type {
   ExternalApiConnectRequest,

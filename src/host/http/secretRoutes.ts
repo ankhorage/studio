@@ -1,7 +1,7 @@
+import type { FastifyInstance, FastifyReply, FastifyRequest } from '@ankhorage/api-fastify';
 import type { SecretPayload, SecretStoreResult } from '@ankhorage/secrets/port';
 import { asRecord } from '@ankhorage/utility/object';
 import { isNonEmptyString } from '@ankhorage/utility/string';
-import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { ProjectSecretService, ProjectSecretUsageError } from '../secrets/projectSecretService';
