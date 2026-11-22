@@ -34,6 +34,14 @@ test('declares the verified published planner minimum while keeping e2e ownershi
   expect(manifest.ankh.ciImpact.complete).toEqual({ e2e: false });
 });
 
+test('installs the standalone Studio consumer before its web e2e spawns Expo', async () => {
+  const manifest = await readStudioManifestAsync();
+
+  expect(manifest.scripts['test:e2e:generated-app-web']).toStartWith(
+    'bun install --cwd apps/studio --frozen-lockfile &&',
+  );
+});
+
 test('allows only the published planner to skip the documented acceptance matrix', async () => {
   const manifest = await readStudioManifestAsync();
   const output = createOutput(['docs/ci-impact.md'], manifest);
@@ -52,7 +60,7 @@ test('keeps an always-running aggregation gate for the published job decisions',
 
   expect(workflow).toContain('acceptance:\n    needs:');
   expect(workflow).toContain('if: always()');
-  expect(workflow).toContain('bun .github/scripts/run-ci-impact.ts plan');
+  expect(workflow).toContain('bun .github/scripts/ci-impact.ts plan');
   expect(workflow).not.toContain('determine-studio-acceptance-scope');
   for (const script of acceptanceScripts) expect(workflow).toContain(script);
 });
