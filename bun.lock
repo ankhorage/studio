@@ -26,8 +26,8 @@
         "@ankhorage/permissions": "^0.3.23",
         "@ankhorage/react-native-reanimated-dnd-web": "^0.4.4",
         "@ankhorage/repository": "^0.10.8",
-        "@ankhorage/rules": "^0.4.0",
-        "@ankhorage/rules-design": "^0.10.0",
+        "@ankhorage/rules": "^0.7.0",
+        "@ankhorage/rules-design": "^0.10.1",
         "@ankhorage/runtime": "^5.5.8",
         "@ankhorage/secrets": "^0.3.2",
         "@ankhorage/secrets-supabase-vault": "^1.0.0",
@@ -145,9 +145,9 @@
 
     "@ankhorage/repository": ["@ankhorage/repository@0.10.8", "", { "dependencies": { "@ankhorage/ankh": "^0.13.3", "@ankhorage/capability": "^0.2.3", "@ankhorage/contracts": "^26.12.0", "ignore": "^7.0.16" } }, "sha512-G7ERzh3css0qh7tsPanIFhXd2cCLcYTwrY6TsJHysBB0InayPBGBw1U2RJNKHNbcp75AKLhN+jQJSqePtPgj4Q=="],
 
-    "@ankhorage/rules": ["@ankhorage/rules@0.4.0", "", { "dependencies": { "@ankhorage/ankh": "^0.13.1", "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^26.0.0", "@ankhorage/utility": "^1.9.0" }, "bin": { "ankhorage-rules": "dist/cli/standalone.js" } }, "sha512-cNDmfOaD5jqmgdWO89xCF2eOq0/8ymHoE4BnjPzSkYAorCjOnAHD2EgKRRQ1xvHLHf7S0mO9PGXpOlS17GqlzA=="],
+    "@ankhorage/rules": ["@ankhorage/rules@0.7.0", "", { "dependencies": { "@ankhorage/ankh": "^0.13.1", "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^26.0.0", "@ankhorage/utility": "^1.9.0" }, "bin": { "ankhorage-rules": "dist/cli/standalone.js" } }, "sha512-i64dUl/173YNPcjE2eJzVqKjUAZ+xqqEmhfYn9v8ZkR7PbDCcfUqavh1f2zu+IWBoIxZWJ2kpQBUUi86qoFuxA=="],
 
-    "@ankhorage/rules-design": ["@ankhorage/rules-design@0.10.0", "", { "dependencies": { "@ankhorage/ankh": "^0.13.4", "@ankhorage/capability": "^0.2.2", "@ankhorage/contracts": "26.12.0", "@ankhorage/rules": "^0.4.0", "@ankhorage/utility": "^1.10.0" } }, "sha512-RberLGTKU2LPEr7chbZg4W1F3clkkp9DvnBpPtM1/WUldJaVQYkFizpnLywHHc0lFHuo6/cuOdHVUxRGZGfLWg=="],
+    "@ankhorage/rules-design": ["@ankhorage/rules-design@0.10.1", "", { "dependencies": { "@ankhorage/ankh": "^0.13.4", "@ankhorage/capability": "^0.2.2", "@ankhorage/contracts": "26.12.0", "@ankhorage/rules": "^0.7.0", "@ankhorage/utility": "^1.10.0" } }, "sha512-cSqL6jKk1pU4wei/nfBymFoQKyDVlnkc/fUckogeyavXU7SvfK2ZDZ9iT/Aje0fsCVhAAbxgxsd0YOV5WUy/DQ=="],
 
     "@ankhorage/rules-documentation": ["@ankhorage/rules-documentation@0.3.4", "", { "dependencies": { "@ankhorage/rules": "^0.2.0" } }, "sha512-UdjehHVOajgMQo1yQFUxQ7S1quWTvslnI/FveSGQomuTGXTj//k8Tm3QTiYijcO3qHiWAKByI311Q1IjZpLOMQ=="],
 
