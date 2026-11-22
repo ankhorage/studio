@@ -350,8 +350,8 @@
   "dependencies": {
     "@ankhorage/api-fastify": "^0.3.0",
     "@ankhorage/apm": "^0.8.15",
-    "@ankhorage/auth": "^0.1.4",
-    "@ankhorage/auth-supabase": "^2.0.20",
+    "@ankhorage/auth": "^0.2.0",
+    "@ankhorage/auth-supabase": "^2.0.21",
     "@ankhorage/capability": "^0.2.3",
     "@ankhorage/color-theory": "^0.3.4",
     "@ankhorage/contracts": "^26.13.1",
