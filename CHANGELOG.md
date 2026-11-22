@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.1.107
+
+### Patch Changes
+
+- 3a52dea: Update dependencies: `@ankhorage/infra-supabase`.
+
 ## 8.1.106
 
 ### Patch Changes
