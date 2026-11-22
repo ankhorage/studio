@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.2.1
+
+### Patch Changes
+
+- 9bac4e0: Update dependencies: `@ankhorage/auth-supabase`, `@ankhorage/auth`.
+
 ## 8.2.0
 
 ### Minor Changes
