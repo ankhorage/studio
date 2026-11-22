@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 
+import type { FastifyInstance, FastifyReply, FastifyRequest } from '@ankhorage/api-fastify';
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
 import type { MonetizationProduct, ReleaseLifecycleControl, ReleasePlan } from '@ankhorage/deploy';
 import type {
@@ -15,7 +16,6 @@ import type {
   StoreListingLocale,
 } from '@ankhorage/deploy/project';
 import { toErrorMessage } from '@ankhorage/utility/error';
-import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import type { ProjectDeployRuntimeInput } from '../../projectDeployRuntimeInput';
 import { ProjectDeployService } from '../deploy/ProjectDeployService';

@@ -344,11 +344,12 @@
     "supabase-vault"
   ],
   "dependencies": {
+    "@ankhorage/api-fastify": "^0.3.0",
     "@ankhorage/apm": "^0.8.15",
     "@ankhorage/auth": "^0.1.4",
     "@ankhorage/auth-supabase": "^2.0.19",
     "@ankhorage/capability": "^0.2.3",
-    "@ankhorage/color-theory": "^0.3.3",
+    "@ankhorage/color-theory": "^0.3.4",
     "@ankhorage/contracts": "^26.13.0",
     "@ankhorage/data-sources": "^2.2.4",
     "@ankhorage/deploy": "^0.14.27",
@@ -374,11 +375,9 @@
     "@ankhorage/templates": "^12.6.57",
     "@ankhorage/utility": "^1.10.1",
     "@ankhorage/zora": "^27.4.7",
-    "@fastify/cors": "^11.4.3",
     "expo-document-picker": "~57.0.3",
     "expo-file-system": "~57.0.7",
-    "expo-image-picker": "~57.0.21",
-    "fastify": "^5.12.8"
+    "expo-image-picker": "~57.0.21"
   },
   "peerDependencies": {
     "@react-native-vector-icons/fontawesome": "^13.1.4 || ^14.0.0",

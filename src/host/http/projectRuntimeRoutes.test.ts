@@ -1,5 +1,5 @@
+import { createFastifyApiServer, type FastifyInstance } from '@ankhorage/api-fastify';
 import { afterEach, describe, expect, test } from 'bun:test';
-import Fastify, { type FastifyInstance } from 'fastify';
 
 import { registerProjectRuntimeRoutes } from './projectRuntimeRoutes';
 
@@ -21,7 +21,7 @@ afterEach(async () => {
 describe('project runtime HTTP adapter', () => {
   test('returns bounded runtime projection currency from ProjectManager', async () => {
     const calls: string[] = [];
-    const server = Fastify({ logger: false });
+    const server = createFastifyApiServer({ logger: false });
     registerProjectRuntimeRoutes(server, {
       workspaceRoot: '/workspace',
       projectManager: {
@@ -49,7 +49,7 @@ describe('project runtime HTTP adapter', () => {
 
   test('reconciles through the provider-neutral ProjectManager lifecycle', async () => {
     const calls: string[] = [];
-    const server = Fastify({ logger: false });
+    const server = createFastifyApiServer({ logger: false });
     registerProjectRuntimeRoutes(server, {
       workspaceRoot: '/workspace',
       projectManager: {
@@ -89,7 +89,7 @@ describe('project runtime HTTP adapter', () => {
   });
 
   test('returns a bounded error for lifecycle failures', async () => {
-    const server = Fastify({ logger: false });
+    const server = createFastifyApiServer({ logger: false });
     registerProjectRuntimeRoutes(server, {
       workspaceRoot: '/workspace',
       projectManager: {

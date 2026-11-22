@@ -2,8 +2,10 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import type { InfraLedger } from '@ankhorage/contracts/infra';
 import { afterEach, expect, test } from 'bun:test';
 
+import type { StudioProjectInfraLifecycle } from '../../features/infrastructure/composition/createStudioProjectInfraLifecycle';
 import { createProjectCreationTestSource } from './createProjectCreationTestSource';
 import { ProjectManager } from './projectManager';
 
@@ -25,6 +27,7 @@ test('resolves a persisted default Infra environment through Studio composition'
     reconcileProjectPackageRootAsync: async () => {
       await Promise.resolve();
     },
+    infraLifecycle: createInfraLifecycle(projectId),
   });
   const manifest = await manager.persistProjectManifest({
     projectId,
@@ -37,7 +40,41 @@ test('resolves a persisted default Infra environment through Studio composition'
   expect(manifest.infra.environments.local.database?.provider).toBe('supabase');
   expect(generated.ledger.projectId).toBe(projectId);
   expect(generated.ledger.resources.map(({ identity }) => identity.adapter)).toContain('local');
-}, 15_000);
+});
+
+function createInfraLifecycle(projectId: string): StudioProjectInfraLifecycle {
+  const ledger: InfraLedger = {
+    schemaVersion: 1,
+    projectId,
+    environment: 'local',
+    targets: [],
+    resources: [
+      {
+        identity: { projectId, environment: 'local', adapter: 'local', resourceId: 'fixture' },
+        persistent: false,
+        retention: 'delete-on-destroy',
+        dependsOn: [],
+      },
+    ],
+    outputs: [],
+    artifacts: [],
+  };
+  return {
+    generateAsync: (request) => {
+      expect(request.projectId).toBe(projectId);
+      expect(request.projectPath).toContain(path.join('apps', projectId));
+      return Promise.resolve({ environment: 'local', artifacts: [], ledger });
+    },
+    upAsync: () =>
+      Promise.resolve({ environment: 'local', targets: [], resources: [], outputs: [], ledger }),
+    statusAsync: () =>
+      Promise.resolve({ projectId, environment: 'local', state: 'ready', resources: [] }),
+    outputsAsync: () => Promise.resolve({ environment: 'local', outputs: [] }),
+    downAsync: () => Promise.resolve({ environment: 'local', ledger }),
+    hasOwnedResourcesAsync: () => Promise.resolve(false),
+    destroyAsync: () => Promise.resolve({ environment: 'local', ledger: null }),
+  };
+}
 
 async function createWorkspaceRoot(): Promise<string> {
   const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'studio-infra-adapter-resolution-'));

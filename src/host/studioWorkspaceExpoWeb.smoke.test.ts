@@ -4,9 +4,9 @@ import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import type { FastifyInstance } from '@ankhorage/api-fastify';
 import type { AppManifest } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
-import type { FastifyInstance } from 'fastify';
 
 const studioWorkspaceWebSmokeTest =
   process.env.ANKH_STUDIO_WORKSPACE_WEB_SMOKE === '1' ? test : test.skip;
