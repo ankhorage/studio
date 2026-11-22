@@ -2,11 +2,8 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import type { InfraLedger } from '@ankhorage/contracts/infra';
-import type { ProjectInfraLifecycle } from '@ankhorage/infra/project';
 import { afterEach, expect, test } from 'bun:test';
 
-import { createStudioProjectInfraLifecycle } from '../../features/infrastructure/composition/createStudioProjectInfraLifecycle';
 import { createProjectCreationTestSource } from './createProjectCreationTestSource';
 import { ProjectManager } from './projectManager';
 
@@ -25,7 +22,6 @@ test('resolves a persisted default Infra environment through Studio composition'
   const projectId = 'infra-adapter-resolution';
   await createProjectRoot(workspaceRoot, projectId);
   const manager = new ProjectManager(workspaceRoot, {
-    infraLifecycle: createInfraLifecycle(projectId),
     reconcileProjectPackageRootAsync: async () => {
       await Promise.resolve();
     },
@@ -41,47 +37,7 @@ test('resolves a persisted default Infra environment through Studio composition'
   expect(manifest.infra.environments.local.database?.provider).toBe('supabase');
   expect(generated.ledger.projectId).toBe(projectId);
   expect(generated.ledger.resources.map(({ identity }) => identity.adapter)).toContain('local');
-});
-
-/*** Compose a deterministic provider-neutral Infra lifecycle and retain the Studio request/response boundary exercised by this test. */
-function createInfraLifecycle(projectId: string) {
-  const ledger: InfraLedger = {
-    schemaVersion: 1,
-    projectId,
-    environment: 'local',
-    targets: [],
-    resources: [
-      {
-        identity: { adapter: 'local', environment: 'local', projectId, resourceId: 'fixture' },
-        dependsOn: [],
-        persistent: false,
-        retention: 'delete-on-destroy',
-      },
-    ],
-    outputs: [],
-    artifacts: [],
-  };
-  const lifecycle: ProjectInfraLifecycle = {
-    validateAsync: () => Promise.resolve(success({ environment: 'local' })),
-    planAsync: () => Promise.resolve(success({ actions: [], environment: 'local', projectId })),
-    generateAsync: () => Promise.resolve(success({ environment: 'local', artifacts: [], ledger })),
-    upAsync: () =>
-      Promise.resolve(
-        success({ environment: 'local', targets: [], resources: [], outputs: [], ledger }),
-      ),
-    statusAsync: () =>
-      Promise.resolve(success({ projectId, environment: 'local', state: 'ready', resources: [] })),
-    outputsAsync: () => Promise.resolve(success({ environment: 'local', outputs: [] })),
-    downAsync: () => Promise.resolve(success({ environment: 'local', ledger })),
-    destroyAsync: () => Promise.resolve(success({ environment: 'local', ledger: null })),
-  };
-  return createStudioProjectInfraLifecycle({ lifecycle });
-}
-
-/*** Create a successful provider-neutral Infra operation result without involving a live control plane. */
-function success<T>(value: T) {
-  return { diagnostics: [], ok: true as const, value };
-}
+}, 15_000);
 
 async function createWorkspaceRoot(): Promise<string> {
   const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'studio-infra-adapter-resolution-'));

@@ -12,7 +12,7 @@ import { createExpo57CapabilityFixtureManifest } from './createExpo57CapabilityF
 import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { createStaticExportServer } from './createStaticExportServer';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
-import { reconcilePackedStudioCandidateProjectAsync } from './preparePackedStudioCandidateAsync';
+import { preparePackedStudioCandidateAsync } from './preparePackedStudioCandidateAsync';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
@@ -30,11 +30,7 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
   try {
     await createWorkspaceAsync(workspaceRoot);
     const manager = new ProjectManager(workspaceRoot, {
-      reconcileProjectPackageRootAsync: (projectRoot) =>
-        reconcilePackedStudioCandidateProjectAsync(projectRoot, workspaceRoot, {
-          label: 'generated capability',
-          timeoutMs: COMMAND_TIMEOUT_MS,
-        }),
+      reconcileProjectPackageRootAsync: async () => undefined,
     });
     const created = await manager.createProject(
       'Expo 57 Generated Capability Acceptance',
@@ -46,6 +42,11 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
       projectId: created.id,
       manifest: createExpo57CapabilityFixtureManifest(),
       mutations: [],
+    });
+    await assertExpo57GeneratedCapabilityContractAsync(created.path);
+    await preparePackedStudioCandidateAsync(created.path, workspaceRoot, {
+      label: 'generated capability',
+      timeoutMs: COMMAND_TIMEOUT_MS,
     });
     await rm(path.join(created.path, 'node_modules'), { force: true, recursive: true });
     await createProjectLockfileAsync(created.path);
@@ -61,7 +62,6 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
     if (!lockedDependencies.equals(installedDependencies)) {
       throw new Error('The frozen generated capability install mutated bun.lock.');
     }
-    await assertExpo57GeneratedCapabilityContractAsync(created.path);
     await assertExpo57GeneratedCapabilityOwnerGraphAsync(created.path);
     await runGeneratedCapabilityChecksAsync(created.path);
     await assertExpo57GeneratedCapabilityNativePrebuildAsync(created.path);
