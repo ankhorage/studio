@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.2.3
+
+### Patch Changes
+
+- dfb408c: Update dependencies: `@ankhorage/orchestrator-module-expo-google-fonts`, `@ankhorage/repository`.
+
 ## 8.2.2
 
 ### Patch Changes
