@@ -8,7 +8,6 @@ import { ProjectManager } from '../../src/host/orchestrator/projectManager';
 import { assertReactNativeOwnerGraphAsync } from './assertReactNativeOwnerGraphAsync';
 import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
-import { preparePackedStudioCandidateAsync } from './preparePackedStudioCandidateAsync';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
@@ -101,9 +100,7 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
     'utf8',
   );
 
-  const projectManager = new ProjectManager(workspaceRoot, {
-    reconcileProjectPackageRootAsync: async () => undefined,
-  });
+  const projectManager = new ProjectManager(workspaceRoot);
   const created = await projectManager.createProject(
     'Expo 57 Generated App Acceptance',
     createSmokeProjectSource(),
@@ -141,17 +138,6 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
     mutations: [],
   });
 
-  await preparePackedStudioCandidateAsync(created.path, workspaceRoot, {
-    label: 'generated app',
-    timeoutMs: COMMAND_TIMEOUT_MS,
-  });
-  await runAcceptanceCommandAsync({
-    args: ['install', '--lockfile-only', '--os=*', '--cpu=*'],
-    command: 'bun',
-    cwd: created.path,
-    label: 'Create generated app lockfile',
-    timeoutMs: COMMAND_TIMEOUT_MS,
-  });
   return created.path;
 }
 

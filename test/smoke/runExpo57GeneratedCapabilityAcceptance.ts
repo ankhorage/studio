@@ -12,7 +12,6 @@ import { createExpo57CapabilityFixtureManifest } from './createExpo57CapabilityF
 import { createSmokeProjectSource } from './createSmokeProjectSource';
 import { createStaticExportServer } from './createStaticExportServer';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
-import { preparePackedStudioCandidateAsync } from './preparePackedStudioCandidateAsync';
 import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
@@ -29,9 +28,7 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
 
   try {
     await createWorkspaceAsync(workspaceRoot);
-    const manager = new ProjectManager(workspaceRoot, {
-      reconcileProjectPackageRootAsync: async () => undefined,
-    });
+    const manager = new ProjectManager(workspaceRoot);
     const created = await manager.createProject(
       'Expo 57 Generated Capability Acceptance',
       createSmokeProjectSource(),
@@ -44,10 +41,6 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
       mutations: [],
     });
     await assertExpo57GeneratedCapabilityContractAsync(created.path);
-    await preparePackedStudioCandidateAsync(created.path, workspaceRoot, {
-      label: 'generated capability',
-      timeoutMs: COMMAND_TIMEOUT_MS,
-    });
     await rm(path.join(created.path, 'node_modules'), { force: true, recursive: true });
     await createProjectLockfileAsync(created.path);
     const lockedDependencies = await readFile(path.join(created.path, 'bun.lock'));
