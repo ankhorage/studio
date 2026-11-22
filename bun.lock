@@ -26,6 +26,7 @@
         "@ankhorage/permissions": "^0.3.23",
         "@ankhorage/react-native-reanimated-dnd-web": "^0.4.4",
         "@ankhorage/repository": "^0.10.8",
+        "@ankhorage/rules": "^0.7.0",
         "@ankhorage/rules-design": "^0.10.2",
         "@ankhorage/runtime": "^5.5.10",
         "@ankhorage/secrets": "^0.3.2",
@@ -144,7 +145,7 @@
 
     "@ankhorage/repository": ["@ankhorage/repository@0.10.8", "", { "dependencies": { "@ankhorage/ankh": "^0.13.3", "@ankhorage/capability": "^0.2.3", "@ankhorage/contracts": "^26.12.0", "ignore": "^7.0.16" } }, "sha512-G7ERzh3css0qh7tsPanIFhXd2cCLcYTwrY6TsJHysBB0InayPBGBw1U2RJNKHNbcp75AKLhN+jQJSqePtPgj4Q=="],
 
-    "@ankhorage/rules": ["@ankhorage/rules@0.2.2", "", { "dependencies": { "@ankhorage/ankh": "^0.13.1", "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^26.0.0", "@ankhorage/utility": "^1.9.0" }, "bin": { "ankhorage-rules": "dist/cli/standalone.js" } }, "sha512-gVd9PHcqiUVZ/Xu291U6FG2zMxjA9Sy9hrqIKzPgwXYeqJHUSyVaFgPnhlIF1nBfF4mh19m112qenno21B0R1g=="],
+    "@ankhorage/rules": ["@ankhorage/rules@0.7.0", "", { "dependencies": { "@ankhorage/ankh": "^0.13.1", "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^26.0.0", "@ankhorage/utility": "^1.9.0" }, "bin": { "ankhorage-rules": "dist/cli/standalone.js" } }, "sha512-i64dUl/173YNPcjE2eJzVqKjUAZ+xqqEmhfYn9v8ZkR7PbDCcfUqavh1f2zu+IWBoIxZWJ2kpQBUUi86qoFuxA=="],
 
     "@ankhorage/rules-design": ["@ankhorage/rules-design@0.10.2", "", { "dependencies": { "@ankhorage/ankh": "^0.13.4", "@ankhorage/capability": "^0.2.2", "@ankhorage/contracts": "26.12.0", "@ankhorage/rules": "^0.7.0", "@ankhorage/utility": "^1.10.0" } }, "sha512-LWMr5A6rPxZ42IypBt6QDlJzUNHJF66VPLfAUxD6uriZY7vfRMLFzdxkLN2lkTRC52D7xE0Dc1O+czyNud0IgA=="],
 
@@ -2084,11 +2085,13 @@
 
     "@ankhorage/devtools/@ankhorage/utility": ["@ankhorage/utility@0.5.5", "", { "dependencies": { "@ankhorage/contracts": "^12.0.1" }, "peerDependencies": { "@techstark/opencv-js": "^5.0.0-release.1", "pixelmatch": "^7.2.0", "sharp": "^0.35.4", "tesseract.js": "^7.0.0" }, "optionalPeers": ["@techstark/opencv-js", "pixelmatch", "sharp", "tesseract.js"] }, "sha512-so1NXcIOQjEPNsNpdGp9McXsw8oIo4Mw/pF3y2x69f1MbwqEC79H7I0dResKs52S8Il4JeO/e5RO3Sf4yDdMGA=="],
 
+    "@ankhorage/paradox/@ankhorage/rules": ["@ankhorage/rules@0.2.2", "", { "dependencies": { "@ankhorage/ankh": "^0.13.1", "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^26.0.0", "@ankhorage/utility": "^1.9.0" }, "bin": { "ankhorage-rules": "dist/cli/standalone.js" } }, "sha512-gVd9PHcqiUVZ/Xu291U6FG2zMxjA9Sy9hrqIKzPgwXYeqJHUSyVaFgPnhlIF1nBfF4mh19m112qenno21B0R1g=="],
+
     "@ankhorage/paradox/@ankhorage/rules-repository": ["@ankhorage/rules-repository@0.4.1", "", { "dependencies": { "@ankhorage/contracts": "^26.11.0", "@ankhorage/rules": "^0.6.0" } }, "sha512-kP955VJaNDjpWJPrAnKAqExOYhb7F0DYHmL5u7PzleSipcAZHTD84P2cJKMV46EQB8u7ZHE3Y8hQafchYylDoQ=="],
 
     "@ankhorage/project-detector/@ankhorage/utility": ["@ankhorage/utility@0.8.0", "", {}, "sha512-0ywzdqu1pO+n9yNhbJE5+JD4CeUQ1GEvMGbh8pccr8ieLFlYgTKMFWxH3XUk0Mw6P2ngelQU+PHC+kjJ/xL8Uw=="],
 
-    "@ankhorage/rules-design/@ankhorage/rules": ["@ankhorage/rules@0.7.0", "", { "dependencies": { "@ankhorage/ankh": "^0.13.1", "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^26.0.0", "@ankhorage/utility": "^1.9.0" }, "bin": { "ankhorage-rules": "dist/cli/standalone.js" } }, "sha512-i64dUl/173YNPcjE2eJzVqKjUAZ+xqqEmhfYn9v8ZkR7PbDCcfUqavh1f2zu+IWBoIxZWJ2kpQBUUi86qoFuxA=="],
+    "@ankhorage/rules-documentation/@ankhorage/rules": ["@ankhorage/rules@0.2.2", "", { "dependencies": { "@ankhorage/ankh": "^0.13.1", "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^26.0.0", "@ankhorage/utility": "^1.9.0" }, "bin": { "ankhorage-rules": "dist/cli/standalone.js" } }, "sha512-gVd9PHcqiUVZ/Xu291U6FG2zMxjA9Sy9hrqIKzPgwXYeqJHUSyVaFgPnhlIF1nBfF4mh19m112qenno21B0R1g=="],
 
     "@ankhorage/rules-repository/@ankhorage/rules": ["@ankhorage/rules@0.6.0", "", { "dependencies": { "@ankhorage/ankh": "^0.13.1", "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^26.0.0", "@ankhorage/utility": "^1.9.0" }, "bin": { "ankhorage-rules": "dist/cli/standalone.js" } }, "sha512-wb8mqMW1EB7cPV40bu5B8T1KOHXzhnfi153ztj8OUTEb25jzhDTrsY/rgztLZiZMn7qnmWjckgRof/mY7SPvbQ=="],
 

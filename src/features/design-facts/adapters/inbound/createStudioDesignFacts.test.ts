@@ -90,10 +90,13 @@ describe('createStudioDesignFacts', () => {
 
 describe('createStudioDesignRuleProvider', () => {
   it('uses the released profile and provider', () => {
-    const contribution = createStudioDesignRuleProvider({
-      color: colorPolicy,
-      typography: typographyPolicy,
-    });
+    const contribution = createStudioDesignRuleProvider(
+      {
+        color: colorPolicy,
+        typography: typographyPolicy,
+      },
+      'design.60-30-10',
+    );
     expect(contribution.profile.profileId).toBe('design.60-30-10');
     expect(contribution.profile.selection.rootRuleIds).toEqual(['design.color.usage-distribution']);
     expect(contribution.provider.packageName).toBe('@ankhorage/rules-design');
@@ -129,10 +132,13 @@ describe('createStudioDesignRuleProvider', () => {
         },
       ],
     });
-    const contribution = createStudioDesignRuleProvider({
-      color: colorPolicy,
-      typography: typographyPolicy,
-    });
+    const contribution = createStudioDesignRuleProvider(
+      {
+        color: colorPolicy,
+        typography: typographyPolicy,
+      },
+      'design.60-30-10',
+    );
     const rule = contribution.provider.ruleSet.rules.find(
       ({ identity }) => identity.id === 'design.color.usage-distribution',
     );
