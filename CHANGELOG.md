@@ -1,5 +1,29 @@
 # @ankhorage/studio
 
+## 8.1.106
+
+### Patch Changes
+
+- 969ed1d: Update dependencies: `@ankhorage/templates`.
+
+## 8.1.105
+
+### Patch Changes
+
+- 0e00ce1: Update dependencies: `@ankhorage/runtime`, `@ankhorage/templates`.
+
+## 8.1.104
+
+### Patch Changes
+
+- 2bfad2c: Update dependencies: `@ankhorage/auth-supabase`, `@ankhorage/data-sources`, `@ankhorage/deploy`, `@ankhorage/infra-minikube`, `@ankhorage/infra`, `@ankhorage/runtime`, `@ankhorage/templates`.
+
+## 8.1.103
+
+### Patch Changes
+
+- 4c47f02: Update dependencies: `@ankhorage/contracts`.
+
 ## 8.1.102
 
 ### Patch Changes
