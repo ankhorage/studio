@@ -18,6 +18,7 @@
     "src/externalApiAuthoring/index.ts",
     "src/app/index.ts",
     "src/app/StudioApp.tsx",
+    "src/app/AcquisitionScreen.tsx",
     "src/app/ProjectsOverviewScreen.tsx",
     "src/app/ProjectDetailScreen.tsx",
     "src/app/CreateCategoriesScreen.tsx",
