@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.2.10
+
+### Patch Changes
+
+- 512f1f8: Update dependencies: `@ankhorage/contracts`, `@ankhorage/navigator`, `@ankhorage/templates`.
+
 ## 8.2.9
 
 ### Patch Changes
