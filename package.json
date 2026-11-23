@@ -362,7 +362,7 @@
     "@ankhorage/infra-local": "^0.3.35",
     "@ankhorage/infra-minikube": "^0.4.136",
     "@ankhorage/infra-supabase": "^0.6.1",
-    "@ankhorage/navigator": "^3.6.2",
+    "@ankhorage/navigator": "^3.6.3",
     "@ankhorage/orchestrator": "^0.4.6",
     "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.29",
     "@ankhorage/orchestrator-module-expo-localization": "^0.7.4",
