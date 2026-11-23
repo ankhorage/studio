@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.2.11
+
+### Patch Changes
+
+- fde7d59: Update dependencies: `@ankhorage/auth-supabase`, `@ankhorage/deploy`, `@ankhorage/infra-local`, `@ankhorage/repository`.
+
 ## 8.2.10
 
 ### Patch Changes
