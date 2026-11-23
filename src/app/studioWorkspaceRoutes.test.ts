@@ -58,12 +58,13 @@ test('apps/studio owns a canonical AppManifest for the Studio workspace app', as
   ) as {
     metadata?: { category?: string; slug?: string };
     navigator?: { type?: string; routes?: { path?: string }[] };
+    screens?: Record<string, { id?: string; root?: { type?: string } }>;
   };
 
   expect(manifest.metadata?.slug).toBe('ankhorage-studio');
   expect(manifest.metadata?.category).toBe('developer_tools');
   expect(manifest.navigator?.type).toBe('stack');
-  expect((manifest as { screens?: Record<string, { id?: string; root?: { type?: string } }> }).screens?.acquisition).toMatchObject({
+  expect(manifest.screens?.acquisition).toMatchObject({
     id: 'acquisition',
     root: { type: 'StudioWorkspaceRoute' },
   });
