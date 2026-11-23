@@ -53,6 +53,11 @@
         "name": "create/[category]/[slug]",
         "path": "/create/:category/:slug",
         "screenId": "create-project"
+      },
+      {
+        "name": "acquisition",
+        "path": "/acquisition",
+        "screenId": "acquisition"
       }
     ]
   },
@@ -106,12 +111,24 @@
         "id": "create-project-root",
         "type": "StudioWorkspaceRoute"
       }
+    },
+    "acquisition": {
+      "id": "acquisition",
+      "name": "Acquisition",
+      "title": "Acquisition",
+      "description": "Embedded Studio preview of the published canonical Acquisition template; content is owned by @ankhorage/templates.",
+      "root": {
+        "id": "acquisition-root",
+        "type": "StudioWorkspaceRoute"
+      }
     }
   },
   "settings": {
     "localization": {
       "defaultLocale": "en",
-      "locales": ["en"]
+      "locales": [
+        "en"
+      ]
     }
   }
 }
