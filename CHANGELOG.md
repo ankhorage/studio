@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.2.17
+
+### Patch Changes
+
+- 3d336bd: Update dependencies: `@ankhorage/auth-supabase`, `@ankhorage/contracts`, `@ankhorage/deploy`, `@ankhorage/infra-local`, `@ankhorage/navigator`, `@ankhorage/repository`, `@ankhorage/runtime`, `@ankhorage/surface`, `@ankhorage/templates`.
+
 ## 8.2.16
 
 ### Patch Changes
