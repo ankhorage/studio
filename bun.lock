@@ -8,15 +8,15 @@
         "@ankhorage/api-fastify": "^0.3.0",
         "@ankhorage/apm": "^0.8.15",
         "@ankhorage/auth": "^0.2.0",
-        "@ankhorage/auth-supabase": "^2.0.21",
+        "@ankhorage/auth-supabase": "^2.0.22",
         "@ankhorage/capability": "^0.2.3",
         "@ankhorage/color-theory": "^0.3.4",
         "@ankhorage/contracts": "^26.14.0",
         "@ankhorage/data-sources": "^2.3.0",
-        "@ankhorage/deploy": "^0.14.28",
+        "@ankhorage/deploy": "^0.14.29",
         "@ankhorage/expo-runtime": "^7.2.0",
         "@ankhorage/infra": "^7.3.5",
-        "@ankhorage/infra-local": "^0.3.34",
+        "@ankhorage/infra-local": "^0.3.35",
         "@ankhorage/infra-minikube": "^0.4.136",
         "@ankhorage/infra-supabase": "^0.6.1",
         "@ankhorage/navigator": "^3.6.2",
@@ -25,7 +25,7 @@
         "@ankhorage/orchestrator-module-expo-localization": "^0.7.4",
         "@ankhorage/permissions": "^0.3.23",
         "@ankhorage/react-native-reanimated-dnd-web": "^0.4.4",
-        "@ankhorage/repository": "^0.10.11",
+        "@ankhorage/repository": "^0.10.12",
         "@ankhorage/rules": "^0.7.0",
         "@ankhorage/rules-design": "^0.10.2",
         "@ankhorage/runtime": "^5.5.10",
@@ -97,7 +97,7 @@
 
     "@ankhorage/data-sources": ["@ankhorage/data-sources@2.3.0", "", { "dependencies": { "@ankhorage/contracts": "^26.13.1" } }, "sha512-Q/NCdTY2zWKWBok61ybBVLoaeMdW760DPwqfkCdW290hqy9A1JI/Mcd6bjJQ/M8W+2WndH2a5gW8HPkZNF815A=="],
 
-    "@ankhorage/deploy": ["@ankhorage/deploy@0.14.28", "", { "dependencies": { "@ankhorage/ankh": "^0.13.3", "@ankhorage/capability": "^0.2.3", "@ankhorage/contracts": "^26.13.1", "@ankhorage/deploy-provider-app-store-connect": "^0.0.0", "@ankhorage/deploy-provider-eas": "^0.0.0", "@ankhorage/deploy-provider-google-play": "^0.0.0" } }, "sha512-J0k73qsczKtnbhhniY+mB+/t/LYSuiMJMORyiJxm5kcD68PCa3qgJhNHiqcSLm+ND3EtO5tOKc5vyHkGJsKcCw=="],
+    "@ankhorage/deploy": ["@ankhorage/deploy@0.14.29", "", { "dependencies": { "@ankhorage/ankh": "^0.13.3", "@ankhorage/capability": "^0.2.3", "@ankhorage/contracts": "^26.14.0", "@ankhorage/deploy-provider-app-store-connect": "^0.0.0", "@ankhorage/deploy-provider-eas": "^0.0.0", "@ankhorage/deploy-provider-google-play": "^0.0.0" } }, "sha512-KcemFcIcuwzh+GLDmEkH1/nPLQini0QairIChmGn+LOzU60oKJXDEcUAdMYJs1NcKNbWoLQyFjkj9PjOWeXRNA=="],
 
     "@ankhorage/deploy-provider-app-store-connect": ["@ankhorage/deploy-provider-app-store-connect@0.0.0", "", { "dependencies": { "@ankhorage/contracts": "^19.2.2", "@ankhorage/utility": "^0.8.0" } }, "sha512-M3ItX2ORlIq1ADXovX0edgpJEYBZqdpx/Z/eb3/nuPqZlmZXCceOQXmDVak4jhmPjtTekL2yQ7gjJPlAou+Hzw=="],
 
