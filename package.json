@@ -377,9 +377,9 @@
     "@ankhorage/storage": "^0.2.3",
     "@ankhorage/storage-supabase": "^1.0.0",
     "@ankhorage/surface": "^9.5.20",
-    "@ankhorage/templates": "^12.6.63",
+    "@ankhorage/templates": "^12.6.66",
     "@ankhorage/utility": "^1.10.1",
-    "@ankhorage/zora": "^27.6.1",
+    "@ankhorage/zora": "^27.9.0",
     "expo-document-picker": "~57.0.3",
     "expo-file-system": "~57.0.7",
     "expo-image-picker": "~57.0.21"
