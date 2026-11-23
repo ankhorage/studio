@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.2.9
+
+### Patch Changes
+
+- ce42b4e: Update dependencies: `@ankhorage/templates`, `@ankhorage/zora`.
+
 ## 8.2.8
 
 ### Patch Changes
