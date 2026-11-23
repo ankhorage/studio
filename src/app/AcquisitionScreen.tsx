@@ -1,9 +1,9 @@
-import { isAppManifest, type AppManifest } from '@ankhorage/contracts';
+import { type AppManifest, isAppManifest } from '@ankhorage/contracts';
 import { RuntimeRenderer } from '@ankhorage/runtime';
 import { isRecord } from '@ankhorage/utility/object';
 import { ZORA_BASE_COMPONENT_REGISTRY } from '@ankhorage/zora/reader-free';
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { studioApiBase } from '../utils/studioApiBase';
 import { EmptyState, LoadingState, WorkspaceScreen } from './workspace/WorkspacePrimitives';
@@ -34,10 +34,7 @@ export function AcquisitionScreen() {
         {preview.status === 'loading' ? (
           <LoadingState label="Loading Acquisition design" />
         ) : (
-          <EmptyState
-            title="Acquisition preview not available"
-            detail={preview.message}
-          />
+          <EmptyState title="Acquisition preview not available" detail={preview.message} />
         )}
       </WorkspaceScreen>
     );
@@ -56,7 +53,7 @@ export function AcquisitionScreen() {
   }
 
   return (
-    <View style={{ flex: 1, minHeight: 0 }}>
+    <View style={styles.root}>
       <RuntimeRenderer
         isRoot
         disableActions
@@ -100,13 +97,15 @@ async function loadAcquisitionPreviewAsync(signal: AbortSignal): Promise<{
   if (!isRecord(payload) || !isAppManifest(payload.manifest) || !isRecord(payload.assets)) {
     throw new Error('The Studio host returned an invalid Acquisition preview manifest.');
   }
-  const assets: Record<string, string> = {};
-  for (const [id, value] of Object.entries(payload.assets)) {
-    if (typeof value !== 'string') {
-      throw new Error('The Studio host returned an invalid Acquisition preview asset.');
-    }
-    assets[id] = value;
+  const entries = Object.entries(payload.assets);
+  const assets = entries.filter((entry): entry is [string, string] => typeof entry[1] === 'string');
+  if (assets.length !== entries.length) {
+    throw new Error('The Studio host returned an invalid Acquisition preview asset.');
   }
 
-  return { manifest: payload.manifest, assets };
+  return { manifest: payload.manifest, assets: Object.fromEntries(assets) };
 }
+
+const styles = StyleSheet.create({
+  root: { flex: 1, minHeight: 0 },
+});
