@@ -371,7 +371,7 @@
     "@ankhorage/repository": "^0.10.15",
     "@ankhorage/rules": "^0.7.0",
     "@ankhorage/rules-design": "^0.10.2",
-    "@ankhorage/runtime": "^5.5.12",
+    "@ankhorage/runtime": "^5.6.0",
     "@ankhorage/secrets": "^0.3.2",
     "@ankhorage/secrets-supabase-vault": "^1.0.0",
     "@ankhorage/storage": "^0.2.3",
