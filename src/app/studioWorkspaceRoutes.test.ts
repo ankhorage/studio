@@ -16,6 +16,7 @@ test('Studio app shell mounts a real Expo Router Stack navigator', async () => {
 test('apps/studio exposes the canonical workspace Expo routes', async () => {
   const routes = {
     'src/app/index.tsx': 'ProjectsOverviewScreen',
+    'src/app/acquisition/index.tsx': 'AcquisitionScreen',
     'src/app/projects/[projectId].tsx': 'ProjectDetailScreen',
     'src/app/create/index.tsx': 'CreateCategoriesScreen',
     'src/app/create/[category]/index.tsx': 'CreateCategoryTemplatesScreen',
@@ -62,11 +63,16 @@ test('apps/studio owns a canonical AppManifest for the Studio workspace app', as
   expect(manifest.metadata?.slug).toBe('ankhorage-studio');
   expect(manifest.metadata?.category).toBe('developer_tools');
   expect(manifest.navigator?.type).toBe('stack');
+  expect((manifest as { screens?: Record<string, { id?: string; root?: { type?: string } }> }).screens?.acquisition).toMatchObject({
+    id: 'acquisition',
+    root: { type: 'StudioWorkspaceRoute' },
+  });
   expect(manifest.navigator?.routes?.map((route) => route.path)).toEqual([
     '/',
     '/projects/:projectId',
     '/create',
     '/create/:category',
     '/create/:category/:slug',
+    '/acquisition',
   ]);
 });
