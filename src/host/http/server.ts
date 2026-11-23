@@ -23,6 +23,7 @@ import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
 import { registerProjectMediaRoutes } from './mediaRoutes';
 import { registerProjectModuleRoutes } from './moduleRoutes';
 import { registerProjectRuntimeRoutes } from './projectRuntimeRoutes';
+import { registerAcquisitionPreviewRoute } from './registerAcquisitionPreviewRoute';
 import { resolveProjectUpdateRootAsync } from './resolveProjectUpdateRootAsync';
 import { isOriginAllowed } from './security';
 
@@ -87,6 +88,7 @@ export async function createStudioHostServer(args: {
   fastify.get('/api/projects', () => projectManager.listProjects());
 
   fastify.get('/api/templates', () => getTemplateCatalog());
+  registerAcquisitionPreviewRoute(fastify);
 
   fastify.post('/api/projects', async (req: FastifyRequest, reply: FastifyReply) => {
     const { name, includeStudio = true } = req.body as {
