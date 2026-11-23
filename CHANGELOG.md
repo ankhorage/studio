@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 8.2.16
+
+### Patch Changes
+
+- 0b705b6: Update dependencies: `@ankhorage/navigator`.
+
 ## 8.2.15
 
 ### Patch Changes
