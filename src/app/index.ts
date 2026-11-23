@@ -1,3 +1,4 @@
+export { AcquisitionScreen } from './AcquisitionScreen';
 export { CreateCategoriesScreen } from './CreateCategoriesScreen';
 export { CreateCategoryTemplatesScreen } from './CreateCategoryTemplatesScreen';
 export { CreateProjectFromTemplateScreen } from './CreateProjectFromTemplateScreen';
