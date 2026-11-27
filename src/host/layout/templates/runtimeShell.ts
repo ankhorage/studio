@@ -4,7 +4,6 @@ import type { GeneratedImportRequirement } from '../generatedImportComposer';
 export function getRuntimeShellImportRequirements(
   includeStudio: boolean,
   zoraEntrypoint: '@ankhorage/zora' | '@ankhorage/zora/reader-free',
-  useStoredAuthSessionCredentialResolver: boolean,
 ): GeneratedImportRequirement[] {
   return [
     {
@@ -52,14 +51,6 @@ export function getRuntimeShellImportRequirements(
         },
       ],
     },
-    ...(useStoredAuthSessionCredentialResolver
-      ? [
-          {
-            source: '@/auth/session',
-            namedImports: [{ imported: 'getStoredAuthSession' }],
-          },
-        ]
-      : []),
     ...(includeStudio
       ? [
           {
@@ -90,19 +81,8 @@ export function getRuntimeShellTsx(args: {
   readonly imports: string;
   readonly includeStudio: boolean;
   readonly runtimeModuleDeclarations?: string;
-  readonly useStoredAuthSessionCredentialResolver: boolean;
-  readonly zoraEntrypoint: '@ankhorage/zora' | '@ankhorage/zora/reader-free';
 }): string {
-  const {
-    imports,
-    includeStudio,
-    runtimeModuleDeclarations,
-    useStoredAuthSessionCredentialResolver,
-    zoraEntrypoint,
-  } = args;
-  const runtimeCredentialResolver = useStoredAuthSessionCredentialResolver
-    ? '\n        credentialResolver: resolveRuntimeOperationCredential,'
-    : '';
+  const { imports, includeStudio, runtimeModuleDeclarations } = args;
   const capabilityExecutor = includeStudio
     ? `useStudioRuntimeCapabilityExecutor({
     setThemeMode: setMode,
@@ -137,23 +117,6 @@ function useGeneratedRuntimeCapabilityExecutor() {
   return { executeCapability };
 }
 `;
-  const credentialResolver = useStoredAuthSessionCredentialResolver
-    ? `
-function resolveRuntimeOperationCredential(credential: { readonly kind?: string } | undefined) {
-  if (credential?.kind !== 'bearer' && credential?.kind !== 'oauth2') return undefined;
-
-  const session = getStoredAuthSession();
-  if (!session?.accessToken) return undefined;
-
-  return {
-    headers: {
-      Authorization: \`Bearer \${session.accessToken}\`,
-    },
-  };
-}
-`
-    : '';
-
   return (
     `${imports}
 
@@ -210,11 +173,12 @@ export function GeneratedRuntimeShell({
 }) {${includeStudio ? '\n  const { setMode } = useZoraTheme();' : ''}
   const runtimeCapabilityExecutor = ${capabilityExecutor};
   const executeApplicationCapability = runtimeCapabilityExecutor.executeCapability;
+  // Credentialed operations require a trusted host and must fail closed on the client.
   const apiCapabilityExecutor = useMemo(
     () =>
       createRuntimeApiCapabilityExecutor({
         apis: runtimeManifest.infra.apis ?? {},
-        fetch: runtimeApiFetch,${runtimeCredentialResolver}
+        fetch: runtimeApiFetch,
       }),
     [runtimeManifest.infra.apis],
   );
@@ -268,6 +232,6 @@ async function runtimeApiFetch(
     text: () => response.text(),
   };
 }
-${credentialResolver}${standaloneExecutor}`.trimEnd() + '\n'
+${standaloneExecutor}`.trimEnd() + '\n'
   );
 }

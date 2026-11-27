@@ -250,7 +250,7 @@ function mergeRuntimeModuleDeclarations(...declarations: readonly string[]): str
  * Follow-up: Move generated-app file orchestration out of the generic host/layout bucket into the projects/template generation owner.
  */
 export class GeneratedAppFileGenerator {
-  static readonly runtimeRevision = '3';
+  static readonly runtimeRevision = '4';
 
   /***
    * Walk the manifest navigators and compose root layouts, nested layouts, screens, auth runtime files and Studio admin routes into the generated project file set.
@@ -289,11 +289,7 @@ export class GeneratedAppFileGenerator {
       path: 'src/generated/runtimeShell.tsx',
       content: getRuntimeShellTsx({
         imports: composeGeneratedImports([
-          ...getRuntimeShellImportRequirements(
-            includeStudio,
-            zoraRuntimeImports.entrypoint,
-            authLayoutPlan.enabled,
-          ),
+          ...getRuntimeShellImportRequirements(includeStudio, zoraRuntimeImports.entrypoint),
           zoraRuntimeImports.componentRegistry === 'ZORA_COMPONENT_REGISTRY'
             ? `import { ZORA_COMPONENT_REGISTRY } from '@ankhorage/zora';`
             : `import { ZORA_BASE_COMPONENT_REGISTRY } from '@ankhorage/zora/registry';`,
@@ -303,8 +299,6 @@ export class GeneratedAppFileGenerator {
           getGeneratedRuntimeRegistryDeclarations(zoraRuntimeImports.componentRegistry),
           ...runtimeLayoutIntegration.moduleDeclarations,
         ),
-        useStoredAuthSessionCredentialResolver: authLayoutPlan.enabled,
-        zoraEntrypoint: zoraRuntimeImports.entrypoint,
       }),
     });
 

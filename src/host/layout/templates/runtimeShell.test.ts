@@ -7,14 +7,13 @@ test('generates Studio Runtime composition with the Studio executor and bundled 
     imports: '',
     includeStudio: true,
     runtimeModuleDeclarations: 'const APP_COMPONENT_REGISTRY = {};',
-    useStoredAuthSessionCredentialResolver: true,
-    zoraEntrypoint: '@ankhorage/zora',
   });
 
   expect(source).toContain(`useStudioRuntimeCapabilityExecutor({
     setThemeMode: setMode,
   })`);
-  expect(source).toContain('credentialResolver: resolveRuntimeOperationCredential');
+  expect(source).not.toContain('credentialResolver');
+  expect(source).not.toContain('getStoredAuthSession');
   expect(source).toContain('const apiCapabilityExecutor = useMemo(');
   expect(source).toContain("args.capability.startsWith('api.')");
   expect(source).toContain('? apiCapabilityExecutor(args)');
@@ -24,7 +23,7 @@ test('generates Studio Runtime composition with the Studio executor and bundled 
   expect(source).toContain('registry: runtimeComponentRegistry');
   expect(source).toContain('resolveEventCapability: resolveZoraRuntimeEventCapability');
   expect(source).toContain('onDiagnostics: reportRuntimeDiagnostics');
-  expect(getRuntimeShellImportRequirements(true, '@ankhorage/zora', true)).toContainEqual({
+  expect(getRuntimeShellImportRequirements(true, '@ankhorage/zora')).toContainEqual({
     source: '@ankhorage/utility/object',
     namedImports: [{ imported: 'readOwnProperty' }],
   });
@@ -45,13 +44,9 @@ test('generates standalone Runtime composition without Studio dependencies', () 
     imports: '',
     includeStudio: false,
     runtimeModuleDeclarations: 'const APP_COMPONENT_REGISTRY = {};',
-    useStoredAuthSessionCredentialResolver: false,
-    zoraEntrypoint: '@ankhorage/zora/reader-free',
   });
 
-  expect(
-    getRuntimeShellImportRequirements(false, '@ankhorage/zora/reader-free', false),
-  ).toContainEqual({
+  expect(getRuntimeShellImportRequirements(false, '@ankhorage/zora/reader-free')).toContainEqual({
     source: '@/generated/runtimeCapabilityExecutor',
     namedImports: [{ imported: 'createGeneratedRuntimeCapabilityExecutor' }],
   });
@@ -65,5 +60,5 @@ test('generates standalone Runtime composition without Studio dependencies', () 
   expect(source).not.toContain('export { bundledMediaRegistry };');
   expect(source).toContain('const runtimeComponentRegistry = APP_COMPONENT_REGISTRY;');
   expect(source).not.toContain('export const runtimeComponentRegistry');
-  expect(source).not.toContain('credentialResolver: resolveRuntimeOperationCredential');
+  expect(source).not.toContain('credentialResolver');
 });
